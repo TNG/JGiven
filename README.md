@@ -142,6 +142,8 @@ http://www.apache.org/licenses/LICENSE-2.0 for details.
 
 ## Maven
 
+Note: JGiven is not yet published on Maven central, thus the following only works if JGiven is installed locally!
+
 Add the following dependency to your POM file:
 
 ```
