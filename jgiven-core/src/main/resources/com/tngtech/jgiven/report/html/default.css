@@ -1,0 +1,278 @@
+html {
+  margin: 0;
+  padding: 0;
+}
+body {
+  padding: 20px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  margin: 0;
+}
+a {
+  color: #0000aa;
+  font-size: 16px;
+}
+h1 {
+  background-color: #fff;
+  padding:0;
+  color: #555;
+  font-size: 40px;
+  font-weight: 300;
+  margin-top: 0;
+}
+
+h2, h2 a {
+  font-size: 30px;
+  color: #444;
+  font-weight: 600;
+  margin:0px;
+  border-radius:0;
+  padding-top:5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid lightgray;
+}
+
+.linklist {
+    font-size: 20px;
+}
+
+.linklist ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.linklist ul a {
+  text-decoration: none;
+}
+
+.package {
+    font-size: 70%;
+}
+
+.packagename {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333;
+}
+
+.scenario {    
+    /* background-color: #eee; */ 
+}
+
+.testcase {
+    padding: 0px;
+    padding-left: 10px;
+    padding-top: 5px;
+}
+
+.testcase > ul {
+  list-style-type: none;
+  padding-left:0px;
+  padding-right:10px;
+  padding-top:0px;
+  padding-bottom:10px;
+}
+
+.scenarioClassName {
+  font-size: 14px;
+  color:#666;
+  padding-left: 5px;
+  padding-bottom: 2px;
+  text-align: right;
+  padding-right: 5px;
+  border-top: lightgray solid 1px;
+
+}
+
+.scenario ul {
+  list-style-type: none;
+}
+.scenarioHeader {
+  padding-left: 10px;
+  padding-bottom: 15px;
+}
+
+.scenario {
+  padding: 0px;
+  margin: 0px;
+  margin-left:0px;
+  margin-right:10px;
+  padding-left: 0px;
+  /*
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px gray;
+  */
+  margin-bottom:20px;
+}
+
+.scenario h3 {
+  margin-top: 5px;
+  font-weight: normal;
+  font-size: 18px;
+  color: #000;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-left:0px;
+  /* text-shadow: 1px 1px 1px lightgray;*/
+  overflow:hidden;
+}
+
+.case {
+/*  border-top: 1px solid #d1d1d1;*/
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  margin-bottom:10px;
+  position:relative;
+}
+
+.passedCase ul.steps  {
+  background-color: #EFE;
+}
+
+.failedCase ul.steps  {
+  background-color: #FEE;
+}
+
+.notImplementedCase {
+  background-color: #ddd;
+}
+
+.partiallyImplementedCase {
+  background-color: #ffb;
+}
+
+.tag {
+  font-size: 14px;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.9);
+  display: inline;
+  margin-right:1ex;
+  float: right;
+  border-radius: 3px;
+  padding:1px;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-shadow: none;
+  background-color: violet;
+  border: 1px rgb(171, 85, 208) solid;
+}
+
+.tag a {
+  text-decoration: none;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.failed {
+  background-color: #f44;
+  border: #f44 solid 5px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-weight:bold;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.passed, .notImplementedYetBadge, .partiallyPassed {
+  border: lightgreen solid 3px;
+  border-radius: 3px;
+  display:inline;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight:bold;
+  font-size: 12px;
+  position: absolute;
+  right:1em;
+  top:1em;
+  padding-left:1em;
+  padding-right:1em;
+}
+
+.passed {
+  background-color: lightgreen;
+  border-color: lightgreen;
+}
+
+.partiallyPassed {
+  background-color: khaki;
+  border-color: khaki;
+}
+
+.notImplementedYetBadge {
+  background-color: #777;
+  border-color: #777;
+  color: #ddd;
+}
+
+.notImplementedYetTag {
+  background-color: #777;
+  border: #777 solid 3px;
+  border-radius: 3px;
+  display:inline;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-left:1em;
+  vertical-align: middle;
+}
+
+.stages {
+  margin: 0;
+  margin-top: 10px;
+  padding: 0;
+  padding-bottom: 5px;
+  font-size:18px;
+}
+
+.stagetype {
+  float: left;
+  width:3em;
+}
+
+ul.steps {
+  list-style-type: none;
+  margin-left: 0;
+  margin-top: 0;
+  margin-bottom: 5px;
+  padding: 10px;
+  position:relative;
+}
+
+li.steps {
+  margin-top: 0;
+  margin-left: 0px;
+}
+
+.caseArgument {
+  color: midnightblue;
+  font-weight:bold;
+}
+
+.argument {
+  color: darkmagenta;
+}
+
+.case h4 {
+  color: #000;
+  font-weight: normal;
+  font-size: 15px;
+  padding: 0px;
+  padding-left: 0px;
+  margin-bottom: 5px;
+  margin-left: 0px;
+  margin-top: 0px;
+  text-shadow: 1px 1px 1px #eee;
+}
+.scenario h5 {
+  color: #333;
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-left:10px
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.notImplementedYet {
+  color: gray;
+}
