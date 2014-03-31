@@ -126,7 +126,7 @@ JGiven solves this problem by using the $ character as follows:
 ```
 given().$_eggs(neggs);
 ```
-This is not perfectly readable at first cite, but as soon as you are used to reading $ as a parameter it comes quite natural.
+This is not perfectly readable at first glance, but as soon as you are used to reading $ as a parameter it comes quite natural.
 The generated report will replace the $ with the corresponding parameter.
 So the generated report will look as follows (given <neggs> was 5):
 ```
