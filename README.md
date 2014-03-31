@@ -21,7 +21,7 @@ public void a_pancake_can_be_fried_out_of_an_egg_milk_and_flour() {
         and().some_milk().
         and().the_ingredient( "flour" );
 
-    when().the_cook_mangles_everthing_to_a_dough()
+    when().the_cook_mangles_everthing_to_a_dough().
         and().the_cook_fries_the_dough_in_a_pan();
 
     then().the_resulting_meal_is_a_pan_cake();
@@ -61,13 +61,13 @@ The big advantage of this modular concept is that stages can be easily reused by
 
 Stage classes are POJOs that follow the fluent-interface pattern. This means that all methods return the this-reference.
 In order to work together with inheritance, a stage class should have a type parameter SELF that extends the stage class itself.
-JGiven also provides the helper class Stage that provides a self() method to return the SELF type parameter. 
+JGiven also provides the helper class Stage that provides a self() method to return the SELF type parameter.
 This is best understood by an example:
 
 ```
 public class GivenIngredients<SELF extends GivenIngredients> extends Stage<SELF> {
    List<String> ingredients = new ArrayList<String>();
-   
+
    public SELF an_egg() {
       ingredients.add("Egg");
       return self();
@@ -77,7 +77,7 @@ public class GivenIngredients<SELF extends GivenIngredients> extends Stage<SELF>
 ```
 
 Stages share state by using injection. This works by annotating the fields with a special annotation @ScenarioState.
-The values of these fields are shared between all stages that have the same field. 
+The values of these fields are shared between all stages that have the same field.
 
 For example, to be able to access the value of the ingredients field of the GivenIngredients stage in the WhenCook stage one has to annotate that field accordingly:
 
@@ -104,7 +104,7 @@ public class WhenCook<SELF extends WhenCook> extends Stage<SELF> {
    public WhenCook the_cook_mangles_everthing_to_a_dough() {
        meal = cook.makeADough( ingredients );
    }
-   
+
 }
 ```
 
