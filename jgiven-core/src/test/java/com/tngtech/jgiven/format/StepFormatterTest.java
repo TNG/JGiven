@@ -1,24 +1,20 @@
 package com.tngtech.jgiven.format;
 
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
+import static java.util.Arrays.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.google.common.base.Joiner;
-import com.tngtech.jgiven.format.ArgumentFormatter;
-import com.tngtech.jgiven.format.NotFormatter;
-import com.tngtech.jgiven.format.PrintfFormatter;
-import com.tngtech.jgiven.format.StepFormatter;
 import com.tngtech.jgiven.format.StepFormatter.Formatting;
 import com.tngtech.jgiven.report.model.Word;
+
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
 @RunWith( JUnitParamsRunner.class )
 public class StepFormatterTest {
@@ -55,7 +51,7 @@ public class StepFormatterTest {
             { "$or should not$", asList( false ), new NotFormatter(), "", "not" },
             { "$or not$", asList( false ), new NotFormatter(), "", "not" },
             { "$", asList( true ), null, "", "true" },
-            { "$", asList( 5d ), new PrintfFormatter(), "%.2f", "5.00" },
+            { "$", asList( 5d ), new PrintfFormatter(), "%.2f", "5[.,]00" },
         };
     }
 
@@ -74,7 +70,7 @@ public class StepFormatterTest {
         List<Word> formattedWords = new StepFormatter( source, arguments, asList )
             .buildFormattedWords();
         String actualResult = Joiner.on( ' ' ).join( formattedWords );
-        assertThat( actualResult ).isEqualTo( expectedResult );
+        assertThat( actualResult ).matches( expectedResult );
     }
 
 }
