@@ -107,10 +107,12 @@ public class HtmlWriter extends ReportModelVisitor {
             writer.println( format( "<h4>Case %d: ", scenarioCase.caseNr ) );
 
             for( int i = 0; i < scenarioCase.arguments.size(); i++ ) {
-                writer.println( format( "%s = %s",
-                    scenarioModel.parameterNames.get( i ),
-                    scenarioCase.arguments.get( i )
-                    ) );
+                if( scenarioModel.parameterNames.size() > i ) {
+                    writer.print( scenarioModel.parameterNames.get( i ) + " = " );
+                }
+
+                writer.print( scenarioCase.arguments.get( i ) );
+
                 if( i < scenarioCase.arguments.size() - 1 ) {
                     writer.println( ", " );
                 }

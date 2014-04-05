@@ -10,11 +10,13 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.thoughtworks.paranamer.BytecodeReadingParanamer;
+import com.thoughtworks.paranamer.ParameterNamesNotFoundException;
+import com.thoughtworks.paranamer.Paranamer;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.IsTag;
@@ -32,7 +34,7 @@ import com.tngtech.jgiven.impl.util.WordUtil;
 public class ReportModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ReportModelBuilder.class );
 
-    private static final LocalVariableTableParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
+    private static final Paranamer paranamer = new BytecodeReadingParanamer();
 
     private ScenarioModel lastScenarioModel;
     private ScenarioCaseModel currentScenarioCase;
@@ -243,7 +245,12 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     private void readParameterNames( Method method ) {
-        setParameterNames( Arrays.asList( discoverer.getParameterNames( method ) ) );
+        try {
+            setParameterNames( Arrays.asList( paranamer.lookupParameterNames( method ) ) );
+        } catch( ParameterNamesNotFoundException e ) {
+            log.warn( "Could not determine parameter names for method " + method
+                    + ". You should compile your source code with debug information." );
+        }
     }
 
     static class ScenarioAnnotations {

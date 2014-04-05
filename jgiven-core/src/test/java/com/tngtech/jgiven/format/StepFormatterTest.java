@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.format;
 
-import static java.util.Arrays.*;
-import static org.assertj.core.api.Assertions.*;
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +10,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.google.common.base.Joiner;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.format.StepFormatter.Formatting;
 import com.tngtech.jgiven.report.model.Word;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
-@RunWith( JUnitParamsRunner.class )
+@RunWith( DataProviderRunner.class )
 public class StepFormatterTest {
 
-    public Object[] testCases() {
+    @DataProvider
+    public static Object[][] testCases() {
         return new Object[][] {
             { "a", asList(), "a" },
             { "a b", asList(), "a b" },
@@ -38,12 +39,13 @@ public class StepFormatterTest {
     }
 
     @Test
-    @Parameters( method = "testCases" )
+    @UseDataProvider( "testCases" )
     public void formatter_should_handle_dollars_correctly( String source, List<Object> arguments, String expectedResult ) {
         testFormatter( source, arguments, null, null, expectedResult );
     }
 
-    public Object[] formatterTestCases() {
+    @DataProvider
+    public static Object[][] formatterTestCases() {
         return new Object[][] {
             { "$", asList( true ), new NotFormatter(), "", "" },
             { "$", asList( false ), new NotFormatter(), "", "not" },
@@ -56,7 +58,7 @@ public class StepFormatterTest {
     }
 
     @Test
-    @Parameters( method = "formatterTestCases" )
+    @UseDataProvider( "formatterTestCases" )
     public void testFormatter( String source, List<Object> arguments, ArgumentFormatter<?> formatter, String formatterArg,
             String expectedResult ) {
         List<Formatting<?>> asList = new ArrayList();
