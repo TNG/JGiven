@@ -63,4 +63,11 @@
       </plugin>
     </plugins>
   </build>
+  <distributionManagement>
+    <repository>
+       <id>internal-repo</id>
+       <name>Internal Repo</name>
+       <url>${repos.url}</url>
+    </repository>
+  </distributionManagement>
 </project>
