@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.junit;
 
 import org.assertj.core.api.Assertions;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -13,6 +14,11 @@ import com.tngtech.jgiven.junit.test.WhenTestStep;
 
 @RunWith( DataProviderRunner.class )
 public class AfterScenarioTest extends ScenarioTest<BeforeAfterTestStage, WhenTestStep, ThenTestStep> {
+
+    @BeforeClass
+    public static void beforeClass() {
+        BeforeAfterTestStage.afterScenarioCalled = 0;
+    }
 
     @DataProvider
     public static Object[][] testData() {
