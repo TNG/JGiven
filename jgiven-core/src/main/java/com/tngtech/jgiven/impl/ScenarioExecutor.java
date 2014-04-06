@@ -123,8 +123,10 @@ public class ScenarioExecutor {
 
         Enhancer e = new Enhancer();
         e.setSuperclass( stepsClass );
-        e.setCallback( new StepMethodInterceptor( new MethodHandler(), stackDepth ) );
+        StepMethodInterceptor callback = new StepMethodInterceptor( new MethodHandler(), stackDepth );
+        e.setCallback( callback );
         T result = (T) e.create();
+        callback.enable();
         stages.put( stepsClass, new StageState( result ) );
         gatherRules( result );
         injectSteps( result );

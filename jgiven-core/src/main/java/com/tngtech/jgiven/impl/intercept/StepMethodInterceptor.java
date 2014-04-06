@@ -16,6 +16,7 @@ public class StepMethodInterceptor implements MethodInterceptor {
 
     private final StepMethodHandler scenarioMethodHandler;
     private final AtomicInteger stackDepth;
+    private boolean enabled;
 
     public StepMethodInterceptor( StepMethodHandler scenarioMethodHandler, AtomicInteger stackDepth ) {
         this.scenarioMethodHandler = scenarioMethodHandler;
@@ -25,7 +26,7 @@ public class StepMethodInterceptor implements MethodInterceptor {
     @Override
     public Object intercept( Object receiver, Method method, Object[] parameters, MethodProxy methodProxy )
             throws Throwable {
-        if( stackDepth.get() == 0 && !method.getDeclaringClass().equals( Object.class ) ) {
+        if( enabled && stackDepth.get() == 0 && !method.getDeclaringClass().equals( Object.class ) ) {
             scenarioMethodHandler.handleMethod( receiver, method, parameters );
         }
 
@@ -54,6 +55,10 @@ public class StepMethodInterceptor implements MethodInterceptor {
         } finally {
             stackDepth.decrementAndGet();
         }
+    }
+
+    public void enable() {
+        this.enabled = true;
     }
 
 }
