@@ -310,6 +310,7 @@ public class ScenarioExecutor {
             return;
         if( state != STARTED )
             throw new IllegalStateException( "The Scenario must be in state STARTED in order to finish it, but it is in state " + state );
+        state = FINISHED;
 
         Exception lastThrownException = null;
         if( beforeStepsWereExecuted ) {
@@ -332,7 +333,6 @@ public class ScenarioExecutor {
             }
         }
 
-        state = FINISHED;
         if( lastThrownException != null ) {
             new RuntimeException( "Exception occurred during the execution of after methods", lastThrownException );
         }

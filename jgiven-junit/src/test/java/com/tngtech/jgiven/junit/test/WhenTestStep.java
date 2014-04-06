@@ -25,4 +25,6 @@ public class WhenTestStep extends Stage<WhenTestStep> {
         intResult = someIntValue * 2;
     }
 
+    public void something() {}
+
 }

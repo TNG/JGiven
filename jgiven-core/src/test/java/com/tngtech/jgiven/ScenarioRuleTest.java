@@ -4,19 +4,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import com.tngtech.jgiven.ScenarioRuleTest.TestSteps;
-import com.tngtech.jgiven.annotation.AfterScenario;
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.base.ScenarioTestBase;
 
-public class ScenarioRuleTest extends ScenarioTestBase<TestSteps<?>, WhenTestStep, TestSteps<?>> {
+public class ScenarioRuleTest extends ScenarioTestBase<BeforeAfterTestStage<?>, WhenTestStep, BeforeAfterTestStage<?>> {
 
     @Test
     public void testBeforeAndAfterIsCalled() {
         scenario.startScenario( "Some Scenario" );
-        TestSteps<?> steps = given().something();
+        BeforeAfterTestStage<?> steps = given().something();
         TestRule rule = steps.rule;
         assertThat( rule.beforeCalled ).isEqualTo( 1 );
         assertThat( steps.beforeCalled ).isEqualTo( 1 );
@@ -46,7 +42,7 @@ public class ScenarioRuleTest extends ScenarioTestBase<TestSteps<?>, WhenTestSte
     @Test
     public void whenExceptionThrownInStepThenAfterMethodsAreExecuted() {
         scenario.startScenario( "some description" );
-        TestSteps<?> steps = given();
+        BeforeAfterTestStage<?> steps = given();
         try {
             when().an_exception_is_thrown();
         } catch( Exception e ) {
@@ -70,7 +66,7 @@ public class ScenarioRuleTest extends ScenarioTestBase<TestSteps<?>, WhenTestSte
         }
     }
 
-    static class ExceptionStep extends TestSteps<ExceptionStep> {
+    static class ExceptionStep extends BeforeAfterTestStage<ExceptionStep> {
         @ScenarioRule
         BeforeExceptionRule exceptionRule = new BeforeExceptionRule();
     }
@@ -83,37 +79,9 @@ public class ScenarioRuleTest extends ScenarioTestBase<TestSteps<?>, WhenTestSte
         }
     }
 
-    public static class TestSteps<SELF extends TestSteps<?>> extends Stage<SELF> {
-        @ScenarioRule
-        TestRule rule = new TestRule();
-
-        int beforeCalled;
-        int afterCalled;
-        int afterStageCalled;
-
-        public SELF something() {
-            return self();
-        }
-
-        @AfterStage
-        void someAfterStageMethod() {
-            afterStageCalled++;
-        }
-
-        @BeforeScenario
-        void someBeforeMethod() {
-            beforeCalled++;
-        }
-
-        @AfterScenario
-        void someAfterMethod() {
-            afterCalled++;
-        }
-    }
-
-    static class TestRule {
-        int beforeCalled;
-        int afterCalled;
+    public static class TestRule {
+        public int beforeCalled;
+        public int afterCalled;
 
         void before() {
             beforeCalled++;
