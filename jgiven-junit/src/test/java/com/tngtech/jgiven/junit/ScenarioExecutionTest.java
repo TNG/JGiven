@@ -13,7 +13,6 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     @Test
     public void before_and_after_is_correctly_executed() {
         assertThat( getScenario().getGivenStage().beforeCalled ).isEqualTo( 0 );
-        assertThat( getScenario().getGivenStage().beforeScenarioCalled ).isEqualTo( 1 );
 
         given().something();
 
@@ -23,7 +22,5 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
         assertThat( getScenario().getGivenStage().beforeCalled ).isEqualTo( 1 );
         assertThat( getScenario().getGivenStage().afterCalled ).isEqualTo( 1 );
-        assertThat( getScenario().getGivenStage().beforeScenarioCalled ).isEqualTo( 1 );
-        assertThat( getScenario().getGivenStage().afterScenarioCalled ).isEqualTo( 0 );
     }
 }
