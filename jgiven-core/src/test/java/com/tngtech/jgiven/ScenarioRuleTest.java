@@ -39,8 +39,8 @@ public class ScenarioRuleTest extends ScenarioTestBase<TestSteps<?>, WhenTestSte
         given().something();
         when().something_happens();
 
-        assertThat( scenario.getWhenSteps().afterStageCalled ).as( "afterStage has not been called" ).isEqualTo( 0 );
-        assertThat( scenario.getGivenSteps().afterStageCalled ).as( "afterStage has been called" ).isEqualTo( 1 );
+        assertThat( scenario.getWhenStage().afterStageCalled ).as( "afterStage has not been called" ).isEqualTo( 0 );
+        assertThat( scenario.getGivenStage().afterStageCalled ).as( "afterStage has been called" ).isEqualTo( 1 );
     }
 
     @Test

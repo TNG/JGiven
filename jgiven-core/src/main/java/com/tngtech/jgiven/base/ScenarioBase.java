@@ -22,7 +22,7 @@ public class ScenarioBase {
     }
 
     public <T> T addSteps( Class<T> stepsClass ) {
-        return executor.addSteps( stepsClass );
+        return executor.addStage( stepsClass );
     }
 
     public void finished() {

@@ -15,7 +15,7 @@ public class ScenarioExecutorTest {
     @Test
     public void methods_annotated_with_BeforeStage_are_executed_before_the_first_step_is_executed() {
         ScenarioExecutor executor = new ScenarioExecutor();
-        BeforeStageStep steps = executor.addSteps( BeforeStageStep.class );
+        BeforeStageStep steps = executor.addStage( BeforeStageStep.class );
         executor.startScenario( "Test" );
         steps.before_stage_was_executed();
     }
@@ -23,8 +23,8 @@ public class ScenarioExecutorTest {
     @Test
     public void methods_annotated_with_AfterStage_are_executed_before_the_first_step_of_the_next_stage_is_executed() {
         ScenarioExecutor executor = new ScenarioExecutor();
-        AfterStageStep steps = executor.addSteps( AfterStageStep.class );
-        NextSteps nextSteps = executor.addSteps( NextSteps.class );
+        AfterStageStep steps = executor.addStage( AfterStageStep.class );
+        NextSteps nextSteps = executor.addStage( NextSteps.class );
         executor.startScenario( "Test" );
         steps.after_stage_was_not_yet_executed();
         nextSteps.after_stage_was_executed();
@@ -33,7 +33,7 @@ public class ScenarioExecutorTest {
     @Test
     public void methods_annotated_with_NotImplementedYet_are_not_really_executed() {
         ScenarioExecutor executor = new ScenarioExecutor();
-        NotImplementedYetTestStep steps = executor.addSteps( NotImplementedYetTestStep.class );
+        NotImplementedYetTestStep steps = executor.addStage( NotImplementedYetTestStep.class );
         executor.startScenario( "Test" );
         steps.something_not_implemented_yet();
         assertThat( true ).as( "No exception was thrown" ).isTrue();
@@ -42,7 +42,7 @@ public class ScenarioExecutorTest {
     @Test
     public void methods_annotated_with_NotImplemented_must_follow_fluent_interface_convention_or_return_null() {
         ScenarioExecutor executor = new ScenarioExecutor();
-        NotImplementedYetTestStep steps = executor.addSteps( NotImplementedYetTestStep.class );
+        NotImplementedYetTestStep steps = executor.addStage( NotImplementedYetTestStep.class );
         executor.startScenario( "Test" );
         assertThat( steps.something_not_implemented_yet_with_wrong_signature() ).isNull();
     }
@@ -50,7 +50,7 @@ public class ScenarioExecutorTest {
     @Test
     public void stepclasses_annotated_with_NotImplementedYet_are_not_really_executed() {
         ScenarioExecutor executor = new ScenarioExecutor();
-        NotImplementedYetTestStepClass steps = executor.addSteps( NotImplementedYetTestStepClass.class );
+        NotImplementedYetTestStepClass steps = executor.addStage( NotImplementedYetTestStepClass.class );
         executor.startScenario( "Test" );
         steps.something_not_implemented_yet();
         assertThat( true ).as( "No exception was thrown" ).isTrue();

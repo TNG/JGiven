@@ -14,45 +14,45 @@ import com.tngtech.jgiven.base.ScenarioBase;
  */
 public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
 
-    private GIVEN givenSteps;
-    private WHEN whenSteps;
-    private THEN thenSteps;
+    private GIVEN givenStage;
+    private WHEN whenStage;
+    private THEN thenStage;
 
     @SuppressWarnings( { "serial", "unchecked" } )
     public Scenario() {
         Class<GIVEN> givenClass = (Class<GIVEN>) new TypeToken<GIVEN>( getClass() ) {}.getRawType();
         Class<WHEN> whenClass = (Class<WHEN>) new TypeToken<WHEN>( getClass() ) {}.getRawType();
         Class<THEN> thenClass = (Class<THEN>) new TypeToken<THEN>( getClass() ) {}.getRawType();
-        setupSteps( givenClass, whenClass, thenClass );
+        setupStages( givenClass, whenClass, thenClass );
     }
 
     @SuppressWarnings( "unchecked" )
-    private Scenario( Class<?> stepsClass ) {
-        givenSteps = (GIVEN) executor.addSteps( stepsClass );
-        whenSteps = (WHEN) givenSteps;
-        thenSteps = (THEN) givenSteps;
+    private Scenario( Class<?> stageClass ) {
+        givenStage = (GIVEN) executor.addStage( stageClass );
+        whenStage = (WHEN) givenStage;
+        thenStage = (THEN) givenStage;
     }
 
     public Scenario( Class<GIVEN> givenClass, Class<WHEN> whenClass, Class<THEN> thenClass ) {
-        setupSteps( givenClass, whenClass, thenClass );
+        setupStages( givenClass, whenClass, thenClass );
     }
 
-    private void setupSteps( Class<GIVEN> givenClass, Class<WHEN> whenClass, Class<THEN> thenClass ) {
-        givenSteps = executor.addSteps( givenClass );
-        whenSteps = executor.addSteps( whenClass );
-        thenSteps = executor.addSteps( thenClass );
+    private void setupStages( Class<GIVEN> givenClass, Class<WHEN> whenClass, Class<THEN> thenClass ) {
+        givenStage = executor.addStage( givenClass );
+        whenStage = executor.addStage( whenClass );
+        thenStage = executor.addStage( thenClass );
     }
 
-    public GIVEN getGivenSteps() {
-        return givenSteps;
+    public GIVEN getGivenStage() {
+        return givenStage;
     }
 
-    public WHEN getWhenSteps() {
-        return whenSteps;
+    public WHEN getWhenStage() {
+        return whenStage;
     }
 
-    public THEN getThenSteps() {
-        return thenSteps;
+    public THEN getThenStage() {
+        return thenStage;
     }
 
     public void addIntroWord( String word ) {
@@ -120,16 +120,16 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
 
     public GIVEN given( String translatedGiven ) {
         addIntroWord( translatedGiven );
-        return getGivenSteps();
+        return getGivenStage();
     }
 
     public WHEN when( String translatedGiven ) {
         addIntroWord( translatedGiven );
-        return getWhenSteps();
+        return getWhenStage();
     }
 
     public THEN then( String translatedGiven ) {
         addIntroWord( translatedGiven );
-        return getThenSteps();
+        return getThenStage();
     }
 }

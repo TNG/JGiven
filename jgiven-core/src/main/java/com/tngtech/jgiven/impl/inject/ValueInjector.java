@@ -59,7 +59,8 @@ public class ValueInjector {
     public void readValues( Object object ) {
         validateFields( object );
         ReflectionUtil.forEachField( object, object.getClass(),
-            ReflectionUtil.hasAtLeastOneAnnotation( ScenarioState.class, ProvidedScenarioState.class ), new FieldAction() {
+            ReflectionUtil.hasAtLeastOneAnnotation( ScenarioState.class, ExpectedScenarioState.class, ProvidedScenarioState.class ),
+            new FieldAction() {
                 @Override
                 public void act( Object object, Field field ) throws Exception {
                     field.setAccessible( true );
@@ -74,7 +75,8 @@ public class ValueInjector {
     public void updateValues( Object object ) {
         validateFields( object );
         ReflectionUtil.forEachField( object, object.getClass(),
-            ReflectionUtil.hasAtLeastOneAnnotation( ScenarioState.class, ExpectedScenarioState.class ), new FieldAction() {
+            ReflectionUtil.hasAtLeastOneAnnotation( ScenarioState.class, ExpectedScenarioState.class, ProvidedScenarioState.class ),
+            new FieldAction() {
                 @Override
                 public void act( Object object, Field field ) throws Exception {
                     field.setAccessible( true );

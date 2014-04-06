@@ -68,7 +68,17 @@ public class ReflectionUtil {
                     if( field.isAnnotationPresent( clazz ) )
                         return true;
                 }
+
                 return false;
+            }
+        };
+    }
+
+    public static FieldPredicate allFields() {
+        return new FieldPredicate() {
+            @Override
+            public boolean isTrue( Field field ) throws Exception {
+                return true;
             }
         };
     }

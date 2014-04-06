@@ -4,6 +4,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.reverse;
 import static com.tngtech.jgiven.impl.ScenarioExecutor.State.FINISHED;
 import static com.tngtech.jgiven.impl.ScenarioExecutor.State.STARTED;
+import static com.tngtech.jgiven.impl.util.ReflectionUtil.allFields;
 import static com.tngtech.jgiven.impl.util.ReflectionUtil.hasAtLeastOneAnnotation;
 
 import java.lang.annotation.Annotation;
@@ -28,6 +29,7 @@ import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.FieldProcessors;
 import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IntroWord;
 import com.tngtech.jgiven.annotation.ScenarioRule;
@@ -41,6 +43,7 @@ import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.FieldAction;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
 import com.tngtech.jgiven.integration.CanWire;
+import com.tngtech.jgiven.integration.StageFieldProcessor;
 
 /**
  * Main class of JGiven for executing scenarios
@@ -117,7 +120,7 @@ public class ScenarioExecutor {
     }
 
     @SuppressWarnings( "unchecked" )
-    public <T> T addSteps( Class<T> stepsClass ) {
+    public <T> T addStage( Class<T> stepsClass ) {
         if( stages.containsKey( stepsClass ) )
             return (T) stages.get( stepsClass ).instance;
 
@@ -130,6 +133,7 @@ public class ScenarioExecutor {
         stages.put( stepsClass, new StageState( result ) );
         gatherRules( result );
         injectSteps( result );
+        executeProcessors( result );
         return result;
     }
 
@@ -145,6 +149,41 @@ public class ScenarioExecutor {
                 log.debug( "Found rule in field: " + field );
                 field.setAccessible( true );
                 scenarioRules.add( field.get( object ) );
+            }
+        } );
+    }
+
+    private void executeProcessors( Object object ) {
+        FieldProcessors annotation = object.getClass().getAnnotation( FieldProcessors.class );
+        if( annotation == null ) {
+            return;
+        }
+
+        log.debug( "Found " + FieldProcessors.class.getSimpleName() + " annotation at stage class " + object.getClass() );
+
+        final List<StageFieldProcessor> processors = Lists.newArrayList();
+        for( Class<? extends StageFieldProcessor> clazz : annotation.value() ) {
+            try {
+                log.debug( "Instantiating field processor " + clazz );
+                processors.add( clazz.newInstance() );
+            } catch( Exception e ) {
+                log.error( "Error while trying to instantiate field processor " + clazz, e );
+                throw Throwables.propagate( e );
+            }
+        }
+
+        ReflectionUtil.forEachField( object, object.getClass(), allFields(), new FieldAction() {
+            @Override
+            public void act( Object object, Field field ) throws Exception {
+                for( StageFieldProcessor processor : processors ) {
+                    try {
+                        processor.process( object, field );
+                    } catch( Exception e ) {
+                        log.error( "Error while executing field processor " + processor.getClass()
+                                + " on field " + field + " of class " + object.getClass(), e );
+                        throw e;
+                    }
+                }
             }
         } );
     }
@@ -307,7 +346,7 @@ public class ScenarioExecutor {
                 public void act( Object object, Field field ) throws Exception {
                     field.setAccessible( true );
                     Class<?> type = field.getType();
-                    Object steps = addSteps( type );
+                    Object steps = addStage( type );
                     field.set( object, steps );
                 }
             } );
