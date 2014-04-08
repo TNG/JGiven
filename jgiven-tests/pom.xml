@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.tngtech</groupId>
     <artifactId>jgiven-parent</artifactId>
-    <version>0.1.5</version>
+    <version>0.1.6-SNAPSHOT</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>jgiven-tests</artifactId>
@@ -39,7 +39,7 @@
       <plugin>
         <groupId>com.tngtech</groupId>
         <artifactId>jgiven-maven-plugin</artifactId>
-        <version>0.1.5</version>
+        <version>0.1.6-SNAPSHOT</version>
         <executions>
           <execution>
             <goals>
