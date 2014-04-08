@@ -39,5 +39,8 @@ import java.lang.annotation.Target;
 @Retention( RUNTIME )
 @Target( { METHOD, TYPE } )
 public @interface NotImplementedYet {
-
+    /**
+     * Optional description to describe when the implementation will be done
+     */
+    String value() default "";
 }
