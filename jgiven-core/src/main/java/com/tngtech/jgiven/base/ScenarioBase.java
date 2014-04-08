@@ -21,7 +21,7 @@ public class ScenarioBase {
         return modelBuilder.getScenarioCollectionModel();
     }
 
-    public <T> T addSteps( Class<T> stepsClass ) {
+    public <T> T addStage( Class<T> stepsClass ) {
         return executor.addStage( stepsClass );
     }
 

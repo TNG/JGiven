@@ -39,12 +39,12 @@ public class ScenarioTestBase<GIVEN, WHEN, THEN> {
     }
 
     /**
-     * Add a new step definition class to the scenario.
-     * @param stepsClass the class with the step definitions
-     * @return a new instance of the given class
+     * Add a new stage class to the scenario.
+     * @param stageClass the class with the step definitions
+     * @return a new instance of the given class enhanced by JGiven
      */
-    public <T> T addSteps( Class<T> stepsClass ) {
-        return scenario.addSteps( stepsClass );
+    public <T> T addStage( Class<T> stageClass ) {
+        return scenario.addStage( stageClass );
     }
 
     /**

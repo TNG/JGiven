@@ -4,7 +4,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.reverse;
 import static com.tngtech.jgiven.impl.ScenarioExecutor.State.FINISHED;
 import static com.tngtech.jgiven.impl.ScenarioExecutor.State.STARTED;
-import static com.tngtech.jgiven.impl.util.ReflectionUtil.allFields;
 import static com.tngtech.jgiven.impl.util.ReflectionUtil.hasAtLeastOneAnnotation;
 
 import java.lang.annotation.Annotation;
@@ -29,7 +28,6 @@ import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.BeforeStage;
-import com.tngtech.jgiven.annotation.FieldProcessors;
 import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IntroWord;
 import com.tngtech.jgiven.annotation.ScenarioRule;
@@ -43,7 +41,6 @@ import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.FieldAction;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
 import com.tngtech.jgiven.integration.CanWire;
-import com.tngtech.jgiven.integration.StageFieldProcessor;
 
 /**
  * Main class of JGiven for executing scenarios
@@ -133,7 +130,6 @@ public class ScenarioExecutor {
         stages.put( stepsClass, new StageState( result ) );
         gatherRules( result );
         injectSteps( result );
-        executeProcessors( result );
         return result;
     }
 
@@ -153,50 +149,18 @@ public class ScenarioExecutor {
         } );
     }
 
-    private void executeProcessors( Object object ) {
-        FieldProcessors annotation = object.getClass().getAnnotation( FieldProcessors.class );
-        if( annotation == null ) {
-            return;
-        }
-
-        log.debug( "Found " + FieldProcessors.class.getSimpleName() + " annotation at stage class " + object.getClass() );
-
-        final List<StageFieldProcessor> processors = Lists.newArrayList();
-        for( Class<? extends StageFieldProcessor> clazz : annotation.value() ) {
-            try {
-                log.debug( "Instantiating field processor " + clazz );
-                processors.add( clazz.newInstance() );
-            } catch( Exception e ) {
-                log.error( "Error while trying to instantiate field processor " + clazz, e );
-                throw Throwables.propagate( e );
-            }
-        }
-
-        ReflectionUtil.forEachField( object, object.getClass(), allFields(), new FieldAction() {
-            @Override
-            public void act( Object object, Field field ) throws Exception {
-                for( StageFieldProcessor processor : processors ) {
-                    try {
-                        processor.process( object, field );
-                    } catch( Exception e ) {
-                        log.error( "Error while executing field processor " + processor.getClass()
-                                + " on field " + field + " of class " + object.getClass(), e );
-                        throw e;
-                    }
-                }
-            }
-        } );
-    }
-
     public <T> T when( T whenStage ) {
         return update( whenStage );
     }
 
     private <T> T update( T t ) {
-        if( currentStage == t )
+        if( currentStage == t ) {
             return t;
+        }
 
-        if( currentStage != null ) {
+        if( currentStage == null ) {
+            ensureBeforeStepsAreExecuted();
+        } else {
             executeAfterStageMethods( currentStage );
             readScenarioState( currentStage );
         }
@@ -366,7 +330,6 @@ public class ScenarioExecutor {
      * @param description the description of the scenario
      */
     public void startScenario( String description ) {
-        ensureBeforeStepsAreExecuted();
         listener.scenarioStarted( description );
     }
 
@@ -377,7 +340,6 @@ public class ScenarioExecutor {
      * @param arguments the arguments of the method invocation
      */
     public void startScenario( Method method, List<?> arguments ) {
-        ensureBeforeStepsAreExecuted();
         listener.scenarioStarted( method, arguments );
     }
 

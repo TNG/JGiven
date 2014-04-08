@@ -53,7 +53,7 @@ public class ScenarioRuleTest extends ScenarioTestBase<BeforeAfterTestStage<?>, 
 
     @Test
     public void whenExceptionThrownInBeforeOfRuleThenAfterMethodIsStillCalled() {
-        ExceptionStep steps = scenario.addSteps( ExceptionStep.class );
+        ExceptionStep steps = scenario.addStage( ExceptionStep.class );
         try {
             scenario.startScenario( "some description" );
             steps.given().something();
