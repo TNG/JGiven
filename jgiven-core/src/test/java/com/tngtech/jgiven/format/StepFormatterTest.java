@@ -13,8 +13,9 @@ import com.google.common.base.Joiner;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import com.tngtech.jgiven.format.StepFormatter.Formatting;
+import com.tngtech.jgiven.report.model.StepFormatter;
 import com.tngtech.jgiven.report.model.Word;
+import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
 @RunWith( DataProviderRunner.class )
 public class StepFormatterTest {

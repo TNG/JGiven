@@ -23,10 +23,9 @@ import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ScenarioDescription;
 import com.tngtech.jgiven.format.PrintfFormatter;
-import com.tngtech.jgiven.format.StepFormatter;
-import com.tngtech.jgiven.format.StepFormatter.Formatting;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.util.WordUtil;
+import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
 /**
  * Builds up the report model while the scenario is executed

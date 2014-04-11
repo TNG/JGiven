@@ -135,4 +135,29 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         assertThat( tags.get( 0 ).value ).isEqualTo( new String[] { "foo", "bar" } );
     }
 
+    @DataProvider
+    public static Object[][] argumentTestData() {
+        return new Object[][] {
+            { null, "null" },
+            { "Foo", "Foo" },
+            { 123, "123" },
+            { true, "true" },
+            { new String[] { "a" }, "[a]" },
+            { new String[] {}, "[]" },
+            { new String[][] { { "a", "b" }, { "c" } }, "[[a, b], [c]]" },
+        };
+    }
+
+    @Test
+    @UseDataProvider( "argumentTestData" )
+    public void testArrayArguments( Object argument, String expected ) {
+        scenario.startScenario( "test" );
+
+        given().an_array( argument );
+
+        scenario.finished();
+        ScenarioModel model = scenario.getModel().getLastScenarioModel();
+        StepModel case0 = model.getCase( 0 ).steps.get( 0 );
+        assertThat( case0.words.get( 2 ).value ).isEqualTo( expected );
+    }
 }

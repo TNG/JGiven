@@ -144,13 +144,13 @@ http://www.apache.org/licenses/LICENSE-2.0 for details.
 
 Note: JGiven is not yet published on Maven central, thus the following only works if JGiven is installed locally!
 
-Add the following dependency to your POM file:
+Add the following dependency to your POM file (replace ${jgiven-version} with the newest version of JGiven)
 
 ```
 <dependency>
    <groupId>com.tngtech</groupId>
    <artifactId>jgiven-junit</artifactId>
-   <version>0.1</version>
+   <version>${jgiven-version}</version>
    <scope>test</scope>
 </dependency>
 ```
@@ -160,7 +160,7 @@ for TestNG instead of JUnit use:
 <dependency>
    <groupId>com.tngtech</groupId>
    <artifactId>jgiven-testng</artifactId>
-   <version>0.1</version>
+   <version>${jgiven-version}</version>
    <scope>test</scope>
 </dependency>
 ```

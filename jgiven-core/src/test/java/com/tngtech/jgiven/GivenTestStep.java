@@ -1,6 +1,5 @@
 package com.tngtech.jgiven;
 
-import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 
 public class GivenTestStep extends Stage<GivenTestStep> {
@@ -28,6 +27,10 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     }
 
     public GivenTestStep something_else() {
+        return self();
+    }
+
+    public GivenTestStep an_array( Object argument ) {
         return self();
     }
 }

@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.format;
+package com.tngtech.jgiven.report.model;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -6,7 +6,8 @@ import java.util.regex.Pattern;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.report.model.Word;
+import com.tngtech.jgiven.format.ArgumentFormatter;
+import com.tngtech.jgiven.format.DefaultFormatter;
 
 public class StepFormatter {
     private final String stepDescription;
@@ -61,7 +62,8 @@ public class StepFormatter {
             }
         }
         for( int i = argCount; i < arguments.size(); i++ ) {
-            Word word = new Word( "" + arguments.get( i ) );
+            Word word = new Word();
+            word.value = formatUsingFormatter( formatters.get( i ), arguments.get( i ) );
             word.isArg = true;
             formattedWords.add( word );
         }
@@ -97,9 +99,10 @@ public class StepFormatter {
 
     @SuppressWarnings( "unchecked" )
     private <T> String formatUsingFormatter( Formatting<T> argumentFormatter, Object value ) {
-        if( argumentFormatter == null )
-            return "" + value;
-        else
-            return argumentFormatter.format( (T) value );
+        if( argumentFormatter == null ) {
+            return new DefaultFormatter<Object>().format( value );
+        }
+
+        return argumentFormatter.format( (T) value );
     }
 }
