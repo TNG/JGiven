@@ -27,19 +27,15 @@ public abstract class AbstractHtmlReportGenerator {
     protected PrintWriter writer;
     protected HtmlWriterUtils utils;
 
-    public void generate( String toDirName, String targetFileName, String sourceDirName ) throws IOException {
-        File toDir = new File( toDirName );
-        if( !toDir.isDirectory() )
-            throw new RuntimeException( toDirName + " is not existing or is not a directory" );
-        generate( toDir, targetFileName, new File( sourceDirName ) );
-    }
-
     public static class ReportModelFile {
         public ReportModel model;
         public File file;
     }
 
     public void generate( File toDir, String targetFileName, File sourceDir ) throws IOException {
+        if( !toDir.isDirectory() )
+            throw new RuntimeException( toDir + " is not existing or is not a directory" );
+
         log.info( "Generating file " + targetFileName + " to directory " + toDir );
 
         this.toDir = toDir;

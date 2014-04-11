@@ -2,10 +2,16 @@ package com.tngtech.jgiven.report.model;
 
 import java.util.List;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 public class ReportModel {
+    /**
+     * Full qualified name of the test class
+     */
     public String className;
+
     public List<ScenarioModel> scenarios = Lists.newArrayList();
 
     public void accept( ReportModelVisitor visitor ) {
@@ -23,6 +29,10 @@ public class ReportModel {
 
     public void addScenarioModel( ScenarioModel currentScenarioModel ) {
         scenarios.add( currentScenarioModel );
+    }
+
+    public String getSimpleClassName() {
+        return Iterables.getLast( Splitter.on( '.' ).split( className ) );
     }
 
 }
