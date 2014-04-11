@@ -61,14 +61,17 @@ public class HtmlWriter extends ReportModelVisitor {
     @Override
     public void visit( ReportModel reportModel ) {
         writer.println( "<div class='testcase'>" );
+        writer.println( "<div class='testcase-header'>" );
         writer.println( format( "<div class='packagename'>%s</div>", Files.getNameWithoutExtension( reportModel.className ) ) );
         writer.println( format( "<h2>%s</h2>", Files.getFileExtension( reportModel.className ) ) );
-        writer.println( "<ul>" );
+        writer.println( "</div>" );
+        writer.println( "<div class='testcase-content'>" );
     }
 
     @Override
     public void visitEnd( ReportModel reportModel ) {
-        writer.append( "</ul></div>" );
+        writer.append( "</div>" );
+        writer.append( "</div>" );
     }
 
     @Override
@@ -137,7 +140,7 @@ public class HtmlWriter extends ReportModelVisitor {
     public void visit( StepModel stepModel ) {
         writer.print( "<li>" );
 
-        boolean firstWord = false;
+        boolean firstWord = true;
         for( Word word : stepModel.words ) {
             if( !firstWord ) {
                 writer.print( ' ' );
@@ -145,10 +148,8 @@ public class HtmlWriter extends ReportModelVisitor {
             String text = word.value;
 
             if( firstWord && word.isIntroWord ) {
-                text = WordUtil.capitalize( text );
-            }
-
-            if( word.isArg ) {
+                writer.print( format( "<span class='introWord'>%s</span>", WordUtil.capitalize( text ) ) );
+            } else if( word.isArg ) {
                 if( scenarioCase.arguments.contains( word.value ) ) {
                     writer.print( format( "<span class='caseArgument'>%s</span>", text ) );
                 } else {
@@ -157,6 +158,7 @@ public class HtmlWriter extends ReportModelVisitor {
             } else {
                 writer.print( text );
             }
+            firstWord = false;
         }
         writer.println( "</li>" );
     }

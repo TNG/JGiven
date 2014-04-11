@@ -11,4 +11,5 @@ public class ScenarioTest<GIVEN, WHEN, THEN> extends ScenarioTestBase<GIVEN, WHE
 
     @Rule
     public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( writerRule.getTestCaseModel(), this, getScenario() );
+
 }

@@ -3,7 +3,7 @@ html {
   padding: 0;
 }
 body {
-  padding: 20px;
+  padding: 0px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-color: #ffffff;
   margin: 0;
@@ -14,11 +14,12 @@ a {
 }
 h1 {
   background-color: #fff;
-  padding:0;
+  padding:20px;
   color: #555;
   font-size: 40px;
   font-weight: 300;
   margin-top: 0;
+  padding-bottom:0;
 }
 
 h2, h2 a {
@@ -28,8 +29,7 @@ h2, h2 a {
   margin:0px;
   border-radius:0;
   padding-top:5px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid lightgray;
+  padding-bottom: 0px;
 }
 
 .linklist {
@@ -38,7 +38,7 @@ h2, h2 a {
 
 .linklist ul {
   list-style-type: none;
-  padding-left: 0;
+  padding-left: 20px;
 }
 
 .linklist ul a {
@@ -60,9 +60,16 @@ h2, h2 a {
 }
 
 .testcase {
-    padding: 0px;
-    padding-left: 10px;
-    padding-top: 5px;
+    padding: 0;
+}
+
+.testcase-header, .testcase-content {
+  padding: 20px;
+}
+
+.testcase-header {
+  background-color: #f0f0f0;
+  border-bottom: 1px solid lightgray;
 }
 
 .testcase > ul {
@@ -107,7 +114,7 @@ h2, h2 a {
 }
 
 .scenario h3 {
-  margin-top: 5px;
+  margin-top: 0px;
   font-weight: normal;
   font-size: 18px;
   color: #000;
@@ -116,6 +123,9 @@ h2, h2 a {
   margin-left:0px;
   /* text-shadow: 1px 1px 1px lightgray;*/
   overflow:hidden;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 5px;
+  padding-top:0;
 }
 
 .case {
@@ -239,9 +249,14 @@ ul.steps {
   position:relative;
 }
 
-li.steps {
-  margin-top: 0;
-  margin-left: 0px;
+ul.steps li {
+  padding-bottom:2px;
+}
+
+.introWord {
+  display: inline-block;
+  min-width: 3em;
+  text-align: right;
 }
 
 .caseArgument {
