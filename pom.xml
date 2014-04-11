@@ -33,7 +33,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <groupId>com.tngtech.jgiven</groupId>
-  <version>0.1.7-SNAPSHOT</version>
+  <version>0.1.7</version>
 
   <organization>
     <name>TNG Technology Consulting</name>
