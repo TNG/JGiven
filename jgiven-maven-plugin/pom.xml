@@ -16,7 +16,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.tngtech</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>jgiven-core</artifactId>
       <version>${project.version}</version>
     </dependency>

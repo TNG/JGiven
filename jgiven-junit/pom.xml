@@ -4,7 +4,7 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.tngtech</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>jgiven-maven-plugin</artifactId>
         <version>0.1.7-SNAPSHOT</version>
         <executions>

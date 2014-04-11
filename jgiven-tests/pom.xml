@@ -11,7 +11,7 @@
   <description>Contains BDD tests for JGiven written in JGiven</description>
   <dependencies>
     <dependency>
-      <groupId>com.tngtech</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>jgiven-junit</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -37,7 +37,7 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>com.tngtech</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>jgiven-maven-plugin</artifactId>
         <version>0.1.7-SNAPSHOT</version>
         <executions>
