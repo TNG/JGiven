@@ -12,7 +12,7 @@
     <module>jgiven-examples</module>
   </modules>
   <name>JGiven</name>
-  <url>http://www.jgiven.org</url>
+  <url>https://github.com/TNG/jgiven</url>
   <description>JGiven - BDD for Java in Java</description>
   <licenses>
     <license>
