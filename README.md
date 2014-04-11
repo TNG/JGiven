@@ -148,7 +148,7 @@ Add the following dependency to your POM file (replace ${jgiven-version} with th
 
 ```
 <dependency>
-   <groupId>com.tngtech</groupId>
+   <groupId>com.tngtech.jgiven</groupId>
    <artifactId>jgiven-junit</artifactId>
    <version>${jgiven-version}</version>
    <scope>test</scope>
@@ -158,7 +158,7 @@ Add the following dependency to your POM file (replace ${jgiven-version} with th
 for TestNG instead of JUnit use:
 ```
 <dependency>
-   <groupId>com.tngtech</groupId>
+   <groupId>com.tngtech.jgiven</groupId>
    <artifactId>jgiven-testng</artifactId>
    <version>${jgiven-version}</version>
    <scope>test</scope>

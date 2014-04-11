@@ -22,7 +22,7 @@
     </dependency>
   </dependencies>
   <parent>
-    <groupId>com.tngtech</groupId>
+    <groupId>com.tngtech.jgiven</groupId>
     <artifactId>jgiven-parent</artifactId>
     <version>0.1.7-SNAPSHOT</version>
     <relativePath>..</relativePath>
