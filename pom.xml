@@ -21,11 +21,31 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <scm>
+    <url>git@github.com:TNG/jgiven.git</url>
+    <connection>scm:git:git@github.com:TNG/jgiven.git</connection>
+    <developerConnection>scm:git:git@github.com:TNG/jgiven.git</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <groupId>com.tngtech</groupId>
   <version>0.1.6</version>
+
+  <organization>
+    <name>TNG Technology Consulting</name>
+    <url>http://www.tngtech.com/</url>
+  </organization>
+
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>7</version>
+  </parent>
+
   <build>
     <plugins>
       <plugin>
@@ -84,11 +104,27 @@
      </plugin>
     </plugins>
   </build>
-  <distributionManagement>
-    <repository>
-       <id>internal-repo</id>
-       <name>Internal Repo</name>
-       <url>${repos.url}</url>
-    </repository>
-  </distributionManagement>
+  <profiles>
+    <profile>
+      <id>signing</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
