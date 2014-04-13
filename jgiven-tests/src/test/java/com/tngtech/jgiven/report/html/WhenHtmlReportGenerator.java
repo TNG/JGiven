@@ -29,5 +29,4 @@ public class WhenHtmlReportGenerator extends Stage<WhenHtmlReportGenerator> {
     public void the_frame_based_HTML_reporter_is_executed() throws IOException {
         new FrameBasedHtmlReportGenerator().generate( targetReportDir, jsonReportDirectory );
     }
-
 }

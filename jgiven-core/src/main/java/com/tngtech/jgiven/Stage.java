@@ -4,7 +4,8 @@ import com.tngtech.jgiven.annotation.IntroWord;
 import com.tngtech.jgiven.base.StageBase;
 
 /**
- * Base class for Stages. 
+ * Base class for Stages.
+ * Defines some introduction words.
  * Follows the fluent interface pattern.
  *
  * @param <SELF> the type of the extending class to realize the fluent interface

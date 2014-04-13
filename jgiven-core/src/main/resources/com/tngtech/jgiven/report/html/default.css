@@ -9,9 +9,14 @@ body {
   margin: 0;
 }
 a {
-  color: #0000aa;
-  font-size: 16px;
+  color: #000066;
+  font-size: 14px;
 }
+
+a:hover {
+  text-shadow: 1px 1px 1px lightgray;
+}
+
 h1 {
   background-color: #fff;
   padding:20px;
@@ -30,6 +35,7 @@ h2, h2 a {
   border-radius:0;
   padding-top:5px;
   padding-bottom: 0px;
+  text-shadow: 1px 1px 1px white;
 }
 
 .linklist {
@@ -41,8 +47,40 @@ h2, h2 a {
   padding-left: 20px;
 }
 
+.linklist ul li {
+  padding-top:0px;
+  padding-bottom:0px;
+  margin-top:-5px;
+  margin-bottom:0px;
+}
+
 .linklist ul a {
   text-decoration: none;
+}
+
+h1 {
+  background: #444444;
+  padding-top:30px;
+  padding-bottom:23px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid lightgray;
+  color: #f0f0f0;
+}
+
+.linklist h3 {
+  margin-top:10px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: -5px;
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background: #f0f0f0;
+  font-size: 14px;
+  color: #444;
+  border-top: 1px solid #d0d0d0;  
+  border-bottom: 1px solid #d0d0d0;
+  text-shadow: 1px 1px 1px white;
 }
 
 .package {
@@ -53,6 +91,7 @@ h2, h2 a {
   font-size: 15px;
   font-weight: bold;
   color: #333;
+  text-shadow: 1px 1px 1px white;
 }
 
 .scenario {    
@@ -110,20 +149,20 @@ h2, h2 a {
   border-radius: 5px;
   box-shadow: 2px 2px 5px gray;
   */
-  margin-bottom:20px;
+  margin-bottom:30px;
 }
 
 .scenario h3 {
   margin-top: 0px;
-  font-weight: normal;
-  font-size: 18px;
-  color: #000;
+  font-weight: bold;
+  font-size: 16px;
+  color: #222;
   margin-top: 8px;
   margin-bottom: 8px;
   margin-left:0px;
-  /* text-shadow: 1px 1px 1px lightgray;*/
   overflow:hidden;
-  border-bottom: 1px solid lightgray;
+  /*text-shadow: 1px 1px 1px lightgray;*/
+/*  border-bottom: 1px solid lightgray;/*
   padding-bottom: 5px;
   padding-top:0;
 }
@@ -140,6 +179,7 @@ h2, h2 a {
 
 .passedCase ul.steps  {
   background-color: #EFE;
+  border: 1px solid #D4EFD4;
 }
 
 .failedCase ul.steps  {
@@ -174,6 +214,11 @@ h2, h2 a {
   text-decoration: none;
   font-size: 14px;
   color: rgba(0, 0, 0, 0.9);
+}
+
+.tag-NotImplementedYet {
+  background-color: gray;
+  border-color: darkgray;
 }
 
 .failed {
@@ -244,13 +289,16 @@ ul.steps {
   list-style-type: none;
   margin-left: 0;
   margin-top: 0;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
   padding: 10px;
   position:relative;
+  border-radius: 3px;
+  text-shadow: 1px 1px 1px white;
+  
 }
 
 ul.steps li {
-  padding-bottom:2px;
+  padding-bottom:1px;
 }
 
 .introWord {
@@ -275,7 +323,7 @@ ul.steps li {
   padding: 0px;
   padding-left: 0px;
   margin-bottom: 5px;
-  margin-left: 0px;
+  margin-left: 10px;
   margin-top: 0px;
   text-shadow: 1px 1px 1px #eee;
 }

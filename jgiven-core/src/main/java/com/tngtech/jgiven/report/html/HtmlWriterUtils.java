@@ -15,7 +15,8 @@ public class HtmlWriterUtils {
     public void writeHtmlHeader( String title ) {
         writer.println( "<!DOCTYPE html>" );
         writer.println( "<html><head>" );
-        writer.println( format( "<title>%s</title>", title ) );
+        writer.println( "  <meta charset='utf-8'>" );
+        writer.println( format( "  <title>%s</title>", title ) );
         writer.println( "  <link href='style.css' rel='stylesheet'>" );
         writer.println( "</head>" );
         writer.println( "<body>" );

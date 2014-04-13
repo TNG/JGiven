@@ -53,4 +53,10 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return reportModel;
     }
 
+    public void the_first_scenario_has_tag( String name ) {
+        Tag tag = new Tag();
+        tag.name = name;
+        reportModel.scenarios.get( 0 ).tags.add( tag );
+    }
+
 }

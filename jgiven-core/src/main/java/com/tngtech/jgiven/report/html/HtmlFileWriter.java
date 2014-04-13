@@ -4,7 +4,9 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.model.ReportModel;
@@ -21,8 +23,10 @@ public class HtmlFileWriter extends HtmlWriter implements Closeable {
 
     private static PrintWriter getPrintWriter( File file ) {
         try {
-            return new PrintWriter( file );
+            return new PrintWriter( file, Charsets.UTF_8.name() );
         } catch( FileNotFoundException e ) {
+            throw Throwables.propagate( e );
+        } catch( UnsupportedEncodingException e ) {
             throw Throwables.propagate( e );
         }
     }
@@ -36,9 +40,7 @@ public class HtmlFileWriter extends HtmlWriter implements Closeable {
         PrintWriter printWriter = getPrintWriter( file );
         try {
             HtmlWriter htmlWriter = new HtmlWriter( printWriter );
-            htmlWriter.writeHtmlHeader( model.className );
             htmlWriter.write( model );
-            htmlWriter.writeHtmlFooter();
         } finally {
             ResourceUtil.close( printWriter );
         }

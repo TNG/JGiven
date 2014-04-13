@@ -3,8 +3,12 @@ package com.tngtech.jgiven.report.html;
 import static java.lang.String.format;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
+import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
@@ -42,7 +46,10 @@ public class HtmlWriter extends ReportModelVisitor {
     }
 
     public void write( ReportModel model ) {
+        writeHtmlHeader( model.className );
         model.accept( this );
+        writeHtmlFooter();
+
     }
 
     public static String toString( ScenarioModel model ) {
@@ -58,12 +65,30 @@ public class HtmlWriter extends ReportModelVisitor {
         }
     }
 
+    public static void writeToFile( File file, ReportModel model ) throws FileNotFoundException, UnsupportedEncodingException {
+        PrintWriter printWriter = new PrintWriter( file, Charsets.UTF_8.name() );
+        try {
+            new HtmlWriter( printWriter ).write( model );
+            printWriter.flush();
+        } finally {
+            ResourceUtil.close( printWriter );
+        }
+    }
+
     @Override
     public void visit( ReportModel reportModel ) {
         writer.println( "<div class='testcase'>" );
         writer.println( "<div class='testcase-header'>" );
-        writer.println( format( "<div class='packagename'>%s</div>", Files.getNameWithoutExtension( reportModel.className ) ) );
-        writer.println( format( "<h2>%s</h2>", Files.getFileExtension( reportModel.className ) ) );
+
+        String packageName = "&nbsp;";
+        String className = reportModel.className;
+        if( reportModel.className.contains( "." ) ) {
+            packageName = Files.getNameWithoutExtension( reportModel.className );
+            className = Files.getFileExtension( reportModel.className );
+        }
+
+        writer.println( format( "<div class='packagename'>%s</div>", packageName ) );
+        writer.println( format( "<h2>%s</h2>", className ) );
         writer.println( "</div>" );
         writer.println( "<div class='testcase-content'>" );
     }
@@ -86,15 +111,8 @@ public class HtmlWriter extends ReportModelVisitor {
     }
 
     private void printTag( Tag tag ) {
-        if( tag.value != null ) {
-            printTag( tag.name, tag.value + "" );
-        } else {
-            printTag( tag.name, "" );
-        }
-    }
-
-    private void printTag( String tagName, String tagValue ) {
-        writer.print( format( "<div class='tag tag-%s'>%s</div>", tagName, tagValue ) );
+        writer.print( format( "<div class='tag tag-%s'><a href='%s'>%s</a></div>",
+            tag.name, FrameBasedHtmlReportGenerator.tagToFilename( tag ), tag.toString() ) );
     }
 
     @Override

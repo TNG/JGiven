@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
+import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
+import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.junit.test.BeforeAfterTestStage;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
@@ -25,7 +27,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         assertThat( getScenario().getGivenStage().afterCalled ).isEqualTo( 1 );
     }
 
-    static class TestStage {
+    static class TestStage extends Stage<TestStage> {
         boolean beforeCalled;
 
         @BeforeScenario
@@ -33,6 +35,9 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
             beforeCalled = true;
         }
 
+        public void an_exception_is_thrown() {
+            throw new RuntimeException( "this exception should not be thrown" );
+        }
     }
 
     @Test
@@ -40,5 +45,13 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         TestStage stage = addStage( TestStage.class );
         given().something();
         assertThat( stage.beforeCalled ).isTrue();
+    }
+
+    @Test
+    @NotImplementedYet
+    public void NotImplementedYet_annotation_works_on_test_methods() {
+        TestStage stage = addStage( TestStage.class );
+        stage.given().an_exception_is_thrown();
+        assertThat( true ).isTrue();
     }
 }

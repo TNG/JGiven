@@ -38,5 +38,4 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenRep
         }
         return self();
     }
-
 }

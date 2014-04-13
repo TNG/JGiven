@@ -8,7 +8,7 @@ import com.tngtech.jgiven.lang.de.Schritte;
 public class DeSzenarioTest extends SzenarioTest<DeutscheTestSchritte, DeutscheTestSchritte, DeutscheTestSchritte> {
 
     @Test
-    public void Szenarien_koennen_in_deutsch_geschrieben_werden() {
+    public void Szenarien_können_in_deutsch_geschrieben_werden() {
         gegeben().ein_deutsches_Projekt();
         wenn().JGiven_verwendet_wird()
             .und().die_Szenarien_in_deutsch_geschrieben_werden();

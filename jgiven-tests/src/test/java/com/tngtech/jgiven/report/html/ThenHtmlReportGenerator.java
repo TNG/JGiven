@@ -17,14 +17,18 @@ public class ThenHtmlReportGenerator extends Stage<ThenHtmlReportGenerator> {
     protected List<ReportModel> reportModels;
 
     public ThenHtmlReportGenerator an_index_file_exists() {
-        assertThat( new File( targetReportDir, "index.html" ) ).exists();
-        return self();
+        return a_file_with_name_$_exists( "index.html" );
     }
 
     public ThenHtmlReportGenerator an_HTML_file_exists_for_each_test_class() {
         for( ReportModel model : reportModels ) {
-            assertThat( new File( targetReportDir, model.className + ".html" ) ).exists();
+            a_file_with_name_$_exists( model.className + ".html" );
         }
+        return self();
+    }
+
+    public ThenHtmlReportGenerator a_file_with_name_$_exists( String name ) {
+        assertThat( new File( targetReportDir, name ) ).exists();
         return self();
     }
 

@@ -8,7 +8,7 @@ public class SingleFileHtmlReportGenerator extends AbstractHtmlReportGenerator {
 
     @Override
     public void handleReportModel( ReportModel model, File file ) {
-        new HtmlWriter( writer ).write( model );
+        new HtmlWriter( writer ).visit( model );
     }
 
 }

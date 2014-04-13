@@ -19,7 +19,8 @@ public class StepInjectionTest extends ScenarioTest {
 
     @Test
     public void steps_are_injected_into_test_case() {
-        customerSteps.given().a_customer().with_age( 34 );
+        customerSteps.given().a_customer()
+            .with().age( 34 );
         thenCustomer.then().customer_has_age( 34 );
     }
 
@@ -34,7 +35,7 @@ public class StepInjectionTest extends ScenarioTest {
             return self();
         }
 
-        public CustomerSteps with_age( int age ) {
+        public CustomerSteps age( int age ) {
             customer.age = age;
             return self();
         }

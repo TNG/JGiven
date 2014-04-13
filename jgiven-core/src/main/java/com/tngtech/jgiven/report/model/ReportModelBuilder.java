@@ -281,7 +281,6 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public static List<Tag> toTags( Annotation annotation ) {
-
         Class<? extends Annotation> annotationType = annotation.annotationType();
         IsTag isTag = annotationType.getAnnotation( IsTag.class );
         if( isTag == null ) {
@@ -290,6 +289,9 @@ public class ReportModelBuilder implements ScenarioListener {
 
         Tag tag = new Tag();
         tag.name = annotationType.getSimpleName();
+        if( isTag.ignoreValue() ) {
+            return Arrays.asList( tag );
+        }
 
         try {
             Method method = annotationType.getMethod( "value" );

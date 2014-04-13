@@ -30,6 +30,7 @@ import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IntroWord;
+import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.impl.inject.ValueInjector;
@@ -71,6 +72,8 @@ public class ScenarioExecutor {
 
     private final ValueInjector injector = new ValueInjector();
     private ScenarioListener listener = new NoOpScenarioListener();
+    private final StepMethodHandler methodHandler = new MethodHandler();
+    private final StepMethodInterceptor methodInterceptor = new StepMethodInterceptor( methodHandler, stackDepth );
 
     public ScenarioExecutor() {
         injector.injectValueByType( ScenarioExecutor.class, this );
@@ -123,10 +126,9 @@ public class ScenarioExecutor {
 
         Enhancer e = new Enhancer();
         e.setSuperclass( stepsClass );
-        StepMethodInterceptor callback = new StepMethodInterceptor( new MethodHandler(), stackDepth );
-        e.setCallback( callback );
+        e.setCallback( methodInterceptor );
         T result = (T) e.create();
-        callback.enable();
+        methodInterceptor.enableMethodHandling();
         stages.put( stepsClass, new StageState( result ) );
         gatherRules( result );
         injectSteps( result );
@@ -341,6 +343,10 @@ public class ScenarioExecutor {
      */
     public void startScenario( Method method, List<?> arguments ) {
         listener.scenarioStarted( method, arguments );
+
+        if( method.isAnnotationPresent( NotImplementedYet.class ) ) {
+            methodInterceptor.disableMethodExecution();
+        }
     }
 
     public void setListener( ScenarioListener listener ) {

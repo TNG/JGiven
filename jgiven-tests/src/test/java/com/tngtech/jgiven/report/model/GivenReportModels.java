@@ -38,4 +38,9 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         return self();
     }
 
+    public SELF the_first_scenario_has_tag( String annotation ) {
+        givenReportModel.the_first_scenario_has_tag( annotation );
+        return self();
+    }
+
 }

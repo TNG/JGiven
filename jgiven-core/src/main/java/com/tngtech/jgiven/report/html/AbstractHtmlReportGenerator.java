@@ -13,13 +13,13 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
 import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
-import com.tngtech.jgiven.impl.util.FilePredicates;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
+import com.tngtech.jgiven.report.json.JsonModelTraverser;
+import com.tngtech.jgiven.report.json.ReportModelFileHandler;
 import com.tngtech.jgiven.report.json.ScenarioJsonReader;
 import com.tngtech.jgiven.report.model.ReportModel;
 
-public abstract class AbstractHtmlReportGenerator {
+public abstract class AbstractHtmlReportGenerator implements ReportModelFileHandler {
     private static final Logger log = LoggerFactory.getLogger( AbstractHtmlReportGenerator.class );
 
     protected File toDir;
@@ -44,11 +44,7 @@ public abstract class AbstractHtmlReportGenerator {
 
         try {
             writeStart();
-            for( ReportModelFile f : Files.fileTreeTraverser().breadthFirstTraversal( sourceDir )
-                .filter( FilePredicates.endsWith( ".json" ) )
-                .transform( new TestCaseFileReader() ) ) {
-                handleReportModel( f.model, f.file );
-            }
+            new JsonModelTraverser().traverseModels( sourceDir, this );
             writeEnd();
         } finally {
             ResourceUtil.close( writer );
@@ -61,14 +57,14 @@ public abstract class AbstractHtmlReportGenerator {
         utils.writeHtmlHeader( "JGiven HTML Report" );
 
         writer.println( "<div class='linklist'>" );
-        writer.println( "<h1>Acceptance Tests</h1><ul>" );
+        writer.println( "<h1>Acceptance Tests</h1>" );
     }
 
     public void writeEnd() {
-        writer.println( "</ul></div></body></html>" );
+        writer.println( "</div></body></html>" );
     }
 
-    public static class TestCaseFileReader implements Function<File, ReportModelFile> {
+    public static class ReportModelFileReader implements Function<File, ReportModelFile> {
         @Override
         public ReportModelFile apply( File file ) {
             ReportModelFile result = new ReportModelFile();
@@ -78,6 +74,7 @@ public abstract class AbstractHtmlReportGenerator {
         }
     }
 
+    @Override
     public abstract void handleReportModel( ReportModel model, File file );
 
     protected void copyFileToTargetDir( String fileName ) throws FileNotFoundException, IOException {

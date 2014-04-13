@@ -16,7 +16,8 @@ public class StepMethodInterceptor implements MethodInterceptor {
 
     private final StepMethodHandler scenarioMethodHandler;
     private final AtomicInteger stackDepth;
-    private boolean enabled;
+    private boolean methodHandlingEnabled;
+    private boolean methodExecutionEnabled = true;
 
     public StepMethodInterceptor( StepMethodHandler scenarioMethodHandler, AtomicInteger stackDepth ) {
         this.scenarioMethodHandler = scenarioMethodHandler;
@@ -26,11 +27,12 @@ public class StepMethodInterceptor implements MethodInterceptor {
     @Override
     public Object intercept( Object receiver, Method method, Object[] parameters, MethodProxy methodProxy )
             throws Throwable {
-        if( enabled && stackDepth.get() == 0 && !method.getDeclaringClass().equals( Object.class ) ) {
+        if( methodHandlingEnabled && stackDepth.get() == 0 && !method.getDeclaringClass().equals( Object.class ) ) {
             scenarioMethodHandler.handleMethod( receiver, method, parameters );
         }
 
-        if( method.isAnnotationPresent( NotImplementedYet.class )
+        if( !methodExecutionEnabled
+                || method.isAnnotationPresent( NotImplementedYet.class )
                 || receiver.getClass().isAnnotationPresent( NotImplementedYet.class ) ) {
             // we assume here that the implementation follows the fluent interface
             // convention and returns the receiver object. If not, we fall back to null
@@ -57,8 +59,12 @@ public class StepMethodInterceptor implements MethodInterceptor {
         }
     }
 
-    public void enable() {
-        this.enabled = true;
+    public void enableMethodHandling() {
+        this.methodHandlingEnabled = true;
+    }
+
+    public void disableMethodExecution() {
+        this.methodExecutionEnabled = false;
     }
 
 }

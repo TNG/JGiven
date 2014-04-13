@@ -44,12 +44,8 @@ public class HtmlReportGenerator {
             return;
         }
 
-        if( frames ) {
-            new FrameBasedHtmlReportGenerator().generate( toDir, sourceDir );
-        } else {
-            new FrameBasedHtmlReportGenerator().generate( toDir, sourceDir );
-            new SingleFileHtmlReportGenerator().generate( toDir, "alltestcases.html", sourceDir );
-        }
+        new FrameBasedHtmlReportGenerator().generate( toDir, sourceDir );
+        new SingleFileHtmlReportGenerator().generate( toDir, "alltestcases.html", sourceDir );
 
         if( customCssFile != null ) {
             if( !customCssFile.canRead() ) {
