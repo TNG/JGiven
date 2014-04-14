@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/TNG/jgiven.png?branch=master)](https://travis-ci.org/TNG/jgiven)
+
 # JGiven v0.1
 
 (c) 2013-2014 under the Apache License
