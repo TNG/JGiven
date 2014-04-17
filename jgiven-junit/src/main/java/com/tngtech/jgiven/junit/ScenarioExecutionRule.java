@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.base.ScenarioBase;
+import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.report.model.ImplementationStatus;
 import com.tngtech.jgiven.report.model.ReportModel;

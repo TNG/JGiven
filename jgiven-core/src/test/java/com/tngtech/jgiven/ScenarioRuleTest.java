@@ -40,6 +40,16 @@ public class ScenarioRuleTest extends ScenarioTestBase<BeforeAfterTestStage<?>, 
     }
 
     @Test
+    public void afterStage_methods_are_only_invoked_once() {
+        scenario.startScenario( "methods_annotated_with_AfterStage_are_called_only_once" );
+        given().something();
+        when().something_happens();
+        given().something();
+        when().something_happens();
+        assertThat( scenario.getGivenStage().afterStageCalled ).as( "afterStage has been called" ).isEqualTo( 1 );
+    }
+
+    @Test
     public void whenExceptionThrownInStepThenAfterMethodsAreExecuted() {
         scenario.startScenario( "some description" );
         BeforeAfterTestStage<?> steps = given();

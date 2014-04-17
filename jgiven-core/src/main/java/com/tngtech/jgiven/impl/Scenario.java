@@ -1,8 +1,7 @@
-package com.tngtech.jgiven;
+package com.tngtech.jgiven.impl;
 
 import com.google.common.reflect.TypeToken;
 import com.tngtech.jgiven.annotation.ScenarioState;
-import com.tngtech.jgiven.base.ScenarioBase;
 
 /**
  * A default scenario implementation that takes three type arguments,

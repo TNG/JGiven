@@ -5,6 +5,11 @@ jdk:
   - oraclejdk7
   - openjdk7
   - openjdk6
+after_success:
+  - mvn clean test
+  - mvn jacoco:report
+  - mvn coveralls:jacoco
+
 
 
 

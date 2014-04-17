@@ -1,7 +1,7 @@
 package com.tngtech.jgiven;
 
-import com.tngtech.jgiven.Scenario;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.impl.Scenario;
 
 public class WhenScenario extends ScenarioStages<WhenScenario> {
 

@@ -151,10 +151,6 @@ public class ScenarioExecutor {
         } );
     }
 
-    public <T> T when( T whenStage ) {
-        return update( whenStage );
-    }
-
     private <T> T update( T t ) {
         if( currentStage == t ) {
             return t;
@@ -195,7 +191,6 @@ public class ScenarioExecutor {
         if( state != State.INIT )
             return;
         state = State.STARTED;
-        startDate = new Date();
 
         try {
             for( Object rule : scenarioRules ) {
@@ -247,16 +242,8 @@ public class ScenarioExecutor {
         executeAnnotatedMethods( stage, BeforeScenario.class );
     }
 
-    public <T> void injectValueByType( Class<T> clazz, T idGenerator ) {
-        injector.injectValueByType( clazz, idGenerator );
-    }
-
     public void readScenarioState( Object object ) {
         injector.readValues( object );
-    }
-
-    public Date getStartDate() {
-        return startDate;
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.base;
 
 import com.google.common.reflect.TypeToken;
-import com.tngtech.jgiven.Scenario;
+import com.tngtech.jgiven.impl.Scenario;
 import com.tngtech.jgiven.integration.CanWire;
 
 /**

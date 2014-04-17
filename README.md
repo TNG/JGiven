@@ -1,10 +1,10 @@
-[![Build Status](https://travis-ci.org/TNG/jgiven.png?branch=master)](https://travis-ci.org/TNG/jgiven)
+[![Build Status](https://travis-ci.org/TNG/jgiven.png?branch=master)](https://travis-ci.org/TNG/JGiven)
 
-# JGiven v0.1
+# JGiven
 
 (c) 2013-2014 under the Apache License
 
-## Back to the roots
+## BDD for Java in Java
 
 * Write your scenarios in plain Java and use all your known IDE features without the need for any additional plugin
 * No need for additional languages like Groovy or Scala

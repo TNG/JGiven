@@ -31,6 +31,12 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Sonar -->
+    <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+    <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+    <sonar.language>java</sonar.language>
   </properties>
   <groupId>com.tngtech.jgiven</groupId>
   <version>0.1.8-SNAPSHOT</version>
@@ -101,7 +107,35 @@
             </goals>
           </execution>
         </executions>
-     </plugin>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>2.2</version>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.6.4.201312101107</version>
+        <configuration>
+          <destFile>${sonar.jacoco.reportPath}</destFile>
+          <dataFile>${sonar.jacoco.reportPath}</dataFile>
+          <append>true</append>
+        </configuration>
+        <executions>
+          <execution>
+            <id>agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>2.2.0</version>
+      </plugin>
     </plugins>
   </build>
   <profiles>

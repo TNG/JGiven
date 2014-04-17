@@ -1,6 +1,5 @@
-package com.tngtech.jgiven.base;
+package com.tngtech.jgiven.impl;
 
-import com.tngtech.jgiven.impl.ScenarioExecutor;
 import com.tngtech.jgiven.integration.CanWire;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;

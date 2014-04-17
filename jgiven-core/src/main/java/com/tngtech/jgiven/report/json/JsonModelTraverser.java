@@ -4,8 +4,7 @@ import java.io.File;
 
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.FilePredicates;
-import com.tngtech.jgiven.report.html.AbstractHtmlReportGenerator.ReportModelFile;
-import com.tngtech.jgiven.report.html.AbstractHtmlReportGenerator.ReportModelFileReader;
+import com.tngtech.jgiven.report.model.ReportModelFile;
 
 public class JsonModelTraverser {
     public void traverseModels( File sourceDir, ReportModelFileHandler handler ) {

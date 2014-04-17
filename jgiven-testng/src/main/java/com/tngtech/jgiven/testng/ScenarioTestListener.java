@@ -7,7 +7,7 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.internal.ConstructorOrMethod;
 
-import com.tngtech.jgiven.base.ScenarioBase;
+import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.text.PlainTextReporter;
