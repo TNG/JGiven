@@ -7,10 +7,5 @@ jdk:
   - openjdk6
 after_success:
   - mvn clean test
-  - mvn jacoco:report
+  - mvn jacoco:report -pl jgiven-core
   - mvn coveralls:jacoco
-
-
-
-
-
