@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/TNG/jgiven.png?branch=master)](https://travis-ci.org/TNG/JGiven)
+[![Build Status](https://travis-ci.org/TNG/JGiven.png?branch=master)](https://travis-ci.org/TNG/JGiven)
+[![Coverage Status](https://coveralls.io/repos/TNG/JGiven/badge.png?branch=master)](https://coveralls.io/r/TNG/JGiven?branch=master)
 
 # JGiven
 
