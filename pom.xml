@@ -32,7 +32,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <jacoco.reportPath>${project.basedir}/../target/site/</jacoco.reportPath>
+    <jacoco.reportPath>${project.basedir}/../target/site/jacoco/</jacoco.reportPath>
     <!-- Sonar -->
     <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
