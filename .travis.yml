@@ -8,4 +8,4 @@ jdk:
 after_success:
   - mvn clean test
   - mvn jacoco:report -pl jgiven-core
-  - mvn -N coveralls:jacoco
+  - mvn coveralls:jacoco -pl jgiven-core
