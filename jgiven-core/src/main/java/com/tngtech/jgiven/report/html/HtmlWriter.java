@@ -5,10 +5,12 @@ import static java.lang.String.format;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Throwables;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
@@ -52,14 +54,14 @@ public class HtmlWriter extends ReportModelVisitor {
 
     }
 
-    public static String toString( ScenarioModel model ) {
+    public static String toString( ScenarioModel model ) throws UnsupportedEncodingException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        PrintWriter printWriter = new PrintWriter( stream );
+        PrintWriter printWriter = new PrintWriter( new OutputStreamWriter( stream, Charsets.UTF_8.name() ), false );
 
         try {
             new HtmlWriter( printWriter ).write( model );
             printWriter.flush();
-            return stream.toString();
+            return stream.toString( Charsets.UTF_8.name() );
         } finally {
             ResourceUtil.close( printWriter );
         }
@@ -179,6 +181,25 @@ public class HtmlWriter extends ReportModelVisitor {
             firstWord = false;
         }
         writer.println( "</li>" );
+    }
+
+    private static PrintWriter getPrintWriter( File file ) {
+        try {
+            return new PrintWriter( file, Charsets.UTF_8.name() );
+        } catch( Exception e ) {
+            throw Throwables.propagate( e );
+        }
+    }
+
+    public static void writeModelToFile( ReportModel model, File file ) {
+        PrintWriter printWriter = getPrintWriter( file );
+        try {
+            HtmlWriter htmlWriter = new HtmlWriter( printWriter );
+            htmlWriter.write( model );
+        } finally {
+            ResourceUtil.close( printWriter );
+        }
+
     }
 
 }

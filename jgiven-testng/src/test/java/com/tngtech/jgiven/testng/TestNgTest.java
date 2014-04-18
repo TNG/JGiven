@@ -27,9 +27,9 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
         assertThat( scenarioModel.testMethodName ).isEqualTo( "Milk_and_Sugar_are_mixed_to_Sugar_Milk" );
         assertThat( scenarioModel.className ).isEqualTo( getClass().getName() );
         assertThat( scenarioModel.parameterNames ).isEmpty();
-        assertThat( scenarioModel.scenarioCases ).hasSize( 1 );
+        assertThat( scenarioModel.getScenarioCases() ).hasSize( 1 );
 
-        ScenarioCaseModel scenarioCaseModel = scenarioModel.scenarioCases.get( 0 );
+        ScenarioCaseModel scenarioCaseModel = scenarioModel.getCase( 0 );
         assertThat( scenarioCaseModel.arguments ).isEmpty();
         assertThat( scenarioCaseModel.caseNr ).isEqualTo( 1 );
         assertThat( scenarioCaseModel.errorMessage ).isNull();
@@ -53,7 +53,7 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
         }
         then().nothing_happens();
 
-        ScenarioCaseModel scenarioCaseModel = scenario.getModel().getLastScenarioModel().scenarioCases.get( 0 );
+        ScenarioCaseModel scenarioCaseModel = scenario.getModel().getLastScenarioModel().getCase( 0 );
         assertThat( scenarioCaseModel.success ).isFalse();
         assertThat( scenarioCaseModel.errorMessage ).contains( "Something failed" );
     }

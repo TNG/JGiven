@@ -1,5 +1,7 @@
 package com.tngtech.jgiven;
 
+import com.tngtech.jgiven.annotation.Description;
+import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 
 public class GivenTestStep extends Stage<GivenTestStep> {
@@ -31,6 +33,15 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     }
 
     public GivenTestStep an_array( Object argument ) {
+        return self();
+    }
+
+    @Description( "a step with a (special) description" )
+    public GivenTestStep a_step_with_a_description() {
+        return self();
+    }
+
+    public GivenTestStep a_step_with_a_printf_annotation_$( @Formatf( "%.2f" ) double d ) {
         return self();
     }
 }

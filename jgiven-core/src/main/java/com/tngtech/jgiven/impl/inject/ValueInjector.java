@@ -13,7 +13,6 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState.Resolution;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
-import com.tngtech.jgiven.impl.Scenario;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.FieldAction;
 
@@ -21,7 +20,7 @@ import com.tngtech.jgiven.impl.util.ReflectionUtil.FieldAction;
  * Used by Scenario to inject and read values from objects.
  */
 public class ValueInjector {
-    private static final Logger log = LoggerFactory.getLogger( Scenario.class );
+    private static final Logger log = LoggerFactory.getLogger( ValueInjector.class );
 
     private final ValueInjectorState state = new ValueInjectorState();
 

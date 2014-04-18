@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.report.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -26,5 +27,17 @@ public class ScenarioCaseModel {
             step.accept( visitor );
         }
         visitor.visitEnd( this );
+    }
+
+    public void addArguments( String... args ) {
+        arguments.addAll( Arrays.asList( args ) );
+    }
+
+    public void addStep( StepModel stepModel ) {
+        steps.add( stepModel );
+    }
+
+    public StepModel getStep( int i ) {
+        return steps.get( i );
     }
 }

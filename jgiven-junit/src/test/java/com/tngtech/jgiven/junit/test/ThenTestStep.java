@@ -21,4 +21,6 @@ public class ThenTestStep extends Stage<ThenTestStep> {
         assertThat( intResult ).isEqualTo( i );
     }
 
+    public void something() {}
+
 }

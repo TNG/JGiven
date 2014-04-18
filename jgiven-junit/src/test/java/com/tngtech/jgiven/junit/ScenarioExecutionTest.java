@@ -3,7 +3,9 @@ package com.tngtech.jgiven.junit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
@@ -11,6 +13,7 @@ import com.tngtech.jgiven.junit.test.BeforeAfterTestStage;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
 
+@RunWith( DataProviderRunner.class )
 public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, WhenTestStep, ThenTestStep> {
 
     @Test

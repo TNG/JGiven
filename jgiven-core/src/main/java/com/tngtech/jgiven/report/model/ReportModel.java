@@ -27,6 +27,10 @@ public class ReportModel {
         return scenarios.get( scenarios.size() - 1 );
     }
 
+    public StepModel getFirstStepModelOfLastScenario() {
+        return getLastScenarioModel().getCase( 0 ).steps.get( 0 );
+    }
+
     public void addScenarioModel( ScenarioModel currentScenarioModel ) {
         scenarios.add( currentScenarioModel );
     }

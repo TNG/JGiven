@@ -28,7 +28,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         ScenarioCaseModel scenarioCaseModel = new ScenarioCaseModel();
         scenarioCaseModel.addStep( "something_happens", Arrays.asList( new Word( "something" ), new Word( "happens" ) ), false );
 
-        scenarioModel.scenarioCases.add( scenarioCaseModel );
+        scenarioModel.addCase( scenarioCaseModel );
 
         reportModel.scenarios.add( scenarioModel );
     }
@@ -53,10 +53,13 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return reportModel;
     }
 
-    public void the_first_scenario_has_tag( String name ) {
-        Tag tag = new Tag();
-        tag.name = name;
-        reportModel.scenarios.get( 0 ).tags.add( tag );
+    public SELF the_first_scenario_has_tag( String name ) {
+        return scenario_$_has_tag_$_with_value_$( 1, name, null );
+    }
+
+    public SELF scenario_$_has_tag_$_with_value_$( int i, String name, String value ) {
+        reportModel.scenarios.get( i - 1 ).tags.add( new Tag( name, value ) );
+        return self();
     }
 
 }

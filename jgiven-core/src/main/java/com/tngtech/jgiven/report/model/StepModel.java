@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.report.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.base.Joiner;
@@ -8,7 +9,6 @@ import com.google.common.collect.Lists;
 public class StepModel {
     public String name;
     public List<Word> words = Lists.newArrayList();
-    public List<String> parameterNames = Lists.newArrayList();
     public boolean notImplementedYet;
     public boolean failed;
     public boolean skipped;
@@ -19,5 +19,17 @@ public class StepModel {
 
     public String getCompleteSentence() {
         return Joiner.on( ' ' ).join( words );
+    }
+
+    public StepModel addWords( String... strings ) {
+        for( String string : strings ) {
+            words.add( new Word( string ) );
+        }
+        return this;
+    }
+
+    public StepModel addWords( Word... words ) {
+        this.words.addAll( Arrays.asList( words ) );
+        return this;
     }
 }

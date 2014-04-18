@@ -14,6 +14,15 @@ public class Tag {
      */
     public Object value;
 
+    public Tag( String name ) {
+        this.name = name;
+    }
+
+    public Tag( String name, Object value ) {
+        this.name = name;
+        this.value = value;
+    }
+
     @Override
     public String toString() {
         return name + ( ( value != null ) ? "-" + value : "" );

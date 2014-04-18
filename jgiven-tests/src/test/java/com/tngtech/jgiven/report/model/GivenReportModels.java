@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.report.model;
 
-import java.io.IOException;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -15,7 +14,7 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
     @ScenarioStage
     public GivenReportModel<?> givenReportModel;
 
-    public SELF $_report_models( int n ) throws IOException {
+    public SELF $_report_models( int n ) {
         for( int i = 0; i < n; i++ ) {
             a_report_model_with_name( "Test" + i );
         }
@@ -38,9 +37,13 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         return self();
     }
 
-    public SELF the_first_scenario_has_tag( String annotation ) {
-        givenReportModel.the_first_scenario_has_tag( annotation );
+    public SELF the_first_scenario_has_tag( String name ) {
+        givenReportModel.the_first_scenario_has_tag( name );
         return self();
     }
 
+    public SELF scenario_$_has_tag_$_with_value_$( int i, String name, String value ) {
+        givenReportModel.scenario_$_has_tag_$_with_value_$( i, name, value );
+        return self();
+    }
 }

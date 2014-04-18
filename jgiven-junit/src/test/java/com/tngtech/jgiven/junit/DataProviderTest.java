@@ -33,7 +33,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
         then().the_value_is_$not$_greater_than_zero( booleanArg );
 
         ScenarioModel scenarioModel = scenario.getModel().scenarios.get( 0 );
-        List<String> arguments = scenarioModel.scenarioCases.get( caseNr ).arguments;
+        List<String> arguments = scenarioModel.getCase( caseNr ).arguments;
         assertThat( arguments ).containsExactly( "" + intArg, "" + booleanArg, "" + caseNr );
     }
 

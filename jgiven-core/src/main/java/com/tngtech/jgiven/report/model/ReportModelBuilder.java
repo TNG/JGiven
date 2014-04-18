@@ -6,17 +6,16 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.ParameterNamesNotFoundException;
 import com.thoughtworks.paranamer.Paranamer;
+import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.IsTag;
@@ -87,12 +86,14 @@ public class ReportModelBuilder implements ScenarioListener {
         return WordUtil.capitalize( scenarioDescription );
     }
 
-    public void writeScenarioCase( ScenarioCaseModel scenarioCase ) {
-        currentScenarioCase = scenarioCase;
-    }
-
     public void addStepMethod( Method paramMethod, List<Object> arguments ) {
-        String name = nameWithoutUnderlines( paramMethod );
+        String name;
+        Description description = paramMethod.getAnnotation( Description.class );
+        if( description != null ) {
+            name = description.value();
+        } else {
+            name = nameWithoutUnderlines( paramMethod );
+        }
 
         List<Formatting<?>> formatters = getFormatters( paramMethod.getParameterAnnotations() );
         List<Word> words = new StepFormatter( name, arguments, formatters ).buildFormattedWords();
@@ -171,14 +172,6 @@ public class ReportModelBuilder implements ScenarioListener {
         lastScenarioModel.testMethodName = methodName;
     }
 
-    public void addAnnotation( Tag tag ) {
-        lastScenarioModel.addTag( tag );
-    }
-
-    public void setCaseNr( int caseNr ) {
-        currentScenarioCase.caseNr = caseNr;
-    }
-
     public void setArguments( List<String> arguments ) {
         currentScenarioCase.arguments = arguments;
     }
@@ -204,10 +197,6 @@ public class ReportModelBuilder implements ScenarioListener {
 
     private static String nameWithoutUnderlines( Method paramMethod ) {
         return paramMethod.getName().replace( '_', ' ' );
-    }
-
-    public ScenarioModel getCurrentScenarioModel() {
-        return lastScenarioModel;
     }
 
     public ReportModel getScenarioCollectionModel() {
@@ -252,29 +241,22 @@ public class ReportModelBuilder implements ScenarioListener {
         }
     }
 
-    static class ScenarioAnnotations {
-        Set<String> tags = Sets.newHashSet();
-        String description = "";
-    }
-
     private void readAnnotations( Method method ) {
-
-        ScenarioAnnotations scenarioAnnotations = new ScenarioAnnotations();
-        scenarioAnnotations.description = method.getName();
+        String scenarioDescription = method.getName();
 
         if( method.isAnnotationPresent( ScenarioDescription.class ) ) {
-            scenarioAnnotations.description = method.getAnnotation( ScenarioDescription.class ).value();
+            scenarioDescription = method.getAnnotation( ScenarioDescription.class ).value();
         }
 
-        scenarioStarted( scenarioAnnotations.description );
+        scenarioStarted( scenarioDescription );
 
         if( currentScenarioCase.caseNr == 1 ) {
-            addTags( scenarioAnnotations, method.getDeclaringClass().getAnnotations() );
-            addTags( scenarioAnnotations, method.getAnnotations() );
+            addTags( method.getDeclaringClass().getAnnotations() );
+            addTags( method.getAnnotations() );
         }
     }
 
-    private void addTags( ScenarioAnnotations scenarioAnnotations, Annotation[] annotations ) {
+    private void addTags( Annotation[] annotations ) {
         for( Annotation annotation : annotations ) {
             this.lastScenarioModel.tags.addAll( toTags( annotation ) );
         }
@@ -287,8 +269,7 @@ public class ReportModelBuilder implements ScenarioListener {
             return Collections.emptyList();
         }
 
-        Tag tag = new Tag();
-        tag.name = annotationType.getSimpleName();
+        Tag tag = new Tag( annotationType.getSimpleName() );
         if( isTag.ignoreValue() ) {
             return Arrays.asList( tag );
         }
@@ -305,9 +286,8 @@ public class ReportModelBuilder implements ScenarioListener {
                     }
                     if( isTag.explodeArray() ) {
                         return getExplodedTags( annotationType.getSimpleName(), stringArray );
-                    } else {
-                        tag.value = stringArray;
                     }
+                    tag.value = stringArray;
                 } else {
                     tag.value = value + "";
                 }
@@ -324,10 +304,7 @@ public class ReportModelBuilder implements ScenarioListener {
     private static List<Tag> getExplodedTags( String tagName, String[] stringArray ) {
         List<Tag> result = Lists.newArrayList();
         for( String singleValue : stringArray ) {
-            Tag tag = new Tag();
-            tag.name = tagName;
-            tag.value = singleValue;
-            result.add( tag );
+            result.add( new Tag( tagName, singleValue ) );
         }
         return result;
     }

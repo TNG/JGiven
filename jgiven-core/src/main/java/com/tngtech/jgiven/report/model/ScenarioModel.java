@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.report.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -11,11 +12,11 @@ public class ScenarioModel {
     public List<Tag> tags = Lists.newArrayList();
     public List<String> parameterNames = Lists.newArrayList();
 
-    public List<ScenarioCaseModel> scenarioCases = Lists.newArrayList();
+    private final List<ScenarioCaseModel> scenarioCases = Lists.newArrayList();
 
     public void accept( ReportModelVisitor visitor ) {
         visitor.visit( this );
-        for( ScenarioCaseModel scenarioCase : scenarioCases ) {
+        for( ScenarioCaseModel scenarioCase : getScenarioCases() ) {
             scenarioCase.accept( visitor );
         }
         visitor.visitEnd( this );
@@ -58,6 +59,14 @@ public class ScenarioModel {
 
     public void addTag( Tag tag ) {
         tags.add( tag );
+    }
+
+    public void addParameterNames( String... params ) {
+        parameterNames.addAll( Arrays.asList( params ) );
+    }
+
+    public List<ScenarioCaseModel> getScenarioCases() {
+        return scenarioCases;
     }
 
 }

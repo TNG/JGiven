@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.test;
+package com.tngtech.jgiven.tags;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

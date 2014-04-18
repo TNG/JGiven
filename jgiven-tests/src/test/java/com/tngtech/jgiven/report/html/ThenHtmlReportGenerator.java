@@ -16,6 +16,9 @@ public class ThenHtmlReportGenerator extends Stage<ThenHtmlReportGenerator> {
     @ExpectedScenarioState
     protected List<ReportModel> reportModels;
 
+    @ExpectedScenarioState
+    protected File customCssFile;
+
     public ThenHtmlReportGenerator an_index_file_exists() {
         return a_file_with_name_$_exists( "index.html" );
     }
@@ -32,4 +35,8 @@ public class ThenHtmlReportGenerator extends Stage<ThenHtmlReportGenerator> {
         return self();
     }
 
+    public ThenHtmlReportGenerator the_custom_CSS_file_is_copied_to_the_target_directory() {
+        assertThat( new File( targetReportDir, customCssFile.getName() ) ).exists();
+        return self();
+    }
 }

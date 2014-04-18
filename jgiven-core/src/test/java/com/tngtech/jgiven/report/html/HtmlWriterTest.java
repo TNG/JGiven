@@ -2,6 +2,7 @@ package com.tngtech.jgiven.report.html;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
 
     @Test
     @UseDataProvider( "testData" )
-    public void HTML_report_is_correctly_generated_for_scenarios( int a, int b, int expectedResult ) {
+    public void HTML_report_is_correctly_generated_for_scenarios( int a, int b, int expectedResult ) throws UnsupportedEncodingException {
         scenario.startScenario( "values can be multiplied" );
 
         given().$d_and_$d( a, b );
@@ -59,7 +60,7 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
 
     @Test
     @UseDataProvider( "testArguments" )
-    public void tests_with_arguments_generate_cases( String paramA, String paramB ) throws SecurityException, NoSuchMethodException {
+    public void tests_with_arguments_generate_cases( String paramA, String paramB ) throws Exception {
         scenario.getExecutor().startScenario(
             HtmlWriterTest.class.getMethod( "tests_with_arguments_generate_cases", String.class, String.class ),
             Arrays.asList( paramA, paramB ) );

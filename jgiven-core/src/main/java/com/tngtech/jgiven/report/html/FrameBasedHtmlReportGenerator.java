@@ -46,7 +46,7 @@ public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
         File targetFile = new File( toDir, targetFileName );
         log.debug( "Writing to file " + targetFile );
         try {
-            HtmlFileWriter.writeModelToFile( model, targetFile );
+            HtmlWriter.writeModelToFile( model, targetFile );
             ModelFile modelFile = new ModelFile();
             modelFile.model = model;
             modelFile.file = targetFile;
@@ -138,9 +138,9 @@ public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
         String fileName = escape( tag.name );
         if( tag.value != null ) {
             if( tag.getClass().isArray() ) {
-                fileName += escape( Joiner.on( '-' ).join( (String[]) tag.value ) );
+                fileName += "-" + escape( Joiner.on( '-' ).join( (String[]) tag.value ) );
             } else {
-                fileName += escape( (String) tag.value );
+                fileName += "-" + escape( (String) tag.value );
             }
         }
         return fileName.substring( 0, Math.min( fileName.length(), 255 ) ) + ".html";

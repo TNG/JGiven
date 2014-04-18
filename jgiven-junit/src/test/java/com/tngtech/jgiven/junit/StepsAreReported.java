@@ -15,6 +15,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
+import com.tngtech.jgiven.annotation.ScenarioDescription;
 import com.tngtech.jgiven.junit.StepsAreReported.TestSteps;
 import com.tngtech.jgiven.report.model.ImplementationStatus;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
@@ -38,9 +39,9 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
         assertThat( model.description ).isEqualTo( "given steps are reported" );
         assertThat( model.parameterNames ).isEmpty();
         assertThat( model.tags ).isEmpty();
-        assertThat( model.scenarioCases ).hasSize( 1 );
+        assertThat( model.getScenarioCases() ).hasSize( 1 );
 
-        ScenarioCaseModel scenarioCase = model.scenarioCases.get( 0 );
+        ScenarioCaseModel scenarioCase = model.getCase( 0 );
         assertThat( scenarioCase.arguments ).isEmpty();
         assertThat( scenarioCase.caseNr ).isEqualTo( 1 );
         assertThat( scenarioCase.steps ).hasSize( 1 );
@@ -59,7 +60,7 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
         getScenario().finished();
 
         ScenarioModel model = getScenario().getModel().getLastScenarioModel();
-        StepModel stepModel = model.scenarioCases.get( 0 ).steps.get( 0 );
+        StepModel stepModel = model.getCase( 0 ).steps.get( 0 );
         assertThat( stepModel.notImplementedYet ).isTrue();
         assertThat( model.getImplementationStatus() ).isEqualTo( ImplementationStatus.NONE );
     }
@@ -122,6 +123,14 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
 
         assertThat( model.tags.get( 0 ).name ).isEqualTo( "TestTag" );
         assertThat( model.tags.get( 0 ).value ).isEqualTo( new String[] { "foo", "bar", "baz" } );
+    }
+
+    @Test
+    @ScenarioDescription( "Some other description" )
+    public void ScenarioDescription_annotation_is_evaluated() {
+        given().some_test_step();
+        getScenario().finished();
+        assertThat( getScenario().getModel().getLastScenarioModel().description ).isEqualTo( "Some other description" );
     }
 
     public static class TestSteps extends Stage<TestSteps> {

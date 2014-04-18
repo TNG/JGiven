@@ -2,6 +2,8 @@ package com.tngtech.jgiven.report.text;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.UnsupportedEncodingException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -47,7 +49,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
     }
 
     @Test
-    public void plain_text_report_works_as_expected() {
+    public void plain_text_report_works_as_expected() throws UnsupportedEncodingException {
         scenario.startScenario( "test" );
 
         given().something()

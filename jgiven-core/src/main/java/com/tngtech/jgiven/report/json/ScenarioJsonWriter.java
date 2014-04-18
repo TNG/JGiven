@@ -2,8 +2,6 @@ package com.tngtech.jgiven.report.json;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +33,5 @@ public class ScenarioJsonWriter {
     @Override
     public String toString() {
         return new GsonBuilder().setPrettyPrinting().create().toJson( model );
-    }
-
-    public void write( OutputStream stream ) {
-        new PrintWriter( stream ).append( toString() ).close();
     }
 }

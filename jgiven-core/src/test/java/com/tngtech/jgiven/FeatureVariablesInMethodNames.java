@@ -16,7 +16,7 @@ public class FeatureVariablesInMethodNames extends ScenarioTestBase<GivenTestSte
         given().$d_and_$d( 5, 6 );
         then().sms_and_emails_exist();
 
-        StepModel stepModel = scenario.getModel().getLastScenarioModel().scenarioCases.get( 0 ).steps.get( 0 );
+        StepModel stepModel = scenario.getModel().getLastScenarioModel().getCase( 0 ).getStep( 0 );
         assertThat( stepModel.getCompleteSentence() ).isEqualTo( "Given 5 and 6" );
     }
 }

@@ -34,7 +34,7 @@ public class ParameterizedTestNgTest extends ScenarioTest<TestSteps, TestSteps, 
         assertThat( currentScenarioModel.description ).isEqualTo( "parameters are handled correctly" );
         assertThat( currentScenarioModel.parameterNames ).containsExactly( "milkInLiter", "ingredient", "caseNr" );
 
-        ScenarioCaseModel scenarioCase = currentScenarioModel.scenarioCases.get( caseNr );
+        ScenarioCaseModel scenarioCase = currentScenarioModel.getCase( caseNr );
 
         Word word = scenarioCase.steps.get( 0 ).words.get( 0 );
         assertThat( word.isIntroWord ).isTrue();

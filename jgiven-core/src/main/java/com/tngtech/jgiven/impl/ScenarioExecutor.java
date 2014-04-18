@@ -10,7 +10,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -58,7 +57,6 @@ public class ScenarioExecutor {
     private Object currentStage;
     private State state = State.INIT;
     private boolean beforeStepsWereExecuted;
-    private Date startDate;
 
     /**
      * Measures the stack depth of methods called on the step definition object.
@@ -124,14 +122,21 @@ public class ScenarioExecutor {
         if( stages.containsKey( stepsClass ) )
             return (T) stages.get( stepsClass ).instance;
 
+        T result = setupCglibProxy( stepsClass );
+
+        stages.put( stepsClass, new StageState( result ) );
+        gatherRules( result );
+        injectSteps( result );
+        return result;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private <T> T setupCglibProxy( Class<T> stepsClass ) {
         Enhancer e = new Enhancer();
         e.setSuperclass( stepsClass );
         e.setCallback( methodInterceptor );
         T result = (T) e.create();
         methodInterceptor.enableMethodHandling();
-        stages.put( stepsClass, new StageState( result ) );
-        gatherRules( result );
-        injectSteps( result );
         return result;
     }
 
@@ -140,8 +145,8 @@ public class ScenarioExecutor {
     }
 
     @SuppressWarnings( "unchecked" )
-    private void gatherRules( Object object ) {
-        ReflectionUtil.forEachField( object, object.getClass(), hasAtLeastOneAnnotation( ScenarioRule.class ), new FieldAction() {
+    private void gatherRules( Object stage ) {
+        ReflectionUtil.forEachField( stage, stage.getClass(), hasAtLeastOneAnnotation( ScenarioRule.class ), new FieldAction() {
             @Override
             public void act( Object object, Field field ) throws Exception {
                 log.debug( "Found rule in field: " + field );
@@ -152,7 +157,7 @@ public class ScenarioExecutor {
     }
 
     private <T> T update( T t ) {
-        if( currentStage == t ) {
+        if( currentStage == t ) { // NOSONAR: reference comparison OK here
             return t;
         }
 
@@ -203,6 +208,7 @@ public class ScenarioExecutor {
                 executeBeforeScenarioSteps( stage.instance );
             }
         } catch( Exception e ) {
+            failed( e );
             finished();
             throw Throwables.propagate( e );
         }
@@ -287,13 +293,13 @@ public class ScenarioExecutor {
         }
 
         if( lastThrownException != null ) {
-            new RuntimeException( "Exception occurred during the execution of after methods", lastThrownException );
+            throw new RuntimeException( "Exception occurred during the execution of after methods", lastThrownException );
         }
     }
 
     @SuppressWarnings( "unchecked" )
-    public void injectSteps( Object object ) {
-        ReflectionUtil.forEachField( object, object.getClass(),
+    public void injectSteps( Object stage ) {
+        ReflectionUtil.forEachField( stage, stage.getClass(),
             ReflectionUtil.hasAtLeastOneAnnotation( ScenarioStage.class ), new FieldAction() {
                 @Override
                 public void act( Object object, Field field ) throws Exception {

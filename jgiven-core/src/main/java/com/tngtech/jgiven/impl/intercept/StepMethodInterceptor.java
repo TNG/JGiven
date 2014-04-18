@@ -51,9 +51,12 @@ public class StepMethodInterceptor implements MethodInterceptor {
         try {
             stackDepth.incrementAndGet();
             return methodProxy.invokeSuper( receiver, parameters );
-        } catch( Throwable t ) {
+        } catch( Exception t ) {
             scenarioMethodHandler.handleThrowable( t );
             throw t;
+        } catch( AssertionError e ) {
+            scenarioMethodHandler.handleThrowable( e );
+            throw e;
         } finally {
             stackDepth.decrementAndGet();
         }

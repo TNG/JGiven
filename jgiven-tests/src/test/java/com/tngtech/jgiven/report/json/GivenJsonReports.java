@@ -23,6 +23,9 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenRep
     @ProvidedScenarioState
     protected List<File> jsonReportFiles = Lists.newArrayList();
 
+    @ProvidedScenarioState
+    protected File customCssFile;
+
     public SELF the_report_exist_as_JSON_file() throws IOException {
         return the_reports_exist_as_JSON_files();
     }
@@ -37,5 +40,9 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenRep
             new ScenarioJsonWriter( reportModel ).write( jsonReportFile );
         }
         return self();
+    }
+
+    public void a_custom_CSS_file() throws IOException {
+        customCssFile = temporaryFolderRule.newFile( "custom.css" );
     }
 }

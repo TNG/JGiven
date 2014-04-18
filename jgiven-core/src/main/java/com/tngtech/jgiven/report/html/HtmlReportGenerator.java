@@ -18,7 +18,11 @@ public class HtmlReportGenerator {
 
     public static void main( String... args ) throws IOException {
         HtmlReportGenerator generator = new HtmlReportGenerator();
+        parseArgs( generator, args );
+        generator.generate();
+    }
 
+    static void parseArgs( HtmlReportGenerator generator, String... args ) {
         for( String arg : args ) {
             if( arg.equals( "-h" ) || arg.equals( "--help" ) ) {
                 printUsageAndExit();
@@ -34,8 +38,6 @@ public class HtmlReportGenerator {
                 printUsageAndExit();
             }
         }
-
-        generator.generate();
     }
 
     public void generate() throws IOException {
@@ -57,7 +59,7 @@ public class HtmlReportGenerator {
     }
 
     private static void printUsageAndExit() {
-        System.err.println( "Options: [--frames] [--dir=<dir>] [--todir=<dir>] [--customcss=<cssfile>]" );
+        System.err.println( "Options: [--frames] [--dir=<dir>] [--todir=<dir>] [--customcss=<cssfile>]" ); // NOSONAR
         System.exit( 1 );
     }
 }

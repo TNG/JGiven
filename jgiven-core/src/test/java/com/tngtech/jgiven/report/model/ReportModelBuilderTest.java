@@ -58,7 +58,6 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
 
         StepModel step0 = case0.steps.get( 0 );
         assertThat( step0.words ).hasSize( 4 );
-        assertThat( step0.parameterNames ).isEmpty();
         assertThat( step0.getCompleteSentence() ).isEqualTo( "Given " + a + " and " + b );
         assertThat( step0.words ).extracting( "isArg" ).isEqualTo( Arrays.asList( false, true, false, true ) );
 
@@ -156,8 +155,30 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         given().an_array( argument );
 
         scenario.finished();
-        ScenarioModel model = scenario.getModel().getLastScenarioModel();
-        StepModel case0 = model.getCase( 0 ).steps.get( 0 );
-        assertThat( case0.words.get( 2 ).value ).isEqualTo( expected );
+        StepModel step = scenario.getModel().getFirstStepModelOfLastScenario();
+        assertThat( step.words.get( 2 ).value ).isEqualTo( expected );
+    }
+
+    @Test
+    public void the_Description_annotation_is_evaluated() {
+        scenario.startScenario( "Scenario with a @Description tag" );
+        given().a_step_with_a_description();
+        scenario.finished();
+        StepModel step = scenario.getModel().getFirstStepModelOfLastScenario();
+        assertThat( step.words.get( 1 ).value ).isEqualTo( "a step with a (special) description" );
+    }
+
+    @Test
+    public void printf_annotation_uses_the_PrintfFormatter() {
+        scenario.startScenario( "printf_annotation_uses_the_PrintfFormatter" );
+        given().a_step_with_a_printf_annotation_$( 5.2 );
+        scenario.finished();
+        StepModel step = scenario.getModel().getFirstStepModelOfLastScenario();
+        assertThat( step.words.get( 2 ).value ).isEqualTo( "5.20" );
+    }
+
+    @Test
+    public void testTagEquals() {
+        assertThat( new Tag( "test", "1" ) ).isEqualTo( new Tag( "test", "1" ) );
     }
 }

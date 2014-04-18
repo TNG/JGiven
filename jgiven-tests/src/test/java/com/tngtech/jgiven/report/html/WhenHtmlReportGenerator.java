@@ -21,6 +21,12 @@ public class WhenHtmlReportGenerator extends Stage<WhenHtmlReportGenerator> {
     @ExpectedScenarioState
     protected File jsonReportDirectory;
 
+    @ExpectedScenarioState
+    protected File customCssFile;
+
+    @ProvidedScenarioState
+    protected HtmlReportGenerator htmlReportGenerator;
+
     @BeforeStage
     protected void setupTargetReportDir() throws IOException {
         targetReportDir = temporaryFolderRule.newFolder();
@@ -29,4 +35,13 @@ public class WhenHtmlReportGenerator extends Stage<WhenHtmlReportGenerator> {
     public void the_frame_based_HTML_reporter_is_executed() throws IOException {
         new FrameBasedHtmlReportGenerator().generate( targetReportDir, jsonReportDirectory );
     }
+
+    public void the_HTML_report_generator_is_executed() throws IOException {
+        htmlReportGenerator = new HtmlReportGenerator();
+        htmlReportGenerator.customCssFile = customCssFile;
+        htmlReportGenerator.sourceDir = jsonReportDirectory;
+        htmlReportGenerator.toDir = targetReportDir;
+        htmlReportGenerator.generate();
+    }
+
 }

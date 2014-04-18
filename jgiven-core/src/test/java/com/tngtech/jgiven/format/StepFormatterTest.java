@@ -3,19 +3,19 @@ package com.tngtech.jgiven.format;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.report.model.StepFormatter;
-import com.tngtech.jgiven.report.model.Word;
 import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
+import com.tngtech.jgiven.report.model.Word;
 
 @RunWith( DataProviderRunner.class )
 public class StepFormatterTest {
@@ -62,7 +62,7 @@ public class StepFormatterTest {
     @UseDataProvider( "formatterTestCases" )
     public void testFormatter( String source, List<Object> arguments, ArgumentFormatter<?> formatter, String formatterArg,
             String expectedResult ) {
-        List<Formatting<?>> asList = new ArrayList();
+        List<Formatting<?>> asList = Lists.newArrayList();
         if( formatter != null ) {
             asList.add( new Formatting( formatter, formatterArg ) );
         } else {

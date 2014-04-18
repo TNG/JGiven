@@ -82,8 +82,7 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
      * @return the new scenario
      */
     public static <STEPS> Scenario<STEPS, STEPS, STEPS> create( Class<STEPS> stepsClass ) {
-        Scenario<STEPS, STEPS, STEPS> scenario = new Scenario<STEPS, STEPS, STEPS>( stepsClass );
-        return scenario;
+        return new Scenario<STEPS, STEPS, STEPS>( stepsClass );
     }
 
     /**

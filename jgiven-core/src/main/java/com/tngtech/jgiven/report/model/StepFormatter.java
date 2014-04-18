@@ -43,7 +43,7 @@ public class StepFormatter {
             String word = words.get( i );
             if( word.startsWith( "$" ) ) {
                 int argEnd = findArgumentEnd( i, words );
-                formatArgument( formattedWords, argCount, word, argEnd != -1 );
+                formatArgument( formattedWords, argCount, word );
                 if( argEnd != -1 ) {
                     i = argEnd;
                 }
@@ -79,7 +79,7 @@ public class StepFormatter {
         return -1;
     }
 
-    private void formatArgument( List<Word> formattedWords, int argCount, String word, boolean isFreeTextArg ) {
+    private void formatArgument( List<Word> formattedWords, int argCount, String word ) {
         Word w = new Word();
         w.isArg = true;
         Pattern pattern = Pattern.compile( "\\$(\\d+)" );
