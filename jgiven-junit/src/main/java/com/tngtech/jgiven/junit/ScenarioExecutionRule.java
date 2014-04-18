@@ -36,7 +36,7 @@ public class ScenarioExecutionRule extends TestWatcher {
     @Override
     protected void succeeded( Description description ) {
         scenario.getExecutor().succeeded();
-        scenario.getExecutor().finished();
+        scenario.finished();
 
         // ignore test when scenario is not implemented
         assumeTrue( scenario.getModel().getLastScenarioModel().getImplementationStatus() != ImplementationStatus.NONE );
@@ -45,7 +45,7 @@ public class ScenarioExecutionRule extends TestWatcher {
     @Override
     protected void failed( Throwable e, Description description ) {
         scenario.getExecutor().failed( e );
-        scenario.getExecutor().finished();
+        scenario.finished();
     }
 
     @Override

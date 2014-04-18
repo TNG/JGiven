@@ -7,8 +7,10 @@ import org.junit.runner.RunWith;
 
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
+import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.junit.test.BeforeAfterTestStage;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
@@ -57,4 +59,67 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         stage.given().an_exception_is_thrown();
         assertThat( true ).isTrue();
     }
+
+    @Test( expected = IllegalStateException.class )
+    public void exception_in_before_method_is_propagated() {
+        addStage( TestStageWithExceptionInBeforeScenario.class );
+        given().something();
+    }
+
+    public static class TestStageWithExceptionInBeforeScenario {
+        @BeforeScenario
+        public void throwException() {
+            throw new IllegalStateException( "BeforeScenario" );
+        }
+    }
+
+    @Test( expected = IllegalStateException.class )
+    public void exception_in_after_method_is_propagated() throws Throwable {
+        addStage( TestStageWithExceptionInAfterScenario.class );
+        given().something();
+        getScenario().getExecutor().finished();
+    }
+
+    public static class TestStageWithExceptionInAfterScenario {
+        @AfterScenario
+        public void throwException() {
+            throw new IllegalStateException( "AfterScenario" );
+        }
+    }
+
+    @Test( expected = IllegalStateException.class )
+    public void exception_in_before_rule_method_is_propagated() throws Throwable {
+        addStage( TestStageWithRuleThatThrowsExceptionInBefore.class );
+        given().something();
+    }
+
+    public static class TestStageWithRuleThatThrowsExceptionInBefore {
+        @ScenarioRule
+        RuleThatThrowsExceptionInBefore rule = new RuleThatThrowsExceptionInBefore();
+    }
+
+    public static class RuleThatThrowsExceptionInBefore {
+        public void before() {
+            throw new IllegalStateException( "BeforeRule" );
+        }
+    }
+
+    @Test( expected = IllegalStateException.class )
+    public void exception_in_after_rule_method_is_propagated() throws Throwable {
+        addStage( TestStageWithRuleThatThrowsExceptionInAfter.class );
+        given().something();
+        getScenario().getExecutor().finished();
+    }
+
+    public static class TestStageWithRuleThatThrowsExceptionInAfter {
+        @ScenarioRule
+        RuleThatThrowsExceptionInAfter rule = new RuleThatThrowsExceptionInAfter();
+    }
+
+    public static class RuleThatThrowsExceptionInAfter {
+        public void after() {
+            throw new IllegalStateException( "AfterRule" );
+        }
+    }
+
 }

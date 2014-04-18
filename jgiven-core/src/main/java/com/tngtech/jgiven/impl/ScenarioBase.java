@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.impl;
 
+import com.google.common.base.Throwables;
 import com.tngtech.jgiven.integration.CanWire;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;
@@ -25,7 +26,11 @@ public class ScenarioBase {
     }
 
     public void finished() {
-        executor.finished();
+        try {
+            executor.finished();
+        } catch( Throwable e ) {
+            throw Throwables.propagate( e );
+        }
     }
 
     public ScenarioExecutor getExecutor() {

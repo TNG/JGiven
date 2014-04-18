@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.ParameterNamesNotFoundException;
@@ -135,10 +136,8 @@ public class ReportModelBuilder implements ScenarioListener {
                     return new Formatting( PrintfFormatter.class.newInstance(), arg.value() );
                 }
             } catch( Exception e ) {
-                log.error( e.getMessage(), e );
-                return null;
+                throw Throwables.propagate( e );
             }
-
         }
         return null;
     }

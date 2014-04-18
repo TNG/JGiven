@@ -8,6 +8,7 @@ import static com.tngtech.jgiven.impl.util.ReflectionUtil.hasAtLeastOneAnnotatio
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.annotation.AfterScenario;
@@ -89,7 +89,7 @@ public class ScenarioExecutor {
 
     class MethodHandler implements StepMethodHandler {
         @Override
-        public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments ) {
+        public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments ) throws Throwable {
             if( paramMethod.isSynthetic() )
                 return;
 
@@ -110,7 +110,7 @@ public class ScenarioExecutor {
         }
 
         @Override
-        public void handleThrowable( Throwable t ) {
+        public void handleThrowable( Throwable t ) throws Throwable {
             failed( t );
             finished();
         }
@@ -156,7 +156,7 @@ public class ScenarioExecutor {
         } );
     }
 
-    private <T> T update( T t ) {
+    private <T> T update( T t ) throws Throwable {
         if( currentStage == t ) { // NOSONAR: reference comparison OK here
             return t;
         }
@@ -180,7 +180,7 @@ public class ScenarioExecutor {
         return t;
     }
 
-    private void executeAfterStageMethods( Object stage ) {
+    private void executeAfterStageMethods( Object stage ) throws Throwable {
         StageState stageState = getStageState( stage );
         if( stageState.afterStageCalled )
             return;
@@ -192,7 +192,7 @@ public class ScenarioExecutor {
         return stages.get( stage.getClass().getSuperclass() );
     }
 
-    private void ensureBeforeStepsAreExecuted() {
+    private void ensureBeforeStepsAreExecuted() throws Throwable {
         if( state != State.INIT )
             return;
         state = State.STARTED;
@@ -207,44 +207,52 @@ public class ScenarioExecutor {
             for( StageState stage : stages.values() ) {
                 executeBeforeScenarioSteps( stage.instance );
             }
-        } catch( Exception e ) {
+        } catch( Throwable e ) {
             failed( e );
             finished();
-            throw Throwables.propagate( e );
+            throw e;
         }
     }
 
-    private void executeAnnotatedMethods( Object stage, Class<? extends Annotation> annotationClass ) {
+    private void executeAnnotatedMethods( Object stage, Class<? extends Annotation> annotationClass ) throws Throwable {
         log.debug( "Executing methods annotated with @" + annotationClass.getName() );
-        ReflectionUtil.forEachMethod( stage, stage.getClass(), annotationClass, new MethodAction() {
-            @Override
-            public void act( Object object, Method method ) throws Exception {
-                log.debug( "Executing method " + method );
-                method.setAccessible( true );
-                method.invoke( object );
+        try {
+            ReflectionUtil.forEachMethod( stage, stage.getClass(), annotationClass, new MethodAction() {
+                @Override
+                public void act( Object object, Method method ) throws Exception {
+                    log.debug( "Executing method " + method );
+                    method.setAccessible( true );
+                    method.invoke( object );
+                }
+            } );
+        } catch( RuntimeException e ) {
+            if( e.getCause() instanceof InvocationTargetException ) {
+                throw e.getCause().getCause();
             }
-        } );
+            throw e;
+        }
     }
 
-    private void invokeRuleMethod( Object rule, String methodName ) {
+    private void invokeRuleMethod( Object rule, String methodName ) throws Throwable {
         Optional<Method> optionalMethod = ReflectionUtil.findMethodTransitively( rule.getClass(), methodName );
         if( !optionalMethod.isPresent() ) {
             log.debug( "Class " + rule.getClass() + " has no " + methodName + " method, but was used as ScenarioRule!" );
+            return;
         }
         log.debug( "Executing method " + methodName + " of rule class " + rule.getClass() );
         optionalMethod.get().setAccessible( true );
         try {
             optionalMethod.get().invoke( rule );
-        } catch( Exception e ) {
-            throw Throwables.propagate( e );
+        } catch( InvocationTargetException e ) {
+            throw e.getCause();
         }
     }
 
-    void executeBeforeStageSteps( Object stage ) {
+    void executeBeforeStageSteps( Object stage ) throws Throwable {
         executeAnnotatedMethods( stage, BeforeStage.class );
     }
 
-    private void executeBeforeScenarioSteps( Object stage ) {
+    private void executeBeforeScenarioSteps( Object stage ) throws Throwable {
         executeAnnotatedMethods( stage, BeforeScenario.class );
     }
 
@@ -264,7 +272,7 @@ public class ScenarioExecutor {
     /**
      * Has to be called when the scenario is finished in order to execute after methods
      */
-    public void finished() {
+    public void finished() throws Throwable {
         if( state == FINISHED )
             return;
         if( state != STARTED )
@@ -293,7 +301,7 @@ public class ScenarioExecutor {
         }
 
         if( lastThrownException != null ) {
-            throw new RuntimeException( "Exception occurred during the execution of after methods", lastThrownException );
+            throw lastThrownException;
         }
     }
 

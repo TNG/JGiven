@@ -113,8 +113,8 @@ public class ValueInjector {
         if( resolution == Resolution.NAME ) {
             String name = field.getName();
             return state.getValueByName( name );
-        } else
-            return state.getValueByType( type );
+        }
+        return state.getValueByType( type );
     }
 
     private Resolution getResolution( Field field ) {
