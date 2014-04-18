@@ -2,6 +2,8 @@ package com.tngtech.jgiven.report.html;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -15,7 +17,7 @@ import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.report.model.ReportModel;
 
 @RunWith( DataProviderRunner.class )
-public class HtmlReporterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {
+public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {
 
     @DataProvider
     public static Object[][] testData() {
@@ -28,7 +30,7 @@ public class HtmlReporterTest extends ScenarioTestBase<GivenTestStep, WhenTestSt
 
     @Test
     @UseDataProvider( "testData" )
-    public void test( int a, int b, int expectedResult ) {
+    public void HTML_report_is_correctly_generated_for_scenarios( int a, int b, int expectedResult ) {
         scenario.startScenario( "values can be multiplied" );
 
         given().$d_and_$d( a, b );
@@ -46,6 +48,29 @@ public class HtmlReporterTest extends ScenarioTestBase<GivenTestStep, WhenTestSt
                 + "<li><span class='introWord'>Then</span> the result is.*<span class='argument'>" + expectedResult + "</span>.*</li>.*"
                 + "<div class='passed'>Passed</div>"
                 + ".*" );
+    }
+
+    @DataProvider
+    public static Object[][] testArguments() {
+        return new Object[][] {
+            { "a", "b" },
+        };
+    }
+
+    @Test
+    @UseDataProvider( "testArguments" )
+    public void tests_with_arguments_generate_cases( String paramA, String paramB ) throws SecurityException, NoSuchMethodException {
+        scenario.getExecutor().startScenario(
+            HtmlWriterTest.class.getMethod( "tests_with_arguments_generate_cases", String.class, String.class ),
+            Arrays.asList( paramA, paramB ) );
+
+        when().both_values_are_multiplied_with_each_other();
+
+        scenario.finished();
+        ReportModel model = scenario.getModel();
+        String string = HtmlWriter.toString( model.getLastScenarioModel() );
+        System.out.println( string );
+        assertThat( string.replace( '\n', ' ' ) ).matches( ".*<h4>Case 1: paramA = a, paramB = b</h4>.*" );
     }
 
     @Test

@@ -22,8 +22,6 @@ public class ScenarioTestListener implements ITestListener {
 
     @Override
     public void onTestStart( ITestResult paramITestResult ) {
-        System.out.println( "TEST STARTED" );
-
         Object instance = paramITestResult.getInstance();
         scenarioCollectionModel.className = instance.getClass().getName();
 

@@ -125,7 +125,7 @@ public class HtmlWriter extends ReportModelVisitor {
         writer.println( format( "<div class='case %sCase'>", scenarioCase.success ? "passed" : "failed" ) );
         this.scenarioCase = scenarioCase;
         if( !scenarioCase.arguments.isEmpty() ) {
-            writer.println( format( "<h4>Case %d: ", scenarioCase.caseNr ) );
+            writer.print( format( "<h4>Case %d: ", scenarioCase.caseNr ) );
 
             for( int i = 0; i < scenarioCase.arguments.size(); i++ ) {
                 if( scenarioModel.parameterNames.size() > i ) {
@@ -135,7 +135,7 @@ public class HtmlWriter extends ReportModelVisitor {
                 writer.print( scenarioCase.arguments.get( i ) );
 
                 if( i < scenarioCase.arguments.size() - 1 ) {
-                    writer.println( ", " );
+                    writer.print( ", " );
                 }
             }
             writer.println( "</h4>" );
