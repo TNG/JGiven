@@ -133,7 +133,7 @@ public class ValueInjector {
             if( annotation instanceof ExpectedScenarioState )
                 return ( (ExpectedScenarioState) annotation ).resolution();
         }
-        throw new IllegalArgumentException( "Field " + field + " has not valid annotation" );
+        throw new IllegalArgumentException( "Field " + field + " has no valid annotation" );
     }
 
     private boolean typeIsTooGeneric( Class<?> type ) {

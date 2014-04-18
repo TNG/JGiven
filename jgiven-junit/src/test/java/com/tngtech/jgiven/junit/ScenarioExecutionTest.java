@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.junit;
 
+import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
@@ -11,6 +12,8 @@ import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ScenarioRule;
+import com.tngtech.jgiven.annotation.ScenarioState;
+import com.tngtech.jgiven.exception.AmbiguousResolutionException;
 import com.tngtech.jgiven.junit.test.BeforeAfterTestStage;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
@@ -58,6 +61,42 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         TestStage stage = addStage( TestStage.class );
         stage.given().an_exception_is_thrown();
         assertThat( true ).isTrue();
+    }
+
+    @Test( expected = AmbiguousResolutionException.class )
+    public void an_exception_is_thrown_when_stages_have_ambiguous_fields() {
+        TestStageWithAmbiguousFields stage = addStage( TestStageWithAmbiguousFields.class );
+        given().something();
+        stage.something();
+    }
+
+    static class SomeType {}
+
+    public static class TestStageWithAmbiguousFields {
+        @ScenarioState
+        SomeType oneType;
+
+        @ScenarioState
+        SomeType secondType;
+
+        public void something() {}
+    }
+
+    @Test
+    public void ambiguous_fields_are_avoided_by_using_resolution_by_name() {
+        TestStageWithAmbiguousFieldsButResolutionByName stage = addStage( TestStageWithAmbiguousFieldsButResolutionByName.class );
+        given().something();
+        stage.something();
+    }
+
+    public static class TestStageWithAmbiguousFieldsButResolutionByName {
+        @ScenarioState( resolution = NAME )
+        SomeType oneType;
+
+        @ScenarioState( resolution = NAME )
+        SomeType secondType;
+
+        public void something() {}
     }
 
     @Test( expected = IllegalStateException.class )

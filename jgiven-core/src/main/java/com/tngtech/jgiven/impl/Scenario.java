@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.impl;
 
-import com.google.common.reflect.TypeToken;
 import com.tngtech.jgiven.annotation.ScenarioState;
 
 /**
@@ -17,14 +16,6 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
     private WHEN whenStage;
     private THEN thenStage;
 
-    @SuppressWarnings( { "serial", "unchecked" } )
-    public Scenario() {
-        Class<GIVEN> givenClass = (Class<GIVEN>) new TypeToken<GIVEN>( getClass() ) {}.getRawType();
-        Class<WHEN> whenClass = (Class<WHEN>) new TypeToken<WHEN>( getClass() ) {}.getRawType();
-        Class<THEN> thenClass = (Class<THEN>) new TypeToken<THEN>( getClass() ) {}.getRawType();
-        setupStages( givenClass, whenClass, thenClass );
-    }
-
     @SuppressWarnings( "unchecked" )
     private Scenario( Class<?> stageClass ) {
         givenStage = (GIVEN) executor.addStage( stageClass );
@@ -33,10 +24,6 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
     }
 
     public Scenario( Class<GIVEN> givenClass, Class<WHEN> whenClass, Class<THEN> thenClass ) {
-        setupStages( givenClass, whenClass, thenClass );
-    }
-
-    private void setupStages( Class<GIVEN> givenClass, Class<WHEN> whenClass, Class<THEN> thenClass ) {
         givenStage = executor.addStage( givenClass );
         whenStage = executor.addStage( whenClass );
         thenStage = executor.addStage( thenClass );
