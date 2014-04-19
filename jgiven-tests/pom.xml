@@ -47,6 +47,13 @@
         <groupId>${project.groupId}</groupId>
         <artifactId>jgiven-maven-plugin</artifactId>
         <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

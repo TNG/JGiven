@@ -10,7 +10,7 @@ import com.tngtech.jgiven.report.html.HtmlReportGenerator;
 
 /**
  * @goal report
- * @phase test
+ * @phase verify
  */
 public class JGivenReportMojo extends AbstractMojo {
 
