@@ -155,9 +155,9 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
             { "Foo", "Foo" },
             { 123, "123" },
             { true, "true" },
-            { new String[] { "a" }, "[a]" },
-            { new String[] {}, "[]" },
-            { new String[][] { { "a", "b" }, { "c" } }, "[[a, b], [c]]" },
+            { new String[] { "a" }, "a" },
+            { new String[] {}, "" },
+            { new String[][] { { "a", "b" }, { "c" } }, "a, b, c" },
         };
     }
 

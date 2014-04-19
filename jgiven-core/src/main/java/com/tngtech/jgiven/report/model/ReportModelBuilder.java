@@ -17,6 +17,7 @@ import com.google.common.collect.Lists;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.ParameterNamesNotFoundException;
 import com.thoughtworks.paranamer.Paranamer;
+import com.tngtech.jgiven.annotation.CasesAsTable;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Formatf;
@@ -36,7 +37,7 @@ public class ReportModelBuilder implements ScenarioListener {
 
     private static final Paranamer paranamer = new BytecodeReadingParanamer();
 
-    private ScenarioModel lastScenarioModel;
+    private ScenarioModel currentScenarioModel;
     private ScenarioCaseModel currentScenarioCase;
     private ReportModel scenarioCollectionModel;
 
@@ -69,18 +70,18 @@ public class ReportModelBuilder implements ScenarioListener {
         if( !scenarioCollectionModel.scenarios.isEmpty() ) {
             ScenarioModel scenarioModel = scenarioCollectionModel.scenarios.get( scenarioCollectionModel.scenarios.size() - 1 );
             if( scenarioModel.description.equals( readableDescription ) ) {
-                lastScenarioModel = scenarioModel;
+                currentScenarioModel = scenarioModel;
             }
         }
 
-        if( lastScenarioModel == null ) {
-            lastScenarioModel = new ScenarioModel();
-            lastScenarioModel.className = scenarioCollectionModel.className;
-            scenarioCollectionModel.scenarios.add( lastScenarioModel );
+        if( currentScenarioModel == null ) {
+            currentScenarioModel = new ScenarioModel();
+            currentScenarioModel.className = scenarioCollectionModel.className;
+            scenarioCollectionModel.scenarios.add( currentScenarioModel );
         }
 
-        lastScenarioModel.addCase( currentScenarioCase );
-        lastScenarioModel.description = readableDescription;
+        currentScenarioModel.addCase( currentScenarioCase );
+        currentScenarioModel.description = readableDescription;
     }
 
     private String camelCaseToReadableText( String camelCase ) {
@@ -169,7 +170,7 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public void setMethodName( String methodName ) {
-        lastScenarioModel.testMethodName = methodName;
+        currentScenarioModel.testMethodName = methodName;
     }
 
     public void setArguments( List<String> arguments ) {
@@ -177,7 +178,7 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public void setParameterNames( List<String> parameterNames ) {
-        lastScenarioModel.parameterNames = parameterNames;
+        currentScenarioModel.parameterNames = parameterNames;
     }
 
     public void setClassName( String name ) {
@@ -250,6 +251,10 @@ public class ReportModelBuilder implements ScenarioListener {
 
         scenarioStarted( scenarioDescription );
 
+        if( method.isAnnotationPresent( CasesAsTable.class ) ) {
+            currentScenarioModel.setCasesAsTable( true );
+        }
+
         if( currentScenarioCase.caseNr == 1 ) {
             addTags( method.getDeclaringClass().getAnnotations() );
             addTags( method.getAnnotations() );
@@ -258,7 +263,7 @@ public class ReportModelBuilder implements ScenarioListener {
 
     private void addTags( Annotation[] annotations ) {
         for( Annotation annotation : annotations ) {
-            this.lastScenarioModel.tags.addAll( toTags( annotation ) );
+            this.currentScenarioModel.tags.addAll( toTags( annotation ) );
         }
     }
 

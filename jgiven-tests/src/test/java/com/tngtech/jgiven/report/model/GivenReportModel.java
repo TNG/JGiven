@@ -1,6 +1,9 @@
 package com.tngtech.jgiven.report.model;
 
+import static java.util.Arrays.asList;
+
 import java.util.Arrays;
+import java.util.List;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
@@ -9,6 +12,10 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     @ProvidedScenarioState
     protected ReportModel reportModel;
+
+    public SELF a_report_model_with_one_scenario() {
+        return a_report_model();
+    }
 
     public SELF a_report_model() {
         reportModel = new ReportModel();
@@ -25,12 +32,23 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         scenarioModel.description = "something should happen";
         scenarioModel.testMethodName = testMethodName;
 
-        ScenarioCaseModel scenarioCaseModel = new ScenarioCaseModel();
-        scenarioCaseModel.addStep( "something_happens", Arrays.asList( new Word( "something" ), new Word( "happens" ) ), false );
-
-        scenarioModel.addCase( scenarioCaseModel );
+        addCase( scenarioModel );
 
         reportModel.scenarios.add( scenarioModel );
+    }
+
+    private void addCase( ScenarioModel scenarioModel ) {
+        ScenarioCaseModel scenarioCaseModel = new ScenarioCaseModel();
+        scenarioModel.addCase( scenarioCaseModel );
+        int i = 0;
+        for( String param : scenarioModel.parameterNames ) {
+            scenarioCaseModel.addArguments( "arg" + scenarioCaseModel.caseNr + i++ );
+        }
+        scenarioCaseModel.addStep( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ), false );
+        if( !scenarioCaseModel.arguments.isEmpty() ) {
+            scenarioCaseModel.addStep( "something_happens", asList( Word.introWord( "when" ),
+                Word.argWord( scenarioCaseModel.arguments.get( 0 ) ) ), false );
+        }
     }
 
     public SELF a_report_model_with_name( String name ) {
@@ -51,6 +69,31 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public ReportModel getReportModel() {
         return reportModel;
+    }
+
+    public SELF the_scenario_is_annotated_with_CasesAsTables() {
+        reportModel.getLastScenarioModel().setCasesAsTable( true );
+        return self();
+    }
+
+    public SELF the_scenario_has_parameters( String... params ) {
+        reportModel.getLastScenarioModel().addParameterNames( params );
+        return self();
+    }
+
+    public SELF the_scenario_has_$_cases( int ncases ) {
+        reportModel.getLastScenarioModel().clearCases();
+        for( int i = 0; i < ncases; i++ ) {
+            addCase( reportModel.getLastScenarioModel() );
+        }
+        return self();
+    }
+
+    public SELF case_$_has_arguments( int ncase, String... args ) {
+        List<String> arguments = reportModel.getLastScenarioModel().getScenarioCases().get( ncase - 1 ).arguments;
+        arguments.clear();
+        arguments.addAll( Arrays.asList( args ) );
+        return self();
     }
 
     public SELF the_first_scenario_has_tag( String name ) {

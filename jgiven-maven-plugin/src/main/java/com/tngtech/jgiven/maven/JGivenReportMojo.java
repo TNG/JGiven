@@ -9,7 +9,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import com.tngtech.jgiven.report.html.HtmlReportGenerator;
 
 /**
- * @goal test
+ * @goal report
  * @phase test
  */
 public class JGivenReportMojo extends AbstractMojo {

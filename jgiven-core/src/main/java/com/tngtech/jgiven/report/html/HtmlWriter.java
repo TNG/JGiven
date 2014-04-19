@@ -10,24 +10,18 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
-import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.StepModel;
-import com.tngtech.jgiven.report.model.Tag;
-import com.tngtech.jgiven.report.model.Word;
 
 public class HtmlWriter extends ReportModelVisitor {
     protected final PrintWriter writer;
     protected final HtmlWriterUtils utils;
-    protected ScenarioModel scenarioModel;
-    private ScenarioCaseModel scenarioCase;
 
     public HtmlWriter( PrintWriter writer ) {
         this.writer = writer;
@@ -55,14 +49,37 @@ public class HtmlWriter extends ReportModelVisitor {
 
     }
 
-    public static String toString( ScenarioModel model ) throws UnsupportedEncodingException {
+    public static String toString( final ScenarioModel model ) {
+        return toString( new Function<PrintWriter, Void>() {
+            @Override
+            public Void apply( PrintWriter input ) {
+                new HtmlWriter( input ).write( model );
+                return null;
+            }
+        } );
+    }
+
+    public static String toString( final ReportModel model ) {
+        return toString( new Function<PrintWriter, Void>() {
+            @Override
+            public Void apply( PrintWriter input ) {
+                new HtmlWriter( input ).write( model );
+                return null;
+            }
+        } );
+    }
+
+    public static String toString( Function<PrintWriter, Void> writeFunction ) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        PrintWriter printWriter = new PrintWriter( new OutputStreamWriter( stream, Charsets.UTF_8.name() ), false );
+        PrintWriter printWriter = null;
 
         try {
-            new HtmlWriter( printWriter ).write( model );
+            printWriter = new PrintWriter( new OutputStreamWriter( stream, Charsets.UTF_8.name() ), false );
+            writeFunction.apply( printWriter );
             printWriter.flush();
             return stream.toString( Charsets.UTF_8.name() );
+        } catch( UnsupportedEncodingException e ) {
+            throw Throwables.propagate( e );
         } finally {
             ResourceUtil.close( printWriter );
         }
@@ -112,90 +129,13 @@ public class HtmlWriter extends ReportModelVisitor {
 
     @Override
     public void visit( ScenarioModel scenarioModel ) {
-        this.scenarioModel = scenarioModel;
-
-        writer.print( format( "<div class='scenario'><h3>%s", WordUtil.capitalize( scenarioModel.description ) ) );
-        for( Tag tag : scenarioModel.tags ) {
-            printTag( tag );
-        }
-        writer.println( "</h3>" );
-        writer.println( "<div class='scenario-content'>" );
-    }
-
-    private void printTag( Tag tag ) {
-        writer.print( format( "<div class='tag tag-%s'><a href='%s'>%s</a></div>",
-            tag.getName(), FrameBasedHtmlReportGenerator.tagToFilename( tag ), tag.toString() ) );
-    }
-
-    @Override
-    public void visitEnd( ScenarioModel scenarioModel ) {
-        writer.println( "</div> <!-- scenario-content -->" );
-
-        writer
-            .println( format( "<div class='scenario-footer'><a href='%s.html'>%s</a></div>", scenarioModel.className,
-                scenarioModel.className ) );
-        writer.println( "</div>" );
-    }
-
-    @Override
-    public void visit( ScenarioCaseModel scenarioCase ) {
-        writer.println( format( "<div class='case %sCase'>", scenarioCase.success ? "passed" : "failed" ) );
-        this.scenarioCase = scenarioCase;
-        if( !scenarioCase.arguments.isEmpty() ) {
-            writer.print( format( "<h4>Case %d: ", scenarioCase.caseNr ) );
-
-            for( int i = 0; i < scenarioCase.arguments.size(); i++ ) {
-                if( scenarioModel.parameterNames.size() > i ) {
-                    writer.print( scenarioModel.parameterNames.get( i ) + " = " );
-                }
-
-                writer.print( scenarioCase.arguments.get( i ) );
-
-                if( i < scenarioCase.arguments.size() - 1 ) {
-                    writer.print( ", " );
-                }
-            }
-            writer.println( "</h4>" );
-        }
-        writer.println( "<ul class='steps'>" );
-    }
-
-    @Override
-    public void visitEnd( ScenarioCaseModel scenarioCase ) {
-        if( scenarioCase.success ) {
-            writer.println( "<div class='passed'>Passed</div>" );
+        ScenarioHtmlWriter scenarioHtmlWriter;
+        if( scenarioModel.isCasesAsTable() ) {
+            scenarioHtmlWriter = new DataTableScenarioHtmlWriter( writer );
         } else {
-            writer.println( "<div class='failed'>Failed: " + scenarioCase.errorMessage + "</div>" );
+            scenarioHtmlWriter = new MultiCaseScenarioHtmlWriter( writer );
         }
-        writer.println( "</ul>" );
-        writer.println( "</div><!-- case -->" );
-    }
-
-    @Override
-    public void visit( StepModel stepModel ) {
-        writer.print( "<li>" );
-
-        boolean firstWord = true;
-        for( Word word : stepModel.words ) {
-            if( !firstWord ) {
-                writer.print( ' ' );
-            }
-            String text = word.value;
-
-            if( firstWord && word.isIntroWord ) {
-                writer.print( format( "<span class='introWord'>%s</span>", WordUtil.capitalize( text ) ) );
-            } else if( word.isArg ) {
-                if( scenarioCase.arguments.contains( word.value ) ) {
-                    writer.print( format( "<span class='caseArgument'>%s</span>", text ) );
-                } else {
-                    writer.print( format( "<span class='argument'>%s</span>", text ) );
-                }
-            } else {
-                writer.print( text );
-            }
-            firstWord = false;
-        }
-        writer.println( "</li>" );
+        scenarioModel.accept( scenarioHtmlWriter );
     }
 
     private static PrintWriter getPrintWriter( File file ) {

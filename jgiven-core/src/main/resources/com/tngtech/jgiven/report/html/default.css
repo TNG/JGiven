@@ -59,7 +59,7 @@ h2, h2 a {
 }
 
 h1 {
-  background: #444444;
+  background: #444;
   padding-top:30px;
   padding-bottom:23px;
   margin-bottom: 25px;
@@ -238,18 +238,21 @@ h1 {
   font-weight:bold;
   font-size: 16px;
   color: rgba(0, 0, 0, 0.7);
+  text-shadow: none;
+}
+
+.topRight {
+  position: absolute;
+  right:1em;
+  top:1em;
 }
 
 .passed, .notImplementedYetBadge, .partiallyPassed {
-  border: lightgreen solid 3px;
   border-radius: 3px;
   display:inline;
   color: rgba(0, 0, 0, 0.6);
   font-weight:bold;
   font-size: 12px;
-  position: absolute;
-  right:1em;
-  top:1em;
   padding-left:1em;
   padding-right:1em;
 }
@@ -325,7 +328,16 @@ ul.steps li {
   color: darkmagenta;
 }
 
-.case h4 {
+.multiline {
+  font-family: monospace;
+  border: 1px solid lightgray;
+  background-color: #eee;
+  display: inline-table;
+  white-space: pre;
+  margin: 5px;  
+}
+
+.scenario h4 {
   color: #000;
   font-weight: normal;
   font-size: 15px;
@@ -336,6 +348,7 @@ ul.steps li {
   margin-top: 0px;
   text-shadow: 1px 1px 1px #eee;
 }
+
 .scenario h5 {
   color: #333;
   margin-bottom: 0;
@@ -343,6 +356,33 @@ ul.steps li {
   padding-left:10px
   font-size: 18px;
   font-weight: normal;
+}
+
+.data-table {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 20px;
+  border: 1px solid lightgray;
+  border-collapse:collapse;
+  box-shadow: 1px 1px 2px lightgray;
+}
+
+.data-table th, .data-table td {
+  border: 1px solid lightgray;
+}
+
+.data-table td {
+  padding: 10px;
+}
+
+.data-table th {
+  background-color: #444;
+  color: white;
+  padding: 8px;
+}
+
+.data-table tr:nth-child(odd) {
+  background-color: #eee;
 }
 
 .scenario-footer {

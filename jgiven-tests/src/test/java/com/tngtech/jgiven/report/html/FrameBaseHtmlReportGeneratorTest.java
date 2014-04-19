@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.jgiven.annotation.CasesAsTable;
 import com.tngtech.jgiven.junit.ScenarioTest;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.tags.FeatureHtmlReport;
@@ -24,8 +25,9 @@ public class FrameBaseHtmlReportGeneratorTest extends ScenarioTest<GivenJsonRepo
     }
 
     @Test
-    @UseDataProvider( "testNumbers" )
     @Issue( "#1" )
+    @CasesAsTable
+    @UseDataProvider( "testNumbers" )
     public void the_frame_based_reporter_generates_one_file_for_each_test_class( int n ) throws IOException {
         given().$_report_models( n )
             .and().the_reports_exist_as_JSON_files();

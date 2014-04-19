@@ -13,7 +13,7 @@ public class ScenarioModel {
     public String description;
     public Set<Tag> tags = Sets.newLinkedHashSet();
     public List<String> parameterNames = Lists.newArrayList();
-
+    private boolean casesAsTable;
     private final List<ScenarioCaseModel> scenarioCases = Lists.newArrayList();
 
     public void accept( ReportModelVisitor visitor ) {
@@ -75,4 +75,15 @@ public class ScenarioModel {
         return Lists.newArrayList( tags );
     }
 
+    public boolean isCasesAsTable() {
+        return casesAsTable;
+    }
+
+    public void setCasesAsTable( boolean casesAsTable ) {
+        this.casesAsTable = casesAsTable;
+    }
+
+    public void clearCases() {
+        scenarioCases.clear();
+    }
 }

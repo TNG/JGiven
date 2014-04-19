@@ -10,6 +10,7 @@ import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.BeforeScenario;
+import com.tngtech.jgiven.annotation.CasesAsTable;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.annotation.ScenarioState;
@@ -159,6 +160,19 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         public void after() {
             throw new IllegalStateException( "AfterRule" );
         }
+    }
+
+    @Test
+    @CasesAsTable
+    public void CasesAsTable_annotation_is_evaluated() {
+        given().something();
+        assertThat( getScenario().getModel().getLastScenarioModel().isCasesAsTable() ).isTrue();
+    }
+
+    @Test
+    public void CasesAsTable_annotation_is_false_by_default() {
+        given().something();
+        assertThat( getScenario().getModel().getLastScenarioModel().isCasesAsTable() ).isFalse();
     }
 
 }

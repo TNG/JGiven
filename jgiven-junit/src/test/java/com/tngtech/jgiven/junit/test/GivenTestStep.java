@@ -14,8 +14,13 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     @ProvidedScenarioState
     int value2;
 
-    public void some_integer_value( int someIntValue ) {
+    public GivenTestStep some_integer_value( int someIntValue ) {
         this.someIntValue = someIntValue;
+        return self();
+    }
+
+    public void some_boolean_value( boolean someBooleanValue ) {
+
     }
 
     public void $d_and_$d( int value1, int value2 ) {

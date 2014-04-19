@@ -6,11 +6,11 @@
       <plugin>
         <groupId>${project.groupId}</groupId>
         <artifactId>jgiven-maven-plugin</artifactId>
-        <version>0.1.8-SNAPSHOT</version>
+        <version>${project.version}</version>
         <executions>
           <execution>
             <goals>
-              <goal>test</goal>
+              <goal>report</goal>
             </goals>
           </execution>
         </executions>

@@ -1,19 +1,19 @@
 package com.tngtech.jgiven.report.text;
 
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.PrintStream;
 import java.util.List;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.Word;
 
-public class ExperimentalTablePlainTextReporter extends PlainTextReporter {
+public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
 
-    public ExperimentalTablePlainTextReporter( OutputStream outStream ) throws UnsupportedEncodingException {
-        super( outStream, false );
+    public DataTablePlainTextScenarioWriter( PrintStream stream, boolean withColor ) {
+        super( stream, withColor );
     }
 
     @Override
@@ -39,19 +39,31 @@ public class ExperimentalTablePlainTextReporter extends PlainTextReporter {
     protected void printCaseLine( ScenarioCaseModel scenarioCase ) {}
 
     @Override
+    public void visitEnd( ScenarioCaseModel scenarioCase ) {
+        if( scenarioCase.caseNr == 1 ) {
+            super.visitEnd( scenarioCase );
+        }
+    }
+
+    @Override
     public void visitEnd( ScenarioModel scenarioModel ) {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder formatBuilder = new StringBuilder();
+        StringBuilder lineBuilder = new StringBuilder();
         List<Integer> columnWidths = getMaxColumnWidth( scenarioModel );
         for( int width : columnWidths ) {
-            builder.append( "| %" + ( width + 2 ) + "s " );
+            formatBuilder.append( "| %" + width + "s " );
+            lineBuilder.append( "+" );
+            lineBuilder.append( Strings.repeat( "-", ( width + 2 ) ) );
         }
-        builder.append( "|" );
+        formatBuilder.append( "|" );
+        lineBuilder.append( "+" );
 
-        String formatString = builder.toString();
-        stream.println( "Examples:\n" );
-        stream.println( "  " + String.format( formatString, scenarioModel.parameterNames.toArray() ) );
+        String formatString = formatBuilder.toString();
+        stream.println( "  Cases:\n" );
+        stream.println( "    " + String.format( formatString, scenarioModel.parameterNames.toArray() ) );
+        stream.println( "    " + lineBuilder );
         for( ScenarioCaseModel c : scenarioModel.getScenarioCases() ) {
-            stream.println( "  " + String.format( formatString, c.arguments.toArray() ) );
+            stream.println( "    " + String.format( formatString, c.arguments.toArray() ) );
         }
     }
 
