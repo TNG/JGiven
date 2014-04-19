@@ -71,4 +71,8 @@ public class ScenarioModel {
         return scenarioCases;
     }
 
+    public List<Tag> getTags() {
+        return Lists.newArrayList( tags );
+    }
+
 }
