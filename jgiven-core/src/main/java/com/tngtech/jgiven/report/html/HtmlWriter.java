@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
@@ -82,15 +83,23 @@ public class HtmlWriter extends ReportModelVisitor {
         writer.println( "<div class='testcase'>" );
         writer.println( "<div class='testcase-header'>" );
 
-        String packageName = "&nbsp;";
+        String packageName = "";
         String className = reportModel.className;
         if( reportModel.className.contains( "." ) ) {
             packageName = Files.getNameWithoutExtension( reportModel.className );
             className = Files.getFileExtension( reportModel.className );
         }
 
-        writer.println( format( "<div class='packagename'>%s</div>", packageName ) );
+        if( !Strings.isNullOrEmpty( packageName ) ) {
+            writer.println( format( "<div class='packagename'>%s</div>", packageName ) );
+        }
+
         writer.println( format( "<h2>%s</h2>", className ) );
+
+        if( !Strings.isNullOrEmpty( reportModel.description ) ) {
+            writer.println( format( "<div class='description'>%s</div>", reportModel.description ) );
+        }
+
         writer.println( "</div>" );
         writer.println( "<div class='testcase-content'>" );
     }
@@ -110,15 +119,21 @@ public class HtmlWriter extends ReportModelVisitor {
             printTag( tag );
         }
         writer.println( "</h3>" );
+        writer.println( "<div class='scenario-content'>" );
     }
 
     private void printTag( Tag tag ) {
         writer.print( format( "<div class='tag tag-%s'><a href='%s'>%s</a></div>",
-            tag.name, FrameBasedHtmlReportGenerator.tagToFilename( tag ), tag.toString() ) );
+            tag.getName(), FrameBasedHtmlReportGenerator.tagToFilename( tag ), tag.toString() ) );
     }
 
     @Override
     public void visitEnd( ScenarioModel scenarioModel ) {
+        writer.println( "</div> <!-- scenario-content -->" );
+
+        writer
+            .println( format( "<div class='scenario-footer'><a href='%s.html'>%s</a></div>", scenarioModel.className,
+                scenarioModel.className ) );
         writer.println( "</div>" );
     }
 

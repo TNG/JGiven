@@ -5,11 +5,8 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.tngtech.jgiven.annotation.IsTag;
 
-/**
- * Tags Scenarios with Story numbers
- */
+@IsTag( type = "Feature", value = "German Scenarios", description = "Scenarios can be written in German" )
 @Retention( RetentionPolicy.RUNTIME )
-@IsTag
-public @interface Story {
-    String[] value();
+public @interface FeatureGerman {
+
 }

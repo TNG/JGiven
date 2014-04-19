@@ -6,13 +6,13 @@ import org.junit.Test;
 
 import com.tngtech.jgiven.junit.ScenarioTest;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
-import com.tngtech.jgiven.tags.Feature;
-import com.tngtech.jgiven.tags.FeatureEnum;
+import com.tngtech.jgiven.tags.FeatureHtmlReport;
 
+@FeatureHtmlReport
 public class HtmlReportGeneratorTest extends ScenarioTest<GivenJsonReports<?>, WhenHtmlReportGenerator, ThenHtmlReportGenerator> {
 
     @Test
-    @Feature( FeatureEnum.HtmlReport )
+    @FeatureHtmlReport
     public void the_HTML_report_generator_works_as_expected() throws IOException {
         given().a_report_model()
             .and().the_reports_exist_as_JSON_files();

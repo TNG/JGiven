@@ -4,7 +4,9 @@ import org.junit.Test;
 
 import com.tngtech.jgiven.junit.de.DeSzenarioTest.DeutscheTestSchritte;
 import com.tngtech.jgiven.lang.de.Schritte;
+import com.tngtech.jgiven.tags.FeatureGerman;
 
+@FeatureGerman
 public class DeSzenarioTest extends SzenarioTest<DeutscheTestSchritte, DeutscheTestSchritte, DeutscheTestSchritte> {
 
     @Test

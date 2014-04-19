@@ -1,18 +1,29 @@
 package com.tngtech.jgiven.report.model;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 
 /**
  * A tag represents a Java annotation of a scenario-test
  */
 public class Tag {
-    public String name;
+    private final String name;
 
     /**
+     * An optional value 
      * Guaranteed to be either of type String or of type String[].
-     * Can be null.
      */
-    public Object value;
+    private Object value;
+
+    /** 
+     * An optional description
+     */
+    private String description;
+
+    /**
+     * Whether the type should be prepended in the report
+     */
+    private boolean prependType;
 
     public Tag( String name ) {
         this.name = name;
@@ -23,14 +34,64 @@ public class Tag {
         this.value = value;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public boolean isPrependType() {
+        return prependType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription( String description ) {
+        this.description = description;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public void setValue( Object value ) {
+        if( value != null && !( value instanceof String ) ) {
+            if( !( value.getClass().isArray() && value.getClass().getComponentType().isAssignableFrom( String.class ) ) ) {
+                throw new IllegalArgumentException( "value is neither null, String nor String[]" );
+            }
+        }
+        this.value = value;
+    }
+
+    public void setPrependType( boolean prependType ) {
+        this.prependType = prependType;
+    }
+
     @Override
     public String toString() {
-        return name + ( ( value != null ) ? "-" + value : "" );
+        if( getValue() != null ) {
+            String valueString = getValueString();
+            if( prependType ) {
+                return getName() + "-" + valueString;
+            }
+            return valueString;
+        }
+        return getName();
+    }
+
+    public String getValueString() {
+        if( getValue() == null ) {
+            return null;
+        }
+        if( getValue().getClass().isArray() ) {
+            return Joiner.on( ", " ).join( (String[]) getValue() );
+        }
+        return getValue().toString();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( name, value );
+        return Objects.hashCode( getName(), getValue() );
     }
 
     @Override
@@ -42,8 +103,8 @@ public class Tag {
         if( getClass() != obj.getClass() )
             return false;
         Tag other = (Tag) obj;
-        return Objects.equal( name, other.name )
-                && Objects.equal( value, other.value );
+        return Objects.equal( getName(), other.getName() )
+                && Objects.equal( getValue(), other.getValue() );
     }
 
 }

@@ -21,13 +21,6 @@ public class StepModel {
         return Joiner.on( ' ' ).join( words );
     }
 
-    public StepModel addWords( String... strings ) {
-        for( String string : strings ) {
-            words.add( new Word( string ) );
-        }
-        return this;
-    }
-
     public StepModel addWords( Word... words ) {
         this.words.addAll( Arrays.asList( words ) );
         return this;

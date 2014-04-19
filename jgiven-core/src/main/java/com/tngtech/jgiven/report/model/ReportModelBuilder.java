@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.assertj.core.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -268,7 +269,26 @@ public class ReportModelBuilder implements ScenarioListener {
             return Collections.emptyList();
         }
 
-        Tag tag = new Tag( annotationType.getSimpleName() );
+        String type = annotationType.getSimpleName();
+
+        if( !Strings.isNullOrEmpty( isTag.type() ) ) {
+            type = isTag.type();
+        }
+
+        Tag tag = new Tag( type );
+
+        if( isTag.prependType() ) {
+            tag.setPrependType( true );
+        }
+
+        if( isTag.description() != null ) {
+            tag.setDescription( isTag.description() );
+        }
+
+        if( !Strings.isNullOrEmpty( isTag.value() ) ) {
+            tag.setValue( isTag.value() );
+        }
+
         if( isTag.ignoreValue() ) {
             return Arrays.asList( tag );
         }
@@ -284,11 +304,11 @@ public class ReportModelBuilder implements ScenarioListener {
                         stringArray[i] = array[i] + "";
                     }
                     if( isTag.explodeArray() ) {
-                        return getExplodedTags( annotationType.getSimpleName(), stringArray );
+                        return getExplodedTags( tag, stringArray );
                     }
-                    tag.value = stringArray;
+                    tag.setValue( stringArray );
                 } else {
-                    tag.value = value + "";
+                    tag.setValue( value + "" );
                 }
             }
         } catch( NoSuchMethodException ignore ) {
@@ -300,10 +320,13 @@ public class ReportModelBuilder implements ScenarioListener {
         return Arrays.asList( tag );
     }
 
-    private static List<Tag> getExplodedTags( String tagName, String[] stringArray ) {
+    private static List<Tag> getExplodedTags( Tag originalTag, String[] stringArray ) {
         List<Tag> result = Lists.newArrayList();
         for( String singleValue : stringArray ) {
-            result.add( new Tag( tagName, singleValue ) );
+            Tag newTag = new Tag( originalTag.getName(), singleValue );
+            newTag.setDescription( originalTag.getDescription() );
+            newTag.setPrependType( originalTag.isPrependType() );
+            result.add( newTag );
         }
         return result;
     }

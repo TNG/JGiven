@@ -12,6 +12,11 @@ public class ReportModel {
      */
     public String className;
 
+    /**
+     * An optional description of the test class
+     */
+    public String description;
+
     public List<ScenarioModel> scenarios = Lists.newArrayList();
 
     public void accept( ReportModelVisitor visitor ) {

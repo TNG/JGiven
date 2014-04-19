@@ -4,6 +4,9 @@ import java.io.File;
 
 import com.tngtech.jgiven.report.model.ReportModel;
 
+/**
+ * Writes all scenarios into a single file.
+ */
 public class SingleFileHtmlReportGenerator extends AbstractHtmlReportGenerator {
 
     @Override

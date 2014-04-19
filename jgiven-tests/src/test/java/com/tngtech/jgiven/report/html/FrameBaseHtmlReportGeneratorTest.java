@@ -10,11 +10,12 @@ import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.junit.ScenarioTest;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
-import com.tngtech.jgiven.tags.Feature;
-import com.tngtech.jgiven.tags.FeatureEnum;
-import com.tngtech.jgiven.tags.Story;
+import com.tngtech.jgiven.tags.FeatureHtmlReport;
+import com.tngtech.jgiven.tags.FeatureTags;
+import com.tngtech.jgiven.tags.Issue;
 
 @RunWith( DataProviderRunner.class )
+@FeatureHtmlReport
 public class FrameBaseHtmlReportGeneratorTest extends ScenarioTest<GivenJsonReports<?>, WhenHtmlReportGenerator, ThenHtmlReportGenerator> {
 
     @DataProvider
@@ -24,8 +25,7 @@ public class FrameBaseHtmlReportGeneratorTest extends ScenarioTest<GivenJsonRepo
 
     @Test
     @UseDataProvider( "testNumbers" )
-    @Story( "JGIVEN-1" )
-    @Feature( FeatureEnum.HtmlReport )
+    @Issue( "#1" )
     public void the_frame_based_reporter_generates_one_file_for_each_test_class( int n ) throws IOException {
         given().$_report_models( n )
             .and().the_reports_exist_as_JSON_files();
@@ -37,7 +37,7 @@ public class FrameBaseHtmlReportGeneratorTest extends ScenarioTest<GivenJsonRepo
     }
 
     @Test
-    @Feature( { FeatureEnum.Tags, FeatureEnum.HtmlReport } )
+    @FeatureTags
     public void the_frame_based_reporter_generates_one_file_for_each_tag() throws IOException {
         given().a_report_model()
             .and().the_first_scenario_has_tag( "TestTag" )
@@ -49,7 +49,7 @@ public class FrameBaseHtmlReportGeneratorTest extends ScenarioTest<GivenJsonRepo
     }
 
     @Test
-    @Feature( { FeatureEnum.Tags, FeatureEnum.HtmlReport } )
+    @FeatureTags
     public void the_frame_based_reporter_generates_one_file_for_each_tag_value() throws IOException {
         given().a_report_model()
             .and().the_report_has_$_scenarios( 2 )

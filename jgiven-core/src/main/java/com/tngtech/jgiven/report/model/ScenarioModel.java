@@ -2,14 +2,16 @@ package com.tngtech.jgiven.report.model;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class ScenarioModel {
     public String className;
     public String testMethodName;
     public String description;
-    public List<Tag> tags = Lists.newArrayList();
+    public Set<Tag> tags = Sets.newLinkedHashSet();
     public List<String> parameterNames = Lists.newArrayList();
 
     private final List<ScenarioCaseModel> scenarioCases = Lists.newArrayList();

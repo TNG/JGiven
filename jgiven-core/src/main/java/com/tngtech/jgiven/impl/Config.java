@@ -25,8 +25,13 @@ public class Config {
     public Optional<File> getReportDir() {
         String reportDirName = System.getProperty( "jgiven.report.dir" );
         if( reportDirName == null ) {
-            reportDirName = "jgiven-reports";
-            log.info( "jgiven.report.dir not set, using default value jgiven-reports" );
+            if( System.getProperty( "surefire.test.class.path" ) != null ) {
+                reportDirName = "target/jgiven-reports/json";
+                log.info( "jgiven.report.dir not set, but detected surefire plugin, generating reports to " + reportDirName );
+            } else {
+                reportDirName = "jgiven-reports";
+                log.info( "jgiven.report.dir not set, using default value jgiven-reports" );
+            }
         }
 
         File reportDir = new File( reportDirName );
@@ -41,7 +46,7 @@ public class Config {
     }
 
     public boolean textColorEnabled() {
-        return System.getProperty( "jgiven.report.text.color", "true" ).equalsIgnoreCase( "true" );
+        return System.getProperty( "jgiven.report.text.color", "false" ).equalsIgnoreCase( "true" );
     }
 
     public boolean textReport() {

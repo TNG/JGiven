@@ -94,10 +94,6 @@ h1 {
   text-shadow: 1px 1px 1px white;
 }
 
-.scenario {    
-    /* background-color: #eee; */ 
-}
-
 .testcase {
     padding: 0;
 }
@@ -109,6 +105,11 @@ h1 {
 .testcase-header {
   background-color: #f0f0f0;
   border-bottom: 1px solid lightgray;
+}
+
+.testcase-header .description {
+  font-size: 18px;
+  padding-top:10px;
 }
 
 .testcase > ul {
@@ -139,32 +140,38 @@ h1 {
 }
 
 .scenario {
-  padding: 0px;
   margin: 0px;
-  margin-left:0px;
-  margin-right:10px;
-  padding-left: 0px;
-  /*
-  border: 1px solid #d1d1d1;
+  padding: 0px;
+  border: 1px solid lightgray;
   border-radius: 5px;
-  box-shadow: 2px 2px 5px gray;
-  */
+  box-shadow: 1px 1px 2px lightgray;
   margin-bottom:30px;
+  background-color: white;
+  
+}
+
+.scenario-content {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 0px;
+  background-color: white;
 }
 
 .scenario h3 {
   margin-top: 0px;
-  font-weight: bold;
-  font-size: 16px;
-  color: #222;
+  font-weight: normal;
+  font-size: 18px;
+  color: #000;
   margin-top: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 2px;
   margin-left:0px;
   overflow:hidden;
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   /*text-shadow: 1px 1px 1px lightgray;*/
-/*  border-bottom: 1px solid lightgray;/*
+/*  border-bottom: 1px solid lightgray;*/
   padding-bottom: 5px;
-  padding-top:0;
 }
 
 .case {
@@ -178,8 +185,10 @@ h1 {
 }
 
 .passedCase ul.steps  {
-  background-color: #EFE;
+  background-color: #f5fff5;
+/* 
   border: 1px solid #D4EFD4;
+  */
 }
 
 .failedCase ul.steps  {
@@ -292,9 +301,9 @@ ul.steps {
   margin-bottom: 15px;
   padding: 10px;
   position:relative;
-  border-radius: 3px;
   text-shadow: 1px 1px 1px white;
-  
+  border-top: 1px lightgray solid;
+  font-size:16px;
 }
 
 ul.steps li {
@@ -334,6 +343,23 @@ ul.steps li {
   padding-left:10px
   font-size: 18px;
   font-weight: normal;
+}
+
+.scenario-footer {
+  text-align:right;
+  padding:0;
+  padding-right:3px;
+  padding-bottom:3px;
+  margin:0;
+}
+
+.scenario-footer a {
+  text-decoration: none;
+  color: #888;
+  text-shadow: 1px 1px 1px #eee;
+  font-size: 14px;
+  padding: 5px;
+  border-top: 1px solid #lightgray;
 }
 
 .notImplementedYet {

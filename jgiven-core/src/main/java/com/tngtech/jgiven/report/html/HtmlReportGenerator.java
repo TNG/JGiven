@@ -47,7 +47,7 @@ public class HtmlReportGenerator {
         }
 
         new FrameBasedHtmlReportGenerator().generate( toDir, sourceDir );
-        new SingleFileHtmlReportGenerator().generate( toDir, "alltestcases.html", sourceDir );
+        new SingleFileHtmlReportGenerator().generate( toDir, "allscenarios.html", sourceDir );
 
         if( customCssFile != null ) {
             if( !customCssFile.canRead() ) {

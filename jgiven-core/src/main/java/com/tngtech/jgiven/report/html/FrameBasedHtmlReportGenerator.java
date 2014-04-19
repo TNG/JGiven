@@ -114,11 +114,12 @@ public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
     private void writeTagFile( Tag tag, List<ScenarioModel> value ) {
         try {
             ReportModel reportModel = new ReportModel();
-            reportModel.className = tag.name;
-            if( tag.value != null ) {
-                reportModel.className += "." + tag.value;
+            reportModel.className = tag.getName();
+            if( tag.getValue() != null ) {
+                reportModel.className += "." + tag.getValueString();
             }
             reportModel.scenarios = value;
+            reportModel.description = tag.getDescription();
 
             String fileName = tagToFilename( tag );
             File targetFile = new File( toDir, fileName );
@@ -130,17 +131,17 @@ public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
                 tag.toString() ) );
 
         } catch( Exception e ) {
-            log.error( "Error while trying to write HTML file for tag " + tag.name );
+            log.error( "Error while trying to write HTML file for tag " + tag.getName() );
         }
     }
 
     static String tagToFilename( Tag tag ) {
-        String fileName = escape( tag.name );
-        if( tag.value != null ) {
-            if( tag.getClass().isArray() ) {
-                fileName += "-" + escape( Joiner.on( '-' ).join( (String[]) tag.value ) );
+        String fileName = escape( tag.getName() );
+        if( tag.getValue() != null ) {
+            if( tag.getValue().getClass().isArray() ) {
+                fileName += "-" + escape( Joiner.on( '-' ).join( (String[]) tag.getValue() ) );
             } else {
-                fileName += "-" + escape( (String) tag.value );
+                fileName += "-" + escape( (String) tag.getValue() );
             }
         }
         return fileName.substring( 0, Math.min( fileName.length(), 255 ) ) + ".html";

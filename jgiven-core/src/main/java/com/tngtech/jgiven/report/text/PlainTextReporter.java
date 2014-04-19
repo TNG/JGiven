@@ -28,7 +28,7 @@ import com.tngtech.jgiven.report.model.Word;
 
 public class PlainTextReporter extends ReportModelVisitor {
     private static final String INDENT = "   ";
-    private static final boolean COLOR_DISABLED = Config.config().textColorEnabled();
+    private static final boolean COLOR_ENABLED = Config.config().textColorEnabled();
 
     protected final PrintStream stream;
 
@@ -45,7 +45,7 @@ public class PlainTextReporter extends ReportModelVisitor {
     }
 
     public PlainTextReporter() {
-        this( !COLOR_DISABLED );
+        this( COLOR_ENABLED );
     }
 
     public PlainTextReporter( boolean withColor ) {
