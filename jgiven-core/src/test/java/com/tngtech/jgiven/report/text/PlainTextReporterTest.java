@@ -45,7 +45,6 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
             .contains( "Given " + a + " and " + b )
             .contains( "When both values are multiplied with each other" )
             .contains( "Then the result is " + expectedResult );
-        System.out.println( string );
     }
 
     @Test
@@ -61,7 +60,6 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
             .but().something_else_not();
 
         String string = PlainTextReporter.toString( scenario.getModel() );
-        System.out.println( string );
         assertThat( string )
             .contains( ""
                     + " Scenario: Test\n"

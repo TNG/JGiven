@@ -6,7 +6,6 @@ import java.io.UnsupportedEncodingException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.common.base.Charsets;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
@@ -29,7 +28,7 @@ public class ExperimentalTablePlainTextReporterTest {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         ExperimentalTablePlainTextReporter reporter = new ExperimentalTablePlainTextReporter( stream );
         model.accept( reporter );
-        System.out.println( stream.toString( Charsets.UTF_8.name() ) );
+        // System.out.println( stream.toString( Charsets.UTF_8.name() ) );
     }
 
     private ScenarioCaseModel getCaseModel( String arg1, String arg2 ) {

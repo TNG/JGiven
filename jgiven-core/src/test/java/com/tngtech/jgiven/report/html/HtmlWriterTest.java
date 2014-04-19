@@ -41,7 +41,6 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
         scenario.finished();
         ReportModel model = scenario.getModel();
         String string = HtmlWriter.toString( model.getLastScenarioModel() );
-        System.out.println( string );
         assertThat( string.replace( '\n', ' ' ) ).matches( ".*"
                 + "<h3>Values can be multiplied</h3>.*"
                 + "<li><span class='introWord'>Given</span> <span class='argument'>" + a + "</span>.*and.*" + b + ".*</li>.*"
@@ -70,12 +69,6 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
         scenario.finished();
         ReportModel model = scenario.getModel();
         String string = HtmlWriter.toString( model.getLastScenarioModel() );
-        System.out.println( string );
         assertThat( string.replace( '\n', ' ' ) ).matches( ".*<h4>Case 1: paramA = a, paramB = b</h4>.*" );
-    }
-
-    @Test
-    public void testAnnotation() {
-
     }
 }

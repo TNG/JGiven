@@ -143,7 +143,7 @@ http://www.apache.org/licenses/LICENSE-2.0 for details.
 
 # Installation
 
-## Maven
+## Maven Dependency
 Add the following dependency to your POM file:
 
 ```
@@ -164,3 +164,55 @@ for TestNG instead of JUnit use:
    <scope>test</scope>
 </dependency>
 ```
+
+## Report Generation
+
+### Plain Text Reports
+By default JGiven outputs plain text reports to the console when executed.
+To disable plain text reports set the following Java system property:
+```
+jgiven.report.text=false
+```
+
+### JSON Reports
+
+By default JGiven will generate JSON reports into the `jgiven-reports/json` directory.
+JGiven tries to autodetect when it is executed by the Maven surefire plugin and in that case generates the
+reports into `target/jgiven-reports/json`.
+To disable JSON report generation set the following Java system property:
+```
+jgiven.report.json=false
+```
+Note that in order to generate HTML reports, JSON reports are required.
+
+### HTML Reports
+To generate HTML reports you have to run the JGiven HTML report generator.
+The reporter is part of the jgiven-core module and can be executed on the command line as follows
+(assuming that the jgiven-core JAR and all required dependencies are on the Java CLASSPATH)
+```
+java com.tngtech.jgiven.report.html.HtmlReportGenerator [--dir=<jsonreports>] [--toDir=<targetDir>]
+```
+
+#### Maven
+For Maven there exists a plugin that can be used as follows:
+```
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.tngtech.jgiven</groupId>
+      <artifactId>jgiven-maven-plugin</artifactId>
+      <version>0.1.7</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>test</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+ </plugins>
+</build>
+```
+
+HTML reports are then generated into the `target/jgiven-reports/html` directory.
+
