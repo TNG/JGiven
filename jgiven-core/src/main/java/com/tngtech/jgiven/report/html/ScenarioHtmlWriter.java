@@ -36,8 +36,12 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     }
 
     private void printTag( Tag tag ) {
-        writer.print( format( "<div class='tag tag-%s'><a href='%s'>%s</a></div>",
-            tag.getName(), HtmlTocWriter.tagToFilename( tag ), tag.toString() ) );
+        writer.print( tagToHtml( tag ) );
+    }
+
+    public static String tagToHtml( Tag tag ) {
+        return format( "<div class='tag tag-%s'><a href='%s'>%s</a></div>",
+            tag.getName(), HtmlTocWriter.tagToFilename( tag ), tag.toString() );
     }
 
     @Override

@@ -145,7 +145,7 @@ public class HtmlWriter extends ReportModelVisitor {
         scenarioModel.accept( scenarioHtmlWriter );
     }
 
-    private static PrintWriter getPrintWriter( File file ) {
+    public static PrintWriter getPrintWriter( File file ) {
         try {
             return new PrintWriter( file, Charsets.UTF_8.name() );
         } catch( Exception e ) {

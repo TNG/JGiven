@@ -62,13 +62,7 @@ public class HtmlTocWriter {
             return;
         }
 
-        List<Tag> sortedTags = Lists.newArrayList( tagMap.keySet() );
-        Collections.sort( sortedTags, new Comparator<Tag>() {
-            @Override
-            public int compare( Tag o1, Tag o2 ) {
-                return o1.toString().compareTo( o2.toString() );
-            }
-        } );
+        List<Tag> sortedTags = getSortedTags();
 
         writer.println( "<h3>Tags</h3>" );
         writer.println( "<ul>" );
@@ -76,6 +70,17 @@ public class HtmlTocWriter {
             writeTagLink( tag, tagMap.get( tag ) );
         }
         writer.println( "</ul>" );
+    }
+
+    public List<Tag> getSortedTags() {
+        List<Tag> sortedTags = Lists.newArrayList( tagMap.keySet() );
+        Collections.sort( sortedTags, new Comparator<Tag>() {
+            @Override
+            public int compare( Tag o1, Tag o2 ) {
+                return o1.toString().compareTo( o2.toString() );
+            }
+        } );
+        return sortedTags;
     }
 
     private void writeTagLink( Tag tag, List<ScenarioModel> list ) {

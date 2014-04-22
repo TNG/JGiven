@@ -1,7 +1,11 @@
 package com.tngtech.jgiven.report.html;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -11,15 +15,18 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
+import com.tngtech.jgiven.impl.util.ResourceUtil;
+import com.tngtech.jgiven.report.json.JsonModelTraverser;
+import com.tngtech.jgiven.report.json.ReportModelFileHandler;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.Tag;
 
-public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
+public class FrameBasedHtmlReportGenerator implements ReportModelFileHandler {
     private static final Logger log = LoggerFactory.getLogger( FrameBasedHtmlReportGenerator.class );
 
-    static final String LINKS_FILE_NAME = "links.html";
     static final String TESTCLASSES_FRAME_NAME = "testclasses";
 
     static class ModelFile {
@@ -30,9 +37,27 @@ public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
     private final List<ModelFile> models = Lists.newArrayList();
     private final Map<Tag, List<ScenarioModel>> tagMap = Maps.newHashMap();
 
+    private File toDir;
+
     public void generate( File toDir, File sourceDir ) throws IOException {
-        generate( toDir, LINKS_FILE_NAME, sourceDir );
-        copyFileToTargetDir( "index.html" );
+        this.toDir = toDir;
+        new JsonModelTraverser().traverseModels( sourceDir, this );
+        writeEnd();
+        copyFileToTargetDir( "style.css" );
+        copyFileToTargetDir( "default.css" );
+    }
+
+    protected void copyFileToTargetDir( String fileName ) throws FileNotFoundException, IOException {
+        InputStream stream = null;
+        FileOutputStream fileOutputStream = null;
+        try {
+            stream = this.getClass().getResourceAsStream( "/com/tngtech/jgiven/report/html/" + fileName );
+            File file = new File( toDir, fileName );
+            fileOutputStream = new FileOutputStream( file );
+            ByteStreams.copy( stream, fileOutputStream );
+        } finally {
+            ResourceUtil.close( stream, fileOutputStream );
+        }
     }
 
     @Override
@@ -58,7 +83,6 @@ public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
         }
     }
 
-    @Override
     public void writeEnd() {
         HtmlTocWriter tocWriter = new HtmlTocWriter( tagMap, models );
         for( ModelFile modelFile : models ) {
@@ -66,6 +90,32 @@ public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
         }
 
         writeTagFiles( tocWriter );
+
+        writeIndexFile( tocWriter );
+
+    }
+
+    private void writeIndexFile( HtmlTocWriter tocWriter ) {
+        File file = new File( toDir, "index.html" );
+        PrintWriter printWriter = HtmlWriter.getPrintWriter( file );
+        try {
+            HtmlWriter htmlWriter = new HtmlWriter( printWriter );
+            htmlWriter.writeHtmlHeader( "Acceptance Tests" );
+            tocWriter.writeToc( printWriter );
+
+            ReportModel reportModel = new ReportModel();
+            reportModel.className = ".Acceptance Tests";
+            htmlWriter.visit( reportModel );
+
+            for( Tag tag : tocWriter.getSortedTags() ) {
+                printWriter.println( ScenarioHtmlWriter.tagToHtml( tag ) );
+            }
+
+            htmlWriter.visitEnd( reportModel );
+            htmlWriter.writeHtmlFooter();
+        } finally {
+            ResourceUtil.close( printWriter );
+        }
     }
 
     private void writeTagFiles( HtmlTocWriter tocWriter ) {
