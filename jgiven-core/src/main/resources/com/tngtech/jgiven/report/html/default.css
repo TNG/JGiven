@@ -1,20 +1,42 @@
+@media all and (min-width: 1280px) {
+  .leftpane {
+     float: left;
+  }
+
+  .testcase {
+     margin-left: 380px;
+  }
+}
+
+@media all and (max-width: 1279px) {
+  .testcase {
+     margin-left: 10px;
+  }
+}
+
+
 html {
   margin: 0;
   padding: 0;
 }
 body {
   padding: 0px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-color: #ffffff;
+  font: 14px "Open Sans", "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #aaa;
   margin: 0;
 }
+
+
+
+
 a {
   color: #000066;
   font-size: 14px;
 }
 
 a:hover {
-  text-shadow: 1px 1px 1px lightgray;
+/*  text-shadow: 1px 1px 1px lightgray;*/
+  text-decoration: underline;
 }
 
 h1 {
@@ -28,33 +50,34 @@ h1 {
 }
 
 h2, h2 a {
-  font-size: 30px;
-  color: #444;
+  font-size: 36px;
+  color: white;
   font-weight: 600;
   margin:0px;
   border-radius:0;
   padding-top:5px;
   padding-bottom: 0px;
-  text-shadow: 1px 1px 1px white;
+/*  text-shadow: 1px 1px 1px white;*/
 }
 
-.linklist {
+.toc {
     font-size: 20px;
 }
 
-.linklist ul {
+.toc ul {
   list-style-type: none;
-  padding-left: 20px;
+  padding: 10px;
+  background: #f0f0f0;
 }
 
-.linklist ul li {
+.toc ul li {
   padding-top:0px;
   padding-bottom:0px;
   margin-top:-5px;
   margin-bottom:0px;
 }
 
-.linklist ul a {
+.toc ul a {
   text-decoration: none;
 }
 
@@ -67,20 +90,21 @@ h1 {
   color: #f0f0f0;
 }
 
-.linklist h3 {
+.toc h3 {
   margin-top:10px;
   margin-left: 0px;
   margin-right: 0px;
-  margin-bottom: -5px;
-  padding-left: 20px;
+  margin-bottom: 0px;
+  padding-left: 15px;
   padding-top: 5px;
   padding-bottom: 5px;
   background: #f0f0f0;
   font-size: 14px;
   color: #444;
-  border-top: 1px solid #d0d0d0;  
+/*  border-top: 1px solid #d0d0d0;
   border-bottom: 1px solid #d0d0d0;
-  text-shadow: 1px 1px 1px white;
+*/
+/*  text-shadow: 1px 1px 1px white;*/
 }
 
 .package {
@@ -90,26 +114,84 @@ h1 {
 .packagename {
   font-size: 15px;
   font-weight: bold;
+  color: white;
+/*  text-shadow: 1px 1px 1px white;*/
+}
+
+.page {
+  position: relative;
+  max-width: 1210px;
+  margin: auto;
+}
+
+.leftpane {
+  width:320px;
+  min-width:320px;
+  min-height: 100px;
+/*  float: left;*/
+  padding: 0px;
+  margin: 10px;
+  margin-top: 0px;
+}
+
+.toc {
+  max-width: 320px;
+  width: 320px;
+  padding: 20px;
+  margin: 0px;
+}
+
+.toc, .testcase {
+  background: white;
+  box-shadow: 0px 0px 15px #222;
+}
+
+#footer,
+#footer a {
   color: #333;
-  text-shadow: 1px 1px 1px white;
+  text-shadow: 1px 1px 1px #fff;
+  text-decoration: none;
+  clear: both;
+}
+
+#footer {
+  margin: auto;
+  text-align: center;
+  padding: 10px;
 }
 
 .testcase {
-    padding: 0;
+  padding: 0px;
+  max-width: 810px;
+  width: auto;
+  min-width: 300px;
+/*  margin:auto;*/
+  margin-right: 10px;
+  margin-bottom: 20px;
+  margin-top:10px;
 }
 
-.testcase-header, .testcase-content {
-  padding: 20px;
+.testcase-header {
+  padding: 30px;
+}
+
+.testcase-content {
+  padding: 30px;
 }
 
 .testcase-header {
   background-color: #f0f0f0;
-  border-bottom: 1px solid lightgray;
+  background: #444;
+  background: #4B5389;
+  background-color: rgb(58, 88, 130);
+
+/*  border-bottom: 1px solid lightgray;*/
 }
 
 .testcase-header .description {
   font-size: 18px;
   padding-top:10px;
+  color: white;
 }
 
 .testcase > ul {
@@ -140,38 +222,49 @@ h1 {
 }
 
 .scenario {
+  position: relative;
   margin: 0px;
   padding: 0px;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  box-shadow: 1px 1px 2px lightgray;
+  /*border: 1px solid lightgray;*/
+  border-radius: 0px;
+/*  box-shadow: 1px 1px 2px lightgray;*/
   margin-bottom:30px;
   background-color: white;
-  
+
 }
 
 .scenario-content {
-  padding-left: 20px;
-  padding-right: 20px;
+  margin-left: 0px;
+  margin-right: 0px;
   padding-bottom: 0px;
+  margin-bottom: -5px;
   background-color: white;
+/*  background-color: #E9FFE9;*/
+  background-color: #f7f7f7;
+
 }
 
 .scenario h3 {
   margin-top: 0px;
   font-weight: normal;
   font-size: 18px;
-  color: #000;
+  color: white;
   margin-top: 8px;
-  margin-bottom: 2px;
+  margin-bottom: 0px;
   margin-left:0px;
+  margin-right: 0px;
   overflow:hidden;
-  padding-top: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-top: 8px;
+  padding-left: 15px;
+  padding-right: 0px;
   /*text-shadow: 1px 1px 1px lightgray;*/
 /*  border-bottom: 1px solid lightgray;*/
-  padding-bottom: 5px;
+  padding-bottom: 6px;
+  background-color: rgb(58, 130, 71);
+  background-color: rgb(58, 88, 130);
+  background-color: rgb(79, 79, 79);
+/*  background-color: rgb(0, 139, 69);*/
+/*  background-color: rgb(0, 139, 106);*/
 }
 
 .case {
@@ -185,8 +278,12 @@ h1 {
 }
 
 .passedCase ul.steps  {
-  background-color: #f5fff5;
-/* 
+  background-color: rgba(0, 139, 69, 0.1);
+  background-color: #E9FFE9;
+  background-color: #f6f6f6;
+
+/*  background-color: #f5fff5;*/
+/*
   border: 1px solid #D4EFD4;
   */
 }
@@ -210,19 +307,24 @@ h1 {
   display: inline;
   margin-right:1ex;
   float: right;
-  border-radius: 3px;
-  padding:1px;
-  padding-left: 4px;
-  padding-right: 4px;
+  border-radius: 0px;
   text-shadow: none;
   background-color: violet;
-  border: 1px rgb(171, 85, 208) solid;
+/*  border: 1px rgb(171, 85, 208) solid; */
 }
 
 .tag a {
+  display: inline-block;
   text-decoration: none;
   font-size: 14px;
   color: rgba(0, 0, 0, 0.9);
+  padding:2px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.tag a:hover {
+    background-color: rgba(255,255,255,0.5);
 }
 
 .tag-NotImplementedYet {
@@ -301,11 +403,12 @@ ul.steps {
   list-style-type: none;
   margin-left: 0;
   margin-top: 0;
-  margin-bottom: 15px;
+  margin-bottom: -10px;
   padding: 10px;
+  padding-botom:0px;
   position:relative;
-  text-shadow: 1px 1px 1px white;
-  border-top: 1px lightgray solid;
+/*  text-shadow: 1px 1px 1px white;*/
+/*  border-top: 1px lightgray solid;*/
   font-size:16px;
 }
 
@@ -331,10 +434,10 @@ ul.steps li {
 .multiline {
   font-family: monospace;
   border: 1px solid lightgray;
-  background-color: #eee;
+  background-color: white;
   display: inline-table;
   white-space: pre;
-  margin: 5px;  
+  margin: 5px;
 }
 
 .scenario h4 {
@@ -345,7 +448,7 @@ ul.steps li {
   padding-left: 0px;
   margin-bottom: 5px;
   margin-left: 10px;
-  margin-top: 0px;
+  margin-top: 10px;
   text-shadow: 1px 1px 1px #eee;
 }
 
@@ -364,7 +467,8 @@ ul.steps li {
   margin-left: 20px;
   border: 1px solid lightgray;
   border-collapse:collapse;
-  box-shadow: 1px 1px 2px lightgray;
+/*  box-shadow: 1px 1px 2px lightgray;*/
+  background-color: white;
 }
 
 .data-table th, .data-table td {
@@ -387,19 +491,27 @@ ul.steps li {
 
 .scenario-footer {
   text-align:right;
-  padding:0;
-  padding-right:3px;
-  padding-bottom:3px;
+  padding:5px;
+  padding-right:5px;
+  padding-bottom:5px;
+  padding-top:0px;
   margin:0;
+  margin-right:0px;
+  margin-left:0px;
+  margin-top: 0px;
+  background-color: #E9FFE9;
+  background-color: #f7f7f7;
+  border-bottom: 1px solid #eee;
+
 }
 
 .scenario-footer a {
   text-decoration: none;
   color: #888;
-  text-shadow: 1px 1px 1px #eee;
+/*  text-shadow: 1px 1px 1px #eee;*/
   font-size: 14px;
   padding: 5px;
-  border-top: 1px solid #lightgray;
+/*  border-top: 1px solid #lightgray;*/
 }
 
 .notImplementedYet {

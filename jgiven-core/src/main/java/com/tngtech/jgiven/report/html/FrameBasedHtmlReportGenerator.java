@@ -1,18 +1,13 @@
 package com.tngtech.jgiven.report.html;
 
-import static java.lang.String.format;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -33,7 +28,7 @@ public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
     }
 
     private final List<ModelFile> models = Lists.newArrayList();
-    private final Map<Tag, List<ScenarioModel>> srToScenariosMap = Maps.newHashMap();
+    private final Map<Tag, List<ScenarioModel>> tagMap = Maps.newHashMap();
 
     public void generate( File toDir, File sourceDir ) throws IOException {
         generate( toDir, LINKS_FILE_NAME, sourceDir );
@@ -46,7 +41,6 @@ public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
         File targetFile = new File( toDir, targetFileName );
         log.debug( "Writing to file " + targetFile );
         try {
-            HtmlWriter.writeModelToFile( model, targetFile );
             ModelFile modelFile = new ModelFile();
             modelFile.model = model;
             modelFile.file = targetFile;
@@ -66,52 +60,25 @@ public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
 
     @Override
     public void writeEnd() {
-        Comparator<ModelFile> comparator = new Comparator<ModelFile>() {
-            @Override
-            public int compare( ModelFile o1, ModelFile o2 ) {
-                return o1.model.getSimpleClassName().compareTo( o2.model.getSimpleClassName() );
-            }
-        };
-        Collections.sort( models, comparator );
-        writer.println( "<h3>Test Classes</h3>" );
-        writer.println( "<ul>" );
+        HtmlTocWriter tocWriter = new HtmlTocWriter( tagMap, models );
         for( ModelFile modelFile : models ) {
-            writeFileLink( modelFile );
+            HtmlWriter.writeModelToFile( modelFile.model, tocWriter, modelFile.file );
         }
-        writer.println( "</ul>" );
 
-        writeTagFiles();
+        writeTagFiles( tocWriter );
     }
 
-    private void writeTagFiles() {
-        if( srToScenariosMap.isEmpty() ) {
+    private void writeTagFiles( HtmlTocWriter tocWriter ) {
+        if( tagMap.isEmpty() ) {
             return;
         }
 
-        List<Tag> sortedTags = Lists.newArrayList( srToScenariosMap.keySet() );
-        Collections.sort( sortedTags, new Comparator<Tag>() {
-            @Override
-            public int compare( Tag o1, Tag o2 ) {
-                return o1.toString().compareTo( o2.toString() );
-            }
-        } );
-
-        writer.println( "<h3>Tags</h3>" );
-        writer.println( "<ul>" );
-        for( Tag tag : sortedTags ) {
-            writeTagFile( tag, srToScenariosMap.get( tag ) );
+        for( Tag tag : tagMap.keySet() ) {
+            writeTagFile( tag, tagMap.get( tag ), tocWriter );
         }
-        writer.println( "</ul>" );
     }
 
-    private void writeFileLink( ModelFile model ) {
-        writer.println( format( "<li><a href='%s' target='%s'>%s</a>",
-            model.file.getName(),
-            TESTCLASSES_FRAME_NAME,
-            model.model.getSimpleClassName() ) );
-    }
-
-    private void writeTagFile( Tag tag, List<ScenarioModel> value ) {
+    private void writeTagFile( Tag tag, List<ScenarioModel> value, HtmlTocWriter tocWriter ) {
         try {
             ReportModel reportModel = new ReportModel();
             reportModel.className = tag.getName();
@@ -121,41 +88,20 @@ public class FrameBasedHtmlReportGenerator extends AbstractHtmlReportGenerator {
             reportModel.scenarios = value;
             reportModel.description = tag.getDescription();
 
-            String fileName = tagToFilename( tag );
+            String fileName = HtmlTocWriter.tagToFilename( tag );
             File targetFile = new File( toDir, fileName );
-            HtmlWriter.writeToFile( targetFile, reportModel );
-
-            writer.println( format( "<li><a href='%s' target='%s'>%s</a>",
-                fileName,
-                TESTCLASSES_FRAME_NAME,
-                tag.toString() ) );
+            HtmlWriter.writeToFile( targetFile, reportModel, tocWriter );
 
         } catch( Exception e ) {
             log.error( "Error while trying to write HTML file for tag " + tag.getName() );
         }
     }
 
-    static String tagToFilename( Tag tag ) {
-        String fileName = escape( tag.getName() );
-        if( tag.getValue() != null ) {
-            if( tag.getValue().getClass().isArray() ) {
-                fileName += "-" + escape( Joiner.on( '-' ).join( (String[]) tag.getValue() ) );
-            } else {
-                fileName += "-" + escape( (String) tag.getValue() );
-            }
-        }
-        return fileName.substring( 0, Math.min( fileName.length(), 255 ) ) + ".html";
-    }
-
-    static String escape( String string ) {
-        return string.replaceAll( "[^\\p{Alnum}-]", "_" );
-    }
-
     private void addToMap( Tag tag, ScenarioModel scenario ) {
-        List<ScenarioModel> list = srToScenariosMap.get( tag );
+        List<ScenarioModel> list = tagMap.get( tag );
         if( list == null ) {
             list = Lists.newArrayList();
-            srToScenariosMap.put( tag, list );
+            tagMap.put( tag, list );
         }
         list.add( scenario );
     }
