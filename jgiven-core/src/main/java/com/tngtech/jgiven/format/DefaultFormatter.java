@@ -1,10 +1,7 @@
 package com.tngtech.jgiven.format;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
-
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
 
 /**
  * A default formatter that merely use {@link String#valueOf(Object)}, 
@@ -19,15 +16,17 @@ public class DefaultFormatter<T> implements ArgumentFormatter<T> {
             return "null";
         }
 
-        if( argumentToFormat.getClass().isArray() ) {
-            return Joiner.on( ", " ).join(
-                Iterables.transform( Arrays.asList( (Object[]) argumentToFormat ), new Function<Object, String>() {
-                    @Override
-                    public String apply( Object input ) {
-                        return new DefaultFormatter<Object>().format( input, formatterArguments );
-                    }
-
-                } ) );
+        Class<? extends Object> clazz = argumentToFormat.getClass();
+        if( clazz.isArray() ) {
+            DefaultFormatter<Object> defaultFormatter = new DefaultFormatter<Object>();
+            StringBuilder sb = new StringBuilder();
+            for( int i = 0; i < Array.getLength( argumentToFormat ); i++ ) {
+                if( i > 0 ) {
+                    sb.append( ", " );
+                }
+                sb.append( defaultFormatter.format( Array.get( argumentToFormat, i ) ) );
+            }
+            return sb.toString();
         }
 
         return String.valueOf( argumentToFormat );

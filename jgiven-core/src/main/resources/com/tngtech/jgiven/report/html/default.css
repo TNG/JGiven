@@ -1,10 +1,14 @@
 @media all and (min-width: 1280px) {
   .leftpane {
-     float: left;
+      float: right;
+      width: 360px;
+      border-left: 1px solid #ddd;
   }
 
   .testcase {
-     margin-left: 380px;
+      float: left;
+      width:849px;
+/*     margin-left: 360px;*/
   }
 }
 
@@ -14,6 +18,9 @@
   }
 }
 
+html, body {
+  height: 100%;
+}
 
 html {
   margin: 0;
@@ -61,13 +68,18 @@ h2, h2 a {
 }
 
 .toc {
-    font-size: 20px;
+  font-size: 20px;
+}
+
+.toc-container {
+  height: 100%;
 }
 
 .toc ul {
   list-style-type: none;
   padding: 10px;
-  background: #f0f0f0;
+  padding-top:0;
+/*  background: #f0f0f0;*/
 }
 
 .toc ul li {
@@ -95,16 +107,13 @@ h1 {
   margin-left: 0px;
   margin-right: 0px;
   margin-bottom: 0px;
-  padding-left: 15px;
+  padding-left: 10px;
   padding-top: 5px;
-  padding-bottom: 5px;
-  background: #f0f0f0;
+  padding-bottom: 0px;
+/*  background: #f0f0f0;*/
   font-size: 14px;
   color: #444;
-/*  border-top: 1px solid #d0d0d0;
-  border-bottom: 1px solid #d0d0d0;
-*/
-/*  text-shadow: 1px 1px 1px white;*/
+  text-shadow: 1px 1px 1px #fff;
 }
 
 .package {
@@ -115,35 +124,43 @@ h1 {
   font-size: 15px;
   font-weight: bold;
   color: white;
-/*  text-shadow: 1px 1px 1px white;*/
 }
 
 .page {
-  position: relative;
-  max-width: 1210px;
+  width: 1210px;
   margin: auto;
+  box-shadow: 0px 0px 15px #222;
+/*  background: #f0f0f0;*/
+  background-color:white;
+  margin-top: 10px;
 }
 
 .leftpane {
-  width:320px;
-  min-width:320px;
-  min-height: 100px;
-/*  float: left;*/
   padding: 0px;
-  margin: 10px;
-  margin-top: 0px;
+  margin: 0px;
+  background-color: white;
 }
 
 .toc {
-  max-width: 320px;
-  width: 320px;
+/*
+  width: 320px;*/
   padding: 20px;
   margin: 0px;
 }
 
-.toc, .testcase {
+.testcase {
   background: white;
-  box-shadow: 0px 0px 15px #222;
+}
+
+.toc {
+/*  background: #f0f0f0;*/
+  background: white;
+}
+
+
+#page-footer {
+  clear:both;
+  height:0px;
 }
 
 #footer,
@@ -161,14 +178,9 @@ h1 {
 }
 
 .testcase {
+  margin:0px;
+  margin-bottom: 0px;
   padding: 0px;
-  max-width: 810px;
-  width: auto;
-  min-width: 300px;
-/*  margin:auto;*/
-  margin-right: 10px;
-  margin-bottom: 20px;
-  margin-top:10px;
 }
 
 .testcase-header {
@@ -184,8 +196,6 @@ h1 {
   background: #444;
   background: #4B5389;
   background-color: rgb(58, 88, 130);
-
-/*  border-bottom: 1px solid lightgray;*/
 }
 
 .testcase-header .description {
@@ -225,9 +235,7 @@ h1 {
   position: relative;
   margin: 0px;
   padding: 0px;
-  /*border: 1px solid lightgray;*/
   border-radius: 0px;
-/*  box-shadow: 1px 1px 2px lightgray;*/
   margin-bottom:30px;
   background-color: white;
 
@@ -241,6 +249,8 @@ h1 {
   background-color: white;
 /*  background-color: #E9FFE9;*/
   background-color: #f7f7f7;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 
 }
 
@@ -257,18 +267,13 @@ h1 {
   padding-top: 8px;
   padding-left: 15px;
   padding-right: 0px;
-  /*text-shadow: 1px 1px 1px lightgray;*/
-/*  border-bottom: 1px solid lightgray;*/
   padding-bottom: 6px;
   background-color: rgb(58, 130, 71);
   background-color: rgb(58, 88, 130);
   background-color: rgb(79, 79, 79);
-/*  background-color: rgb(0, 139, 69);*/
-/*  background-color: rgb(0, 139, 106);*/
 }
 
 .case {
-/*  border-top: 1px solid #d1d1d1;*/
   padding-left: 0px;
   padding-right: 0px;
   padding-bottom: 0px;
@@ -281,11 +286,6 @@ h1 {
   background-color: rgba(0, 139, 69, 0.1);
   background-color: #E9FFE9;
   background-color: #f6f6f6;
-
-/*  background-color: #f5fff5;*/
-/*
-  border: 1px solid #D4EFD4;
-  */
 }
 
 .failedCase ul.steps  {
@@ -501,17 +501,17 @@ ul.steps li {
   margin-top: 0px;
   background-color: #E9FFE9;
   background-color: #f7f7f7;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 
 }
 
 .scenario-footer a {
   text-decoration: none;
   color: #888;
-/*  text-shadow: 1px 1px 1px #eee;*/
   font-size: 14px;
   padding: 5px;
-/*  border-top: 1px solid #lightgray;*/
 }
 
 .notImplementedYet {

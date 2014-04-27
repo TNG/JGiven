@@ -13,7 +13,6 @@ import com.tngtech.jgiven.junit.ScenarioTest;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.tags.FeatureHtmlReport;
 import com.tngtech.jgiven.tags.FeatureTags;
-import com.tngtech.jgiven.tags.Issue;
 
 @RunWith( DataProviderRunner.class )
 @FeatureHtmlReport
@@ -25,7 +24,6 @@ public class FrameBaseHtmlReportGeneratorTest extends ScenarioTest<GivenJsonRepo
     }
 
     @Test
-    @Issue( "#1" )
     @CasesAsTable
     @UseDataProvider( "testNumbers" )
     public void the_frame_based_reporter_generates_one_file_for_each_test_class( int n ) throws IOException {

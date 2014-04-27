@@ -101,10 +101,12 @@ public class FrameBasedHtmlReportGenerator implements ReportModelFileHandler {
         try {
             HtmlWriter htmlWriter = new HtmlWriter( printWriter );
             htmlWriter.writeHtmlHeader( "Acceptance Tests" );
-            tocWriter.writeToc( printWriter );
 
             ReportModel reportModel = new ReportModel();
             reportModel.className = ".Acceptance Tests";
+            htmlWriter.writeHeader( reportModel );
+
+            tocWriter.writeToc( printWriter );
             htmlWriter.visit( reportModel );
 
             for( Tag tag : tocWriter.getSortedTags() ) {
