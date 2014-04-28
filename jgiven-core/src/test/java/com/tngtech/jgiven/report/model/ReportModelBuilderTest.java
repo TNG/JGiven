@@ -188,7 +188,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         given().a_step_with_a_printf_annotation_$( 5.2 );
         scenario.finished();
         StepModel step = scenario.getModel().getFirstStepModelOfLastScenario();
-        assertThat( step.words.get( 2 ).value ).isEqualTo( "5.20" );
+        assertThat( step.words.get( 2 ).value ).isEqualTo( String.format( "%.2f", 5.2 ) );
     }
 
     @Test
