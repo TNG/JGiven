@@ -193,6 +193,9 @@ The reporter is part of the jgiven-core module and can be executed on the comman
 java com.tngtech.jgiven.report.html.HtmlReportGenerator [--dir=<jsonreports>] [--toDir=<targetDir>]
 ```
 
+To see how the generated report looks like have a look at the
+[HTML reports of JGiven itself](https://buildhive.cloudbees.com/job/TNG/job/JGiven/ws/jgiven-tests/target/jgiven-reports/html/index.html)
+
 #### Maven
 For Maven there exists a plugin that can be used as follows:
 ```
