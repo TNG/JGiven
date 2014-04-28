@@ -7,8 +7,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * A special format annotation that uses the standard
- * format string known from the printf method.
+ * A special format annotation that uses the formatting
+ * known from the String.format method.
+ * <p>
+ * Note that this uses the default locale returned from Locale.getDefault()
  */
 @Documented
 @Retention( RetentionPolicy.RUNTIME )
