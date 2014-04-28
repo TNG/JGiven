@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterScenario;
+import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.CasesAsTable;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
@@ -173,6 +174,29 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     public void CasesAsTable_annotation_is_false_by_default() {
         given().something();
         assertThat( getScenario().getModel().getLastScenarioModel().isCasesAsTable() ).isFalse();
+    }
+
+    @SuppressWarnings( "serial" )
+    static class SomeExceptionInAfterStage extends RuntimeException {}
+
+    static class AssertionInAfterStage extends Stage<AssertionInAfterStage> {
+        @AfterStage
+        public void after() {
+            throw new SomeExceptionInAfterStage();
+        }
+
+        public void something() {}
+    }
+
+    @Test( expected = SomeExceptionInAfterStage.class )
+    public void AfterStage_methods_of_the_last_stage_are_executed() {
+        AssertionInAfterStage stage = addStage( AssertionInAfterStage.class );
+        given().something();
+        stage.then().something();
+
+        // we have to call finish here because the exception is otherwise
+        // thrown too late for the expected annotation
+        getScenario().finished();
     }
 
 }

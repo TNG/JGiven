@@ -48,7 +48,7 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
 
         StepModel step = scenarioCase.steps.get( 0 );
         assertThat( step.name ).isEqualTo( "some test step" );
-        assertThat( step.words ).isEqualTo( Arrays.asList( new Word( "Given" ), new Word( "some test step" ) ) );
+        assertThat( step.words ).isEqualTo( Arrays.asList( Word.introWord( "Given" ), new Word( "some test step" ) ) );
         assertThat( step.notImplementedYet ).isFalse();
 
     }

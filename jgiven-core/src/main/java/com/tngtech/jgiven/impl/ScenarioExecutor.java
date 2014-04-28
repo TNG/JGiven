@@ -279,8 +279,20 @@ public class ScenarioExecutor {
             throw new IllegalStateException( "The Scenario must be in state STARTED in order to finish it, but it is in state " + state );
         state = FINISHED;
 
-        Exception lastThrownException = null;
+        Throwable lastThrownException = null;
         if( beforeStepsWereExecuted ) {
+            if( currentStage != null ) {
+                try {
+                    executeAfterStageMethods( currentStage );
+                } catch( AssertionError e ) {
+                    log.error( e.getMessage(), e );
+                    lastThrownException = e;
+                } catch( Exception e ) {
+                    log.error( e.getMessage(), e );
+                    lastThrownException = e;
+                }
+            }
+
             for( StageState stage : reverse( newArrayList( stages.values() ) ) ) {
                 try {
                     executeAnnotatedMethods( stage.instance, AfterScenario.class );
