@@ -78,7 +78,8 @@ h2, h2 a {
 .toc ul {
   list-style-type: none;
   padding: 10px;
-  padding-top:0;
+  padding-top:0px;
+  margin-top:10px;
 /*  background: #f0f0f0;*/
 }
 
@@ -103,10 +104,8 @@ h1 {
 }
 
 .toc h3 {
-  margin-top:10px;
-  margin-left: 0px;
-  margin-right: 0px;
-  margin-bottom: 0px;
+  margin:0px;
+  margin-top: 10px;
   padding-left: 10px;
   padding-top: 5px;
   padding-bottom: 0px;
@@ -441,14 +440,15 @@ ul.steps li {
 }
 
 .scenario h4 {
-  color: #000;
-  font-weight: normal;
+  color: #333;
+  font-weight: bold;
   font-size: 15px;
   padding: 0px;
-  padding-left: 0px;
-  margin-bottom: 5px;
+  padding-left: 5px;
+  padding-top: 10px;
+  margin-bottom: 0px;
   margin-left: 10px;
-  margin-top: 10px;
+  margin-top: 0px;
   text-shadow: 1px 1px 1px #eee;
 }
 
