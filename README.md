@@ -150,7 +150,7 @@ Add the following dependency to your POM file:
 <dependency>
    <groupId>com.tngtech.jgiven</groupId>
    <artifactId>jgiven-junit</artifactId>
-   <version>0.1.7</version>
+   <version>0.2</version>
    <scope>test</scope>
 </dependency>
 ```
@@ -160,7 +160,7 @@ for TestNG instead of JUnit use:
 <dependency>
    <groupId>com.tngtech.jgiven</groupId>
    <artifactId>jgiven-testng</artifactId>
-   <version>0.1.7</version>
+   <version>0.2</version>
    <scope>test</scope>
 </dependency>
 ```
@@ -204,7 +204,7 @@ For Maven there exists a plugin that can be used as follows:
     <plugin>
       <groupId>com.tngtech.jgiven</groupId>
       <artifactId>jgiven-maven-plugin</artifactId>
-      <version>0.1.7</version>
+      <version>0.2</version>
       <executions>
         <execution>
           <goals>
