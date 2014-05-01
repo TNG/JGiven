@@ -31,12 +31,4 @@ public class JUnitParamsTest extends ScenarioTest<GivenTestStep, WhenTestStep, T
         // assertThat( arguments ).containsExactly( "" + intArg, "" + booleanArg, "" + caseNr );
     }
 
-    @Test
-    @Parameters( {
-        "1", "2", "4",
-        "4", "5", "6" } )
-    public void testName() throws Exception {
-
-    }
-
 }
