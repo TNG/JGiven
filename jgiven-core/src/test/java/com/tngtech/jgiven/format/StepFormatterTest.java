@@ -3,6 +3,8 @@ package com.tngtech.jgiven.format;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -76,4 +78,8 @@ public class StepFormatterTest {
         assertThat( actualResult ).matches( expectedResult );
     }
 
+    @Test
+    public void testName() throws Exception {
+        System.out.println( DateFormat.getDateTimeInstance().format( new Date() ) );
+    }
 }

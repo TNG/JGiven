@@ -26,8 +26,8 @@ public class HtmlTocWriter {
 
     public void writeToc( PrintWriter writer ) {
         this.writer = writer;
-        writer.println( "<div class='leftpane'>" );
-        writer.println( "<div class='toc'>" );
+        writer.println( "<div id='leftpane'>" );
+        writer.println( "<div id='toc'>" );
         writeClassLinks();
         writeTagLinks();
         writer.println( "</div> <!-- toc -->" );

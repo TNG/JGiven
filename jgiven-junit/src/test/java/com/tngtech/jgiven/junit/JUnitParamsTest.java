@@ -8,7 +8,6 @@ import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.tngtech.jgiven.junit.ScenarioTest;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
@@ -30,6 +29,14 @@ public class JUnitParamsTest extends ScenarioTest<GivenTestStep, WhenTestStep, T
         List<String> arguments = scenarioModel.getCase( caseNr ).arguments;
         // Currently not working:
         // assertThat( arguments ).containsExactly( "" + intArg, "" + booleanArg, "" + caseNr );
+    }
+
+    @Test
+    @Parameters( {
+        "1", "2", "4",
+        "4", "5", "6" } )
+    public void testName() throws Exception {
+
     }
 
 }

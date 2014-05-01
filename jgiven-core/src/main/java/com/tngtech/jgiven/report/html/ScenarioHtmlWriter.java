@@ -26,13 +26,19 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     @Override
     public void visit( ScenarioModel scenarioModel ) {
         this.scenarioModel = scenarioModel;
+        writer.println( "<div class='scenario'>" );
 
-        writer.print( format( "<div class='scenario'><h3>%s", WordUtil.capitalize( scenarioModel.description ) ) );
+        writer.println( format( "<h3>%s</h3>", WordUtil.capitalize( scenarioModel.description ) ) );
+        writeTagLine( scenarioModel );
+        writer.println( "<div class='scenario-content'>" );
+    }
+
+    private void writeTagLine( ScenarioModel scenarioModel ) {
+        writer.print( "<div class='tag-line'>" );
         for( Tag tag : scenarioModel.tags ) {
             printTag( tag );
         }
-        writer.println( "</h3>" );
-        writer.println( "<div class='scenario-content'>" );
+        writer.println( "</div>" );
     }
 
     private void printTag( Tag tag ) {
