@@ -1,6 +1,5 @@
 package com.tngtech.jgiven;
 
-import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
@@ -39,6 +38,14 @@ public class WhenTestStep extends Stage<WhenTestStep> {
     @AfterStage
     void someAfterStageMethod() {
         afterStageCalled++;
+    }
+
+    public WhenTestStep one_parameter_is_used( String paramA ) {
+        return self();
+    }
+
+    public WhenTestStep another_parameter_is_used( String paramB ) {
+        return self();
     }
 
 }

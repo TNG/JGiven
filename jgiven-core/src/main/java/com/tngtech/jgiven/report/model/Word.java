@@ -4,7 +4,6 @@ import com.google.common.base.Objects;
 
 public class Word {
     public String value;
-    public boolean isArg;
     public boolean isIntroWord;
 
     public Word() {}
@@ -13,22 +12,25 @@ public class Word {
         this.value = value;
     }
 
-    public Word( String value, boolean isArg, boolean isIntroWord ) {
+    public Word( String value, boolean isIntroWord ) {
         this.value = value;
-        this.isArg = isArg;
         this.isIntroWord = isIntroWord;
     }
 
-    public static Word argWord( String value ) {
-        return new Word( value, true, false );
+    public static ArgumentWord argWord( String value ) {
+        return new ArgumentWord( value );
     }
 
     public static Word introWord( String value ) {
-        return new Word( value, false, true );
+        return new Word( value, true );
     }
 
     public void append( String word ) {
         value += " " + word;
+    }
+
+    public boolean isArg() {
+        return false;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class Word {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( isArg, isIntroWord, value );
+        return Objects.hashCode( isIntroWord, value );
     }
 
     @Override
@@ -50,8 +52,7 @@ public class Word {
         if( getClass() != obj.getClass() )
             return false;
         Word other = (Word) obj;
-        return Objects.equal( isArg, other.isArg ) &&
-                Objects.equal( isIntroWord, other.isIntroWord ) &&
+        return Objects.equal( isIntroWord, other.isIntroWord ) &&
                 Objects.equal( value, other.value );
     }
 }

@@ -2,6 +2,7 @@ package com.tngtech.jgiven.report.html;
 
 import java.io.PrintWriter;
 
+import com.tngtech.jgiven.report.model.ArgumentWord;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
@@ -71,13 +72,18 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
     }
 
     @Override
-    String formatCaseArgument( String value ) {
-        int index = scenarioCase.arguments.indexOf( value );
+    String formatCaseArgument( ArgumentWord value ) {
+        String paramName = findParameterName( value );
+        return "&lt;" + paramName + "&gt;";
+    }
+
+    private String findParameterName( ArgumentWord value ) {
+        int index = value.getParameterIndex();
         String paramName = index + "";
         if( index < scenarioModel.parameterNames.size() ) {
             paramName = scenarioModel.parameterNames.get( index );
         }
-        return "&lt;" + paramName + "&gt;";
+        return paramName;
     }
 
 }

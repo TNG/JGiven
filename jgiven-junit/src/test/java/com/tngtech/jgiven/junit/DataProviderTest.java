@@ -14,6 +14,9 @@ import com.tngtech.jgiven.annotation.CasesAsTable;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
+import com.tngtech.jgiven.report.impl.CaseArgumentAnalyser;
+import com.tngtech.jgiven.report.model.ArgumentWord;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 
 @RunWith( DataProviderRunner.class )
@@ -38,6 +41,39 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
         ScenarioModel scenarioModel = scenario.getModel().scenarios.get( 0 );
         List<String> arguments = scenarioModel.getCase( caseNr ).arguments;
         assertThat( arguments ).containsExactly( "" + intArg, "" + booleanArg, "" + caseNr );
+    }
+
+    @DataProvider
+    public static Object[][] trickyData() {
+        return new Object[][] {
+            { 0, 0, 0 },
+            { 0, 1, 0 },
+            { 0, 0, 1 },
+        };
+    }
+
+    @Test
+    @CasesAsTable
+    @UseDataProvider( "trickyData" )
+    public void DataProviderRunner_with_tricky_data( int firstArg, int secondArg, int thirdArg ) {
+        given().some_integer_value( firstArg )
+            .and().another_integer_value( secondArg )
+            .and().a_third_integer_value( thirdArg );
+
+        when().multiply_with_two();
+
+        ScenarioModel scenarioModel = scenario.getModel().scenarios.get( 0 );
+        if( scenarioModel.getScenarioCases().size() == 3 ) {
+            CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
+            analyser.analyze( scenarioModel );
+            ScenarioCaseModel case0 = scenarioModel.getCase( 0 );
+            assertParamIndex( case0, 0, 0 );
+        }
+    }
+
+    private void assertParamIndex( ScenarioCaseModel case0, int step, int parameterIndex ) {
+        ArgumentWord word = (ArgumentWord) case0.getStep( step ).words.get( 2 );
+        assertThat( word.getParameterIndex() ).isEqualTo( parameterIndex );
     }
 
 }

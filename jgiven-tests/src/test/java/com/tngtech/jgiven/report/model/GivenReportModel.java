@@ -6,7 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.report.impl.CaseArgumentAnalyser;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
 
@@ -90,9 +92,18 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF case_$_has_arguments( int ncase, String... args ) {
-        List<String> arguments = reportModel.getLastScenarioModel().getScenarioCases().get( ncase - 1 ).arguments;
+        List<String> arguments = getCase( ncase ).arguments;
         arguments.clear();
         arguments.addAll( Arrays.asList( args ) );
+        return self();
+    }
+
+    private ScenarioCaseModel getCase( int ncase ) {
+        return reportModel.getLastScenarioModel().getScenarioCases().get( ncase - 1 );
+    }
+
+    public SELF case_$_has_a_when_step_$_with_argument( int ncase, String name, String arg ) {
+        getCase( ncase ).addStep( name, Arrays.asList( Word.introWord( "when" ), new Word( name ), Word.argWord( arg ) ), false );
         return self();
     }
 
@@ -105,4 +116,8 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
+    @AfterStage
+    public void analyzeReport() {
+        new CaseArgumentAnalyser().analyze( reportModel );
+    }
 }

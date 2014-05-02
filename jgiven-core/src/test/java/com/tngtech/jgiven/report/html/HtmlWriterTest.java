@@ -71,4 +71,5 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
         String string = HtmlWriter.toString( model.getLastScenarioModel() );
         assertThat( string.replace( '\n', ' ' ) ).matches( ".*<h4>Case 1: paramA = a, paramB = b</h4>.*" );
     }
+
 }

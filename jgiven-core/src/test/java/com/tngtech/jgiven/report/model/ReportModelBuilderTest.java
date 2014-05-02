@@ -5,12 +5,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.google.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -59,11 +61,19 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         StepModel step0 = case0.steps.get( 0 );
         assertThat( step0.words ).hasSize( 4 );
         assertThat( step0.getCompleteSentence() ).isEqualTo( "Given " + a + " and " + b );
-        assertThat( step0.words ).extracting( "isArg" ).isEqualTo( Arrays.asList( false, true, false, true ) );
+        assertThat( extractIsArg( step0.words ) ).isEqualTo( Arrays.asList( false, true, false, true ) );
 
         StepModel step2 = case0.steps.get( 2 );
         assertThat( step2.words ).hasSize( 3 );
-        assertThat( step2.words ).extracting( "isArg" ).isEqualTo( Arrays.asList( false, false, true ) );
+        assertThat( extractIsArg( step2.words ) ).isEqualTo( Arrays.asList( false, false, true ) );
+    }
+
+    public static List<Boolean> extractIsArg( List<Word> words ) {
+        ArrayList<Boolean> result = Lists.newArrayList();
+        for( Word word : words ) {
+            result.add( word.isArg() );
+        }
+        return result;
     }
 
     @IsTag

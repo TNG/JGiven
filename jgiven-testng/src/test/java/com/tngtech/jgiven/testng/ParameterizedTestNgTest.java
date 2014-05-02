@@ -41,11 +41,11 @@ public class ParameterizedTestNgTest extends ScenarioTest<TestSteps, TestSteps, 
         assertThat( word.value ).isEqualTo( "Given" );
 
         word = scenarioCase.steps.get( 0 ).words.get( 1 );
-        assertThat( word.isArg ).isTrue();
+        assertThat( word.isArg() ).isTrue();
         assertThat( word.value ).isEqualTo( "" + milkInLiter );
 
         word = scenarioCase.steps.get( 2 ).words.get( 2 );
-        assertThat( word.isArg ).isTrue();
+        assertThat( word.isArg() ).isTrue();
         assertThat( word.value ).isEqualTo( "something" );
 
         StepModel stepModel = scenarioCase.steps.get( 3 );

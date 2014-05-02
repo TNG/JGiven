@@ -28,4 +28,10 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         this.value2 = value2;
     }
 
+    public GivenTestStep another_integer_value( int secondArg ) {
+        return self();
+    }
+
+    public void a_third_integer_value( int thirdArg ) {}
+
 }

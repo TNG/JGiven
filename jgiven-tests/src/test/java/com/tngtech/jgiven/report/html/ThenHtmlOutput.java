@@ -25,9 +25,7 @@ public class ThenHtmlOutput extends Stage<ThenHtmlOutput> {
         }
         patternBuilder.append( "\\s*<th>Status</th>\\s*" );
         patternBuilder.append( "\\s*</tr>.*</table>.*" );
-        Pattern pattern = Pattern.compile( patternBuilder.toString(), Pattern.MULTILINE | Pattern.DOTALL );
-        Assertions.assertThat( html ).matches( pattern );
-        return self();
+        return the_HTML_report_contains_text( patternBuilder.toString() );
     }
 
     public ThenHtmlOutput the_data_table_has_one_line_for_the_arguments_of_each_case() {
@@ -43,7 +41,11 @@ public class ThenHtmlOutput extends Stage<ThenHtmlOutput> {
             patternBuilder.append( "\\s*</tr>" );
         }
         patternBuilder.append( "\\s*</table>.*" );
-        Pattern pattern = Pattern.compile( patternBuilder.toString(), Pattern.MULTILINE | Pattern.DOTALL );
+        return the_HTML_report_contains_text( patternBuilder.toString() );
+    }
+
+    public ThenHtmlOutput the_HTML_report_contains_text( String string ) {
+        Pattern pattern = Pattern.compile( ".*" + string + ".*", Pattern.MULTILINE | Pattern.DOTALL );
         Assertions.assertThat( html ).matches( pattern );
         return self();
     }

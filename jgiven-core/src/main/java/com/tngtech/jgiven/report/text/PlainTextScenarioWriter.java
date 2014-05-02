@@ -124,7 +124,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     }
 
     protected String wordToString( Word word ) {
-        if( word.isArg && !isInt( word ) ) {
+        if( word.isArg() && !isInt( word ) ) {
             return "'" + word.value + "'";
         }
         return word.value;
