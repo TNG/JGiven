@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.report.model.ArgumentWord;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
@@ -28,8 +27,7 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
     @Override
     protected String wordToString( Word word ) {
         if( word.isArg() ) {
-            ArgumentWord argWord = (ArgumentWord) word;
-            int argIndex = argWord.getParameterIndex();
+            int argIndex = word.getArgumentInfo().getParameterIndex();
             if( argIndex < currentScenarioModel.parameterNames.size() ) {
                 return "<" + currentScenarioModel.parameterNames.get( argIndex ) + ">";
             }

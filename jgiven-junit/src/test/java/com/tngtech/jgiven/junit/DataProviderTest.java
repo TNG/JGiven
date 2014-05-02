@@ -15,9 +15,9 @@ import com.tngtech.jgiven.junit.test.GivenTestStep;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
 import com.tngtech.jgiven.report.impl.CaseArgumentAnalyser;
-import com.tngtech.jgiven.report.model.ArgumentWord;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.Word;
 
 @RunWith( DataProviderRunner.class )
 public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, ThenTestStep> {
@@ -72,8 +72,8 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
     }
 
     private void assertParamIndex( ScenarioCaseModel case0, int step, int parameterIndex ) {
-        ArgumentWord word = (ArgumentWord) case0.getStep( step ).words.get( 2 );
-        assertThat( word.getParameterIndex() ).isEqualTo( parameterIndex );
+        Word word = case0.getStep( step ).words.get( 2 );
+        assertThat( word.getArgumentInfo().getParameterIndex() ).isEqualTo( parameterIndex );
     }
 
 }

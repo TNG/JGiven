@@ -62,9 +62,8 @@ public class StepFormatter {
             }
         }
         for( int i = argCount; i < arguments.size(); i++ ) {
-            Word word = new ArgumentWord();
-            word.value = formatUsingFormatter( formatters.get( i ), arguments.get( i ) );
-            formattedWords.add( word );
+            String value = formatUsingFormatter( formatters.get( i ), arguments.get( i ) );
+            formattedWords.add( Word.argWord( value ) );
         }
         return formattedWords;
     }
@@ -79,7 +78,6 @@ public class StepFormatter {
     }
 
     private void formatArgument( List<Word> formattedWords, int argCount, String word ) {
-        Word w = new ArgumentWord();
         Pattern pattern = Pattern.compile( "\\$(\\d+)" );
         Matcher matcher = pattern.matcher( word );
         int index = argCount;
@@ -88,10 +86,10 @@ public class StepFormatter {
             index = argIndex - 1;
         }
 
-        w.value = formatUsingFormatter( formatters.get( index ), arguments.get( index ) );
+        String value = formatUsingFormatter( formatters.get( index ), arguments.get( index ) );
 
-        if( w.value != null && !w.value.isEmpty() ) {
-            formattedWords.add( w );
+        if( value != null && !value.isEmpty() ) {
+            formattedWords.add( Word.argWord( value ) );
         }
     }
 

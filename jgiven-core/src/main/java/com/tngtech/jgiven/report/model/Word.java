@@ -6,6 +6,11 @@ public class Word {
     public String value;
     public boolean isIntroWord;
 
+    /**
+     * Is set when this word is an argument, is <code>null</code> otherwise
+     */
+    private ArgumentInfo argumentInfo;
+
     public Word() {}
 
     public Word( String value ) {
@@ -17,8 +22,10 @@ public class Word {
         this.isIntroWord = isIntroWord;
     }
 
-    public static ArgumentWord argWord( String value ) {
-        return new ArgumentWord( value );
+    public static Word argWord( String value ) {
+        Word word = new Word( value );
+        word.argumentInfo = new ArgumentInfo();
+        return word;
     }
 
     public static Word introWord( String value ) {
@@ -30,7 +37,11 @@ public class Word {
     }
 
     public boolean isArg() {
-        return false;
+        return argumentInfo != null;
+    }
+
+    public ArgumentInfo getArgumentInfo() {
+        return argumentInfo;
     }
 
     @Override
@@ -40,7 +51,7 @@ public class Word {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( isIntroWord, value );
+        return Objects.hashCode( isIntroWord, value, argumentInfo );
     }
 
     @Override
@@ -53,6 +64,8 @@ public class Word {
             return false;
         Word other = (Word) obj;
         return Objects.equal( isIntroWord, other.isIntroWord ) &&
-                Objects.equal( value, other.value );
+                Objects.equal( value, other.value ) &&
+                Objects.equal( argumentInfo, other.argumentInfo );
     }
+
 }

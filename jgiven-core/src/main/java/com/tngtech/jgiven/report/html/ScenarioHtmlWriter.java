@@ -5,7 +5,6 @@ import static java.lang.String.format;
 import java.io.PrintWriter;
 
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.model.ArgumentWord;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
@@ -113,7 +112,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             if( firstWord && word.isIntroWord ) {
                 writer.print( format( "<span class='introWord'>%s</span>", WordUtil.capitalize( text ) ) );
             } else if( word.isArg() ) {
-                printArg( (ArgumentWord) word );
+                printArg( word );
             } else {
                 writer.print( text );
             }
@@ -122,11 +121,11 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         writer.println( "</li>" );
     }
 
-    private void printArg( ArgumentWord word ) {
-        String value = word.isCaseArg() ? formatCaseArgument( word ) : word.value;
+    private void printArg( Word word ) {
+        String value = word.getArgumentInfo().isCaseArg() ? formatCaseArgument( word ) : word.value;
         value = escapeToHtml( value );
         String multiLine = value.contains( "<br />" ) ? "multiline" : "";
-        String caseClass = word.isCaseArg() ? "caseArgument" : "argument";
+        String caseClass = word.getArgumentInfo().isCaseArg() ? "caseArgument" : "argument";
         writer.print( format( "<span class='%s %s'>%s</span>", caseClass, multiLine, value ) );
     }
 
@@ -134,7 +133,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         return value.replaceAll( "(\r\n|\n)", "<br />" );
     }
 
-    String formatCaseArgument( ArgumentWord word ) {
+    String formatCaseArgument( Word word ) {
         return word.value;
     }
 }

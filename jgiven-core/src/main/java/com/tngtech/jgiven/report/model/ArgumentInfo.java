@@ -2,13 +2,7 @@ package com.tngtech.jgiven.report.model;
 
 import com.google.common.base.Objects;
 
-public class ArgumentWord extends Word {
-    public ArgumentWord() {}
-
-    public ArgumentWord( String value ) {
-        super( value );
-    }
-
+public class ArgumentInfo {
     /**
      * If this word is an argument, whether it is a case
      * argument or not.
@@ -20,11 +14,6 @@ public class ArgumentWord extends Word {
      * this field is set to the corresponding parameter index
      */
     private int parameterIndex;
-
-    @Override
-    public boolean isArg() {
-        return true;
-    }
 
     public void setParameterIndex( int i ) {
         isCaseArg = true;
@@ -41,8 +30,7 @@ public class ArgumentWord extends Word {
 
     @Override
     public int hashCode() {
-        return super.hashCode() + 31 +
-                Objects.hashCode( isCaseArg, parameterIndex );
+        return Objects.hashCode( isCaseArg, parameterIndex );
     }
 
     @Override
@@ -53,10 +41,7 @@ public class ArgumentWord extends Word {
             return false;
         if( getClass() != obj.getClass() )
             return false;
-        ArgumentWord other = (ArgumentWord) obj;
-        if( !super.equals( other ) ) {
-            return false;
-        }
+        ArgumentInfo other = (ArgumentInfo) obj;
         return Objects.equal( isCaseArg, other.isCaseArg ) &&
                 Objects.equal( parameterIndex, other.parameterIndex );
     }
