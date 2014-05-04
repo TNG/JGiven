@@ -73,11 +73,6 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return reportModel;
     }
 
-    public SELF the_scenario_is_annotated_with_CasesAsTables() {
-        reportModel.getLastScenarioModel().setCasesAsTable( true );
-        return self();
-    }
-
     public SELF the_scenario_has_parameters( String... params ) {
         reportModel.getLastScenarioModel().addParameterNames( params );
         return self();

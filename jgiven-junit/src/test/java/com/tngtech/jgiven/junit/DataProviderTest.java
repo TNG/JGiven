@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import com.tngtech.jgiven.annotation.CasesAsTable;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
@@ -30,7 +29,6 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
     }
 
     @Test
-    @CasesAsTable
     @UseDataProvider( "dataProvider" )
     public void DataProviderRunner_can_be_used( int intArg, boolean booleanArg, int caseNr ) {
         given().some_integer_value( intArg )
@@ -53,7 +51,6 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
     }
 
     @Test
-    @CasesAsTable
     @UseDataProvider( "trickyData" )
     public void DataProviderRunner_with_tricky_data( int firstArg, int secondArg, int thirdArg ) {
         given().some_integer_value( firstArg )

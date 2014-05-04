@@ -31,16 +31,46 @@ public class CaseArgumentAnalyser {
     }
 
     public void analyze( ScenarioModel scenarioModel ) {
+        if( scenarioModel.getScenarioCases().size() < 2 ) {
+            return;
+        }
         CollectPhase collectPhase = new CollectPhase();
         scenarioModel.accept( collectPhase );
 
         try {
             reduceMatrix( collectPhase.argumentMatrix );
+            scenarioModel.setCasesAsTable( allStepsEqual( collectPhase.allWords ) );
         } catch( IndexOutOfBoundsException e ) {
             log.info( "Scenario model " + scenarioModel.className + "." + scenarioModel.testMethodName + " has no homogene cases."
                     + " Cannot analyse argument cases" );
+            scenarioModel.setCasesAsTable( false );
         }
 
+    }
+
+    private boolean allStepsEqual( List<List<Word>> allWords ) {
+        List<Word> firstWords = allWords.get( 0 );
+        for( int i = 1; i < allWords.size(); i++ ) {
+            if( !wordsAreEqual( firstWords, allWords.get( i ) ) ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean wordsAreEqual( List<Word> firstWords, List<Word> words ) {
+        if( firstWords.size() != words.size() ) {
+            return false;
+        }
+        for( int j = 0; j < words.size(); j++ ) {
+            if( firstWords.get( j ).isArg() && firstWords.get( j ).getArgumentInfo().isCaseArg() ) {
+                continue;
+            }
+            if( !firstWords.get( j ).equals( words.get( j ) ) ) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void reduceMatrix( List<List<ArgumentHolder>> argumentMatrix ) {
@@ -77,6 +107,8 @@ public class CaseArgumentAnalyser {
     static class CollectPhase extends ReportModelVisitor {
         List<List<ArgumentHolder>> argumentMatrix = Lists.newArrayList();
         List<ArgumentHolder> argumentsOfCurrentCase;
+        List<List<Word>> allWords = Lists.newArrayList();
+        List<Word> allWordsOfCurrentCase;
         ScenarioCaseModel currentCase;
 
         @Override
@@ -84,6 +116,8 @@ public class CaseArgumentAnalyser {
             currentCase = scenarioCase;
             argumentsOfCurrentCase = Lists.newArrayList();
             argumentMatrix.add( argumentsOfCurrentCase );
+            allWordsOfCurrentCase = Lists.newArrayList();
+            allWords.add( allWordsOfCurrentCase );
         }
 
         @Override
@@ -95,6 +129,7 @@ public class CaseArgumentAnalyser {
                     holder.params = getMatchingIndices( word );
                     argumentsOfCurrentCase.add( holder );
                 }
+                allWordsOfCurrentCase.add( word );
             }
         }
 

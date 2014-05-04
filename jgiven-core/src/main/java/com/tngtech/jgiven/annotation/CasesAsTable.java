@@ -9,11 +9,12 @@ import java.lang.annotation.Target;
  * Test methods or test classes can be annotated with this
  * annotation to indicate that the generated report should generate
  * a data table instead of multiple scenario cases.
- * <p>
- * <b>This is an EXPERIMENTAL feature.</b>
+ * 
+ * @deprecated since v0.2.2, data tables are the default, so this annotation has no effect anymore
  */
 @Target( { ElementType.METHOD, ElementType.TYPE } )
 @Retention( RetentionPolicy.RUNTIME )
+@Deprecated
 public @interface CasesAsTable {
 
 }

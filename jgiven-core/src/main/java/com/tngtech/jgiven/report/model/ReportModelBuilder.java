@@ -24,6 +24,7 @@ import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ScenarioDescription;
+import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.util.WordUtil;
@@ -228,7 +229,7 @@ public class ReportModelBuilder implements ScenarioListener {
     private List<String> toStringList( List<?> arguments ) {
         List<String> result = Lists.newArrayList();
         for( Object o : arguments ) {
-            result.add( "" + o );
+            result.add( new DefaultFormatter<Object>().format( o ) );
         }
         return result;
     }

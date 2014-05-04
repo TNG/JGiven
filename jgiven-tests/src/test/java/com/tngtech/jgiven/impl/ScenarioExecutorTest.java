@@ -52,14 +52,14 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
     @DataProvider
     public static Object[][] primitiveArrays() {
         return new Object[][] {
-            { new byte[] { 1, 2, 3 } },
-            { new char[] { 'a', 'b', 'c' } },
-            { new short[] { 1, 2, 3 } },
-            { new int[] { 1, 2, 3 } },
-            { new long[] { 1, 2, 3 } },
-            { new double[] { 1, 2, 3 } },
-            { new float[] { 1, 2, 3 } },
-            { new boolean[] { true, false } },
+            { "byte", new byte[] { 1, 2, 3 } },
+            { "char", new char[] { 'a', 'b', 'c' } },
+            { "short", new short[] { 1, 2, 3 } },
+            { "int", new int[] { 1, 2, 3 } },
+            { "long", new long[] { 1, 2, 3 } },
+            { "double", new double[] { 1, 2, 3 } },
+            { "float", new float[] { 1, 2, 3 } },
+            { "boolean", new boolean[] { true, false } },
         };
     }
 
@@ -67,8 +67,8 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
     @UseDataProvider( "primitiveArrays" )
     @Issue( "#1" )
     @FeatureStepParameters
-    public void step_methods_can_have_primitive_arrays_as_parameters( Object array ) {
-        given().a_step_method_with_a_primitive_$_array_$_as_parameter( array.getClass().getComponentType().getSimpleName(), array );
+    public void step_methods_can_have_primitive_arrays_as_parameters( String type, Object array ) {
+        given().a_step_method_with_a_primitive_$_array_$_as_parameter( type, array );
         when().the_scenario_is_executed();
         then().no_exeception_is_thrown();
     }
