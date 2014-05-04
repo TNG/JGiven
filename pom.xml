@@ -39,7 +39,7 @@
     <sonar.language>java</sonar.language>
   </properties>
   <groupId>com.tngtech.jgiven</groupId>
-  <version>0.2.2-SNAPSHOT</version>
+  <version>0.2.2</version>
 
   <organization>
     <name>TNG Technology Consulting</name>
