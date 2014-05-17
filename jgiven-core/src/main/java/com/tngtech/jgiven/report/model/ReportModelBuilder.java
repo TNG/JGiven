@@ -24,6 +24,10 @@ import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ScenarioDescription;
+import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
+import com.tngtech.jgiven.config.ConfigurationUtil;
+import com.tngtech.jgiven.config.DefaultConfiguration;
+import com.tngtech.jgiven.config.TagConfiguration;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
@@ -43,6 +47,8 @@ public class ReportModelBuilder implements ScenarioListener {
     private ReportModel scenarioCollectionModel;
 
     private Word introWord;
+
+    private AbstractJGivenConfiguraton configuration = new DefaultConfiguration();
 
     public ReportModelBuilder() {
         this( new ReportModel() );
@@ -218,12 +224,17 @@ public class ReportModelBuilder implements ScenarioListener {
 
     @Override
     public void scenarioStarted( Method method, List<?> arguments ) {
+        readConfiguration( method.getDeclaringClass() );
         readAnnotations( method );
         readParameterNames( method );
 
         // must come at last
         setMethodName( method.getName() );
         setArguments( toStringList( arguments ) );
+    }
+
+    private void readConfiguration( Class<?> testClass ) {
+        configuration = ConfigurationUtil.getConfiguration( testClass );
     }
 
     private List<String> toStringList( List<?> arguments ) {
@@ -268,34 +279,41 @@ public class ReportModelBuilder implements ScenarioListener {
         }
     }
 
-    public static List<Tag> toTags( Annotation annotation ) {
+    public List<Tag> toTags( Annotation annotation ) {
         Class<? extends Annotation> annotationType = annotation.annotationType();
         IsTag isTag = annotationType.getAnnotation( IsTag.class );
-        if( isTag == null ) {
+        TagConfiguration tagConfig;
+        if( isTag != null ) {
+            tagConfig = TagConfiguration.fromIsTag( isTag );
+        } else {
+            tagConfig = configuration.getTagConfiguration( annotationType );
+        }
+
+        if( tagConfig == null ) {
             return Collections.emptyList();
         }
 
         String type = annotationType.getSimpleName();
 
-        if( !Strings.isNullOrEmpty( isTag.type() ) ) {
-            type = isTag.type();
+        if( !Strings.isNullOrEmpty( tagConfig.getType() ) ) {
+            type = tagConfig.getType();
         }
 
         Tag tag = new Tag( type );
 
-        if( isTag.prependType() ) {
+        if( tagConfig.isPrependType() ) {
             tag.setPrependType( true );
         }
 
-        if( isTag.description() != null ) {
-            tag.setDescription( isTag.description() );
+        if( tagConfig.getDescription() != null ) {
+            tag.setDescription( tagConfig.getDescription() );
         }
 
-        if( !Strings.isNullOrEmpty( isTag.value() ) ) {
-            tag.setValue( isTag.value() );
+        if( !Strings.isNullOrEmpty( tagConfig.getDefaultValue() ) ) {
+            tag.setValue( tagConfig.getDefaultValue() );
         }
 
-        if( isTag.ignoreValue() ) {
+        if( tagConfig.isIgnoreValue() ) {
             return Arrays.asList( tag );
         }
 
@@ -309,7 +327,7 @@ public class ReportModelBuilder implements ScenarioListener {
                     for( int i = 0; i < array.length; i++ ) {
                         stringArray[i] = array[i] + "";
                     }
-                    if( isTag.explodeArray() ) {
+                    if( tagConfig.isExplodeArray() ) {
                         return getExplodedTags( tag, stringArray );
                     }
                     tag.setValue( stringArray );

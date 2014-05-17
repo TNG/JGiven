@@ -125,4 +125,14 @@ public class ReflectionUtil {
         return method;
     }
 
+    public static <T> T newInstance( Class<T> value ) {
+        try {
+            return value.newInstance();
+        } catch( InstantiationException e ) {
+            throw new RuntimeException( e );
+        } catch( IllegalAccessException e ) {
+            throw new RuntimeException( e );
+        }
+    }
+
 }

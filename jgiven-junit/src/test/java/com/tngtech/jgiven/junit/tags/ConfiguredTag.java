@@ -1,12 +1,9 @@
-package com.tngtech.jgiven.tags;
+package com.tngtech.jgiven.junit.tags;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-/**
- * Tags Scenarios with Story numbers
- */
 @Retention( RetentionPolicy.RUNTIME )
-public @interface Issue {
-    String[] value();
+public @interface ConfiguredTag {
+
 }

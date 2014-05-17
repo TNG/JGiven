@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.jgiven.JGivenTestConfiguration;
+import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.impl.ScenarioExecutorTest.TestSteps;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import com.tngtech.jgiven.report.model.StepModel;
@@ -15,6 +17,7 @@ import com.tngtech.jgiven.tags.FeatureStepParameters;
 import com.tngtech.jgiven.tags.Issue;
 
 @RunWith( DataProviderRunner.class )
+@JGivenConfiguration( JGivenTestConfiguration.class )
 public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
 
     @Test

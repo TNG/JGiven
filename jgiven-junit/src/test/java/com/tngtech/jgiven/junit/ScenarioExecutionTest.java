@@ -3,6 +3,8 @@ package com.tngtech.jgiven.junit;
 import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -12,15 +14,19 @@ import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.CasesAsTable;
+import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
+import com.tngtech.jgiven.junit.tags.ConfiguredTag;
 import com.tngtech.jgiven.junit.test.BeforeAfterTestStage;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
+import com.tngtech.jgiven.report.model.Tag;
 
 @RunWith( DataProviderRunner.class )
+@JGivenConfiguration( TestConfiguration.class )
 public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, WhenTestStep, ThenTestStep> {
 
     @Test
@@ -197,6 +203,19 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         // we have to call finish here because the exception is otherwise
         // thrown too late for the expected annotation
         getScenario().finished();
+    }
+
+    @Test
+    @ConfiguredTag
+    public void configured_tags_are_reported() {
+        given().something();
+        getScenario().finished();
+        List<Tag> tags = getScenario().getModel().getLastScenarioModel().getTags();
+        assertThat( tags ).isNotEmpty();
+        Tag tag = tags.get( 0 );
+        assertThat( tag ).isNotNull();
+        assertThat( tag.getName() ).isEqualTo( "ConfiguredTag" );
+
     }
 
 }

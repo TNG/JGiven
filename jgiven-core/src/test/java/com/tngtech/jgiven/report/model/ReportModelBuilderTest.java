@@ -85,7 +85,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
 
     @Test
     public void testAnnotationParsing() throws Exception {
-        List<Tag> tags = ReportModelBuilder.toTags( AnnotationTestClass.class.getAnnotations()[0] );
+        List<Tag> tags = new ReportModelBuilder().toTags( AnnotationTestClass.class.getAnnotations()[0] );
         assertThat( tags ).hasSize( 1 );
         assertThat( tags.get( 0 ).getName() ).isEqualTo( "AnnotationWithoutValue" );
         assertThat( tags.get( 0 ).getValue() ).isEqualTo( null );
@@ -102,7 +102,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
 
     @Test
     public void testAnnotationWithValueParsing() throws Exception {
-        List<Tag> tags = ReportModelBuilder.toTags( AnnotationWithSingleValueTestClass.class.getAnnotations()[0] );
+        List<Tag> tags = new ReportModelBuilder().toTags( AnnotationWithSingleValueTestClass.class.getAnnotations()[0] );
         assertThat( tags ).hasSize( 1 );
         assertThat( tags.get( 0 ).getName() ).isEqualTo( "AnnotationWithSingleValue" );
         assertThat( tags.get( 0 ).getValue() ).isEqualTo( "testvalue" );
@@ -119,7 +119,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
 
     @Test
     public void testAnnotationWithArrayParsing() throws Exception {
-        List<Tag> tags = ReportModelBuilder.toTags( AnnotationWithArrayValueTestClass.class.getAnnotations()[0] );
+        List<Tag> tags = new ReportModelBuilder().toTags( AnnotationWithArrayValueTestClass.class.getAnnotations()[0] );
         assertThat( tags ).hasSize( 2 );
         assertThat( tags.get( 0 ).getName() ).isEqualTo( "AnnotationWithArray" );
         assertThat( tags.get( 0 ).getValue() ).isEqualTo( "foo" );
@@ -138,7 +138,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
 
     @Test
     public void testAnnotationWithoutExplodedArrayParsing() throws Exception {
-        List<Tag> tags = ReportModelBuilder.toTags( AnnotationWithoutExplodedArrayValueTestClass.class.getAnnotations()[0] );
+        List<Tag> tags = new ReportModelBuilder().toTags( AnnotationWithoutExplodedArrayValueTestClass.class.getAnnotations()[0] );
         assertThat( tags ).hasSize( 1 );
         assertThat( tags.get( 0 ).getName() ).isEqualTo( "AnnotationWithoutExplodedArray" );
         assertThat( tags.get( 0 ).getValue() ).isEqualTo( new String[] { "foo", "bar" } );
@@ -153,7 +153,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
 
     @Test
     public void testAnnotationWithDescription() throws Exception {
-        List<Tag> tags = ReportModelBuilder.toTags( AnnotationWithDescription.class.getAnnotations()[0] );
+        List<Tag> tags = new ReportModelBuilder().toTags( AnnotationWithDescription.class.getAnnotations()[0] );
         assertThat( tags ).hasSize( 1 );
         assertThat( tags.get( 0 ).getDescription() ).isEqualTo( "Some Description" );
     }
