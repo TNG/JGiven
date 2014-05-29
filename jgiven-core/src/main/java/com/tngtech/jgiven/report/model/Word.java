@@ -32,6 +32,10 @@ public class Word {
         return new Word( value, true );
     }
 
+    public void setValue( String name ) {
+        value = name;
+    }
+
     public void append( String word ) {
         value += " " + word;
     }

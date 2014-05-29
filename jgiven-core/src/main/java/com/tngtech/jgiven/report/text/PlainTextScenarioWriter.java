@@ -105,9 +105,11 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
         }
         String rest = joinWords( words.subList( 1, words.size() ) );
 
-        if( stepModel.notImplementedYet ) {
+        if( stepModel.isNotImplementedYet() ) {
             rest = withColor( Color.BLACK, true, Attribute.INTENSITY_FAINT, rest + " (not implemented yet)" );
-        } else if( stepModel.failed ) {
+        } else if( stepModel.isSkipped() ) {
+            rest = withColor( Color.BLACK, true, Attribute.INTENSITY_FAINT, rest + " (skipped)" );
+        } else if( stepModel.isFailed() ) {
             rest = withColor( Color.RED, true, Attribute.INTENSITY_FAINT, rest );
             rest += withColor( Color.RED, true, Attribute.INTENSITY_BOLD, " (failed)" );
         }

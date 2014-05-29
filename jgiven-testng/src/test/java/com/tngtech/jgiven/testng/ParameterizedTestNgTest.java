@@ -49,7 +49,7 @@ public class ParameterizedTestNgTest extends ScenarioTest<TestSteps, TestSteps, 
         assertThat( word.value ).isEqualTo( "something" );
 
         StepModel stepModel = scenarioCase.steps.get( 3 );
-        assertThat( stepModel.failed ).isFalse();
+        assertThat( stepModel.isFailed() ).isFalse();
 
         List<String> arguments = scenarioCase.arguments;
         assertThat( arguments ).containsExactly( "" + milkInLiter, ingredient, "" + caseNr );

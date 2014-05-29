@@ -12,6 +12,7 @@ public class ScenarioModel {
     public String testMethodName;
     public String description;
     public Set<Tag> tags = Sets.newLinkedHashSet();
+    public boolean notImplementedYet;
     public List<String> parameterNames = Lists.newArrayList();
     private boolean casesAsTable;
     private final List<ScenarioCaseModel> scenarioCases = Lists.newArrayList();
@@ -29,30 +30,43 @@ public class ScenarioModel {
         scenarioCases.add( scenarioCase );
     }
 
-    public ImplementationStatus getImplementationStatus() {
+    public ExecutionStatus getExecutionStatus() {
         return new ReportModelVisitor() {
-            int implementedCount;
+            int failedCount;
             int notImplementedCount;
+            int totalCount;
 
             @Override
             public void visit( StepModel stepModel ) {
-                if( stepModel.notImplementedYet ) {
+                if( stepModel.isFailed() ) {
+                    failedCount++;
+                } else if( stepModel.isNotImplementedYet() ) {
                     notImplementedCount++;
-                } else {
-                    implementedCount++;
                 }
+                totalCount++;
             };
 
-            public ImplementationStatus notFullyImplementedYet() {
+            public ExecutionStatus excecutionStatus() {
+                if( ScenarioModel.this.notImplementedYet ) {
+                    return ExecutionStatus.NONE_IMPLEMENTED;
+                }
+
                 ScenarioModel.this.accept( this );
-                if( implementedCount == 0 )
-                    return ImplementationStatus.NONE;
-                if( notImplementedCount == 0 )
-                    return ImplementationStatus.FINISHED;
-                return ImplementationStatus.PARTIALLY;
+                if( failedCount > 0 ) {
+                    return ExecutionStatus.FAILED;
+                }
+
+                if( notImplementedCount > 0 ) {
+                    if( notImplementedCount < totalCount ) {
+                        return ExecutionStatus.PARTIALLY_IMPLEMENTED;
+                    }
+                    return ExecutionStatus.NONE_IMPLEMENTED;
+                }
+
+                return ExecutionStatus.SUCCESS;
             }
 
-        }.notFullyImplementedYet();
+        }.excecutionStatus();
     }
 
     public ScenarioCaseModel getCase( int i ) {

@@ -30,6 +30,7 @@ import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.config.TagConfiguration;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
+import com.tngtech.jgiven.impl.intercept.InvocationMode;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
@@ -96,7 +97,7 @@ public class ReportModelBuilder implements ScenarioListener {
         return WordUtil.capitalize( scenarioDescription );
     }
 
-    public void addStepMethod( Method paramMethod, List<Object> arguments ) {
+    public void addStepMethod( Method paramMethod, List<Object> arguments, InvocationMode mode ) {
         String name;
         Description description = paramMethod.getAnnotation( Description.class );
         if( description != null ) {
@@ -107,15 +108,13 @@ public class ReportModelBuilder implements ScenarioListener {
 
         List<Formatting<?>> formatters = getFormatters( paramMethod.getParameterAnnotations() );
         List<Word> words = new StepFormatter( name, arguments, formatters ).buildFormattedWords();
-        boolean notImplementedYet = paramMethod.isAnnotationPresent( NotImplementedYet.class ) ||
-                paramMethod.getDeclaringClass().isAnnotationPresent( NotImplementedYet.class );
 
         if( introWord != null ) {
             words.add( 0, introWord );
             introWord = null;
         }
 
-        writeStep( name, words, notImplementedYet );
+        writeStep( name, words, mode );
     }
 
     @Override
@@ -151,8 +150,8 @@ public class ReportModelBuilder implements ScenarioListener {
         return null;
     }
 
-    public void writeStep( String name, List<Word> words, boolean notImplementedYet ) {
-        getCurrentScenarioCase().addStep( name, words, notImplementedYet );
+    public void writeStep( String name, List<Word> words, InvocationMode mode ) {
+        getCurrentScenarioCase().addStep( name, words, mode );
     }
 
     private ScenarioCaseModel getCurrentScenarioCase() {
@@ -163,10 +162,10 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     @Override
-    public void stepMethodInvoked( Method paramMethod, List<Object> arguments ) {
+    public void stepMethodInvoked( Method paramMethod, List<Object> arguments, InvocationMode mode ) {
         if( !isStepMethod( paramMethod ) )
             return;
-        addStepMethod( paramMethod, arguments );
+        addStepMethod( paramMethod, arguments, mode );
     }
 
     public boolean isStepMethod( Method paramMethod ) {
@@ -192,11 +191,12 @@ public class ReportModelBuilder implements ScenarioListener {
         scenarioCollectionModel.className = name;
     }
 
-    public void setSuccess( boolean b ) {
-        if( !currentScenarioCase.steps.isEmpty() ) {
-            currentScenarioCase.steps.get( currentScenarioCase.steps.size() - 1 ).failed = !b;
+    public void setSuccess( boolean success ) {
+        if( !currentScenarioCase.steps.isEmpty() && !success ) {
+            currentScenarioCase.steps.get( currentScenarioCase.steps.size() - 1 )
+                .setStatus( StepStatus.FAILED );
         }
-        currentScenarioCase.success = b;
+        currentScenarioCase.success = success;
     }
 
     public void setErrorMessage( String message ) {
@@ -265,6 +265,10 @@ public class ReportModelBuilder implements ScenarioListener {
 
         if( method.isAnnotationPresent( CasesAsTable.class ) ) {
             currentScenarioModel.setCasesAsTable( true );
+        }
+
+        if( method.isAnnotationPresent( NotImplementedYet.class ) ) {
+            currentScenarioModel.notImplementedYet = true;
         }
 
         if( currentScenarioCase.caseNr == 1 ) {

@@ -15,6 +15,10 @@ public class CommonReportHelper {
     private static final Logger log = LoggerFactory.getLogger( CommonReportHelper.class );
 
     public void finishReport( ReportModel model ) {
+        if( !Config.config().isReportEnabled() ) {
+            return;
+        }
+
         new CaseArgumentAnalyser().analyze( model );
 
         if( Config.config().textReport() ) {

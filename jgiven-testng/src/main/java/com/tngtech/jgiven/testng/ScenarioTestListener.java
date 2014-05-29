@@ -7,10 +7,10 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.internal.ConstructorOrMethod;
 
+import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.report.text.PlainTextReporter;
 
 /**
  * TestNG Test listener to enable JGiven for a test class
@@ -25,8 +25,8 @@ public class ScenarioTestListener implements ITestListener {
         Object instance = paramITestResult.getInstance();
         scenarioCollectionModel.className = instance.getClass().getName();
 
-        if( instance instanceof ScenarioTest<?, ?, ?> ) {
-            ScenarioTest<?, ?, ?> testInstance = (ScenarioTest<?, ?, ?>) instance;
+        if( instance instanceof ScenarioTestBase<?, ?, ?> ) {
+            ScenarioTestBase<?, ?, ?> testInstance = (ScenarioTestBase<?, ?, ?>) instance;
             scenario = testInstance.createNewScenario();
         } else {
             scenario = new ScenarioBase();
@@ -53,7 +53,6 @@ public class ScenarioTestListener implements ITestListener {
 
     private void testFinished() {
         scenario.finished();
-        new PlainTextReporter().write( scenario.getModel().getLastScenarioModel() );
     }
 
     @Override

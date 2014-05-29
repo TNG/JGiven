@@ -43,21 +43,6 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
         assertThat( steps.get( 3 ).getCompleteSentence() ).isEqualTo( "Then you get sugar milk" );
     }
 
-    @Test
-    public void failing_tests_are_reported() {
-        given().nothing();
-        try {
-            when().something_fails();
-        } catch( AssertionError e ) {
-
-        }
-        then().nothing_happens();
-
-        ScenarioCaseModel scenarioCaseModel = scenario.getModel().getLastScenarioModel().getCase( 0 );
-        assertThat( scenarioCaseModel.success ).isFalse();
-        assertThat( scenarioCaseModel.errorMessage ).contains( "Something failed" );
-    }
-
     public static class TestSteps extends Stage<TestSteps> {
 
         @ScenarioState
@@ -96,8 +81,7 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
         }
 
         public TestSteps something_fails() {
-            assertThat( true ).as( "Something failed" ).isFalse();
-            return this;
+            throw new IllegalStateException( "Something failed" );
         }
 
         public TestSteps you_get_sugar_milk() {

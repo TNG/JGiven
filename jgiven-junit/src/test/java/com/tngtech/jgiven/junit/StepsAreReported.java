@@ -17,7 +17,7 @@ import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ScenarioDescription;
 import com.tngtech.jgiven.junit.StepsAreReported.TestSteps;
-import com.tngtech.jgiven.report.model.ImplementationStatus;
+import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
@@ -49,7 +49,7 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
         StepModel step = scenarioCase.steps.get( 0 );
         assertThat( step.name ).isEqualTo( "some test step" );
         assertThat( step.words ).isEqualTo( Arrays.asList( Word.introWord( "Given" ), new Word( "some test step" ) ) );
-        assertThat( step.notImplementedYet ).isFalse();
+        assertThat( step.isNotImplementedYet() ).isFalse();
 
     }
 
@@ -61,8 +61,8 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
 
         ScenarioModel model = getScenario().getModel().getLastScenarioModel();
         StepModel stepModel = model.getCase( 0 ).steps.get( 0 );
-        assertThat( stepModel.notImplementedYet ).isTrue();
-        assertThat( model.getImplementationStatus() ).isEqualTo( ImplementationStatus.NONE );
+        assertThat( stepModel.isNotImplementedYet() ).isTrue();
+        assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.NONE_IMPLEMENTED );
     }
 
     @Test
@@ -73,18 +73,7 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
         getScenario().finished();
 
         ScenarioModel model = getScenario().getModel().getLastScenarioModel();
-        assertThat( model.getImplementationStatus() ).isEqualTo( ImplementationStatus.PARTIALLY );
-    }
-
-    @Test
-    public void if_some_step_fails_then_the_error_message_is_stored() {
-        try {
-            given().a_step_fails();
-        } catch( AssertionError e ) {
-
-        }
-        ScenarioCaseModel model = getScenario().getModel().getLastScenarioModel().getCase( 0 );
-        assertThat( model.errorMessage ).isNotNull();
+        assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.PARTIALLY_IMPLEMENTED );
     }
 
     @Retention( RetentionPolicy.RUNTIME )

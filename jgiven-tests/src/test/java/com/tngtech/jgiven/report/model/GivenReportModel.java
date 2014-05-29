@@ -8,6 +8,7 @@ import java.util.List;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.impl.intercept.InvocationMode;
 import com.tngtech.jgiven.report.impl.CaseArgumentAnalyser;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
@@ -46,10 +47,11 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         for( String param : scenarioModel.parameterNames ) {
             scenarioCaseModel.addArguments( "arg" + scenarioCaseModel.caseNr + i++ );
         }
-        scenarioCaseModel.addStep( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ), false );
+        scenarioCaseModel.addStep( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ),
+            InvocationMode.NORMAL );
         if( !scenarioCaseModel.arguments.isEmpty() ) {
             scenarioCaseModel.addStep( "something_happens", asList( Word.introWord( "when" ),
-                Word.argWord( scenarioCaseModel.arguments.get( 0 ) ) ), false );
+                Word.argWord( scenarioCaseModel.arguments.get( 0 ) ) ), InvocationMode.NORMAL );
         }
     }
 
@@ -97,8 +99,19 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return reportModel.getLastScenarioModel().getScenarioCases().get( ncase - 1 );
     }
 
+    public SELF step_$_is_named( int i, String name ) {
+        getCase( 1 ).getStep( i - 1 ).words.get( 1 ).setValue( name );
+        return self();
+    }
+
+    public SELF step_$_has_status( int i, StepStatus status ) {
+        getCase( 1 ).getStep( i - 1 ).setStatus( status );
+        return self();
+    }
+
     public SELF case_$_has_a_when_step_$_with_argument( int ncase, String name, String arg ) {
-        getCase( ncase ).addStep( name, Arrays.asList( Word.introWord( "when" ), new Word( name ), Word.argWord( arg ) ), false );
+        getCase( ncase ).addStep( name, Arrays.asList( Word.introWord( "when" ), new Word( name ), Word.argWord( arg ) ),
+            InvocationMode.NORMAL );
         return self();
     }
 

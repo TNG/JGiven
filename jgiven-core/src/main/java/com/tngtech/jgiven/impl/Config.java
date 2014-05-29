@@ -22,6 +22,10 @@ public class Config {
         return System.getProperty( "jgiven.report.enabled", "true" ).equalsIgnoreCase( "true" );
     }
 
+    public void setReportEnabled( boolean enabled ) {
+        System.setProperty( "jgiven.report.enabled", "" + enabled );
+    }
+
     public Optional<File> getReportDir() {
         String reportDirName = System.getProperty( "jgiven.report.dir" );
         if( reportDirName == null ) {
@@ -51,6 +55,10 @@ public class Config {
 
     public boolean textReport() {
         return System.getProperty( "jgiven.report.text", "true" ).equalsIgnoreCase( "true" );
+    }
+
+    public void setTextReport( boolean b ) {
+        System.setProperty( "jgiven.report.text", "" + b );
     }
 
 }

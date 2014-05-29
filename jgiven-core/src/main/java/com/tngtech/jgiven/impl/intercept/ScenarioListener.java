@@ -13,7 +13,7 @@ public interface ScenarioListener {
 
     void scenarioStarted( Method method, List<?> arguments );
 
-    void stepMethodInvoked( Method paramMethod, List<Object> arguments );
+    void stepMethodInvoked( Method paramMethod, List<Object> arguments, InvocationMode mode );
 
     void introWordAdded( String word );
 

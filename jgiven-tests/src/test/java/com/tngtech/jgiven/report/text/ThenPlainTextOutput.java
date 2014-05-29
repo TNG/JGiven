@@ -13,7 +13,7 @@ public class ThenPlainTextOutput extends Stage<ThenPlainTextOutput> {
     @ExpectedScenarioState
     String plainTextOutput;
 
-    public ThenPlainTextOutput the_plain_report_contains_the_text( String line ) {
+    public ThenPlainTextOutput the_report_contains_text( String line ) {
         Assertions.assertThat( plainTextOutput ).contains( line );
         return this;
     }

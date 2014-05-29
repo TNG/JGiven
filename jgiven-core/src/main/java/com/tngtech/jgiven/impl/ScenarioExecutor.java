@@ -33,6 +33,7 @@ import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.impl.inject.ValueInjector;
+import com.tngtech.jgiven.impl.intercept.InvocationMode;
 import com.tngtech.jgiven.impl.intercept.NoOpScenarioListener;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.intercept.StepMethodHandler;
@@ -72,6 +73,7 @@ public class ScenarioExecutor {
     private ScenarioListener listener = new NoOpScenarioListener();
     private final StepMethodHandler methodHandler = new MethodHandler();
     private final StepMethodInterceptor methodInterceptor = new StepMethodInterceptor( methodHandler, stackDepth );
+    private Throwable failedException;
 
     public ScenarioExecutor() {
         injector.injectValueByType( ScenarioExecutor.class, this );
@@ -89,7 +91,7 @@ public class ScenarioExecutor {
 
     class MethodHandler implements StepMethodHandler {
         @Override
-        public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments ) throws Throwable {
+        public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode ) throws Throwable {
             if( paramMethod.isSynthetic() )
                 return;
 
@@ -105,14 +107,13 @@ public class ScenarioExecutor {
             if( paramMethod.isAnnotationPresent( IntroWord.class ) ) {
                 listener.introWordAdded( paramMethod.getName() );
             } else {
-                listener.stepMethodInvoked( paramMethod, Arrays.asList( arguments ) );
+                listener.stepMethodInvoked( paramMethod, Arrays.asList( arguments ), mode );
             }
         }
 
         @Override
         public void handleThrowable( Throwable t ) throws Throwable {
             failed( t );
-            finished();
         }
 
     }
@@ -136,7 +137,7 @@ public class ScenarioExecutor {
         e.setSuperclass( stepsClass );
         e.setCallback( methodInterceptor );
         T result = (T) e.create();
-        methodInterceptor.enableMethodHandling();
+        methodInterceptor.enableMethodHandling( true );
         return result;
     }
 
@@ -196,6 +197,7 @@ public class ScenarioExecutor {
         if( state != State.INIT )
             return;
         state = State.STARTED;
+        methodInterceptor.enableMethodHandling( false );
 
         try {
             for( Object rule : scenarioRules ) {
@@ -212,6 +214,8 @@ public class ScenarioExecutor {
             finished();
             throw e;
         }
+
+        methodInterceptor.enableMethodHandling( true );
     }
 
     private void executeAnnotatedMethods( Object stage, Class<? extends Annotation> annotationClass ) throws Throwable {
@@ -278,8 +282,9 @@ public class ScenarioExecutor {
         if( state != STARTED )
             throw new IllegalStateException( "The Scenario must be in state STARTED in order to finish it, but it is in state " + state );
         state = FINISHED;
+        methodInterceptor.enableMethodHandling( false );
 
-        Throwable lastThrownException = null;
+        Throwable lastThrownException = failedException;
         if( beforeStepsWereExecuted ) {
             if( currentStage != null ) {
                 try {
@@ -337,6 +342,8 @@ public class ScenarioExecutor {
 
     public void failed( Throwable e ) {
         listener.scenarioFailed( e );
+        methodInterceptor.disableMethodExecution();
+        failedException = e;
     }
 
     /**
@@ -357,7 +364,8 @@ public class ScenarioExecutor {
     public void startScenario( Method method, List<?> arguments ) {
         listener.scenarioStarted( method, arguments );
 
-        if( method.isAnnotationPresent( NotImplementedYet.class ) ) {
+        boolean notImplementedYet = method.isAnnotationPresent( NotImplementedYet.class );
+        if( notImplementedYet ) {
             methodInterceptor.disableMethodExecution();
         }
     }

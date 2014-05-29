@@ -1,8 +1,11 @@
 package com.tngtech.jgiven.junit;
 
+import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
+import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
 import static org.junit.Assume.assumeTrue;
 
 import java.lang.reflect.Method;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
-import com.tngtech.jgiven.report.model.ImplementationStatus;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;
 
@@ -24,12 +26,12 @@ public class ScenarioExecutionRule extends TestWatcher {
 
     private final Object testInstance;
     private final ScenarioBase scenario;
+    private final ReportModel reportModel;
 
     public ScenarioExecutionRule( ReportModel model, Object testInstance, ScenarioBase scenario ) {
         this.testInstance = testInstance;
         this.scenario = scenario;
-        this.scenario.setModel( model );
-        scenario.getExecutor().injectSteps( testInstance );
+        this.reportModel = model;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class ScenarioExecutionRule extends TestWatcher {
         scenario.finished();
 
         // ignore test when scenario is not implemented
-        assumeTrue( scenario.getModel().getLastScenarioModel().getImplementationStatus() != ImplementationStatus.NONE );
+        assumeTrue( EnumSet.of( SUCCESS, FAILED ).contains( scenario.getModel().getLastScenarioModel().getExecutionStatus() ) );
     }
 
     @Override
@@ -49,6 +51,9 @@ public class ScenarioExecutionRule extends TestWatcher {
 
     @Override
     protected void starting( Description description ) {
+        scenario.setModel( reportModel );
+        scenario.getExecutor().injectSteps( testInstance );
+
         Class<?> testClass = description.getTestClass();
         ReportModelBuilder modelBuilder = scenario.getModelBuilder();
         modelBuilder.setClassName( testClass.getName() );
