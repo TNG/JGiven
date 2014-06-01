@@ -40,6 +40,7 @@ public class JUnitExecutionTest extends ScenarioTest<GivenScenarioTest<?>, WhenJ
     public void the_error_message_of_a_failing_step_is_reported() {
         given().a_failing_test();
         when().the_test_is_executed_with_JUnit();
-        then().an_error_message_is_stored_in_the_report();
+        then().the_case_is_marked_as_failed()
+            .and().an_error_message_is_stored_in_the_report();
     }
 }

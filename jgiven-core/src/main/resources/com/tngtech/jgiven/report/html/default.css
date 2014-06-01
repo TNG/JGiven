@@ -257,12 +257,9 @@ h1 {
   margin-right: 0px;
   overflow:hidden;
   padding-top: 0px;
-  padding-left: 15px;
+  padding-left: 0px;
   padding-right: 1ex;
   padding-bottom: 0px;
-  background-color: rgb(58, 130, 71);
-  background-color: rgb(58, 88, 130);
-  background-color: rgb(79, 79, 79);
   background-color: white;
   float: left;
 }
@@ -339,7 +336,7 @@ h1 {
 
 .failed {
   background-color: #f44;
-  border: #f44 solid 5px;
+  border: #f44 solid 3px;
   border-radius: 5px;
   margin-bottom: 5px;
   font-weight:bold;
@@ -348,20 +345,33 @@ h1 {
   text-shadow: none;
 }
 
+.badge.failed {
+  border: 2px;
+}
+
 .topRight {
   position: absolute;
   right:1em;
   top:1em;
 }
 
-.passed, .notImplementedYetBadge, .partiallyPassed {
+.passed, .badge, .notImplementedYet, .partiallyPassed {
   border-radius: 3px;
   display:inline;
   color: rgba(0, 0, 0, 0.6);
   font-weight:bold;
   font-size: 12px;
-  padding-left:1em;
-  padding-right:1em;
+  padding: 1px;
+  padding-left:8px;
+  padding-right:8px;
+  vertical-align: middle;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.badge {
+  position: relative;
+  top: -1px;
 }
 
 .passed {
@@ -374,10 +384,10 @@ h1 {
   border-color: khaki;
 }
 
-.notImplementedYetBadge {
+.notImplementedYet, .skipped {
   background-color: #777;
   border-color: #777;
-  color: #ddd;
+  color: rgb(245, 245, 245);
 }
 
 .notImplementedYetTag {
@@ -510,8 +520,4 @@ ul.steps li {
   color: #888;
   font-size: 14px;
   padding: 5px;
-}
-
-.notImplementedYet {
-  color: gray;
 }

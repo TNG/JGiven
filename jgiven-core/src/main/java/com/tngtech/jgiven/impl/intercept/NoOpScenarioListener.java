@@ -9,9 +9,6 @@ public class NoOpScenarioListener implements ScenarioListener {
     public void scenarioFailed( Throwable e ) {}
 
     @Override
-    public void scenarioSucceeded() {}
-
-    @Override
     public void scenarioStarted( String string ) {}
 
     @Override

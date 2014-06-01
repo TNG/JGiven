@@ -29,7 +29,7 @@ public class ScenarioCaseModel {
             case FAILED:
                 return StepStatus.FAILED;
             case NOT_IMPLEMENTED_YET:
-                return StepStatus.NOT_IMPLEMENTED;
+                return StepStatus.NOT_IMPLEMENTED_YET;
             case SKIPPED:
                 return StepStatus.SKIPPED;
             default:

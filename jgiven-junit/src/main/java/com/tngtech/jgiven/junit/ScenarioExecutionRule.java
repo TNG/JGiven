@@ -36,7 +36,6 @@ public class ScenarioExecutionRule extends TestWatcher {
 
     @Override
     protected void succeeded( Description description ) {
-        scenario.getExecutor().succeeded();
         scenario.finished();
 
         // ignore test when scenario is not implemented

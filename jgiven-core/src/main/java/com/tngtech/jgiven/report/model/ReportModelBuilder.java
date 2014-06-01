@@ -192,10 +192,6 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public void setSuccess( boolean success ) {
-        if( !currentScenarioCase.steps.isEmpty() && !success ) {
-            currentScenarioCase.steps.get( currentScenarioCase.steps.size() - 1 )
-                .setStatus( StepStatus.FAILED );
-        }
         currentScenarioCase.success = success;
     }
 
@@ -213,13 +209,12 @@ public class ReportModelBuilder implements ScenarioListener {
 
     @Override
     public void scenarioFailed( Throwable e ) {
+        if( !currentScenarioCase.steps.isEmpty() ) {
+            currentScenarioCase.steps.get( currentScenarioCase.steps.size() - 1 )
+                .setStatus( StepStatus.FAILED );
+        }
         setSuccess( false );
         setErrorMessage( e.getMessage() );
-    }
-
-    @Override
-    public void scenarioSucceeded() {
-        setSuccess( true );
     }
 
     @Override

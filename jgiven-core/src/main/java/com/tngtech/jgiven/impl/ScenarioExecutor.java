@@ -336,10 +336,6 @@ public class ScenarioExecutor {
             } );
     }
 
-    public void succeeded() {
-        listener.scenarioSucceeded();
-    }
-
     public void failed( Throwable e ) {
         listener.scenarioFailed( e );
         methodInterceptor.disableMethodExecution();

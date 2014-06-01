@@ -45,6 +45,7 @@ public class FrameBasedHtmlReportGenerator implements ReportModelFileHandler {
         writeEnd();
         copyFileToTargetDir( "style.css" );
         copyFileToTargetDir( "default.css" );
+        copyFileToTargetDir( "print.css" );
     }
 
     protected void copyFileToTargetDir( String fileName ) throws FileNotFoundException, IOException {

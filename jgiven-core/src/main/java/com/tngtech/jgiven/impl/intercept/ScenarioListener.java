@@ -7,8 +7,6 @@ public interface ScenarioListener {
 
     void scenarioFailed( Throwable e );
 
-    void scenarioSucceeded();
-
     void scenarioStarted( String string );
 
     void scenarioStarted( Method method, List<?> arguments );

@@ -1,5 +1,10 @@
 package com.tngtech.jgiven.impl.util;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.FluentIterable;
+
 public class WordUtil {
 
     /**
@@ -20,6 +25,26 @@ public class WordUtil {
         if( text == null || text.isEmpty() )
             return text;
         return text.substring( 0, 1 ).toUpperCase().concat( text.substring( 1, text.length() ) );
+    }
+
+    public static String lowerCaseFirstChar( String text ) {
+        if( text == null || text.isEmpty() )
+            return text;
+        return text.substring( 0, 1 ).toLowerCase().concat( text.substring( 1, text.length() ) );
+    }
+
+    public static String camelCase( String string ) {
+        return lowerCaseFirstChar( Joiner.on( "" )
+            .join( FluentIterable.from( Splitter.on( '_' ).split( string ) ).transform( capitalize() ) ) );
+    }
+
+    private static Function<String, String> capitalize() {
+        return new Function<String, String>() {
+            @Override
+            public String apply( String arg ) {
+                return capitalize( arg );
+            }
+        };
     }
 
 }

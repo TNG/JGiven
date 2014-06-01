@@ -38,7 +38,6 @@ public class ScenarioTestListener implements ITestListener {
 
     @Override
     public void onTestSuccess( ITestResult paramITestResult ) {
-        scenario.getExecutor().succeeded();
         testFinished();
     }
 

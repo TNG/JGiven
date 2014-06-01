@@ -10,6 +10,7 @@ import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.JGivenTestConfiguration;
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
+import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.impl.ScenarioExecutorTest.TestSteps;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import com.tngtech.jgiven.report.model.StepModel;
@@ -49,6 +50,15 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
         public void no_exeception_is_thrown() {
             assertThat( true ).as( "no exception is thrown" ).isTrue();
         }
+
+        public void a_step_failed() {
+            assertThat( false ).isTrue();
+        }
+
+        @NotImplementedYet
+        public void a_NotImplementedYet_annotated_step() {}
+
+        public void the_next_step_is_skipped() {}
 
     }
 

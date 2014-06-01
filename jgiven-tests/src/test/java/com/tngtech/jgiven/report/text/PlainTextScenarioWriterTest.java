@@ -24,8 +24,7 @@ public class PlainTextScenarioWriterTest extends ScenarioTest<GivenReportModel<?
             { StepStatus.PASSED, "something happens" },
             { StepStatus.FAILED, "something happens (failed)" },
             { StepStatus.SKIPPED, "something happens (skipped)" },
-            { StepStatus.NOT_IMPLEMENTED, "something happens (not implemented yet)" },
-
+            { StepStatus.NOT_IMPLEMENTED_YET, "something happens (not implemented yet)" },
         };
     }
 
@@ -46,7 +45,6 @@ public class PlainTextScenarioWriterTest extends ScenarioTest<GivenReportModel<?
     public void cases_are_generated_in_text_reports() throws UnsupportedEncodingException {
         given()
             .a_report_model_with_one_scenario()
-            .and().the_scenario_has_parameters( "param1", "param2" )
             .and().the_scenario_has_$_cases( 2 )
             .and().case_$_has_a_when_step_$_with_argument( 1, "some step", "someArg" );
 

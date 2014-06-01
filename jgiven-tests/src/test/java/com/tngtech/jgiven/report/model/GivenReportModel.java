@@ -88,6 +88,12 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
+    public SELF case_$_fails_with_error_message( int ncase, String errorMessage ) {
+        getCase( ncase ).errorMessage = errorMessage;
+        getCase( ncase ).success = false;
+        return self();
+    }
+
     public SELF case_$_has_arguments( int ncase, String... args ) {
         List<String> arguments = getCase( ncase ).arguments;
         arguments.clear();

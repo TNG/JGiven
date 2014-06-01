@@ -9,6 +9,7 @@ import com.tngtech.jgiven.report.model.ReportModelVisitor;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
+import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Tag;
 import com.tngtech.jgiven.report.model.Word;
 
@@ -117,6 +118,11 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
                 writer.print( text );
             }
             firstWord = false;
+        }
+        StepStatus status = stepModel.getStatus();
+        if( status != StepStatus.PASSED ) {
+            String lowerCase = status.toString().toLowerCase();
+            writer.print( format( " <span class='badge %s'>%s</span>", WordUtil.camelCase( lowerCase ), lowerCase.replace( '_', ' ' ) ) );
         }
         writer.println( "</li>" );
     }

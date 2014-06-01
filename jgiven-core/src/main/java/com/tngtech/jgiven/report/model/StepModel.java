@@ -25,7 +25,7 @@ public class StepModel {
     }
 
     public boolean isNotImplementedYet() {
-        return getStatus() == StepStatus.NOT_IMPLEMENTED;
+        return getStatus() == StepStatus.NOT_IMPLEMENTED_YET;
     }
 
     public boolean isFailed() {
