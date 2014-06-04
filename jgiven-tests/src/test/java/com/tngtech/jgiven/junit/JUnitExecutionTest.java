@@ -5,6 +5,7 @@ import org.junit.Test;
 import com.tngtech.jgiven.GivenScenarioTest;
 import com.tngtech.jgiven.tags.FeatureJUnit;
 import com.tngtech.jgiven.tags.FeatureNotImplementedYet;
+import com.tngtech.jgiven.tags.Issue;
 
 @FeatureJUnit
 public class JUnitExecutionTest extends ScenarioTest<GivenScenarioTest<?>, WhenJUnitTest<?>, ThenJUnitTest<?>> {
@@ -25,6 +26,17 @@ public class JUnitExecutionTest extends ScenarioTest<GivenScenarioTest<?>, WhenJ
             .and().the_test_is_annotated_with_NotImplementedYet();
         when().the_test_is_executed_with_JUnit();
         then().the_test_passes();
+    }
+
+    @Test
+    @Issue( "#4" )
+    @FeatureNotImplementedYet
+    public void passing_tests_annotated_with_NotImplementedYet_with_failIfPassed_set_to_true_fail() {
+        given().a_passing_test()
+            .and().the_test_is_annotated_with_NotImplementedYet()
+            .with().failIfPassed_set_to_true();
+        when().the_test_is_executed_with_JUnit();
+        then().the_test_fails_with_message( "Test succeeded, but failIfPassed set to true" );
     }
 
     @Test

@@ -12,17 +12,19 @@ import java.lang.annotation.Target;
 /**
  * Marks methods of step definitions as not implemented yet.
  * Such steps will not be executed, but will appear in 
- * the report as an not implemented yet. 
+ * the report as not implemented yet. 
  * <p>
  * This is useful if one already wants to define the scenario without
  * already implementing all steps, for example, to verify that
  * all acceptance criteria of a story are covered by the scenario.
  * <p>
- * Can also annotated the overall step definition class to indicate
+ * Annotating a stage class indicates
  * that no step is implemented yet.
  * <p>
  * Finally, a test method can be annotated to indicate that the whole
  * test is not implemented yet. The test will then be ignored by the testing-framework.
+ * (In fact an AssumptionException is thrown. It depends on the test runner how this
+ * is interpreted)
  * <i>Currently only works for JUnit</i>
  * 
  * <h2>Example</h2>
@@ -44,4 +46,23 @@ public @interface NotImplementedYet {
      * Optional description to describe when the implementation will be done
      */
     String value() default "";
+
+    /**
+     * Instead of only reporting not implemented yet steps,
+     * the steps are actually executed.
+     * This is useful to see whether some steps fail, for example.
+     * Failing steps, however, have no influence on the overall test result.
+     */
+    boolean executeSteps() default false;
+
+    /**
+     * If <b>no</b> step fails during the execution of the test, 
+     * the test will fail.
+     * <p>
+     * This makes sense if one ensures that a not implemented feature
+     * always leads to failing tests in the spirit of test-driven development.
+     * <p>
+     * If this is true, the <code>executeSteps</code> attribute is implicitly <code>true</code>.
+     */
+    boolean failIfPass() default false;
 }

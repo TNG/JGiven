@@ -32,4 +32,11 @@ public class TestScenarios extends ScenarioTest<GivenTestStage, WhenTestStage, T
         given().nothing();
     }
 
+    @Test
+    @org.testng.annotations.Test
+    @NotImplementedYet( failIfPass = true )
+    public void passing_test_with_NotImplementedYet_annotation_and_failIfPassed_set_to_true() {
+        given().nothing();
+    }
+
 }

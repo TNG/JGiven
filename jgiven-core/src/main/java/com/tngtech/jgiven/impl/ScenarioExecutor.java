@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import junit.framework.AssertionFailedError;
 import net.sf.cglib.proxy.Enhancer;
 
 import org.slf4j.Logger;
@@ -74,6 +75,7 @@ public class ScenarioExecutor {
     private final StepMethodHandler methodHandler = new MethodHandler();
     private final StepMethodInterceptor methodInterceptor = new StepMethodInterceptor( methodHandler, stackDepth );
     private Throwable failedException;
+    private boolean failIfPass;
 
     public ScenarioExecutor() {
         injector.injectValueByType( ScenarioExecutor.class, this );
@@ -320,6 +322,10 @@ public class ScenarioExecutor {
         if( lastThrownException != null ) {
             throw lastThrownException;
         }
+
+        if( failIfPass ) {
+            throw new AssertionFailedError( "Test succeeded, but failIfPassed set to true" );
+        }
     }
 
     @SuppressWarnings( "unchecked" )
@@ -360,14 +366,24 @@ public class ScenarioExecutor {
     public void startScenario( Method method, List<?> arguments ) {
         listener.scenarioStarted( method, arguments );
 
-        boolean notImplementedYet = method.isAnnotationPresent( NotImplementedYet.class );
-        if( notImplementedYet ) {
-            methodInterceptor.disableMethodExecution();
+        if( method.isAnnotationPresent( NotImplementedYet.class ) ) {
+            NotImplementedYet annotation = method.getAnnotation( NotImplementedYet.class );
+
+            if( annotation.failIfPass() ) {
+                failIfPass = true;
+            } else if( !annotation.executeSteps() ) {
+                methodInterceptor.disableMethodExecution();
+            }
+
         }
     }
 
     public void setListener( ScenarioListener listener ) {
         this.listener = listener;
+    }
+
+    public void failIfPass() {
+        failIfPass = true;
     }
 
 }

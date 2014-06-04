@@ -8,7 +8,7 @@ public class JGivenTestConfiguration extends AbstractJGivenConfiguraton {
     @Override
     public void configure() {
         configureTag( Issue.class )
-            .prependType( false )
+            .prependType( true )
             .description( "Issue numbers correspond to Issues in GitHub" );
     }
 

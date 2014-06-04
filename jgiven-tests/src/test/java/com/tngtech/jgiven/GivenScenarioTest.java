@@ -1,6 +1,5 @@
 package com.tngtech.jgiven;
 
-import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.tests.TestScenarioRepository;
@@ -32,6 +31,11 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
 
     public SELF the_test_is_annotated_with_NotImplementedYet() {
         criteria.notImplementedYet = true;
+        return self();
+    }
+
+    public SELF failIfPassed_set_to_true() {
+        criteria.failIfPassed = true;
         return self();
     }
 
