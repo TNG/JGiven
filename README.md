@@ -194,7 +194,7 @@ java com.tngtech.jgiven.report.html.HtmlReportGenerator [--dir=<jsonreports>] [-
 ```
 
 To see how the generated report looks like have a look at the
-[HTML reports of JGiven itself](https://buildhive.cloudbees.com/job/TNG/job/JGiven/ws/jgiven-tests/target/jgiven-reports/html/index.html)
+[HTML reports of JGiven itself](http://tng.github.io/JGiven/jgiven-report/)
 
 #### Maven
 For Maven there exists a plugin that can be used as follows:
