@@ -377,6 +377,8 @@ h1 {
 .passed {
   background-color: lightgreen;
   border-color: lightgreen;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .partiallyPassed {
