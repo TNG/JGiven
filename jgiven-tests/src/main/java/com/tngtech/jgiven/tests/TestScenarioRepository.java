@@ -11,6 +11,7 @@ public class TestScenarioRepository {
         public Integer numberOfSteps;
         public Integer failingStep;
         public Boolean failIfPassed;
+        public Boolean tagAnnotation;
 
         public boolean matches( ScenarioCriteria criteria ) {
             if( notImplementedYet != criteria.notImplementedYet ) {
@@ -33,6 +34,10 @@ public class TestScenarioRepository {
                 return false;
             }
 
+            if( tagAnnotation != null && !tagAnnotation.equals( criteria.tagAnnotation ) ) {
+                return false;
+            }
+
             return true;
         }
     }
@@ -43,6 +48,7 @@ public class TestScenarioRepository {
         public boolean failing;
         public Integer failingStep;
         public int numberOfSteps = 1;
+        public boolean tagAnnotation;
 
         public ScenarioCriteria notImplementedYet() {
             notImplementedYet = true;
@@ -67,6 +73,11 @@ public class TestScenarioRepository {
 
         public ScenarioCriteria numberOfSteps( int n ) {
             numberOfSteps = n;
+            return this;
+        }
+
+        public ScenarioCriteria tagAnnotation() {
+            tagAnnotation = true;
             return this;
         }
     }
@@ -118,6 +129,10 @@ public class TestScenarioRepository {
         addTestScenario( result, "passing_test_with_NotImplementedYet_annotation_and_failIfPassed_set_to_true" )
             .notImplementedYet()
             .failIfPassed()
+            .numberOfSteps( 1 );
+
+        addTestScenario( result, "test_with_tag_annotation" )
+            .tagAnnotation()
             .numberOfSteps( 1 );
 
         return result;

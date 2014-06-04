@@ -3,11 +3,15 @@ package com.tngtech.jgiven.junit;
 import org.junit.Test;
 
 import com.tngtech.jgiven.GivenScenarioTest;
+import com.tngtech.jgiven.JGivenTestConfiguration;
+import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.tags.FeatureJUnit;
 import com.tngtech.jgiven.tags.FeatureNotImplementedYet;
+import com.tngtech.jgiven.tags.FeatureTags;
 import com.tngtech.jgiven.tags.Issue;
 
 @FeatureJUnit
+@JGivenConfiguration( JGivenTestConfiguration.class )
 public class JUnitExecutionTest extends ScenarioTest<GivenScenarioTest<?>, WhenJUnitTest<?>, ThenJUnitTest<?>> {
 
     @Test
@@ -54,5 +58,14 @@ public class JUnitExecutionTest extends ScenarioTest<GivenScenarioTest<?>, WhenJ
         when().the_test_is_executed_with_JUnit();
         then().the_case_is_marked_as_failed()
             .and().an_error_message_is_stored_in_the_report();
+    }
+
+    @Test
+    @FeatureTags
+    public void tag_annotations_appear_in_the_report_model() {
+        given().a_test()
+            .and().the_test_has_a_tag_annotation_named( "TestTag" );
+        when().the_test_is_executed_with_JUnit();
+        then().the_report_model_contains_a_tag_named( "TestTag" );
     }
 }

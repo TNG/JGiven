@@ -63,8 +63,9 @@ public class Tag {
         this.value = value;
     }
 
-    public void setPrependType( boolean prependType ) {
+    public Tag setPrependType( boolean prependType ) {
         this.prependType = prependType;
+        return this;
     }
 
     @Override

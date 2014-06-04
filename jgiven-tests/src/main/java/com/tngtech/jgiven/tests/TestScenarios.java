@@ -39,4 +39,11 @@ public class TestScenarios extends ScenarioTest<GivenTestStage, WhenTestStage, T
         given().nothing();
     }
 
+    @Test
+    @org.testng.annotations.Test
+    @TestTag( "testValue" )
+    public void test_with_tag_annotation() {
+        given().nothing();
+    }
+
 }

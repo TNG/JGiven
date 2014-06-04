@@ -1,5 +1,7 @@
 package com.tngtech.jgiven;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.tests.TestScenarioRepository;
@@ -20,6 +22,10 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
 
     SearchCriteria criteria = new SearchCriteria();
 
+    public SELF a_test() {
+        return self();
+    }
+
     public SELF a_passing_test() {
         return self();
     }
@@ -36,6 +42,12 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
 
     public SELF failIfPassed_set_to_true() {
         criteria.failIfPassed = true;
+        return self();
+    }
+
+    public SELF the_test_has_a_tag_annotation_named( String name ) {
+        assertThat( name ).isEqualTo( "TestTag" );
+        criteria.tagAnnotation = true;
         return self();
     }
 

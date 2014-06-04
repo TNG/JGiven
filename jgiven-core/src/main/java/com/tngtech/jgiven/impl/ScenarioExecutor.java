@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import junit.framework.AssertionFailedError;
 import net.sf.cglib.proxy.Enhancer;
 
 import org.slf4j.Logger;
@@ -324,7 +323,7 @@ public class ScenarioExecutor {
         }
 
         if( failIfPass ) {
-            throw new AssertionFailedError( "Test succeeded, but failIfPassed set to true" );
+            throw new RuntimeException( "Test succeeded, but failIfPassed set to true" );
         }
     }
 

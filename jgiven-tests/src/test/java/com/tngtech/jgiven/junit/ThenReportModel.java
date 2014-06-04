@@ -2,11 +2,14 @@ package com.tngtech.jgiven.junit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Set;
+
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.StepModel;
+import com.tngtech.jgiven.report.model.Tag;
 
 public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF> {
 
@@ -38,6 +41,12 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
 
     public void an_error_message_is_stored_in_the_report() {
         assertThat( getFirstCase().errorMessage ).isNotNull();
+    }
+
+    public void the_report_model_contains_a_tag_named( String tagName ) {
+        Set<Tag> tags = reportModel.getLastScenarioModel().tags;
+        assertThat( tags ).isNotEmpty();
+        assertThat( tags ).extracting( "name" ).contains( tagName );
     }
 
 }

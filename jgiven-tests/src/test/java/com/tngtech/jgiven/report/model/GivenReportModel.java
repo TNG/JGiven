@@ -126,7 +126,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF scenario_$_has_tag_$_with_value_$( int i, String name, String value ) {
-        reportModel.scenarios.get( i - 1 ).tags.add( new Tag( name, value ) );
+        reportModel.scenarios.get( i - 1 ).tags.add( new Tag( name, value ).setPrependType( true ) );
         return self();
     }
 
