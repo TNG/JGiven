@@ -3,18 +3,16 @@
 }
 
 #header {
+  background-color: white;
   -webkit-print-color-adjust:exact;
 }
 
-.packagename {
+h2, .packagename, #header .description {
   color: black;
 }
 
-h2 {
-  color: black;
-}
 
-#toc {
+#leftpane{
   display: none;
 }
 
