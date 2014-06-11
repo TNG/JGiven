@@ -8,7 +8,6 @@ import static com.tngtech.jgiven.impl.util.ReflectionUtil.hasAtLeastOneAnnotatio
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +31,8 @@ import com.tngtech.jgiven.annotation.IntroWord;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.exception.FailIfPassedException;
+import com.tngtech.jgiven.exception.JGivenUserException;
 import com.tngtech.jgiven.impl.inject.ValueInjector;
 import com.tngtech.jgiven.impl.intercept.InvocationMode;
 import com.tngtech.jgiven.impl.intercept.NoOpScenarioListener;
@@ -75,6 +76,7 @@ public class ScenarioExecutor {
     private final StepMethodInterceptor methodInterceptor = new StepMethodInterceptor( methodHandler, stackDepth );
     private Throwable failedException;
     private boolean failIfPass;
+    private boolean suppressExceptions;
 
     public ScenarioExecutor() {
         injector.injectValueByType( ScenarioExecutor.class, this );
@@ -219,36 +221,30 @@ public class ScenarioExecutor {
         methodInterceptor.enableMethodHandling( true );
     }
 
-    private void executeAnnotatedMethods( Object stage, Class<? extends Annotation> annotationClass ) throws Throwable {
-        log.debug( "Executing methods annotated with @" + annotationClass.getName() );
+    private void executeAnnotatedMethods( Object stage, final Class<? extends Annotation> annotationClass ) throws Throwable {
+        log.debug( "Executing methods annotated with @{}", annotationClass.getName() );
         try {
             ReflectionUtil.forEachMethod( stage, stage.getClass(), annotationClass, new MethodAction() {
                 @Override
                 public void act( Object object, Method method ) throws Exception {
-                    log.debug( "Executing method " + method );
-                    method.setAccessible( true );
-                    method.invoke( object );
+                    ReflectionUtil.invokeMethod( object, method, " with annotation @" + annotationClass.getName() );
                 }
             } );
-        } catch( RuntimeException e ) {
-            if( e.getCause() instanceof InvocationTargetException ) {
-                throw e.getCause().getCause();
-            }
-            throw e;
+        } catch( JGivenUserException e ) {
+            throw e.getCause();
         }
     }
 
     private void invokeRuleMethod( Object rule, String methodName ) throws Throwable {
         Optional<Method> optionalMethod = ReflectionUtil.findMethodTransitively( rule.getClass(), methodName );
         if( !optionalMethod.isPresent() ) {
-            log.debug( "Class " + rule.getClass() + " has no " + methodName + " method, but was used as ScenarioRule!" );
+            log.debug( "Class {} has no {} method, but was used as ScenarioRule!", rule.getClass(), methodName );
             return;
         }
-        log.debug( "Executing method " + methodName + " of rule class " + rule.getClass() );
-        optionalMethod.get().setAccessible( true );
+
         try {
-            optionalMethod.get().invoke( rule );
-        } catch( InvocationTargetException e ) {
+            ReflectionUtil.invokeMethod( rule, optionalMethod.get(), " of rule class " + rule.getClass().getName() );
+        } catch( JGivenUserException e ) {
             throw e.getCause();
         }
     }
@@ -285,26 +281,25 @@ public class ScenarioExecutor {
         state = FINISHED;
         methodInterceptor.enableMethodHandling( false );
 
-        Throwable lastThrownException = failedException;
+        Throwable firstThrownException = failedException;
         if( beforeStepsWereExecuted ) {
             if( currentStage != null ) {
                 try {
                     executeAfterStageMethods( currentStage );
                 } catch( AssertionError e ) {
-                    log.error( e.getMessage(), e );
-                    lastThrownException = e;
+                    firstThrownException = logAndGetFirstException( firstThrownException, e );
                 } catch( Exception e ) {
-                    log.error( e.getMessage(), e );
-                    lastThrownException = e;
+                    firstThrownException = logAndGetFirstException( firstThrownException, e );
                 }
             }
 
             for( StageState stage : reverse( newArrayList( stages.values() ) ) ) {
                 try {
                     executeAnnotatedMethods( stage.instance, AfterScenario.class );
+                } catch( AssertionError e ) {
+                    firstThrownException = logAndGetFirstException( firstThrownException, e );
                 } catch( Exception e ) {
-                    log.error( e.getMessage(), e );
-                    lastThrownException = e;
+                    firstThrownException = logAndGetFirstException( firstThrownException, e );
                 }
             }
         }
@@ -312,19 +307,27 @@ public class ScenarioExecutor {
         for( Object rule : Lists.reverse( scenarioRules ) ) {
             try {
                 invokeRuleMethod( rule, "after" );
+            } catch( AssertionError e ) {
+                firstThrownException = logAndGetFirstException( firstThrownException, e );
             } catch( Exception e ) {
-                log.error( e.getMessage(), e );
-                lastThrownException = e;
+                firstThrownException = logAndGetFirstException( firstThrownException, e );
             }
         }
 
-        if( lastThrownException != null ) {
-            throw lastThrownException;
+        failedException = firstThrownException;
+
+        if( !suppressExceptions && failedException != null ) {
+            throw failedException;
         }
 
-        if( failIfPass ) {
-            throw new RuntimeException( "Test succeeded, but failIfPassed set to true" );
+        if( failIfPass && failedException == null ) {
+            throw new FailIfPassedException();
         }
+    }
+
+    private Throwable logAndGetFirstException( Throwable firstThrownException, Throwable newException ) {
+        log.error( newException.getMessage(), newException );
+        return firstThrownException == null ? newException : firstThrownException;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -333,10 +336,9 @@ public class ScenarioExecutor {
             ReflectionUtil.hasAtLeastOneAnnotation( ScenarioStage.class ), new FieldAction() {
                 @Override
                 public void act( Object object, Field field ) throws Exception {
-                    field.setAccessible( true );
-                    Class<?> type = field.getType();
-                    Object steps = addStage( type );
-                    field.set( object, steps );
+                    ReflectionUtil.makeAccessible( field, ", annoted with @ScenarioStage" );
+                    Object steps = addStage( field.getType() );
+                    ReflectionUtil.setField( field, object, steps, ", annoted with @ScenarioStage" );
                 }
             } );
     }
@@ -369,11 +371,11 @@ public class ScenarioExecutor {
             NotImplementedYet annotation = method.getAnnotation( NotImplementedYet.class );
 
             if( annotation.failIfPass() ) {
-                failIfPass = true;
+                failIfPass();
             } else if( !annotation.executeSteps() ) {
                 methodInterceptor.disableMethodExecution();
             }
-
+            suppressExceptions = true;
         }
     }
 

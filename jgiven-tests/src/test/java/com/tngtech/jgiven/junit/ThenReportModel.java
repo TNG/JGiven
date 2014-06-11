@@ -9,6 +9,7 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.StepModel;
+import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Tag;
 
 public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF> {
@@ -23,6 +24,11 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
 
     public SELF step_$_is_reported_as_failed( int i ) {
         assertThat( getStep( i ).isFailed() ).isTrue();
+        return self();
+    }
+
+    public SELF step_$_is_reported_as_passed( int i ) {
+        assertThat( getStep( i ).getStatus() ).isEqualTo( StepStatus.PASSED );
         return self();
     }
 

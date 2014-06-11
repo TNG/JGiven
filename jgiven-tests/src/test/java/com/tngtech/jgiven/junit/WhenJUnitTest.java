@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.junit;
 
+import org.assertj.core.api.Assertions;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Request;
@@ -25,6 +26,8 @@ public class WhenJUnitTest<SELF extends WhenJUnitTest<?>> extends Stage<SELF> {
     ReportModel reportModel;
 
     public void the_test_is_executed_with_JUnit() {
+        Assertions.assertThat( testScenario ).as( "No matching test scenario found" ).isNotNull();
+
         JUnitCore junitCore = new JUnitCore();
         Request request = Request.method( testScenario.testClass, testScenario.testMethod );
         TestRunListener runListener = new TestRunListener();

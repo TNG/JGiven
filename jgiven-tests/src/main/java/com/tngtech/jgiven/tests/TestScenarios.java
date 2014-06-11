@@ -19,6 +19,13 @@ public class TestScenarios extends ScenarioTest<GivenTestStage, WhenTestStage, T
 
     @Test
     @org.testng.annotations.Test
+    public void failing_test_with_two_steps_and_second_step_fails() {
+        given().nothing();
+        when().a_step_fails();
+    }
+
+    @Test
+    @org.testng.annotations.Test
     @NotImplementedYet
     public void failing_test_with_NotImplementedYet_annotation() {
         given().an_exception_is_thrown();
@@ -37,6 +44,20 @@ public class TestScenarios extends ScenarioTest<GivenTestStage, WhenTestStage, T
     @NotImplementedYet( failIfPass = true )
     public void passing_test_with_NotImplementedYet_annotation_and_failIfPassed_set_to_true() {
         given().nothing();
+    }
+
+    @Test
+    @org.testng.annotations.Test
+    @NotImplementedYet( failIfPass = true )
+    public void failing_test_with_NotImplementedYet_annotation_and_failIfPassed_set_to_true() {
+        given().an_exception_is_thrown();
+    }
+
+    @Test
+    @org.testng.annotations.Test
+    @NotImplementedYet( executeSteps = true )
+    public void failing_test_with_NotImplementedYet_annotation_and_executeSteps_set_to_true() {
+        given().an_exception_is_thrown();
     }
 
     @Test

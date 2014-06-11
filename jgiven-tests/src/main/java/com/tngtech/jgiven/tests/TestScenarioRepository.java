@@ -11,6 +11,7 @@ public class TestScenarioRepository {
         public Integer numberOfSteps;
         public Integer failingStep;
         public Boolean failIfPassed;
+        public Boolean executeSteps;
         public Boolean tagAnnotation;
 
         public boolean matches( ScenarioCriteria criteria ) {
@@ -19,6 +20,10 @@ public class TestScenarioRepository {
             }
 
             if( failIfPassed != null && !failIfPassed.equals( criteria.failIfPassed ) ) {
+                return false;
+            }
+
+            if( executeSteps != null && !executeSteps.equals( criteria.executeSteps ) ) {
                 return false;
             }
 
@@ -45,6 +50,7 @@ public class TestScenarioRepository {
     public static class ScenarioCriteria {
         public boolean notImplementedYet;
         public boolean failIfPassed;
+        public boolean executeSteps;
         public boolean failing;
         public Integer failingStep;
         public int numberOfSteps = 1;
@@ -57,6 +63,11 @@ public class TestScenarioRepository {
 
         public ScenarioCriteria failIfPassed() {
             failIfPassed = true;
+            return this;
+        }
+
+        public ScenarioCriteria executeSteps() {
+            executeSteps = true;
             return this;
         }
 
@@ -117,23 +128,34 @@ public class TestScenarioRepository {
             .numberOfSteps( 2 )
             .failingStep( 1 );
 
+        addTestScenario( result, "failing_test_with_two_steps_and_second_step_fails" )
+            .numberOfSteps( 2 )
+            .failingStep( 2 );
+
         addTestScenario( result, "failing_test_with_NotImplementedYet_annotation" )
             .notImplementedYet()
             .numberOfSteps( 2 )
             .failingStep( 1 );
 
         addTestScenario( result, "passing_test_with_NotImplementedYet_annotation" )
-            .notImplementedYet()
-            .numberOfSteps( 1 );
+            .notImplementedYet();
 
         addTestScenario( result, "passing_test_with_NotImplementedYet_annotation_and_failIfPassed_set_to_true" )
             .notImplementedYet()
+            .failIfPassed();
+
+        addTestScenario( result, "failing_test_with_NotImplementedYet_annotation_and_failIfPassed_set_to_true" )
+            .notImplementedYet()
             .failIfPassed()
-            .numberOfSteps( 1 );
+            .failingStep( 1 );
+
+        addTestScenario( result, "failing_test_with_NotImplementedYet_annotation_and_executeSteps_set_to_true" )
+            .notImplementedYet()
+            .executeSteps()
+            .failingStep( 1 );
 
         addTestScenario( result, "test_with_tag_annotation" )
-            .tagAnnotation()
-            .numberOfSteps( 1 );
+            .tagAnnotation();
 
         return result;
     }

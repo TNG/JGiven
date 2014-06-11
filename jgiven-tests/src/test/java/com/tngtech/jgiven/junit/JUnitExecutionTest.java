@@ -20,7 +20,7 @@ public class JUnitExecutionTest extends ScenarioTest<GivenScenarioTest<?>, WhenJ
         given().a_failing_test()
             .and().the_test_is_annotated_with_NotImplementedYet();
         when().the_test_is_executed_with_JUnit();
-        then().the_test_passes();
+        then().the_test_is_ignored();
     }
 
     @Test
@@ -29,7 +29,7 @@ public class JUnitExecutionTest extends ScenarioTest<GivenScenarioTest<?>, WhenJ
         given().a_passing_test()
             .and().the_test_is_annotated_with_NotImplementedYet();
         when().the_test_is_executed_with_JUnit();
-        then().the_test_passes();
+        then().the_test_is_ignored();
     }
 
     @Test
@@ -44,12 +44,42 @@ public class JUnitExecutionTest extends ScenarioTest<GivenScenarioTest<?>, WhenJ
     }
 
     @Test
+    @Issue( "#4" )
+    @FeatureNotImplementedYet
+    public void failing_tests_annotated_with_NotImplementedYet_with_failIfPassed_set_to_true_are_ignored() {
+        given().a_failing_test()
+            .and().the_test_is_annotated_with_NotImplementedYet()
+            .with().failIfPassed_set_to_true();
+        when().the_test_is_executed_with_JUnit();
+        then().the_test_is_ignored();
+    }
+
+    @Test
+    @FeatureNotImplementedYet
+    public void failing_tests_annotated_with_NotImplementedYet_with_executeSteps_set_to_true_are_ignored() {
+        given().a_failing_test()
+            .and().the_test_is_annotated_with_NotImplementedYet()
+            .with().executeSteps_set_to_true();
+        when().the_test_is_executed_with_JUnit();
+        then().the_test_is_ignored();
+    }
+
+    @Test
     public void steps_following_failing_steps_are_reported_as_skipped() {
         given().a_failing_test_with_$_steps( 2 )
             .and().step_$_fails( 1 );
         when().the_test_is_executed_with_JUnit();
         then().step_$_is_reported_as_failed( 1 )
             .and().step_$_is_reported_as_skipped( 2 );
+    }
+
+    @Test
+    public void passing_steps_before_failing_steps_are_reported_as_passed() {
+        given().a_failing_test_with_$_steps( 2 )
+            .and().step_$_fails( 2 );
+        when().the_test_is_executed_with_JUnit();
+        then().step_$_is_reported_as_passed( 1 )
+            .and().step_$_is_reported_as_failed( 2 );
     }
 
     @Test

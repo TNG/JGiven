@@ -10,17 +10,25 @@ public class ThenJUnitTest<SELF extends ThenJUnitTest<?>> extends ThenReportMode
     @ProvidedScenarioState
     Result result;
 
+    public void the_test_is_ignored() {
+        // this is actually not correct, because it depends on the JUnit executor whether
+        // a test is ignored if an AssumptionException is thrown.
+        // The standard JUnit executor will report the test as passed and not ignored,
+        // we thus only test for not failed here
+        the_test_passes();
+    }
+
     public void the_test_passes() {
-        assertThat( result.getFailureCount() ).isEqualTo( 0 );
+        assertThat( result.getFailureCount() ).as( "failure count" ).isEqualTo( 0 );
     }
 
     public void the_test_fails() {
-        assertThat( result.getFailureCount() ).isGreaterThan( 0 );
+        assertThat( result.getFailureCount() ).as( "failure count" ).isGreaterThan( 0 );
     }
 
     public void the_test_fails_with_message( String expectedMessage ) {
         the_test_fails();
-        assertThat( result.getFailures().get( 0 ).getMessage() ).isEqualTo( expectedMessage );
+        assertThat( result.getFailures().get( 0 ).getMessage() ).as( "failure message" ).isEqualTo( expectedMessage );
     }
 
 }

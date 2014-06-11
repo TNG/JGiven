@@ -45,6 +45,11 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         return self();
     }
 
+    public SELF executeSteps_set_to_true() {
+        criteria.executeSteps = true;
+        return self();
+    }
+
     public SELF the_test_has_a_tag_annotation_named( String name ) {
         assertThat( name ).isEqualTo( "TestTag" );
         criteria.tagAnnotation = true;
