@@ -320,7 +320,8 @@ h1 {
   text-decoration: none;
   font-size: 14px;
   color: rgba(0, 0, 0, 0.9);
-  padding:1px;
+  padding-bottom:1px;
+  padding-top: 0px;
   padding-left: 4px;
   padding-right: 4px;
 }
