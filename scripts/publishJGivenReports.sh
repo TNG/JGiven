@@ -1,4 +1,5 @@
 #!/bin/sh
+mvn verify
 git checkout gh-pages
 git rm -r jgiven-report/*
 cp -r jgiven-tests/target/jgiven-reports/html/ jgiven-report
