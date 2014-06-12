@@ -2,7 +2,9 @@ package com.tngtech.jgiven.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeStage;
@@ -10,8 +12,12 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.exception.JGivenExecutionException;
 
 public class ScenarioExecutorTest {
+    @Rule
+    public final ExpectedException expectedExceptionRule = ExpectedException.none();
+
     @Test
     public void methods_annotated_with_BeforeStage_are_executed_before_the_first_step_is_executed() {
         ScenarioExecutor executor = new ScenarioExecutor();
@@ -77,6 +83,18 @@ public class ScenarioExecutorTest {
         assertThat( testClass.step.step ).isSameAs( testClass.step );
     }
 
+    @Test
+    public void BeforeStage_methods_may_not_have_parameters() {
+        expectedExceptionRule.expect( JGivenExecutionException.class );
+        expectedExceptionRule.expectMessage( "Could not execute method 'setup' of class 'BeforeStageWithParameters'" );
+        expectedExceptionRule.expectMessage( ", because it requires parameters" );
+
+        ScenarioExecutor executor = new ScenarioExecutor();
+        BeforeStageWithParameters stage = executor.addStage( BeforeStageWithParameters.class );
+        executor.startScenario( "Test" );
+        stage.something();
+    }
+
     static class TestClass {
         @ScenarioStage
         TestStep step;
@@ -124,6 +142,13 @@ public class ScenarioExecutorTest {
         public void after_stage_was_not_yet_executed() {
             assertThat( afterStageExecuted ).isFalse();
         }
+    }
+
+    static class BeforeStageWithParameters {
+        @BeforeStage
+        protected void setup( int someParam ) {}
+
+        public void something() {}
     }
 
     static class NextSteps {

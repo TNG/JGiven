@@ -193,10 +193,10 @@ public class ReflectionUtil {
     public static String toReadableString( AccessibleObject object ) {
         if( object instanceof Method ) {
             Method method = (Method) object;
-            return "method " + method.getName() + " of class " + method.getDeclaringClass().getSimpleName();
+            return "method '" + method.getName() + "' of class '" + method.getDeclaringClass().getSimpleName() + "'";
         } else if( object instanceof Field ) {
             Field field = (Field) object;
-            return "field " + field.getName() + " of class " + field.getDeclaringClass().getSimpleName();
+            return "field '" + field.getName() + "' of class '" + field.getDeclaringClass().getSimpleName() + "'";
         }
         return null;
     }
