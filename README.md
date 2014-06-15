@@ -190,7 +190,7 @@ To generate HTML reports you have to run the JGiven HTML report generator.
 The reporter is part of the jgiven-core module and can be executed on the command line as follows
 (assuming that the jgiven-core JAR and all required dependencies are on the Java CLASSPATH)
 ```
-java com.tngtech.jgiven.report.html.HtmlReportGenerator [--dir=<jsonreports>] [--toDir=<targetDir>]
+java com.tngtech.jgiven.report.html.HtmlReportGenerator [--dir=<jsonreports>] [--todir=<targetDir>]
 ```
 
 To see how the generated report looks like have a look at the
