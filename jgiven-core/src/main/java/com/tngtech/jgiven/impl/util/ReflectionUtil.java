@@ -166,6 +166,8 @@ public class ReflectionUtil {
     }
 
     public static void setField( Field field, Object object, Object value, String errorDescription ) {
+        ReflectionUtil.makeAccessible( field, errorDescription );
+
         try {
             field.set( object, value );
         } catch( IllegalArgumentException e ) {

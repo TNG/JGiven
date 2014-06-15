@@ -336,7 +336,6 @@ public class ScenarioExecutor {
             ReflectionUtil.hasAtLeastOneAnnotation( ScenarioStage.class ), new FieldAction() {
                 @Override
                 public void act( Object object, Field field ) throws Exception {
-                    ReflectionUtil.makeAccessible( field, ", annoted with @ScenarioStage" );
                     Object steps = addStage( field.getType() );
                     ReflectionUtil.setField( field, object, steps, ", annoted with @ScenarioStage" );
                 }
