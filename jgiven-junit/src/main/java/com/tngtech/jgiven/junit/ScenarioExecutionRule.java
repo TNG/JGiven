@@ -4,14 +4,19 @@ import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
 import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
 import static org.junit.Assume.assumeTrue;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.junit.internal.AssumptionViolatedException;
+import org.junit.rules.MethodRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +26,8 @@ import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;
 
-public class ScenarioExecutionRule extends TestWatcher {
+// TODO MethodRule has been deprecated in 4.10 but no longer in 4.11
+public class ScenarioExecutionRule implements MethodRule {
     private static final Logger log = LoggerFactory.getLogger( ScenarioExecutionRule.class );
 
     private final Object testInstance;
@@ -34,76 +40,107 @@ public class ScenarioExecutionRule extends TestWatcher {
         this.reportModel = model;
     }
 
-    @Override
-    protected void succeeded( Description description ) {
+
+    public Statement apply(final Statement base, final FrameworkMethod method,
+                           final Object target) {
+        return new Statement() {
+            @Override
+            public void evaluate() throws Throwable {
+                starting(method, target);
+                try {
+                    base.evaluate();
+                    succeeded(method);
+                } catch (AssumptionViolatedException e) {
+                    throw e;
+                } catch (Throwable t) {
+                    failed(t, method);
+                    throw t;
+                } finally {
+                    finished(method);
+                }
+            }
+        };
+    }
+
+    protected void succeeded( FrameworkMethod testMethod ) {
         scenario.finished();
 
         // ignore test when scenario is not implemented
         assumeTrue( EnumSet.of( SUCCESS, FAILED ).contains( scenario.getModel().getLastScenarioModel().getExecutionStatus() ) );
     }
 
-    @Override
-    protected void failed( Throwable e, Description description ) {
+    protected void failed( Throwable e, FrameworkMethod testMethod ) {
         scenario.getExecutor().failed( e );
         scenario.finished();
     }
 
-    @Override
-    protected void starting( Description description ) {
+    protected void starting( FrameworkMethod testMethod, Object target ) {
         scenario.setModel( reportModel );
         scenario.getExecutor().injectSteps( testInstance );
 
-        Class<?> testClass = description.getTestClass();
+        Class<?> testClass = target.getClass();
         ReportModelBuilder modelBuilder = scenario.getModelBuilder();
         modelBuilder.setClassName( testClass.getName() );
 
-        Case singleCase = parseMethodName( description.getMethodName() );
-
-        Method method = ReflectionUtil.findMethod( testClass, singleCase.methodName );
-
-        scenario.getExecutor().startScenario( method, singleCase.arguments );
+        scenario.getExecutor().startScenario( testMethod.getMethod(), getMethodArguments(testMethod) );
 
         // inject state from the test itself
         scenario.getExecutor().readScenarioState( testInstance );
     }
 
-    private static final Pattern DATA_PROVIDER_RUNNER_PATTERN = Pattern.compile( "\\[(\\d+):(.*)\\]" );
+    protected void finished( FrameworkMethod testMethod ) {
+        // not used currently
+    }
+
     private static final Pattern PARAMETER_RUNNER_PATTERN = Pattern.compile( "\\[(\\d+)\\]" );
     private static final Pattern JUNIT_PARAMS_RUNNER_PATTERN = Pattern.compile( "\\[(\\d+)\\] (.*)" );
 
-    static Case parseMethodName( String name ) {
-        Case singleCase = new Case();
+    static List<Object> getMethodArguments( FrameworkMethod method ) {
+
+        Class<? extends FrameworkMethod> methodClass = method.getClass();
+        if ( "com.tngtech.java.junit.dataprovider.DataProviderFrameworkMethod".equals( methodClass.getCanonicalName() ) ) {
+            try {
+                Field parametersField = methodClass.getDeclaredField( "parameters" );
+                parametersField.setAccessible( true );
+                Object[] parameters = (Object[]) parametersField.get( method );
+                return Arrays.asList( parameters );
+
+            } catch ( NoSuchFieldException e ) {
+                log.warn( String.format(
+                        "Could not find field containing test method arguments in '%s'. Probably the internal representation has changed. Consider writing bug report.",
+                        methodClass.getSimpleName() ), e );
+            } catch ( IllegalAccessException e ) {
+                log.warn( String.format(
+                        "Not able to access field containing test method arguments in '%s'. Probably the internal representation has changed. Consider writing bug report.",
+                        methodClass.getSimpleName() ), e );
+            }
+            return Collections.emptyList();
+        }
+
+        String name = method.getName(); // TODO this is not same as with Description?
 
         // test for parameters
         int endOfMethod = name.indexOf( '[' );
         if( endOfMethod != -1 ) {
-            String methodName = name.substring( 0, endOfMethod );
-            singleCase.methodName = methodName;
-
             String data = name.substring( endOfMethod, name.length() );
 
-            Matcher matcher = DATA_PROVIDER_RUNNER_PATTERN.matcher( data );
+            Matcher matcher = JUNIT_PARAMS_RUNNER_PATTERN.matcher( data );
             if( !matcher.matches() ) {
-                matcher = JUNIT_PARAMS_RUNNER_PATTERN.matcher( data );
+                matcher = PARAMETER_RUNNER_PATTERN.matcher( data );
                 if( !matcher.matches() ) {
-                    matcher = PARAMETER_RUNNER_PATTERN.matcher( data );
-                    if( !matcher.matches() ) {
-                        log.warn(
-                            "Arguments '{}' did not match any known JUnit parameter runner. Consider writing a feature request or bug report.",
-                            data );
-                        return singleCase;
-                    }
+                    log.warn(
+                        "Arguments '{}' did not match any known JUnit parameter runner. Consider writing a feature request or bug report.",
+                        data );
+                    return Collections.emptyList();
                 }
             }
 
             if( matcher.groupCount() > 1 ) {
                 String arguments = matcher.group( 2 );
-                singleCase.arguments = parseArguments( arguments );
+                return new ArrayList<Object>( parseArguments( arguments ) );
             }
-        } else {
-            singleCase.methodName = name;
         }
-        return singleCase;
+        return Collections.emptyList();
     }
 
     /**
@@ -152,10 +189,4 @@ public class ScenarioExecutionRule extends TestWatcher {
         }
         return result;
     }
-
-    static class Case {
-        String methodName;
-        List<String> arguments = Lists.newArrayList();
-    }
-
 }
