@@ -17,13 +17,13 @@
      <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
-        <version>1.4.0</version>
+        <version>${assertj.version}</version>
         <scope>test</scope>
      </dependency>
      <dependency>
        <groupId>org.testng</groupId>
        <artifactId>testng</artifactId>
-       <version>6.8.7</version>
+       <version>${testng.version}</version>
        <scope>provided</scope>
      </dependency>
   </dependencies>

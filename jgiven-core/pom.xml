@@ -11,55 +11,55 @@
      <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>16.0.1</version>
+        <version>${guava.version}</version>
      </dependency>
      <dependency>
         <groupId>com.google.code.gson</groupId>
         <artifactId>gson</artifactId>
-        <version>2.2.4</version>
+        <version>${gson.version}</version>
      </dependency>
      <dependency>
         <groupId>com.thoughtworks.paranamer</groupId>
         <artifactId>paranamer</artifactId>
-        <version>2.6</version>
+        <version>${paranamer.version}</version>
      </dependency>
      <dependency>
         <groupId>cglib</groupId>
         <artifactId>cglib-nodep</artifactId>
-        <version>2.2.2</version>
+        <version>${cglib-nodep.version}</version>
      </dependency>
      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-log4j12</artifactId>
-        <version>1.7.5</version>
-     </dependency>
-     <dependency>
-        <groupId>org.fusesource.jansi</groupId>
-        <artifactId>jansi</artifactId>
-        <version>1.11</version>
+        <version>${slf4j.version}</version>
      </dependency>
      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>jcl-over-slf4j</artifactId>
-        <version>1.7.5</version>
+        <version>${slf4j.version}</version>
         <scope>test</scope>
+     </dependency>
+     <dependency>
+        <groupId>org.fusesource.jansi</groupId>
+        <artifactId>jansi</artifactId>
+        <version>${jansi.version}</version>
      </dependency>
      <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
-        <version>1.4.0</version>
+        <version>${assertj.version}</version>
         <scope>test</scope>
      </dependency>
      <dependency>
        <groupId>junit</groupId>
        <artifactId>junit</artifactId>
-       <version>4.11</version>
+       <version>${junit.version}</version>
        <scope>test</scope>
      </dependency>
      <dependency>
         <groupId>com.tngtech.java</groupId>
         <artifactId>junit-dataprovider</artifactId>
-        <version>1.5.0</version>
+        <version>${junit-dataprovider.version}</version>
         <scope>test</scope>
      </dependency>
   </dependencies>

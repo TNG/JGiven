@@ -15,11 +15,6 @@
         <scope>test</scope>
      </dependency>
      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>3.2.4.RELEASE</version>
-     </dependency>
-     <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>jgiven-junit</artifactId>
         <version>${project.version}</version>
@@ -27,20 +22,26 @@
      </dependency>
      <dependency>
         <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+        <scope>provided</scope>
+     </dependency>
+     <dependency>
+        <groupId>org.springframework</groupId>
         <artifactId>spring-test</artifactId>
-        <version>3.2.4.RELEASE</version>
+        <version>${spring.version}</version>
         <scope>test</scope>
      </dependency>
      <dependency>
         <groupId>org.assertj</groupId>
         <artifactId>assertj-core</artifactId>
-        <version>1.4.0</version>
+        <version>${assertj.version}</version>
         <scope>test</scope>
      </dependency>
      <dependency>
        <groupId>junit</groupId>
        <artifactId>junit</artifactId>
-       <version>4.11</version>
+       <version>${junit.version}</version>
        <scope>test</scope>
      </dependency>
   </dependencies>
