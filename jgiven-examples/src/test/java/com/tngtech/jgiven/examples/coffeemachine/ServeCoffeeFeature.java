@@ -1,5 +1,8 @@
 package com.tngtech.jgiven.examples.coffeemachine;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -7,10 +10,6 @@ import com.tngtech.jgiven.examples.coffeemachine.steps.GivenSteps;
 import com.tngtech.jgiven.examples.coffeemachine.steps.ThenSteps;
 import com.tngtech.jgiven.examples.coffeemachine.steps.WhenSteps;
 import com.tngtech.jgiven.junit.ScenarioTest;
-import com.tngtech.jgiven.report.text.PlainTextReporter;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * Feature: Serve coffee
@@ -21,27 +20,20 @@ import org.junit.runner.RunWith;
  * Original example due to Cucumber Wiki
  */
 @RunWith( DataProviderRunner.class )
-public class JUnitDataProviderServeCoffeeFeature extends ScenarioTest<GivenSteps, WhenSteps, ThenSteps> {
-    @After
-    public void printScenario() {
-        PlainTextReporter textWriter = new PlainTextReporter();
-        getScenario().getModel().accept( textWriter );
-    }
+public class ServeCoffeeFeature extends ScenarioTest<GivenSteps, WhenSteps, ThenSteps> {
 
     @DataProvider
-    public static Object[][] dataProvider_buy_a_coffee() {
-        // @formatter:off
+    public static Object[][] buyCoffeeData() {
         return new Object[][] {
-                { true,  1, 1, false },
-                { true,  1, 2, true  },
-                { true,  0, 2, false },
-                { false, 1, 2, false },
-            };
-        // @formatter:on
+            { true, 1, 1, false },
+            { true, 1, 2, true },
+            { true, 0, 2, false },
+            { false, 1, 2, false },
+        };
     }
 
     @Test
-    @UseDataProvider( "dataProvider_buy_a_coffee" )
+    @UseDataProvider( "buyCoffeeData" )
     public void buy_a_coffee( boolean on, int coffees, int dollars, boolean coffeeServed ) {
 
         given().there_are_$_coffees_left_in_the_machine( coffees ).

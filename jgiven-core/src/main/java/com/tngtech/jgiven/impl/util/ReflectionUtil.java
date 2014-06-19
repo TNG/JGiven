@@ -174,7 +174,7 @@ public class ReflectionUtil {
         } catch( SecurityException e ) {
             log.debug( "Caught exception: ", e );
             log.warn( "Could not make " + toReadableString( object ) + errorDescription
-                    + " accessible, trying to executed it nevertheless and hoping for the best." );
+                    + " accessible, trying to access it nevertheless and hoping for the best." );
         }
     }
 

@@ -1,15 +1,15 @@
 package com.tngtech.jgiven.examples.coffeemachine;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import com.tngtech.jgiven.examples.coffeemachine.steps.GivenSteps;
 import com.tngtech.jgiven.examples.coffeemachine.steps.ThenSteps;
 import com.tngtech.jgiven.examples.coffeemachine.steps.WhenSteps;
 import com.tngtech.jgiven.junit.ScenarioTest;
-import com.tngtech.jgiven.report.text.PlainTextReporter;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * Feature: Serve coffee
@@ -21,11 +21,6 @@ import org.junit.runner.RunWith;
  */
 @RunWith( JUnitParamsRunner.class )
 public class JUnitParamsServeCoffeeFeature extends ScenarioTest<GivenSteps, WhenSteps, ThenSteps> {
-    @After
-    public void printScenario() {
-        PlainTextReporter textWriter = new PlainTextReporter();
-        getScenario().getModel().accept( textWriter );
-    }
 
     @Test
     @Parameters( {
