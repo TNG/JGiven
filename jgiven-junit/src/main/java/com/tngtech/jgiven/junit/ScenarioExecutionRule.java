@@ -18,14 +18,14 @@ import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
+import com.google.common.annotations.VisibleForTesting;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;
 
 public class ScenarioExecutionRule implements MethodRule {
-    private static final String JUNITPARAMS_STATEMENT = "junitparams.internal.InvokeParameterisedMethod";
     private static final String DATAPROVIDER_FRAMEWORK_METHOD = "com.tngtech.java.junit.dataprovider.DataProviderFrameworkMethod";
+    private static final String JUNITPARAMS_STATEMENT = "junitparams.internal.InvokeParameterisedMethod";
 
     private static final Logger log = LoggerFactory.getLogger( ScenarioExecutionRule.class );
 
@@ -84,25 +84,25 @@ public class ScenarioExecutionRule implements MethodRule {
         scenario.getExecutor().readScenarioState( testInstance );
     }
 
+    @VisibleForTesting
     static List<Object> getMethodArguments( Statement base, FrameworkMethod method ) {
         if( DATAPROVIDER_FRAMEWORK_METHOD.equals( method.getClass().getCanonicalName() ) ) {
-            return getParametersFromObject( method, "parameters" );
+            return getParametersFrom( method, "parameters" );
         }
-
         if( JUNITPARAMS_STATEMENT.equals( base.getClass().getCanonicalName() ) ) {
-            return getParametersFromObject( base, "params" );
+            return getParametersFrom( base, "params" );
         }
-
         return Collections.emptyList();
     }
 
-    private static List<Object> getParametersFromObject( Object object, String fieldName ) {
+    private static List<Object> getParametersFrom( Object object, String fieldName ) {
         Class<?> methodClass = object.getClass();
         try {
             Field parametersField = methodClass.getDeclaredField( fieldName );
             parametersField.setAccessible( true );
             Object[] parameters = (Object[]) parametersField.get( object );
             return Arrays.asList( parameters );
+
         } catch( NoSuchFieldException e ) {
             log.warn( format( "Could not find field containing test method arguments in '%s'. "
                 + "Probably the internal representation has changed. Consider writing a bug report.",
@@ -113,52 +113,5 @@ public class ScenarioExecutionRule implements MethodRule {
                 methodClass.getSimpleName() ), e );
         }
         return Collections.emptyList();
-    }
-
-    /**
-     * Simple splitting by ',' is not possible, because of arguments
-     * that contain ',' like arrays for example.
-     * Handles arrays and lists that are contained in [ ]. 
-     * Can also deal with nested arrays.
-     * <p>
-     * Removes the surrounding [ ] from lists in the result
-     */
-    public static List<String> parseArguments( String arguments ) {
-        List<String> result = Lists.newArrayList();
-        StringBuilder currentArg = new StringBuilder();
-        int listDepth = 0;
-        for( int i = 0; i < arguments.length(); i++ ) {
-            char c = arguments.charAt( i );
-            if( c == '[' ) {
-                if( listDepth > 0 || currentArg.toString().trim().length() == 0 ) {
-                    listDepth++;
-                    if( listDepth == 1 ) {
-                        continue;
-                    }
-                }
-            } else if( listDepth > 0 ) {
-                if( c == ']' ) {
-                    listDepth--;
-                    if( listDepth == 0 ) {
-                        continue;
-                    }
-                }
-            } else {
-                if( c == ',' ) {
-                    result.add( currentArg.toString().trim() );
-                    currentArg = new StringBuilder();
-                    continue;
-                }
-            }
-            currentArg.append( c );
-        }
-        // fix string if list was not ended correctly
-        if( listDepth > 0 ) {
-            currentArg.insert( 0, '[' );
-        }
-        if( currentArg.length() > 0 ) {
-            result.add( currentArg.toString().trim() );
-        }
-        return result;
     }
 }

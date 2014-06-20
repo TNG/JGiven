@@ -32,6 +32,15 @@ public class ScenarioTestRuleTest {
         };
     }
 
+    @Test
+    @UseDataProvider( "methodTestData" )
+    public void testParseMethodName( Statement statement, FrameworkMethod testMethod, List<String> expectedArgs ) {
+        List<Object> result = ScenarioExecutionRule.getMethodArguments( statement, testMethod );
+        assertThat( result ).isEqualTo( expectedArgs );
+    }
+
+    // -- helper methods -----------------------------------------------------------------------------------------------
+
     private static Object dataProviderFrameworkMethod( Method method, Object... args ) throws Exception {
         return new DataProviderFrameworkMethod( method, 1, args );
     }
@@ -47,41 +56,16 @@ public class ScenarioTestRuleTest {
         };
     }
 
-    @Test
-    @UseDataProvider( "methodTestData" )
-    public void testParseMethodName( Statement statement, FrameworkMethod testMethod, List<String> expectedArgs ) {
-        List<Object> result = ScenarioExecutionRule.getMethodArguments( statement, testMethod );
-        assertThat( result ).isEqualTo( expectedArgs );
+    private static Method twoParamsMethod() throws Exception {
+        return getMethod( "testMethodWithTwoParams", String.class, int.class );
     }
 
-    public void testMethodWithTwoParams( String arg1, int arg2 ) {}
-
-    protected static Method twoParamsMethod() throws Exception {
-        return anyMethod( "testMethodWithTwoParams", String.class, int.class );
-    }
-
-    protected static Method anyMethod( String methodName, Class<?>... types ) throws Exception {
+    private static Method getMethod( String methodName, Class<?>... types ) throws Exception {
         return ScenarioTestRuleTest.class.getDeclaredMethod( methodName, types );
     }
 
-    @DataProvider
-    public static Object[][] argumentTestData() {
-        return new Object[][] {
-            { "foo", Arrays.asList( "foo" ) },
-            { "foo, bar", Arrays.asList( "foo", "bar" ) },
-            { "foo, [1, 2, 3]", Arrays.asList( "foo", "1, 2, 3" ) },
-            { "[1, 2], foo", Arrays.asList( "1, 2", "foo" ) },
-            { "foo, [1, 2], bar", Arrays.asList( "foo", "1, 2", "bar" ) },
-            { "[1, [1, 2], 2]", Arrays.asList( "1, [1, 2], 2" ) },
-            { "[foo", Arrays.asList( "[foo" ) },
-        };
-    }
+    // -- mock methods -------------------------------------------------------------------------------------------------
 
-    @Test
-    @UseDataProvider( "argumentTestData" )
-    public void testArgumentParsing( String argumentString, List<String> expectedResult ) {
-        List<String> parseArguments = ScenarioExecutionRule.parseArguments( argumentString );
-        assertThat( parseArguments ).isEqualTo( expectedResult );
-    }
+    public void testMethodWithTwoParams( String arg1, int arg2 ) {}
 
 }
