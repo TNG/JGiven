@@ -1,14 +1,15 @@
 package com.tngtech.jgiven.testng;
 
-import java.util.Arrays;
+import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
 
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import org.testng.internal.ConstructorOrMethod;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.ScenarioBase;
+import com.tngtech.jgiven.impl.util.ScenarioUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
 
@@ -32,8 +33,9 @@ public class ScenarioTestListener implements ITestListener {
             scenario = new ScenarioBase();
         }
         scenario.setModel( scenarioCollectionModel );
-        ConstructorOrMethod constructorOrMethod = paramITestResult.getMethod().getConstructorOrMethod();
-        scenario.getExecutor().startScenario( constructorOrMethod.getMethod(), Arrays.asList( paramITestResult.getParameters() ) );
+
+        Method method = paramITestResult.getMethod().getConstructorOrMethod().getMethod();
+        scenario.getExecutor().startScenario( method, getArgumentsFrom( method, paramITestResult ) );
     }
 
     @Override
@@ -65,6 +67,10 @@ public class ScenarioTestListener implements ITestListener {
     @Override
     public void onFinish( ITestContext paramITestContext ) {
         new CommonReportHelper().finishReport( scenarioCollectionModel );
+    }
+
+    private LinkedHashMap<String, ?> getArgumentsFrom( Method method, ITestResult paramITestResult ) {
+        return ScenarioUtil.mapArgumentsWithParameterNamesOf( method, paramITestResult.getParameters() );
     }
 
 }

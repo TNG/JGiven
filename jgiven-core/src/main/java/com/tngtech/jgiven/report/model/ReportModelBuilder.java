@@ -1,10 +1,14 @@
 package com.tngtech.jgiven.report.model;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,9 +18,6 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
-import com.thoughtworks.paranamer.BytecodeReadingParanamer;
-import com.thoughtworks.paranamer.ParameterNamesNotFoundException;
-import com.thoughtworks.paranamer.Paranamer;
 import com.tngtech.jgiven.annotation.CasesAsTable;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.Format;
@@ -40,8 +41,6 @@ import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
  */
 public class ReportModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ReportModelBuilder.class );
-
-    private static final Paranamer paranamer = new BytecodeReadingParanamer();
 
     private ScenarioModel currentScenarioModel;
     private ScenarioCaseModel currentScenarioCase;
@@ -218,35 +217,26 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     @Override
-    public void scenarioStarted( Method method, List<?> arguments ) {
+    public void scenarioStarted( Method method, LinkedHashMap<String, ?> arguments ) {
         readConfiguration( method.getDeclaringClass() );
         readAnnotations( method );
-        readParameterNames( method );
+        setParameterNames( newArrayList( arguments.keySet() ) );
 
         // must come at last
         setMethodName( method.getName() );
-        setArguments( toStringList( arguments ) );
+        setArguments( toStringList( arguments.values() ) );
     }
 
     private void readConfiguration( Class<?> testClass ) {
         configuration = ConfigurationUtil.getConfiguration( testClass );
     }
 
-    private List<String> toStringList( List<?> arguments ) {
+    private List<String> toStringList( Collection<?> arguments ) {
         List<String> result = Lists.newArrayList();
         for( Object o : arguments ) {
             result.add( new DefaultFormatter<Object>().format( o ) );
         }
         return result;
-    }
-
-    private void readParameterNames( Method method ) {
-        try {
-            setParameterNames( Arrays.asList( paranamer.lookupParameterNames( method ) ) );
-        } catch( ParameterNamesNotFoundException e ) {
-            log.warn( "Could not determine parameter names for method " + method
-                    + ". You should compile your source code with debug information." );
-        }
     }
 
     private void readAnnotations( Method method ) {

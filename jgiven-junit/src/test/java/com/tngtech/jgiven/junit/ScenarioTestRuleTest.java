@@ -1,17 +1,23 @@
 package com.tngtech.jgiven.junit;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.EMPTY_LIST;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.google.common.collect.Maps.immutableEntry;
+import static org.assertj.core.error.ShouldContainExactly.shouldContainExactly;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import junitparams.internal.InvokeParameterisedMethod;
 
+import org.assertj.core.api.MapAssert;
+import org.assertj.core.internal.Failures;
+import org.assertj.core.internal.Maps;
+import org.assertj.core.internal.Objects;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
@@ -26,34 +32,51 @@ public class ScenarioTestRuleTest {
     @DataProvider
     public static Object[][] methodTestData() throws Exception {
         return new Object[][] {
-            { emptyStatement(), new FrameworkMethod( twoParamsMethod() ), EMPTY_LIST },
-            { emptyStatement(), dataProviderFrameworkMethod( twoParamsMethod(), "arg1", 2 ), asList( "arg1", 2 ) },
-            { junitParamsStatement( twoParamsMethod(), "arg1, 2" ), new FrameworkMethod( twoParamsMethod() ), asList( "arg1", 2 ) },
-        };
+            // Normal JUnit test
+            { emptyStatement(), anyFrameworkMethod(), new Object(), },
+
+            // junit-dataprovider test
+            { emptyStatement(), dataProviderFrameworkMethod( twoParamsMethod(), "arg1", 2 ), new Object(),
+                new Map.Entry<?, ?>[] { immutableEntry( "s", "arg1" ), immutableEntry( "i", 2 ) } },
+
+            // junitparams test
+            { junitParamsStatement( twoParamsMethod(), "arg1, 2" ), anyFrameworkMethod(), new Object(),
+                new Map.Entry<?, ?>[] { immutableEntry( "s", "arg1" ), immutableEntry( "i", 2 ) } },
+
+            // @Parameterized test
+            { emptyStatement(), anyFrameworkMethod(), new ParameterizedTest( "test1", 4, false ),
+                new Map.Entry<?, ?>[] { immutableEntry( "s", "test1" ), immutableEntry( "i", 4 ),
+                    immutableEntry( "b", false ) } }, };
     }
 
     @Test
     @UseDataProvider( "methodTestData" )
-    public void testParseMethodName( Statement statement, FrameworkMethod testMethod, List<String> expectedArgs ) {
-        List<Object> result = ScenarioExecutionRule.getMethodArguments( statement, testMethod );
-        assertThat( result ).isEqualTo( expectedArgs );
+    public void testParseMethodName( Statement statement, FrameworkMethod testMethod, Object target,
+            Map.Entry<?, ?>[] expected ) {
+
+        LinkedHashMap<String, ?> result = ScenarioExecutionRule.getMethodArguments( statement, testMethod, target );
+        assertThat( result ).containsExactly( expected );
     }
 
     // -- helper methods -----------------------------------------------------------------------------------------------
-
-    private static Object dataProviderFrameworkMethod( Method method, Object... args ) throws Exception {
-        return new DataProviderFrameworkMethod( method, 1, args );
-    }
-
-    private static Object junitParamsStatement( Method method, String args ) throws Exception {
-        return new InvokeParameterisedMethod( new FrameworkMethod( method ), ScenarioTestRuleTest.class, args, 1 );
-    }
 
     private static Statement emptyStatement() {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {}
         };
+    }
+
+    private static FrameworkMethod anyFrameworkMethod() throws Exception {
+        return new FrameworkMethod( twoParamsMethod() );
+    }
+
+    private static Object dataProviderFrameworkMethod( Method method, Object... args ) {
+        return new DataProviderFrameworkMethod( method, 1, args );
+    }
+
+    private static Object junitParamsStatement( Method method, String args ) {
+        return new InvokeParameterisedMethod( new FrameworkMethod( method ), ScenarioTestRuleTest.class, args, 1 );
     }
 
     private static Method twoParamsMethod() throws Exception {
@@ -64,8 +87,64 @@ public class ScenarioTestRuleTest {
         return ScenarioTestRuleTest.class.getDeclaredMethod( methodName, types );
     }
 
-    // -- mock methods -------------------------------------------------------------------------------------------------
+    private static <K, V> LinkedHashMapAssert<K, V> assertThat( LinkedHashMap<K, V> actual ) {
+        return new LinkedHashMapAssert<K, V>( actual );
+    }
 
-    public void testMethodWithTwoParams( String arg1, int arg2 ) {}
+    private static class LinkedHashMapAssert<K, V> extends MapAssert<K, V> {
+        private final Objects objects = Objects.instance();
+        private final Maps maps = Maps.instance();
+        private final Failures failures = Failures.instance();
+
+        protected LinkedHashMapAssert( LinkedHashMap<K, V> actual ) {
+            super( actual );
+        }
+
+        public LinkedHashMapAssert<K, V> containsExactly( Map.Entry<?, ?>... entries ) {
+            if( entries == null ) {
+                throw new NullPointerException( "The array of entries to look for should not be null" );
+            }
+            objects.assertNotNull( info, actual );
+
+            // if both actual and values are empty, then assertion passes.
+            if( actual.isEmpty() && entries.length == 0 ) {
+                return this;
+            }
+            maps.assertHasSameSizeAs( info, actual, entries );
+
+            int idx = 0;
+            for( Iterator<Entry<K, V>> actualIterator = actual.entrySet().iterator(); actualIterator.hasNext(); ) {
+                Entry<K, V> entry = actualIterator.next();
+                Entry<?, ?> expected = entries[idx];
+
+                if( !entry.equals( expected ) ) {
+                    throw failures.failure( info, shouldContainExactly( entry, expected, idx ) );
+                }
+                idx++;
+            }
+            return this;
+        }
+    }
+
+    // -- mocks --------------------------------------------------------------------------------------------------------
+
+    public void testMethodWithTwoParams( String s, int i ) {}
+
+    @RunWith( Parameterized.class )
+    public static class ParameterizedTest {
+        private final static String S = "static";
+
+        private final Object o = new Object();
+        private final String s;
+        private final double d = 5.0;
+        private final int i;
+        private final Boolean b;
+
+        public ParameterizedTest( String s, int i, Boolean b ) {
+            this.s = s;
+            this.i = i;
+            this.b = b;
+        }
+    }
 
 }
