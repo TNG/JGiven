@@ -33,7 +33,7 @@ public class ScenarioTestRuleTest {
     public static Object[][] methodTestData() throws Exception {
         return new Object[][] {
             // Normal JUnit test
-            { emptyStatement(), anyFrameworkMethod(), new Object(), },
+            { emptyStatement(), anyFrameworkMethod(), new Object(), new Map.Entry<?, ?>[0] },
 
             // junit-dataprovider test
             { emptyStatement(), dataProviderFrameworkMethod( twoParamsMethod(), "arg1", 2 ), new Object(),
