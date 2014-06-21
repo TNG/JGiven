@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Preconditions;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.ParameterNamesNotFoundException;
 import com.thoughtworks.paranamer.Paranamer;
@@ -19,7 +20,9 @@ public class ScenarioUtil {
 
     private static final Paranamer PARANAMER = new BytecodeReadingParanamer();
 
+    /** @throws NullPointerException iif {@code constructorOrMethod} is {@code null} */
     public static LinkedHashMap<String, ?> mapArgumentsWithParameterNamesOf( AccessibleObject contructorOrMethod, Object[] arguments ) {
+        Preconditions.checkNotNull( contructorOrMethod, "constructorOrMethod must not be null." );
         String[] names = getParameterNames( contructorOrMethod );
 
         LinkedHashMap<String, Object> result = newLinkedHashMap();
