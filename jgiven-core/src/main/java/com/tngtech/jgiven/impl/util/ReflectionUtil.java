@@ -98,6 +98,15 @@ public class ReflectionUtil {
         };
     }
 
+    public static FieldPredicate nonStaticField() {
+        return new FieldPredicate() {
+            @Override
+            public boolean isTrue( Field field ) throws Exception {
+                return !Modifier.isStatic( field.getModifiers() );
+            }
+        };
+    }
+
     public interface FieldPredicate {
         boolean isTrue( Field field ) throws Exception;
     }
@@ -170,21 +179,23 @@ public class ReflectionUtil {
      * @param errorDescription customizable part of logged error message
      * @return a {@link List} containing all the found field values (never {@code null})
      */
-    public static List<Object> getAllNonStaticFieldValuesFrom( Class<?> clazz, Object target, String errorDescription ) {
+    public static List<Object> getAllNonStaticFieldValuesFrom( final Class<?> clazz, Object target, final String errorDescription ) {
         final List<Object> fieldValues = new ArrayList<Object>();
-        for( Field field : clazz.getDeclaredFields() ) {
-            if( !Modifier.isStatic( field.getModifiers() ) ) {
+
+        forEachField( target, clazz, nonStaticField(), new FieldAction() {
+            @Override
+            public void act( Object target, Field field ) throws Exception {
                 makeAccessible( field, "" );
                 try {
                     fieldValues.add( field.get( target ) );
-
                 } catch( IllegalAccessException e ) {
                     log.warn(
                         format( "Not able to access field '%s' containing in '%s'." + errorDescription, field.getName(),
                             clazz.getSimpleName() ), e );
                 }
             }
-        }
+        } );
+
         return fieldValues;
     }
 
