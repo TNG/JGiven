@@ -48,7 +48,7 @@ Scenario: a pancake can be fried out of an egg milk and flour
 
 ## Getting Started
 
-Start by reading the [documentation](http://tng.github.io/JGiven/docs/) section on JGiven's website.
+Start by reading the [documentation](http://jgiven.org/docs/) section on JGiven's website.
 
 ## License
 
