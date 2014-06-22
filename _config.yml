@@ -1,8 +1,8 @@
 # Site settings
 title: JGiven
 description: "Pragmatic BDD for Java"
-baseurl: "/"
-url: "http://jgiven.org"
+baseurl: ""
+url: "http://tng.github.io/JGiven/"
 
 # Build settings
 markdown: kramdown
