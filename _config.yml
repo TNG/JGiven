@@ -1,0 +1,14 @@
+# Site settings
+title: JGiven
+description: "Pragmatic BDD for Java"
+baseurl: ""
+url: "http://jgiven.org"
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+kramdown:
+    input: GFM
+
+version: 0.2.3
