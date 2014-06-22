@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.internal.AssumptionViolatedException;
@@ -153,7 +154,7 @@ public class ScenarioExecutionRule implements MethodRule {
      * non-static instance fields and comparing their types with the constructor arguments. The order of resulting
      * parameters corresponds to the order of the constructor argument types (which is equal to order of the provided
      * data of the method annotated with {@link Parameters}). If the constructor contains multiple arguments of the same
-     * type, the order of the {@link Class#getDeclaredFields()} is used.
+     * type, the order of {@link ReflectionUtil#getAllNonStaticFieldValuesFrom(Class, Object, String)} is used.
      *
      * @param constructor {@link Constructor} from which argument types should be retrieved
      * @param target {@link Parameterized} test instance from which arguments tried to be retrieved
@@ -171,21 +172,18 @@ public class ScenarioExecutionRule implements MethodRule {
 
     private static List<Object> getTypeMatchingValuesInOrderOf( Class<?>[] expectedClasses, List<Object> values ) {
         List<Object> result = new ArrayList<Object>();
-        int idx = 0;
-        int jdx = 0;
-        while( idx < expectedClasses.length && jdx < values.size() ) {
-            Class<?> argumentClass = expectedClasses[idx];
-            Object value = values.get( jdx );
-            if( Primitives.wrap( argumentClass ).equals( value.getClass() ) ) {
-                // or: if ( Primitives.wrap( paramClass ).isInstance( value ) ) {
-                result.add( value );
-                idx++;
-                jdx++;
-            } else {
-                jdx++;
+        for( Class<?> argumentClass : expectedClasses ) {
+            for( Iterator<Object> iterator = values.iterator(); iterator.hasNext(); ) {
+                Object value = iterator.next();
+                if( Primitives.wrap( argumentClass ).isInstance( value ) ) {
+                    // or: if( Primitives.wrap( argumentClass ).equals( value.getClass() ) ) {
+                    result.add( value );
+                    iterator.remove();
+                    break;
+                }
             }
         }
-        if( idx < expectedClasses.length ) {
+        if( result.size() < expectedClasses.length ) {
             log.warn( format( "Couldn't find matching values in '%s' for expected classes '%s',", values,
                 Arrays.toString( expectedClasses ) ) );
         }

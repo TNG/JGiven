@@ -3,6 +3,7 @@ package com.tngtech.jgiven.junit;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.Method;
+import java.util.Calendar;
 import java.util.List;
 
 import junitparams.internal.InvokeParameterisedMethod;
@@ -36,9 +37,13 @@ public class ScenarioTestRuleTest {
             { junitParamsStatement( twoParamsMethod(), "arg1, 2" ), anyFrameworkMethod(), new Object(),
                 new NamedArgument[] { new NamedArgument( "s", "arg1" ), new NamedArgument( "i", 2 ) } },
 
-            // @Parameterized test
-            { emptyStatement(), anyFrameworkMethod(), new ParameterizedTest( "test1", 4, false ),
-                new NamedArgument[] { new NamedArgument( "s", "test1" ), new NamedArgument( "i", 4 ), new NamedArgument( "b", false ) } }, };
+            // @Parameterized tests
+            { emptyStatement(), anyFrameworkMethod(), new ParameterizedSimpleTest( '?', 7L ),
+                new NamedArgument[] { new NamedArgument( "c", '?' ), new NamedArgument( "l", 7l ) } },
+            { emptyStatement(), anyFrameworkMethod(), new ParameterizedOutOfOrderTest( 4, "test1" ),
+                new NamedArgument[] { new NamedArgument( "i", 4 ), new NamedArgument( "s", "test1" ) } },
+            { emptyStatement(), anyFrameworkMethod(), new ParameterizedWithAdditionalFieldsTest( "test1", 4, false ),
+                new NamedArgument[] { new NamedArgument( "s", "test1" ), new NamedArgument( "n", 4 ), new NamedArgument( "b", false ) } }, };
     }
 
     @Test
@@ -84,19 +89,42 @@ public class ScenarioTestRuleTest {
     public void testMethodWithTwoParams( String s, int i ) {}
 
     @RunWith( Parameterized.class )
-    public static class ParameterizedTest {
+    public static class ParameterizedSimpleTest {
+        private final Character c;
+        private final long l;
+
+        public ParameterizedSimpleTest( Character c, long l ) {
+            this.c = c;
+            this.l = l;
+        }
+    }
+
+    @RunWith( Parameterized.class )
+    public static class ParameterizedOutOfOrderTest {
+        private final String s;
+        private final int i;
+
+        public ParameterizedOutOfOrderTest( int i, String s ) {
+            this.i = i;
+            this.s = s;
+        }
+    }
+
+    @RunWith( Parameterized.class )
+    public static class ParameterizedWithAdditionalFieldsTest {
         private final static String S = "static";
 
-        private final Object o = new Object();
+        private final Calendar c = Calendar.getInstance();
+        private final Number n;
+        private final boolean b;
+        private final double d;
         private final String s;
-        private final double d = 5.0;
-        private final int i;
-        private final Boolean b;
 
-        public ParameterizedTest( String s, int i, Boolean b ) {
+        public ParameterizedWithAdditionalFieldsTest( String s, Number n, boolean b ) {
             this.s = s;
-            this.i = i;
+            this.n = n;
             this.b = b;
+            this.d = 5.0;
         }
     }
 

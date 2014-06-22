@@ -31,4 +31,10 @@ public class NamedArgument {
         return Objects.equal( this.name, other.name )
             && Objects.equal( this.value, other.value );
     }
+
+    @Override
+    public String toString() {
+        return "NamedArgument [name=" + name + ", value=" + value + "]";
+    }
+
 }
