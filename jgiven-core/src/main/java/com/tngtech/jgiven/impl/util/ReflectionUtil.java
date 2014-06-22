@@ -1,10 +1,16 @@
 package com.tngtech.jgiven.impl.util;
 
+import static java.lang.String.format;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -151,9 +157,39 @@ public class ReflectionUtil {
         }
     }
 
-    public static void setField( Field field, Object object, Object value, String errorDescription ) {
-        ReflectionUtil.makeAccessible( field, errorDescription );
+    /**
+     * Returns a {@link List} of objects reflecting all the non-static field values declared by the class or interface
+     * represented by the given {@link Class} object and defined by the given {@link Object}. This includes
+     * {@code public}, {@code protected}, default (package) access, and {@code private} fields, but excludes inherited
+     * fields. The elements in the {@link List} returned are not sorted and are not in any particular order. This method
+     * returns an empty {@link List} if the class or interface declares no fields, or if the given {@link Class} object
+     * represents a primitive type, an array class, or void.
+     *
+     * @param clazz class or interface declaring fields
+     * @param target instance of given {@code clazz} from which field values should be retrieved
+     * @param errorDescription customizable part of logged error message
+     * @return a {@link List} containing all the found field values (never {@code null})
+     */
+    public static List<Object> getAllNonStaticFieldValuesFrom( Class<?> clazz, Object target, String errorDescription ) {
+        final List<Object> fieldValues = new ArrayList<Object>();
+        for( Field field : clazz.getDeclaredFields() ) {
+            if( !Modifier.isStatic( field.getModifiers() ) ) {
+                makeAccessible( field, "" );
+                try {
+                    fieldValues.add( field.get( target ) );
 
+                } catch( IllegalAccessException e ) {
+                    log.warn(
+                        format( "Not able to access field '%s' containing in '%s'." + errorDescription, field.getName(),
+                            clazz.getSimpleName() ), e );
+                }
+            }
+        }
+        return fieldValues;
+    }
+
+    public static void setField( Field field, Object object, Object value, String errorDescription ) {
+        makeAccessible( field, errorDescription );
         try {
             field.set( object, value );
         } catch( IllegalArgumentException e ) {
@@ -185,6 +221,9 @@ public class ReflectionUtil {
         } else if( object instanceof Field ) {
             Field field = (Field) object;
             return "field '" + field.getName() + "' of class '" + field.getDeclaringClass().getSimpleName() + "'";
+        } else if( object instanceof Constructor<?> ) {
+            Constructor<?> constructor = (Constructor<?>) object;
+            return "constructor '" + constructor.getName() + "' of class '" + constructor.getDeclaringClass().getSimpleName() + "'";
         }
         return null;
     }

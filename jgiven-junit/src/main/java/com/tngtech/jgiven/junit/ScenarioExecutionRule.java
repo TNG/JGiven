@@ -8,7 +8,6 @@ import static org.junit.Assume.assumeTrue;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,6 +28,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.Primitives;
 import com.tngtech.jgiven.impl.NamedArgument;
 import com.tngtech.jgiven.impl.ScenarioBase;
+import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;
@@ -163,26 +163,10 @@ public class ScenarioExecutionRule implements MethodRule {
         Class<?> testClass = target.getClass();
 
         Class<?>[] constructorParamClasses = constructor.getParameterTypes();
-        List<Object> fieldValues = getAllNonStaticFieldValuesFrom( testClass, target );
+        List<Object> fieldValues = ReflectionUtil.getAllNonStaticFieldValuesFrom( testClass, target,
+            " Consider writing a bug report." );
 
         return getTypeMatchingValuesInOrderOf( constructorParamClasses, fieldValues );
-    }
-
-    private static List<Object> getAllNonStaticFieldValuesFrom( Class<?> testClass, Object target ) {
-        List<Object> fieldValues = new ArrayList<Object>();
-        for( Field field : testClass.getDeclaredFields() ) {
-            if( !Modifier.isStatic( field.getModifiers() ) ) {
-                field.setAccessible( true );
-                try {
-                    fieldValues.add( field.get( target ) );
-
-                } catch( IllegalAccessException e ) {
-                    log.warn( format( "Not able to access field '%s' containing parameterized test argument in '%s'. "
-                        + "Consider writing a bug report.", field.getName(), testClass.getSimpleName() ), e );
-                }
-            }
-        }
-        return fieldValues;
     }
 
     private static List<Object> getTypeMatchingValuesInOrderOf( Class<?>[] expectedClasses, List<Object> values ) {
