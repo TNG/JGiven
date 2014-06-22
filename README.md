@@ -219,3 +219,17 @@ For Maven there exists a plugin that can be used as follows:
 
 HTML reports are then generated into the `target/jgiven-reports/html` directory.
 
+## Contributing
+
+1. Fork the project
+2. Create a new feature branch with your contribution
+3. Implement your great new feature or bug fix
+4. Issue a pull request
+
+### Code Format
+
+Please follow the code format of existing code.
+You can ensure this by using the provided Eclipse formatter `develop/eclipse-formatter.xml`.
+
+
+
