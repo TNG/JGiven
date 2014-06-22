@@ -120,20 +120,6 @@ public class ReflectionUtil {
 
     }
 
-    public static Method findMethod( Class<?> testClass, String methodName ) {
-        Method method = null;
-        for( Method m : testClass.getMethods() ) {
-            if( m.getName().equals( methodName ) ) {
-                method = m;
-                break;
-            }
-        }
-
-        if( method == null )
-            throw new RuntimeException( "Could not find method with name " + methodName );
-        return method;
-    }
-
     public static <T> T newInstance( Class<T> value ) {
         try {
             return value.newInstance();
@@ -188,7 +174,7 @@ public class ReflectionUtil {
         } catch( SecurityException e ) {
             log.debug( "Caught exception: ", e );
             log.warn( "Could not make " + toReadableString( object ) + errorDescription
-                    + " accessible, trying to executed it nevertheless and hoping for the best." );
+                    + " accessible, trying to access it nevertheless and hoping for the best." );
         }
     }
 

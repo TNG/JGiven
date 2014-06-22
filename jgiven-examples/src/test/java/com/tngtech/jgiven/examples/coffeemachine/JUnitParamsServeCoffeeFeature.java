@@ -1,11 +1,11 @@
 package com.tngtech.jgiven.examples.coffeemachine;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.examples.coffeemachine.steps.GivenSteps;
 import com.tngtech.jgiven.examples.coffeemachine.steps.ThenSteps;
 import com.tngtech.jgiven.examples.coffeemachine.steps.WhenSteps;
@@ -19,21 +19,16 @@ import com.tngtech.jgiven.junit.ScenarioTest;
  *  
  * Original example due to Cucumber Wiki
  */
-@RunWith( DataProviderRunner.class )
-public class ServeCoffeeFeature extends ScenarioTest<GivenSteps, WhenSteps, ThenSteps> {
-
-    @DataProvider
-    public static Object[][] buyCoffeeData() {
-        return new Object[][] {
-            { true, 1, 1, false },
-            { true, 1, 2, true },
-            { true, 0, 2, false },
-            { false, 1, 2, false },
-        };
-    }
+@RunWith( JUnitParamsRunner.class )
+public class JUnitParamsServeCoffeeFeature extends ScenarioTest<GivenSteps, WhenSteps, ThenSteps> {
 
     @Test
-    @UseDataProvider( "buyCoffeeData" )
+    @Parameters( {
+        "true, 1, 1, false",
+        "true, 1, 2, true",
+        "true, 0, 2, false",
+        "false, 1, 2, false"
+    } )
     public void buy_a_coffee( boolean on, int coffees, int dollars, boolean coffeeServed ) {
 
         given().there_are_$_coffees_left_in_the_machine( coffees ).

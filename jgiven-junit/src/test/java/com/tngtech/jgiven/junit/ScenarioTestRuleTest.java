@@ -1,60 +1,104 @@
 package com.tngtech.jgiven.junit;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.EMPTY_LIST;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.tngtech.assertj.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
 
+import junitparams.internal.InvokeParameterisedMethod;
+
+import org.assertj.core.data.MapEntry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.Statement;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderFrameworkMethod;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import com.tngtech.jgiven.junit.ScenarioExecutionRule.Case;
 
 @RunWith( DataProviderRunner.class )
 public class ScenarioTestRuleTest {
 
     @DataProvider
-    public static Object[][] methodTestData() {
+    public static Object[][] methodTestData() throws Exception {
         return new Object[][] {
-            { "someName", "someName", EMPTY_LIST },
-            { "someName[1: arg1, arg2]", "someName", asList( "arg1", "arg2" ) }, // DataProviderRunner example
-            { "someName[1: arg1[1: test], arg2]", "someName", asList( "arg1[1: test]", "arg2" ) },
-            { "someName[1]", "someName", EMPTY_LIST }, // ParameterizedRunner example
-            { "[1] arg1, arg2", "", asList( "arg1", "arg2" ) }, // JUnitParams example
-        };
+            // normal JUnit test
+            { emptyStatement(), anyFrameworkMethod(), new Object(), new MapEntry[0] },
+
+            // junit-dataprovider test
+            { emptyStatement(), dataProviderFrameworkMethod( twoParamsMethod(), "arg1", 2 ), new Object(),
+                new MapEntry[] { entry( "s", "arg1" ), entry( "i", 2 ) } },
+
+            // junitparams test
+            { junitParamsStatement( twoParamsMethod(), "arg1, 2" ), anyFrameworkMethod(), new Object(),
+                new MapEntry[] { entry( "s", "arg1" ), entry( "i", 2 ) } },
+
+            // @Parameterized test
+            { emptyStatement(), anyFrameworkMethod(), new ParameterizedTest( "test1", 4, false ),
+                new MapEntry[] { entry( "s", "test1" ), entry( "i", 4 ), entry( "b", false ) } }, };
     }
 
     @Test
     @UseDataProvider( "methodTestData" )
-    public void testParseMethodName( String inputName, String expectedName, List<String> expectedArgs ) {
-        Case parsedCase = ScenarioExecutionRule.parseMethodName( inputName );
-        assertThat( parsedCase.methodName ).isEqualTo( expectedName );
-        assertThat( parsedCase.arguments ).isEqualTo( expectedArgs );
+    public void testParseMethodName( Statement statement, FrameworkMethod testMethod, Object target,
+            MapEntry[] expected ) {
+
+        LinkedHashMap<String, ?> result = ScenarioExecutionRule.getMethodArguments( statement, testMethod, target );
+        assertThat( result ).containsExactly( expected );
     }
 
-    @DataProvider
-    public static Object[][] argumentTestData() {
-        return new Object[][] {
-            { "foo", Arrays.asList( "foo" ) },
-            { "foo, bar", Arrays.asList( "foo", "bar" ) },
-            { "foo, [1, 2, 3]", Arrays.asList( "foo", "1, 2, 3" ) },
-            { "[1, 2], foo", Arrays.asList( "1, 2", "foo" ) },
-            { "foo, [1, 2], bar", Arrays.asList( "foo", "1, 2", "bar" ) },
-            { "[1, [1, 2], 2]", Arrays.asList( "1, [1, 2], 2" ) },
-            { "[foo", Arrays.asList( "[foo" ) },
+    // -- helper methods -----------------------------------------------------------------------------------------------
+
+    private static Statement emptyStatement() {
+        return new Statement() {
+            @Override
+            public void evaluate() throws Throwable {}
         };
     }
 
-    @Test
-    @UseDataProvider( "argumentTestData" )
-    public void testArgumentParsing( String argumentString, List<String> expectedResult ) {
-        List<String> parseArguments = ScenarioExecutionRule.parseArguments( argumentString );
-        assertThat( parseArguments ).isEqualTo( expectedResult );
+    private static FrameworkMethod anyFrameworkMethod() throws Exception {
+        return new FrameworkMethod( twoParamsMethod() );
+    }
+
+    private static Object dataProviderFrameworkMethod( Method method, Object... args ) {
+        return new DataProviderFrameworkMethod( method, 1, args );
+    }
+
+    private static Object junitParamsStatement( Method method, String args ) {
+        return new InvokeParameterisedMethod( new FrameworkMethod( method ), ScenarioTestRuleTest.class, args, 1 );
+    }
+
+    private static Method twoParamsMethod() throws Exception {
+        return getMethod( "testMethodWithTwoParams", String.class, int.class );
+    }
+
+    private static Method getMethod( String methodName, Class<?>... types ) throws Exception {
+        return ScenarioTestRuleTest.class.getDeclaredMethod( methodName, types );
+    }
+
+    // -- mocks --------------------------------------------------------------------------------------------------------
+
+    public void testMethodWithTwoParams( String s, int i ) {}
+
+    @RunWith( Parameterized.class )
+    public static class ParameterizedTest {
+        private final static String S = "static";
+
+        private final Object o = new Object();
+        private final String s;
+        private final double d = 5.0;
+        private final int i;
+        private final Boolean b;
+
+        public ParameterizedTest( String s, int i, Boolean b ) {
+            this.s = s;
+            this.i = i;
+            this.b = b;
+        }
     }
 
 }
