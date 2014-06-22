@@ -1,14 +1,11 @@
 package com.tngtech.jgiven.report.model;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -31,6 +28,7 @@ import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.config.TagConfiguration;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
+import com.tngtech.jgiven.impl.NamedArgument;
 import com.tngtech.jgiven.impl.intercept.InvocationMode;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.util.WordUtil;
@@ -217,14 +215,30 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     @Override
-    public void scenarioStarted( Method method, LinkedHashMap<String, ?> arguments ) {
+    public void scenarioStarted( Method method, List<NamedArgument> namedArguments ) {
         readConfiguration( method.getDeclaringClass() );
         readAnnotations( method );
-        setParameterNames( newArrayList( arguments.keySet() ) );
+        setParameterNames( getNames( namedArguments ) );
 
         // must come at last
         setMethodName( method.getName() );
-        setArguments( toStringList( arguments.values() ) );
+        setArguments( toStringList( getValues( namedArguments ) ) );
+    }
+
+    private List<Object> getValues( List<NamedArgument> namedArguments ) {
+        List<Object> result = Lists.newArrayList();
+        for( NamedArgument a : namedArguments ) {
+            result.add( a.value );
+        }
+        return result;
+    }
+
+    private List<String> getNames( List<NamedArgument> namedArguments ) {
+        List<String> result = Lists.newArrayList();
+        for( NamedArgument a : namedArguments ) {
+            result.add( a.name );
+        }
+        return result;
     }
 
     private void readConfiguration( Class<?> testClass ) {

@@ -1,13 +1,13 @@
 package com.tngtech.jgiven.report.html;
 
-import static com.google.common.collect.Maps.newLinkedHashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.google.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -15,6 +15,7 @@ import com.tngtech.jgiven.GivenTestStep;
 import com.tngtech.jgiven.ThenTestStep;
 import com.tngtech.jgiven.WhenTestStep;
 import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.impl.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModel;
 
 @RunWith( DataProviderRunner.class )
@@ -59,9 +60,9 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
 
     @Test
     public void tests_with_arguments_generate_cases() throws Exception {
-        LinkedHashMap<String, Object> args = newLinkedHashMap();
-        args.put( "paramA", 1 );
-        args.put( "paramB", 'b' );
+        List<NamedArgument> args = Lists.newArrayList();
+        args.add( new NamedArgument( "paramA", 1 ) );
+        args.add( new NamedArgument( "paramB", 'b' ) );
 
         scenario.getExecutor().startScenario( getClass().getMethod( "tests_with_arguments_generate_cases" ), args );
 

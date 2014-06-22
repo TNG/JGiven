@@ -1,14 +1,12 @@
 package com.tngtech.jgiven.junit;
 
-import static com.tngtech.assertj.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.Method;
-import java.util.LinkedHashMap;
+import java.util.List;
 
 import junitparams.internal.InvokeParameterisedMethod;
 
-import org.assertj.core.data.MapEntry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -19,6 +17,7 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderFrameworkMethod;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.jgiven.impl.NamedArgument;
 
 @RunWith( DataProviderRunner.class )
 public class ScenarioTestRuleTest {
@@ -27,27 +26,27 @@ public class ScenarioTestRuleTest {
     public static Object[][] methodTestData() throws Exception {
         return new Object[][] {
             // normal JUnit test
-            { emptyStatement(), anyFrameworkMethod(), new Object(), new MapEntry[0] },
+            { emptyStatement(), anyFrameworkMethod(), new Object(), new NamedArgument[0] },
 
             // junit-dataprovider test
             { emptyStatement(), dataProviderFrameworkMethod( twoParamsMethod(), "arg1", 2 ), new Object(),
-                new MapEntry[] { entry( "s", "arg1" ), entry( "i", 2 ) } },
+                new NamedArgument[] { new NamedArgument( "s", "arg1" ), new NamedArgument( "i", 2 ) } },
 
             // junitparams test
             { junitParamsStatement( twoParamsMethod(), "arg1, 2" ), anyFrameworkMethod(), new Object(),
-                new MapEntry[] { entry( "s", "arg1" ), entry( "i", 2 ) } },
+                new NamedArgument[] { new NamedArgument( "s", "arg1" ), new NamedArgument( "i", 2 ) } },
 
             // @Parameterized test
             { emptyStatement(), anyFrameworkMethod(), new ParameterizedTest( "test1", 4, false ),
-                new MapEntry[] { entry( "s", "test1" ), entry( "i", 4 ), entry( "b", false ) } }, };
+                new NamedArgument[] { new NamedArgument( "s", "test1" ), new NamedArgument( "i", 4 ), new NamedArgument( "b", false ) } }, };
     }
 
     @Test
     @UseDataProvider( "methodTestData" )
     public void testParseMethodName( Statement statement, FrameworkMethod testMethod, Object target,
-            MapEntry[] expected ) {
+            NamedArgument[] expected ) {
 
-        LinkedHashMap<String, ?> result = ScenarioExecutionRule.getMethodArguments( statement, testMethod, target );
+        List<NamedArgument> result = ScenarioExecutionRule.getNamedArguments( statement, testMethod, target );
         assertThat( result ).containsExactly( expected );
     }
 

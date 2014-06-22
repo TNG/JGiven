@@ -1,13 +1,16 @@
 package com.tngtech.jgiven.testng;
 
+import static java.util.Arrays.asList;
+
 import java.lang.reflect.Method;
-import java.util.LinkedHashMap;
+import java.util.List;
 
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.impl.NamedArgument;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
@@ -69,8 +72,8 @@ public class ScenarioTestListener implements ITestListener {
         new CommonReportHelper().finishReport( scenarioCollectionModel );
     }
 
-    private LinkedHashMap<String, ?> getArgumentsFrom( Method method, ITestResult paramITestResult ) {
-        return ScenarioUtil.mapArgumentsWithParameterNamesOf( method, paramITestResult.getParameters() );
+    private List<NamedArgument> getArgumentsFrom( Method method, ITestResult paramITestResult ) {
+        return ScenarioUtil.mapArgumentsWithParameterNamesOf( method, asList( paramITestResult.getParameters() ) );
     }
 
 }

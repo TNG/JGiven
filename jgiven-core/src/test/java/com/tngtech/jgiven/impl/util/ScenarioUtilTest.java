@@ -1,49 +1,52 @@
 package com.tngtech.jgiven.impl.util;
 
-import static com.tngtech.assertj.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.LinkedHashMap;
+import java.util.List;
 
-import org.assertj.core.data.MapEntry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.jgiven.impl.NamedArgument;
 
 @RunWith( DataProviderRunner.class )
 public class ScenarioUtilTest {
 
     @DataProvider
+    @SuppressWarnings( { "unchecked", "boxing" } )
     public static Object[][] dataProviderMapArgumentsWithParameterNamesOf() throws Exception {
         // @formatter:off
         return new Object[][] {
-            { methodWithNoArgs(), null, new MapEntry[0] },
-
-            { methodWithThreeArgs(),      array( "test1", 1, false ), array( entry( "s", "test1" ), entry( "i", 1 ),   entry( "b", false ) ) },
-            { constructorWithThreeArgs(), array( "test2", 1.0, 7L ),  array( entry( "s", "test2" ), entry( "d", 1.0 ), entry( "l", 7L )    ) },
+            { methodWithNoArgs(),         emptyList(),                 emptyList() },
+            { methodWithThreeArgs(),      asList( "test1", 1, false ), asList( na( "s", "test1" ), na( "i", 1 ),   na( "b", false ) ) },
+            { constructorWithThreeArgs(), asList( "test2", 1.0, 7L ),  asList( na( "s", "test2" ), na( "d", 1.0 ), na( "l", 7L )    ) },
         };
         // @formatter:on
     }
 
     @Test
     @UseDataProvider( "dataProviderMapArgumentsWithParameterNamesOf" )
-    public void testMapArgumentsWithParameterNamesOf( AccessibleObject contructorOrMethod, Object[] arguments, MapEntry[] expected ) {
+    public void testMapArgumentsWithParameterNamesOf( AccessibleObject contructorOrMethod, List<Object> arguments,
+            List<NamedArgument> expected ) {
         // When:
-        LinkedHashMap<String, ?> result = ScenarioUtil.mapArgumentsWithParameterNamesOf( contructorOrMethod, arguments );
+        List<NamedArgument> result = ScenarioUtil.mapArgumentsWithParameterNamesOf( contructorOrMethod, arguments );
 
         // Then:
-        assertThat( result ).containsExactly( expected );
+        assertThat( result ).containsExactly( expected.toArray( new NamedArgument[0] ) );
     }
 
     // -- helper methods -----------------------------------------------------------------------------------------------
-    private static <T> T[] array( T... ts ) {
-        return ts;
+
+    private static NamedArgument na( String name, Object value ) {
+        return new NamedArgument( name, value );
     }
 
     private static Method methodWithNoArgs() throws Exception {

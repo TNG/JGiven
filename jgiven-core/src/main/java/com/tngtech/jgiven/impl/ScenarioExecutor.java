@@ -10,7 +10,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -364,7 +363,7 @@ public class ScenarioExecutor {
      * @param method the method that started the scenario
      * @param arguments the test arguments with their parameter names
      */
-    public void startScenario( Method method, LinkedHashMap<String, ?> arguments ) {
+    public void startScenario( Method method, List<NamedArgument> arguments ) {
         listener.scenarioStarted( method, arguments );
 
         if( method.isAnnotationPresent( NotImplementedYet.class ) ) {

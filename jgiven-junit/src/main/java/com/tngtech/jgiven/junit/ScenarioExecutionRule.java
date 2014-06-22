@@ -11,8 +11,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.junit.internal.AssumptionViolatedException;
@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.Primitives;
+import com.tngtech.jgiven.impl.NamedArgument;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
 import com.tngtech.jgiven.report.model.ReportModel;
@@ -86,37 +87,41 @@ public class ScenarioExecutionRule implements MethodRule {
         ReportModelBuilder modelBuilder = scenario.getModelBuilder();
         modelBuilder.setClassName( testClass.getName() );
 
-        scenario.getExecutor().startScenario( testMethod.getMethod(), getMethodArguments( base, testMethod, target ) );
+        scenario.getExecutor().startScenario( testMethod.getMethod(), getNamedArguments( base, testMethod, target ) );
 
         // inject state from the test itself
         scenario.getExecutor().readScenarioState( testInstance );
     }
 
     @VisibleForTesting
-    static LinkedHashMap<String, ?> getMethodArguments( Statement base, FrameworkMethod method, Object target ) {
+    static List<NamedArgument> getNamedArguments( Statement base, FrameworkMethod method, Object target ) {
         AccessibleObject constructorOrMethod = method.getMethod();
-        Object[] arguments = null;
+
+        List<Object> arguments = Collections.emptyList();
 
         if( DATAPROVIDER_FRAMEWORK_METHOD.equals( method.getClass().getCanonicalName() ) ) {
             arguments = getArgumentsFrom( method, "parameters" );
         }
+
         if( JUNITPARAMS_STATEMENT.equals( base.getClass().getCanonicalName() ) ) {
             arguments = getArgumentsFrom( base, "params" );
         }
+
         if( isParameterizedTest( target ) ) {
             Constructor<?> constructor = getOnlyConstructor( target.getClass() );
             constructorOrMethod = constructor;
             arguments = getArgumentsFrom( constructor, target );
         }
+
         return ScenarioUtil.mapArgumentsWithParameterNamesOf( constructorOrMethod, arguments );
     }
 
-    private static Object[] getArgumentsFrom( Object object, String fieldName ) {
+    private static List<Object> getArgumentsFrom( Object object, String fieldName ) {
         Class<?> methodClass = object.getClass();
         try {
             Field field = methodClass.getDeclaredField( fieldName );
             field.setAccessible( true );
-            return (Object[]) field.get( object );
+            return Arrays.asList( (Object[]) field.get( object ) );
 
         } catch( NoSuchFieldException e ) {
             log.warn( format( "Could not find field containing test method arguments in '%s'. "
@@ -127,7 +132,7 @@ public class ScenarioExecutionRule implements MethodRule {
                 + "Probably the internal representation has changed. Consider writing a bug report.",
                 methodClass.getSimpleName() ), e );
         }
-        return new Object[0];
+        return Collections.emptyList();
     }
 
     private static boolean isParameterizedTest( Object target ) {
@@ -154,7 +159,7 @@ public class ScenarioExecutionRule implements MethodRule {
      * @param target {@link Parameterized} test instance from which arguments tried to be retrieved
      * @return the determined arguments, never {@code null}
      */
-    private static Object[] getArgumentsFrom( Constructor<?> constructor, Object target ) {
+    private static List<Object> getArgumentsFrom( Constructor<?> constructor, Object target ) {
         Class<?> testClass = target.getClass();
 
         Class<?>[] constructorParamClasses = constructor.getParameterTypes();
@@ -180,7 +185,7 @@ public class ScenarioExecutionRule implements MethodRule {
         return fieldValues;
     }
 
-    private static Object[] getTypeMatchingValuesInOrderOf( Class<?>[] expectedClasses, List<Object> values ) {
+    private static List<Object> getTypeMatchingValuesInOrderOf( Class<?>[] expectedClasses, List<Object> values ) {
         List<Object> result = new ArrayList<Object>();
         int idx = 0;
         int jdx = 0;
@@ -200,7 +205,7 @@ public class ScenarioExecutionRule implements MethodRule {
             log.warn( format( "Couldn't find matching values in '%s' for expected classes '%s',", values,
                 Arrays.toString( expectedClasses ) ) );
         }
-        return result.toArray();
+        return result;
     }
 
 }
