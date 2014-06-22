@@ -5,5 +5,5 @@ permalink: /about/
 ---
 
 JGiven is a pragmatic open-source BDD framework for Java.
-It was developed out of the frustration about existing BDD-tools for Java.
-JGiven is mainly developed by [TNG](http://www.tngtech.com/en/), but any contributor is welcome!
+It was borne by [Jan Schäfer](http://github.com/janschaefer) out of frustration about existing BDD tools for Java.
+JGiven is mainly developed by [TNG](http://github.com/TNG/), but any contributor is welcome!
