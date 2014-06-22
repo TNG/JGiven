@@ -1,7 +1,7 @@
 # Site settings
 title: JGiven
 description: "Pragmatic BDD for Java"
-baseurl: "JGiven"
+baseurl: ""
 url: "http://jgiven.org"
 
 # Build settings
