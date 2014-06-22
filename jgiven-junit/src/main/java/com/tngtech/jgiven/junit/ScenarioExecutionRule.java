@@ -176,7 +176,6 @@ public class ScenarioExecutionRule implements MethodRule {
             for( Iterator<Object> iterator = values.iterator(); iterator.hasNext(); ) {
                 Object value = iterator.next();
                 if( Primitives.wrap( argumentClass ).isInstance( value ) ) {
-                    // or: if( Primitives.wrap( argumentClass ).equals( value.getClass() ) ) {
                     result.add( value );
                     iterator.remove();
                     break;
