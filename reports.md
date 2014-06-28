@@ -37,7 +37,7 @@ java com.tngtech.jgiven.report.html.HtmlReportGenerator \
 {% endhighlight %}
 
 To see how the generated report looks like have a look at the
-[HTML reports of JGiven itself](http://tng.github.io/JGiven/jgiven-report/)
+[HTML reports of JGiven itself]({{ site.baseurl }}/jgiven-report/)
 
 ### Maven
 For Maven there exists a plugin that can be used as follows:
