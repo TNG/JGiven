@@ -1,4 +1,4 @@
-v0.2.4
+v0.3.0
 * Arguments from JUnit Parameterized and JUnitParams runner can now be read
 * Arguments from JUnit Dataprovider runner are now read directly instead of parsing them
 * Schritte-class is deprecated and has been replaced with Stufe-class (only relevant for german scenarios)
