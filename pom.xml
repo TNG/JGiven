@@ -57,7 +57,7 @@
 
   </properties>
   <groupId>com.tngtech.jgiven</groupId>
-  <version>0.2.4</version>
+  <version>0.2.5-SNAPSHOT</version>
 
   <organization>
     <name>TNG Technology Consulting</name>
