@@ -2,7 +2,7 @@
 layout: post
 title:  "Version 0.3.0 Released"
 date:   2014-06-29 20:00:00
-categories: website
+categories: news
 ---
 The new version 0.3.0 of JGiven is released:
 
