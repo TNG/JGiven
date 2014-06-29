@@ -101,6 +101,18 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
+    public SELF all_cases_have_a_step_$_with_argument( String name, String arg ) {
+        int i = 1;
+        for( ScenarioCaseModel caseModel : reportModel.getLastScenarioModel().getScenarioCases() ) {
+            case_$_has_a_step_$_with_argument( i++, name, arg );
+        }
+        return self();
+    }
+
+    public SELF case_$_has_a_step_$_with_argument( int i, String name, String arg ) {
+        return case_$_has_a_when_step_$_with_argument( i, name, arg );
+    }
+
     private ScenarioCaseModel getCase( int ncase ) {
         return reportModel.getLastScenarioModel().getScenarioCases().get( ncase - 1 );
     }

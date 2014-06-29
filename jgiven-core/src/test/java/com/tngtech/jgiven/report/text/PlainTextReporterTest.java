@@ -17,8 +17,8 @@ import com.tngtech.jgiven.base.ScenarioTestBase;
 
 /**
  * Please note that we do explicitly <strong>not</strong> use the ScenarioTest class for JUnit,
- * as this would require a dependency to jgiven-junit, which we have to avoid 
- * here. 
+ * as this would require a dependency to jgiven-junit, which we have to avoid
+ * here.
  */
 @RunWith( DataProviderRunner.class )
 public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {

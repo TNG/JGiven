@@ -60,12 +60,15 @@ public class Word {
 
     @Override
     public boolean equals( Object obj ) {
-        if( this == obj )
+        if( this == obj ) {
             return true;
-        if( obj == null )
+        }
+        if( obj == null ) {
             return false;
-        if( getClass() != obj.getClass() )
+        }
+        if( getClass() != obj.getClass() ) {
             return false;
+        }
         Word other = (Word) obj;
         return Objects.equal( isIntroWord, other.isIntroWord ) &&
                 Objects.equal( value, other.value ) &&
