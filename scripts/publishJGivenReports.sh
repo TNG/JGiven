@@ -2,6 +2,7 @@
 set -e
 mvn clean verify
 git checkout gh-pages
+git pull --rebase
 git rm -r jgiven-report/*
 cp -r jgiven-tests/target/jgiven-reports/html/ jgiven-report
 git add jgiven-report/
