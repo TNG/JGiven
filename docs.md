@@ -10,6 +10,7 @@ permalink: /docs/
 * [Report Generation]({{site.baseurl}}/docs/reportgeneration/)
 * [Stages and State Injection]({{site.baseurl}}/docs/stages/)
 * [Parameters]({{site.baseurl}}/docs/parameters/)
+* Life-Cycle Methods (tbd)
 * Data Tables (tbd)
 * Tags (tbd)
 
