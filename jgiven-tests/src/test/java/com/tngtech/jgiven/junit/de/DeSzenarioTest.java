@@ -2,12 +2,13 @@ package com.tngtech.jgiven.junit.de;
 
 import org.junit.Test;
 
-import com.tngtech.jgiven.junit.de.DeSzenarioTest.DeutscheTestSchritte;
+import com.tngtech.jgiven.junit.de.DeSzenarioTest.DeutscheTestStufe;
 import com.tngtech.jgiven.lang.de.Schritte;
+import com.tngtech.jgiven.lang.de.Stufe;
 import com.tngtech.jgiven.tags.FeatureGerman;
 
 @FeatureGerman
-public class DeSzenarioTest extends SzenarioTest<DeutscheTestSchritte, DeutscheTestSchritte, DeutscheTestSchritte> {
+public class DeSzenarioTest extends SzenarioTest<DeutscheTestStufe, DeutscheTestStufe, DeutscheTestStufe> {
 
     @Test
     public void Szenarien_können_in_deutsch_geschrieben_werden() {
@@ -17,21 +18,21 @@ public class DeSzenarioTest extends SzenarioTest<DeutscheTestSchritte, DeutscheT
         dann().generiert_JGiven_deutsche_Berichte();
     }
 
-    static class DeutscheTestSchritte extends Schritte<DeutscheTestSchritte> {
+    static class DeutscheTestStufe extends Stufe<DeutscheTestStufe> {
 
-        public DeutscheTestSchritte ein_deutsches_Projekt() {
+        public DeutscheTestStufe ein_deutsches_Projekt() {
             return self();
         }
 
-        public DeutscheTestSchritte generiert_JGiven_deutsche_Berichte() {
+        public DeutscheTestStufe generiert_JGiven_deutsche_Berichte() {
             return self();
         }
 
-        public DeutscheTestSchritte die_Szenarien_in_deutsch_geschrieben_werden() {
+        public DeutscheTestStufe die_Szenarien_in_deutsch_geschrieben_werden() {
             return self();
         }
 
-        public DeutscheTestSchritte JGiven_verwendet_wird() {
+        public DeutscheTestStufe JGiven_verwendet_wird() {
             return self();
         }
 

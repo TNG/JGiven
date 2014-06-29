@@ -49,9 +49,9 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         }
         scenarioCaseModel.addStep( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ),
             InvocationMode.NORMAL );
-        if( !scenarioCaseModel.arguments.isEmpty() ) {
+        for( String arg : scenarioCaseModel.arguments ) {
             scenarioCaseModel.addStep( "something_happens", asList( Word.introWord( "when" ),
-                Word.argWord( scenarioCaseModel.arguments.get( 0 ) ) ), InvocationMode.NORMAL );
+                Word.argWord( arg ) ), InvocationMode.NORMAL );
         }
     }
 

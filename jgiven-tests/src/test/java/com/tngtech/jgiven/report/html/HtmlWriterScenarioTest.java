@@ -11,6 +11,7 @@ import com.tngtech.jgiven.report.model.GivenReportModel;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.tags.FeatureDataTables;
 import com.tngtech.jgiven.tags.FeatureHtmlReport;
+import com.tngtech.jgiven.tags.Issue;
 
 @FeatureHtmlReport
 @RunWith( DataProviderRunner.class )
@@ -34,6 +35,16 @@ public class HtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, Wh
             .and().step_$_has_status( 1, status );
         when().the_HTML_report_is_generated();
         then().the_HTML_report_contains_text( expectedString );
+    }
+
+    @Test
+    @FeatureDataTables
+    @Issue( "#9" )
+    public void HTML_in_arguments_is_escaped_in_HTML_reports() {
+        given().a_report_model_with_one_scenario()
+            .and().case_$_has_a_when_step_$_with_argument( 1, "test", "<someHtmlTag>" );
+        when().the_HTML_report_is_generated();
+        then().the_HTML_report_contains_text( "&lt;someHtmlTag&gt;" );
     }
 
     @Test

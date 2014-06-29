@@ -128,6 +128,10 @@ public class TestScenarioRepository {
             .numberOfSteps( 2 )
             .failingStep( 1 );
 
+        addTestScenario( result, "failing_test_with_three_steps" )
+            .numberOfSteps( 3 )
+            .failingStep( 1 );
+
         addTestScenario( result, "failing_test_with_two_steps_and_second_step_fails" )
             .numberOfSteps( 2 )
             .failingStep( 2 );

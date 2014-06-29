@@ -68,11 +68,13 @@ public class PlainTextScenarioWriterTest extends ScenarioTest<GivenReportModel<?
 
         when().the_plain_text_report_is_generated();
 
-        then().the_report_contains_text( "\n" +
-                "    | param1 | param2 |\n" +
-                "    +--------+--------+\n" +
-                "    |  arg10 |  arg11 |\n" +
-                "    |  arg20 |  arg21 |\n" +
-                "    |  arg30 |  arg31 |\n" );
+        then().the_report_contains_text( "<param1>" )
+            .and().the_report_contains_text( "<param2>" )
+            .and().the_report_contains_text( "\n" +
+                    "    | param1 | param2 |\n" +
+                    "    +--------+--------+\n" +
+                    "    |  arg10 |  arg11 |\n" +
+                    "    |  arg20 |  arg21 |\n" +
+                    "    |  arg30 |  arg31 |\n" );
     }
 }

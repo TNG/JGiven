@@ -4,6 +4,7 @@ import static java.lang.String.format;
 
 import java.io.PrintWriter;
 
+import com.google.common.html.HtmlEscapers;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
@@ -108,7 +109,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             if( !firstWord ) {
                 writer.print( ' ' );
             }
-            String text = word.value;
+            String text = HtmlEscapers.htmlEscaper().escape( word.value );
 
             if( firstWord && word.isIntroWord ) {
                 writer.print( format( "<span class='introWord'>%s</span>", WordUtil.capitalize( text ) ) );
@@ -128,7 +129,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     }
 
     private void printArg( Word word ) {
-        String value = word.getArgumentInfo().isCaseArg() ? formatCaseArgument( word ) : word.value;
+        String value = word.getArgumentInfo().isCaseArg() ? formatCaseArgument( word ) : HtmlEscapers.htmlEscaper().escape( word.value );
         value = escapeToHtml( value );
         String multiLine = value.contains( "<br />" ) ? "multiline" : "";
         String caseClass = word.getArgumentInfo().isCaseArg() ? "caseArgument" : "argument";
@@ -140,6 +141,6 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     }
 
     String formatCaseArgument( Word word ) {
-        return word.value;
+        return HtmlEscapers.htmlEscaper().escape( word.value );
     }
 }

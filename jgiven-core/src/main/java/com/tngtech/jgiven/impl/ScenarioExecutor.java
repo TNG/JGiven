@@ -62,7 +62,7 @@ public class ScenarioExecutor {
 
     /**
      * Measures the stack depth of methods called on the step definition object.
-     * Only the top-level method calls are used for reporting. 
+     * Only the top-level method calls are used for reporting.
      */
     private final AtomicInteger stackDepth = new AtomicInteger();
 
@@ -95,15 +95,17 @@ public class ScenarioExecutor {
     class MethodHandler implements StepMethodHandler {
         @Override
         public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode ) throws Throwable {
-            if( paramMethod.isSynthetic() )
+            if( paramMethod.isSynthetic() ) {
                 return;
+            }
 
             if( paramMethod.isAnnotationPresent( AfterStage.class ) ||
                     paramMethod.isAnnotationPresent( BeforeStage.class ) ||
                     paramMethod.isAnnotationPresent( BeforeScenario.class ) ||
                     paramMethod.isAnnotationPresent( AfterScenario.class ) ||
-                    paramMethod.isAnnotationPresent( Hidden.class ) )
+                    paramMethod.isAnnotationPresent( Hidden.class ) ) {
                 return;
+            }
 
             update( stageInstance );
 
@@ -116,6 +118,7 @@ public class ScenarioExecutor {
 
         @Override
         public void handleThrowable( Throwable t ) throws Throwable {
+            listener.stepMethodFailed( t );
             failed( t );
         }
 
@@ -123,8 +126,9 @@ public class ScenarioExecutor {
 
     @SuppressWarnings( "unchecked" )
     public <T> T addStage( Class<T> stepsClass ) {
-        if( stages.containsKey( stepsClass ) )
+        if( stages.containsKey( stepsClass ) ) {
             return (T) stages.get( stepsClass ).instance;
+        }
 
         T result = setupCglibProxy( stepsClass );
 
@@ -186,8 +190,9 @@ public class ScenarioExecutor {
 
     private void executeAfterStageMethods( Object stage ) throws Throwable {
         StageState stageState = getStageState( stage );
-        if( stageState.afterStageCalled )
+        if( stageState.afterStageCalled ) {
             return;
+        }
         stageState.afterStageCalled = true;
         executeAnnotatedMethods( stage, AfterStage.class );
     }
@@ -197,8 +202,9 @@ public class ScenarioExecutor {
     }
 
     private void ensureBeforeStepsAreExecuted() throws Throwable {
-        if( state != State.INIT )
+        if( state != State.INIT ) {
             return;
+        }
         state = State.STARTED;
         methodInterceptor.enableMethodHandling( false );
 
@@ -274,10 +280,12 @@ public class ScenarioExecutor {
      * Has to be called when the scenario is finished in order to execute after methods
      */
     public void finished() throws Throwable {
-        if( state == FINISHED )
+        if( state == FINISHED ) {
             return;
-        if( state != STARTED )
+        }
+        if( state != STARTED ) {
             throw new IllegalStateException( "The Scenario must be in state STARTED in order to finish it, but it is in state " + state );
+        }
         state = FINISHED;
         methodInterceptor.enableMethodHandling( false );
 
@@ -350,7 +358,7 @@ public class ScenarioExecutor {
 
     /**
      * Starts a scenario with the given description.
-     * 
+     *
      * @param description the description of the scenario
      */
     public void startScenario( String description ) {

@@ -66,11 +66,12 @@ public class JUnitExecutionTest extends ScenarioTest<GivenScenarioTest<?>, WhenJ
 
     @Test
     public void steps_following_failing_steps_are_reported_as_skipped() {
-        given().a_failing_test_with_$_steps( 2 )
+        given().a_failing_test_with_$_steps( 3 )
             .and().step_$_fails( 1 );
         when().the_test_is_executed_with_JUnit();
         then().step_$_is_reported_as_failed( 1 )
-            .and().step_$_is_reported_as_skipped( 2 );
+            .and().step_$_is_reported_as_skipped( 2 )
+            .and().step_$_is_reported_as_skipped( 3 );
     }
 
     @Test

@@ -63,6 +63,7 @@ public class ScenarioExecutionRule implements MethodRule {
                     throw e;
                 } catch( Throwable t ) {
                     failed( t );
+                    throw t;
                 }
             }
         };
@@ -126,11 +127,11 @@ public class ScenarioExecutionRule implements MethodRule {
 
         } catch( NoSuchFieldException e ) {
             log.warn( format( "Could not find field containing test method arguments in '%s'. "
-                + "Probably the internal representation has changed. Consider writing a bug report.",
+                    + "Probably the internal representation has changed. Consider writing a bug report.",
                 methodClass.getSimpleName() ), e );
         } catch( IllegalAccessException e ) {
             log.warn( format( "Not able to access field containing test method arguments in '%s'. "
-                + "Probably the internal representation has changed. Consider writing a bug report.",
+                    + "Probably the internal representation has changed. Consider writing a bug report.",
                 methodClass.getSimpleName() ), e );
         }
         return Collections.emptyList();

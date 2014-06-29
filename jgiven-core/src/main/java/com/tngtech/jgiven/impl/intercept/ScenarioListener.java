@@ -17,4 +17,6 @@ public interface ScenarioListener {
 
     void introWordAdded( String word );
 
+    void stepMethodFailed( Throwable t );
+
 }

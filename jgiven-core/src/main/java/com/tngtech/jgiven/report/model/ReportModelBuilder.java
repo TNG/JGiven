@@ -160,14 +160,16 @@ public class ReportModelBuilder implements ScenarioListener {
 
     @Override
     public void stepMethodInvoked( Method paramMethod, List<Object> arguments, InvocationMode mode ) {
-        if( !isStepMethod( paramMethod ) )
+        if( !isStepMethod( paramMethod ) ) {
             return;
+        }
         addStepMethod( paramMethod, arguments, mode );
     }
 
     public boolean isStepMethod( Method paramMethod ) {
-        if( !Modifier.isPublic( paramMethod.getModifiers() ) )
+        if( !Modifier.isPublic( paramMethod.getModifiers() ) ) {
             return false;
+        }
 
         return true;
     }
@@ -205,11 +207,15 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     @Override
-    public void scenarioFailed( Throwable e ) {
+    public void stepMethodFailed( Throwable t ) {
         if( !currentScenarioCase.steps.isEmpty() ) {
             currentScenarioCase.steps.get( currentScenarioCase.steps.size() - 1 )
                 .setStatus( StepStatus.FAILED );
         }
+    }
+
+    @Override
+    public void scenarioFailed( Throwable e ) {
         setSuccess( false );
         setErrorMessage( e.getMessage() );
     }
@@ -357,4 +363,5 @@ public class ReportModelBuilder implements ScenarioListener {
         }
         return result;
     }
+
 }

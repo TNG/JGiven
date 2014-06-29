@@ -19,6 +19,14 @@ public class TestScenarios extends ScenarioTest<GivenTestStage, WhenTestStage, T
 
     @Test
     @org.testng.annotations.Test
+    public void failing_test_with_three_steps() {
+        given().an_exception_is_thrown();
+        when().something_happens();
+        then().something_happened();
+    }
+
+    @Test
+    @org.testng.annotations.Test
     public void failing_test_with_two_steps_and_second_step_fails() {
         given().nothing();
         when().a_step_fails();
