@@ -11,7 +11,7 @@ import com.tngtech.jgiven.tests.TestScenarioRepository.TestScenario;
 /**
  * Note that this is a rather unusual JGiven stage. Usually you would rather build up
  * your cases using some kind of builder. However, in this case this would be very complicated,
- * because it would require to build Java code dynamically, as JGiven scenarios are just plain Java code. 
+ * because it would require to build Java code dynamically, as JGiven scenarios are just plain Java code.
  * So instead of building the scenarios dynamically, the scenarios are predefined and selected dynamically
  * based on search criteria.
  */
@@ -32,6 +32,16 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
 
     public SELF a_failing_test() {
         criteria.failing = true;
+        return self();
+    }
+
+    public SELF the_test_has_$_failing_stages( int n ) {
+        criteria.numberOfFailingStages = n;
+        return self();
+    }
+
+    public SELF stage_$_has_a_failing_after_stage_method( int i ) {
+        criteria.stageWithFailingAfterStageMethod = i;
         return self();
     }
 

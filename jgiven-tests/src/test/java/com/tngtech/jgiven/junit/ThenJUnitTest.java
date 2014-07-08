@@ -22,8 +22,9 @@ public class ThenJUnitTest<SELF extends ThenJUnitTest<?>> extends ThenReportMode
         assertThat( result.getFailureCount() ).as( "failure count" ).isEqualTo( 0 );
     }
 
-    public void the_test_fails() {
+    public SELF the_test_fails() {
         assertThat( result.getFailureCount() ).as( "failure count" ).isGreaterThan( 0 );
+        return self();
     }
 
     public void the_test_fails_with_message( String expectedMessage ) {

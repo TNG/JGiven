@@ -10,9 +10,11 @@ public class TestScenarioRepository {
         public boolean failing = false;
         public Integer numberOfSteps;
         public Integer failingStep;
+        public Integer numberOfFailingStages;
         public Boolean failIfPassed;
         public Boolean executeSteps;
         public Boolean tagAnnotation;
+        public Integer stageWithFailingAfterStageMethod;
 
         public boolean matches( ScenarioCriteria criteria ) {
             if( notImplementedYet != criteria.notImplementedYet ) {
@@ -35,7 +37,16 @@ public class TestScenarioRepository {
                 return false;
             }
 
+            if( numberOfFailingStages != null && numberOfFailingStages != criteria.numberOfFailingStages ) {
+                return false;
+            }
+
             if( failingStep != null && !failingStep.equals( criteria.failingStep ) ) {
+                return false;
+            }
+
+            if( stageWithFailingAfterStageMethod != null
+                    && !stageWithFailingAfterStageMethod.equals( criteria.stageWithFailingAfterStageMethod ) ) {
                 return false;
             }
 
@@ -55,6 +66,8 @@ public class TestScenarioRepository {
         public Integer failingStep;
         public int numberOfSteps = 1;
         public boolean tagAnnotation;
+        private int numberOfFailingStages;
+        public Integer stageWithFailingAfterStageMethod;
 
         public ScenarioCriteria notImplementedYet() {
             notImplementedYet = true;
@@ -89,6 +102,16 @@ public class TestScenarioRepository {
 
         public ScenarioCriteria tagAnnotation() {
             tagAnnotation = true;
+            return this;
+        }
+
+        public ScenarioCriteria numberOfFailingStages( int i ) {
+            numberOfFailingStages = i;
+            return this;
+        }
+
+        public ScenarioCriteria stageWithFailingAfterStageMethod( Integer stageWithFailingAfterStageMethod ) {
+            this.stageWithFailingAfterStageMethod = stageWithFailingAfterStageMethod;
             return this;
         }
     }
@@ -135,6 +158,17 @@ public class TestScenarioRepository {
         addTestScenario( result, "failing_test_with_two_steps_and_second_step_fails" )
             .numberOfSteps( 2 )
             .failingStep( 2 );
+
+        addTestScenario( result, "failing_test_with_two_failing_stages" )
+            .numberOfSteps( 2 )
+            .numberOfFailingStages( 2 )
+            .failingStep( 1 );
+
+        addTestScenario( result, "failing_test_where_second_stage_has_a_failing_after_stage_method" )
+            .numberOfSteps( 2 )
+            .numberOfFailingStages( 2 )
+            .stageWithFailingAfterStageMethod( 2 )
+            .failingStep( 1 );
 
         addTestScenario( result, "failing_test_with_NotImplementedYet_annotation" )
             .notImplementedYet()
