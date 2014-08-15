@@ -6,7 +6,15 @@
 
 JGiven is a pragmatic BDD tool for Java.
 
-## Principles
+## Why another BDD tool?
+
+Behavioral-Driven Development (BDD) is a development method where business analysists, developers, and testers describe the behavior of a software product in a common language and notation. Behavior is typically described in terms of scenarios, which are written in the Given-When-Then notation. The common language and notation is one cornerstone of BDD. The other cornerstone is that the defined scenarios are exectuable and form a comprehensive test suite for the software product.
+
+In classical BDD tools for Java like JBehave or Cucumber scenarios are written in plain text files. This allows non-developers to write scenarios, because no programming knowledge is required. To make scenarios executable, developers write so-called step-implementations. To bind plain text to step implementations regular expressions are used. For developers mainting these executable scenarios has a high overhead that is not required if tests would be directly written in a programming language.
+
+Beside the classical BDD tools there are a number of tools for Java to write BDD tests in a programming language like Groovy (easyb) or Scala (ScalaTest). To our knowledge, however, there is no BDD tool where scenarios can be written in plain Java.
+
+## BDD with JGiven
 
 * Scenarios are written as standard Java code (no extra language like Scala or Groovy needed, no IDE plugin needed)
 * Java method names and parameters are parsed during test execution (no extra annotations needed)
