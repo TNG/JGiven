@@ -1,7 +1,7 @@
 # JGiven
-[![Build Status](https://travis-ci.org/TNG/JGiven.png?branch=master)](https://travis-ci.org/TNG/JGiven)
-[![Coverage Status](https://coveralls.io/repos/TNG/JGiven/badge.png?branch=master)](https://coveralls.io/r/TNG/JGiven?branch=master)
-[![Apache License 2.0](http://img.shields.io/badge/license-apache2-blue.svg)](http://opensource.org/licenses/Apache-2.0)
+[![Build Status](http://img.shields.io/travis/TNG/JGiven.svg?style=flat-square)](https://travis-ci.org/TNG/JGiven)
+[![Coverage Status](http://img.shields.io/coveralls/TNG/JGiven.svg?style=flat-square)](https://coveralls.io/r/TNG/JGiven?branch=master)
+[![Apache License 2.0](http://img.shields.io/badge/license-apache2-blue.svg?style=flat-square)](http://opensource.org/licenses/Apache-2.0)
 
 
 JGiven is a pragmatic BDD tool for Java.
