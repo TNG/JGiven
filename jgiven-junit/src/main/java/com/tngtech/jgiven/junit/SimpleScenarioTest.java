@@ -10,6 +10,6 @@ public class SimpleScenarioTest<STEPS> extends SimpleScenarioTestBase<STEPS> {
     public static final ScenarioReportRule writerRule = new ScenarioReportRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( writerRule.getTestCaseModel(), this, getScenario() );
+    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( writerRule, this, getScenario() );
 
 }

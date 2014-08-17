@@ -5,15 +5,15 @@ import com.tngtech.jgiven.base.ScenarioTestBase;
 public class SzenarioTestBasis<GEGEBEN, WENN, DANN> extends ScenarioTestBase<GEGEBEN, WENN, DANN> {
 
     public GEGEBEN gegeben() {
-        return scenario.given( "Gegeben" );
+        return getScenario().given( "Gegeben" );
     }
 
     public WENN wenn() {
-        return scenario.when( "Wenn" );
+        return getScenario().when( "Wenn" );
     }
 
     public DANN dann() {
-        return scenario.then( "Dann" );
+        return getScenario().then( "Dann" );
     }
 
 }

@@ -33,14 +33,14 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
     @Test
     @UseDataProvider( "testData" )
     public void HTML_report_is_correctly_generated_for_scenarios( int a, int b, int expectedResult ) {
-        scenario.startScenario( "values can be multiplied" );
+        getScenario().startScenario( "values can be multiplied" );
 
         given().$d_and_$d( a, b );
         when().both_values_are_multiplied_with_each_other();
         then().the_result_is( expectedResult );
 
-        scenario.finished();
-        ReportModel model = scenario.getModel();
+        getScenario().finished();
+        ReportModel model = getScenario().getModel();
         String string = HtmlWriter.toString( model.getLastScenarioModel() );
         assertThat( string.replace( '\n', ' ' ) ).matches( ".*"
                 + "<h3>Values can be multiplied</h3>.*"
@@ -64,12 +64,12 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
         args.add( new NamedArgument( "paramA", 1 ) );
         args.add( new NamedArgument( "paramB", 'b' ) );
 
-        scenario.getExecutor().startScenario( getClass().getMethod( "tests_with_arguments_generate_cases" ), args );
+        getScenario().getExecutor().startScenario( getClass().getMethod( "tests_with_arguments_generate_cases" ), args );
 
         when().both_values_are_multiplied_with_each_other();
 
-        scenario.finished();
-        ReportModel model = scenario.getModel();
+        getScenario().finished();
+        ReportModel model = getScenario().getModel();
         String string = HtmlWriter.toString( model.getLastScenarioModel() );
         assertThat( string.replace( '\n', ' ' ) ).matches( ".*<h4>Case 1: paramA = 1, paramB = b</h4>.*" );
     }

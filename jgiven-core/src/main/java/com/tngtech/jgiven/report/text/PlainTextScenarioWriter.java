@@ -22,9 +22,9 @@ import com.tngtech.jgiven.report.model.Word;
 public class PlainTextScenarioWriter extends PlainTextWriter {
     private static final String INDENT = "   ";
 
-    private int maxFillWordLength;
     protected ScenarioModel currentScenarioModel;
     protected ScenarioCaseModel currentCaseModel;
+    private int maxFillWordLength;
 
     public PlainTextScenarioWriter( PrintStream stream, boolean withColor ) {
         super( stream, withColor );

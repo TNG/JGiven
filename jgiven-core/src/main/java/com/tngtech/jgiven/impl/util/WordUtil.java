@@ -5,11 +5,13 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.collect.FluentIterable;
 
-public class WordUtil {
+public final class WordUtil {
+
+    private WordUtil() {}
 
     /**
-     * Returns the given text with the first letter in upper case
-     * 
+     * Returns the given text with the first letter in upper case.
+     *
      * <h2>Examples:</h2>
      * <pre>
      * capitalize("hi") == "Hi"
@@ -22,14 +24,16 @@ public class WordUtil {
      * @return text with the first letter in upper case
      */
     public static String capitalize( String text ) {
-        if( text == null || text.isEmpty() )
+        if( text == null || text.isEmpty() ) {
             return text;
+        }
         return text.substring( 0, 1 ).toUpperCase().concat( text.substring( 1, text.length() ) );
     }
 
     public static String lowerCaseFirstChar( String text ) {
-        if( text == null || text.isEmpty() )
+        if( text == null || text.isEmpty() ) {
             return text;
+        }
         return text.substring( 0, 1 ).toLowerCase().concat( text.substring( 1, text.length() ) );
     }
 

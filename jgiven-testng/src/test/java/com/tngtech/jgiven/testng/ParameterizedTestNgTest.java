@@ -30,7 +30,7 @@ public class ParameterizedTestNgTest extends ScenarioTest<TestSteps, TestSteps, 
         when().mixed_with( "something" );
         then().nothing_happens();
 
-        ScenarioModel currentScenarioModel = scenario.getModel().getLastScenarioModel();
+        ScenarioModel currentScenarioModel = getScenario().getModel().getLastScenarioModel();
         assertThat( currentScenarioModel.description ).isEqualTo( "parameters are handled correctly" );
         assertThat( currentScenarioModel.parameterNames ).containsExactly( "milkInLiter", "ingredient", "caseNr" );
 

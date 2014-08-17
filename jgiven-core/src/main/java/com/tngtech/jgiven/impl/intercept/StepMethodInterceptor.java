@@ -29,8 +29,7 @@ public class StepMethodInterceptor implements MethodInterceptor {
     }
 
     @Override
-    public Object intercept( Object receiver, Method method, Object[] parameters, MethodProxy methodProxy )
-            throws Throwable {
+    public Object intercept( Object receiver, Method method, Object[] parameters, MethodProxy methodProxy ) throws Throwable {
 
         InvocationMode mode = getInvocationMode( receiver, method );
 
@@ -54,7 +53,7 @@ public class StepMethodInterceptor implements MethodInterceptor {
         }
     }
 
-    private Object handleThrowable( Object receiver, Method method, Throwable t ) throws Throwable, Exception {
+    private Object handleThrowable( Object receiver, Method method, Throwable t ) throws Throwable {
         if( methodHandlingEnabled ) {
             scenarioMethodHandler.handleThrowable( t );
             return returnReceiverOrNull( receiver, method );

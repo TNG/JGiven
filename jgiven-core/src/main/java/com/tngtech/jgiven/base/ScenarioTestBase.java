@@ -11,7 +11,7 @@ import com.tngtech.jgiven.integration.CanWire;
  */
 public class ScenarioTestBase<GIVEN, WHEN, THEN> {
 
-    protected Scenario<GIVEN, WHEN, THEN> scenario = createScenario();
+    private Scenario<GIVEN, WHEN, THEN> scenario = createScenario();
 
     @SuppressWarnings( { "serial", "unchecked" } )
     protected Scenario<GIVEN, WHEN, THEN> createScenario() {
@@ -23,19 +23,19 @@ public class ScenarioTestBase<GIVEN, WHEN, THEN> {
     }
 
     public GIVEN given() {
-        return scenario.given();
+        return getScenario().given();
     }
 
     public WHEN when() {
-        return scenario.when();
+        return getScenario().when();
     }
 
     public THEN then() {
-        return scenario.then();
+        return getScenario().then();
     }
 
     public void wireSteps( CanWire canWire ) {
-        scenario.wireSteps( canWire );
+        getScenario().wireSteps( canWire );
     }
 
     /**
@@ -44,7 +44,7 @@ public class ScenarioTestBase<GIVEN, WHEN, THEN> {
      * @return a new instance of the given class enhanced by JGiven
      */
     public <T> T addStage( Class<T> stageClass ) {
-        return scenario.addStage( stageClass );
+        return getScenario().addStage( stageClass );
     }
 
     /**
@@ -55,12 +55,11 @@ public class ScenarioTestBase<GIVEN, WHEN, THEN> {
     }
 
     /**
-     * Creates a new scenario for this test
+     * Creates a new scenario for this test.
      * @return the new scenario
      */
     public Scenario<GIVEN, WHEN, THEN> createNewScenario() {
-        scenario = createScenario();
-        return scenario;
+        this.scenario = createScenario();
+        return getScenario();
     }
-
 }

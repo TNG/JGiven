@@ -19,7 +19,6 @@ import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
@@ -31,7 +30,6 @@ import com.tngtech.jgiven.impl.NamedArgument;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
-import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;
 
 public class ScenarioExecutionRule implements MethodRule {
@@ -42,12 +40,12 @@ public class ScenarioExecutionRule implements MethodRule {
 
     private final Object testInstance;
     private final ScenarioBase scenario;
-    private final ReportModel reportModel;
+    private final ScenarioReportRule reportRule;
 
-    public ScenarioExecutionRule( ReportModel model, Object testInstance, ScenarioBase scenario ) {
+    public ScenarioExecutionRule( ScenarioReportRule reportRule, Object testInstance, ScenarioBase scenario ) {
         this.testInstance = testInstance;
         this.scenario = scenario;
-        this.reportModel = model;
+        this.reportRule = reportRule;
     }
 
     @Override
@@ -82,7 +80,7 @@ public class ScenarioExecutionRule implements MethodRule {
     }
 
     protected void starting( Statement base, FrameworkMethod testMethod, Object target ) {
-        scenario.setModel( reportModel );
+        scenario.setModel( reportRule.getTestCaseModel() );
         scenario.getExecutor().injectSteps( testInstance );
 
         Class<?> testClass = target.getClass();
@@ -145,7 +143,8 @@ public class ScenarioExecutionRule implements MethodRule {
     private static Constructor<?> getOnlyConstructor( Class<?> testClass ) {
         Constructor<?>[] constructors = testClass.getConstructors();
         if( constructors.length != 1 ) {
-            log.warn( "Test class can only have one public constructor, see org.junit.runners.Parameterized.TestClassRunnerForParameters.validateConstructor(List<Throwable>)" );
+            log.warn( "Test class can only have one public constructor, "
+                    + "see org.junit.runners.Parameterized.TestClassRunnerForParameters.validateConstructor(List<Throwable>)" );
         }
         return constructors[0];
     }

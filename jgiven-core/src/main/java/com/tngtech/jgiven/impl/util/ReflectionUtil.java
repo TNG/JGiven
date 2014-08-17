@@ -80,8 +80,9 @@ public class ReflectionUtil {
             @Override
             public boolean isTrue( Field field ) throws Exception {
                 for( Class<? extends Annotation> clazz : annotation ) {
-                    if( field.isAnnotationPresent( clazz ) )
+                    if( field.isAnnotationPresent( clazz ) ) {
                         return true;
+                    }
                 }
 
                 return false;
@@ -124,8 +125,9 @@ public class ReflectionUtil {
     }
 
     public static Optional<Method> findMethodTransitively( Class<?> clazz, String methodName ) {
-        if( clazz == null )
+        if( clazz == null ) {
             return Optional.absent();
+        }
 
         try {
             return Optional.of( clazz.getDeclaredMethod( methodName ) );

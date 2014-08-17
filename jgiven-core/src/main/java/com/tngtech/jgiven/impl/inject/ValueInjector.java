@@ -119,19 +119,23 @@ public class ValueInjector {
 
     private Resolution getResolution( Field field ) {
         Resolution resolution = getDeclaredResolution( field );
-        if( resolution == Resolution.AUTO )
+        if( resolution == Resolution.AUTO ) {
             return typeIsTooGeneric( field.getType() ) ? Resolution.NAME : Resolution.TYPE;
+        }
         return resolution;
     }
 
     private Resolution getDeclaredResolution( Field field ) {
         for( Annotation annotation : field.getAnnotations() ) {
-            if( annotation instanceof ScenarioState )
+            if( annotation instanceof ScenarioState ) {
                 return ( (ScenarioState) annotation ).resolution();
-            if( annotation instanceof ProvidedScenarioState )
+            }
+            if( annotation instanceof ProvidedScenarioState ) {
                 return ( (ProvidedScenarioState) annotation ).resolution();
-            if( annotation instanceof ExpectedScenarioState )
+            }
+            if( annotation instanceof ExpectedScenarioState ) {
                 return ( (ExpectedScenarioState) annotation ).resolution();
+            }
         }
         throw new IllegalArgumentException( "Field " + field + " has no valid annotation" );
     }

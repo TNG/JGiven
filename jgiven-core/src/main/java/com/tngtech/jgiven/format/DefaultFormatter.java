@@ -1,12 +1,11 @@
 package com.tngtech.jgiven.format;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
 
 /**
- * A default formatter that merely use {@link String#valueOf(Object)}, 
- * except for arrays where {@link Arrays#deepToString(Object[])} is used.
- * @param <T> 
+ * A default formatter that merely use {@link String#valueOf(Object)},
+ * except for arrays where {@link java.util.Arrays#deepToString(Object[])} is used.
+ * @param <T>
  */
 public class DefaultFormatter<T> implements ArgumentFormatter<T> {
 

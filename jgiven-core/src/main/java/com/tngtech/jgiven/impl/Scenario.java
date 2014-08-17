@@ -1,20 +1,18 @@
 package com.tngtech.jgiven.impl;
 
-import com.tngtech.jgiven.annotation.ScenarioState;
-
 /**
  * A default scenario implementation that takes three type arguments,
  * one for each stage.
- * 
+ *
  * @param <GIVEN> the Given stage
  * @param <WHEN> then When stage
  * @param <THEN> then Then stage
  */
 public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
 
-    private GIVEN givenStage;
-    private WHEN whenStage;
-    private THEN thenStage;
+    private final GIVEN givenStage;
+    private final WHEN whenStage;
+    private final THEN thenStage;
 
     @SuppressWarnings( "unchecked" )
     private Scenario( Class<?> stageClass ) {
@@ -47,9 +45,10 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
 
     /**
      * Creates a scenario with 3 different steps classes.
-     * 
-     * To share state between the different steps instances use the {@link ScenarioState} annotation
-     * 
+     *
+     * To share state between the different steps instances use the
+     * {@link com.tngtech.jgiven.annotation.ScenarioState} annotation
+     *
      * @param givenClass the Given steps class
      * @param whenClass the When steps class
      * @param thenClass the Then steps class
@@ -62,9 +61,10 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
 
     /**
      * Creates a scenario with a single steps class.
-     * Only creates a single steps instance for all three step types, 
-     * so no {@link ScenarioState} annotations are needed to share state between the different steps instances.
-     * 
+     * Only creates a single steps instance for all three step types,
+     * so no {@link com.tngtech.jgiven.annotation.ScenarioState} annotations are needed
+     * to share state between the different steps instances.
+     *
      * @param stepsClass the class to use for given, when and then steps
      * @return the new scenario
      */
@@ -85,7 +85,7 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
     }
 
     /**
-     * Alias for {@link #startScenario(String)}
+     * Alias for {@link #startScenario(String)}.
      */
     public Scenario<GIVEN, WHEN, THEN> as( String description ) {
         return startScenario( description );

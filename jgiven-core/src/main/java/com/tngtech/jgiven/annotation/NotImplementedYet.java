@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
 
 /**
  * Marks methods of step definitions as not implemented yet.
- * Such steps will not be executed, but will appear in 
- * the report as not implemented yet. 
+ * Such steps will not be executed, but will appear in
+ * the report as not implemented yet.
  * <p>
  * This is useful if one already wants to define the scenario without
  * already implementing all steps, for example, to verify that
@@ -26,12 +26,12 @@ import java.lang.annotation.Target;
  * (In fact an AssumptionException is thrown. It depends on the test runner how this
  * is interpreted)
  * <i>Currently only works for JUnit</i>
- * 
+ *
  * <h2>Example</h2>
  * <pre>
  * @NotImplementedYet
  * public void my_cool_new_feature() {
- *   
+ *
  * }
  * </pre>
  *
@@ -43,7 +43,7 @@ import java.lang.annotation.Target;
 @IsTag( ignoreValue = true, description = "Not implemented Scenarios" )
 public @interface NotImplementedYet {
     /**
-     * Optional description to describe when the implementation will be done
+     * Optional description to describe when the implementation will be done.
      */
     String value() default "";
 
@@ -56,7 +56,7 @@ public @interface NotImplementedYet {
     boolean executeSteps() default false;
 
     /**
-     * If <b>no</b> step fails during the execution of the test, 
+     * If <b>no</b> step fails during the execution of the test,
      * the test will fail.
      * <p>
      * This makes sense if one ensures that a not implemented feature

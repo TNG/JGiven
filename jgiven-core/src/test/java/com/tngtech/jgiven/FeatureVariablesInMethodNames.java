@@ -11,12 +11,12 @@ public class FeatureVariablesInMethodNames extends ScenarioTestBase<GivenTestSte
 
     @Test
     public void variables_are_read_from_method_names() {
-        scenario.startScenario( "variables are read from method names" );
+        getScenario().startScenario( "variables are read from method names" );
 
         given().$d_and_$d( 5, 6 );
         then().sms_and_emails_exist();
 
-        StepModel stepModel = scenario.getModel().getLastScenarioModel().getCase( 0 ).getStep( 0 );
+        StepModel stepModel = getScenario().getModel().getLastScenarioModel().getCase( 0 ).getStep( 0 );
         assertThat( stepModel.getCompleteSentence() ).isEqualTo( "Given 5 and 6" );
     }
 }

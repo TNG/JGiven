@@ -10,9 +10,7 @@ import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
 
 /**
- * Allows arguments of step methods to be formatted with 
- * an ArgumentFormatter
- *
+ * Allows arguments of step methods to be formatted with an ArgumentFormatter.
  */
 @Documented
 @Retention( RetentionPolicy.RUNTIME )
@@ -21,7 +19,7 @@ public @interface Format {
     Class<? extends ArgumentFormatter<?>> value() default PrintfFormatter.class;
 
     /**
-     * Optional arguments for the ArgumentFormatter
+     * Optional arguments for the ArgumentFormatter.
      */
     String[] args() default {};
 }

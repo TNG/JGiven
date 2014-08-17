@@ -43,7 +43,8 @@ public class ScenarioTestRuleTest {
             { emptyStatement(), anyFrameworkMethod(), new ParameterizedOutOfOrderTest( 4, "test1" ),
                 new NamedArgument[] { new NamedArgument( "i", 4 ), new NamedArgument( "s", "test1" ) } },
             { emptyStatement(), anyFrameworkMethod(), new ParameterizedWithAdditionalFieldsTest( "test1", 4, false ),
-                new NamedArgument[] { new NamedArgument( "s", "test1" ), new NamedArgument( "n", 4 ), new NamedArgument( "b", false ) } }, };
+                new NamedArgument[] { new NamedArgument( "s", "test1" ),
+                    new NamedArgument( "n", 4 ), new NamedArgument( "b", false ) } }, };
     }
 
     @Test
@@ -69,7 +70,7 @@ public class ScenarioTestRuleTest {
     }
 
     private static Object dataProviderFrameworkMethod( Method method, Object... args ) {
-        return new DataProviderFrameworkMethod( method, 1, args );
+        return new DataProviderFrameworkMethod( method, 1, args, "%s" );
     }
 
     private static Object junitParamsStatement( Method method, String args ) {

@@ -7,7 +7,7 @@ public class Word {
     public boolean isIntroWord;
 
     /**
-     * Is set when this word is an argument, is <code>null</code> otherwise
+     * Is set when this word is an argument, is <code>null</code> otherwise.
      */
     private ArgumentInfo argumentInfo;
 

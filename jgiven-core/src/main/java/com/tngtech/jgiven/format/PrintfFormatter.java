@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.format;
 
 /**
- * Formatter to use a Java format string to format arguments 
+ * Formatter to use a Java format string to format arguments.
  */
 public class PrintfFormatter implements ArgumentFormatter<Object> {
 

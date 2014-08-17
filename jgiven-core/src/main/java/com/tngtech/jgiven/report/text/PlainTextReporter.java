@@ -17,8 +17,6 @@ import com.tngtech.jgiven.report.model.ScenarioModel;
 public class PlainTextReporter extends PlainTextWriter {
     private static final boolean COLOR_ENABLED = Config.config().textColorEnabled();
 
-    PlainTextScenarioWriter scenarioWriter;
-
     public static String toString( ReportModel model ) throws UnsupportedEncodingException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         PlainTextReporter textWriter = new PlainTextReporter( new PrintStream( stream, false, Charsets.UTF_8.name() ), false );

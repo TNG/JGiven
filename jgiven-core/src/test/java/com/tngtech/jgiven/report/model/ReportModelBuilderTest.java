@@ -38,14 +38,14 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
     @UseDataProvider( "testData" )
     public void test( int a, int b, int expectedResult ) {
         String description = "values can be multiplied";
-        scenario.startScenario( description );
+        getScenario().startScenario( description );
 
         given().$d_and_$d( a, b );
         when().both_values_are_multiplied_with_each_other();
         then().the_result_is( expectedResult );
 
-        scenario.finished();
-        ScenarioModel model = scenario.getModel().getLastScenarioModel();
+        getScenario().finished();
+        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
 
         assertThat( model.description ).isEqualTo( description );
 
@@ -174,30 +174,30 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
     @Test
     @UseDataProvider( "argumentTestData" )
     public void testArrayArguments( Object argument, String expected ) {
-        scenario.startScenario( "test" );
+        getScenario().startScenario( "test" );
 
         given().an_array( argument );
 
-        scenario.finished();
-        StepModel step = scenario.getModel().getFirstStepModelOfLastScenario();
+        getScenario().finished();
+        StepModel step = getScenario().getModel().getFirstStepModelOfLastScenario();
         assertThat( step.words.get( 2 ).value ).isEqualTo( expected );
     }
 
     @Test
     public void the_Description_annotation_is_evaluated() {
-        scenario.startScenario( "Scenario with a @Description tag" );
+        getScenario().startScenario( "Scenario with a @Description tag" );
         given().a_step_with_a_description();
-        scenario.finished();
-        StepModel step = scenario.getModel().getFirstStepModelOfLastScenario();
+        getScenario().finished();
+        StepModel step = getScenario().getModel().getFirstStepModelOfLastScenario();
         assertThat( step.words.get( 1 ).value ).isEqualTo( "a step with a (special) description" );
     }
 
     @Test
     public void printf_annotation_uses_the_PrintfFormatter() {
-        scenario.startScenario( "printf_annotation_uses_the_PrintfFormatter" );
+        getScenario().startScenario( "printf_annotation_uses_the_PrintfFormatter" );
         given().a_step_with_a_printf_annotation_$( 5.2 );
-        scenario.finished();
-        StepModel step = scenario.getModel().getFirstStepModelOfLastScenario();
+        getScenario().finished();
+        StepModel step = getScenario().getModel().getFirstStepModelOfLastScenario();
         assertThat( step.words.get( 2 ).value ).isEqualTo( String.format( "%.2f", 5.2 ) );
     }
 

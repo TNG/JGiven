@@ -45,7 +45,7 @@ import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
 import com.tngtech.jgiven.integration.CanWire;
 
 /**
- * Main class of JGiven for executing scenarios
+ * Main class of JGiven for executing scenarios.
  */
 public class ScenarioExecutor {
     private static final Logger log = LoggerFactory.getLogger( ScenarioExecutor.class );
@@ -99,11 +99,11 @@ public class ScenarioExecutor {
                 return;
             }
 
-            if( paramMethod.isAnnotationPresent( AfterStage.class ) ||
-                    paramMethod.isAnnotationPresent( BeforeStage.class ) ||
-                    paramMethod.isAnnotationPresent( BeforeScenario.class ) ||
-                    paramMethod.isAnnotationPresent( AfterScenario.class ) ||
-                    paramMethod.isAnnotationPresent( Hidden.class ) ) {
+            if( paramMethod.isAnnotationPresent( AfterStage.class )
+                    || paramMethod.isAnnotationPresent( BeforeStage.class )
+                    || paramMethod.isAnnotationPresent( BeforeScenario.class )
+                    || paramMethod.isAnnotationPresent( AfterScenario.class )
+                    || paramMethod.isAnnotationPresent( Hidden.class ) ) {
                 return;
             }
 
@@ -268,7 +268,7 @@ public class ScenarioExecutor {
     }
 
     /**
-     * Used for DI frameworks to inject values into stages
+     * Used for DI frameworks to inject values into stages.
      */
     public void wireSteps( CanWire canWire ) {
         for( StageState steps : stages.values() ) {
@@ -277,7 +277,7 @@ public class ScenarioExecutor {
     }
 
     /**
-     * Has to be called when the scenario is finished in order to execute after methods
+     * Has to be called when the scenario is finished in order to execute after methods.
      */
     public void finished() throws Throwable {
         if( state == FINISHED ) {

@@ -53,17 +53,18 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
         for( int width : columnWidths ) {
             formatBuilder.append( "| %" + width + "s " );
             lineBuilder.append( "+" );
-            lineBuilder.append( Strings.repeat( "-", ( width + 2 ) ) );
+            lineBuilder.append( Strings.repeat( "-", width + 2 ) );
         }
         formatBuilder.append( "|" );
         lineBuilder.append( "+" );
 
         String formatString = formatBuilder.toString();
+        String caseIndent = "    ";
         stream.println( "  Cases:\n" );
-        stream.println( "    " + String.format( formatString, scenarioModel.parameterNames.toArray() ) );
-        stream.println( "    " + lineBuilder );
+        stream.println( caseIndent + String.format( formatString, scenarioModel.parameterNames.toArray() ) );
+        stream.println( caseIndent + lineBuilder );
         for( ScenarioCaseModel c : scenarioModel.getScenarioCases() ) {
-            stream.println( "    " + String.format( formatString, c.arguments.toArray() ) );
+            stream.println( caseIndent + String.format( formatString, c.arguments.toArray() ) );
         }
     }
 

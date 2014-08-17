@@ -1,12 +1,10 @@
 package com.tngtech.jgiven.lang.de;
 
-import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.IntroWord;
 import com.tngtech.jgiven.base.StageBase;
 
 /**
- * Eine deutsche Version der {@link Stage}-Klasse
- *
+ * Eine deutsche Version der {@link com.tngtech.jgiven.Stage}-Klasse.
  */
 public class Stufe<SELF extends Stufe<?>> extends StageBase<SELF> {
 

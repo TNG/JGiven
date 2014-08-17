@@ -5,8 +5,8 @@ import java.util.Set;
 
 public interface Cook {
 
-   String fryDoughInAPan(Set<String> dough);
+    String fryDoughInAPan( Set<String> dough );
 
-   Set<String> makeADough(List<String> ingredients);
+    Set<String> makeADough( List<String> ingredients );
 
 }

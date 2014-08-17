@@ -1,21 +1,17 @@
 package com.tngtech.jgiven.base;
 
-import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.IntroWord;
-import com.tngtech.jgiven.lang.de.Schritte;
-
 /**
  * Useful base class for step definitions as it provides a {@link #self()} method
  * to create fluent interfaces.
  * <p>
- * Direct subclasses should provide introduction words (see {@link IntroWord}). 
+ * Direct subclasses should provide introduction words (see {@link com.tngtech.jgiven.annotation.IntroWord}).
  * <p>
  * Typically one derives from one of the language-specific step definition classes, which
- * already provide a handful of useful introduction words. 
+ * already provide a handful of useful introduction words.
  *
  * @param <SELF> the type of the subclass
- * @see Stage
- * @see Schritte
+ * @see com.tngtech.jgiven.Stage
+ * @see com.tngtech.jgiven.lang.de.Stufe
  */
 public class StageBase<SELF extends StageBase<?>> {
 

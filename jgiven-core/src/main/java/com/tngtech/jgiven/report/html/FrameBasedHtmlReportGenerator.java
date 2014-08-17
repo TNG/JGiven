@@ -1,7 +1,6 @@
 package com.tngtech.jgiven.report.html;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +47,7 @@ public class FrameBasedHtmlReportGenerator implements ReportModelFileHandler {
         copyFileToTargetDir( "print.css" );
     }
 
-    protected void copyFileToTargetDir( String fileName ) throws FileNotFoundException, IOException {
+    protected void copyFileToTargetDir( String fileName ) throws IOException {
         InputStream stream = null;
         FileOutputStream fileOutputStream = null;
         try {

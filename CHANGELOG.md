@@ -1,3 +1,7 @@
+v0.3.1
+* fix issue with intercepting methods of stages during construction
+* if multiple exceptions are thrown during scenario execution throw the first one at the end of the test execution
+
 v0.3.0
 * Arguments from JUnit Parameterized and JUnitParams runner can now be read
 * Arguments from JUnit Dataprovider runner are now read directly instead of parsing them

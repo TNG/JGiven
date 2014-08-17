@@ -1,13 +1,13 @@
 package com.tngtech.jgiven.format;
 
 /**
- * Translates <code>false</code> to the word "not" and <code>true</code> to the empty word ""
- * 
+ * Translates <code>false</code> to the word "not" and <code>true</code> to the empty word "".
+ *
  * <pre>
  * true:  ""
  * false: "not"
  * </pre>
- * 
+ *
  * <h1>Example:</h1>
  * <pre>
  * then().the_coffee_should_$$not_be_served( coffeeServed )

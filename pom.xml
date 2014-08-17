@@ -36,7 +36,7 @@
     <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
 
     <!-- Dependency Versions -->
-    <junit-dataprovider.version>1.7.0</junit-dataprovider.version>
+    <junit-dataprovider.version>1.9.1-SNAPSHOT</junit-dataprovider.version>
     <junit.version>4.11</junit.version>
     <junitparams.version>1.0.2</junitparams.version>
     <testng.version>6.8.7</testng.version>
@@ -48,6 +48,7 @@
     <gson.version>2.2.4</gson.version>
     <guava.version>16.0.1</guava.version>
     <spring.version>3.2.4.RELEASE</spring.version>
+    <checkstyle.version>2.12.1</checkstyle.version>
 
     <!-- Sonar -->
     <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -164,6 +165,22 @@
         <groupId>org.eluder.coveralls</groupId>
         <artifactId>coveralls-maven-plugin</artifactId>
         <version>2.2.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>${checkstyle.version}</version>
+        <configuration>
+          <configLocation>develop/checkstyle-rules.xml</configLocation>
+        </configuration>
+        <executions>
+          <execution>
+            <id>checkstyle-check</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

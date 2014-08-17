@@ -14,7 +14,7 @@ public class ScenarioBase {
     }
 
     public void setModel( ReportModel scenarioCollectionModel ) {
-        modelBuilder.setModel( scenarioCollectionModel );
+        modelBuilder.setReportModel( scenarioCollectionModel );
     }
 
     public ReportModel getModel() {

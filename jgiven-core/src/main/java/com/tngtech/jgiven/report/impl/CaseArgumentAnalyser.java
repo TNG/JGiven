@@ -17,7 +17,7 @@ import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.Word;
 
 /**
- * Analyzes a report model and tries to infer which step method
+ * Analyzes a report model and tries to infer which step method.
  * arguments match to which case argument
  *
  */

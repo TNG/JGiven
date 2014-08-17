@@ -8,12 +8,12 @@ import com.google.common.collect.Lists;
 
 public class ReportModel {
     /**
-     * Full qualified name of the test class
+     * Full qualified name of the test class.
      */
     public String className;
 
     /**
-     * An optional description of the test class
+     * An optional description of the test class.
      */
     public String description;
 

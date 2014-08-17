@@ -35,14 +35,14 @@ import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
 /**
- * Builds up the report model while the scenario is executed
+ * Builds up the report model while the scenario is executed.
  */
 public class ReportModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ReportModelBuilder.class );
 
     private ScenarioModel currentScenarioModel;
     private ScenarioCaseModel currentScenarioCase;
-    private ReportModel scenarioCollectionModel;
+    private ReportModel reportModel;
 
     private Word introWord;
 
@@ -53,11 +53,11 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public ReportModelBuilder( ReportModel scenarioCollectionModel ) {
-        setModel( scenarioCollectionModel );
+        setReportModel( scenarioCollectionModel );
     }
 
-    public void setModel( ReportModel scenarioCollectionModel ) {
-        this.scenarioCollectionModel = scenarioCollectionModel;
+    public void setReportModel( ReportModel reportModel ) {
+        this.reportModel = reportModel;
     }
 
     @Override
@@ -72,8 +72,8 @@ public class ReportModelBuilder implements ScenarioListener {
 
         currentScenarioCase = new ScenarioCaseModel();
 
-        if( !scenarioCollectionModel.scenarios.isEmpty() ) {
-            ScenarioModel scenarioModel = scenarioCollectionModel.scenarios.get( scenarioCollectionModel.scenarios.size() - 1 );
+        if( !reportModel.scenarios.isEmpty() ) {
+            ScenarioModel scenarioModel = reportModel.scenarios.get( reportModel.scenarios.size() - 1 );
             if( scenarioModel.description.equals( readableDescription ) ) {
                 currentScenarioModel = scenarioModel;
             }
@@ -81,8 +81,8 @@ public class ReportModelBuilder implements ScenarioListener {
 
         if( currentScenarioModel == null ) {
             currentScenarioModel = new ScenarioModel();
-            currentScenarioModel.className = scenarioCollectionModel.className;
-            scenarioCollectionModel.scenarios.add( currentScenarioModel );
+            currentScenarioModel.className = reportModel.className;
+            reportModel.scenarios.add( currentScenarioModel );
         }
 
         currentScenarioModel.addCase( currentScenarioCase );
@@ -187,7 +187,7 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public void setClassName( String name ) {
-        scenarioCollectionModel.className = name;
+        reportModel.className = name;
     }
 
     public void setSuccess( boolean success ) {
@@ -203,7 +203,7 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public ReportModel getScenarioCollectionModel() {
-        return scenarioCollectionModel;
+        return reportModel;
     }
 
     @Override

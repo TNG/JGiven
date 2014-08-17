@@ -11,7 +11,7 @@ public class ScenarioRuleTest extends ScenarioTestBase<BeforeAfterTestStage<?>, 
 
     @Test
     public void testBeforeAndAfterIsCalled() {
-        scenario.startScenario( "Some Scenario" );
+        getScenario().startScenario( "Some Scenario" );
         BeforeAfterTestStage<?> steps = given().something();
         TestRule rule = steps.rule;
         assertThat( rule.beforeCalled ).isEqualTo( 1 );
@@ -21,7 +21,7 @@ public class ScenarioRuleTest extends ScenarioTestBase<BeforeAfterTestStage<?>, 
         assertThat( rule.afterCalled ).isEqualTo( 0 );
         assertThat( steps.afterCalled ).isEqualTo( 0 );
 
-        scenario.finished();
+        getScenario().finished();
 
         assertThat( rule.beforeCalled ).isEqualTo( 1 );
         assertThat( rule.afterCalled ).isEqualTo( 1 );
@@ -31,27 +31,27 @@ public class ScenarioRuleTest extends ScenarioTestBase<BeforeAfterTestStage<?>, 
 
     @Test
     public void methods_annotated_with_AfterStage_are_called() {
-        scenario.startScenario( "methods_annotated_with_AfterStage_are_called" );
+        getScenario().startScenario( "methods_annotated_with_AfterStage_are_called" );
         given().something();
         when().something_happens();
 
-        assertThat( scenario.getWhenStage().afterStageCalled ).as( "afterStage has not been called" ).isEqualTo( 0 );
-        assertThat( scenario.getGivenStage().afterStageCalled ).as( "afterStage has been called" ).isEqualTo( 1 );
+        assertThat( getScenario().getWhenStage().afterStageCalled ).as( "afterStage has not been called" ).isEqualTo( 0 );
+        assertThat( getScenario().getGivenStage().afterStageCalled ).as( "afterStage has been called" ).isEqualTo( 1 );
     }
 
     @Test
     public void afterStage_methods_are_only_invoked_once() {
-        scenario.startScenario( "methods_annotated_with_AfterStage_are_called_only_once" );
+        getScenario().startScenario( "methods_annotated_with_AfterStage_are_called_only_once" );
         given().something();
         when().something_happens();
         given().something();
         when().something_happens();
-        assertThat( scenario.getGivenStage().afterStageCalled ).as( "afterStage has been called" ).isEqualTo( 1 );
+        assertThat( getScenario().getGivenStage().afterStageCalled ).as( "afterStage has been called" ).isEqualTo( 1 );
     }
 
     @Test
     public void whenExceptionThrownInStepThenAfterMethodsAreExecuted() {
-        scenario.startScenario( "some description" );
+        getScenario().startScenario( "some description" );
         BeforeAfterTestStage<?> steps = given();
         try {
             when().an_exception_is_thrown();
@@ -63,9 +63,9 @@ public class ScenarioRuleTest extends ScenarioTestBase<BeforeAfterTestStage<?>, 
 
     @Test
     public void whenExceptionThrownInBeforeOfRuleThenAfterMethodIsStillCalled() {
-        ExceptionStep steps = scenario.addStage( ExceptionStep.class );
+        ExceptionStep steps = getScenario().addStage( ExceptionStep.class );
         try {
-            scenario.startScenario( "some description" );
+            getScenario().startScenario( "some description" );
             steps.given().something();
         } catch( Exception e ) {
             TestRule rule = steps.exceptionRule;

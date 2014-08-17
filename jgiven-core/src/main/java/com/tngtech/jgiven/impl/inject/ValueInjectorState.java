@@ -5,7 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 
 /**
- * Holds values based on their type or name
+ * Holds values based on their type or name.
  */
 public class ValueInjectorState {
     private final Map<Class<?>, Object> valuesByType = Maps.newHashMap();

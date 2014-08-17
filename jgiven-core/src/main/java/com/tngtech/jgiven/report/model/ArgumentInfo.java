@@ -11,7 +11,7 @@ public class ArgumentInfo {
 
     /**
      * In case this word is a case argument (isCaseArg == true)
-     * this field is set to the corresponding parameter index
+     * this field is set to the corresponding parameter index.
      */
     private int parameterIndex;
 
@@ -35,12 +35,15 @@ public class ArgumentInfo {
 
     @Override
     public boolean equals( Object obj ) {
-        if( this == obj )
+        if( this == obj ) {
             return true;
-        if( obj == null )
+        }
+        if( obj == null ) {
             return false;
-        if( getClass() != obj.getClass() )
+        }
+        if( getClass() != obj.getClass() ) {
             return false;
+        }
         ArgumentInfo other = (ArgumentInfo) obj;
         return Objects.equal( isCaseArg, other.isCaseArg ) &&
                 Objects.equal( parameterIndex, other.parameterIndex );

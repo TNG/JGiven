@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * description for a step method.
  * This description is then used in the generated report
  * instead of using the method name.
- * 
+ *
  * <pre>
  * @Description("some (complicated) step")
  * public SELF some_complicated_step() {
@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 public @interface Description {
 
     /**
-     * The description of the step
+     * The description of the step.
      */
     String value();
 

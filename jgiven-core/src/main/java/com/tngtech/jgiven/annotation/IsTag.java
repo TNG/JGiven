@@ -22,7 +22,7 @@ public @interface IsTag {
     boolean explodeArray() default true;
 
     /**
-     * Whether values should be ignored. 
+     * Whether values should be ignored.
      * If true only a single tag is created for the annotation and the value does not appear in the report.
      * This is useful if the value is used as an internal comment
      * @see NotImplementedYet
@@ -40,12 +40,12 @@ public @interface IsTag {
     String description() default "";
 
     /**
-     * An optional type description that overrides the default which is the name of the annotation
+     * An optional type description that overrides the default which is the name of the annotation.
      */
     String type() default "";
 
     /**
-     * Whether the type should be prepended to the tag if the tag has a value
+     * Whether the type should be prepended to the tag if the tag has a value.
      */
     boolean prependType() default false;
 }

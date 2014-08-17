@@ -4,24 +4,24 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 
 /**
- * A tag represents a Java annotation of a scenario-test
+ * A tag represents a Java annotation of a scenario-test.
  */
 public class Tag {
     private final String name;
 
     /**
-     * An optional value 
+     * An optional value
      * Guaranteed to be either of type String or of type String[].
      */
     private Object value;
 
-    /** 
-     * An optional description
+    /**
+     * An optional description.
      */
     private String description;
 
     /**
-     * Whether the type should be prepended in the report
+     * Whether the type should be prepended in the report.
      */
     private boolean prependType;
 
@@ -97,12 +97,15 @@ public class Tag {
 
     @Override
     public boolean equals( Object obj ) {
-        if( this == obj )
+        if( this == obj ) {
             return true;
-        if( obj == null )
+        }
+        if( obj == null ) {
             return false;
-        if( getClass() != obj.getClass() )
+        }
+        if( getClass() != obj.getClass() ) {
             return false;
+        }
         Tag other = (Tag) obj;
         return Objects.equal( getName(), other.getName() )
                 && Objects.equal( getValue(), other.getValue() );

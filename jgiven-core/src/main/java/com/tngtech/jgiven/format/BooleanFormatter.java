@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.format;
 
 /**
- * General formatter to format boolean values
+ * General formatter to format boolean values.
  */
 public class BooleanFormatter implements ArgumentFormatter<Boolean> {
 

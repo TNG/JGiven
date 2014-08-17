@@ -71,8 +71,9 @@ public class StepFormatter {
     private int findArgumentEnd( int i, List<String> words ) {
         for( int j = i; j < words.size(); j++ ) {
             String word = words.get( j );
-            if( word.endsWith( "$" ) && word.length() > 1 )
+            if( word.endsWith( "$" ) && word.length() > 1 ) {
                 return j;
+            }
         }
         return -1;
     }

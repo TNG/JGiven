@@ -34,13 +34,13 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
     @Test
     @UseDataProvider( "testData" )
     public void parmeters_are_reported_correctly( int a, int b, int expectedResult ) throws Exception {
-        scenario.startScenario( "values can be multiplied" );
+        getScenario().startScenario( "values can be multiplied" );
 
         given().$d_and_$d( a, b );
         when().both_values_are_multiplied_with_each_other();
         then().the_result_is( expectedResult );
 
-        String string = PlainTextReporter.toString( scenario.getModel() );
+        String string = PlainTextReporter.toString( getScenario().getModel() );
         assertThat( string )
             .contains( "Given " + a + " and " + b )
             .contains( "When both values are multiplied with each other" )
@@ -49,7 +49,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
 
     @Test
     public void plain_text_report_works_as_expected() throws UnsupportedEncodingException {
-        scenario.startScenario( "test" );
+        getScenario().startScenario( "test" );
 
         given().something()
             .and().something_else();
@@ -59,7 +59,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         then().something_has_happend()
             .but().something_else_not();
 
-        String string = PlainTextReporter.toString( scenario.getModel() );
+        String string = PlainTextReporter.toString( getScenario().getModel() );
         assertThat( string )
             .contains( ""
                     + " Scenario: Test\n"
