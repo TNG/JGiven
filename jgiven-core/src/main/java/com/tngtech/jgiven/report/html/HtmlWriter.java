@@ -2,12 +2,7 @@ package com.tngtech.jgiven.report.html;
 
 import static java.lang.String.format;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -17,6 +12,7 @@ import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
+import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
 import com.tngtech.jgiven.report.model.ScenarioModel;
@@ -160,16 +156,8 @@ public class HtmlWriter extends ReportModelVisitor {
         scenarioModel.accept( scenarioHtmlWriter );
     }
 
-    public static PrintWriter getPrintWriter( File file ) {
-        try {
-            return new PrintWriter( file, Charsets.UTF_8.name() );
-        } catch( Exception e ) {
-            throw Throwables.propagate( e );
-        }
-    }
-
     public static void writeModelToFile( ReportModel model, HtmlTocWriter tocWriter, File file ) {
-        PrintWriter printWriter = getPrintWriter( file );
+        PrintWriter printWriter = CommonReportHelper.getPrintWriter( file );
         try {
             HtmlWriter htmlWriter = new HtmlWriter( printWriter );
             htmlWriter.write( model, tocWriter );

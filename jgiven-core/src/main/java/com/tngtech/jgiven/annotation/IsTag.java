@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * Marks an annotation to be used as a tag in JGiven reports.
  * The name and a possible value will be stored.
  * A value can be an array in which case it is either translated into multiple tags, one for each array element,
- * of a comma-separated list of values.
+ * or a comma-separated list of values.
  * <p>
  * <strong>Note that the annotation must have retention policy RUNTIME</strong>
  */

@@ -3,7 +3,7 @@ package com.tngtech.jgiven.report.text;
 import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD;
 import static org.fusesource.jansi.Ansi.Color.MAGENTA;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.List;
 
 import org.fusesource.jansi.Ansi.Attribute;
@@ -13,11 +13,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.model.ReportModelVisitor;
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.StepModel;
-import com.tngtech.jgiven.report.model.Word;
+import com.tngtech.jgiven.report.model.*;
 
 public class PlainTextScenarioWriter extends PlainTextWriter {
     private static final String INDENT = "   ";
@@ -26,13 +22,13 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     protected ScenarioCaseModel currentCaseModel;
     private int maxFillWordLength;
 
-    public PlainTextScenarioWriter( PrintStream stream, boolean withColor ) {
-        super( stream, withColor );
+    public PlainTextScenarioWriter( PrintWriter printWriter, boolean withColor ) {
+        super( printWriter, withColor );
     }
 
     @Override
     public void visit( ScenarioModel scenarioModel ) {
-        stream.print( "\n" + withColor( MAGENTA, INTENSITY_BOLD, " Scenario: " ) );
+        writer.print( "\n" + withColor( MAGENTA, INTENSITY_BOLD, " Scenario: " ) );
         println( Color.MAGENTA, scenarioModel.description + "\n" );
         currentScenarioModel = scenarioModel;
     }
@@ -40,10 +36,10 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     @Override
     public void visitEnd( ScenarioCaseModel scenarioCase ) {
         if( !scenarioCase.success ) {
-            stream.println();
-            stream.print( "FAILED: " + scenarioCase.errorMessage );
+            writer.println();
+            writer.print( "FAILED: " + scenarioCase.errorMessage );
         }
-        stream.println();
+        writer.println();
     }
 
     @Override
@@ -56,21 +52,21 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     }
 
     protected void printCaseLine( ScenarioCaseModel scenarioCase ) {
-        stream.print( "  Case " + scenarioCase.caseNr + ": " );
+        writer.print( "  Case " + scenarioCase.caseNr + ": " );
         List<String> arguments = scenarioCase.arguments;
         if( !arguments.isEmpty() ) {
             List<String> parameterNames = currentScenarioModel.parameterNames;
             for( int i = 0; i < arguments.size(); i++ ) {
                 if( i < parameterNames.size() ) {
-                    stream.print( parameterNames.get( i ) + " = " );
+                    writer.print( parameterNames.get( i ) + " = " );
                 }
-                stream.print( arguments.get( i ) );
+                writer.print( arguments.get( i ) );
                 if( i != arguments.size() - 1 ) {
-                    stream.print( ", " );
+                    writer.print( ", " );
                 }
             }
         }
-        stream.println();
+        writer.println();
     }
 
     static class MaxFillWordLengthGetter extends ReportModelVisitor {
@@ -113,7 +109,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
             rest = withColor( Color.RED, true, Attribute.INTENSITY_FAINT, rest );
             rest += withColor( Color.RED, true, Attribute.INTENSITY_BOLD, " (failed)" );
         }
-        stream.println( intro + rest );
+        writer.println( intro + rest );
     }
 
     private String joinWords( List<Word> words ) {

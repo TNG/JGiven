@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.text;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.Ansi.Attribute;
@@ -9,16 +9,16 @@ import org.fusesource.jansi.Ansi.Color;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
 
 public class PlainTextWriter extends ReportModelVisitor {
-    protected final PrintStream stream;
+    protected final PrintWriter writer;
     protected final boolean withColor;
 
-    public PlainTextWriter( PrintStream stream, boolean withColor ) {
-        this.stream = stream;
+    public PlainTextWriter( PrintWriter printWriter, boolean withColor ) {
+        this.writer = printWriter;
         this.withColor = withColor;
     }
 
     void println( Color color, String text ) {
-        stream.println( withColor( color, text ) );
+        writer.println( withColor( color, text ) );
     }
 
     String withColor( Color color, String text ) {

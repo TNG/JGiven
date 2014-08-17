@@ -10,7 +10,7 @@ import java.util.Map;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.report.html.FrameBasedHtmlReportGenerator.ModelFile;
+import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator.ModelFile;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.Tag;
 

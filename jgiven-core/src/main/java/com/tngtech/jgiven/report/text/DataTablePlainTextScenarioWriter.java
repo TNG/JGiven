@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.text;
 
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.List;
 
 import com.google.common.base.Strings;
@@ -12,8 +12,8 @@ import com.tngtech.jgiven.report.model.Word;
 
 public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
 
-    public DataTablePlainTextScenarioWriter( PrintStream stream, boolean withColor ) {
-        super( stream, withColor );
+    public DataTablePlainTextScenarioWriter( PrintWriter writer, boolean withColor ) {
+        super( writer, withColor );
     }
 
     @Override
@@ -60,11 +60,11 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
 
         String formatString = formatBuilder.toString();
         String caseIndent = "    ";
-        stream.println( "  Cases:\n" );
-        stream.println( caseIndent + String.format( formatString, scenarioModel.parameterNames.toArray() ) );
-        stream.println( caseIndent + lineBuilder );
+        writer.println( "  Cases:\n" );
+        writer.println( caseIndent + String.format( formatString, scenarioModel.parameterNames.toArray() ) );
+        writer.println( caseIndent + lineBuilder );
         for( ScenarioCaseModel c : scenarioModel.getScenarioCases() ) {
-            stream.println( caseIndent + String.format( formatString, c.arguments.toArray() ) );
+            writer.println( caseIndent + String.format( formatString, c.arguments.toArray() ) );
         }
     }
 

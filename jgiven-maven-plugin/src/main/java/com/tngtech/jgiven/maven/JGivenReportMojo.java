@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
-import com.tngtech.jgiven.report.html.HtmlReportGenerator;
+import com.tngtech.jgiven.report.ReportGenerator;
 
 /**
  * @goal report
@@ -44,11 +44,11 @@ public class JGivenReportMojo extends AbstractMojo {
                 getLog().info( "JGiven HTML report custom CSS file: " + customCssFile );
             }
             getLog().info( "Generating HTML reports to " + outputDirectory + "..." );
-            HtmlReportGenerator generator = new HtmlReportGenerator();
-            generator.toDir = outputDirectory;
-            generator.sourceDir = sourceDirectory;
-            generator.frames = true;
-            generator.customCssFile = customCssFile;
+            ReportGenerator generator = new ReportGenerator();
+            generator.setToDir( outputDirectory );
+            generator.setSourceDir( sourceDirectory );
+            generator.setFormat( ReportGenerator.Format.HTML );
+            generator.setCustomCssFile( customCssFile );
             generator.generate();
             getLog().info( "-------------------------------------------------------------------" );
             getLog().info( "Generated JGiven HTML reports to directory " + outputDirectory );

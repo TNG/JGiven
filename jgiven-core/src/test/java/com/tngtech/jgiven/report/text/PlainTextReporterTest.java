@@ -33,7 +33,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
 
     @Test
     @UseDataProvider( "testData" )
-    public void parmeters_are_reported_correctly( int a, int b, int expectedResult ) throws Exception {
+    public void parameters_are_reported_correctly(int a, int b, int expectedResult) throws Exception {
         getScenario().startScenario( "values can be multiplied" );
 
         given().$d_and_$d( a, b );

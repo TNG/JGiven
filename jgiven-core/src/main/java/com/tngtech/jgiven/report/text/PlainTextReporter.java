@@ -2,26 +2,34 @@ package com.tngtech.jgiven.report.text;
 
 import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
 import org.fusesource.jansi.Ansi.Color;
 
-import com.google.common.base.Charsets;
 import com.tngtech.jgiven.impl.Config;
+import com.tngtech.jgiven.impl.util.ResourceUtil;
+import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 
+/**
+ * Generates a plain text report to a PrintStream.
+ */
 public class PlainTextReporter extends PlainTextWriter {
     private static final boolean COLOR_ENABLED = Config.config().textColorEnabled();
 
     public static String toString( ReportModel model ) throws UnsupportedEncodingException {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        PlainTextReporter textWriter = new PlainTextReporter( new PrintStream( stream, false, Charsets.UTF_8.name() ), false );
-        textWriter.write( model );
-        return stream.toString( Charsets.UTF_8.name() );
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter( stringWriter );
+        PlainTextReporter textWriter = new PlainTextReporter( printWriter, false );
+        try {
+            textWriter.write( model );
+            return stringWriter.toString();
+        } finally {
+            ResourceUtil.close( printWriter );
+        }
     }
 
     public PlainTextReporter() {
@@ -29,15 +37,11 @@ public class PlainTextReporter extends PlainTextWriter {
     }
 
     public PlainTextReporter( boolean withColor ) {
-        this( System.out, withColor );
+        this( CommonReportHelper.getPrintWriter( System.out ), withColor );
     }
 
-    public PlainTextReporter( OutputStream outputStream, boolean withColor ) throws UnsupportedEncodingException {
-        this( new PrintStream( outputStream, false, Charsets.UTF_8.name() ), withColor );
-    }
-
-    private PlainTextReporter( PrintStream stream, boolean withColor ) {
-        super( stream, withColor );
+    public PlainTextReporter( PrintWriter printWriter, boolean withColor ) {
+        super( printWriter, withColor );
     }
 
     public void write( ReportModel model ) {
@@ -50,7 +54,7 @@ public class PlainTextReporter extends PlainTextWriter {
 
     @Override
     public void visit( ReportModel multiScenarioModel ) {
-        stream.println();
+        writer.println();
         String title = withColor( Color.RED, INTENSITY_BOLD, "Test Class: " );
         title += withColor( Color.RED, multiScenarioModel.className );
         println( Color.RED, title );
@@ -59,9 +63,9 @@ public class PlainTextReporter extends PlainTextWriter {
     @Override
     public void visit( ScenarioModel scenarioModel ) {
         if( scenarioModel.isCasesAsTable() ) {
-            scenarioModel.accept( new DataTablePlainTextScenarioWriter( stream, withColor ) );
+            scenarioModel.accept( new DataTablePlainTextScenarioWriter( writer, withColor ) );
         } else {
-            scenarioModel.accept( new PlainTextScenarioWriter( stream, withColor ) );
+            scenarioModel.accept( new PlainTextScenarioWriter( writer, withColor ) );
         }
     }
 

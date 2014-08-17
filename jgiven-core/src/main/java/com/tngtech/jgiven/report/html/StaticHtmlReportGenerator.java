@@ -1,10 +1,6 @@
 package com.tngtech.jgiven.report.html;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -17,16 +13,15 @@ import com.google.common.collect.Maps;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
+import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.json.JsonModelTraverser;
 import com.tngtech.jgiven.report.json.ReportModelFileHandler;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.Tag;
 
-public class FrameBasedHtmlReportGenerator implements ReportModelFileHandler {
-    private static final Logger log = LoggerFactory.getLogger( FrameBasedHtmlReportGenerator.class );
-
-    static final String TESTCLASSES_FRAME_NAME = "testclasses";
+public class StaticHtmlReportGenerator implements ReportModelFileHandler {
+    private static final Logger log = LoggerFactory.getLogger( StaticHtmlReportGenerator.class );
 
     static class ModelFile {
         ReportModel model;
@@ -97,7 +92,7 @@ public class FrameBasedHtmlReportGenerator implements ReportModelFileHandler {
 
     private void writeIndexFile( HtmlTocWriter tocWriter ) {
         File file = new File( toDir, "index.html" );
-        PrintWriter printWriter = HtmlWriter.getPrintWriter( file );
+        PrintWriter printWriter = CommonReportHelper.getPrintWriter( file );
         try {
             HtmlWriter htmlWriter = new HtmlWriter( printWriter );
             htmlWriter.writeHtmlHeader( "Acceptance Tests" );
