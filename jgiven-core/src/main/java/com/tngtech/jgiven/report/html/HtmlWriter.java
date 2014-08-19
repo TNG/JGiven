@@ -1,8 +1,13 @@
 package com.tngtech.jgiven.report.html;
 
-import static java.lang.String.format;
+import static java.lang.String.*;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -15,7 +20,9 @@ import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
+import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.StatisticsCalculator;
 
 public class HtmlWriter extends ReportModelVisitor {
     protected final PrintWriter writer;
@@ -60,6 +67,16 @@ public class HtmlWriter extends ReportModelVisitor {
         model.accept( this );
         writeHtmlFooter();
 
+    }
+
+    private void writeStatistics( ReportModel model ) {
+        ReportStatistics statistics = new StatisticsCalculator().getStatistics( model );
+        writer.print( "<div class='statistics'>" );
+        writer.print( statistics.numScenarios + " scenarios, "
+                + statistics.numCases + " cases, "
+                + statistics.numSteps + " steps, "
+                + statistics.numFailedCases + " failed cases" );
+        writer.println( "</div>" );
     }
 
     public static String toString( final ScenarioModel model ) {
@@ -141,6 +158,8 @@ public class HtmlWriter extends ReportModelVisitor {
 
     @Override
     public void visitEnd( ReportModel reportModel ) {
+        writeStatistics( reportModel );
+
         writer.println( "</div> <!-- testcase-content -->" );
         writer.println( "</div> <!-- testcase -->" );
     }

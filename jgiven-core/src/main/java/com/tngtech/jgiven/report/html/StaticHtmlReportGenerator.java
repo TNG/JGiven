@@ -1,6 +1,10 @@
 package com.tngtech.jgiven.report.html;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +22,7 @@ import com.tngtech.jgiven.report.json.JsonModelTraverser;
 import com.tngtech.jgiven.report.json.ReportModelFileHandler;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.StatisticsCalculator;
 import com.tngtech.jgiven.report.model.Tag;
 
 public class StaticHtmlReportGenerator implements ReportModelFileHandler {
@@ -30,6 +35,7 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
 
     private final List<ModelFile> models = Lists.newArrayList();
     private final Map<Tag, List<ScenarioModel>> tagMap = Maps.newHashMap();
+    private final StatisticsCalculator statisticsCalculator = new StatisticsCalculator();
 
     private File toDir;
 
@@ -95,10 +101,10 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
         PrintWriter printWriter = CommonReportHelper.getPrintWriter( file );
         try {
             HtmlWriter htmlWriter = new HtmlWriter( printWriter );
-            htmlWriter.writeHtmlHeader( "Acceptance Tests" );
+            htmlWriter.writeHtmlHeader( "Scenarios" );
 
             ReportModel reportModel = new ReportModel();
-            reportModel.className = ".Acceptance Tests";
+            reportModel.className = ".Scenarios";
             htmlWriter.writeHeader( reportModel );
 
             tocWriter.writeToc( printWriter );
