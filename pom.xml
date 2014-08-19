@@ -172,6 +172,8 @@
         <version>${checkstyle.version}</version>
         <configuration>
           <configLocation>develop/checkstyle-rules.xml</configLocation>
+          <consoleOutput>false</consoleOutput>
+          <logViolationsToConsole>true</logViolationsToConsole>
         </configuration>
         <executions>
           <execution>
