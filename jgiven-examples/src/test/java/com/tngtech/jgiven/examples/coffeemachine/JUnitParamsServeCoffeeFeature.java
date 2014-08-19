@@ -6,9 +6,9 @@ import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.tngtech.jgiven.examples.coffeemachine.steps.GivenSteps;
-import com.tngtech.jgiven.examples.coffeemachine.steps.ThenSteps;
-import com.tngtech.jgiven.examples.coffeemachine.steps.WhenSteps;
+import com.tngtech.jgiven.examples.coffeemachine.steps.GivenCoffee;
+import com.tngtech.jgiven.examples.coffeemachine.steps.ThenCoffee;
+import com.tngtech.jgiven.examples.coffeemachine.steps.WhenCoffee;
 import com.tngtech.jgiven.junit.ScenarioTest;
 
 /**
@@ -20,7 +20,7 @@ import com.tngtech.jgiven.junit.ScenarioTest;
  * Original example due to Cucumber Wiki
  */
 @RunWith( JUnitParamsRunner.class )
-public class JUnitParamsServeCoffeeFeature extends ScenarioTest<GivenSteps, WhenSteps, ThenSteps> {
+public class JUnitParamsServeCoffeeFeature extends ScenarioTest<GivenCoffee, WhenCoffee, ThenCoffee> {
 
     @Test
     @Parameters( {
@@ -35,7 +35,7 @@ public class JUnitParamsServeCoffeeFeature extends ScenarioTest<GivenSteps, When
             and().the_machine_is_$on_or_off$( on ).
             and().the_coffee_costs_$_dollar( 2 );
 
-        when().I_deposit_$_dollar( dollars ).
+        when().I_insert_$_one_euro_coins(dollars).
             and().I_press_the_coffee_button();
 
         then().I_should_$or_should_not$_be_served_a_coffee( coffeeServed );

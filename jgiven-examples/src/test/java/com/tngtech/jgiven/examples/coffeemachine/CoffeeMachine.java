@@ -8,18 +8,30 @@ public class CoffeeMachine {
     public boolean on;
     public int dollars;
     public int coffees;
+    public String message;
 
     public boolean pressButton() {
-        if ( on && coffees > 0 && dollars >= price ) {
-            coffees--;
-            dollars = 0;
-            return true;
-        } else {
+        if( !on ) {
             return false;
         }
+
+        if( coffees == 0 ) {
+            message = "Error: No coffees left";
+            return false;
+        }
+
+        if( dollars < price ) {
+            message = "Error: Insufficient money";
+            return false;
+        }
+
+        coffees--;
+        dollars = 0;
+        message = "Enjoy your coffee!";
+        return true;
     }
 
-    public void insertMoney( int dollars ) {
+    public void insertOneEuroCoin(int dollars) {
         this.dollars += dollars;
     }
 
