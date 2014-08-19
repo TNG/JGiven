@@ -44,8 +44,16 @@ public class PlainTextReporter extends PlainTextWriter {
         super( printWriter, withColor );
     }
 
-    public void write( ReportModel model ) {
+    public PlainTextReporter write( ReportModel model ) {
         model.accept( this );
+        return this;
+    }
+
+    /**
+     * Closes the underlying PrintWriter
+     */
+    public void close() {
+        writer.close();
     }
 
     public void write( ScenarioModel scenarioModel ) {

@@ -24,7 +24,7 @@ public class CommonReportHelper {
         new CaseArgumentAnalyser().analyze( model );
 
         if( Config.config().textReport() ) {
-            new PlainTextReporter().write( model );
+            new PlainTextReporter().write( model ).close();
         }
 
         Optional<File> optionalReportDir = Config.config().getReportDir();
