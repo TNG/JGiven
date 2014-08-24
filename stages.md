@@ -53,4 +53,4 @@ public class WhenCook<SELF extends WhenCook> extends Stage<SELF> {
 
 Instead of the @ScenarioState annotation one can also use @ExpectedScenarioState and @ProvidedScenarioState to indicate whether the state is expected by the stage or provided by the stage.
 
-Next: [Parameters]({{site.baseurl}}/docs/parameters/)
+Back: [Report Generation]({{site.baseurl}}/docs/reportgeneration/) - Next: [Parameters]({{site.baseurl}}/docs/parameters/)
