@@ -19,7 +19,7 @@ given().$_eggs(neggs);
 {% endhighlight %}
 This is not perfectly readable at first glance, but as soon as you are used to reading $ as a parameter it comes quite natural.
 The generated report will replace the $ with the corresponding parameter.
-So the generated report will look as follows (given <neggs> was 5):
+So the generated report will look as follows (given neggs is 5):
 
 {% highlight java %}
 Given 5 eggs
@@ -57,3 +57,5 @@ public void coffee_is_not_served( int coffees, int dollars) {
     then().I_should_not_be_served_a_coffee();
 }
 {% endhighlight %}
+
+Back: [Stages and Stage Injection]({{site.baseurl}}/docs/stages/)
