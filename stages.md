@@ -4,8 +4,6 @@ title: Stages and State Injection
 permalink: /docs/stages/
 ---
 
-## Stages and State Injection
-
 A JGiven scenario consists of multiple stages. Typically there is a stage for each phase of a scenario: a given stage, a when stage and a then stage, however, it is also possible to just use one stage or use arbitrary many stages. A stage is implemented by a stage class that contains methods representing the steps that can be used in the scenario. The big advantage of this modular concept is that stages can be easily reused by different scenarios.
 
 Stage classes are POJOs that follow the fluent-interface pattern. This means that all methods return the this-reference. In order to work together with inheritance, a stage class should have a type parameter SELF that extends the stage class itself. JGiven also provides the helper class Stage that provides a self() method to return the SELF type parameter. This is best understood by an example:
