@@ -70,13 +70,15 @@ public class HtmlWriter extends ReportModelVisitor {
     }
 
     private void writeStatistics( ReportModel model ) {
-        ReportStatistics statistics = new StatisticsCalculator().getStatistics( model );
-        writer.print( "<div class='statistics'>" );
-        writer.print( statistics.numScenarios + " scenarios, "
-                + statistics.numCases + " cases, "
-                + statistics.numSteps + " steps, "
-                + statistics.numFailedCases + " failed cases" );
-        writer.println( "</div>" );
+        if( !model.scenarios.isEmpty() ) {
+            ReportStatistics statistics = new StatisticsCalculator().getStatistics( model );
+            writer.print( "<div class='statistics'>" );
+            writer.print( statistics.numScenarios + " scenarios, "
+                    + statistics.numCases + " cases, "
+                    + statistics.numSteps + " steps, "
+                    + statistics.numFailedCases + " failed cases" );
+            writer.println( "</div>" );
+        }
     }
 
     public static String toString( final ScenarioModel model ) {
