@@ -30,9 +30,11 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         this.scenarioModel = scenarioModel;
         writer.println( "<div class='scenario'>" );
 
-        writer.println( format( "<h3>%s</h3>", WordUtil.capitalize( scenarioModel.description ) ) );
+        String id = scenarioModel.className + ":" + scenarioModel.description;
+        writer.println( format( "<h3 onclick='toggleScenario(\"%s\")'>%s</h3>",
+            id, WordUtil.capitalize( scenarioModel.description ) ) );
         writeTagLine( scenarioModel );
-        writer.println( "<div class='scenario-content'>" );
+        writer.println( "<div class='scenario-content' id='" + id + "'>" );
     }
 
     private void writeTagLine( ScenarioModel scenarioModel ) {
@@ -57,8 +59,8 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         writer.println( "</div> <!-- scenario-content -->" );
 
         writer
-            .println( format( "<div class='scenario-footer'><a href='%s.html'>%s</a></div>", scenarioModel.className,
-                scenarioModel.className ) );
+        .println( format( "<div class='scenario-footer'><a href='%s.html'>%s</a></div>", scenarioModel.className,
+            scenarioModel.className ) );
         writer.println( "</div>" );
     }
 

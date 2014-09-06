@@ -38,8 +38,7 @@ body {
 
 
 a {
-  color: #000066;
-  font-size: 14px;
+  text-decoration: none;
 }
 
 a:hover {
@@ -107,6 +106,8 @@ h2, h2 a {
 
 #toc ul a {
   text-decoration: none;
+  color: #000066;
+  font-size: 14px;
 }
 
 h1 {
@@ -243,14 +244,12 @@ h1 {
   padding-bottom: 0px;
   margin-bottom: -5px;
   background-color: white;
+  display: none;
 }
 
 .scenario h3 {
   vertical-align: middle;
   margin-top: 8px;
-  font-weight: bold;
-  font-size: 18px;
-  color: black;
   margin-top: 8px;
   margin-bottom: 0px;
   margin-left:0px;
@@ -262,6 +261,13 @@ h1 {
   padding-bottom: 0px;
   background-color: white;
   float: left;
+}
+
+.scenario h3, .scenario h3 a {
+  font-weight: bold;
+  font-size: 18px;
+  color: black;
+  cursor: pointer;
 }
 
 .case {

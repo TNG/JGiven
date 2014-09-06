@@ -46,6 +46,7 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
         copyFileToTargetDir( "style.css" );
         copyFileToTargetDir( "default.css" );
         copyFileToTargetDir( "print.css" );
+        copyFileToTargetDir( "report.js" );
     }
 
     protected void copyFileToTargetDir( String fileName ) throws IOException {
@@ -122,9 +123,8 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
     }
 
     private void writeTagFiles( HtmlTocWriter tocWriter ) {
-        if( tagMap.isEmpty() ) {
+        if( tagMap.isEmpty() )
             return;
-        }
 
         for( Tag tag : tagMap.keySet() ) {
             writeTagFile( tag, tagMap.get( tag ), tocWriter );

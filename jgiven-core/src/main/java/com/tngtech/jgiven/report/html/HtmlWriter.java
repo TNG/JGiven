@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.html;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -30,7 +30,7 @@ public class HtmlWriter extends ReportModelVisitor {
 
     public HtmlWriter( PrintWriter writer ) {
         this.writer = writer;
-        this.utils = new HtmlWriterUtils( writer );
+        utils = new HtmlWriterUtils( writer );
     }
 
     public void writeHtmlHeader( String title ) {
@@ -43,6 +43,7 @@ public class HtmlWriter extends ReportModelVisitor {
         writer.println( "<div id='page-footer'></div>" );
         writer.println( "</div> <!-- page -->" );
         writeJGivenFooter();
+        writer.println( "<script src='report.js'></script>" );
         writer.println( "</body></html>" );
     }
 
