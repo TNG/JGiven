@@ -61,7 +61,6 @@ public class HtmlWriter extends ReportModelVisitor {
 
     public void write( ReportModel model, HtmlTocWriter htmlTocWriter ) {
         writeHtmlHeader( model.className );
-        writeHeader( model );
         if( htmlTocWriter != null ) {
             htmlTocWriter.writeToc( writer );
         }
@@ -130,6 +129,7 @@ public class HtmlWriter extends ReportModelVisitor {
     @Override
     public void visit( ReportModel reportModel ) {
         writer.println( "<div id='rightpane'>" );
+        writeHeader( reportModel );
         writer.println( "<div id='content'>" );
     }
 
@@ -154,7 +154,6 @@ public class HtmlWriter extends ReportModelVisitor {
         }
 
         writer.println( "</div>" );
-        writer.println( "<div id='col-container'>" );
     }
 
     @Override

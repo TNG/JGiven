@@ -12,6 +12,11 @@
   #rightpane {
       display: table-cell;
       vertical-align: top;
+      width:100%;
+  }
+
+  #content {
+      display: inline-block;
   }
 }
 
@@ -61,16 +66,16 @@ a#toggle-btn:hover {
 
 h1 {
   background-color: #fff;
-  padding:20px;
+  padding:10px;
   color: #555;
-  font-size: 40px;
+  font-size: 32px;
   font-weight: 300;
   margin-top: 0;
   padding-bottom:0;
 }
 
 h2, h2 a {
-  font-size: 36px;
+  font-size: 32px;
   color: white;
   font-weight: 600;
   margin:0px;
@@ -81,7 +86,7 @@ h2, h2 a {
 
 #toc {
   font-size: 20px;
-  padding: 20px;
+  padding: 10px;
   margin: 0px;
   background: white;
 }
@@ -179,11 +184,12 @@ h1 {
 }
 
 #header {
-  padding: 30px;
+  padding: 20px;
 }
 
 #content {
-  padding: 30px;
+  padding: 20px;
+  background: white;
 }
 
 #header {
@@ -265,7 +271,7 @@ h1 {
 
 .scenario h3, .scenario h3 a {
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
   color: black;
   cursor: pointer;
 }
@@ -434,6 +440,10 @@ ul.steps {
   font-size:16px;
 }
 
+.collapsed {
+	display:none;
+}
+
 ul.steps li {
   padding-bottom:1px;
 }
@@ -473,6 +483,8 @@ ul.steps li {
   margin-left: 10px;
   margin-top: 0px;
   text-shadow: 1px 1px 1px #eee;
+  cursor: pointer;
+
 }
 
 .scenario h5 {

@@ -24,9 +24,9 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
     @DataProvider
     public static Object[][] testData() {
         return new Object[][] {
-                { 5, 6, 30 },
-                { 2, 2, 4 },
-                { -5, 1, -5 },
+            { 5, 6, 30 },
+            { 2, 2, 4 },
+            { -5, 1, -5 },
         };
     }
 
@@ -54,7 +54,7 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
     @DataProvider
     public static Object[][] testArguments() {
         return new Object[][] {
-                { "a", "b" },
+            { "a", "b" },
         };
     }
 
@@ -71,7 +71,7 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
         getScenario().finished();
         ReportModel model = getScenario().getModel();
         String string = HtmlWriter.toString( model.getLastScenarioModel() );
-        assertThat( string.replace( '\n', ' ' ) ).matches( ".*<h4>Case 1: paramA = 1, paramB = b</h4>.*" );
+        assertThat( string.replace( '\n', ' ' ) ).matches( ".*<h4.*>Case 1: paramA = 1, paramB = b</h4>.*" );
     }
 
 }

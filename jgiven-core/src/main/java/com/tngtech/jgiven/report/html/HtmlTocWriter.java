@@ -26,6 +26,7 @@ public class HtmlTocWriter {
 
     public void writeToc( PrintWriter writer ) {
         this.writer = writer;
+        writer.println( "<div id='col-container'>" );
         writer.println( "<div id='leftpane'>" );
         writer.println( "<div id='toc'>" );
         writeClassLinks();
@@ -58,9 +59,8 @@ public class HtmlTocWriter {
     }
 
     private void writeTagLinks() {
-        if( tagMap.isEmpty() ) {
+        if( tagMap.isEmpty() )
             return;
-        }
 
         List<Tag> sortedTags = getSortedTags();
 

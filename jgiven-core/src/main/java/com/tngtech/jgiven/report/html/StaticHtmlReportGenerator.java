@@ -106,7 +106,6 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
 
             ReportModel reportModel = new ReportModel();
             reportModel.className = ".Scenarios";
-            htmlWriter.writeHeader( reportModel );
 
             tocWriter.writeToc( printWriter );
             htmlWriter.visit( reportModel );

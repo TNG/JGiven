@@ -1,4 +1,4 @@
-function toggleScenario(id) {
+function toggle(id) {
    var element = document.getElementById(id);
    console.log(element.style.display);
    if (element.style.display === 'block') {

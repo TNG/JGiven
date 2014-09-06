@@ -31,7 +31,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         writer.println( "<div class='scenario'>" );
 
         String id = scenarioModel.className + ":" + scenarioModel.description;
-        writer.println( format( "<h3 onclick='toggleScenario(\"%s\")'>%s</h3>",
+        writer.println( format( "<h3 onclick='toggle(\"%s\")'>%s</h3>",
             id, WordUtil.capitalize( scenarioModel.description ) ) );
         writeTagLine( scenarioModel );
         writer.println( "<div class='scenario-content' id='" + id + "'>" );
@@ -59,8 +59,8 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         writer.println( "</div> <!-- scenario-content -->" );
 
         writer
-        .println( format( "<div class='scenario-footer'><a href='%s.html'>%s</a></div>", scenarioModel.className,
-            scenarioModel.className ) );
+            .println( format( "<div class='scenario-footer'><a href='%s.html'>%s</a></div>", scenarioModel.className,
+                scenarioModel.className ) );
         writer.println( "</div>" );
     }
 
@@ -68,13 +68,18 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     public void visit( ScenarioCaseModel scenarioCase ) {
         this.scenarioCase = scenarioCase;
         printCaseHeader( scenarioCase );
-        writer.println( "<ul class='steps'>" );
+        String collapsed = scenarioCase.arguments.isEmpty() ? "" : " collapsed";
+        writer.println( "<ul class='steps" + collapsed + "' id='" + getCaseId() + "'>" );
+    }
+
+    private String getCaseId() {
+        return scenarioModel.className + ":" + scenarioModel.description + ":" + scenarioCase.caseNr;
     }
 
     void printCaseHeader( ScenarioCaseModel scenarioCase ) {
         writer.println( format( "<div class='case %sCase'>", scenarioCase.success ? "passed" : "failed" ) );
         if( !scenarioCase.arguments.isEmpty() ) {
-            writer.print( format( "<h4>Case %d: ", scenarioCase.caseNr ) );
+            writer.print( format( "<h4 onclick='toggle(\"%s\")'>Case %d: ", getCaseId(), scenarioCase.caseNr ) );
 
             for( int i = 0; i < scenarioCase.arguments.size(); i++ ) {
                 if( scenarioModel.parameterNames.size() > i ) {
