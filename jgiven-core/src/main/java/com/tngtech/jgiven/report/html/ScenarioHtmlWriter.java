@@ -40,10 +40,11 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             iconClass = "icon-ok";
         }
 
-        writer.println( format( "<h3 onclick='toggle(\"%s\")'>%s <i class='%s'></i></h3>",
-            id, WordUtil.capitalize( scenarioModel.description ), iconClass ) );
+        writer.println( format( "<h3 onclick='toggle(\"%s\")'><i class='%s'></i> %s</h3>",
+            id, iconClass, WordUtil.capitalize( scenarioModel.description ) ) );
         writeTagLine( scenarioModel );
-        writer.println( "<div class='scenario-content' id='" + id + "'>" );
+        writer.println( "<div class='scenario-body' id='" + id + "'>" );
+        writer.println( "<div class='scenario-content'>" );
     }
 
     private void writeTagLine( ScenarioModel scenarioModel ) {
@@ -67,9 +68,9 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     public void visitEnd( ScenarioModel scenarioModel ) {
         writer.println( "</div> <!-- scenario-content -->" );
 
-        writer
-            .println( format( "<div class='scenario-footer'><a href='%s.html'>%s</a></div>", scenarioModel.className,
-                scenarioModel.className ) );
+        writer.println( format( "<div class='scenario-footer'><a href='%s.html'>%s</a></div>",
+            scenarioModel.className, scenarioModel.className ) );
+        writer.println( "</div> <!-- scenario-body --> " );
         writer.println( "</div>" );
     }
 
@@ -77,7 +78,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     public void visit( ScenarioCaseModel scenarioCase ) {
         this.scenarioCase = scenarioCase;
         printCaseHeader( scenarioCase );
-        String collapsed = scenarioCase.arguments.isEmpty() ? "" : " collapsed";
+        String collapsed = scenarioCase.arguments.isEmpty() || scenarioModel.isCasesAsTable() ? "" : " collapsed";
         writer.println( "<ul class='steps" + collapsed + "' id='" + getCaseId() + "'>" );
     }
 

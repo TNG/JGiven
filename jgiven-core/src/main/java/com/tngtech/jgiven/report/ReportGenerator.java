@@ -32,9 +32,8 @@ public class ReportGenerator {
 
         public static Format fromStringOrNull( String value ) {
             for( Format format : values() ) {
-                if( format.text.equalsIgnoreCase( value ) ) {
+                if( format.text.equalsIgnoreCase( value ) )
                     return format;
-                }
             }
             return null;
         }
