@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 
 import com.google.common.html.HtmlEscapers;
 import com.tngtech.jgiven.impl.util.WordUtil;
+import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
@@ -31,8 +32,16 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         writer.println( "<div class='scenario'>" );
 
         String id = scenarioModel.className + ":" + scenarioModel.description;
-        writer.println( format( "<h3 onclick='toggle(\"%s\")'>%s</h3>",
-            id, WordUtil.capitalize( scenarioModel.description ) ) );
+        ExecutionStatus executionStatus = scenarioModel.getExecutionStatus();
+        String iconClass = "";
+        if( executionStatus == ExecutionStatus.FAILED ) {
+            iconClass = "icon-cancel";
+        } else if( executionStatus == ExecutionStatus.SUCCESS ) {
+            iconClass = "icon-ok";
+        }
+
+        writer.println( format( "<h3 onclick='toggle(\"%s\")'>%s <i class='%s'></i></h3>",
+            id, WordUtil.capitalize( scenarioModel.description ), iconClass ) );
         writeTagLine( scenarioModel );
         writer.println( "<div class='scenario-content' id='" + id + "'>" );
     }

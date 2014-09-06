@@ -118,7 +118,7 @@ public class HtmlWriter extends ReportModelVisitor {
     }
 
     public static void writeToFile( File file, ReportModel model, HtmlTocWriter htmlTocWriter ) throws FileNotFoundException,
-            UnsupportedEncodingException {
+    UnsupportedEncodingException {
         PrintWriter printWriter = new PrintWriter( file, Charsets.UTF_8.name() );
         try {
             new HtmlWriter( printWriter ).write( model, htmlTocWriter );

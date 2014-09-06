@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.report.model;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.google.common.base.Splitter;
@@ -21,11 +23,23 @@ public class ReportModel {
 
     public void accept( ReportModelVisitor visitor ) {
         visitor.visit( this );
-        for( ScenarioModel m : scenarios ) {
+        List<ScenarioModel> sorted = sortByDescription();
+        for( ScenarioModel m : sorted ) {
             m.accept( visitor );
         }
         visitor.visitEnd( this );
 
+    }
+
+    private List<ScenarioModel> sortByDescription() {
+        List<ScenarioModel> sorted = Lists.newArrayList( scenarios );
+        Collections.sort( sorted, new Comparator<ScenarioModel>() {
+            @Override
+            public int compare( ScenarioModel o1, ScenarioModel o2 ) {
+                return o1.description.compareTo( o2.description );
+            }
+        } );
+        return sorted;
     }
 
     public ScenarioModel getLastScenarioModel() {

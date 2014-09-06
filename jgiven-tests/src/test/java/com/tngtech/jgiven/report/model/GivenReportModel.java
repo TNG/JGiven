@@ -24,15 +24,15 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         reportModel = new ReportModel();
         reportModel.className = "Test Class";
 
-        createScenarioModel( "something_should_happen" );
+        createScenarioModel( "something should happen", "something_should_happen" );
 
         return self();
     }
 
-    private void createScenarioModel( String testMethodName ) {
+    private void createScenarioModel( String description, String testMethodName ) {
         ScenarioModel scenarioModel = new ScenarioModel();
         scenarioModel.className = reportModel.className;
-        scenarioModel.description = "something should happen";
+        scenarioModel.description = description;
         scenarioModel.testMethodName = testMethodName;
 
         addCase( scenarioModel );
@@ -67,7 +67,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     public void the_report_has_$_scenarios( int n ) {
         reportModel.scenarios.clear();
         for( int i = 0; i < n; i++ ) {
-            createScenarioModel( "something_should_happen_" + i );
+            createScenarioModel( "something should happen " + i, "something_should_happen_" + i );
         }
     }
 

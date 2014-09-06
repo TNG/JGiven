@@ -47,6 +47,8 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
         copyFileToTargetDir( "default.css" );
         copyFileToTargetDir( "print.css" );
         copyFileToTargetDir( "report.js" );
+        copyFileToTargetDir( "fontawesome.css" );
+        copyFileToTargetDir( "fontawesome.ttf" );
     }
 
     protected void copyFileToTargetDir( String fileName ) throws IOException {
