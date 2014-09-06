@@ -88,7 +88,6 @@ h2, h2 a {
   font-size: 20px;
   padding: 10px;
   margin: 0px;
-  background: white;
 }
 
 #toc-container {
@@ -154,7 +153,7 @@ h1 {
 #leftpane {
   padding: 0px;
   margin: 0px;
-  background-color: white;
+  background-color: #efefef;
 }
 
 #page-footer {
@@ -240,6 +239,12 @@ h1 {
   padding-bottom:15px;
   margin-bottom:15px;
   background-color: white;
+  min-height: 5px;
+  clear: both;
+}
+
+.scenario-body {
+  display: none;
   border-bottom: lightgray solid 1px;
 }
 
@@ -250,7 +255,6 @@ h1 {
   padding-bottom: 0px;
   margin-bottom: -5px;
   background-color: white;
-  display: none;
 }
 
 .scenario h3 {
@@ -549,4 +553,8 @@ ul.steps li {
   color: #888;
   font-size: 14px;
   padding: 5px;
+}
+
+.statistics {
+	padding-top:10px;
 }
