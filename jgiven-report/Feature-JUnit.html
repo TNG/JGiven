@@ -5,23 +5,19 @@
   <link href='style.css' rel='stylesheet'>
 </head>
 <body>
-<div id='page'><div id='header'>
-<div class='packagename'>Feature</div>
-<h2>JUnit</h2>
-<div class='description'>tests can be be executed with JUnit</div>
-</div>
-<div id='col-container'>
+<div id='page'><div id='col-container'>
 <div id='leftpane'>
 <div id='toc'>
 <h3>Test Classes</h3>
 <ul>
 <li><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html' >DeSzenarioTest</a>
-<li><a href='com.tngtech.jgiven.report.html.FrameBaseHtmlReportGeneratorTest.html' >FrameBaseHtmlReportGeneratorTest</a>
-<li><a href='com.tngtech.jgiven.report.html.HtmlReportGeneratorTest.html' >HtmlReportGeneratorTest</a>
 <li><a href='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest.html' >HtmlWriterScenarioTest</a>
 <li><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html' >JUnitExecutionTest</a>
+<li><a href='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest.html' >PlainTextGeneratorScenarioTest</a>
 <li><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html' >PlainTextScenarioWriterTest</a>
+<li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a>
 <li><a href='com.tngtech.jgiven.impl.ScenarioExecutorTest.html' >ScenarioExecutorTest</a>
+<li><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html' >StaticHtmlReportGeneratorTest</a>
 <li><a href='com.tngtech.jgiven.testng.TestNgExecutionTest.html' >TestNgExecutionTest</a>
 </ul>
 <h3>Tags</h3>
@@ -43,13 +39,38 @@
 </div> <!-- toc -->
 </div> <!-- leftpane -->
 <div id='rightpane'>
+<div id='header'>
+<div class='packagename'>Feature</div>
+<h2>JUnit</h2>
+<div class='description'>tests can be be executed with JUnit</div>
+</div>
 <div id='content'>
 <div class='scenario'>
-<h3>Passing tests annotated with NotImplementedYet are ignored</h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-content'>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutionTest:after stage methods of stages following failing stages are ignored")'>After stage methods of stages following failing stages are ignored</h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div></div>
+<div class='scenario-content' id='com.tngtech.jgiven.junit.JUnitExecutionTest:after stage methods of stages following failing stages are ignored'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.junit.JUnitExecutionTest:after stage methods of stages following failing stages are ignored:1'>
+<li><span class='introWord'>Given</span> a failing test with <span class='argument '>2</span> steps</li>
+<li><span class='introWord'>And</span> the test has <span class='argument '>2</span> failing stages</li>
+<li><span class='introWord'>And</span> stage <span class='argument '>2</span> has a failing after stage method</li>
+<li><span class='introWord'>And</span> step <span class='argument '>1</span> fails</li>
+<li><span class='introWord'>When</span> the test is executed with JUnit</li>
+<li><span class='introWord'>Then</span> the test fails</li>
+<li><span class='introWord'>And</span> step <span class='argument '>1</span> is reported as failed</li>
+<li><span class='introWord'>And</span> step <span class='argument '>2</span> is reported as skipped</li>
+<div class='topRight passed'>Passed</div>
+</ul>
+</div><!-- case -->
+</div> <!-- scenario-content -->
+<div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html'>com.tngtech.jgiven.junit.JUnitExecutionTest</a></div>
+</div>
+<div class='scenario'>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutionTest:passing tests annotated with NotImplementedYet are ignored")'>Passing tests annotated with NotImplementedYet are ignored</h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
+<div class='scenario-content' id='com.tngtech.jgiven.junit.JUnitExecutionTest:passing tests annotated with NotImplementedYet are ignored'>
+<div class='case passedCase'>
+<ul class='steps' id='com.tngtech.jgiven.junit.JUnitExecutionTest:passing tests annotated with NotImplementedYet are ignored:1'>
 <li><span class='introWord'>Given</span> a passing test</li>
 <li><span class='introWord'>And</span> the test is annotated with NotImplementedYet</li>
 <li><span class='introWord'>When</span> the test is executed with JUnit</li>
@@ -61,11 +82,11 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html'>com.tngtech.jgiven.junit.JUnitExecutionTest</a></div>
 </div>
 <div class='scenario'>
-<h3>Failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored")'>Failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.junit.JUnitExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.junit.JUnitExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored:1'>
 <li><span class='introWord'>Given</span> a failing test</li>
 <li><span class='introWord'>And</span> the test is annotated with NotImplementedYet</li>
 <li><span class='introWord'>With</span> failIfPassed set to true</li>
@@ -78,11 +99,11 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html'>com.tngtech.jgiven.junit.JUnitExecutionTest</a></div>
 </div>
 <div class='scenario'>
-<h3>The error message of a failing step is reported</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutionTest:the error message of a failing step is reported")'>The error message of a failing step is reported</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.junit.JUnitExecutionTest:the error message of a failing step is reported'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.junit.JUnitExecutionTest:the error message of a failing step is reported:1'>
 <li><span class='introWord'>Given</span> a failing test</li>
 <li><span class='introWord'>When</span> the test is executed with JUnit</li>
 <li><span class='introWord'>Then</span> the case is marked as failed</li>
@@ -94,11 +115,11 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html'>com.tngtech.jgiven.junit.JUnitExecutionTest</a></div>
 </div>
 <div class='scenario'>
-<h3>Failing tests annotated with NotImplementedYet are ignored</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutionTest:failing tests annotated with NotImplementedYet are ignored")'>Failing tests annotated with NotImplementedYet are ignored</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.junit.JUnitExecutionTest:failing tests annotated with NotImplementedYet are ignored'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.junit.JUnitExecutionTest:failing tests annotated with NotImplementedYet are ignored:1'>
 <li><span class='introWord'>Given</span> a failing test</li>
 <li><span class='introWord'>And</span> the test is annotated with NotImplementedYet</li>
 <li><span class='introWord'>When</span> the test is executed with JUnit</li>
@@ -110,11 +131,11 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html'>com.tngtech.jgiven.junit.JUnitExecutionTest</a></div>
 </div>
 <div class='scenario'>
-<h3>Passing steps before failing steps are reported as passed</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutionTest:passing steps before failing steps are reported as passed")'>Passing steps before failing steps are reported as passed</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.junit.JUnitExecutionTest:passing steps before failing steps are reported as passed'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.junit.JUnitExecutionTest:passing steps before failing steps are reported as passed:1'>
 <li><span class='introWord'>Given</span> a failing test with <span class='argument '>2</span> steps</li>
 <li><span class='introWord'>And</span> step <span class='argument '>2</span> fails</li>
 <li><span class='introWord'>When</span> the test is executed with JUnit</li>
@@ -127,11 +148,30 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html'>com.tngtech.jgiven.junit.JUnitExecutionTest</a></div>
 </div>
 <div class='scenario'>
-<h3>Tag annotations appear in the report model</h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-Tags.html'>Tags</a></div></div>
-<div class='scenario-content'>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutionTest:all steps of stages following failing stages are ignored")'>All steps of stages following failing stages are ignored</h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div></div>
+<div class='scenario-content' id='com.tngtech.jgiven.junit.JUnitExecutionTest:all steps of stages following failing stages are ignored'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.junit.JUnitExecutionTest:all steps of stages following failing stages are ignored:1'>
+<li><span class='introWord'>Given</span> a failing test with <span class='argument '>2</span> steps</li>
+<li><span class='introWord'>And</span> the test has <span class='argument '>2</span> failing stages</li>
+<li><span class='introWord'>And</span> step <span class='argument '>1</span> fails</li>
+<li><span class='introWord'>When</span> the test is executed with JUnit</li>
+<li><span class='introWord'>Then</span> the test fails</li>
+<li><span class='introWord'>And</span> step <span class='argument '>1</span> is reported as failed</li>
+<li><span class='introWord'>And</span> step <span class='argument '>2</span> is reported as skipped</li>
+<div class='topRight passed'>Passed</div>
+</ul>
+</div><!-- case -->
+</div> <!-- scenario-content -->
+<div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html'>com.tngtech.jgiven.junit.JUnitExecutionTest</a></div>
+</div>
+<div class='scenario'>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutionTest:tag annotations appear in the report model")'>Tag annotations appear in the report model</h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-Tags.html'>Tags</a></div></div>
+<div class='scenario-content' id='com.tngtech.jgiven.junit.JUnitExecutionTest:tag annotations appear in the report model'>
+<div class='case passedCase'>
+<ul class='steps' id='com.tngtech.jgiven.junit.JUnitExecutionTest:tag annotations appear in the report model:1'>
 <li><span class='introWord'>Given</span> a test</li>
 <li><span class='introWord'>And</span> the test has a tag annotation named <span class='argument '>TestTag</span></li>
 <li><span class='introWord'>When</span> the test is executed with JUnit</li>
@@ -143,11 +183,11 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html'>com.tngtech.jgiven.junit.JUnitExecutionTest</a></div>
 </div>
 <div class='scenario'>
-<h3>Failing tests annotated with NotImplementedYet with executeSteps set to true are ignored</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutionTest:failing tests annotated with NotImplementedYet with executeSteps set to true are ignored")'>Failing tests annotated with NotImplementedYet with executeSteps set to true are ignored</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.junit.JUnitExecutionTest:failing tests annotated with NotImplementedYet with executeSteps set to true are ignored'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.junit.JUnitExecutionTest:failing tests annotated with NotImplementedYet with executeSteps set to true are ignored:1'>
 <li><span class='introWord'>Given</span> a failing test</li>
 <li><span class='introWord'>And</span> the test is annotated with NotImplementedYet</li>
 <li><span class='introWord'>With</span> executeSteps set to true</li>
@@ -160,11 +200,11 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html'>com.tngtech.jgiven.junit.JUnitExecutionTest</a></div>
 </div>
 <div class='scenario'>
-<h3>Steps following failing steps are reported as skipped</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutionTest:steps following failing steps are reported as skipped")'>Steps following failing steps are reported as skipped</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.junit.JUnitExecutionTest:steps following failing steps are reported as skipped'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.junit.JUnitExecutionTest:steps following failing steps are reported as skipped:1'>
 <li><span class='introWord'>Given</span> a failing test with <span class='argument '>3</span> steps</li>
 <li><span class='introWord'>And</span> step <span class='argument '>1</span> fails</li>
 <li><span class='introWord'>When</span> the test is executed with JUnit</li>
@@ -178,11 +218,11 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html'>com.tngtech.jgiven.junit.JUnitExecutionTest</a></div>
 </div>
 <div class='scenario'>
-<h3>Passing tests annotated with NotImplementedYet with failIfPassed set to true fail</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail")'>Passing tests annotated with NotImplementedYet with failIfPassed set to true fail</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.junit.JUnitExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.junit.JUnitExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail:1'>
 <li><span class='introWord'>Given</span> a passing test</li>
 <li><span class='introWord'>And</span> the test is annotated with NotImplementedYet</li>
 <li><span class='introWord'>With</span> failIfPassed set to true</li>
@@ -194,10 +234,12 @@
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html'>com.tngtech.jgiven.junit.JUnitExecutionTest</a></div>
 </div>
+<div class='statistics'>11 scenarios, 11 cases, 57 steps, 0 failed cases</div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://github.com/TNG/JGiven'>JGiven</a> - on Jun 29, 2014 1:42:25 PM</div>
+<div id='footer'>Generated by <a href='http://github.com/TNG/JGiven'>JGiven</a> - on Sep 6, 2014 9:02:33 PM</div>
+<script src='report.js'></script>
 </body></html>
