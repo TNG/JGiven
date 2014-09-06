@@ -5,23 +5,19 @@
   <link href='style.css' rel='stylesheet'>
 </head>
 <body>
-<div id='page'><div id='header'>
-<div class='packagename'>Feature</div>
-<h2>Html Report Generation</h2>
-<div class='description'>HTML reports can be generated</div>
-</div>
-<div id='col-container'>
+<div id='page'><div id='col-container'>
 <div id='leftpane'>
 <div id='toc'>
 <h3>Test Classes</h3>
 <ul>
 <li><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html' >DeSzenarioTest</a>
-<li><a href='com.tngtech.jgiven.report.html.FrameBaseHtmlReportGeneratorTest.html' >FrameBaseHtmlReportGeneratorTest</a>
-<li><a href='com.tngtech.jgiven.report.html.HtmlReportGeneratorTest.html' >HtmlReportGeneratorTest</a>
 <li><a href='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest.html' >HtmlWriterScenarioTest</a>
 <li><a href='com.tngtech.jgiven.junit.JUnitExecutionTest.html' >JUnitExecutionTest</a>
+<li><a href='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest.html' >PlainTextGeneratorScenarioTest</a>
 <li><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html' >PlainTextScenarioWriterTest</a>
+<li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a>
 <li><a href='com.tngtech.jgiven.impl.ScenarioExecutorTest.html' >ScenarioExecutorTest</a>
+<li><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html' >StaticHtmlReportGeneratorTest</a>
 <li><a href='com.tngtech.jgiven.testng.TestNgExecutionTest.html' >TestNgExecutionTest</a>
 </ul>
 <h3>Tags</h3>
@@ -43,32 +39,18 @@
 </div> <!-- toc -->
 </div> <!-- leftpane -->
 <div id='rightpane'>
+<div id='header'>
+<div class='packagename'>Feature</div>
+<h2>Html Report Generation</h2>
+<div class='description'>HTML reports can be generated</div>
+</div>
 <div id='content'>
 <div class='scenario'>
-<h3>The HTML report generator works as expected</h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div></div>
-<div class='scenario-content'>
-<div class='case passedCase'>
-<ul class='steps'>
-<li><span class='introWord'>Given</span> a report model</li>
-<li><span class='introWord'>And</span> the reports exist as JSON files</li>
-<li><span class='introWord'>Given</span> a custom CSS file</li>
-<li><span class='introWord'>When</span> the HTML report generator is executed</li>
-<li><span class='introWord'>Then</span> an index file exists</li>
-<li><span class='introWord'>And</span> the custom CSS file is copied to the target directory</li>
-<li><span class='introWord'>And</span> an HTML file exists for each test class</li>
-<div class='topRight passed'>Passed</div>
-</ul>
-</div><!-- case -->
-</div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.HtmlReportGeneratorTest.html'>com.tngtech.jgiven.report.html.HtmlReportGeneratorTest</a></div>
-</div>
-<div class='scenario'>
-<h3>Data tables are generated in HTML reports</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:data tables are generated in HTML reports")'>Data tables are generated in HTML reports</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div><div class='tag tag-Feature'><a href='Feature-Data_Tables.html'>Data Tables</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:data tables are generated in HTML reports'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:data tables are generated in HTML reports:1'>
 <li><span class='introWord'>Given</span> a report model with one scenario</li>
 <li><span class='introWord'>And</span> the scenario has parameters <span class='argument '>param1, param2</span></li>
 <li><span class='introWord'>And</span> the scenario has <span class='argument '>3</span> cases</li>
@@ -82,11 +64,11 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest.html'>com.tngtech.jgiven.report.html.HtmlWriterScenarioTest</a></div>
 </div>
 <div class='scenario'>
-<h3>When data tables are generated then step parameter placeholders are correct in HTML reports</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:when data tables are generated then step parameter placeholders are correct in HTML reports")'>When data tables are generated then step parameter placeholders are correct in HTML reports</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div><div class='tag tag-Feature'><a href='Feature-Data_Tables.html'>Data Tables</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:when data tables are generated then step parameter placeholders are correct in HTML reports'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:when data tables are generated then step parameter placeholders are correct in HTML reports:1'>
 <li><span class='introWord'>Given</span> a report model with one scenario</li>
 <li><span class='introWord'>And</span> the scenario has <span class='argument '>2</span> cases</li>
 <li><span class='introWord'>And</span> the scenario has parameters <span class='argument '>param1, param2</span></li>
@@ -108,11 +90,11 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest.html'>com.tngtech.jgiven.report.html.HtmlWriterScenarioTest</a></div>
 </div>
 <div class='scenario'>
-<h3>The error message of failed scenarios are reported</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:the error message of failed scenarios are reported")'>The error message of failed scenarios are reported</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:the error message of failed scenarios are reported'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:the error message of failed scenarios are reported:1'>
 <li><span class='introWord'>Given</span> a report model with one scenario</li>
 <li><span class='introWord'>And</span> the scenario has <span class='argument '>1</span> cases</li>
 <li><span class='introWord'>And</span> case <span class='argument '>1</span> fails with error message <span class='argument '>Test Error</span></li>
@@ -125,11 +107,11 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest.html'>com.tngtech.jgiven.report.html.HtmlWriterScenarioTest</a></div>
 </div>
 <div class='scenario'>
-<h3>HTML in arguments is escaped in HTML reports</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:HTML in arguments is escaped in HTML reports")'>HTML in arguments is escaped in HTML reports</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div><div class='tag tag-Issue'><a href='Issue-_9.html'>Issue-#9</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:HTML in arguments is escaped in HTML reports'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:HTML in arguments is escaped in HTML reports:1'>
 <li><span class='introWord'>Given</span> a report model with one scenario</li>
 <li><span class='introWord'>And</span> case <span class='argument '>1</span> has a when step <span class='argument '>test</span> with argument <span class='argument '>&lt;someHtmlTag&gt;</span></li>
 <li><span class='introWord'>When</span> the HTML report is generated</li>
@@ -141,10 +123,10 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest.html'>com.tngtech.jgiven.report.html.HtmlWriterScenarioTest</a></div>
 </div>
 <div class='scenario'>
-<h3>Step status appears correctly in HTML reports</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:step status appears correctly in HTML reports")'>Step status appears correctly in HTML reports</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div></div>
-<div class='scenario-content'>
-<ul class='steps'>
+<div class='scenario-content' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:step status appears correctly in HTML reports'>
+<ul class='steps collapsed' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:step status appears correctly in HTML reports:1'>
 <li><span class='introWord'>Given</span> a report model with one scenario</li>
 <li><span class='introWord'>And</span> step <span class='argument '>1</span> is named <span class='argument '>something happens</span></li>
 <li><span class='introWord'>And</span> step <span class='argument '>1</span> has status <span class='caseArgument '>&lt;status&gt;</span></li>
@@ -172,50 +154,52 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest.html'>com.tngtech.jgiven.report.html.HtmlWriterScenarioTest</a></div>
 </div>
 <div class='scenario'>
-<h3>The frame based reporter generates one file for each tag</h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div><div class='tag tag-Feature'><a href='Feature-Tags.html'>Tags</a></div></div>
-<div class='scenario-content'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.ReportGeneratorTest:the report generator can generate HTML files")'>The report generator can generate HTML files</h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div></div>
+<div class='scenario-content' id='com.tngtech.jgiven.report.html.ReportGeneratorTest:the report generator can generate HTML files'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.report.html.ReportGeneratorTest:the report generator can generate HTML files:1'>
 <li><span class='introWord'>Given</span> a report model</li>
-<li><span class='introWord'>And</span> the first scenario has tag <span class='argument '>TestTag</span></li>
-<li><span class='introWord'>And</span> the report exist as JSON file</li>
-<li><span class='introWord'>When</span> the frame based HTML reporter is executed</li>
-<li><span class='introWord'>Then</span> a file with name <span class='argument '>TestTag.html</span> exists</li>
+<li><span class='introWord'>And</span> the reports exist as JSON files</li>
+<li><span class='introWord'>Given</span> a custom CSS file</li>
+<li><span class='introWord'>When</span> the report generator is executed with format <span class='argument '>HTML</span></li>
+<li><span class='introWord'>Then</span> an index file exists</li>
+<li><span class='introWord'>And</span> the custom CSS file is copied to the target directory</li>
+<li><span class='introWord'>And</span> an HTML file exists for each test class</li>
 <div class='topRight passed'>Passed</div>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.FrameBaseHtmlReportGeneratorTest.html'>com.tngtech.jgiven.report.html.FrameBaseHtmlReportGeneratorTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html'>com.tngtech.jgiven.report.html.ReportGeneratorTest</a></div>
 </div>
 <div class='scenario'>
-<h3>The frame based reporter generates one file for each tag value</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag value")'>The static HTML reporter generates one file for each tag value</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div><div class='tag tag-Feature'><a href='Feature-Tags.html'>Tags</a></div></div>
-<div class='scenario-content'>
+<div class='scenario-content' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag value'>
 <div class='case passedCase'>
-<ul class='steps'>
+<ul class='steps' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag value:1'>
 <li><span class='introWord'>Given</span> a report model</li>
 <li><span class='introWord'>And</span> the report has <span class='argument '>2</span> scenarios</li>
 <li><span class='introWord'>And</span> scenario <span class='argument '>1</span> has tag <span class='argument '>TestTag</span> with value <span class='argument '>123</span></li>
 <li><span class='introWord'>And</span> scenario <span class='argument '>2</span> has tag <span class='argument '>TestTag</span> with value <span class='argument '>456</span></li>
 <li><span class='introWord'>And</span> the report exist as JSON file</li>
-<li><span class='introWord'>When</span> the frame based HTML reporter is executed</li>
+<li><span class='introWord'>When</span> the static HTML reporter is executed</li>
 <li><span class='introWord'>Then</span> a file with name <span class='argument '>TestTag-123.html</span> exists</li>
 <li><span class='introWord'>And</span> a file with name <span class='argument '>TestTag-456.html</span> exists</li>
 <div class='topRight passed'>Passed</div>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.FrameBaseHtmlReportGeneratorTest.html'>com.tngtech.jgiven.report.html.FrameBaseHtmlReportGeneratorTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html'>com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest</a></div>
 </div>
 <div class='scenario'>
-<h3>The frame based reporter generates one file for each test class</h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each test class")'>The static HTML reporter generates one file for each test class</h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div></div>
-<div class='scenario-content'>
-<ul class='steps'>
+<div class='scenario-content' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each test class'>
+<ul class='steps collapsed' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each test class:1'>
 <li><span class='introWord'>Given</span> <span class='caseArgument '>&lt;n&gt;</span> report models</li>
 <li><span class='introWord'>And</span> the reports exist as JSON files</li>
-<li><span class='introWord'>When</span> the frame based HTML reporter is executed</li>
+<li><span class='introWord'>When</span> the static HTML reporter is executed</li>
 <li><span class='introWord'>Then</span> an index file exists</li>
 <li><span class='introWord'>And</span> an HTML file exists for each test class</li>
 </ul>
@@ -234,12 +218,31 @@
 </td></tr>
 </table>
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.FrameBaseHtmlReportGeneratorTest.html'>com.tngtech.jgiven.report.html.FrameBaseHtmlReportGeneratorTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html'>com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest</a></div>
 </div>
+<div class='scenario'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag")'>The static HTML reporter generates one file for each tag</h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div><div class='tag tag-Feature'><a href='Feature-Tags.html'>Tags</a></div></div>
+<div class='scenario-content' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag'>
+<div class='case passedCase'>
+<ul class='steps' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag:1'>
+<li><span class='introWord'>Given</span> a report model</li>
+<li><span class='introWord'>And</span> the first scenario has tag <span class='argument '>TestTag</span></li>
+<li><span class='introWord'>And</span> the report exist as JSON file</li>
+<li><span class='introWord'>When</span> the static HTML reporter is executed</li>
+<li><span class='introWord'>Then</span> a file with name <span class='argument '>TestTag.html</span> exists</li>
+<div class='topRight passed'>Passed</div>
+</ul>
+</div><!-- case -->
+</div> <!-- scenario-content -->
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html'>com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest</a></div>
+</div>
+<div class='statistics'>9 scenarios, 14 cases, 84 steps, 0 failed cases</div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://github.com/TNG/JGiven'>JGiven</a> - on Jun 29, 2014 1:42:26 PM</div>
+<div id='footer'>Generated by <a href='http://github.com/TNG/JGiven'>JGiven</a> - on Sep 6, 2014 9:02:33 PM</div>
+<script src='report.js'></script>
 </body></html>
