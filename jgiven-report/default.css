@@ -276,6 +276,14 @@ h1 {
   cursor: pointer;
 }
 
+.scenario h3 .icon-ok {
+  color: green;
+}
+
+.scenario h3 .icon-cancel {
+  color: red;
+}
+
 .case {
   padding-left: 0px;
   padding-right: 0px;
