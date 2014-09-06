@@ -36,7 +36,7 @@ public class ReportModel {
         Collections.sort( sorted, new Comparator<ScenarioModel>() {
             @Override
             public int compare( ScenarioModel o1, ScenarioModel o2 ) {
-                return o1.description.compareTo( o2.description );
+                return o1.description.toLowerCase().compareTo( o2.description.toLowerCase() );
             }
         } );
         return sorted;
