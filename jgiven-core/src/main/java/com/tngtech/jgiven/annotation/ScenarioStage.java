@@ -11,10 +11,12 @@ import java.lang.annotation.Target;
  * This is useful to reuse stages within stages.
  * It can also be used to inject stages into test classes,
  * for example, when more than three step definition classes are needed
- * 
+ *
  * <pre>
+ * {@code
  * @ScenarioStage
  * MyStage stage;
+ * }
  * </pre>
  *
  */
