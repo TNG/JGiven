@@ -6,10 +6,10 @@ import org.junit.Test;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ScenarioRule;
-import com.tngtech.jgiven.examples.rules.RulesExample.TestSteps;
+import com.tngtech.jgiven.examples.rules.RulesExampleTest.TestSteps;
 import com.tngtech.jgiven.junit.ScenarioTest;
 
-public class RulesExample extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
+public class RulesExampleTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
 
     @Test
     public void rules_work_as_expected() {

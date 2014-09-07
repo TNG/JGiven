@@ -4,10 +4,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.examples.simpletestcase.SimpleScenarioTestCaseExample.TestSteps;
+import com.tngtech.jgiven.examples.simpletestcase.SimpleScenarioTestExampleTest.TestSteps;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 
-public class SimpleScenarioTestCaseExample extends SimpleScenarioTest<TestSteps> {
+public class SimpleScenarioTestExampleTest extends SimpleScenarioTest<TestSteps> {
 
     public static class CoffeeMachine {
 

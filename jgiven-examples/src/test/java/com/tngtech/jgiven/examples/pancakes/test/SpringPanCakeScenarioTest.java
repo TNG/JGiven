@@ -17,7 +17,7 @@ import com.tngtech.jgiven.junit.ScenarioTest;
 
 @RunWith( SpringJUnit4ClassRunner.class )
 @ContextConfiguration( classes = SpringConfig.class )
-public class SpringPanCakeScenario extends ScenarioTest<GivenIngredients, WhenCook, ThenMeal> {
+public class SpringPanCakeScenarioTest extends ScenarioTest<GivenIngredients, WhenCook, ThenMeal> {
     @Autowired
     private AutowireCapableBeanFactory beanFactory;
 

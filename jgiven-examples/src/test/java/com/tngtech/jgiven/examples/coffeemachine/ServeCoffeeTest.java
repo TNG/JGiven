@@ -13,13 +13,13 @@ import com.tngtech.jgiven.junit.ScenarioTest;
 /**
  * Feature: Serve coffee
  *    In order to refresh myself
- *    as a customer 
+ *    as a customer
  *    I want to coffee to be served
- *  
+ *
  * Original example due to Cucumber Wiki
  */
 @RunWith( DataProviderRunner.class )
-public class ServeCoffeeFeature extends ScenarioTest<GivenCoffee, WhenCoffee, ThenCoffee> {
+public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenCoffee> {
 
     @Test
     public void an_empty_coffee_machine_cannot_serve_any_coffee() throws Exception {
@@ -38,13 +38,14 @@ public class ServeCoffeeFeature extends ScenarioTest<GivenCoffee, WhenCoffee, Th
         given().an_empty_coffee_machine();
         when().I_insert_$_one_euro_coins( 5 )
             .and().I_press_the_coffee_button();
-        then().the_message_$_is_shown( "Error: No coffee left" );
+        then().the_message_$_is_shown( "Error: No coffees left" );
     }
 
     @Test
     public void not_enough_money_message_is_shown_when_insufficient_money_was_given() throws Exception {
 
-        given().a_coffee_machine();
+        given().a_coffee_machine()
+            .and().there_are_$_coffees_left_in_the_machine( 2 );
         when().I_insert_$_one_euro_coins( 1 )
             .and().I_press_the_coffee_button();
         then().the_message_$_is_shown( "Error: Insufficient money" );
@@ -87,7 +88,8 @@ public class ServeCoffeeFeature extends ScenarioTest<GivenCoffee, WhenCoffee, Th
     } )
     public void buy_a_coffee( boolean on, int coffees, int dollars, boolean coffeeServed ) {
 
-        given().there_are_$_coffees_left_in_the_machine( coffees ).
+        given().a_coffee_machine().
+            and().there_are_$_coffees_left_in_the_machine( coffees ).
             and().the_machine_is_$on_or_off$( on ).
             and().the_coffee_costs_$_dollar( 2 );
 
@@ -96,5 +98,4 @@ public class ServeCoffeeFeature extends ScenarioTest<GivenCoffee, WhenCoffee, Th
 
         then().I_should_$or_should_not$_be_served_a_coffee( coffeeServed );
     }
-
 }

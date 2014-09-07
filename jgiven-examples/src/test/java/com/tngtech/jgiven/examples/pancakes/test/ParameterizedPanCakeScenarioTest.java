@@ -17,7 +17,7 @@ import com.tngtech.jgiven.examples.pancakes.test.steps.WhenCook;
 import com.tngtech.jgiven.junit.ScenarioTest;
 
 @RunWith( Parameterized.class )
-public class ParameterizedPanCakeScenario extends ScenarioTest<GivenIngredients, WhenCook, ThenMeal> {
+public class ParameterizedPanCakeScenarioTest extends ScenarioTest<GivenIngredients, WhenCook, ThenMeal> {
     @ProvidedScenarioState
     private final Cook cook = new PanCakeCook();
 
@@ -31,7 +31,7 @@ public class ParameterizedPanCakeScenario extends ScenarioTest<GivenIngredients,
     String ingredient;
     String expectedMeal;
 
-    public ParameterizedPanCakeScenario( String ingredient, String expectedMeal ) {
+    public ParameterizedPanCakeScenarioTest( String ingredient, String expectedMeal ) {
         this.ingredient = ingredient;
         this.expectedMeal = expectedMeal;
     }
