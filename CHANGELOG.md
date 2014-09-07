@@ -1,4 +1,4 @@
-v0.3.1
+v0.4.0
 * fix issue with intercepting methods of stages during construction
 * if multiple exceptions are thrown during scenario execution throw the first one at the end of the test execution
 * made scenarios and cases in HTML reports collapsible (Issue-#18)
