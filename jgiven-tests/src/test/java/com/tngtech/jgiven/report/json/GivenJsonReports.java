@@ -34,7 +34,7 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenRep
         jsonReportDirectory = temporaryFolderRule.newFolder();
 
         for( ReportModel reportModel : reportModels ) {
-            File jsonReportFile = new File( jsonReportDirectory, reportModel.className + ".json" );
+            File jsonReportFile = new File( jsonReportDirectory, reportModel.getClassName() + ".json" );
 
             jsonReportFiles.add( jsonReportFile );
             new ScenarioJsonWriter( reportModel ).write( jsonReportFile );

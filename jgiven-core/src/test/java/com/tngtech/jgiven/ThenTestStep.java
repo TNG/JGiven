@@ -11,8 +11,9 @@ public class ThenTestStep extends Stage<ThenTestStep> {
 
     public void sms_and_emails_exist() {}
 
-    public void the_result_is( int i ) {
+    public ThenTestStep the_result_is( int i ) {
         assertThat( intResult ).isEqualTo( i );
+        return self();
     }
 
     public ThenTestStep something_has_happend() {

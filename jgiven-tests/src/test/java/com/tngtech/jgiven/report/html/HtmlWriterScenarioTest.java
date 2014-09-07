@@ -12,6 +12,7 @@ import com.tngtech.jgiven.junit.ScenarioTest;
 import com.tngtech.jgiven.report.model.GivenReportModel;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.tags.FeatureDataTables;
+import com.tngtech.jgiven.tags.FeatureDuration;
 import com.tngtech.jgiven.tags.FeatureHtmlReport;
 import com.tngtech.jgiven.tags.Issue;
 
@@ -23,10 +24,10 @@ public class HtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, Wh
     @DataProvider
     public static Object[][] statusTexts() {
         return new Object[][] {
-            { StepStatus.PASSED, "something happens</li>" },
-            { StepStatus.FAILED, "something happens <span class='badge failed'>failed</span></li>" },
-            { StepStatus.SKIPPED, "something happens <span class='badge skipped'>skipped</span></li>" },
-            { StepStatus.NOT_IMPLEMENTED_YET, "something happens <span class='badge notImplementedYet'>not implemented yet</span></li>" },
+            { StepStatus.PASSED, "something happens.*</li>" },
+            { StepStatus.FAILED, "something happens <span class='badge failed'>failed</span>.*</li>" },
+            { StepStatus.SKIPPED, "something happens <span class='badge skipped'>skipped</span>.*</li>" },
+            { StepStatus.NOT_IMPLEMENTED_YET, "something happens <span class='badge notImplementedYet'>not implemented yet</span>.*</li>" },
         };
     }
 
@@ -37,7 +38,7 @@ public class HtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, Wh
             .and().step_$_is_named( 1, "something happens" )
             .and().step_$_has_status( 1, status );
         when().the_HTML_report_is_generated();
-        then().the_HTML_report_contains_text( expectedString );
+        then().the_HTML_report_contains_pattern( expectedString );
     }
 
     @Test
@@ -46,7 +47,7 @@ public class HtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, Wh
         given().a_report_model_with_one_scenario()
             .and().case_$_has_a_when_step_$_with_argument( 1, "test", "<someHtmlTag>" );
         when().the_HTML_report_is_generated();
-        then().the_HTML_report_contains_text( "&lt;someHtmlTag&gt;" );
+        then().the_HTML_report_contains_pattern( "&lt;someHtmlTag&gt;" );
     }
 
     @Test
@@ -74,8 +75,8 @@ public class HtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, Wh
             .and().case_$_has_a_when_step_$_with_argument( 2, "uses the second parameter", "b" );
 
         when().the_HTML_report_is_generated();
-        then().the_HTML_report_contains_text( "uses the first parameter.*&lt;param1&gt;.*second" )
-            .and().the_HTML_report_contains_text( "uses the second parameter.*&lt;param2&gt;.*Cases" )
+        then().the_HTML_report_contains_pattern( "uses the first parameter.*&lt;param1&gt;.*second" )
+            .and().the_HTML_report_contains_pattern( "uses the second parameter.*&lt;param2&gt;.*Cases" )
             .and().the_HTML_report_contains_a_data_table_with_header_values( "param1", "param2" )
             .and().the_data_table_has_one_line_for_the_arguments_of_each_case();
     }
@@ -88,4 +89,23 @@ public class HtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, Wh
         when().the_HTML_report_is_generated();
         then().the_HTML_report_contains_text( "<div class='failed'>Failed: Test Error</div>" );
     }
+
+    @Test
+    @FeatureDuration
+    public void the_duration_of_steps_are_reported() {
+        given().a_report_model_with_one_scenario()
+            .and().step_$_has_a_duration_of_$_nano_seconds( 1, 123456789 );
+        when().the_HTML_report_is_generated();
+        then().the_HTML_report_contains_text( "<span class='duration'>(123.46 ms)</span>" );
+    }
+
+    @Test
+    @FeatureDuration
+    public void the_duration_of_scenarios_are_reported() {
+        given().a_report_model_with_one_scenario()
+            .and().the_scenario_has_a_duration_of_$_nano_seconds( 123456789 );
+        when().the_HTML_report_is_generated();
+        then().the_HTML_report_contains_text( "<span class='duration'>(123.46 ms)</span>" );
+    }
+
 }

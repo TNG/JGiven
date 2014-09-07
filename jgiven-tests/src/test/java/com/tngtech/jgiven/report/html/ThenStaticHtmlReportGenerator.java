@@ -19,7 +19,7 @@ public class ThenStaticHtmlReportGenerator<SELF extends ThenStaticHtmlReportGene
 
     public SELF an_HTML_file_exists_for_each_test_class() {
         for( ReportModel model : reportModels ) {
-            a_file_with_name_$_exists( model.className + ".html" );
+            a_file_with_name_$_exists( model.getClassName() + ".html" );
         }
         return self();
     }

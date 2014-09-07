@@ -94,7 +94,8 @@ public class ScenarioExecutor {
 
     class MethodHandler implements StepMethodHandler {
         @Override
-        public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode ) throws Throwable {
+        public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode )
+                throws Throwable {
             if( paramMethod.isSynthetic() ) {
                 return;
             }
@@ -120,6 +121,11 @@ public class ScenarioExecutor {
         public void handleThrowable( Throwable t ) throws Throwable {
             listener.stepMethodFailed( t );
             failed( t );
+        }
+
+        @Override
+        public void handleMethodFinished( long durationInNanos ) {
+            listener.stepMethodFinished( durationInNanos );
         }
 
     }
@@ -289,6 +295,14 @@ public class ScenarioExecutor {
         state = FINISHED;
         methodInterceptor.enableMethodHandling( false );
 
+        try {
+            callFinishLifeCycleMethods();
+        } finally {
+            listener.scenarioFinished();
+        }
+    }
+
+    private void callFinishLifeCycleMethods() throws Throwable {
         Throwable firstThrownException = failedException;
         if( beforeStepsWereExecuted ) {
             if( currentStage != null ) {

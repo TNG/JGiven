@@ -13,6 +13,11 @@ public class ScenarioCaseModel {
     public boolean success = true;
     public String errorMessage;
 
+    /**
+     * The total execution time of the whole case in milliseconds
+     */
+    public long durationInNanos;
+
     public StepModel addStep( String name, List<Word> words, InvocationMode mode ) {
         StepModel stepModel = new StepModel();
         stepModel.name = name;
@@ -55,5 +60,13 @@ public class ScenarioCaseModel {
 
     public StepModel getStep( int i ) {
         return steps.get( i );
+    }
+
+    public void setDurationInNanoes( long durationInNanos ) {
+        this.durationInNanos = durationInNanos;
+    }
+
+    public long getDurationInNanos() {
+        return durationInNanos;
     }
 }

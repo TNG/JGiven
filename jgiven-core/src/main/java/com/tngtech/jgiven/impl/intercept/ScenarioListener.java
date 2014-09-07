@@ -19,4 +19,8 @@ public interface ScenarioListener {
 
     void stepMethodFailed( Throwable t );
 
+    void stepMethodFinished( long durationInNanos );
+
+    void scenarioFinished();
+
 }

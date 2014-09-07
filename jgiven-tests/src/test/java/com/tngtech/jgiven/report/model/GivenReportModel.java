@@ -22,7 +22,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF a_report_model() {
         reportModel = new ReportModel();
-        reportModel.className = "Test Class";
+        reportModel.setClassName( "Test Class" );
 
         createScenarioModel( "something should happen", "something_should_happen" );
 
@@ -31,13 +31,13 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     private void createScenarioModel( String description, String testMethodName ) {
         ScenarioModel scenarioModel = new ScenarioModel();
-        scenarioModel.className = reportModel.className;
+        scenarioModel.className = reportModel.getClassName();
         scenarioModel.description = description;
         scenarioModel.testMethodName = testMethodName;
 
         addCase( scenarioModel );
 
-        reportModel.scenarios.add( scenarioModel );
+        reportModel.getScenarios().add( scenarioModel );
     }
 
     private void addCase( ScenarioModel scenarioModel ) {
@@ -57,15 +57,15 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF a_report_model_with_name( String name ) {
         a_report_model();
-        reportModel.className = name;
-        for( ScenarioModel model : reportModel.scenarios ) {
+        reportModel.setClassName( name );
+        for( ScenarioModel model : reportModel.getScenarios() ) {
             model.className = name;
         }
         return self();
     }
 
     public void the_report_has_$_scenarios( int n ) {
-        reportModel.scenarios.clear();
+        reportModel.getScenarios().clear();
         for( int i = 0; i < n; i++ ) {
             createScenarioModel( "something should happen " + i, "something_should_happen_" + i );
         }
@@ -77,6 +77,11 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF the_scenario_has_parameters( String... params ) {
         reportModel.getLastScenarioModel().addParameterNames( params );
+        return self();
+    }
+
+    public SELF the_scenario_has_a_duration_of_$_nano_seconds( long durationInNanos ) {
+        reportModel.getLastScenarioModel().setDurationInNanos( durationInNanos );
         return self();
     }
 
@@ -127,6 +132,11 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
+    public SELF step_$_has_a_duration_of_$_nano_seconds( int i, long durationInNanos ) {
+        getCase( 1 ).getStep( i - 1 ).setDurationInNanos( durationInNanos );
+        return self();
+    }
+
     public SELF case_$_has_a_when_step_$_with_argument( int ncase, String name, String arg ) {
         getCase( ncase ).addStep( name, Arrays.asList( Word.introWord( "when" ), new Word( name ), Word.argWord( arg ) ),
             InvocationMode.NORMAL );
@@ -138,7 +148,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF scenario_$_has_tag_$_with_value_$( int i, String name, String value ) {
-        reportModel.scenarios.get( i - 1 ).tags.add( new Tag( name, value ).setPrependType( true ) );
+        reportModel.getScenarios().get( i - 1 ).tags.add( new Tag( name, value ).setPrependType( true ) );
         return self();
     }
 

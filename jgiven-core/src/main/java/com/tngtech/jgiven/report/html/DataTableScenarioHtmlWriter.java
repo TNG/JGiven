@@ -47,11 +47,13 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
         }
         writer.print( "<td>" );
 
-        if( scenarioCase.success ) {
-            writer.println( "<div class='passed'>Passed</div>" );
-        } else {
+        writeStatusIcon( scenarioCase.success );
+
+        if( !scenarioCase.success ) {
             writer.println( "<div class='failed'>Failed: " + scenarioCase.errorMessage + "</div>" );
         }
+
+        writeDuration( scenarioCase.durationInNanos );
 
         writer.print( "</td>" );
 

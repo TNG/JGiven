@@ -30,10 +30,11 @@ public class StepMethodInterceptor implements MethodInterceptor {
 
     @Override
     public Object intercept( Object receiver, Method method, Object[] parameters, MethodProxy methodProxy ) throws Throwable {
-
+        long started = System.nanoTime();
         InvocationMode mode = getInvocationMode( receiver, method );
 
-        if( methodHandlingEnabled && stackDepth.get() == 0 && !method.getDeclaringClass().equals( Object.class ) ) {
+        boolean handleMethod = methodHandlingEnabled && stackDepth.get() == 0 && !method.getDeclaringClass().equals( Object.class );
+        if( handleMethod ) {
             scenarioMethodHandler.handleMethod( receiver, method, parameters, mode );
         }
 
@@ -45,15 +46,18 @@ public class StepMethodInterceptor implements MethodInterceptor {
             stackDepth.incrementAndGet();
             return methodProxy.invokeSuper( receiver, parameters );
         } catch( Exception t ) {
-            return handleThrowable( receiver, method, t );
+            return handleThrowable( receiver, method, t, System.nanoTime() - started );
         } catch( AssertionError e ) {
-            return handleThrowable( receiver, method, e );
+            return handleThrowable( receiver, method, e, System.nanoTime() - started );
         } finally {
             stackDepth.decrementAndGet();
+            if( handleMethod ) {
+                scenarioMethodHandler.handleMethodFinished( System.nanoTime() - started );
+            }
         }
     }
 
-    private Object handleThrowable( Object receiver, Method method, Throwable t ) throws Throwable {
+    private Object handleThrowable( Object receiver, Method method, Throwable t, long durationInNanos ) throws Throwable {
         if( methodHandlingEnabled ) {
             scenarioMethodHandler.handleThrowable( t );
             return returnReceiverOrNull( receiver, method );

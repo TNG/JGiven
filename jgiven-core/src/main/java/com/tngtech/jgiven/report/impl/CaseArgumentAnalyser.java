@@ -25,7 +25,7 @@ public class CaseArgumentAnalyser {
     private static final Logger log = LoggerFactory.getLogger( CaseArgumentAnalyser.class );
 
     public void analyze( ReportModel model ) {
-        for( ScenarioModel scenarioModel : model.scenarios ) {
+        for( ScenarioModel scenarioModel : model.getScenarios() ) {
             analyze( scenarioModel );
         }
     }

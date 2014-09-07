@@ -16,6 +16,7 @@ public class ScenarioModel {
     public List<String> parameterNames = Lists.newArrayList();
     private boolean casesAsTable;
     private final List<ScenarioCaseModel> scenarioCases = Lists.newArrayList();
+    private long durationInNanos;
 
     public void accept( ReportModelVisitor visitor ) {
         visitor.visit( this );
@@ -99,5 +100,17 @@ public class ScenarioModel {
 
     public void clearCases() {
         scenarioCases.clear();
+    }
+
+    public long getDurationInNanos() {
+        return durationInNanos;
+    }
+
+    public void setDurationInNanos( long durationInNanos ) {
+        this.durationInNanos = durationInNanos;
+    }
+
+    public void addDurationInNanos( long durationInNanosDelta ) {
+        this.durationInNanos += durationInNanosDelta;
     }
 }

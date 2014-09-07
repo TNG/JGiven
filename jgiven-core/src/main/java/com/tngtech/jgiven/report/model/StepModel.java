@@ -11,6 +11,11 @@ public class StepModel {
     public List<Word> words = Lists.newArrayList();
     private StepStatus status = StepStatus.PASSED;
 
+    /**
+     * The total execution time of the step in nano seconds
+     */
+    private long durationInNanos;
+
     public void accept( ReportModelVisitor visitor ) {
         visitor.visit( this );
     }
@@ -42,5 +47,13 @@ public class StepModel {
 
     public void setStatus( StepStatus status ) {
         this.status = status;
+    }
+
+    public long getDurationInNanos() {
+        return durationInNanos;
+    }
+
+    public void setDurationInNanos( long durationInNanos ) {
+        this.durationInNanos = durationInNanos;
     }
 }

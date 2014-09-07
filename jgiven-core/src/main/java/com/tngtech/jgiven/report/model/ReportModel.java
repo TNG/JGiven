@@ -12,14 +12,14 @@ public class ReportModel {
     /**
      * Full qualified name of the test class.
      */
-    public String className;
+    private String className;
 
     /**
      * An optional description of the test class.
      */
-    public String description;
+    private String description;
 
-    public List<ScenarioModel> scenarios = Lists.newArrayList();
+    private List<ScenarioModel> scenarios = Lists.newArrayList();
 
     public void accept( ReportModelVisitor visitor ) {
         visitor.visit( this );
@@ -32,7 +32,7 @@ public class ReportModel {
     }
 
     private List<ScenarioModel> sortByDescription() {
-        List<ScenarioModel> sorted = Lists.newArrayList( scenarios );
+        List<ScenarioModel> sorted = Lists.newArrayList( getScenarios() );
         Collections.sort( sorted, new Comparator<ScenarioModel>() {
             @Override
             public int compare( ScenarioModel o1, ScenarioModel o2 ) {
@@ -43,7 +43,7 @@ public class ReportModel {
     }
 
     public ScenarioModel getLastScenarioModel() {
-        return scenarios.get( scenarios.size() - 1 );
+        return getScenarios().get( getScenarios().size() - 1 );
     }
 
     public StepModel getFirstStepModelOfLastScenario() {
@@ -51,11 +51,35 @@ public class ReportModel {
     }
 
     public void addScenarioModel( ScenarioModel currentScenarioModel ) {
-        scenarios.add( currentScenarioModel );
+        getScenarios().add( currentScenarioModel );
     }
 
     public String getSimpleClassName() {
-        return Iterables.getLast( Splitter.on( '.' ).split( className ) );
+        return Iterables.getLast( Splitter.on( '.' ).split( getClassName() ) );
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription( String description ) {
+        this.description = description;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName( String className ) {
+        this.className = className;
+    }
+
+    public List<ScenarioModel> getScenarios() {
+        return scenarios;
+    }
+
+    public void setScenarios( List<ScenarioModel> scenarios ) {
+        this.scenarios = scenarios;
     }
 
 }

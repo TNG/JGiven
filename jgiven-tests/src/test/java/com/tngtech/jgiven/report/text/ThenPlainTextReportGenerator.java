@@ -7,7 +7,7 @@ public class ThenPlainTextReportGenerator<SELF extends ThenPlainTextReportGenera
 
     public SELF a_text_file_exists_for_each_test_class() {
         for( ReportModel model : reportModels ) {
-            a_file_with_name_$_exists( model.className + ".feature" );
+            a_file_with_name_$_exists( model.getClassName() + ".feature" );
         }
         return self();
     }

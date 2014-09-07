@@ -1,8 +1,12 @@
 package com.tngtech.jgiven.report.html;
 
+import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
+import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
 import static java.lang.String.format;
 
 import java.io.PrintWriter;
+import java.util.Formatter;
+import java.util.Locale;
 
 import com.google.common.html.HtmlEscapers;
 import com.tngtech.jgiven.impl.util.WordUtil;
@@ -32,7 +36,26 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         writer.println( "<div class='scenario'>" );
 
         String id = scenarioModel.className + ":" + scenarioModel.description;
-        ExecutionStatus executionStatus = scenarioModel.getExecutionStatus();
+
+        writer.print( format( "<h3 onclick='toggle(\"%s\")'>", id ) );
+
+        writeStatusIcon( scenarioModel.getExecutionStatus() );
+
+        writer.print( " " + WordUtil.capitalize( scenarioModel.description ) );
+
+        writeDuration( scenarioModel.getDurationInNanos() );
+        writer.println( "</h3>" );
+
+        writeTagLine( scenarioModel );
+        writer.println( "<div class='scenario-body' id='" + id + "'>" );
+        writer.println( "<div class='scenario-content'>" );
+    }
+
+    public void writeStatusIcon( boolean success ) {
+        writeStatusIcon( success ? SUCCESS : FAILED );
+    }
+
+    public void writeStatusIcon( ExecutionStatus executionStatus ) {
         String iconClass = "";
         if( executionStatus == ExecutionStatus.FAILED ) {
             iconClass = "icon-cancel";
@@ -40,11 +63,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             iconClass = "icon-ok";
         }
 
-        writer.println( format( "<h3 onclick='toggle(\"%s\")'><i class='%s'></i> %s</h3>",
-            id, iconClass, WordUtil.capitalize( scenarioModel.description ) ) );
-        writeTagLine( scenarioModel );
-        writer.println( "<div class='scenario-body' id='" + id + "'>" );
-        writer.println( "<div class='scenario-content'>" );
+        writer.print( format( "<i class='%s'></i>", iconClass ) );
     }
 
     private void writeTagLine( ScenarioModel scenarioModel ) {
@@ -89,7 +108,9 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     void printCaseHeader( ScenarioCaseModel scenarioCase ) {
         writer.println( format( "<div class='case %sCase'>", scenarioCase.success ? "passed" : "failed" ) );
         if( !scenarioCase.arguments.isEmpty() ) {
-            writer.print( format( "<h4 onclick='toggle(\"%s\")'>Case %d: ", getCaseId(), scenarioCase.caseNr ) );
+            writer.print( format( "<h4 onclick='toggle(\"%s\")'>", getCaseId() ) );
+            writeStatusIcon( scenarioCase.success );
+            writer.print( format( " Case %d: ", scenarioCase.caseNr ) );
 
             for( int i = 0; i < scenarioCase.arguments.size(); i++ ) {
                 if( scenarioModel.parameterNames.size() > i ) {
@@ -102,15 +123,15 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
                     writer.print( ", " );
                 }
             }
+
+            writeDuration( scenarioCase.durationInNanos );
             writer.println( "</h4>" );
         }
     }
 
     @Override
     public void visitEnd( ScenarioCaseModel scenarioCase ) {
-        if( scenarioCase.success ) {
-            writer.println( "<div class='topRight passed'>Passed</div>" );
-        } else {
+        if( !scenarioCase.success ) {
             writer.println( "<div class='failed'>Failed: " + scenarioCase.errorMessage + "</div>" );
         }
         writer.println( "</ul>" );
@@ -137,12 +158,24 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             }
             firstWord = false;
         }
+
         StepStatus status = stepModel.getStatus();
         if( status != StepStatus.PASSED ) {
             String lowerCase = status.toString().toLowerCase();
             writer.print( format( " <span class='badge %s'>%s</span>", WordUtil.camelCase( lowerCase ), lowerCase.replace( '_', ' ' ) ) );
         }
+
+        writeDuration( stepModel.getDurationInNanos() );
+
         writer.println( "</li>" );
+    }
+
+    protected void writeDuration( long durationInNanos ) {
+        // TODO: provide a configuration value to configure the locale
+        double durationInMs = ( (double) durationInNanos ) / 1000000;
+        Formatter usFormatter = new Formatter( Locale.US );
+        writer.print( usFormatter.format( " <span class='duration'>(%.2f ms)</span>", durationInMs ) );
+        usFormatter.close();
     }
 
     private void printArg( Word word ) {

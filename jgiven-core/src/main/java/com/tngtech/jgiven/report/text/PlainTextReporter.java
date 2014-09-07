@@ -64,7 +64,7 @@ public class PlainTextReporter extends PlainTextWriter {
     public void visit( ReportModel multiScenarioModel ) {
         writer.println();
         String title = withColor( Color.RED, INTENSITY_BOLD, "Test Class: " );
-        title += withColor( Color.RED, multiScenarioModel.className );
+        title += withColor( Color.RED, multiScenarioModel.getClassName() );
         println( Color.RED, title );
     }
 

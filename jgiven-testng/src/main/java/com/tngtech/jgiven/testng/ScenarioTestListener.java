@@ -27,7 +27,7 @@ public class ScenarioTestListener implements ITestListener {
     @Override
     public void onTestStart( ITestResult paramITestResult ) {
         Object instance = paramITestResult.getInstance();
-        scenarioCollectionModel.className = instance.getClass().getName();
+        scenarioCollectionModel.setClassName( instance.getClass().getName() );
 
         if( instance instanceof ScenarioTestBase<?, ?, ?> ) {
             ScenarioTestBase<?, ?, ?> testInstance = (ScenarioTestBase<?, ?, ?>) instance;

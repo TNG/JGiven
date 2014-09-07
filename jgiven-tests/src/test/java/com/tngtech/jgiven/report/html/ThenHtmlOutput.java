@@ -25,7 +25,7 @@ public class ThenHtmlOutput extends Stage<ThenHtmlOutput> {
         }
         patternBuilder.append( "\\s*<th>Status</th>\\s*" );
         patternBuilder.append( "\\s*</tr>.*</table>.*" );
-        return the_HTML_report_contains_text( patternBuilder.toString() );
+        return the_HTML_report_contains_pattern( patternBuilder.toString() );
     }
 
     public ThenHtmlOutput the_data_table_has_one_line_for_the_arguments_of_each_case() {
@@ -37,17 +37,21 @@ public class ThenHtmlOutput extends Stage<ThenHtmlOutput> {
             for( String arg : caseModel.arguments ) {
                 patternBuilder.append( "\\s*<td>" + arg + "</td>\\s*" );
             }
-            patternBuilder.append( "\\s*<td>.*Passed.*</td>\\s*" );
+            patternBuilder.append( "\\s*<td>.*icon-ok.*</td>\\s*" );
             patternBuilder.append( "\\s*</tr>" );
         }
         patternBuilder.append( "\\s*</table>.*" );
-        return the_HTML_report_contains_text( patternBuilder.toString() );
+        return the_HTML_report_contains_pattern( patternBuilder.toString() );
     }
 
-    public ThenHtmlOutput the_HTML_report_contains_text( String string ) {
-        Pattern pattern = Pattern.compile( ".*" + string + ".*", Pattern.MULTILINE | Pattern.DOTALL );
+    public ThenHtmlOutput the_HTML_report_contains_pattern( String patternString ) {
+        Pattern pattern = Pattern.compile( ".*" + patternString + ".*", Pattern.MULTILINE | Pattern.DOTALL );
         Assertions.assertThat( html ).matches( pattern );
         return self();
     }
 
+    public ThenHtmlOutput the_HTML_report_contains_text( String text ) {
+        Assertions.assertThat( html ).contains( text );
+        return self();
+    }
 }

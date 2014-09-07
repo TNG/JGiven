@@ -24,4 +24,10 @@ public class NoOpScenarioListener implements ScenarioListener {
 
     @Override
     public void stepMethodFailed( Throwable t ) {}
+
+    @Override
+    public void stepMethodFinished( long durationInNanos ) {}
+
+    @Override
+    public void scenarioFinished() {}
 }

@@ -31,6 +31,7 @@ import com.tngtech.jgiven.format.PrintfFormatter;
 import com.tngtech.jgiven.impl.NamedArgument;
 import com.tngtech.jgiven.impl.intercept.InvocationMode;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
+import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
@@ -48,6 +49,8 @@ public class ReportModelBuilder implements ScenarioListener {
 
     private AbstractJGivenConfiguraton configuration = new DefaultConfiguration();
 
+    private long scenarioStartedNanos;
+
     public ReportModelBuilder() {
         this( new ReportModel() );
     }
@@ -62,6 +65,7 @@ public class ReportModelBuilder implements ScenarioListener {
 
     @Override
     public void scenarioStarted( String description ) {
+        scenarioStartedNanos = System.nanoTime();
         String readableDescription = description;
 
         if( description.contains( "_" ) ) {
@@ -72,8 +76,8 @@ public class ReportModelBuilder implements ScenarioListener {
 
         currentScenarioCase = new ScenarioCaseModel();
 
-        if( !reportModel.scenarios.isEmpty() ) {
-            ScenarioModel scenarioModel = reportModel.scenarios.get( reportModel.scenarios.size() - 1 );
+        if( !reportModel.getScenarios().isEmpty() ) {
+            ScenarioModel scenarioModel = reportModel.getScenarios().get( reportModel.getScenarios().size() - 1 );
             if( scenarioModel.description.equals( readableDescription ) ) {
                 currentScenarioModel = scenarioModel;
             }
@@ -81,8 +85,8 @@ public class ReportModelBuilder implements ScenarioListener {
 
         if( currentScenarioModel == null ) {
             currentScenarioModel = new ScenarioModel();
-            currentScenarioModel.className = reportModel.className;
-            reportModel.scenarios.add( currentScenarioModel );
+            currentScenarioModel.className = reportModel.getClassName();
+            reportModel.getScenarios().add( currentScenarioModel );
         }
 
         currentScenarioModel.addCase( currentScenarioCase );
@@ -187,7 +191,7 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public void setClassName( String name ) {
-        reportModel.className = name;
+        reportModel.setClassName( name );
     }
 
     public void setSuccess( boolean success ) {
@@ -211,6 +215,13 @@ public class ReportModelBuilder implements ScenarioListener {
         if( !currentScenarioCase.steps.isEmpty() ) {
             currentScenarioCase.steps.get( currentScenarioCase.steps.size() - 1 )
                 .setStatus( StepStatus.FAILED );
+        }
+    }
+
+    @Override
+    public void stepMethodFinished( long durationInNanos ) {
+        if( !currentScenarioCase.steps.isEmpty() ) {
+            currentScenarioCase.steps.get( currentScenarioCase.steps.size() - 1 ).setDurationInNanos( durationInNanos );
         }
     }
 
@@ -364,6 +375,14 @@ public class ReportModelBuilder implements ScenarioListener {
             result.add( newTag );
         }
         return result;
+    }
+
+    @Override
+    public void scenarioFinished() {
+        AssertionUtil.assertTrue( scenarioStartedNanos > 0, "Scenario has no start time" );
+        long durationInNanos = System.nanoTime() - scenarioStartedNanos;
+        currentScenarioCase.setDurationInNanoes( durationInNanos );
+        currentScenarioModel.addDurationInNanos( durationInNanos );
     }
 
 }

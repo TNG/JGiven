@@ -75,7 +75,7 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
             modelFile.file = targetFile;
             models.add( modelFile );
 
-            for( ScenarioModel scenario : model.scenarios ) {
+            for( ScenarioModel scenario : model.getScenarios() ) {
                 for( Tag tag : scenario.tags ) {
                     addToMap( tag, scenario );
                 }
@@ -107,7 +107,7 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
             htmlWriter.writeHtmlHeader( "Scenarios" );
 
             ReportModel reportModel = new ReportModel();
-            reportModel.className = ".Scenarios";
+            reportModel.setClassName( ".Scenarios" );
 
             tocWriter.writeToc( printWriter );
             htmlWriter.visit( reportModel );
@@ -135,12 +135,12 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
     private void writeTagFile( Tag tag, List<ScenarioModel> value, HtmlTocWriter tocWriter ) {
         try {
             ReportModel reportModel = new ReportModel();
-            reportModel.className = tag.getName();
+            reportModel.setClassName( tag.getName() );
             if( tag.getValue() != null ) {
-                reportModel.className += "." + tag.getValueString();
+                reportModel.setClassName( reportModel.getClassName() + "." + tag.getValueString() );
             }
-            reportModel.scenarios = value;
-            reportModel.description = tag.getDescription();
+            reportModel.setScenarios( value );
+            reportModel.setDescription( tag.getDescription() );
 
             String fileName = HtmlTocWriter.tagToFilename( tag );
             File targetFile = new File( toDir, fileName );
