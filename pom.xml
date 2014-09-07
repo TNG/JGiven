@@ -34,7 +34,7 @@
 
     <!-- Plugin Versions -->
     <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
-    <maven-deploy-plugin.version>2.17</maven-deploy-plugin.version>
+    <maven-deploy-plugin.version>2.7</maven-deploy-plugin.version>
 
     <!-- Dependency Versions -->
     <junit-dataprovider.version>1.9.1</junit-dataprovider.version>
