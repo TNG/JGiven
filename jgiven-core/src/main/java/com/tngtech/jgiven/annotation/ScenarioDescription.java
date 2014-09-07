@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * scenario a complex description that cannot be
  * directly represented by a Java method name.
  *
- * @deprecated just use {@link @Description} instead, will be removed with v0.5
+ * @deprecated just use {@link Description} instead, will be removed with v0.5
  */
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.METHOD )
