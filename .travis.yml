@@ -2,9 +2,9 @@ language: java
 install: "mvn install -DskipTests=true"
 script: "mvn test -e"
 jdk:
+  - oraclejdk8
   - oraclejdk7
-  - openjdk7
-  - openjdk6
+  - oraclejdk6
 after_success:
   - mvn clean test
   - mvn jacoco:report -pl jgiven-core
