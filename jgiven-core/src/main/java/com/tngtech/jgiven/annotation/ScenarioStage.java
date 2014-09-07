@@ -13,10 +13,8 @@ import java.lang.annotation.Target;
  * for example, when more than three step definition classes are needed
  *
  * <pre>
- * {@code
- * @ScenarioStage
+ * {@literal @}ScenarioStage
  * MyStage stage;
- * }
  * </pre>
  *
  */

@@ -29,11 +29,9 @@ import java.lang.annotation.Target;
  *
  * <h2>Example</h2>
  * <pre>
- * {@code
- * @NotImplementedYet
+ * {@literal @}NotImplementedYet
  * public void my_cool_new_feature() {
  *
- * }
  * }
  * </pre>
  *

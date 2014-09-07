@@ -15,10 +15,8 @@ import java.lang.annotation.Target;
  * {@link AfterScenario}
  *
  * <pre>
- * {@code
- * @ScenarioRule
+ * {@literal @}ScenarioRule
  * MyRule rule = new MyRule();
- * }
  * </pre>
  *
  */

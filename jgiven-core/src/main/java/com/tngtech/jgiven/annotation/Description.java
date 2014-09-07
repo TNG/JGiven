@@ -16,21 +16,17 @@ import java.lang.annotation.Target;
  * replaced with step arguments
  *
  * <pre>
- * {@code
- * @Description("some (complicated) step")
+ * {@literal @}Description("some (complicated) step")
  * public SELF some_complicated_step() {
  *    ...
- * }
  * }
  * </pre>
  *
  * <pre>
- * {@code
- * @Description("Some 'special' scenario description")
- * @Test
+ * {@literal @}Description("Some 'special' scenario description")
+ * {@literal @}Test
  * public void some_special_scenario_description() {
  *    ...
- * }
  * }
  * </pre>
  */
