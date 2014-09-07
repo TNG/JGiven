@@ -264,6 +264,8 @@ public class ReportModelBuilder implements ScenarioListener {
 
         if( method.isAnnotationPresent( ScenarioDescription.class ) ) {
             scenarioDescription = method.getAnnotation( ScenarioDescription.class ).value();
+        } else if( method.isAnnotationPresent( Description.class ) ) {
+            scenarioDescription = method.getAnnotation( Description.class ).value();
         }
 
         scenarioStarted( scenarioDescription );

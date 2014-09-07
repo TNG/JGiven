@@ -5,8 +5,6 @@ import java.io.File;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import com.tngtech.jgiven.report.ReportGenerator;
-
 public class ReportGeneratorArgumentTest {
     @Test
     public void testArgumentParsing() {

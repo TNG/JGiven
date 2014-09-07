@@ -122,4 +122,5 @@ public class JUnitExecutionTest extends ScenarioTest<GivenScenarioTest<?>, WhenJ
         when().the_test_is_executed_with_JUnit();
         then().the_report_model_contains_a_tag_named( "TestTag" );
     }
+
 }

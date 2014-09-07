@@ -1,6 +1,9 @@
 v0.3.1
 * fix issue with intercepting methods of stages during construction
 * if multiple exceptions are thrown during scenario execution throw the first one at the end of the test execution
+* made scenarios and cases in HTML reports collapsible (Issue-#18)
+* scenarios are sorted by name in HTML reports
+* @ScenarioDescription is now deprecated, instead just use @Description (Issue-#16)
 
 v0.3.0
 * Arguments from JUnit Parameterized and JUnitParams runner can now be read

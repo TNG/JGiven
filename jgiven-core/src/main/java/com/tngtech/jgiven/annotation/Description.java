@@ -8,9 +8,12 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation can be used to define an alternate
- * description for a step method.
+ * description for a step method or test method.
  * This description is then used in the generated report
  * instead of using the method name.
+ * <p>
+ * Note that the '$' character keeps its special meaning and will be
+ * replaced with step arguments
  *
  * <pre>
  * @Description("some (complicated) step")
@@ -18,6 +21,13 @@ import java.lang.annotation.Target;
  *    ...
  * }
  * </pre>
+ *
+ * <pre>
+ * @Description("Some 'special' scenario description")
+ * @Test
+ * public void some_special_scenario_description() {
+ *    ...
+ * }
  */
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.METHOD )

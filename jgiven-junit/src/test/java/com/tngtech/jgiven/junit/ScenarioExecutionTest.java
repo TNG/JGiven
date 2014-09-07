@@ -14,6 +14,7 @@ import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.CasesAsTable;
+import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.ScenarioRule;
@@ -215,7 +216,15 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         Tag tag = tags.get( 0 );
         assertThat( tag ).isNotNull();
         assertThat( tag.getName() ).isEqualTo( "ConfiguredTag" );
+    }
 
+    @Test
+    @Description( "@Description annotations are evaluated" )
+    public void description_annotations_are_evaluated() {
+        given().something();
+        getScenario().finished();
+        String description = getScenario().getModel().getLastScenarioModel().description;
+        assertThat( description ).isEqualTo( "@Description annotations are evaluated" );
     }
 
 }
