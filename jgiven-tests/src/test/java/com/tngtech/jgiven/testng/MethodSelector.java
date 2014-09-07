@@ -6,11 +6,13 @@ import org.testng.IMethodSelector;
 import org.testng.IMethodSelectorContext;
 import org.testng.ITestNGMethod;
 
+import com.tngtech.jgiven.testframework.TestNgExecutor;
+
 @SuppressWarnings( "serial" )
 public class MethodSelector implements IMethodSelector {
     @Override
     public boolean includeMethod( IMethodSelectorContext context, ITestNGMethod method, boolean isTestMethod ) {
-        return method.getMethodName().equals( WhenTestNGTest.methodName );
+        return method.getMethodName().equals( TestNgExecutor.methodName );
     }
 
     @Override

@@ -85,7 +85,7 @@ public class ScenarioExecutionRule implements MethodRule {
 
         Class<?> testClass = target.getClass();
         ReportModelBuilder modelBuilder = scenario.getModelBuilder();
-        modelBuilder.setClassName( testClass.getName() );
+        modelBuilder.setTestClass( testClass );
 
         scenario.getExecutor().startScenario( testMethod.getMethod(), getNamedArguments( base, testMethod, target ) );
 

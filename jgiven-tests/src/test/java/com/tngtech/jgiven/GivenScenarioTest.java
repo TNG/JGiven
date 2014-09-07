@@ -26,6 +26,10 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         return self();
     }
 
+    public SELF a_test_class() {
+        return self();
+    }
+
     public SELF a_passing_test() {
         return self();
     }
@@ -68,7 +72,9 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
 
     @AfterStage
     public void findScenario() {
-        testScenario = TestScenarioRepository.findScenario( criteria );
+        if( testScenario == null ) {
+            testScenario = TestScenarioRepository.findScenario( criteria );
+        }
     }
 
     public SELF a_failing_test_with_$_steps( int n ) {
@@ -86,4 +92,18 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         return self();
     }
 
+    public SELF the_test_class_has_a_description_annotation_with_value( String value ) {
+        criteria.testClassDescription = value;
+        return self();
+    }
+
+    public SELF a_JUnit_test_class_with_the_Parameterized_Runner() {
+        criteria.parameterizedRunner = true;
+        return self();
+    }
+
+    public SELF the_test_class_has_$_parameters( int nParameters ) {
+        criteria.numberOfParameters = nParameters;
+        return self();
+    }
 }

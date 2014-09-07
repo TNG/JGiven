@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -44,6 +45,15 @@ public class ReportModel {
 
     public ScenarioModel getLastScenarioModel() {
         return getScenarios().get( getScenarios().size() - 1 );
+    }
+
+    public Optional<ScenarioModel> findScenarioModel( String scenarioDescription ) {
+        for( ScenarioModel model : getScenarios() ) {
+            if( model.description.equals( scenarioDescription ) ) {
+                return Optional.of( model );
+            }
+        }
+        return Optional.absent();
     }
 
     public StepModel getFirstStepModelOfLastScenario() {

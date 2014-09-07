@@ -1,42 +1,33 @@
-package com.tngtech.jgiven.testng;
+package com.tngtech.jgiven.testframework;
 
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 import org.testng.TestNG;
 
-import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.tests.TestScenarioRepository.TestScenario;
+import com.tngtech.jgiven.testng.MethodSelector;
 
-public class WhenTestNGTest<SELF extends WhenTestNGTest<?>> extends Stage<SELF> {
+public class TestNgExecutor extends TestExecutor {
 
-    @ExpectedScenarioState
-    TestScenario testScenario;
+    public static String methodName;
 
-    @ProvidedScenarioState
-    ReportModel reportModel;
-
-    @ProvidedScenarioState
-    ITestResult testResult;
-
-    static String methodName;
-
-    public void the_test_is_executed_with_TestNG() {
+    @Override
+    public TestExecutionResult execute( Class<?> testClass, String testMethod ) {
+        TestNgExecutionResult result = new TestNgExecutionResult();
         ScenarioTestListenerAdapter testListenerAdapter = new ScenarioTestListenerAdapter();
         TestNG testng = new TestNG();
-        testng.setTestClasses( new Class<?>[] { testScenario.testClass } );
-        methodName = testScenario.testMethod;
+        testng.setTestClasses( new Class<?>[] { testClass } );
+        methodName = testMethod;
         testng.addMethodSelector( MethodSelector.class.getName(), 10 );
         testng.addListener( testListenerAdapter );
         Config.config().setReportEnabled( false );
         testng.run();
         Config.config().setReportEnabled( true );
-        this.reportModel = testListenerAdapter.reportModel;
-        this.testResult = testListenerAdapter.testResult;
+        result.reportModel = testListenerAdapter.reportModel;
+        result.testResult = testListenerAdapter.testResult;
+        return result;
     }
 
     static class ScenarioTestListenerAdapter extends TestListenerAdapter {
@@ -58,4 +49,10 @@ public class WhenTestNGTest<SELF extends WhenTestNGTest<?>> extends Stage<SELF> 
             reportModel = ( (ScenarioTestBase<?, ?, ?>) tr.getInstance() ).getScenario().getModel();
         }
     }
+
+    @Override
+    public TestExecutionResult execute( Class<?> testClass ) {
+        throw new UnsupportedOperationException();
+    }
+
 }

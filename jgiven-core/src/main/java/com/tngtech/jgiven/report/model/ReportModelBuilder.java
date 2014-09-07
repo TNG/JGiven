@@ -76,12 +76,7 @@ public class ReportModelBuilder implements ScenarioListener {
 
         currentScenarioCase = new ScenarioCaseModel();
 
-        if( !reportModel.getScenarios().isEmpty() ) {
-            ScenarioModel scenarioModel = reportModel.getScenarios().get( reportModel.getScenarios().size() - 1 );
-            if( scenarioModel.description.equals( readableDescription ) ) {
-                currentScenarioModel = scenarioModel;
-            }
-        }
+        currentScenarioModel = reportModel.findScenarioModel( readableDescription ).orNull();
 
         if( currentScenarioModel == null ) {
             currentScenarioModel = new ScenarioModel();
@@ -383,6 +378,13 @@ public class ReportModelBuilder implements ScenarioListener {
         long durationInNanos = System.nanoTime() - scenarioStartedNanos;
         currentScenarioCase.setDurationInNanoes( durationInNanos );
         currentScenarioModel.addDurationInNanos( durationInNanos );
+    }
+
+    public void setTestClass( Class<?> testClass ) {
+        setClassName( testClass.getName() );
+        if( testClass.isAnnotationPresent( Description.class ) ) {
+            reportModel.setDescription( testClass.getAnnotation( Description.class ).value() );
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.junit;
+package com.tngtech.jgiven.report.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,16 +6,11 @@ import java.util.Set;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
-import com.tngtech.jgiven.report.model.StepModel;
-import com.tngtech.jgiven.report.model.StepStatus;
-import com.tngtech.jgiven.report.model.Tag;
 
 public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF> {
 
     @ProvidedScenarioState
-    ReportModel reportModel;
+    protected ReportModel reportModel;
 
     public SELF step_$_is_reported_as_skipped( int i ) {
         assertThat( getStep( i ).isSkipped() ).isTrue();
@@ -53,6 +48,14 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
         Set<Tag> tags = reportModel.getLastScenarioModel().tags;
         assertThat( tags ).isNotEmpty();
         assertThat( tags ).extracting( "name" ).contains( tagName );
+    }
+
+    public void the_description_of_the_report_model_is( String description ) {
+        assertThat( reportModel.getDescription() ).isEqualTo( description );
+    }
+
+    public void the_report_model_contains_$_scenarios( int nScenarios ) {
+        assertThat( reportModel.getScenarios() ).hasSize( nScenarios );
     }
 
 }

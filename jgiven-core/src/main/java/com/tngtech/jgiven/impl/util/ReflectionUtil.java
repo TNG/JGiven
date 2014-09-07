@@ -10,12 +10,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.common.base.Throwables;
+import com.google.common.collect.FluentIterable;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
 import com.tngtech.jgiven.exception.JGivenInjectionException;
 import com.tngtech.jgiven.exception.JGivenUserException;
@@ -241,4 +244,14 @@ public class ReflectionUtil {
         return null;
     }
 
+    public static List<Method> getNonStaticMethod( Method[] declaredMethods ) {
+        return FluentIterable.from( Arrays.asList( declaredMethods ) )
+            .filter( new Predicate<Method>() {
+                @Override
+                public boolean apply( Method input ) {
+                    return ( input.getModifiers() & Modifier.STATIC ) == 0;
+                }
+            } )
+            .toList();
+    }
 }

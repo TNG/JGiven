@@ -3,6 +3,7 @@ package com.tngtech.jgiven.tests;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.tngtech.jgiven.annotation.Description;
 
 public class TestScenarioRepository {
     public static class SearchCriteria {
@@ -15,6 +16,9 @@ public class TestScenarioRepository {
         public Boolean executeSteps;
         public Boolean tagAnnotation;
         public Integer stageWithFailingAfterStageMethod;
+        public Boolean parameterizedRunner;
+        public Integer numberOfParameters;
+        public String testClassDescription;
 
         public boolean matches( ScenarioCriteria criteria ) {
             if( notImplementedYet != criteria.notImplementedYet ) {
@@ -54,6 +58,18 @@ public class TestScenarioRepository {
                 return false;
             }
 
+            if( parameterizedRunner != null && !parameterizedRunner.equals( criteria.parameterizedRunner ) ) {
+                return false;
+            }
+
+            if( numberOfParameters != null && numberOfParameters != criteria.numberOfParameters ) {
+                return false;
+            }
+
+            if( testClassDescription != null && !testClassDescription.equals( criteria.testClassDescription ) ) {
+                return false;
+            }
+
             return true;
         }
     }
@@ -68,6 +84,9 @@ public class TestScenarioRepository {
         public boolean tagAnnotation;
         private int numberOfFailingStages;
         public Integer stageWithFailingAfterStageMethod;
+        public Integer numberOfParameters;
+        private boolean parameterizedRunner;
+        private String testClassDescription;
 
         public ScenarioCriteria notImplementedYet() {
             notImplementedYet = true;
@@ -114,17 +133,36 @@ public class TestScenarioRepository {
             this.stageWithFailingAfterStageMethod = stageWithFailingAfterStageMethod;
             return this;
         }
+
+        public ScenarioCriteria numberOfParameters( int n ) {
+            this.numberOfParameters = n;
+            return this;
+        }
+
+        public ScenarioCriteria parameterizedRunner() {
+            this.parameterizedRunner = true;
+            return this;
+        }
+
+        public ScenarioCriteria testClassDescription( String value ) {
+            this.testClassDescription = value;
+            return this;
+        }
     }
 
     public static class TestScenario {
-        public Class<?> testClass = TestScenarios.class;
+        public Class<?> testClass;
         public String testMethod;
         public ScenarioCriteria criteria = new ScenarioCriteria();
 
-        public TestScenario( String testMethod ) {
-            this.testMethod = testMethod;
+        public TestScenario( Class<?> testClass ) {
+            this.testClass = testClass;
         }
 
+        public TestScenario( String testMethod ) {
+            this.testMethod = testMethod;
+            this.testClass = TestScenarios.class;
+        }
     }
 
     final static List<TestScenario> testScenarios = setupTestScenarios();
@@ -138,8 +176,21 @@ public class TestScenarioRepository {
         throw new IllegalArgumentException( "No matching scenario found" );
     }
 
+    private static ScenarioCriteria addTestScenario( List<TestScenario> list, Class<?> testClass ) {
+        TestScenario testScenario = new TestScenario( testClass );
+        list.add( testScenario );
+        return testScenario.criteria;
+    }
+
     private static ScenarioCriteria addTestScenario( List<TestScenario> list, String testMethod ) {
         TestScenario testScenario = new TestScenario( testMethod );
+        list.add( testScenario );
+        return testScenario.criteria;
+    }
+
+    private static ScenarioCriteria addTestScenario( List<TestScenario> list, Class<?> testClass, String testMethod ) {
+        TestScenario testScenario = new TestScenario( testClass );
+        testScenario.testMethod = testMethod;
         list.add( testScenario );
         return testScenario.criteria;
     }
@@ -195,7 +246,13 @@ public class TestScenarioRepository {
         addTestScenario( result, "test_with_tag_annotation" )
             .tagAnnotation();
 
+        addTestScenario( result, TestClassWithParameterizedRunner.class )
+            .parameterizedRunner()
+            .numberOfParameters( 2 );
+
+        addTestScenario( result, TestClassWithDescription.class, "some_test" )
+            .testClassDescription( TestClassWithDescription.class.getAnnotation( Description.class ).value() );
+
         return result;
     }
-
 }

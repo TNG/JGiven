@@ -15,6 +15,7 @@ import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ReportModelBuilder;
 
 /**
  * TestNG Test listener to enable JGiven for a test class
@@ -27,7 +28,8 @@ public class ScenarioTestListener implements ITestListener {
     @Override
     public void onTestStart( ITestResult paramITestResult ) {
         Object instance = paramITestResult.getInstance();
-        scenarioCollectionModel.setClassName( instance.getClass().getName() );
+        ReportModelBuilder builder = new ReportModelBuilder( scenarioCollectionModel );
+        builder.setTestClass( instance.getClass() );
 
         if( instance instanceof ScenarioTestBase<?, ?, ?> ) {
             ScenarioTestBase<?, ?, ?> testInstance = (ScenarioTestBase<?, ?, ?>) instance;
