@@ -28,6 +28,7 @@ import java.lang.annotation.Target;
  * public void some_special_scenario_description() {
  *    ...
  * }
+ * </pre>
  */
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.METHOD )
