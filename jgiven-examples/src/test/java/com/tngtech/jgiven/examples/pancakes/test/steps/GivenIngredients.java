@@ -15,11 +15,6 @@ public class GivenIngredients extends Stage<GivenIngredients> {
         return the_ingredient( "egg" );
     }
 
-    @Override
-    public GivenIngredients and() {
-        return this;
-    }
-
     public GivenIngredients the_ingredient( String ingredient ) {
         ingredients.add( ingredient );
         return this;

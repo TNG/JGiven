@@ -32,42 +32,9 @@ public class ScenarioModel {
     }
 
     public ExecutionStatus getExecutionStatus() {
-        return new ReportModelVisitor() {
-            int failedCount;
-            int notImplementedCount;
-            int totalCount;
-
-            @Override
-            public void visit( StepModel stepModel ) {
-                if( stepModel.isFailed() ) {
-                    failedCount++;
-                } else if( stepModel.isNotImplementedYet() ) {
-                    notImplementedCount++;
-                }
-                totalCount++;
-            };
-
-            public ExecutionStatus excecutionStatus() {
-                if( ScenarioModel.this.notImplementedYet ) {
-                    return ExecutionStatus.NONE_IMPLEMENTED;
-                }
-
-                ScenarioModel.this.accept( this );
-                if( failedCount > 0 ) {
-                    return ExecutionStatus.FAILED;
-                }
-
-                if( notImplementedCount > 0 ) {
-                    if( notImplementedCount < totalCount ) {
-                        return ExecutionStatus.PARTIALLY_IMPLEMENTED;
-                    }
-                    return ExecutionStatus.NONE_IMPLEMENTED;
-                }
-
-                return ExecutionStatus.SUCCESS;
-            }
-
-        }.excecutionStatus();
+        ExecutionStatusCalculator executionStatusCalculator = new ExecutionStatusCalculator();
+        this.accept( executionStatusCalculator );
+        return executionStatusCalculator.executionStatus();
     }
 
     public ScenarioCaseModel getCase( int i ) {

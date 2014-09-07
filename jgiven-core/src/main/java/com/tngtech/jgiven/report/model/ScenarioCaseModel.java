@@ -69,4 +69,10 @@ public class ScenarioCaseModel {
     public long getDurationInNanos() {
         return durationInNanos;
     }
+
+    public ExecutionStatus getExecutionStatus() {
+        ExecutionStatusCalculator executionStatusCalculator = new ExecutionStatusCalculator();
+        this.accept( executionStatusCalculator );
+        return executionStatusCalculator.executionStatus();
+    }
 }

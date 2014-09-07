@@ -33,6 +33,7 @@ public class StatisticsCalculator {
         @Override
         public void visit( ScenarioModel scenarioModel ) {
             statistics.numScenarios++;
+            statistics.durationInNanos += scenarioModel.getDurationInNanos();
         }
 
         @Override

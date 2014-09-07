@@ -35,10 +35,6 @@ public class WhenCook extends Stage<WhenCook> {
         return this;
     }
 
-    public WhenCook and() {
-        return this;
-    }
-
     public WhenCook the_cook_fries_the_dough_in_a_pan() {
         assertThat( cook ).isNotNull();
         assertThat( dough ).isNotNull();

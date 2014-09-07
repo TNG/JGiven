@@ -47,7 +47,7 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
         }
         writer.print( "<td>" );
 
-        writeStatusIcon( scenarioCase.success );
+        writeStatusIcon( scenarioCase.getExecutionStatus() );
 
         if( !scenarioCase.success ) {
             writer.println( "<div class='failed'>Failed: " + scenarioCase.errorMessage + "</div>" );

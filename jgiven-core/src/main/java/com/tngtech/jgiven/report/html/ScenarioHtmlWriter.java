@@ -56,7 +56,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     }
 
     public void writeStatusIcon( ExecutionStatus executionStatus ) {
-        String iconClass = "";
+        String iconClass = "icon-block";
         if( executionStatus == ExecutionStatus.FAILED ) {
             iconClass = "icon-cancel";
         } else if( executionStatus == ExecutionStatus.SUCCESS ) {
