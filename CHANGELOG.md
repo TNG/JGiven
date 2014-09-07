@@ -4,6 +4,8 @@ v0.3.1
 * made scenarios and cases in HTML reports collapsible (Issue-#18)
 * scenarios are sorted by name in HTML reports
 * @ScenarioDescription is now deprecated, instead just use @Description (Issue-#16)
+* @Description now also works on test classes
+* fixed case generation for parameterized JUnit runner (Issue-#21)
 
 v0.3.0
 * Arguments from JUnit Parameterized and JUnitParams runner can now be read
