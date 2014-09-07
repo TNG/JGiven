@@ -280,11 +280,11 @@ h1 {
   cursor: pointer;
 }
 
-.scenario h3 .icon-ok {
+.icon-ok {
   color: green;
 }
 
-.scenario h3 .icon-cancel {
+.icon-cancel {
   color: red;
 }
 
@@ -556,5 +556,10 @@ ul.steps li {
 }
 
 .statistics {
-	padding-top:10px;
+  padding-top:10px;
+}
+
+.duration {
+  opacity: 0.5;
+  font-size: 10px;
 }
