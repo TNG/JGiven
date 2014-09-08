@@ -1,0 +1,19 @@
+---
+layout: post
+title:  "Version 0.4.0 Released"
+date:   2014-09-08 09:00:00
+categories: news
+---
+The new version 0.4.0 of JGiven is released:
+
+* made scenarios and cases in HTML reports collapsible (Issue-#18)
+* slightly changed layout and appearance of HTML reports
+* scenarios are sorted by name in HTML reports
+* fix issue with intercepting methods of stages during construction
+* fix issue when multiple exceptions are thrown to throw the first one instead of the last one
+* @ScenarioDescription is now deprecated, instead just use @Description (Issue-#16)
+* @Description now also works on test classes
+* fixed case generation for parameterized JUnit runner (Issue-#21)
+
+[jgiven-gh]: https://github.com/TNG/JGiven
+[jgiven]:    http://jgiven.org
