@@ -1,6 +1,7 @@
 v0.4.0
 * made scenarios and cases in HTML reports collapsible (Issue-#18)
 * slightly changed layout and appearance of HTML reports
+* measure duration of each step and include in reports (Issue-#13)
 * scenarios are sorted by name in HTML reports
 * fix issue with intercepting methods of stages during construction
 * fix issue when multiple exceptions are thrown to throw the first one instead of the last one
