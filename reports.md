@@ -26,14 +26,15 @@ jgiven.report.json=false
 Note that in order to generate HTML reports, JSON reports are required.
 
 ## HTML Reports
-To generate HTML reports you have to run the JGiven HTML report generator.
+To generate HTML reports you have to run the JGiven report generator.
 The reporter is part of the jgiven-core module and can be executed on the command line as follows
 (assuming that the jgiven-core JAR and all required dependencies are on the Java CLASSPATH)
 
 {% highlight java %}
-java com.tngtech.jgiven.report.html.HtmlReportGenerator \
+java com.tngtech.jgiven.report.ReportGenerator \
+  --format=html \
   [--dir=<jsonreports>] \
-  [--todir=<targetDir>]
+  [--todir=<targetDir>] \
 {% endhighlight %}
 
 To see how the generated report looks like have a look at the
