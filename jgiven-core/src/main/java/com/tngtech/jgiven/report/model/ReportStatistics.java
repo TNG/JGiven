@@ -6,5 +6,5 @@ public class ReportStatistics {
     public int numCases;
     public int numFailedCases;
     public int numSteps;
-    public int durationInNanos;
+    public long durationInNanos;
 }
