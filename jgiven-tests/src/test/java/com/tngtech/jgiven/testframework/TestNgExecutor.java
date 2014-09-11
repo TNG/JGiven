@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.testframework;
 
+import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 import org.testng.TestNG;
@@ -19,8 +20,10 @@ public class TestNgExecutor extends TestExecutor {
         ScenarioTestListenerAdapter testListenerAdapter = new ScenarioTestListenerAdapter();
         TestNG testng = new TestNG();
         testng.setTestClasses( new Class<?>[] { testClass } );
-        methodName = testMethod;
-        testng.addMethodSelector( MethodSelector.class.getName(), 10 );
+        if( testMethod != null ) {
+            methodName = testMethod;
+            testng.addMethodSelector( MethodSelector.class.getName(), 10 );
+        }
         testng.addListener( testListenerAdapter );
         Config.config().setReportEnabled( false );
         testng.run();
@@ -28,6 +31,11 @@ public class TestNgExecutor extends TestExecutor {
         result.reportModel = testListenerAdapter.reportModel;
         result.testResult = testListenerAdapter.testResult;
         return result;
+    }
+
+    @Override
+    public TestExecutionResult execute( Class<?> testClass ) {
+        return execute( testClass, null );
     }
 
     static class ScenarioTestListenerAdapter extends TestListenerAdapter {
@@ -44,15 +52,21 @@ public class TestNgExecutor extends TestExecutor {
             setTestResult( tr );
         }
 
+        @Override
+        public void onTestSkipped( ITestResult tr ) {
+            setTestResult( tr );
+        }
+
+        @Override
+        public void onStart( ITestContext testContext ) {
+            // TODO Auto-generated method stub
+            super.onStart( testContext );
+        }
+
         private void setTestResult( ITestResult tr ) {
             testResult = tr;
             reportModel = ( (ScenarioTestBase<?, ?, ?>) tr.getInstance() ).getScenario().getModel();
         }
-    }
-
-    @Override
-    public TestExecutionResult execute( Class<?> testClass ) {
-        throw new UnsupportedOperationException();
     }
 
 }

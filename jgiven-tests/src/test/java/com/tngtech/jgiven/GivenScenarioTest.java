@@ -106,4 +106,8 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         criteria.numberOfParameters = nParameters;
         return self();
     }
+
+    public void a_test_class_with_all_tests_ignored() {
+        testScenario = TestScenarioRepository.testClassWithOnlyIgnoredTests();
+    }
 }

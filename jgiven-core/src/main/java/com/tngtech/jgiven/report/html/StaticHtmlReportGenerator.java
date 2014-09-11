@@ -66,6 +66,11 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
 
     @Override
     public void handleReportModel( ReportModel model, File file ) {
+        if( model.getClassName() == null ) {
+            log.error( "ClassName in report model is null for file " + file + ". Skipping." );
+            return;
+        }
+
         String targetFileName = Files.getNameWithoutExtension( file.getName() ) + ".html";
         File targetFile = new File( toDir, targetFileName );
         log.debug( "Writing to file " + targetFile );
@@ -124,8 +129,9 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
     }
 
     private void writeTagFiles( HtmlTocWriter tocWriter ) {
-        if( tagMap.isEmpty() )
+        if( tagMap.isEmpty() ) {
             return;
+        }
 
         for( Tag tag : tagMap.keySet() ) {
             writeTagFile( tag, tagMap.get( tag ), tocWriter );

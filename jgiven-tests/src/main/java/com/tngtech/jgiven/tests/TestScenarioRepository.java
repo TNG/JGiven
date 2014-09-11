@@ -255,4 +255,8 @@ public class TestScenarioRepository {
 
         return result;
     }
+
+    public static TestScenario testClassWithOnlyIgnoredTests() {
+        return new TestScenario( TestClassWithOnlyIgnoredTests.class );
+    }
 }

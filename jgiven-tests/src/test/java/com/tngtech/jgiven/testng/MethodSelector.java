@@ -12,7 +12,10 @@ import com.tngtech.jgiven.testframework.TestNgExecutor;
 public class MethodSelector implements IMethodSelector {
     @Override
     public boolean includeMethod( IMethodSelectorContext context, ITestNGMethod method, boolean isTestMethod ) {
-        return method.getMethodName().equals( TestNgExecutor.methodName );
+        if( TestNgExecutor.methodName != null ) {
+            return method.getMethodName().equals( TestNgExecutor.methodName );
+        }
+        return true;
     }
 
     @Override

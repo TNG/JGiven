@@ -1,6 +1,10 @@
 package com.tngtech.jgiven.report.impl;
 
-import java.io.*;
+import java.io.File;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +22,10 @@ public class CommonReportHelper {
 
     public void finishReport( ReportModel model ) {
         if( !Config.config().isReportEnabled() ) {
+            return;
+        }
+
+        if( model.getScenarios().isEmpty() ) {
             return;
         }
 

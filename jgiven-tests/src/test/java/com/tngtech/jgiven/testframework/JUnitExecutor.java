@@ -53,7 +53,12 @@ public class JUnitExecutor extends TestExecutor {
         ReportModel reportModel;
 
         @Override
-        public void testStarted( Description description ) throws Exception {
+        public void testIgnored( Description description ) throws Exception {
+            reportModel = ScenarioTest.writerRule.getTestCaseModel();
+        }
+
+        @Override
+        public void testFinished( Description description ) throws Exception {
             reportModel = ScenarioTest.writerRule.getTestCaseModel();
         }
 

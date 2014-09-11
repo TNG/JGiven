@@ -54,8 +54,9 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
         assertThat( reportModel.getDescription() ).isEqualTo( description );
     }
 
-    public void the_report_model_contains_$_scenarios( int nScenarios ) {
+    public SELF the_report_model_contains_$_scenarios( int nScenarios ) {
         assertThat( reportModel.getScenarios() ).hasSize( nScenarios );
+        return self();
     }
 
 }

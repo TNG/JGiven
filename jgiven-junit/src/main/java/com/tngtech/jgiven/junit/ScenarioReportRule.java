@@ -13,7 +13,9 @@ public class ScenarioReportRule extends TestWatcher {
 
     @Override
     protected void starting( Description description ) {
-        models.push( new ReportModel() );
+        ReportModel reportModel = new ReportModel();
+        reportModel.setClassName( description.getDisplayName() );
+        models.push( reportModel );
     }
 
     @Override

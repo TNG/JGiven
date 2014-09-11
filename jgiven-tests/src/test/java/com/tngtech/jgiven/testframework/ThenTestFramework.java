@@ -53,4 +53,9 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
         }
         return self();
     }
+
+    public SELF the_report_model_has_a_valid_class_name() {
+        assertThat( reportModel.getClassName() ).isEqualTo( testScenario.testClass.getName() );
+        return self();
+    }
 }

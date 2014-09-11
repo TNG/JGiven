@@ -48,7 +48,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
     public void passing_tests_annotated_with_NotImplementedYet_are_ignored() {
         given().a_passing_test()
             .and().the_test_is_annotated_with_NotImplementedYet();
-        when().when().the_test_is_executed_with( testFramework );
+        when().the_test_is_executed_with( testFramework );
         then().the_test_is_ignored();
     }
 
@@ -59,7 +59,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
         given().a_passing_test()
             .and().the_test_is_annotated_with_NotImplementedYet()
             .with().failIfPassed_set_to_true();
-        when().when().the_test_is_executed_with( testFramework );
+        when().the_test_is_executed_with( testFramework );
         then().the_test_fails_with_message( "Test succeeded, but failIfPassed set to true" );
     }
 
@@ -70,7 +70,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
         given().a_failing_test()
             .and().the_test_is_annotated_with_NotImplementedYet()
             .with().failIfPassed_set_to_true();
-        when().when().the_test_is_executed_with( testFramework );
+        when().the_test_is_executed_with( testFramework );
         then().the_test_is_ignored();
     }
 
@@ -80,7 +80,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
         given().a_failing_test()
             .and().the_test_is_annotated_with_NotImplementedYet()
             .with().executeSteps_set_to_true();
-        when().when().the_test_is_executed_with( testFramework );
+        when().the_test_is_executed_with( testFramework );
         then().the_test_is_ignored();
     }
 
@@ -88,7 +88,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
     public void steps_following_failing_steps_are_reported_as_skipped() {
         given().a_failing_test_with_$_steps( 3 )
             .and().step_$_fails( 1 );
-        when().when().the_test_is_executed_with( testFramework );
+        when().the_test_is_executed_with( testFramework );
         then().step_$_is_reported_as_failed( 1 )
             .and().step_$_is_reported_as_skipped( 2 )
             .and().step_$_is_reported_as_skipped( 3 );
@@ -98,7 +98,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
     public void passing_steps_before_failing_steps_are_reported_as_passed() {
         given().a_failing_test_with_$_steps( 2 )
             .and().step_$_fails( 2 );
-        when().when().the_test_is_executed_with( testFramework );
+        when().the_test_is_executed_with( testFramework );
         then().step_$_is_reported_as_passed( 1 )
             .and().step_$_is_reported_as_failed( 2 );
     }
@@ -106,7 +106,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
     @Test
     public void the_error_message_of_a_failing_step_is_reported() {
         given().a_failing_test();
-        when().when().the_test_is_executed_with( testFramework );
+        when().the_test_is_executed_with( testFramework );
         then().the_case_is_marked_as_failed()
             .and().an_error_message_is_stored_in_the_report();
     }
@@ -116,7 +116,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
         given().a_failing_test_with_$_steps( 2 )
             .and().the_test_has_$_failing_stages( 2 )
             .and().step_$_fails( 1 );
-        when().when().the_test_is_executed_with( testFramework );
+        when().the_test_is_executed_with( testFramework );
         then().the_test_fails()
             .and().step_$_is_reported_as_failed( 1 )
             .and().step_$_is_reported_as_skipped( 2 );
@@ -128,7 +128,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
             .and().the_test_has_$_failing_stages( 2 )
             .and().stage_$_has_a_failing_after_stage_method( 2 )
             .and().step_$_fails( 1 );
-        when().when().the_test_is_executed_with( testFramework );
+        when().the_test_is_executed_with( testFramework );
         then().the_test_fails()
             .and().step_$_is_reported_as_failed( 1 )
             .and().step_$_is_reported_as_skipped( 2 );
@@ -139,7 +139,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
     public void tag_annotations_appear_in_the_report_model() {
         given().a_test()
             .and().the_test_has_a_tag_annotation_named( "TestTag" );
-        when().when().the_test_is_executed_with( testFramework );
+        when().the_test_is_executed_with( testFramework );
         then().the_report_model_contains_a_tag_named( "TestTag" );
     }
 
@@ -147,7 +147,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
     public void description_annotations_on_test_classes_are_evaluated() {
         given().a_test_class()
             .and().the_test_class_has_a_description_annotation_with_value( "Test Description" );
-        when().when().the_test_is_executed_with( testFramework );
+        when().the_test_is_executed_with( testFramework );
         then().the_description_of_the_report_model_is( "Test Description" );
     }
 }
