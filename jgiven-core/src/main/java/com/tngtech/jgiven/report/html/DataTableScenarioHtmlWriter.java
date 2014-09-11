@@ -53,7 +53,7 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
             writer.println( "<div class='failed'>Failed: " + scenarioCase.errorMessage + "</div>" );
         }
 
-        writeDuration( scenarioCase.durationInNanos );
+        utils.writeDuration( scenarioCase.durationInNanos );
 
         writer.print( "</td>" );
 

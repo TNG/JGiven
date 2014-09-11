@@ -5,8 +5,6 @@ import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
 import static java.lang.String.format;
 
 import java.io.PrintWriter;
-import java.util.Formatter;
-import java.util.Locale;
 
 import com.google.common.html.HtmlEscapers;
 import com.tngtech.jgiven.impl.util.WordUtil;
@@ -24,9 +22,11 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
 
     ScenarioModel scenarioModel;
     ScenarioCaseModel scenarioCase;
+    HtmlWriterUtils utils;
 
     public ScenarioHtmlWriter( PrintWriter writer ) {
         this.writer = writer;
+        this.utils = new HtmlWriterUtils( writer );
 
     }
 
@@ -43,7 +43,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
 
         writer.print( " " + WordUtil.capitalize( scenarioModel.description ) );
 
-        writeDuration( scenarioModel.getDurationInNanos() );
+        utils.writeDuration( scenarioModel.getDurationInNanos() );
         writer.println( "</h3>" );
 
         writeTagLine( scenarioModel );
@@ -124,7 +124,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
                 }
             }
 
-            writeDuration( scenarioCase.durationInNanos );
+            utils.writeDuration( scenarioCase.durationInNanos );
             writer.println( "</h4>" );
         }
     }
@@ -165,17 +165,9 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             writer.print( format( " <span class='badge %s'>%s</span>", WordUtil.camelCase( lowerCase ), lowerCase.replace( '_', ' ' ) ) );
         }
 
-        writeDuration( stepModel.getDurationInNanos() );
+        utils.writeDuration( stepModel.getDurationInNanos() );
 
         writer.println( "</li>" );
-    }
-
-    protected void writeDuration( long durationInNanos ) {
-        // TODO: provide a configuration value to configure the locale
-        double durationInMs = ( (double) durationInNanos ) / 1000000;
-        Formatter usFormatter = new Formatter( Locale.US );
-        writer.print( usFormatter.format( " <span class='duration'>(%.2f ms)</span>", durationInMs ) );
-        usFormatter.close();
     }
 
     private void printArg( Word word ) {

@@ -3,8 +3,8 @@ package com.tngtech.jgiven.report.html;
 import static java.lang.String.format;
 
 import java.io.PrintWriter;
-import java.util.Formatter;
-import java.util.Locale;
+
+import com.tngtech.jgiven.impl.util.DurationFormatter;
 
 public class HtmlWriterUtils {
 
@@ -30,11 +30,7 @@ public class HtmlWriterUtils {
     }
 
     public void writeDuration( long durationInNanos ) {
-        // TODO: provide a configuration value to configure the locale
-        double durationInMs = ( (double) durationInNanos ) / 1000000;
-        Formatter usFormatter = new Formatter( Locale.US );
-        writer.print( usFormatter.format( " <span class='duration'>(%.2f ms)</span>", durationInMs ) );
-        usFormatter.close();
+        writer.print( " <span class='duration'>(" + DurationFormatter.format( durationInNanos ) + ")" );
     }
 
 }
