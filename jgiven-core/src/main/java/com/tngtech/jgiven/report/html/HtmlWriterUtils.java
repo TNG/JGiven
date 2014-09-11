@@ -30,7 +30,7 @@ public class HtmlWriterUtils {
     }
 
     public void writeDuration( long durationInNanos ) {
-        writer.print( " <span class='duration'>(" + DurationFormatter.format( durationInNanos ) + ")" );
+        writer.print( " <span class='duration'>(" + DurationFormatter.format( durationInNanos ) + ")</span>" );
     }
 
 }
