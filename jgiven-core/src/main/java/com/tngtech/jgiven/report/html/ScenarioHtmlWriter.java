@@ -47,7 +47,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         writer.println( "</h3>" );
 
         writeTagLine( scenarioModel );
-        writer.println( "<div class='scenario-body' id='" + id + "'>" );
+        writer.println( "<div class='scenario-body collapsed' id='" + id + "'>" );
         writer.println( "<div class='scenario-content'>" );
     }
 
