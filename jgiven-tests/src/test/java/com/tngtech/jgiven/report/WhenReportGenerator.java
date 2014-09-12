@@ -1,7 +1,5 @@
 package com.tngtech.jgiven.report;
 
-import static com.tngtech.jgiven.report.ReportGenerator.Format;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -12,6 +10,7 @@ import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioRule;
+import com.tngtech.jgiven.report.ReportGenerator.Format;
 import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 
@@ -33,7 +32,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
 
     @BeforeStage
     protected void setupTargetReportDir() throws IOException {
-        targetReportDir = temporaryFolderRule.newFolder();
+        targetReportDir = temporaryFolderRule.newFolder( "targetReportDir" );
     }
 
     public void the_static_HTML_reporter_is_executed() throws IOException {

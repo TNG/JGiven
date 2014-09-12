@@ -31,7 +31,7 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenRep
     }
 
     public SELF the_reports_exist_as_JSON_files() throws IOException {
-        jsonReportDirectory = temporaryFolderRule.newFolder();
+        jsonReportDirectory = temporaryFolderRule.newFolder( "tmpJsonReports" );
 
         for( ReportModel reportModel : reportModels ) {
             File jsonReportFile = new File( jsonReportDirectory, reportModel.getClassName() + ".json" );

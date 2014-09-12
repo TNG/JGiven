@@ -39,7 +39,7 @@
 
     <!-- Dependency Versions -->
     <junit-dataprovider.version>1.9.1</junit-dataprovider.version>
-    <junit.version>4.11</junit.version>
+    <junit.version>4.9</junit.version>
     <junitparams.version>1.0.2</junitparams.version>
     <testng.version>6.8.7</testng.version>
     <assertj.version>1.4.0</assertj.version>
