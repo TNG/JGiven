@@ -24,6 +24,7 @@ Depending on the testing framework you need either te `jgiven-junit` or the `jgi
 ```
 
 Note that `jgiven-junit` does not directly depend on JUnit, thus you also must have a dependency to JUnit itself.
+JGiven requires at least JUnit v4.9, while the recommended version is 4.11.
 
 #### TestNG
 ```
