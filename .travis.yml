@@ -1,14 +1,13 @@
 language: java
 install: "mvn install -DskipTests=true"
 script:
-  - "mvn test -e -Djunit.version=4.9"
-  - "mvn test -e -Djunit.version=4.10"
-  - "mvn test -e -Djunit.version=4.11"
+  - "mvn clean test -e -Djunit.version=4.9"
+  - "mvn clean test -e -Djunit.version=4.10"
+  - "mvn clean test -e -Djunit.version=4.11"
 jdk:
   - oraclejdk8
   - oraclejdk7
   - openjdk6
 after_success:
-  - mvn clean test
   - mvn jacoco:report -pl jgiven-core
   - mvn coveralls:jacoco -pl jgiven-core
