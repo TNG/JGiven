@@ -23,6 +23,13 @@
      </dependency>
      <dependency>
         <groupId>${project.groupId}</groupId>
+        <artifactId>jgiven-tests</artifactId>
+        <version>${project.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+     </dependency>
+     <dependency>
+        <groupId>${project.groupId}</groupId>
         <artifactId>jgiven-spring</artifactId>
         <version>${project.version}</version>
         <scope>test</scope>

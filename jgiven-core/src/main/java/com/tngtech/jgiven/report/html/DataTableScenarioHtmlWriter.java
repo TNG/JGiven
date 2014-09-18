@@ -80,12 +80,7 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
     }
 
     private String findParameterName( Word word ) {
-        int index = word.getArgumentInfo().getParameterIndex();
-        String paramName = index + "";
-        if( index < scenarioModel.parameterNames.size() ) {
-            paramName = scenarioModel.parameterNames.get( index );
-        }
-        return paramName;
+        return word.getArgumentInfo().getParameterName();
     }
 
 }

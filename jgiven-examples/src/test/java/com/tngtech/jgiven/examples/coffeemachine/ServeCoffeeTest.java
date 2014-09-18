@@ -9,6 +9,8 @@ import com.tngtech.jgiven.examples.coffeemachine.steps.GivenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.ThenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.WhenCoffee;
 import com.tngtech.jgiven.junit.ScenarioTest;
+import com.tngtech.jgiven.tags.FeatureDataTables;
+import com.tngtech.jgiven.tags.Issue;
 
 /**
  * Feature: Serve coffee
@@ -52,6 +54,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     }
 
     @Test
+    @FeatureDataTables
     @DataProvider( {
         "0, 0, Error: No coffees left",
         "0, 1, Error: No coffees left",
@@ -65,6 +68,19 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
         when().I_insert_$_one_euro_coins( numberOfCoins )
             .and().I_press_the_coffee_button();
         then().the_message_$_is_shown( message );
+    }
+
+    @Test
+    @FeatureDataTables
+    @Issue( "#15" )
+    @DataProvider( { "1", "3", "10" } )
+    public void serving_a_coffee_reduces_the_number_of_available_coffees_by_one( int initialCoffees ) {
+        given().a_coffee_machine()
+            .and().there_are_$_coffees_left_in_the_machine( initialCoffees );
+        when().I_insert_$_one_euro_coins( 2 )
+            .and().I_press_the_coffee_button();
+        then().a_coffee_should_be_served()
+            .and().there_are_$_coffees_left_in_the_machine( initialCoffees - 1 );
     }
 
     @Test

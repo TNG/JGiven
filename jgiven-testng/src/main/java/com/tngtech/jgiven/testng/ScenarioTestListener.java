@@ -75,7 +75,7 @@ public class ScenarioTestListener implements ITestListener {
     }
 
     private List<NamedArgument> getArgumentsFrom( Method method, ITestResult paramITestResult ) {
-        return ScenarioUtil.mapArgumentsWithParameterNamesOf( method, asList( paramITestResult.getParameters() ) );
+        return ScenarioUtil.mapArgumentsWithParameterNames( method, asList( paramITestResult.getParameters() ) );
     }
 
 }

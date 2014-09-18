@@ -22,9 +22,10 @@ public class Word {
         this.isIntroWord = isIntroWord;
     }
 
-    public static Word argWord( String value ) {
+    public static Word argWord( String argumentName, String value ) {
         Word word = new Word( value );
         word.argumentInfo = new ArgumentInfo();
+        word.argumentInfo.setArgumentName( argumentName );
         return word;
     }
 

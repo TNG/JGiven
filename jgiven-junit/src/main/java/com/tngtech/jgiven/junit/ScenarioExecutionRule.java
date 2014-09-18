@@ -113,7 +113,7 @@ public class ScenarioExecutionRule implements MethodRule {
             arguments = getArgumentsFrom( constructor, target );
         }
 
-        return ScenarioUtil.mapArgumentsWithParameterNamesOf( constructorOrMethod, arguments );
+        return ScenarioUtil.mapArgumentsWithParameterNames( constructorOrMethod, arguments );
     }
 
     private static List<Object> getArgumentsFrom( Object object, String fieldName ) {

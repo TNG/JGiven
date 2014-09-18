@@ -80,4 +80,8 @@ public class ScenarioModel {
     public void addDurationInNanos( long durationInNanosDelta ) {
         this.durationInNanos += durationInNanosDelta;
     }
+
+    public void addDerivedParameter( String parameterName ) {
+        this.parameterNames.add( parameterName );
+    }
 }

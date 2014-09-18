@@ -15,6 +15,7 @@ import com.google.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.jgiven.impl.NamedArgument;
 import com.tngtech.jgiven.report.model.StepFormatter;
 import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 import com.tngtech.jgiven.report.model.Word;
@@ -72,7 +73,12 @@ public class StepFormatterTest {
                 asList.add( null );
             }
         }
-        List<Word> formattedWords = new StepFormatter( source, arguments, asList )
+        List<NamedArgument> namedArguments = Lists.newArrayList();
+        for( Object o : arguments ) {
+            namedArguments.add( new NamedArgument( "foo", o ) );
+        }
+
+        List<Word> formattedWords = new StepFormatter( source, namedArguments, asList )
             .buildFormattedWords();
         String actualResult = Joiner.on( ' ' ).join( formattedWords );
         assertThat( actualResult ).matches( expectedResult );

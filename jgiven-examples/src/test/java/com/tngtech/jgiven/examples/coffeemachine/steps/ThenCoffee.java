@@ -24,26 +24,31 @@ public class ThenCoffee extends Stage<ThenCoffee> {
         I_should_be_served_a_coffee( false );
     }
 
-    private void I_should_be_served_a_coffee( boolean b ) {
+    private ThenCoffee I_should_be_served_a_coffee( boolean b ) {
         assertThat( coffeeServed ).isEqualTo( b );
+        return self();
     }
 
-    public void a_coffee_should_be_served() {
-        I_should_be_served_a_coffee( true );
+    public ThenCoffee a_coffee_should_be_served() {
+        return I_should_be_served_a_coffee( true );
     }
 
     public ThenCoffee no_coffee_should_be_served() {
-
-        return this;
+        return self();
     }
 
     public ThenCoffee an_error_should_be_shown() {
         assertThat( coffeeMachine.message ).startsWith( "Error" );
-        return this;
+        return self();
     }
 
-    public ThenCoffee the_message_$_is_shown(String message) {
+    public ThenCoffee the_message_$_is_shown( String message ) {
         assertThat( coffeeMachine.message ).isEqualTo( message );
-        return this;
+        return self();
+    }
+
+    public ThenCoffee there_are_$_coffees_left_in_the_machine( int coffeesLeft ) {
+        assertThat( coffeeMachine.coffees ).isEqualTo( coffeesLeft );
+        return self();
     }
 }

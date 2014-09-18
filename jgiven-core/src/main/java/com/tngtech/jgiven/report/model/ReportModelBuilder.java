@@ -93,7 +93,7 @@ public class ReportModelBuilder implements ScenarioListener {
         return WordUtil.capitalize( scenarioDescription );
     }
 
-    public void addStepMethod( Method paramMethod, List<Object> arguments, InvocationMode mode ) {
+    public void addStepMethod( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
         String name;
         Description description = paramMethod.getAnnotation( Description.class );
         if( description != null ) {
@@ -158,7 +158,7 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     @Override
-    public void stepMethodInvoked( Method paramMethod, List<Object> arguments, InvocationMode mode ) {
+    public void stepMethodInvoked( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
         if( !isStepMethod( paramMethod ) ) {
             return;
         }

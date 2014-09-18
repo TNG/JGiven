@@ -8,10 +8,11 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.DefaultFormatter;
+import com.tngtech.jgiven.impl.NamedArgument;
 
 public class StepFormatter {
     private final String stepDescription;
-    private final List<?> arguments;
+    private final List<NamedArgument> arguments;
     private final List<Formatting<?>> formatters;
 
     public static class Formatting<T> {
@@ -28,7 +29,7 @@ public class StepFormatter {
         }
     }
 
-    public StepFormatter( String stepDescription, List<?> arguments, List<Formatting<?>> formatters ) {
+    public StepFormatter( String stepDescription, List<NamedArgument> arguments, List<Formatting<?>> formatters ) {
         this.stepDescription = stepDescription;
         this.arguments = arguments;
         this.formatters = formatters;
@@ -62,8 +63,8 @@ public class StepFormatter {
             }
         }
         for( int i = argCount; i < arguments.size(); i++ ) {
-            String value = formatUsingFormatter( formatters.get( i ), arguments.get( i ) );
-            formattedWords.add( Word.argWord( value ) );
+            String value = formatUsingFormatter( formatters.get( i ), arguments.get( i ).value );
+            formattedWords.add( Word.argWord( arguments.get( i ).name, value ) );
         }
         return formattedWords;
     }
@@ -87,10 +88,11 @@ public class StepFormatter {
             index = argIndex - 1;
         }
 
-        String value = formatUsingFormatter( formatters.get( index ), arguments.get( index ) );
+        String value = formatUsingFormatter( formatters.get( index ), arguments.get( index ).value );
+        String argumentName = arguments.get( index ).name;
 
         if( value != null && !value.isEmpty() ) {
-            formattedWords.add( Word.argWord( value ) );
+            formattedWords.add( Word.argWord( argumentName, value ) );
         }
     }
 

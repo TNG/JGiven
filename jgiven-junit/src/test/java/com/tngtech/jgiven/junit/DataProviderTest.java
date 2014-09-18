@@ -64,13 +64,31 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
             CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
             analyser.analyze( scenarioModel );
             ScenarioCaseModel case0 = scenarioModel.getCase( 0 );
-            assertParamIndex( case0, 0, 0 );
+            assertParameter( case0, 0, scenarioModel.parameterNames.get( 0 ) );
         }
     }
 
-    private void assertParamIndex( ScenarioCaseModel case0, int step, int parameterIndex ) {
+    private void assertParameter( ScenarioCaseModel case0, int step, String parameter ) {
         Word word = case0.getStep( step ).words.get( 2 );
-        assertThat( word.getArgumentInfo().getParameterIndex() ).isEqualTo( parameterIndex );
+        assertThat( word.getArgumentInfo().getParameterName() ).isEqualTo( parameter );
+    }
+
+    @Test
+    @DataProvider( { "1", "2", "3" } )
+    public void derived_parameters_work( Integer arg ) {
+        given().some_integer_value( arg )
+            .and().another_integer_value( arg * 10 );
+
+        when().multiply_with_two();
+
+        ScenarioModel scenarioModel = getScenario().getModel().getScenarios().get( 0 );
+        if( scenarioModel.getScenarioCases().size() == 3 ) {
+            CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
+            analyser.analyze( scenarioModel );
+            ScenarioCaseModel case0 = scenarioModel.getCase( 0 );
+            assertParameter( case0, 0, scenarioModel.parameterNames.get( 0 ) );
+            assertParameter( case0, 1, "param0" );
+        }
     }
 
 }

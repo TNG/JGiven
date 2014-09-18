@@ -42,6 +42,7 @@ import com.tngtech.jgiven.impl.intercept.StepMethodInterceptor;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.FieldAction;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
+import com.tngtech.jgiven.impl.util.ScenarioUtil;
 import com.tngtech.jgiven.integration.CanWire;
 
 /**
@@ -113,7 +114,8 @@ public class ScenarioExecutor {
             if( paramMethod.isAnnotationPresent( IntroWord.class ) ) {
                 listener.introWordAdded( paramMethod.getName() );
             } else {
-                listener.stepMethodInvoked( paramMethod, Arrays.asList( arguments ), mode );
+                List<NamedArgument> namedArguments = ScenarioUtil.mapArgumentsWithParameterNames( paramMethod, Arrays.asList( arguments ) );
+                listener.stepMethodInvoked( paramMethod, namedArguments, mode );
             }
         }
 

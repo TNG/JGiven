@@ -25,7 +25,7 @@ public class ScenarioUtil {
     /** 
      * @throws NullPointerException iif {@code constructorOrMethod} is {@code null} 
      */
-    public static List<NamedArgument> mapArgumentsWithParameterNamesOf( AccessibleObject contructorOrMethod, List<Object> arguments ) {
+    public static List<NamedArgument> mapArgumentsWithParameterNames( AccessibleObject contructorOrMethod, List<Object> arguments ) {
         Preconditions.checkNotNull( contructorOrMethod, "constructorOrMethod must not be null." );
         Preconditions.checkNotNull( arguments, "arguments must not be null" );
 

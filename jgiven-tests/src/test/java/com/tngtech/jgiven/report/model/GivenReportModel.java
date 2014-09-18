@@ -49,9 +49,10 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         }
         scenarioCaseModel.addStep( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ),
             InvocationMode.NORMAL );
+        i = 0;
         for( String arg : scenarioCaseModel.arguments ) {
             scenarioCaseModel.addStep( "something_happens", asList( Word.introWord( "when" ),
-                Word.argWord( arg ) ), InvocationMode.NORMAL );
+                Word.argWord( "stepArg" + i++, arg ) ), InvocationMode.NORMAL );
         }
     }
 
@@ -138,7 +139,11 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF case_$_has_a_when_step_$_with_argument( int ncase, String name, String arg ) {
-        getCase( ncase ).addStep( name, Arrays.asList( Word.introWord( "when" ), new Word( name ), Word.argWord( arg ) ),
+        return case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( ncase, name, arg, "argName" );
+    }
+
+    public SELF case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( int ncase, String name, String arg, String argName ) {
+        getCase( ncase ).addStep( name, Arrays.asList( Word.introWord( "when" ), new Word( name ), Word.argWord( argName, arg ) ),
             InvocationMode.NORMAL );
         return self();
     }

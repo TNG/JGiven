@@ -26,11 +26,9 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
 
     @Override
     protected String wordToString( Word word ) {
-        if( word.isArg() && word.getArgumentInfo().isCaseArg() ) {
-            int argIndex = word.getArgumentInfo().getParameterIndex();
-            if( argIndex < currentScenarioModel.parameterNames.size() ) {
-                return "<" + currentScenarioModel.parameterNames.get( argIndex ) + ">";
-            }
+        if( word.isArg() && word.getArgumentInfo().isParameter() ) {
+            String parameterName = word.getArgumentInfo().getParameterName();
+            return "<" + parameterName + ">";
         }
         return super.wordToString( word );
     }

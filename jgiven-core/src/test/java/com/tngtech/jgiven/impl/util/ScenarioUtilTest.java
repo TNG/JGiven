@@ -37,7 +37,7 @@ public class ScenarioUtilTest {
     public void testMapArgumentsWithParameterNamesOf( AccessibleObject contructorOrMethod, List<Object> arguments,
             List<NamedArgument> expected ) {
         // When:
-        List<NamedArgument> result = ScenarioUtil.mapArgumentsWithParameterNamesOf( contructorOrMethod, arguments );
+        List<NamedArgument> result = ScenarioUtil.mapArgumentsWithParameterNames( contructorOrMethod, arguments );
 
         // Then:
         assertThat( result ).containsExactly( expected.toArray( new NamedArgument[0] ) );

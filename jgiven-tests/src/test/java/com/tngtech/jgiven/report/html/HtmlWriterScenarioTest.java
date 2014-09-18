@@ -12,6 +12,7 @@ import com.tngtech.jgiven.junit.ScenarioTest;
 import com.tngtech.jgiven.report.model.GivenReportModel;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.tags.FeatureDataTables;
+import com.tngtech.jgiven.tags.FeatureDerivedParameters;
 import com.tngtech.jgiven.tags.FeatureDuration;
 import com.tngtech.jgiven.tags.FeatureHtmlReport;
 import com.tngtech.jgiven.tags.Issue;
@@ -78,6 +79,27 @@ public class HtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, Wh
         then().the_HTML_report_contains_pattern( "uses the first parameter.*&lt;param1&gt;.*second" )
             .and().the_HTML_report_contains_pattern( "uses the second parameter.*&lt;param2&gt;.*Cases" )
             .and().the_HTML_report_contains_a_data_table_with_header_values( "param1", "param2" )
+            .and().the_data_table_has_one_line_for_the_arguments_of_each_case();
+    }
+
+    @Test
+    @FeatureDataTables
+    @FeatureDerivedParameters
+    public void derived_parameters_appear_in_the_data_table() {
+        given().a_report_model_with_one_scenario()
+            .and().the_scenario_has_$_cases( 2 )
+            .and().the_scenario_has_parameters( "param1" )
+            .and().case_$_has_arguments( 1, "a" )
+            .and().case_$_has_a_when_step_$_with_argument( 1, "uses the first parameter", "a" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "derive a parameter", "aa", "arg" )
+            .and().case_$_has_arguments( 2, "b" )
+            .and().case_$_has_a_when_step_$_with_argument( 2, "uses the first parameter", "b" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "derive a parameter", "bb", "arg" );
+
+        when().the_HTML_report_is_generated();
+        then().the_HTML_report_contains_pattern( "uses the first parameter.*&lt;param1&gt;.*derive" )
+            .and().the_HTML_report_contains_pattern( "derive a parameter.*&lt;arg&gt;.*Cases" )
+            .and().the_HTML_report_contains_a_data_table_with_header_values( "param1", "arg" )
             .and().the_data_table_has_one_line_for_the_arguments_of_each_case();
     }
 

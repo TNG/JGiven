@@ -171,10 +171,10 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     }
 
     private void printArg( Word word ) {
-        String value = word.getArgumentInfo().isCaseArg() ? formatCaseArgument( word ) : HtmlEscapers.htmlEscaper().escape( word.value );
+        String value = word.getArgumentInfo().isParameter() ? formatCaseArgument( word ) : HtmlEscapers.htmlEscaper().escape( word.value );
         value = escapeToHtml( value );
         String multiLine = value.contains( "<br />" ) ? "multiline" : "";
-        String caseClass = word.getArgumentInfo().isCaseArg() ? "caseArgument" : "argument";
+        String caseClass = word.getArgumentInfo().isParameter() ? "caseArgument" : "argument";
         writer.print( format( "<span class='%s %s'>%s</span>", caseClass, multiLine, value ) );
     }
 

@@ -5,6 +5,7 @@ import org.junit.Test;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
+import com.tngtech.jgiven.tags.FeatureNotImplementedYet;
 
 @Description( "As a good BDD practitioner,<br>"
         + "I want to write my scenarios before I start coding<br>"
@@ -12,6 +13,7 @@ import com.tngtech.jgiven.junit.SimpleScenarioTest;
 public class NotImplementYetExampleTest extends SimpleScenarioTest<NotImplementYetExampleTest.TestSteps> {
 
     @Test
+    @FeatureNotImplementedYet
     @NotImplementedYet
     public void tests_that_are_not_implemented_yet_can_be_annotated_with_the_NotImplementedYet_annotation() {
         given().some_state();
