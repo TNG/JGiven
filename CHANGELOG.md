@@ -2,7 +2,7 @@
 
 ## New Features
 
-* implement derived parameters (#15)
+* implement derived parameters (Issue-#15)
 
 ## Backwards incompatible changes
 
