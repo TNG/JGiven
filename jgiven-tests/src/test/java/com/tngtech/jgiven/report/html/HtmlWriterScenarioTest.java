@@ -95,6 +95,24 @@ public class HtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, Wh
 
     @Test
     @FeatureDataTables
+    public void derived_parameters_with_the_same_name_should_be_avoided() {
+        given().a_report_model_with_one_scenario()
+            .and().the_scenario_has_$_cases( 2 )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "step1", "a", "stepArg" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "step2", "b", "stepArg" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "step1", "c", "stepArg" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "step2", "d", "stepArg" );
+
+        when().the_HTML_report_is_generated();
+        then().the_HTML_report_contains_pattern( "step1.*&lt;stepArg&gt;.*step2" )
+            .and().the_HTML_report_contains_pattern( "step2.*&lt;stepArg2&gt;.*Cases" )
+            .and().the_HTML_report_contains_a_data_table_with_header_values( "stepArg", "stepArg2" )
+            .and().line_$_of_the_data_table_has_arguments_$( 1, "a", "b" )
+            .and().line_$_of_the_data_table_has_arguments_$( 2, "c", "d" );
+    }
+
+    @Test
+    @FeatureDataTables
     @FeatureDerivedParameters
     public void when_data_tables_are_generated_then_step_parameter_placeholders_are_correct_in_HTML_reports() {
         given().a_report_model_with_one_scenario()

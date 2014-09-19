@@ -104,8 +104,18 @@ public class CaseArgumentAnalyser {
         String replacementName;
         boolean isStepParameterName;
 
-        public void updateToStepParameterName() {
-            replacementName = arguments.get( 0 ).getArgumentInfo().getArgumentName();
+        public void updateToStepParameterName( Set<String> usedNames ) {
+            String name = arguments.get( 0 ).getArgumentInfo().getArgumentName();
+
+            int i = 1;
+            String suffix = "";
+            while( usedNames.contains( name + suffix ) ) {
+                i++;
+                suffix = "" + i;
+            }
+
+            replacementName = name + suffix;
+            usedNames.add( replacementName );
             isStepParameterName = true;
         }
     }
@@ -114,6 +124,7 @@ public class CaseArgumentAnalyser {
         int nArguments = argumentMatrix.get( 0 ).arguments.size();
         Map<String, ParameterReplacement> usedParameters = Maps.newLinkedHashMap();
         List<ParameterReplacement> parameterReplacements = Lists.newArrayList();
+        Set<String> usedNames = Sets.newHashSet();
 
         for( int iArg = 0; iArg < nArguments; iArg++ ) {
             List<Word> arguments = getArgumentsOfAllCases( argumentMatrix, iArg );
@@ -137,10 +148,11 @@ public class CaseArgumentAnalyser {
                 if( usedParameters.containsKey( match.parameter ) ) {
                     ParameterReplacement usedReplacement = usedParameters.get( match.parameter );
                     if( match.formattedValueMatches && !usedReplacement.match.formattedValueMatches ) {
-                        usedReplacement.updateToStepParameterName();
+                        usedReplacement.updateToStepParameterName( usedNames );
                     }
                 }
 
+                usedNames.add( replacement.replacementName );
                 usedParameters.put( match.parameter, replacement );
 
                 if( iterator.hasNext() ) {
@@ -148,7 +160,7 @@ public class CaseArgumentAnalyser {
                             + ". Took the first one." );
                 }
             } else {
-                replacement.updateToStepParameterName();
+                replacement.updateToStepParameterName( usedNames );
             }
         }
 

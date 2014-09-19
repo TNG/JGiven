@@ -22,7 +22,7 @@ public class JUnitExecutorTest extends JGivenScenarioTest<GivenScenarioTest<?>, 
     }
 
     @Test
-    @Issue( "25" )
+    @Issue( "#25" )
     public void test_classes_with_only_ignored_test_result_in_a_valid_report() {
         given().a_test_class_with_all_tests_ignored();
         when().the_test_class_is_executed_with_JUnit();
