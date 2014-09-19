@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html><head>
+  <meta charset='utf-8'>
+  <title>Feature.Derived Parameters</title>
+  <link href='style.css' rel='stylesheet'>
+</head>
+<body>
+<div id='page'><div id='col-container'>
+<div id='leftpane'>
+<div id='toc'>
+<h3>Test Classes</h3>
+<ul>
+<li><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html' >DeSzenarioTest</a>
+<li><a href='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest.html' >HtmlWriterScenarioTest</a>
+<li><a href='com.tngtech.jgiven.junit.de.JUnitExecutorTest.html' >JUnitExecutorTest</a>
+<li><a href='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest.html' >PlainTextGeneratorScenarioTest</a>
+<li><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html' >PlainTextScenarioWriterTest</a>
+<li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a>
+<li><a href='com.tngtech.jgiven.impl.ScenarioExecutorTest.html' >ScenarioExecutorTest</a>
+<li><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html' >StaticHtmlReportGeneratorTest</a>
+<li><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html' >TestFrameworkExecutionTest</a>
+</ul>
+<h3>Tags</h3>
+<ul>
+<li><a href='Feature-Data_Tables.html'>Data Tables</a>
+<li><a href='Feature-Derived_Parameters.html'>Derived Parameters</a>
+<li><a href='Feature-Duration.html'>Duration</a>
+<li><a href='Feature-German_Scenarios.html'>German Scenarios</a>
+<li><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a>
+<li><a href='Issue-_1.html'>Issue-#1</a>
+<li><a href='Issue-_10.html'>Issue-#10</a>
+<li><a href='Issue-_4.html'>Issue-#4</a>
+<li><a href='Issue-_9.html'>Issue-#9</a>
+<li><a href='Issue-25.html'>Issue-25</a>
+<li><a href='Feature-JUnit.html'>JUnit</a>
+<li><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a>
+<li><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a>
+<li><a href='Feature-Step_Parameters.html'>Step Parameters</a>
+<li><a href='Feature-Tags.html'>Tags</a>
+<li><a href='Feature-TestNG.html'>TestNG</a>
+</ul>
+</div> <!-- toc -->
+</div> <!-- leftpane -->
+<div id='rightpane'>
+<div id='header'>
+<div class='packagename'>Feature</div>
+<h2>Derived Parameters</h2>
+<div class='description'>In order to not have to specify easily derivable parameters explicitly<br>As a developer,</br>I want that step arguments derived from parameters appear in a data table</div>
+</div>
+<div id='content'>
+<div class='scenario'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:when data tables are generated then step parameter placeholders are correct in HTML reports")'><i class='icon-ok'></i> When data tables are generated then step parameter placeholders are correct in HTML reports <span class='duration'>(31.99 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div><div class='tag tag-Feature'><a href='Feature-Data_Tables.html'>Data Tables</a></div><div class='tag tag-Feature'><a href='Feature-Derived_Parameters.html'>Derived Parameters</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:when data tables are generated then step parameter placeholders are correct in HTML reports'>
+<div class='scenario-content'>
+<div class='case passedCase'>
+<ul class='steps' id='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest:when data tables are generated then step parameter placeholders are correct in HTML reports:1'>
+<li><span class='introWord'>Given</span> a report model with one scenario <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> the scenario has parameters <span class='argument '>param1, param2</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> the scenario has <span class='argument '>2</span> cases <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> case <span class='argument '>1</span> has arguments <span class='argument '>x, y</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> case <span class='argument '>1</span> has a when step <span class='argument '>uses the first parameter</span> with argument <span class='argument '>a</span> and argument name <span class='argument '>stepArg1</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> case <span class='argument '>1</span> has a when step <span class='argument '>uses the second parameter</span> with argument <span class='argument '>b</span> and argument name <span class='argument '>stepArg2</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> case <span class='argument '>2</span> has arguments <span class='argument '>x2, y2</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> case <span class='argument '>2</span> has a when step <span class='argument '>uses the first parameter</span> with argument <span class='argument '>c</span> and argument name <span class='argument '>stepArg1</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> case <span class='argument '>2</span> has a when step <span class='argument '>uses the second parameter</span> with argument <span class='argument '>d</span> and argument name <span class='argument '>stepArg2</span> <span class='duration'>(0.10 ms)</span></li>
+<li><span class='introWord'>When</span> the HTML report is generated <span class='duration'>(2.17 ms)</span></li>
+<li><span class='introWord'>Then</span> the HTML report contains pattern <span class='argument '>uses the first parameter.*&amp;lt;stepArg1&amp;gt;.*second</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> the HTML report contains pattern <span class='argument '>uses the second parameter.*&amp;lt;stepArg2&amp;gt;.*Cases</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> the HTML report contains a data table with header values <span class='argument '>stepArg1, stepArg2</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> line <span class='argument '>1</span> of the data table has arguments <span class='argument '>a, b</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> line <span class='argument '>2</span> of the data table has arguments <span class='argument '>c, d</span> <span class='duration'>(7.72 ms)</span></li>
+</ul>
+</div><!-- case -->
+</div> <!-- scenario-content -->
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest.html'>com.tngtech.jgiven.report.html.HtmlWriterScenarioTest</a></div>
+</div> <!-- scenario-body --> 
+</div>
+<div class='statistics'>1 scenarios, 1 cases, 15 steps, 0 failed cases  <span class='duration'>(31.99 ms)</span></div>
+</div> <!-- testcase-content -->
+</div> <!-- testcase -->
+</div> <!-- col-container -->
+<div id='page-footer'></div>
+</div> <!-- page -->
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.4.1-SNAPSHOT-66effa - on Sep 19, 2014 3:33:38 PM</div>
+<script src='report.js'></script>
+</body></html>
