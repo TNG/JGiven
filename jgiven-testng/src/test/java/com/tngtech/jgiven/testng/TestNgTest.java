@@ -26,11 +26,11 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
         assertThat( scenarioModel.description ).isEqualTo( "Milk and Sugar are mixed to Sugar Milk" );
         assertThat( scenarioModel.testMethodName ).isEqualTo( "Milk_and_Sugar_are_mixed_to_Sugar_Milk" );
         assertThat( scenarioModel.className ).isEqualTo( getClass().getName() );
-        assertThat( scenarioModel.parameterNames ).isEmpty();
+        assertThat( scenarioModel.getExplicitParameters() ).isEmpty();
         assertThat( scenarioModel.getScenarioCases() ).hasSize( 1 );
 
         ScenarioCaseModel scenarioCaseModel = scenarioModel.getCase( 0 );
-        assertThat( scenarioCaseModel.arguments ).isEmpty();
+        assertThat( scenarioCaseModel.getExplicitArguments() ).isEmpty();
         assertThat( scenarioCaseModel.caseNr ).isEqualTo( 1 );
         assertThat( scenarioCaseModel.errorMessage ).isNull();
         assertThat( scenarioCaseModel.success ).isTrue();

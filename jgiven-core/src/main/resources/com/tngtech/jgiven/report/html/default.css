@@ -164,7 +164,7 @@ h1 {
 #footer,
 #footer a {
   color: #333;
-  text-shadow: 1px 1px 1px #fff;
+  text-shadow: 0px 1px 0px #ddd;
   text-decoration: none;
   clear: both;
 }

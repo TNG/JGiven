@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.report.html;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.assertj.core.api.Assertions;
@@ -28,20 +30,34 @@ public class ThenHtmlOutput extends Stage<ThenHtmlOutput> {
         return the_HTML_report_contains_pattern( patternBuilder.toString() );
     }
 
+    public ThenHtmlOutput line_$_of_the_data_table_has_arguments_$( int line, String... args ) {
+        StringBuilder patternBuilder = new StringBuilder();
+        patternBuilder.append( ".*<table class='data-table'>.*" );
+        patternBuilder.append( getPatternForTableLine( line, Arrays.asList( args ) ) );
+        patternBuilder.append( "\\s*</table>.*" );
+        return the_HTML_report_contains_pattern( patternBuilder.toString() );
+    }
+
     public ThenHtmlOutput the_data_table_has_one_line_for_the_arguments_of_each_case() {
         StringBuilder patternBuilder = new StringBuilder();
         patternBuilder.append( ".*<table class='data-table'>.*" );
         for( ScenarioCaseModel caseModel : reportModel.getLastScenarioModel().getScenarioCases() ) {
-            patternBuilder.append( "\\s*<tr>" );
-            patternBuilder.append( "\\s*<td>" + caseModel.caseNr + "</td>\\s*" );
-            for( String arg : caseModel.arguments ) {
-                patternBuilder.append( "\\s*<td>" + arg + "</td>\\s*" );
-            }
-            patternBuilder.append( "\\s*<td>.*icon-ok.*</td>\\s*" );
-            patternBuilder.append( "\\s*</tr>" );
+            patternBuilder.append( getPatternForTableLine( caseModel.caseNr, caseModel.getExplicitArguments() ) );
         }
         patternBuilder.append( "\\s*</table>.*" );
         return the_HTML_report_contains_pattern( patternBuilder.toString() );
+    }
+
+    private StringBuilder getPatternForTableLine( int caseNr, List<String> explicitArguments ) {
+        StringBuilder patternBuilder = new StringBuilder();
+        patternBuilder.append( "\\s*<tr>" );
+        patternBuilder.append( "\\s*<td>" + caseNr + "</td>\\s*" );
+        for( String arg : explicitArguments ) {
+            patternBuilder.append( "\\s*<td>" + arg + "</td>\\s*" );
+        }
+        patternBuilder.append( "\\s*<td>.*icon-ok.*</td>\\s*" );
+        patternBuilder.append( "\\s*</tr>" );
+        return patternBuilder;
     }
 
     public ThenHtmlOutput the_HTML_report_contains_pattern( String patternString ) {

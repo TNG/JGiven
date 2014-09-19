@@ -3,7 +3,6 @@ package com.tngtech.jgiven.report.model;
 import static java.util.Arrays.asList;
 
 import java.util.Arrays;
-import java.util.List;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
@@ -35,22 +34,22 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         scenarioModel.description = description;
         scenarioModel.testMethodName = testMethodName;
 
-        addCase( scenarioModel );
+        addDefaultCase( scenarioModel );
 
         reportModel.getScenarios().add( scenarioModel );
     }
 
-    private void addCase( ScenarioModel scenarioModel ) {
+    private void addDefaultCase( ScenarioModel scenarioModel ) {
         ScenarioCaseModel scenarioCaseModel = new ScenarioCaseModel();
         scenarioModel.addCase( scenarioCaseModel );
         int i = 0;
-        for( String param : scenarioModel.parameterNames ) {
-            scenarioCaseModel.addArguments( "arg" + scenarioCaseModel.caseNr + i++ );
+        for( String param : scenarioModel.getExplicitParameters() ) {
+            scenarioCaseModel.addExplicitArguments( "arg" + scenarioCaseModel.caseNr + i++ );
         }
         scenarioCaseModel.addStep( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ),
             InvocationMode.NORMAL );
         i = 0;
-        for( String arg : scenarioCaseModel.arguments ) {
+        for( String arg : scenarioCaseModel.getExplicitArguments() ) {
             scenarioCaseModel.addStep( "something_happens", asList( Word.introWord( "when" ),
                 Word.argWord( "stepArg" + i++, arg ) ), InvocationMode.NORMAL );
         }
@@ -87,9 +86,18 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF the_scenario_has_$_cases( int ncases ) {
+        ScenarioModel scenarioModel = reportModel.getLastScenarioModel();
+        scenarioModel.clearCases();
+        for( int i = 0; i < ncases; i++ ) {
+            scenarioModel.addCase( new ScenarioCaseModel() );
+        }
+        return self();
+    }
+
+    public SELF the_scenario_has_$_default_cases( int ncases ) {
         reportModel.getLastScenarioModel().clearCases();
         for( int i = 0; i < ncases; i++ ) {
-            addCase( reportModel.getLastScenarioModel() );
+            addDefaultCase( reportModel.getLastScenarioModel() );
         }
         return self();
     }
@@ -101,9 +109,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF case_$_has_arguments( int ncase, String... args ) {
-        List<String> arguments = getCase( ncase ).arguments;
-        arguments.clear();
-        arguments.addAll( Arrays.asList( args ) );
+        getCase( ncase ).setExplicitArguments( Arrays.asList( args ) );
         return self();
     }
 
@@ -112,6 +118,12 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         for( ScenarioCaseModel caseModel : reportModel.getLastScenarioModel().getScenarioCases() ) {
             case_$_has_a_step_$_with_argument( i++, name, arg );
         }
+        return self();
+    }
+
+    public SELF case_$_has_a_step_$( int ncase, String name ) {
+        getCase( ncase ).addStep( name, Arrays.asList( Word.introWord( "when" ), new Word( name ) ),
+            InvocationMode.NORMAL );
         return self();
     }
 

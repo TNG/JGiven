@@ -9,7 +9,9 @@ public class ResourceUtil {
         Exception t = null;
         for( Closeable c : closeables ) {
             try {
-                c.close();
+                if( c != null ) {
+                    c.close();
+                }
             } catch( Exception e ) {
                 t = e;
             }

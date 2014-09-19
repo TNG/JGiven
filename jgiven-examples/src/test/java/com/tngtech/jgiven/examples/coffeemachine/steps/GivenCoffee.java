@@ -48,4 +48,5 @@ public class GivenCoffee extends Stage<GivenCoffee> {
         return a_coffee_machine()
             .and().there_are_no_more_coffees_left();
     }
+
 }

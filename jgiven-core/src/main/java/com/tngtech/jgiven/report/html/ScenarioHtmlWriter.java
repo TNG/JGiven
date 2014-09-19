@@ -97,7 +97,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     public void visit( ScenarioCaseModel scenarioCase ) {
         this.scenarioCase = scenarioCase;
         printCaseHeader( scenarioCase );
-        String collapsed = scenarioCase.arguments.isEmpty() || scenarioModel.isCasesAsTable() ? "" : " collapsed";
+        String collapsed = scenarioCase.getExplicitArguments().isEmpty() || scenarioModel.isCasesAsTable() ? "" : " collapsed";
         writer.println( "<ul class='steps" + collapsed + "' id='" + getCaseId() + "'>" );
     }
 
@@ -107,19 +107,19 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
 
     void printCaseHeader( ScenarioCaseModel scenarioCase ) {
         writer.println( format( "<div class='case %sCase'>", scenarioCase.success ? "passed" : "failed" ) );
-        if( !scenarioCase.arguments.isEmpty() ) {
+        if( !scenarioCase.getExplicitArguments().isEmpty() ) {
             writer.print( format( "<h4 onclick='toggle(\"%s\")'>", getCaseId() ) );
             writeStatusIcon( scenarioCase.success );
             writer.print( format( " Case %d: ", scenarioCase.caseNr ) );
 
-            for( int i = 0; i < scenarioCase.arguments.size(); i++ ) {
-                if( scenarioModel.parameterNames.size() > i ) {
-                    writer.print( scenarioModel.parameterNames.get( i ) + " = " );
+            for( int i = 0; i < scenarioCase.getExplicitArguments().size(); i++ ) {
+                if( scenarioModel.getExplicitParameters().size() > i ) {
+                    writer.print( scenarioModel.getExplicitParameters().get( i ) + " = " );
                 }
 
-                writer.print( scenarioCase.arguments.get( i ) );
+                writer.print( scenarioCase.getExplicitArguments().get( i ) );
 
-                if( i < scenarioCase.arguments.size() - 1 ) {
+                if( i < scenarioCase.getExplicitArguments().size() - 1 ) {
                     writer.print( ", " );
                 }
             }
@@ -147,9 +147,9 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             if( !firstWord ) {
                 writer.print( ' ' );
             }
-            String text = HtmlEscapers.htmlEscaper().escape( word.value );
+            String text = HtmlEscapers.htmlEscaper().escape( word.getValue() );
 
-            if( firstWord && word.isIntroWord ) {
+            if( firstWord && word.isIntroWord() ) {
                 writer.print( format( "<span class='introWord'>%s</span>", WordUtil.capitalize( text ) ) );
             } else if( word.isArg() ) {
                 printArg( word );
@@ -171,7 +171,8 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     }
 
     private void printArg( Word word ) {
-        String value = word.getArgumentInfo().isParameter() ? formatCaseArgument( word ) : HtmlEscapers.htmlEscaper().escape( word.value );
+        String value = word.getArgumentInfo().isParameter() ? formatCaseArgument( word ) : HtmlEscapers.htmlEscaper().escape(
+            word.getFormattedValue() );
         value = escapeToHtml( value );
         String multiLine = value.contains( "<br />" ) ? "multiline" : "";
         String caseClass = word.getArgumentInfo().isParameter() ? "caseArgument" : "argument";
@@ -183,6 +184,6 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     }
 
     String formatCaseArgument( Word word ) {
-        return HtmlEscapers.htmlEscaper().escape( word.value );
+        return HtmlEscapers.htmlEscaper().escape( word.getValue() );
     }
 }

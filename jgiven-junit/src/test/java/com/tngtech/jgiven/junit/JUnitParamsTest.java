@@ -26,7 +26,7 @@ public class JUnitParamsTest extends ScenarioTest<GivenTestStep, WhenTestStep, T
         then().the_value_is_$not$_greater_than_zero( booleanArg );
 
         ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
-        List<String> arguments = scenarioModel.getCase( caseNr ).arguments;
+        List<String> arguments = scenarioModel.getCase( caseNr ).getExplicitArguments();
         // Currently not working:
         // assertThat( arguments ).containsExactly( "" + intArg, "" + booleanArg, "" + caseNr );
     }

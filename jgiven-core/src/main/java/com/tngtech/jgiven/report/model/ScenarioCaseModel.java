@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.report.model;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -9,12 +10,28 @@ import com.tngtech.jgiven.impl.intercept.InvocationMode;
 public class ScenarioCaseModel {
     public int caseNr;
     public List<StepModel> steps = Lists.newArrayList();
-    public List<String> arguments = Lists.newArrayList();
+
+    /**
+     * The arguments that have been explicitly passed to a scenario test.
+     * These arguments only appear in a report if there are multiple cases
+     * and no data table could be written.
+     */
+    private List<String> explicitArguments = Lists.newArrayList();
+
+    /**
+     * Derived arguments are arguments that used as arguments to step methods.
+     * These have not to be the same as the explicit arguments.
+     * However, typically they are somehow derived from them.
+     * For data tables only the derived arguments are used, because
+     * these are the only visible arguments.
+     */
+    private List<String> derivedArguments = Lists.newArrayList();
+
     public boolean success = true;
     public String errorMessage;
 
     /**
-     * The total execution time of the whole case in milliseconds
+     * The total execution time of the whole case in nanoseconds.
      */
     public long durationInNanos;
 
@@ -50,8 +67,17 @@ public class ScenarioCaseModel {
         visitor.visitEnd( this );
     }
 
-    public void addArguments( String... args ) {
-        arguments.addAll( Arrays.asList( args ) );
+    public void addExplicitArguments( String... args ) {
+        explicitArguments.addAll( Arrays.asList( args ) );
+    }
+
+    public void setExplicitArguments( List<String> arguments ) {
+        explicitArguments.clear();
+        explicitArguments.addAll( arguments );
+    }
+
+    public List<String> getExplicitArguments() {
+        return Collections.unmodifiableList( explicitArguments );
     }
 
     public void addStep( StepModel stepModel ) {
@@ -62,7 +88,7 @@ public class ScenarioCaseModel {
         return steps.get( i );
     }
 
-    public void setDurationInNanoes( long durationInNanos ) {
+    public void setDurationInNanos( long durationInNanos ) {
         this.durationInNanos = durationInNanos;
     }
 
@@ -75,4 +101,13 @@ public class ScenarioCaseModel {
         this.accept( executionStatusCalculator );
         return executionStatusCalculator.executionStatus();
     }
+
+    public void addDerivedArguments( String... values ) {
+        this.derivedArguments.addAll( Arrays.asList( values ) );
+    }
+
+    public List<String> getDerivedArguments() {
+        return Collections.unmodifiableList( derivedArguments );
+    }
+
 }

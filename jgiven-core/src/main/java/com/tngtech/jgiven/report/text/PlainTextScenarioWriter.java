@@ -53,9 +53,9 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     protected void printCaseLine( ScenarioCaseModel scenarioCase ) {
         writer.print( "  Case " + scenarioCase.caseNr + ": " );
-        List<String> arguments = scenarioCase.arguments;
+        List<String> arguments = scenarioCase.getExplicitArguments();
         if( !arguments.isEmpty() ) {
-            List<String> parameterNames = currentScenarioModel.parameterNames;
+            List<String> parameterNames = currentScenarioModel.getExplicitParameters();
             for( int i = 0; i < arguments.size(); i++ ) {
                 if( i < parameterNames.size() ) {
                     writer.print( parameterNames.get( i ) + " = " );
@@ -80,8 +80,8 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
         @Override
         public void visit( StepModel stepModel ) {
             Word word = stepModel.words.get( 0 );
-            if( word.isIntroWord ) {
-                int length = word.value.length();
+            if( word.isIntroWord() ) {
+                int length = word.getValue().length();
                 if( length > maxLength ) {
                     maxLength = length;
                 }
@@ -93,11 +93,11 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     public void visit( StepModel stepModel ) {
         String intro = "";
         List<Word> words = stepModel.words;
-        if( words.get( 0 ).isIntroWord ) {
+        if( words.get( 0 ).isIntroWord() ) {
             intro = withColor( Color.BLUE, Attribute.INTENSITY_BOLD,
-                INDENT + String.format( "%" + maxFillWordLength + "s ", WordUtil.capitalize( words.get( 0 ).value ) ) );
+                INDENT + String.format( "%" + maxFillWordLength + "s ", WordUtil.capitalize( words.get( 0 ).getValue() ) ) );
         } else {
-            intro = INDENT + words.get( 0 ).value;
+            intro = INDENT + words.get( 0 ).getValue();
         }
         String rest = joinWords( words.subList( 1, words.size() ) );
 
@@ -123,14 +123,14 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     protected String wordToString( Word word ) {
         if( word.isArg() && !isInt( word ) ) {
-            return "'" + word.value + "'";
+            return "'" + word.getValue() + "'";
         }
-        return word.value;
+        return word.getValue();
     }
 
     private boolean isInt( Word word ) {
         try {
-            Integer.valueOf( word.value );
+            Integer.valueOf( word.getValue() );
             return true;
         } catch( NumberFormatException e ) {
             return false;

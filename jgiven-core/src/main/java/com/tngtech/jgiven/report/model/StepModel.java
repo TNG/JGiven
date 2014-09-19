@@ -12,7 +12,7 @@ public class StepModel {
     private StepStatus status = StepStatus.PASSED;
 
     /**
-     * The total execution time of the step in nano seconds
+     * The total execution time of the step in nano seconds.
      */
     private long durationInNanos;
 

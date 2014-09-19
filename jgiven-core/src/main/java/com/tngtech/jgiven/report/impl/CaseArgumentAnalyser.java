@@ -1,6 +1,9 @@
 package com.tngtech.jgiven.report.impl;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -8,8 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.tngtech.jgiven.report.model.ArgumentInfo;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
@@ -21,7 +24,9 @@ import com.tngtech.jgiven.report.model.Word;
  * Analyzes a report model and tries to infer which step method arguments match to which case argument.
  *
  * This is done by comparing all cases of a scenario and find out which method arguments
- * match in all cases to the same parameter
+ * match in all cases to the same parameter.
+ *
+ * The algorithm is rather complex, but I could not find an easier one yet.
  *
  */
 public class CaseArgumentAnalyser {
@@ -66,10 +71,13 @@ public class CaseArgumentAnalyser {
             return false;
         }
         for( int j = 0; j < words.size(); j++ ) {
-            if( firstWords.get( j ).isArg() && firstWords.get( j ).getArgumentInfo().isParameter() ) {
+            Word firstWord = firstWords.get( j );
+            Word word = words.get( j );
+            if( firstWord.isArg() && word.isArg()
+                    && Objects.equal( firstWord.getArgumentInfo().getArgumentName(), word.getArgumentInfo().getArgumentName() ) ) {
                 continue;
             }
-            if( !firstWords.get( j ).equals( words.get( j ) ) ) {
+            if( !firstWord.equals( word ) ) {
                 return false;
             }
         }
@@ -90,60 +98,124 @@ public class CaseArgumentAnalyser {
         }
     }
 
+    static class ParameterReplacement {
+        List<Word> arguments;
+        ParameterMatch match;
+        String replacementName;
+        boolean isStepParameterName;
+
+        public void updateToStepParameterName() {
+            replacementName = arguments.get( 0 ).getArgumentInfo().getArgumentName();
+            isStepParameterName = true;
+        }
+    }
+
     private void reduceMatrix( ScenarioModel scenarioModel, List<CaseArguments> argumentMatrix ) {
         int nArguments = argumentMatrix.get( 0 ).arguments.size();
-        List<String> derivedParams = Lists.newArrayList();
+        Map<String, ParameterReplacement> usedParameters = Maps.newLinkedHashMap();
+        List<ParameterReplacement> parameterReplacements = Lists.newArrayList();
+
         for( int iArg = 0; iArg < nArguments; iArg++ ) {
-            Set<String> currentSet = Sets.newLinkedHashSet();
-            currentSet.addAll( argumentMatrix.get( 0 ).get( iArg ).params );
-            for( int iCase = 1; iCase < argumentMatrix.size(); iCase++ ) {
-                currentSet.retainAll( argumentMatrix.get( iCase ).get( iArg ).params );
-            }
-            if( currentSet.size() > 1 ) {
-                log.warn( "Could not disambiguate case arguments for argument " + iArg + ". Values: " + currentSet );
-            } else if( currentSet.isEmpty() ) {
-                log.warn( "Could not identify parameter index for argument " + iArg );
+            List<Word> arguments = getArgumentsOfAllCases( argumentMatrix, iArg );
 
-                if( !allArgumentsAreEqual( argumentMatrix, iArg ) ) {
-                    String parameterName = argumentMatrix.get( 0 ).get( iArg ).word.getArgumentInfo().getArgumentName();
-                    derivedParams.add( parameterName );
-                    for( int iCase = 0; iCase < argumentMatrix.size(); iCase++ ) {
-                        CaseArguments caseArguments = argumentMatrix.get( iCase );
-                        Word word = caseArguments.get( iArg ).word;
-                        ArgumentInfo argumentInfo = word.getArgumentInfo();
-                        argumentInfo.setParameterName( parameterName );
-                        argumentInfo.setDerivedParameter( true );
-                        caseArguments.caseModel.addArguments( word.value );
-                    }
-                    scenarioModel.addDerivedParameter( parameterName );
-                }
-
+            if( allArgumentsAreEqual( arguments ) ) {
                 continue;
             }
-            for( int iCase = 0; iCase < argumentMatrix.size(); iCase++ ) {
-                Word word = argumentMatrix.get( iCase ).get( iArg ).word;
-                word.getArgumentInfo().setParameterName( currentSet.iterator().next() );
+
+            ParameterReplacement replacement = new ParameterReplacement();
+            replacement.arguments = arguments;
+            parameterReplacements.add( replacement );
+
+            Collection<ParameterMatch> parameterMatches = getPossibleParameterNames( argumentMatrix, iArg );
+
+            if( !parameterMatches.isEmpty() ) {
+                Iterator<ParameterMatch> iterator = parameterMatches.iterator();
+                ParameterMatch match = iterator.next();
+                replacement.match = match;
+                replacement.replacementName = match.parameter;
+
+                if( usedParameters.containsKey( match.parameter ) ) {
+                    ParameterReplacement usedReplacement = usedParameters.get( match.parameter );
+                    if( match.formattedValueMatches && !usedReplacement.match.formattedValueMatches ) {
+                        usedReplacement.updateToStepParameterName();
+                    }
+                }
+
+                usedParameters.put( match.parameter, replacement );
+
+                if( iterator.hasNext() ) {
+                    log.debug( "Multiple parameter matches found for argument " + iArg + ": " + parameterMatches
+                            + ". Took the first one." );
+                }
+            } else {
+                replacement.updateToStepParameterName();
+            }
+        }
+
+        for( ParameterReplacement replacement : parameterReplacements ) {
+            scenarioModel.addDerivedParameter( replacement.replacementName );
+            for( int i = 0; i < replacement.arguments.size(); i++ ) {
+                Word word = replacement.arguments.get( i );
+                word.getArgumentInfo().setParameterName( replacement.replacementName );
+                word.getArgumentInfo().setDerivedParameter( replacement.isStepParameterName );
+                scenarioModel.getCase( i ).addDerivedArguments( word.getFormattedValue() );
             }
         }
 
     }
 
-    private boolean allArgumentsAreEqual( List<CaseArguments> argumentMatrix, int iArg ) {
-        Word word = argumentMatrix.get( 0 ).get( iArg ).word;
-        boolean allWordsAreEqual = true;
-        for( int iCase = 1; iCase < argumentMatrix.size(); iCase++ ) {
-            Word word2 = argumentMatrix.get( iCase ).get( iArg ).word;
-            if( !word.equals( word2 ) ) {
-                allWordsAreEqual = false;
-                break;
+    private Collection<ParameterMatch> getPossibleParameterNames( List<CaseArguments> argumentMatrix, int iArg ) {
+        Map<String, ParameterMatch> result = toMap( argumentMatrix.get( 0 ).arguments.get( iArg ).params );
+
+        for( int i = 1; i < argumentMatrix.size(); i++ ) {
+            Map<String, ParameterMatch> map = toMap( argumentMatrix.get( i ).arguments.get( iArg ).params );
+            for( String key : Lists.newArrayList( result.keySet() ) ) {
+                if( !map.containsKey( key ) ) {
+                    result.remove( key );
+                } else {
+                    result.get( key ).formattedValueMatches &= map.get( key ).formattedValueMatches;
+                }
             }
         }
-        return allWordsAreEqual;
+        return result.values();
+    }
+
+    private Map<String, ParameterMatch> toMap( Set<ParameterMatch> params ) {
+        Map<String, ParameterMatch> result = Maps.newLinkedHashMap();
+        for( ParameterMatch match : params ) {
+            result.put( match.parameter, match );
+        }
+        return result;
+    }
+
+    private List<Word> getArgumentsOfAllCases( List<CaseArguments> argumentMatrix, int iArg ) {
+        List<Word> result = Lists.newArrayList();
+        for( int iCase = 0; iCase < argumentMatrix.size(); iCase++ ) {
+            result.add( argumentMatrix.get( iCase ).get( iArg ).word );
+        }
+        return result;
+    }
+
+    private boolean allArgumentsAreEqual( List<Word> arguments ) {
+        Word firstWord = arguments.get( 0 );
+        for( int i = 1; i < arguments.size(); i++ ) {
+            Word word = arguments.get( i );
+            if( !firstWord.equals( word ) ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static class ParameterMatch {
+        String parameter;
+        int index;
+        boolean formattedValueMatches;
     }
 
     static class ArgumentHolder {
         Word word;
-        Set<String> params;
+        Set<ParameterMatch> params;
     }
 
     /**
@@ -184,12 +256,17 @@ public class CaseArgumentAnalyser {
             }
         }
 
-        private Set<String> getMatchingParameters( Word word ) {
-            Set<String> matchingParameters = Sets.newLinkedHashSet();
-            for( int i = 0; i < currentCase.arguments.size(); i++ ) {
-                if( Objects.equal( word.value, currentCase.arguments.get( i ) ) ) {
-                    if( i < scenarioModel.parameterNames.size() ) {
-                        matchingParameters.add( scenarioModel.parameterNames.get( i ) );
+        private Set<ParameterMatch> getMatchingParameters( Word word ) {
+            Set<ParameterMatch> matchingParameters = Sets.newLinkedHashSet();
+            for( int i = 0; i < currentCase.getExplicitArguments().size(); i++ ) {
+                String argumentValue = currentCase.getExplicitArguments().get( i );
+                if( Objects.equal( word.getValue(), argumentValue ) ) {
+                    if( i < scenarioModel.getExplicitParameters().size() ) {
+                        ParameterMatch match = new ParameterMatch();
+                        match.index = i;
+                        match.parameter = scenarioModel.getExplicitParameters().get( i );
+                        match.formattedValueMatches = Objects.equal( word.getFormattedValue(), argumentValue );
+                        matchingParameters.add( match );
                     }
                 }
             }

@@ -63,8 +63,9 @@ public class StepFormatter {
             }
         }
         for( int i = argCount; i < arguments.size(); i++ ) {
-            String value = formatUsingFormatter( formatters.get( i ), arguments.get( i ).value );
-            formattedWords.add( Word.argWord( arguments.get( i ).name, value ) );
+            Object value = arguments.get( i ).value;
+            String formattedValue = formatUsingFormatterOrNull( formatters.get( i ), value );
+            formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ), formattedValue ) );
         }
         return formattedWords;
     }
@@ -88,20 +89,26 @@ public class StepFormatter {
             index = argIndex - 1;
         }
 
-        String value = formatUsingFormatter( formatters.get( index ), arguments.get( index ).value );
+        Object value = arguments.get( index ).value;
+        String defaultFormattedValue = toDefaultStringFormat( value );
+        String formattedValue = formatUsingFormatterOrNull( formatters.get( index ), value );
         String argumentName = arguments.get( index ).name;
 
-        if( value != null && !value.isEmpty() ) {
-            formattedWords.add( Word.argWord( argumentName, value ) );
+        if( defaultFormattedValue != null && !defaultFormattedValue.isEmpty() ) {
+            formattedWords.add( Word.argWord( argumentName, defaultFormattedValue, formattedValue ) );
         }
     }
 
     @SuppressWarnings( "unchecked" )
-    private <T> String formatUsingFormatter( Formatting<T> argumentFormatter, Object value ) {
+    private <T> String formatUsingFormatterOrNull( Formatting<T> argumentFormatter, Object value ) {
         if( argumentFormatter == null ) {
-            return new DefaultFormatter<Object>().format( value );
+            return null;
         }
 
         return argumentFormatter.format( (T) value );
+    }
+
+    private String toDefaultStringFormat( Object value ) {
+        return new DefaultFormatter<Object>().format( value );
     }
 }

@@ -59,20 +59,20 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
         String formatString = formatBuilder.toString();
         String caseIndent = "    ";
         writer.println( "  Cases:\n" );
-        writer.println( caseIndent + String.format( formatString, scenarioModel.parameterNames.toArray() ) );
+        writer.println( caseIndent + String.format( formatString, scenarioModel.getDerivedParameters().toArray() ) );
         writer.println( caseIndent + lineBuilder );
         for( ScenarioCaseModel c : scenarioModel.getScenarioCases() ) {
-            writer.println( caseIndent + String.format( formatString, c.arguments.toArray() ) );
+            writer.println( caseIndent + String.format( formatString, c.getDerivedArguments().toArray() ) );
         }
     }
 
     private List<Integer> getMaxColumnWidth( ScenarioModel scenarioModel ) {
         List<Integer> result = Lists.newArrayList();
-        for( int i = 0; i < scenarioModel.parameterNames.size(); i++ ) {
-            int maxWidth = scenarioModel.parameterNames.get( i ).length();
+        for( int i = 0; i < scenarioModel.getDerivedParameters().size(); i++ ) {
+            int maxWidth = scenarioModel.getDerivedParameters().get( i ).length();
             for( ScenarioCaseModel c : scenarioModel.getScenarioCases() ) {
-                if( c.arguments.size() > i ) {
-                    int width = c.arguments.get( i ).length();
+                if( c.getExplicitArguments().size() > i ) {
+                    int width = c.getExplicitArguments().get( i ).length();
                     if( width > maxWidth ) {
                         maxWidth = width;
                     }

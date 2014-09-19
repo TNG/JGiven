@@ -25,6 +25,12 @@ public class ArgumentInfo {
      */
     private String argumentName;
 
+    /**
+     * The value of the argument after formatting has been applied.
+     * Can be {@code null}
+     */
+    private String formattedValue;
+
     public void setParameterName( String parameterName ) {
         this.parameterName = parameterName;
     }
@@ -61,6 +67,14 @@ public class ArgumentInfo {
 
     public boolean isDerivedParameter() {
         return isDerivedParameter;
+    }
+
+    public void setFormattedValue( String formattedValue ) {
+        this.formattedValue = formattedValue;
+    }
+
+    public String getFormattedValue() {
+        return formattedValue;
     }
 
     @Override

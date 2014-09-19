@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.examples.coffeemachine.steps.GivenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.ThenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.WhenCoffee;
@@ -13,14 +14,12 @@ import com.tngtech.jgiven.tags.FeatureDataTables;
 import com.tngtech.jgiven.tags.Issue;
 
 /**
- * Feature: Serve coffee
- *    In order to refresh myself
- *    as a customer
- *    I want to coffee to be served
- *
- * Original example due to Cucumber Wiki
+ * Original example due to Cucumber Wiki.
  */
 @RunWith( DataProviderRunner.class )
+@Description( "In order to refresh myself</br>" +
+        "as a customer</br>" +
+        "I want coffee to be served" )
 public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenCoffee> {
 
     @Test

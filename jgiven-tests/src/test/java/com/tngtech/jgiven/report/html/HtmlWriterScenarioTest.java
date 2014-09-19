@@ -53,60 +53,91 @@ public class HtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, Wh
 
     @Test
     @FeatureDataTables
-    public void data_tables_are_generated_in_HTML_reports() {
+    public void step_arguments_matching_case_arguments_are_replaced_by_scenario_parameter_names() {
         given().a_report_model_with_one_scenario()
             .and().the_scenario_has_parameters( "param1", "param2" )
-            .and().the_scenario_has_$_cases( 3 );
-        when().the_HTML_report_is_generated();
-        then().the_HTML_report_contains_a_data_table_with_header_values( "param1", "param2" )
-            .and().the_data_table_has_one_line_for_the_arguments_of_each_case();
-    }
-
-    @Test
-    @FeatureDataTables
-    public void when_data_tables_are_generated_then_step_parameter_placeholders_are_correct_in_HTML_reports() {
-        given().a_report_model_with_one_scenario()
             .and().the_scenario_has_$_cases( 2 )
-            .and().the_scenario_has_parameters( "param1", "param2" )
-            .and().case_$_has_arguments( 1, "a", "a" )
-            .and().case_$_has_a_when_step_$_with_argument( 1, "uses the first parameter", "a" )
-            .and().case_$_has_a_when_step_$_with_argument( 1, "uses the second parameter", "a" )
-            .and().case_$_has_arguments( 2, "a", "b" )
-            .and().case_$_has_a_when_step_$_with_argument( 2, "uses the first parameter", "a" )
-            .and().case_$_has_a_when_step_$_with_argument( 2, "uses the second parameter", "b" );
+            .and().case_$_has_arguments( 1, "a", "b" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "uses the first parameter", "a", "stepArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "uses the second parameter", "b", "stepArg2" )
+            .and().case_$_has_arguments( 2, "c", "d" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "uses the first parameter", "c", "stepArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "uses the second parameter", "d", "stepArg2" );
 
         when().the_HTML_report_is_generated();
         then().the_HTML_report_contains_pattern( "uses the first parameter.*&lt;param1&gt;.*second" )
             .and().the_HTML_report_contains_pattern( "uses the second parameter.*&lt;param2&gt;.*Cases" )
             .and().the_HTML_report_contains_a_data_table_with_header_values( "param1", "param2" )
-            .and().the_data_table_has_one_line_for_the_arguments_of_each_case();
+            .and().line_$_of_the_data_table_has_arguments_$( 1, "a", "b" )
+            .and().line_$_of_the_data_table_has_arguments_$( 2, "c", "d" );
+    }
+
+    @Test
+    @FeatureDataTables
+    public void scenario_parameters_and_step_arguments_can_be_mixed() {
+        given().a_report_model_with_one_scenario()
+            .and().the_scenario_has_parameters( "param1" )
+            .and().the_scenario_has_$_cases( 2 )
+            .and().case_$_has_arguments( 1, "a" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "uses the first parameter", "a", "stepArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "uses the second parameter", "b", "stepArg2" )
+            .and().case_$_has_arguments( 2, "c" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "uses the first parameter", "c", "stepArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "uses the second parameter", "d", "stepArg2" );
+
+        when().the_HTML_report_is_generated();
+        then().the_HTML_report_contains_pattern( "uses the first parameter.*&lt;param1&gt;.*second" )
+            .and().the_HTML_report_contains_pattern( "uses the second parameter.*&lt;stepArg2&gt;.*Cases" )
+            .and().the_HTML_report_contains_a_data_table_with_header_values( "param1", "stepArg2" )
+            .and().line_$_of_the_data_table_has_arguments_$( 1, "a", "b" )
+            .and().line_$_of_the_data_table_has_arguments_$( 2, "c", "d" );
     }
 
     @Test
     @FeatureDataTables
     @FeatureDerivedParameters
-    public void derived_parameters_appear_in_the_data_table() {
+    public void when_data_tables_are_generated_then_step_parameter_placeholders_are_correct_in_HTML_reports() {
         given().a_report_model_with_one_scenario()
+            .and().the_scenario_has_parameters( "param1", "param2" )
             .and().the_scenario_has_$_cases( 2 )
-            .and().the_scenario_has_parameters( "param1" )
-            .and().case_$_has_arguments( 1, "a" )
-            .and().case_$_has_a_when_step_$_with_argument( 1, "uses the first parameter", "a" )
-            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "derive a parameter", "aa", "arg" )
-            .and().case_$_has_arguments( 2, "b" )
-            .and().case_$_has_a_when_step_$_with_argument( 2, "uses the first parameter", "b" )
-            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "derive a parameter", "bb", "arg" );
+            .and().case_$_has_arguments( 1, "x", "y" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "uses the first parameter", "a", "stepArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "uses the second parameter", "b", "stepArg2" )
+            .and().case_$_has_arguments( 2, "x2", "y2" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "uses the first parameter", "c", "stepArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "uses the second parameter", "d", "stepArg2" );
 
         when().the_HTML_report_is_generated();
-        then().the_HTML_report_contains_pattern( "uses the first parameter.*&lt;param1&gt;.*derive" )
-            .and().the_HTML_report_contains_pattern( "derive a parameter.*&lt;arg&gt;.*Cases" )
-            .and().the_HTML_report_contains_a_data_table_with_header_values( "param1", "arg" )
-            .and().the_data_table_has_one_line_for_the_arguments_of_each_case();
+        then().the_HTML_report_contains_pattern( "uses the first parameter.*&lt;stepArg1&gt;.*second" )
+            .and().the_HTML_report_contains_pattern( "uses the second parameter.*&lt;stepArg2&gt;.*Cases" )
+            .and().the_HTML_report_contains_a_data_table_with_header_values( "stepArg1", "stepArg2" )
+            .and().line_$_of_the_data_table_has_arguments_$( 1, "a", "b" )
+            .and().line_$_of_the_data_table_has_arguments_$( 2, "c", "d" );
+    }
+
+    @Test
+    public void when_cases_are_structurally_different_then_each_case_appears_seperately() {
+        given().a_report_model_with_one_scenario()
+            .and().the_scenario_has_$_default_cases( 2 )
+            .and().the_scenario_has_parameters( "param1", "param2" )
+            .and().case_$_has_arguments( 1, "arg1", "anotherArg1" )
+            .and().case_$_has_a_step_$_with_argument( 1, "uses the first parameter", "arg1" )
+            .and().case_$_has_arguments( 2, "arg2", "anotherArg2" )
+            .and().case_$_has_a_step_$_with_argument( 2, "uses the first parameter", "arg2" )
+            .and().case_$_has_a_step_$( 2, "some extra step method only appearing in case 2" );
+
+        when().the_HTML_report_is_generated();
+        then().the_HTML_report_contains_pattern( "Case 1: param1 = arg1, param2 = anotherArg1" )
+            .and().the_HTML_report_contains_pattern( "uses the first parameter.*arg1.*Case 2" )
+            .and().the_HTML_report_contains_pattern( "Case 2: param1 = arg2, param2 = anotherArg2" )
+            .and().the_HTML_report_contains_pattern( "uses the first parameter.*arg2.*" )
+            .and().the_HTML_report_contains_pattern( "some extra step method only appearing in case 2" );
     }
 
     @Test
     public void the_error_message_of_failed_scenarios_are_reported() {
         given().a_report_model_with_one_scenario()
-            .and().the_scenario_has_$_cases( 1 )
+            .and().the_scenario_has_$_default_cases( 1 )
             .and().case_$_fails_with_error_message( 1, "Test Error" );
         when().the_HTML_report_is_generated();
         then().the_HTML_report_contains_text( "<div class='failed'>Failed: Test Error</div>" );

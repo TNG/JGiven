@@ -52,7 +52,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         ScenarioCaseModel case0 = model.getCase( 0 );
         assertThat( case0.success ).isTrue();
         assertThat( case0.caseNr ).isEqualTo( 1 );
-        assertThat( case0.arguments ).isEmpty();
+        assertThat( case0.getExplicitArguments() ).isEmpty();
         assertThat( case0.steps ).hasSize( 3 );
         assertThat( case0.steps ).extracting( "failed" ).isEqualTo( asList( false, false, false ) );
         assertThat( case0.steps ).extracting( "notImplementedYet" ).isEqualTo( asList( false, false, false ) );
@@ -180,7 +180,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
 
         getScenario().finished();
         StepModel step = getScenario().getModel().getFirstStepModelOfLastScenario();
-        assertThat( step.words.get( 2 ).value ).isEqualTo( expected );
+        assertThat( step.words.get( 2 ).getValue() ).isEqualTo( expected );
     }
 
     @Test
@@ -189,7 +189,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         given().a_step_with_a_description();
         getScenario().finished();
         StepModel step = getScenario().getModel().getFirstStepModelOfLastScenario();
-        assertThat( step.words.get( 1 ).value ).isEqualTo( "a step with a (special) description" );
+        assertThat( step.words.get( 1 ).getValue() ).isEqualTo( "a step with a (special) description" );
     }
 
     @Test
@@ -198,7 +198,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         given().a_step_with_a_printf_annotation_$( 5.2 );
         getScenario().finished();
         StepModel step = getScenario().getModel().getFirstStepModelOfLastScenario();
-        assertThat( step.words.get( 2 ).value ).isEqualTo( String.format( "%.2f", 5.2 ) );
+        assertThat( step.words.get( 2 ).getFormattedValue() ).isEqualTo( String.format( "%.2f", 5.2 ) );
     }
 
     @Test

@@ -49,7 +49,7 @@ public class PlainTextScenarioWriterTest extends ScenarioTest<GivenReportModel<?
     public void cases_are_generated_in_text_reports() throws UnsupportedEncodingException {
         given()
             .a_report_model_with_one_scenario()
-            .and().the_scenario_has_$_cases( 2 )
+            .and().the_scenario_has_$_default_cases( 2 )
             .and().case_$_has_a_when_step_$_with_argument( 1, "some step", "someArg" );
 
         when().the_plain_text_report_is_generated();
@@ -66,11 +66,11 @@ public class PlainTextScenarioWriterTest extends ScenarioTest<GivenReportModel<?
         given()
             .a_report_model_with_one_scenario()
             .and().the_scenario_has_parameters( "param1" )
-            .and().the_scenario_has_$_cases( 2 )
+            .and().the_scenario_has_$_default_cases( 2 )
             .and().case_$_has_arguments( 1, "arg10" )
-            .and().case_$_has_a_step_$_with_argument( 1, "some arg step", "arg10" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "some arg step", "arg10", "aArg" )
             .and().case_$_has_arguments( 2, "arg20" )
-            .and().case_$_has_a_step_$_with_argument( 2, "some arg step", "arg20" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "some arg step", "arg20", "aArg" )
             .and().all_cases_have_a_step_$_with_argument( "some step", "someArg" );
 
         when().the_plain_text_report_is_generated();
@@ -84,21 +84,23 @@ public class PlainTextScenarioWriterTest extends ScenarioTest<GivenReportModel<?
     public void data_tables_are_generated_in_text_reports() throws UnsupportedEncodingException {
         given()
             .a_report_model_with_one_scenario()
-            .and().the_scenario_has_parameters( "param1", "param2" )
-            .and().the_scenario_has_$_cases( 3 )
-            .and().case_$_has_arguments( 1, "arg10", "arg11" )
-            .and().case_$_has_arguments( 2, "arg20", "arg21" )
-            .and().case_$_has_arguments( 3, "arg30", "arg31" );
+            .and().the_scenario_has_$_default_cases( 3 )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "some arg step", "arg10", "aArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "another arg step", "arg11", "aArg2" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "some arg step", "arg20", "aArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "another arg step", "arg21", "aArg2" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 3, "some arg step", "arg30", "aArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 3, "another arg step", "arg31", "aArg2" );
 
         when().the_plain_text_report_is_generated();
 
-        then().the_report_contains_text( "<param1>" )
-            .and().the_report_contains_text( "<param2>" )
+        then().the_report_contains_text( "<aArg1>" )
+            .and().the_report_contains_text( "<aArg2>" )
             .and().the_report_contains_text( "\n" +
-                    "    | param1 | param2 |\n" +
-                    "    +--------+--------+\n" +
-                    "    |  arg10 |  arg11 |\n" +
-                    "    |  arg20 |  arg21 |\n" +
-                    "    |  arg30 |  arg31 |\n" );
+                    "    | aArg1 | aArg2 |\n" +
+                    "    +-------+-------+\n" +
+                    "    | arg10 | arg11 |\n" +
+                    "    | arg20 | arg21 |\n" +
+                    "    | arg30 | arg31 |\n" );
     }
 }

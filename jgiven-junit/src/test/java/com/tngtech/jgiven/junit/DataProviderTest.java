@@ -37,7 +37,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
         then().the_value_is_$not$_greater_than_zero( booleanArg );
 
         ScenarioModel scenarioModel = getScenario().getModel().getScenarios().get( 0 );
-        List<String> arguments = scenarioModel.getCase( caseNr ).arguments;
+        List<String> arguments = scenarioModel.getCase( caseNr ).getExplicitArguments();
         assertThat( arguments ).containsExactly( "" + intArg, "" + booleanArg, "" + caseNr );
     }
 
@@ -64,7 +64,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
             CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
             analyser.analyze( scenarioModel );
             ScenarioCaseModel case0 = scenarioModel.getCase( 0 );
-            assertParameter( case0, 0, scenarioModel.parameterNames.get( 0 ) );
+            assertParameter( case0, 0, scenarioModel.getExplicitParameters().get( 0 ) );
         }
     }
 
@@ -86,7 +86,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
             CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
             analyser.analyze( scenarioModel );
             ScenarioCaseModel case0 = scenarioModel.getCase( 0 );
-            assertParameter( case0, 0, scenarioModel.parameterNames.get( 0 ) );
+            assertParameter( case0, 0, scenarioModel.getExplicitParameters().get( 0 ) );
             assertParameter( case0, 1, "param0" );
         }
     }

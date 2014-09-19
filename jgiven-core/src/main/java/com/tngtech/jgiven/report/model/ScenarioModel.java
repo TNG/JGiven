@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.report.model;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -13,7 +14,8 @@ public class ScenarioModel {
     public String description;
     public Set<Tag> tags = Sets.newLinkedHashSet();
     public boolean notImplementedYet;
-    public List<String> parameterNames = Lists.newArrayList();
+    private List<String> explicitParameters = Lists.newArrayList();
+    private List<String> derivedParameters = Lists.newArrayList();
     private boolean casesAsTable;
     private final List<ScenarioCaseModel> scenarioCases = Lists.newArrayList();
     private long durationInNanos;
@@ -46,7 +48,16 @@ public class ScenarioModel {
     }
 
     public void addParameterNames( String... params ) {
-        parameterNames.addAll( Arrays.asList( params ) );
+        explicitParameters.addAll( Arrays.asList( params ) );
+    }
+
+    public void setExplicitParameters( List<String> params ) {
+        explicitParameters.clear();
+        explicitParameters.addAll( params );
+    }
+
+    public List<String> getExplicitParameters() {
+        return Collections.unmodifiableList( explicitParameters );
     }
 
     public List<ScenarioCaseModel> getScenarioCases() {
@@ -82,6 +93,11 @@ public class ScenarioModel {
     }
 
     public void addDerivedParameter( String parameterName ) {
-        this.parameterNames.add( parameterName );
+        this.derivedParameters.add( parameterName );
     }
+
+    public List<String> getDerivedParameters() {
+        return Collections.unmodifiableList( derivedParameters );
+    }
+
 }

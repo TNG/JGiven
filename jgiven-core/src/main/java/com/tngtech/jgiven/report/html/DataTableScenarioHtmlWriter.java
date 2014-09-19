@@ -33,7 +33,7 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
             writer.println( "<table class='data-table'>" );
             writer.println( "<tr>" );
             writer.print( "<th>#</th>" );
-            for( String param : scenarioModel.parameterNames ) {
+            for( String param : scenarioModel.getDerivedParameters() ) {
                 writer.print( "<th>" + param + "</th>" );
             }
             writer.print( "<th>Status</th>" );
@@ -42,7 +42,7 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
 
         writer.println( "<tr>" );
         writer.print( "<td>" + scenarioCase.caseNr + "</td>" );
-        for( String arg : scenarioCase.arguments ) {
+        for( String arg : scenarioCase.getDerivedArguments() ) {
             writer.print( "<td>" + arg + "</td>" );
         }
         writer.print( "<td>" );

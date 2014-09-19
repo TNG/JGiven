@@ -116,8 +116,8 @@ public class ReportModelBuilder implements ScenarioListener {
     @Override
     public void introWordAdded( String fillWord ) {
         introWord = new Word();
-        introWord.isIntroWord = true;
-        introWord.value = fillWord;
+        introWord.setIntroWord( true );
+        introWord.setValue( fillWord );
     }
 
     private List<Formatting<?>> getFormatters( Annotation[][] parameterAnnotations ) {
@@ -178,11 +178,11 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public void setArguments( List<String> arguments ) {
-        currentScenarioCase.arguments = arguments;
+        currentScenarioCase.setExplicitArguments( arguments );
     }
 
     public void setParameterNames( List<String> parameterNames ) {
-        currentScenarioModel.parameterNames = parameterNames;
+        currentScenarioModel.setExplicitParameters( parameterNames );
     }
 
     public void setClassName( String name ) {
@@ -376,7 +376,7 @@ public class ReportModelBuilder implements ScenarioListener {
     public void scenarioFinished() {
         AssertionUtil.assertTrue( scenarioStartedNanos > 0, "Scenario has no start time" );
         long durationInNanos = System.nanoTime() - scenarioStartedNanos;
-        currentScenarioCase.setDurationInNanoes( durationInNanos );
+        currentScenarioCase.setDurationInNanos( durationInNanos );
         currentScenarioModel.addDurationInNanos( durationInNanos );
     }
 

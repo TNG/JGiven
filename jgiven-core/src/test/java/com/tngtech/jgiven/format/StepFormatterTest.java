@@ -80,8 +80,17 @@ public class StepFormatterTest {
 
         List<Word> formattedWords = new StepFormatter( source, namedArguments, asList )
             .buildFormattedWords();
-        String actualResult = Joiner.on( ' ' ).join( formattedWords );
+        List<String> formattedValues = toFormattedValues( formattedWords );
+        String actualResult = Joiner.on( ' ' ).join( formattedValues );
         assertThat( actualResult ).matches( expectedResult );
+    }
+
+    private List<String> toFormattedValues( List<Word> formattedWords ) {
+        List<String> result = Lists.newArrayList();
+        for( Word w : formattedWords ) {
+            result.add( w.getFormattedValue() );
+        }
+        return result;
     }
 
     @Test

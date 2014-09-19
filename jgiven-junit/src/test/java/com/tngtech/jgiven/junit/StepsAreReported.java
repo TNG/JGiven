@@ -37,12 +37,12 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
         assertThat( model.className ).isEqualTo( StepsAreReported.class.getName() );
         assertThat( model.testMethodName ).isEqualTo( "given_steps_are_reported" );
         assertThat( model.description ).isEqualTo( "given steps are reported" );
-        assertThat( model.parameterNames ).isEmpty();
+        assertThat( model.getExplicitParameters() ).isEmpty();
         assertThat( model.tags ).isEmpty();
         assertThat( model.getScenarioCases() ).hasSize( 1 );
 
         ScenarioCaseModel scenarioCase = model.getCase( 0 );
-        assertThat( scenarioCase.arguments ).isEmpty();
+        assertThat( scenarioCase.getExplicitArguments() ).isEmpty();
         assertThat( scenarioCase.caseNr ).isEqualTo( 1 );
         assertThat( scenarioCase.steps ).hasSize( 1 );
 

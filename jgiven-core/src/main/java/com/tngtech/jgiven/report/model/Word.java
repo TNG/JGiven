@@ -2,9 +2,18 @@ package com.tngtech.jgiven.report.model;
 
 import com.google.common.base.Objects;
 
+/**
+ * Represents a part of a step.
+ */
 public class Word {
-    public String value;
-    public boolean isIntroWord;
+    private String value;
+
+    /**
+     * Whether this word is an introduction word.
+     * <p>
+     * Typical English introduction words are given, when, then, and, but
+     */
+    private boolean isIntroWord;
 
     /**
      * Is set when this word is an argument, is <code>null</code> otherwise.
@@ -14,19 +23,31 @@ public class Word {
     public Word() {}
 
     public Word( String value ) {
-        this.value = value;
+        this.setValue( value );
     }
 
     public Word( String value, boolean isIntroWord ) {
-        this.value = value;
-        this.isIntroWord = isIntroWord;
+        this.setValue( value );
+        this.setIntroWord( isIntroWord );
     }
 
     public static Word argWord( String argumentName, String value ) {
+        return argWord( argumentName, value, null );
+    }
+
+    public static Word argWord( String argumentName, String value, String formattedValue ) {
         Word word = new Word( value );
         word.argumentInfo = new ArgumentInfo();
         word.argumentInfo.setArgumentName( argumentName );
+        word.argumentInfo.setFormattedValue( formattedValue );
         return word;
+    }
+
+    public String getFormattedValue() {
+        if( isArg() && getArgumentInfo().getFormattedValue() != null ) {
+            return getArgumentInfo().getFormattedValue();
+        }
+        return getValue();
     }
 
     public static Word introWord( String value ) {
@@ -38,7 +59,7 @@ public class Word {
     }
 
     public void append( String word ) {
-        value += " " + word;
+        setValue( getValue() + " " + word );
     }
 
     public boolean isArg() {
@@ -51,12 +72,12 @@ public class Word {
 
     @Override
     public String toString() {
-        return value;
+        return getValue();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( isIntroWord, value, argumentInfo );
+        return Objects.hashCode( isIntroWord(), getValue(), argumentInfo );
     }
 
     @Override
@@ -71,9 +92,21 @@ public class Word {
             return false;
         }
         Word other = (Word) obj;
-        return Objects.equal( isIntroWord, other.isIntroWord ) &&
-                Objects.equal( value, other.value ) &&
+        return Objects.equal( isIntroWord(), other.isIntroWord() ) &&
+                Objects.equal( getValue(), other.getValue() ) &&
                 Objects.equal( argumentInfo, other.argumentInfo );
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public boolean isIntroWord() {
+        return isIntroWord;
+    }
+
+    public void setIntroWord( boolean isIntroWord ) {
+        this.isIntroWord = isIntroWord;
     }
 
 }
