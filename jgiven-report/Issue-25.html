@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
   <meta charset='utf-8'>
-  <title>com.tngtech.jgiven.junit.de.JUnitParameterizedRunnerTest</title>
+  <title>Issue.25</title>
   <link href='style.css' rel='stylesheet'>
 </head>
 <body>
@@ -12,7 +12,7 @@
 <ul>
 <li><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html' >DeSzenarioTest</a>
 <li><a href='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest.html' >HtmlWriterScenarioTest</a>
-<li><a href='com.tngtech.jgiven.junit.de.JUnitParameterizedRunnerTest.html' >JUnitParameterizedRunnerTest</a>
+<li><a href='com.tngtech.jgiven.junit.de.JUnitExecutorTest.html' >JUnitExecutorTest</a>
 <li><a href='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest.html' >PlainTextGeneratorScenarioTest</a>
 <li><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html' >PlainTextScenarioWriterTest</a>
 <li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a>
@@ -23,6 +23,7 @@
 <h3>Tags</h3>
 <ul>
 <li><a href='Feature-Data_Tables.html'>Data Tables</a>
+<li><a href='Feature-Derived_Parameters.html'>Derived Parameters</a>
 <li><a href='Feature-Duration.html'>Duration</a>
 <li><a href='Feature-German_Scenarios.html'>German Scenarios</a>
 <li><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a>
@@ -30,6 +31,7 @@
 <li><a href='Issue-_10.html'>Issue-#10</a>
 <li><a href='Issue-_4.html'>Issue-#4</a>
 <li><a href='Issue-_9.html'>Issue-#9</a>
+<li><a href='Issue-25.html'>Issue-25</a>
 <li><a href='Feature-JUnit.html'>JUnit</a>
 <li><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a>
 <li><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a>
@@ -41,34 +43,34 @@
 </div> <!-- leftpane -->
 <div id='rightpane'>
 <div id='header'>
-<div class='packagename'>com.tngtech.jgiven.junit.de</div>
-<h2>JUnitParameterizedRunnerTest</h2>
+<div class='packagename'>Issue</div>
+<h2>25</h2>
+<div class='description'>Issue numbers correspond to Issues in GitHub</div>
 </div>
 <div id='content'>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.junit.de.JUnitParameterizedRunnerTest:the JUnit Parameterized runner creates correct cases")'><i class='icon-ok'></i> The JUnit Parameterized runner creates correct cases <span class='duration'>(19.26 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div></div>
-<div class='scenario-body' id='com.tngtech.jgiven.junit.de.JUnitParameterizedRunnerTest:the JUnit Parameterized runner creates correct cases'>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.de.JUnitExecutorTest:test classes with only ignored test result in a valid report")'><i class='icon-ok'></i> Test classes with only ignored test result in a valid report <span class='duration'>(4.03 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-25.html'>Issue-25</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.junit.de.JUnitExecutorTest:test classes with only ignored test result in a valid report'>
 <div class='scenario-content'>
 <div class='case passedCase'>
-<ul class='steps' id='com.tngtech.jgiven.junit.de.JUnitParameterizedRunnerTest:the JUnit Parameterized runner creates correct cases:1'>
-<li><span class='introWord'>Given</span> a JUnit test class with the Parameterized Runner <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> the test class has <span class='argument '>2</span> parameters <span class='duration'>(0.02 ms)</span></li>
-<li><span class='introWord'>When</span> the test class is executed with JUnit <span class='duration'>(15.98 ms)</span></li>
-<li><span class='introWord'>Then</span> the report model contains one scenario for each test method <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> each scenario contains <span class='argument '>2</span> cases <span class='duration'>(0.47 ms)</span></li>
+<ul class='steps' id='com.tngtech.jgiven.junit.de.JUnitExecutorTest:test classes with only ignored test result in a valid report:1'>
+<li><span class='introWord'>Given</span> a test class with all tests ignored <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>When</span> the test class is executed with JUnit <span class='duration'>(2.25 ms)</span></li>
+<li><span class='introWord'>Then</span> the report model contains <span class='argument '>0</span> scenarios <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> the report model has a valid class name <span class='duration'>(0.10 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.junit.de.JUnitParameterizedRunnerTest.html'>com.tngtech.jgiven.junit.de.JUnitParameterizedRunnerTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.junit.de.JUnitExecutorTest.html'>com.tngtech.jgiven.junit.de.JUnitExecutorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>1 scenarios, 1 cases, 5 steps, 0 failed cases  <span class='duration'>(19.26 ms)</span></div>
+<div class='statistics'>1 scenarios, 1 cases, 4 steps, 0 failed cases  <span class='duration'>(4.03 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://github.com/TNG/JGiven'>JGiven</a> - on Sep 7, 2014 10:29:28 PM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.4.1-SNAPSHOT-66effa - on Sep 19, 2014 3:33:38 PM</div>
 <script src='report.js'></script>
 </body></html>

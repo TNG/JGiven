@@ -27,3 +27,7 @@ ul.steps {
 .scenario-footer a {
   font-size: 8pt;
 }
+
+.collapsed {
+  display: block;
+}
