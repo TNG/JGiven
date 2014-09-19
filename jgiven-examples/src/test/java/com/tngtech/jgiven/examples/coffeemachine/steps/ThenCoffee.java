@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.examples.coffeemachine.CoffeeMachine;
+import com.tngtech.jgiven.format.BooleanFormatter;
 
 public class ThenCoffee extends Stage<ThenCoffee> {
 
@@ -14,8 +16,9 @@ public class ThenCoffee extends Stage<ThenCoffee> {
     @ExpectedScenarioState
     private CoffeeMachine coffeeMachine;
 
-    public void I_should_$or_should_not$_be_served_a_coffee( /*@Format( NotFormatter.class )*/boolean coffeeServed ) {
-        I_should_be_served_a_coffee( coffeeServed );
+    public void I_$should_or_should_not$_be_served_a_coffee(
+            @Format( value = BooleanFormatter.class, args = { "should", "should not" } ) boolean shouldOrShouldNot ) {
+        I_should_be_served_a_coffee( shouldOrShouldNot );
     }
 
     public void I_should_not_be_served_a_coffee() {

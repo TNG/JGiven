@@ -30,8 +30,8 @@ public class GivenCoffee extends Stage<GivenCoffee> {
         return this;
     }
 
-    public GivenCoffee the_machine_is_$on_or_off$( @Format( value = BooleanFormatter.class, args = { "on", "off" } ) boolean on ) {
-        coffeeMachine.on = on;
+    public GivenCoffee the_machine_is_$on_or_off$( @Format( value = BooleanFormatter.class, args = { "on", "off" } ) boolean onOrOff ) {
+        coffeeMachine.on = onOrOff;
         return this;
     }
 

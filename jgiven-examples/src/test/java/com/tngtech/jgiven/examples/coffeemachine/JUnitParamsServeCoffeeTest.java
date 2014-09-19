@@ -29,17 +29,17 @@ public class JUnitParamsServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCo
         "true, 0, 2, false",
         "false, 1, 2, false"
     } )
-    public void buy_a_coffee( boolean on, int coffees, int dollars, boolean coffeeServed ) {
+    public void buy_a_coffee( boolean onOrOff, int coffees, int dollars, boolean shouldOrShouldNot ) {
 
         given().a_coffee_machine().
             and().there_are_$_coffees_left_in_the_machine( coffees ).
-            and().the_machine_is_$on_or_off$( on ).
+            and().the_machine_is_$on_or_off$( onOrOff ).
             and().the_coffee_costs_$_dollar( 2 );
 
         when().I_insert_$_one_euro_coins( dollars ).
             and().I_press_the_coffee_button();
 
-        then().I_should_$or_should_not$_be_served_a_coffee( coffeeServed );
+        then().I_$should_or_should_not$_be_served_a_coffee( shouldOrShouldNot );
     }
 
 }
