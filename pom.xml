@@ -38,7 +38,7 @@
     <maven-release-plugin.version>2.5</maven-release-plugin.version>
 
     <!-- Dependency Versions -->
-    <junit-dataprovider.version>1.9.1</junit-dataprovider.version>
+    <junit-dataprovider.version>1.9.2</junit-dataprovider.version>
     <junit.version>4.9</junit.version>
     <junitparams.version>1.0.2</junitparams.version>
     <testng.version>6.8.7</testng.version>
