@@ -2,17 +2,39 @@
 
 ## New Features
 
-* implement derived parameters [#15](https://github.com/TNG/JGiven/issues/15)
+### Derived Parameters [#15](https://github.com/TNG/JGiven/issues/15)
+
+Derived parameters are parameters of step methods that are not directly passed
+to the scenario as a parameter, but are derived from them.
+
+Consider the following example that tests that a simple calculator can add 1 to some input number:
+
+```
+@Test
+@DataProvider( { "0", "1", "3" })
+public void the_calculator_should_be_able_to_add_one(int input) {
+   given().a_calculator()
+   when().adding_$_and_$( input, 1 );
+   then().the_result_is( input + 1 );
+}
+```
+
+The parameter of the last step `the_result_is` is not explicitly given as a parameter of the test method.
+Instead it is just derived from the input. In v0.4.0, JGiven would then not be able to generate a data table
+and fall back to print every case individually in the report.
+In v0.5.0, JGiven will treat this derived parameter just like a normal parameter and will generate a data table
+for it. The name of the placeholder is then taken from parameter name of the step method.
+In addition, if an explicitly parameter is not used at all (but only derived values)
+it will then not even appear in the data table.
+
 
 ## Backwards incompatible changes
 
 ### JSON Model
 
 * The JSON model has been changed to support [#15](https://github.com/TNG/JGiven/issues/15).
-  Step arguments now have their argument name derived from the parameter name of
-  the step method. In addition, the parameter name is now directly stored in the
-  step argument instead as a parameter index. Finally, a new boolean field `isDerivedParameter`
-  has been added to indicate that an argument is a derived parameter.
+  This means that JSON models generated with v0.4.0 will not work with the report generator of v0.5.0.
+  This is in general no problem, because new JSON files are generated each time you execute your tests.
 
 # v0.4.0
 * made scenarios and cases in HTML reports collapsible [#18](https://github.com/TNG/JGiven/issues/18)
