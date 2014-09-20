@@ -27,6 +27,15 @@ for it. The name of the placeholder is then taken from parameter name of the ste
 In addition, if an explicitly parameter is not used at all (but only derived values)
 it will not even appear in the data table.
 
+## Smaller enhancements
+
+* Elapsed time in HTML report should be shown in a convenient unit [#24](https://github.com/TNG/JGiven/issues/24)
+* Test against different JUnit versions [#22](https://github.com/TNG/JGiven/issues/22)
+
+## Fixed Bugs
+
+* JGiven creates null.json files for test classes where all tests are ignored [#25](https://github.com/TNG/JGiven/issues/25)
+* Printed reports should not have collapsed scenarios [#23](https://github.com/TNG/JGiven/issues/23)
 
 ## Backwards incompatible changes
 
