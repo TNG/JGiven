@@ -63,8 +63,11 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
         if( scenarioModel.getScenarioCases().size() == 3 ) {
             CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
             analyser.analyze( scenarioModel );
-            ScenarioCaseModel case0 = scenarioModel.getCase( 0 );
-            assertParameter( case0, 0, scenarioModel.getExplicitParameters().get( 0 ) );
+            Word word = scenarioModel.getCase( 0 ).getStep( 0 ).getWord( 2 );
+            assertThat( word.isArg() ).isTrue();
+            assertThat( word.getArgumentInfo().isParameter() ).isFalse();
+            assertParameter( scenarioModel.getCase( 0 ), 1, scenarioModel.getExplicitParameters().get( 1 ) );
+            assertParameter( scenarioModel.getCase( 0 ), 2, scenarioModel.getExplicitParameters().get( 2 ) );
         }
     }
 
@@ -87,7 +90,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
             analyser.analyze( scenarioModel );
             ScenarioCaseModel case0 = scenarioModel.getCase( 0 );
             assertParameter( case0, 0, scenarioModel.getExplicitParameters().get( 0 ) );
-            assertParameter( case0, 1, "param0" );
+            assertParameter( case0, 1, "secondArg" );
         }
     }
 

@@ -56,4 +56,8 @@ public class StepModel {
     public void setDurationInNanos( long durationInNanos ) {
         this.durationInNanos = durationInNanos;
     }
+
+    public Word getWord( int i ) {
+        return this.words.get( i );
+    }
 }
