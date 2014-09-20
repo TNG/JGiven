@@ -25,7 +25,7 @@ and fall back to print every case individually in the report.
 In v0.5.0, JGiven will treat this derived parameter just like a normal parameter and will generate a data table
 for it. The name of the placeholder is then taken from parameter name of the step method.
 In addition, if an explicitly parameter is not used at all (but only derived values)
-it will then not even appear in the data table.
+it will not even appear in the data table.
 
 
 ## Backwards incompatible changes
