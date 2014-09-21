@@ -148,13 +148,17 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
                 writer.print( ' ' );
             }
             String text = HtmlEscapers.htmlEscaper().escape( word.getValue() );
-
+            String diffClass = diffClass( word );
             if( firstWord && word.isIntroWord() ) {
                 writer.print( format( "<span class='introWord'>%s</span>", WordUtil.capitalize( text ) ) );
             } else if( word.isArg() ) {
                 printArg( word );
             } else {
-                writer.print( text );
+                if( word.isDifferent() ) {
+                    writer.print( format( "<span class='%s'>%s</span>", diffClass, text ) );
+                } else {
+                    writer.print( text );
+                }
             }
             firstWord = false;
         }
@@ -170,13 +174,17 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         writer.println( "</li>" );
     }
 
+    private String diffClass( Word word ) {
+        return word.isDifferent() ? " diff" : "";
+    }
+
     private void printArg( Word word ) {
         String value = word.getArgumentInfo().isParameter() ? formatCaseArgument( word ) : HtmlEscapers.htmlEscaper().escape(
             word.getFormattedValue() );
         value = escapeToHtml( value );
-        String multiLine = value.contains( "<br />" ) ? "multiline" : "";
+        String multiLine = value.contains( "<br />" ) ? " multiline" : "";
         String caseClass = word.getArgumentInfo().isParameter() ? "caseArgument" : "argument";
-        writer.print( format( "<span class='%s %s'>%s</span>", caseClass, multiLine, value ) );
+        writer.print( format( "<span class='%s%s%s'>%s</span>", caseClass, multiLine, diffClass( word ), value ) );
     }
 
     private String escapeToHtml( String value ) {

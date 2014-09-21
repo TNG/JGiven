@@ -464,6 +464,7 @@ ul.steps li {
   display: inline-block;
   min-width: 3em;
   text-align: right;
+  color: black;
 }
 
 .caseArgument {
@@ -482,6 +483,10 @@ ul.steps li {
   display: inline-table;
   white-space: pre;
   margin: 5px;
+}
+
+.diff {
+  background-color: yellow;
 }
 
 .scenario h4 {

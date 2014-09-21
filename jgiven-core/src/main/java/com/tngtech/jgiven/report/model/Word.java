@@ -20,6 +20,12 @@ public class Word {
      */
     private ArgumentInfo argumentInfo;
 
+    /**
+     * Whether this word does not appear in all cases of the scenario.
+     * This is can be used to highlight this word in the report.
+     */
+    private boolean isDifferent;
+
     public Word() {}
 
     public Word( String value ) {
@@ -107,6 +113,14 @@ public class Word {
 
     public void setIntroWord( boolean isIntroWord ) {
         this.isIntroWord = isIntroWord;
+    }
+
+    public void setIsDifferent( boolean b ) {
+        this.isDifferent = b;
+    }
+
+    public boolean isDifferent() {
+        return isDifferent;
     }
 
 }

@@ -48,6 +48,10 @@ public class CaseArgumentAnalyser {
         try {
             reduceMatrix( scenarioModel, collectPhase.argumentMatrix );
             scenarioModel.setCasesAsTable( allStepsEqual( collectPhase.allWords ) );
+            if( !scenarioModel.isCasesAsTable() ) {
+                new CaseDifferenceAnalyzer().analyze( scenarioModel );
+            }
+
         } catch( IndexOutOfBoundsException e ) {
             log.info( "Scenario model " + scenarioModel.className + "." + scenarioModel.testMethodName + " has no homogene cases."
                     + " Cannot analyse argument cases" );

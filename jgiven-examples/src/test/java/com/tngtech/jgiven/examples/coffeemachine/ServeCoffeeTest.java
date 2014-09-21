@@ -10,6 +10,7 @@ import com.tngtech.jgiven.examples.coffeemachine.steps.GivenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.ThenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.WhenCoffee;
 import com.tngtech.jgiven.junit.ScenarioTest;
+import com.tngtech.jgiven.tags.FeatureCaseDiffs;
 import com.tngtech.jgiven.tags.FeatureDataTables;
 import com.tngtech.jgiven.tags.Issue;
 
@@ -112,5 +113,25 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
             and().I_press_the_coffee_button();
 
         then().I_$should_or_should_not$_be_served_a_coffee( shouldOrShouldNot );
+    }
+
+    @Test
+    @FeatureCaseDiffs
+    @DataProvider( { "true", "false" } )
+    public void turned_off_machines_should_not_serve_coffee( boolean onOrOff ) {
+        given().a_coffee_machine()
+            .and().there_are_$_coffees_left_in_the_machine( 2 )
+            .and().the_machine_is_$on_or_off$( onOrOff );
+
+        when().I_insert_$_one_euro_coins( 2 ).
+            and().I_press_the_coffee_button();
+
+        if( onOrOff ) {
+            then().I_should_be_served_a_coffee();
+        } else {
+            then().I_should_not_be_served_a_coffee().
+                and().no_error_is_shown();
+        }
+
     }
 }

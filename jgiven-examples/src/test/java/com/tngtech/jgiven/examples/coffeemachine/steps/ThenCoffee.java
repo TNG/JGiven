@@ -21,8 +21,8 @@ public class ThenCoffee extends Stage<ThenCoffee> {
         I_should_be_served_a_coffee( shouldOrShouldNot );
     }
 
-    public void I_should_not_be_served_a_coffee() {
-        I_should_be_served_a_coffee( false );
+    public ThenCoffee I_should_not_be_served_a_coffee() {
+        return I_should_be_served_a_coffee( false );
     }
 
     private ThenCoffee I_should_be_served_a_coffee( boolean b ) {
@@ -50,6 +50,15 @@ public class ThenCoffee extends Stage<ThenCoffee> {
 
     public ThenCoffee there_are_$_coffees_left_in_the_machine( int coffeesLeft ) {
         assertThat( coffeeMachine.coffees ).isEqualTo( coffeesLeft );
+        return self();
+    }
+
+    public ThenCoffee I_should_be_served_a_coffee() {
+        return I_should_be_served_a_coffee( true );
+    }
+
+    public ThenCoffee no_error_is_shown() {
+        assertThat( coffeeMachine.message ).isNull();
         return self();
     }
 }
