@@ -27,7 +27,7 @@ for it. The name of the placeholder is then taken from parameter name of the ste
 In addition, if an explicitly parameter is not used at all (but only derived values)
 it will not even appear in the data table.
 
-### Highlight differences in cases that cannot be shown as a data table [#14](https://github.com/TNG/JGiven/issues/14)
+### Case differences highlighting [#14](https://github.com/TNG/JGiven/issues/14)
 
 If multiple cases of the same scenario are structurally different, JGiven cannot generate a data table for them.
 Instead each case is printed individually in the report.
