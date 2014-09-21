@@ -427,6 +427,16 @@ h1 {
   vertical-align: middle;
 }
 
+.count {
+  background-color: #aaa;
+  color: white;
+  border-radius: 7px;
+  font-size: 10px;
+  margin-right: 0em;
+  margin-left: 0.5em;
+  background-color: gray;
+}
+
 .stages {
   margin: 0;
   margin-top: 10px;
@@ -464,6 +474,7 @@ ul.steps li {
   display: inline-block;
   min-width: 3em;
   text-align: right;
+  color: black;
 }
 
 .caseArgument {
@@ -482,6 +493,10 @@ ul.steps li {
   display: inline-table;
   white-space: pre;
   margin: 5px;
+}
+
+.diff {
+  background-color: yellow;
 }
 
 .scenario h4 {
