@@ -36,6 +36,7 @@ To help the reader, the differences are now highlighted in the HTML report.
 
 ## Smaller enhancements
 
+* Show number of cases in the scenario headline of the HTML report [#26](https://github.com/TNG/JGiven/issues/26)
 * Elapsed time in HTML report should be shown in a convenient unit [#24](https://github.com/TNG/JGiven/issues/24)
 * Test against different JUnit versions [#22](https://github.com/TNG/JGiven/issues/22)
 
