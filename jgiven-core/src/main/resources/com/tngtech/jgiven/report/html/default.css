@@ -427,6 +427,16 @@ h1 {
   vertical-align: middle;
 }
 
+.count {
+  background-color: #aaa;
+  color: white;
+  border-radius: 7px;
+  font-size: 10px;
+  margin-right: 0em;
+  margin-left: 0.5em;
+  background-color: gray;
+}
+
 .stages {
   margin: 0;
   margin-top: 10px;

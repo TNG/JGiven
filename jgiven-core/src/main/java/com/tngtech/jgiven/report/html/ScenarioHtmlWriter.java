@@ -43,7 +43,12 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
 
         writer.print( " " + WordUtil.capitalize( scenarioModel.description ) );
 
+        int numberOfCases = scenarioModel.getScenarioCases().size();
+        if( numberOfCases > 1 ) {
+            writer.print( "<span class='badge count'>" + numberOfCases + "</span>" );
+        }
         utils.writeDuration( scenarioModel.getDurationInNanos() );
+
         writer.println( "</h3>" );
 
         writeTagLine( scenarioModel );
