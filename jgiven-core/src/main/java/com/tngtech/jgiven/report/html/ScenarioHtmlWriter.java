@@ -112,7 +112,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
 
     void printCaseHeader( ScenarioCaseModel scenarioCase ) {
         writer.println( format( "<div class='case %sCase'>", scenarioCase.success ? "passed" : "failed" ) );
-        if( !scenarioCase.getExplicitArguments().isEmpty() ) {
+        if( scenarioModel.getScenarioCases().size() > 1 ) {
             writer.print( format( "<h4 onclick='toggle(\"%s\")'>", getCaseId() ) );
             writeStatusIcon( scenarioCase.success );
             writer.print( format( " Case %d: ", scenarioCase.caseNr ) );
