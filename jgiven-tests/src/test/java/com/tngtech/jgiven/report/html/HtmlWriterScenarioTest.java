@@ -142,7 +142,7 @@ public class HtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, Wh
             .and().case_$_has_a_step_$_with_argument( 1, "uses the first parameter", "arg1" )
             .and().case_$_has_arguments( 2, "arg2", "anotherArg2" )
             .and().case_$_has_a_step_$_with_argument( 2, "uses the first parameter", "arg2" )
-            .and().case_$_has_a_step_$( 2, "some extra step method only appearing in case 2" );
+            .and().case_$_has_step_$( 2, "some extra step method only appearing in case 2" );
 
         when().the_HTML_report_is_generated();
         then().the_HTML_report_contains_pattern( "Case 1: param1 = arg1, param2 = anotherArg1" )

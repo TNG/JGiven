@@ -8,12 +8,19 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.impl.intercept.InvocationMode;
-import com.tngtech.jgiven.report.impl.CaseArgumentAnalyser;
+import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
 
     @ProvidedScenarioState
     protected ReportModel reportModel;
+
+    private boolean analyze = true;
+
+    public SELF an_unanalyzed_report_model_with_one_scenario() {
+        analyze = false;
+        return a_report_model_with_one_scenario();
+    }
 
     public SELF a_report_model_with_one_scenario() {
         return a_report_model();
@@ -121,7 +128,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
-    public SELF case_$_has_a_step_$( int ncase, String name ) {
+    public SELF case_$_has_step_$( int ncase, String name ) {
         getCase( ncase ).addStep( name, Arrays.asList( Word.introWord( "when" ), new Word( name ) ),
             InvocationMode.NORMAL );
         return self();
@@ -171,6 +178,8 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     @AfterStage
     public void analyzeReport() {
-        new CaseArgumentAnalyser().analyze( reportModel );
+        if( analyze ) {
+            new CaseArgumentAnalyser().analyze( reportModel );
+        }
     }
 }

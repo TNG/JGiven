@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.report.impl;
+package com.tngtech.jgiven.report.analysis;
 
 import java.util.Collection;
 import java.util.Iterator;

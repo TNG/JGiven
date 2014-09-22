@@ -13,7 +13,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
-import com.tngtech.jgiven.report.impl.CaseArgumentAnalyser;
+import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.Word;

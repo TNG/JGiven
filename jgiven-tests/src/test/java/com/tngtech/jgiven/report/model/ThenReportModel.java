@@ -59,4 +59,22 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
         return self();
     }
 
+    public SELF word_$_of_step_$_of_case_$_is_marked_as_diff( int wordNr, int stepNr, int caseNr ) {
+        return isDifferent( wordNr, stepNr, caseNr, true );
+    }
+
+    public SELF word_$_of_step_$_of_case_$_is_not_marked_as_diff( int wordNr, int stepNr, int caseNr ) {
+        return isDifferent( wordNr, stepNr, caseNr, false );
+    }
+
+    private SELF isDifferent( int wordNr, int stepNr, int caseNr, boolean expected ) {
+        Word word = getWord( caseNr, stepNr, wordNr );
+        assertThat( word.isDifferent() ).isEqualTo( expected );
+        return self();
+    }
+
+    private Word getWord( int caseNr, int stepNr, int wordNr ) {
+        return reportModel.getLastScenarioModel().getCase( caseNr - 1 ).getStep( stepNr - 1 ).getWord( wordNr - 1 );
+    }
+
 }

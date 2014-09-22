@@ -1,10 +1,10 @@
-package com.tngtech.jgiven.report.impl;
+package com.tngtech.jgiven.report.analysis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.tngtech.jgiven.report.impl.CaseArgumentAnalyser.CollectPhase;
+import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser.CollectPhase;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.Word;
 
