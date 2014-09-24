@@ -162,6 +162,10 @@ h1 {
   color: #f0f0f0;
 }
 
+#toc {
+  position:relative;
+}
+
 #toc h3 {
   margin:0px;
   margin-top: 10px;
@@ -172,6 +176,33 @@ h1 {
   color: #444;
   text-shadow: 1px 1px 1px #fff;
 }
+
+#toc > .icon-cancel {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  color: gray;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+#toc .icon-cancel:hover {
+  color: lightgray;
+}
+
+#show-menu-icon {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  cursor: pointer;
+  color: lightgray;
+  font-size: 12px;
+}
+
+#show-menu-icon:hover {
+  color: white;
+}
+
 
 .package {
     font-size: 70%;
@@ -222,6 +253,7 @@ h1 {
 }
 
 #header {
+  position: relative;
   padding: 20px;
 }
 

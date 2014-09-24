@@ -1,3 +1,36 @@
+init();
+
+function init() {
+   if (document.location.search.indexOf('toc=0') != -1) {
+      hideToc();
+   }
+}
+
+function showToc() {
+   toggle('toc');
+   if (document.location.search.indexOf('toc=0') != -1) {
+      document.location.search = document.location.search.replace("toc=0", "");
+   }
+   toggle('show-menu-icon');
+}
+
+function hideToc() {
+   toggle('toc');
+   if (document.location.search.indexOf('toc=1') != -1) {
+      document.location.search = document.location.search.replace("toc=1", "toc=0");
+   } else if (document.location.search.indexOf('toc=0') == -1) {
+      document.location.search = document.location.search + "toc=0";
+   }
+   toggle('show-menu-icon');
+
+   var elements = document.getElementsByTagName("A");
+   for (i = 0; i < elements.length; i++) {
+      var href = elements[i].getAttribute('href');
+      elements[i].setAttribute('href', href + '?toc=0');
+   }
+
+}
+
 /**
  * Invoked when the use clicks on the header of a collapsibel element
  * @param id
@@ -50,9 +83,23 @@ function searchChanged(event) {
       var searchfield = document.getElementById('searchfield');
       var search = searchfield.value;
       console.log("Search for " + search);
-
       openMatchingElements(new RegExp(search,'i'), toc, 0);
+
+      if (search === '') {
+         collapseAllUl(toc, 0);
+      }
    }, 100);
+}
+
+function collapseAllUl(element, depth) {
+   if (depth > 2 && element.tagName === "UL" && !isCollapsed(element)) {
+      toggleElement(element);
+   }
+
+   var children = element.childNodes;
+   for(var i=0; i < children.length; i++) {
+      collapseAllUl(children[i], depth + 1);
+   }
 }
 
 function openMatchingElements(search, element, depth) {
@@ -60,7 +107,7 @@ function openMatchingElements(search, element, depth) {
       return true;
    }
 
-   if (depth > 1 && (element.tagName === "UL" || element.tagName === "LI") && !isCollapsed(element)) {
+   if (depth > 2 && (element.tagName === "UL" || element.tagName === "LI") && !isCollapsed(element)) {
       toggleElement(element);
    }
 

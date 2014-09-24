@@ -36,6 +36,7 @@ public class HtmlTocWriter {
         writer.println( "<div id='col-container'>" );
         writer.println( "<div id='leftpane'>" );
         writer.println( "<div id='toc'>" );
+        writer.println( "<i class='icon-cancel' onclick='hideToc()'></i>" );
         writeSearchInput();
         writePackages();
         writeTagLinks();
@@ -68,7 +69,7 @@ public class HtmlTocWriter {
         } else {
             if( !toc.name.equals( "" ) ) {
                 writer.print( "<li><h4 class='packagename' onclick='toggle(\"" + toc.name + "\")'>" + name + "</h4>" );
-                String collapsed = name.equals( toc.name ) ? "" : "collapsed";
+                String collapsed = "collapsed";
                 writer.println( "<ul class='" + collapsed + "' id='" + toc.name + "'>" );
             }
             printPackageTocs( toc.packages );

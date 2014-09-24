@@ -144,6 +144,7 @@ public class HtmlWriter extends ReportModelVisitor {
 
     void writeHeader( ReportModel reportModel ) {
         writer.println( "<div id='header'>" );
+        writer.println( "<i id='show-menu-icon' class='icon-menu collapsed' onclick='showToc()'></i>" );
 
         String packageName = "";
         String className = reportModel.getClassName();
