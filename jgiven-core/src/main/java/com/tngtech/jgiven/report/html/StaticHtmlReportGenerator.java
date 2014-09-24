@@ -17,6 +17,7 @@ import com.google.common.collect.Maps;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
+import com.tngtech.jgiven.report.html.PackageTocBuilder.PackageToc;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.json.JsonModelTraverser;
 import com.tngtech.jgiven.report.json.ReportModelFileHandler;
@@ -93,7 +94,8 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
     }
 
     public void writeEnd() {
-        HtmlTocWriter tocWriter = new HtmlTocWriter( tagMap, models );
+        PackageToc packageToc = new PackageTocBuilder( models ).getRootPackageToc();
+        HtmlTocWriter tocWriter = new HtmlTocWriter( tagMap, packageToc );
         for( ModelFile modelFile : models ) {
             HtmlWriter.writeModelToFile( modelFile.model, tocWriter, modelFile.file );
         }

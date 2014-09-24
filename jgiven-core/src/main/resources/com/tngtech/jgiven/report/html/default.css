@@ -33,7 +33,9 @@ html, body {
 html {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
+
 body {
   padding: 0px;
   font: 14px "Open Sans", "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -41,6 +43,9 @@ body {
   margin: 0;
 }
 
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 
 a {
   text-decoration: none;
@@ -88,6 +93,7 @@ h2, h2 a {
   font-size: 20px;
   padding: 10px;
   margin: 0px;
+  min-width: 10em;
 }
 
 #toc-container {
@@ -96,22 +102,48 @@ h2, h2 a {
 
 #toc ul {
   list-style-type: none;
+  padding:0px;
+  padding-left:10px;
+  margin:0px;
+  white-space-collapsing:discard;
+  font-size:0px;
+}
+
+#toc > ul {
+  margin-top: 0px;
   padding: 10px;
-  padding-top:0px;
-  margin-top:10px;
 }
 
 #toc ul li {
-  padding-top:0px;
+  padding-top:3px;
   padding-bottom:0px;
-  margin-top:-5px;
+  margin-top:0px;
   margin-bottom:0px;
+  font-size:0px;
 }
 
 #toc ul a {
   text-decoration: none;
   color: #000066;
   font-size: 14px;
+}
+
+#toc ul h4 {
+  color: #444;
+  padding:0;
+  margin:0;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+#searchfield {
+  border: 1px solid gray;
+  border-radius: 15px;
+  font-size: 14px;
+  margin-left: 10px;
+  margin-top: 5px;
+  padding: 5px 10px;
+  width: 90%;
 }
 
 h1 {

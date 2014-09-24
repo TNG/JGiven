@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.tngtech.jgiven.report.html.PackageTocBuilder.PackageToc;
 import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator.ModelFile;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.Tag;
@@ -17,11 +18,11 @@ import com.tngtech.jgiven.report.model.Tag;
 public class HtmlTocWriter {
     protected PrintWriter writer;
     private final Map<Tag, List<ScenarioModel>> tagMap;
-    private final List<ModelFile> models;
+    private final PackageToc packageToc;
 
-    public HtmlTocWriter( Map<Tag, List<ScenarioModel>> tagMap, List<ModelFile> models ) {
+    public HtmlTocWriter( Map<Tag, List<ScenarioModel>> tagMap, PackageToc packageToc ) {
         this.tagMap = tagMap;
-        this.models = models;
+        this.packageToc = packageToc;
     }
 
     public void writeToc( PrintWriter writer ) {
@@ -29,38 +30,65 @@ public class HtmlTocWriter {
         writer.println( "<div id='col-container'>" );
         writer.println( "<div id='leftpane'>" );
         writer.println( "<div id='toc'>" );
-        writeClassLinks();
+        writeSearchInput();
+        writePackages();
         writeTagLinks();
         writer.println( "</div> <!-- toc -->" );
         writer.println( "</div> <!-- leftpane -->" );
     }
 
-    private void writeClassLinks() {
-        Comparator<ModelFile> comparator = new Comparator<ModelFile>() {
-            @Override
-            public int compare( ModelFile o1, ModelFile o2 ) {
-                return o1.model.getSimpleClassName().compareTo( o2.model.getSimpleClassName() );
-            }
-        };
-        List<ModelFile> sortedModels = Lists.newArrayList( models );
-        Collections.sort( sortedModels, comparator );
+    private void writeSearchInput() {
+        writer.println( "<input id='searchfield' type='input' onkeypress='searchChanged(event)'></input>" );
+    }
+
+    private void writePackages() {
         writer.println( "<h3>Test Classes</h3>" );
         writer.println( "<ul>" );
-        for( ModelFile modelFile : sortedModels ) {
-            writeClassLink( modelFile );
-        }
+        printPackageToc( "", packageToc );
         writer.println( "</ul>" );
     }
 
+    private void printPackageTocs( Iterable<PackageToc> tocs ) {
+        for( PackageToc toc : tocs ) {
+            printPackageToc( "", toc );
+        }
+    }
+
+    private void printPackageToc( String prefix, PackageToc toc ) {
+        String name = prefix + toc.getLastName();
+        if( toc.files.isEmpty() && toc.packages.size() == 1 ) {
+            String newPrefix = name.equals( "" ) ? "" : name + ".";
+            printPackageToc( newPrefix, toc.packages.get( 0 ) );
+        } else {
+            if( !toc.name.equals( "" ) ) {
+                writer.print( "<li><h4 class='packagename' onclick='toggle(\"" + toc.name + "\")'>" + name + "</h4>" );
+                String collapsed = name.equals( toc.name ) ? "" : "collapsed";
+                writer.println( "<ul class='" + collapsed + "' id='" + toc.name + "'>" );
+            }
+            printPackageTocs( toc.packages );
+            printClassLinks( toc.files );
+            if( !toc.name.equals( "" ) ) {
+                writer.print( "</ul></li>" );
+            }
+        }
+    }
+
+    private void printClassLinks( List<ModelFile> files ) {
+        for( ModelFile modelFile : files ) {
+            writeClassLink( modelFile );
+        }
+    }
+
     private void writeClassLink( ModelFile model ) {
-        writer.println( format( "<li><a href='%s' >%s</a>",
+        writer.print( format( "<li><a href='%s' >%s</a></li>",
             model.file.getName(),
             model.model.getSimpleClassName() ) );
     }
 
     private void writeTagLinks() {
-        if( tagMap.isEmpty() )
+        if( tagMap.isEmpty() ) {
             return;
+        }
 
         List<Tag> sortedTags = getSortedTags();
 

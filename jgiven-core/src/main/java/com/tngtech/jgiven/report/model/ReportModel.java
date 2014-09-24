@@ -92,4 +92,8 @@ public class ReportModel {
         this.scenarios = scenarios;
     }
 
+    public String getPackageName() {
+        return this.className.substring( 0, this.className.lastIndexOf( '.' ) );
+    }
+
 }
