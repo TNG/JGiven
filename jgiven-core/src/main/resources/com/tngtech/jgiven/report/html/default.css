@@ -138,7 +138,7 @@ h2, h2 a {
   cursor: pointer;
 }
 
-#searchfield {
+#searchfield, #searchfield:focus {
   border: 1px solid gray;
   border-radius: 15px;
   font-size: 14px;
@@ -146,6 +146,11 @@ h2, h2 a {
   margin-top: 5px;
   padding: 5px 10px;
   width: 90%;
+}
+
+#searchfield:focus {
+  outline: none;
+  box-shadow: 0px 0px 3px blue;
 }
 
 h1 {
