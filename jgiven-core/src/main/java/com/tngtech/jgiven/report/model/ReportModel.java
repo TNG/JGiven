@@ -93,7 +93,11 @@ public class ReportModel {
     }
 
     public String getPackageName() {
-        return this.className.substring( 0, this.className.lastIndexOf( '.' ) );
+        int index = this.className.lastIndexOf( '.' );
+        if( index == -1 ) {
+            return "";
+        }
+        return this.className.substring( 0, index );
     }
 
 }

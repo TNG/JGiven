@@ -70,6 +70,8 @@ public class PackageTocBuilder {
 
     public PackageToc getRootPackageToc() {
         calculatePackageTocs();
+        getOrCreate( "" );
+
         Queue<PackageToc> tocCopy = Queues.newArrayDeque( tocs.values() );
         Map<String, PackageToc> handledTocs = Maps.newHashMap();
 
