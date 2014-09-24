@@ -8,27 +8,30 @@ function init() {
 
 function showToc() {
    toggle('toc');
-   if (document.location.search.indexOf('toc=0') != -1) {
-      document.location.search = document.location.search.replace("toc=0", "");
-   }
    toggle('show-menu-icon');
+   adaptHrefs(false);
 }
 
 function hideToc() {
    toggle('toc');
-   if (document.location.search.indexOf('toc=1') != -1) {
-      document.location.search = document.location.search.replace("toc=1", "toc=0");
-   } else if (document.location.search.indexOf('toc=0') == -1) {
-      document.location.search = document.location.search + "toc=0";
-   }
    toggle('show-menu-icon');
+   adaptHrefs(true);
+}
 
+function adaptHrefs(hideToc) {
    var elements = document.getElementsByTagName("A");
    for (i = 0; i < elements.length; i++) {
       var href = elements[i].getAttribute('href');
-      elements[i].setAttribute('href', href + '?toc=0');
-   }
 
+      var newHref;
+      if (hideToc) {
+         newHref = href + "?toc=0";
+      } else {
+         newHref = href.replace("?toc=0","");
+      }
+
+      elements[i].setAttribute('href', newHref);
+   }
 }
 
 /**
