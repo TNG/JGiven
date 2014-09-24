@@ -26,3 +26,6 @@
 .icon-ok:before { content: '\e800'; } /* '' */
 .icon-cancel:before { content: '\e801'; } /* '' */
 .icon-block:before { content: '\e802'; } /* '' */
+.icon-right-open:before { content: '\e803'; } /* '' */
+.icon-down-open:before { content: '\e804'; } /* '' */
+.icon-menu:before { content: '\e805'; } /* '' */
