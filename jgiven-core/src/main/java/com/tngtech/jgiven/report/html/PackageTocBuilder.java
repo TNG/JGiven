@@ -70,6 +70,8 @@ public class PackageTocBuilder {
 
     public PackageToc getRootPackageToc() {
         calculatePackageTocs();
+
+        // ensure that there is at least the root node
         getOrCreate( "" );
 
         Queue<PackageToc> tocCopy = Queues.newArrayDeque( tocs.values() );

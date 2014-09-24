@@ -35,33 +35,30 @@ function isCollapsed(element) {
    return element.style.display === 'none';
 }
 
+var searchTimeout;
+
 /**
  * Invoked when the content of the search field changes
  */
 function searchChanged(event) {
-   console.log("Search Changed "+event);
-   event = event || window.event;
-   if (event.keyCode !== 13) {
-      console.log("No enter");
-      return;
+   if (searchTimeout) {
+      window.clearTimeout(searchTimeout);
    }
 
-   var toc = document.getElementById('toc');
-   var searchfield = document.getElementById('searchfield');
-   var search = searchfield.value;
-   console.log("Search for " + search);
+   searchTimeout = window.setTimeout( function() {
+      var toc = document.getElementById('toc');
+      var searchfield = document.getElementById('searchfield');
+      var search = searchfield.value;
+      console.log("Search for " + search);
 
-   openMatchingElements(search, toc, 0);
+      openMatchingElements(search, toc, 0);
+   }, 100);
 }
 
 function openMatchingElements(search, element, depth) {
-   console.log("Search in "+element.value + " "+depth);
-   if (element.nodeType==3 && element.nodeValue.indexOf( search ) > -1) {
-      console.log("FOUND IN "+element);
+   if (element.nodeType==3 && element.nodeValue.match(new RegExp(search,'i') )) {
       return true;
    }
-
-
 
    if (depth > 1 && (element.tagName === "UL" || element.tagName === "LI") && !isCollapsed(element)) {
       toggleElement(element);
@@ -76,10 +73,7 @@ function openMatchingElements(search, element, depth) {
    }
 
    if (found) {
-      console.log("Found in child of "+element);
-
       if (isCollapsed(element)) {
-         console.log("Toggling "+element);
          toggleElement(element);
          if (element.tagName === "A") {
             element.classList.toggle('diff');

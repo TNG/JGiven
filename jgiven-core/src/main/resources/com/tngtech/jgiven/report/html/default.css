@@ -110,8 +110,9 @@ h2, h2 a {
 }
 
 #toc > ul {
-  margin-top: 0px;
+  margin-top: 5px;
   padding: 10px;
+  padding-top: 0px;
 }
 
 #toc ul li {
@@ -119,7 +120,8 @@ h2, h2 a {
   padding-bottom:0px;
   margin-top:0px;
   margin-bottom:0px;
-  font-size:0px;
+  font-size: 14px;
+  line-height: 1.25;
 }
 
 #toc ul a {

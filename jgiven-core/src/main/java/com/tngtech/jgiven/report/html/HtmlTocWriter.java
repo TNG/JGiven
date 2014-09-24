@@ -8,8 +8,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimaps;
+import com.google.common.collect.Ordering;
 import com.tngtech.jgiven.report.html.PackageTocBuilder.PackageToc;
 import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator.ModelFile;
 import com.tngtech.jgiven.report.model.ScenarioModel;
@@ -38,7 +42,7 @@ public class HtmlTocWriter {
     }
 
     private void writeSearchInput() {
-        writer.println( "<input id='searchfield' type='input' onkeypress='searchChanged(event)'></input>" );
+        writer.println( "<input id='searchfield' type='input' onkeydown='searchChanged(event)'></input>" );
     }
 
     private void writePackages() {
@@ -90,14 +94,34 @@ public class HtmlTocWriter {
             return;
         }
 
-        List<Tag> sortedTags = getSortedTags();
+        ImmutableListMultimap<String, Tag> tags = getGroupedTags();
 
         writer.println( "<h3>Tags</h3>" );
         writer.println( "<ul>" );
-        for( Tag tag : sortedTags ) {
-            writeTagLink( tag, tagMap.get( tag ) );
+        List<String> orderedKeys = Ordering.natural().sortedCopy( tags.keySet() );
+        for( String key : orderedKeys ) {
+            writer.println( "<li>" );
+            String tagId = "tag" + key;
+            writer.println( "<h4 onclick='toggle(\"" + tagId + "\")'>" + key + "</h4>" );
+            writer.println( "<ul id='" + tagId + "' class='collapsed'>" );
+
+            List<Tag> sortedTags = Ordering.usingToString().sortedCopy( tags.get( key ) );
+            for( Tag tag : sortedTags ) {
+                writeTagLink( tag, tagMap.get( tag ) );
+            }
+            writer.println( "</ul>" );
         }
         writer.println( "</ul>" );
+    }
+
+    private ImmutableListMultimap<String, Tag> getGroupedTags() {
+        ImmutableListMultimap<String, Tag> multiMap = Multimaps.index( tagMap.keySet(), new Function<Tag, String>() {
+            @Override
+            public String apply( Tag input ) {
+                return input.getName();
+            }
+        } );
+        return multiMap;
     }
 
     public List<Tag> getSortedTags() {
