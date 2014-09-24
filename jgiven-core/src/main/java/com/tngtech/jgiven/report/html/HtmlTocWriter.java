@@ -23,10 +23,12 @@ public class HtmlTocWriter {
     protected PrintWriter writer;
     private final Map<Tag, List<ScenarioModel>> tagMap;
     private final PackageToc packageToc;
+    private final ImmutableListMultimap<String, Tag> groupedTags;
 
     public HtmlTocWriter( Map<Tag, List<ScenarioModel>> tagMap, PackageToc packageToc ) {
         this.tagMap = tagMap;
         this.packageToc = packageToc;
+        groupedTags = getGroupedTags();
     }
 
     public void writeToc( PrintWriter writer ) {
@@ -94,18 +96,16 @@ public class HtmlTocWriter {
             return;
         }
 
-        ImmutableListMultimap<String, Tag> tags = getGroupedTags();
-
         writer.println( "<h3>Tags</h3>" );
         writer.println( "<ul>" );
-        List<String> orderedKeys = Ordering.natural().sortedCopy( tags.keySet() );
+        List<String> orderedKeys = Ordering.natural().sortedCopy( groupedTags.keySet() );
         for( String key : orderedKeys ) {
             writer.println( "<li>" );
             String tagId = "tag" + key;
             writer.println( "<h4 onclick='toggle(\"" + tagId + "\")'>" + key + "</h4>" );
             writer.println( "<ul id='" + tagId + "' class='collapsed'>" );
 
-            List<Tag> sortedTags = Ordering.usingToString().sortedCopy( tags.get( key ) );
+            List<Tag> sortedTags = Ordering.usingToString().sortedCopy( groupedTags.get( key ) );
             for( Tag tag : sortedTags ) {
                 writeTagLink( tag, tagMap.get( tag ) );
             }
