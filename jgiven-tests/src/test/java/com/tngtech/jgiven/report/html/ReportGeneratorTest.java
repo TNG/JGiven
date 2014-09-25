@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import com.tngtech.jgiven.junit.ScenarioTest;
+import com.tngtech.jgiven.JGivenScenarioTest;
 import com.tngtech.jgiven.report.ReportGenerator;
 import com.tngtech.jgiven.report.WhenReportGenerator;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
@@ -12,7 +12,7 @@ import com.tngtech.jgiven.report.text.ThenPlainTextReportGenerator;
 import com.tngtech.jgiven.tags.FeatureHtmlReport;
 import com.tngtech.jgiven.tags.FeatureTextReport;
 
-public class ReportGeneratorTest extends ScenarioTest<GivenJsonReports<?>, WhenReportGenerator<?>, ThenStaticHtmlReportGenerator<?>> {
+public class ReportGeneratorTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenReportGenerator<?>, ThenStaticHtmlReportGenerator<?>> {
 
     @Test
     @FeatureHtmlReport

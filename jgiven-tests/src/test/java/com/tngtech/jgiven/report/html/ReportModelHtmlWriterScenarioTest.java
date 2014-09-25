@@ -6,9 +6,7 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import com.tngtech.jgiven.JGivenTestConfiguration;
-import com.tngtech.jgiven.annotation.JGivenConfiguration;
-import com.tngtech.jgiven.junit.ScenarioTest;
+import com.tngtech.jgiven.JGivenScenarioTest;
 import com.tngtech.jgiven.report.model.GivenReportModel;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.tags.FeatureDataTables;
@@ -19,8 +17,7 @@ import com.tngtech.jgiven.tags.Issue;
 
 @FeatureHtmlReport
 @RunWith( DataProviderRunner.class )
-@JGivenConfiguration( JGivenTestConfiguration.class )
-public class ReportModelHtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, WhenReportModelHtmlWriter, ThenHtmlOutput> {
+public class ReportModelHtmlWriterScenarioTest extends JGivenScenarioTest<GivenReportModel<?>, WhenReportModelHtmlWriter, ThenHtmlOutput> {
 
     @DataProvider
     public static Object[][] statusTexts() {

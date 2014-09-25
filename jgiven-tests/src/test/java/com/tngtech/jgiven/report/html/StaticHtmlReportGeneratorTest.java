@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.jgiven.junit.ScenarioTest;
+import com.tngtech.jgiven.JGivenScenarioTest;
 import com.tngtech.jgiven.report.WhenReportGenerator;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.tags.FeatureHtmlReport;
@@ -17,7 +17,7 @@ import com.tngtech.jgiven.tags.Issue;
 @RunWith( DataProviderRunner.class )
 @FeatureHtmlReport
 public class StaticHtmlReportGeneratorTest extends
-        ScenarioTest<GivenJsonReports<?>, WhenReportGenerator<?>, ThenStaticHtmlReportGenerator<?>> {
+        JGivenScenarioTest<GivenJsonReports<?>, WhenReportGenerator<?>, ThenStaticHtmlReportGenerator<?>> {
 
     @Test
     @DataProvider( { "0", "1", "3" } )
