@@ -49,14 +49,27 @@ public class StatisticsPageHtmlWriter {
     }
 
     private void writeStatistics() {
-        printWriter.write( "Number of Classes: " + statistics.numClasses + "<br>" );
-        printWriter.write( "Number of Scenarios: " + statistics.numScenarios + "<br>" );
-        printWriter.write( "Number of Cases: " + statistics.numCases + "<br>" );
-        printWriter.write( "Number of Failed Cases: " + statistics.numFailedCases + "<br>" );
-        printWriter.write( "Number of Steps: " + statistics.numSteps + "<br>" );
-        printWriter.write( "Total Time: " + DurationFormatter.format( statistics.durationInNanos ) + "<br>" );
-
+        printWriter.write( "<div class='statistics-line'>" );
+        writeStatisticNumber( statistics.numClasses, "classes" );
+        writeStatisticNumber( statistics.numScenarios, "scenarios" );
+        writeStatisticNumber( statistics.numCases, "cases" );
+        writeStatisticNumber( statistics.numSteps, "steps" );
+        writeStatisticNumber( "" + statistics.numFailedCases, "failed cases", statistics.numFailedCases > 0 ? "failed" : "" );
+        writeStatisticNumber( DurationFormatter.format( statistics.durationInNanos ), "total time" );
         long averageNanos = statistics.numCases != 0 ? statistics.durationInNanos / statistics.numCases : 0;
-        printWriter.write( "Average duration per Case: " + DurationFormatter.format( averageNanos ) );
+        writeStatisticNumber( DurationFormatter.format( averageNanos ), "time / case" );
+        printWriter.println( "</div>" );
+    }
+
+    private void writeStatisticNumber( int number, String name ) {
+        writeStatisticNumber( number + "", name, "" );
+    }
+
+    private void writeStatisticNumber( String number, String name ) {
+        writeStatisticNumber( number, name, "" );
+    }
+
+    private void writeStatisticNumber( String number, String name, String extraClass ) {
+        printWriter.write( "<div class='statistics-number " + extraClass + "'><i>" + number + "</i><br/><b>" + name + "</b></div>" );
     }
 }
