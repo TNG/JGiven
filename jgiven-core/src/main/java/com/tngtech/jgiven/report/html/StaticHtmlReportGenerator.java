@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -18,10 +17,10 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.html.PackageTocBuilder.PackageToc;
-import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.json.JsonModelTraverser;
 import com.tngtech.jgiven.report.json.ReportModelFileHandler;
 import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StatisticsCalculator;
 import com.tngtech.jgiven.report.model.Tag;
@@ -96,38 +95,18 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
     public void writeEnd() {
         PackageToc packageToc = new PackageTocBuilder( models ).getRootPackageToc();
         HtmlTocWriter tocWriter = new HtmlTocWriter( tagMap, packageToc );
+        ReportStatistics totalStatistics = new ReportStatistics();
+
         for( ModelFile modelFile : models ) {
-            ReportModelHtmlWriter.writeModelToFile( modelFile.model, tocWriter, modelFile.file );
+            ReportModelHtmlWriter modelWriter = ReportModelHtmlWriter.writeModelToFile( modelFile.model, tocWriter, modelFile.file );
+            totalStatistics = totalStatistics.add( modelWriter.getStatistics() );
         }
 
         writeTagFiles( tocWriter );
 
-        writeIndexFile( tocWriter );
+        StatisticsPageHtmlWriter statisticsPageHtmlWriter = new StatisticsPageHtmlWriter( tocWriter, totalStatistics );
+        statisticsPageHtmlWriter.write( toDir );
 
-    }
-
-    private void writeIndexFile( HtmlTocWriter tocWriter ) {
-        File file = new File( toDir, "index.html" );
-        PrintWriter printWriter = CommonReportHelper.getPrintWriter( file );
-        try {
-            ReportModelHtmlWriter htmlWriter = new ReportModelHtmlWriter( printWriter );
-            htmlWriter.writeHtmlHeader( "Scenarios" );
-
-            ReportModel reportModel = new ReportModel();
-            reportModel.setClassName( ".Scenarios" );
-
-            tocWriter.writeToc( printWriter );
-            htmlWriter.visit( reportModel );
-
-            for( Tag tag : tocWriter.getSortedTags() ) {
-                printWriter.println( ScenarioHtmlWriter.tagToHtml( tag ) );
-            }
-
-            htmlWriter.visitEnd( reportModel );
-            htmlWriter.writeHtmlFooter();
-        } finally {
-            ResourceUtil.close( printWriter );
-        }
     }
 
     private void writeTagFiles( HtmlTocWriter tocWriter ) {

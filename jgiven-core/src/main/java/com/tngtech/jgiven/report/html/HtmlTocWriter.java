@@ -38,6 +38,7 @@ public class HtmlTocWriter {
         writer.println( "<div id='toc'>" );
         writer.println( "<i class='icon-cancel' onclick='hideToc()'></i>" );
         writeSearchInput();
+        writer.println( "<h3><a href='index.html'>Summary</a></h3>" );
         writePackages();
         writeTagLinks();
         writer.println( "</div> <!-- toc -->" );

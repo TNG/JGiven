@@ -28,6 +28,7 @@ import com.tngtech.jgiven.report.model.StatisticsCalculator;
 public class ReportModelHtmlWriter extends ReportModelVisitor {
     protected final PrintWriter writer;
     protected final HtmlWriterUtils utils;
+    private ReportStatistics statistics;
 
     public ReportModelHtmlWriter( PrintWriter writer ) {
         this.writer = writer;
@@ -77,7 +78,7 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
 
     private void writeStatistics( ReportModel model ) {
         if( !model.getScenarios().isEmpty() ) {
-            ReportStatistics statistics = new StatisticsCalculator().getStatistics( model );
+            statistics = new StatisticsCalculator().getStatistics( model );
             writer.print( "<div class='statistics'>" );
             writer.print( statistics.numScenarios + " scenarios, "
                     + statistics.numCases + " cases, "
@@ -86,6 +87,10 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
             utils.writeDuration( statistics.durationInNanos );
             closeDiv();
         }
+    }
+
+    ReportStatistics getStatistics() {
+        return statistics;
     }
 
     public static String toString( final ScenarioModel model ) {
@@ -185,11 +190,12 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
         scenarioModel.accept( scenarioHtmlWriter );
     }
 
-    public static void writeModelToFile( ReportModel model, HtmlTocWriter tocWriter, File file ) {
+    static ReportModelHtmlWriter writeModelToFile( ReportModel model, HtmlTocWriter tocWriter, File file ) {
         PrintWriter printWriter = CommonReportHelper.getPrintWriter( file );
         try {
             ReportModelHtmlWriter htmlWriter = new ReportModelHtmlWriter( printWriter );
             htmlWriter.write( model, tocWriter );
+            return htmlWriter;
         } finally {
             ResourceUtil.close( printWriter );
         }

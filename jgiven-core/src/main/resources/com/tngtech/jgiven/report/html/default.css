@@ -113,6 +113,7 @@ h2, h2 a {
   margin-top: 5px;
   padding: 10px;
   padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 #toc ul li {
@@ -124,7 +125,7 @@ h2, h2 a {
   line-height: 1.25;
 }
 
-#toc ul a {
+#toc ul li a {
   text-decoration: none;
   color: #000066;
   font-size: 14px;
@@ -172,10 +173,15 @@ h1 {
   padding-left: 10px;
   padding-top: 5px;
   padding-bottom: 0px;
+}
+
+#toc h3, #toc h3 a {
   font-size: 14px;
   color: #444;
   text-shadow: 1px 1px 1px #fff;
 }
+
+
 
 #toc > .icon-cancel {
   position: absolute;
