@@ -55,7 +55,8 @@ public class StatisticsPageHtmlWriter {
         printWriter.write( "Number of Failed Cases: " + statistics.numFailedCases + "<br>" );
         printWriter.write( "Number of Steps: " + statistics.numSteps + "<br>" );
         printWriter.write( "Total Time: " + DurationFormatter.format( statistics.durationInNanos ) + "<br>" );
-        printWriter.write( "Average duration per Case: "
-                + DurationFormatter.format( statistics.durationInNanos / statistics.numCases ) );
+
+        long averageNanos = statistics.numCases != 0 ? statistics.durationInNanos / statistics.numCases : 0;
+        printWriter.write( "Average duration per Case: " + DurationFormatter.format( averageNanos ) );
     }
 }
