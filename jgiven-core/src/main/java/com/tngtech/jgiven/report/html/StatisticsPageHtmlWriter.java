@@ -31,10 +31,10 @@ public class StatisticsPageHtmlWriter {
         utils = new HtmlWriterUtils( printWriter );
         try {
             ReportModelHtmlWriter htmlWriter = new ReportModelHtmlWriter( printWriter );
-            htmlWriter.writeHtmlHeader( "Scenarios" );
+            htmlWriter.writeHtmlHeader( "Summary" );
 
             ReportModel reportModel = new ReportModel();
-            reportModel.setClassName( ".Scenarios" );
+            reportModel.setClassName( ".Summary" );
 
             tocWriter.writeToc( printWriter );
             htmlWriter.visit( reportModel );
