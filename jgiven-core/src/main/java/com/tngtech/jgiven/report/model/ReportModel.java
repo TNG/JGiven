@@ -100,4 +100,14 @@ public class ReportModel {
         return this.className.substring( 0, index );
     }
 
+    public List<ScenarioModel> getFailedScenarios() {
+        List<ScenarioModel> result = Lists.newArrayList();
+        for( ScenarioModel m : scenarios ) {
+            if( m.getExecutionStatus() == ExecutionStatus.FAILED ) {
+                result.add( m );
+            }
+        }
+        return result;
+    }
+
 }

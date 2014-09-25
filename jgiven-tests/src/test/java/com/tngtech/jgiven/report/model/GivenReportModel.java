@@ -109,6 +109,11 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
+    public SELF case_$_of_scenario_$_has_failed( int caseNr, int scenarioNr ) {
+        getCase( scenarioNr, caseNr ).success = false;
+        return self();
+    }
+
     public SELF case_$_fails_with_error_message( int ncase, String errorMessage ) {
         getCase( ncase ).errorMessage = errorMessage;
         getCase( ncase ).success = false;
@@ -136,6 +141,10 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF case_$_has_a_step_$_with_argument( int i, String name, String arg ) {
         return case_$_has_a_when_step_$_with_argument( i, name, arg );
+    }
+
+    private ScenarioCaseModel getCase( int scenarioNr, int caseNr ) {
+        return reportModel.getScenarios().get( scenarioNr - 1 ).getCase( caseNr - 1 );
     }
 
     private ScenarioCaseModel getCase( int ncase ) {

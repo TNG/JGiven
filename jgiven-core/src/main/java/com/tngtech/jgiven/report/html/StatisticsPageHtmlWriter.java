@@ -54,7 +54,11 @@ public class StatisticsPageHtmlWriter {
         writeStatisticNumber( statistics.numScenarios, "scenarios" );
         writeStatisticNumber( statistics.numCases, "cases" );
         writeStatisticNumber( statistics.numSteps, "steps" );
-        writeStatisticNumber( "" + statistics.numFailedCases, "failed cases", statistics.numFailedCases > 0 ? "failed" : "" );
+
+        String failedClass = statistics.numFailedCases > 0 ? "failed" : "";
+        printWriter.write( "<div class='statistics-number " + failedClass + "'><a href='failed.html'><i>"
+                + statistics.numFailedCases + "</i><br/><b>failed cases</b></a></div>" );
+
         writeStatisticNumber( DurationFormatter.format( statistics.durationInNanos ), "total time" );
         long averageNanos = statistics.numCases != 0 ? statistics.durationInNanos / statistics.numCases : 0;
         writeStatisticNumber( DurationFormatter.format( averageNanos ), "time / case" );
@@ -62,14 +66,10 @@ public class StatisticsPageHtmlWriter {
     }
 
     private void writeStatisticNumber( int number, String name ) {
-        writeStatisticNumber( number + "", name, "" );
+        writeStatisticNumber( number + "", name );
     }
 
     private void writeStatisticNumber( String number, String name ) {
-        writeStatisticNumber( number, name, "" );
-    }
-
-    private void writeStatisticNumber( String number, String name, String extraClass ) {
-        printWriter.write( "<div class='statistics-number " + extraClass + "'><i>" + number + "</i><br/><b>" + name + "</b></div>" );
+        printWriter.write( "<div class='statistics-number'><i>" + number + "</i><br/><b>" + name + "</b></div>" );
     }
 }

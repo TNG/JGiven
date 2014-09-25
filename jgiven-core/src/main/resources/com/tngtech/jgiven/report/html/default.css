@@ -655,33 +655,39 @@ ul.steps li {
   border-radius: 20px;
   display: inline-block;
   margin-right: 20px;
+  margin-bottom: 20px;
   text-align: center;
   background-color: #f0f0f0;
+}
+
+.statistics-number a {
+  display: inline-block;
+  color: red;
 }
 
 .statistics-number.failed {
   background-color: #f0f0f0;
 }
 
-.statistics-number > i {
+.statistics-number i {
   font-size: 20px;
   color: #222;
   font-weight: 200;
   font-style: normal;
 }
 
-.statistics-number.failed > i {
+.statistics-number.failed i {
   color: red;
   font-weight: bold;
 }
 
-.statistics-number > b {
+.statistics-number b {
   text-transform: uppercase;
   font-size: 14px;
   color: gray;
 }
 
-.statistics-number.failed > b {
+.statistics-number.failed b {
   color: red;
 }
 

@@ -46,4 +46,9 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         givenReportModel.scenario_$_has_tag_$_with_value_$( i, name, value );
         return self();
     }
+
+    public SELF case_$_of_scenario_$_has_failed( int caseNr, int scenarioNr ) {
+        givenReportModel.case_$_of_scenario_$_has_failed( caseNr, scenarioNr );
+        return self();
+    }
 }

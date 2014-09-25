@@ -12,6 +12,7 @@ import com.tngtech.jgiven.report.WhenReportGenerator;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.tags.FeatureHtmlReport;
 import com.tngtech.jgiven.tags.FeatureTags;
+import com.tngtech.jgiven.tags.Issue;
 
 @RunWith( DataProviderRunner.class )
 @FeatureHtmlReport
@@ -57,4 +58,14 @@ public class StaticHtmlReportGeneratorTest extends
             .and().a_file_with_name_$_exists( "TestTag-456.html" );
     }
 
+    @Test
+    @Issue( "#29" )
+    public void the_static_HTML_report_generates_one_file_for_all_failed_scenarios() throws IOException {
+        given().a_report_model()
+            .and().the_report_has_$_scenarios( 1 )
+            .and().case_$_of_scenario_$_has_failed( 1, 1 )
+            .and().the_report_exist_as_JSON_file();
+        when().the_static_HTML_reporter_is_executed();
+        then().a_file_with_name_$_exists( "failed.html" );
+    }
 }

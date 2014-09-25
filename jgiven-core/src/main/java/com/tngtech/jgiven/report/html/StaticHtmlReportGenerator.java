@@ -96,17 +96,27 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
         PackageToc packageToc = new PackageTocBuilder( models ).getRootPackageToc();
         HtmlTocWriter tocWriter = new HtmlTocWriter( tagMap, packageToc );
         ReportStatistics totalStatistics = new ReportStatistics();
+        List<ScenarioModel> failedScenarios = Lists.newArrayList();
 
         for( ModelFile modelFile : models ) {
             ReportModelHtmlWriter modelWriter = ReportModelHtmlWriter.writeModelToFile( modelFile.model, tocWriter, modelFile.file );
             totalStatistics = totalStatistics.add( modelWriter.getStatistics() );
+            failedScenarios.addAll( modelFile.model.getFailedScenarios() );
         }
 
         writeTagFiles( tocWriter );
+        writeFailedFile( tocWriter, failedScenarios );
 
         StatisticsPageHtmlWriter statisticsPageHtmlWriter = new StatisticsPageHtmlWriter( tocWriter, totalStatistics );
         statisticsPageHtmlWriter.write( toDir );
 
+    }
+
+    private void writeFailedFile( HtmlTocWriter tocWriter, List<ScenarioModel> failedScenarios ) {
+        ReportModel reportModel = new ReportModel();
+        reportModel.setScenarios( failedScenarios );
+        reportModel.setClassName( ".Failed Scenarios" );
+        ReportModelHtmlWriter.writeModelToFile( reportModel, tocWriter, new File( toDir, "failed.html" ) );
     }
 
     private void writeTagFiles( HtmlTocWriter tocWriter ) {
