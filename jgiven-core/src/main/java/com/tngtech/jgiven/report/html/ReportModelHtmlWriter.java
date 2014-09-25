@@ -25,11 +25,11 @@ import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StatisticsCalculator;
 
-public class HtmlWriter extends ReportModelVisitor {
+public class ReportModelHtmlWriter extends ReportModelVisitor {
     protected final PrintWriter writer;
     protected final HtmlWriterUtils utils;
 
-    public HtmlWriter( PrintWriter writer ) {
+    public ReportModelHtmlWriter( PrintWriter writer ) {
         this.writer = writer;
         utils = new HtmlWriterUtils( writer );
     }
@@ -92,7 +92,7 @@ public class HtmlWriter extends ReportModelVisitor {
         return toString( new Function<PrintWriter, Void>() {
             @Override
             public Void apply( PrintWriter input ) {
-                new HtmlWriter( input ).write( model );
+                new ReportModelHtmlWriter( input ).write( model );
                 return null;
             }
         } );
@@ -102,7 +102,7 @@ public class HtmlWriter extends ReportModelVisitor {
         return toString( new Function<PrintWriter, Void>() {
             @Override
             public Void apply( PrintWriter input ) {
-                new HtmlWriter( input ).write( model, null );
+                new ReportModelHtmlWriter( input ).write( model, null );
                 return null;
             }
         } );
@@ -128,7 +128,7 @@ public class HtmlWriter extends ReportModelVisitor {
             UnsupportedEncodingException {
         PrintWriter printWriter = new PrintWriter( file, Charsets.UTF_8.name() );
         try {
-            new HtmlWriter( printWriter ).write( model, htmlTocWriter );
+            new ReportModelHtmlWriter( printWriter ).write( model, htmlTocWriter );
             printWriter.flush();
         } finally {
             ResourceUtil.close( printWriter );
@@ -188,7 +188,7 @@ public class HtmlWriter extends ReportModelVisitor {
     public static void writeModelToFile( ReportModel model, HtmlTocWriter tocWriter, File file ) {
         PrintWriter printWriter = CommonReportHelper.getPrintWriter( file );
         try {
-            HtmlWriter htmlWriter = new HtmlWriter( printWriter );
+            ReportModelHtmlWriter htmlWriter = new ReportModelHtmlWriter( printWriter );
             htmlWriter.write( model, tocWriter );
         } finally {
             ResourceUtil.close( printWriter );

@@ -49,7 +49,7 @@ public class SingleFileHtmlReportGenerator implements ReportModelFileHandler {
 
     @Override
     public void handleReportModel( ReportModel model, File file ) {
-        new HtmlWriter( writer ).visit( model );
+        new ReportModelHtmlWriter( writer ).visit( model );
     }
 
 }

@@ -15,7 +15,7 @@ import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.report.model.ReportModel;
 
 @RunWith( DataProviderRunner.class )
-public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {
+public class ReportModelHtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {
 
     @DataProvider
     public static Object[][] testData() {
@@ -37,7 +37,7 @@ public class HtmlWriterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep
 
         getScenario().finished();
         ReportModel model = getScenario().getModel();
-        String string = HtmlWriter.toString( model.getLastScenarioModel() );
+        String string = ReportModelHtmlWriter.toString( model.getLastScenarioModel() );
         assertThat( string.replace( '\n', ' ' ) ).matches( ".*"
                 + "<h3.*>.*Values can be multiplied.*</h3>.*"
                 + "<li><span class='introWord'>Given</span> <span class='argument'>" + a + "</span>.*and.*" + b + ".*</li>.*"

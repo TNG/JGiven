@@ -5,7 +5,7 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.report.model.ReportModel;
 
-public class WhenHtmlWriter extends Stage<WhenHtmlWriter> {
+public class WhenReportModelHtmlWriter extends Stage<WhenReportModelHtmlWriter> {
 
     @ExpectedScenarioState
     protected ReportModel reportModel;
@@ -14,7 +14,7 @@ public class WhenHtmlWriter extends Stage<WhenHtmlWriter> {
     protected String html;
 
     public void the_HTML_report_is_generated() {
-        html = HtmlWriter.toString( reportModel );
+        html = ReportModelHtmlWriter.toString( reportModel );
     }
 
 }

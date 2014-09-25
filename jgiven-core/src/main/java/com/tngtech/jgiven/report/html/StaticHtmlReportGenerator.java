@@ -97,7 +97,7 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
         PackageToc packageToc = new PackageTocBuilder( models ).getRootPackageToc();
         HtmlTocWriter tocWriter = new HtmlTocWriter( tagMap, packageToc );
         for( ModelFile modelFile : models ) {
-            HtmlWriter.writeModelToFile( modelFile.model, tocWriter, modelFile.file );
+            ReportModelHtmlWriter.writeModelToFile( modelFile.model, tocWriter, modelFile.file );
         }
 
         writeTagFiles( tocWriter );
@@ -110,7 +110,7 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
         File file = new File( toDir, "index.html" );
         PrintWriter printWriter = CommonReportHelper.getPrintWriter( file );
         try {
-            HtmlWriter htmlWriter = new HtmlWriter( printWriter );
+            ReportModelHtmlWriter htmlWriter = new ReportModelHtmlWriter( printWriter );
             htmlWriter.writeHtmlHeader( "Scenarios" );
 
             ReportModel reportModel = new ReportModel();
@@ -152,7 +152,7 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
 
             String fileName = HtmlTocWriter.tagToFilename( tag );
             File targetFile = new File( toDir, fileName );
-            HtmlWriter.writeToFile( targetFile, reportModel, tocWriter );
+            ReportModelHtmlWriter.writeToFile( targetFile, reportModel, tocWriter );
 
         } catch( Exception e ) {
             log.error( "Error while trying to write HTML file for tag " + tag.getName() );

@@ -20,7 +20,7 @@ import com.tngtech.jgiven.tags.Issue;
 @FeatureHtmlReport
 @RunWith( DataProviderRunner.class )
 @JGivenConfiguration( JGivenTestConfiguration.class )
-public class HtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, WhenHtmlWriter, ThenHtmlOutput> {
+public class ReportModelHtmlWriterScenarioTest extends ScenarioTest<GivenReportModel<?>, WhenReportModelHtmlWriter, ThenHtmlOutput> {
 
     @DataProvider
     public static Object[][] statusTexts() {
