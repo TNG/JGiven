@@ -113,6 +113,7 @@ h2, h2 a {
   margin-top: 5px;
   padding: 10px;
   padding-top: 0px;
+  padding-bottom: 0px;
 }
 
 #toc ul li {
@@ -124,7 +125,7 @@ h2, h2 a {
   line-height: 1.25;
 }
 
-#toc ul a {
+#toc ul li a {
   text-decoration: none;
   color: #000066;
   font-size: 14px;
@@ -172,6 +173,9 @@ h1 {
   padding-left: 10px;
   padding-top: 5px;
   padding-bottom: 0px;
+}
+
+#toc h3, #toc h3 a {
   font-size: 14px;
   color: #444;
   text-shadow: 1px 1px 1px #fff;
@@ -643,6 +647,48 @@ ul.steps li {
 
 .statistics {
   padding-top:10px;
+}
+
+.statistics-number {
+  padding: 20px;
+  border: solid #e0e0e0 1px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  background-color: #f0f0f0;
+}
+
+.statistics-number a {
+  display: inline-block;
+  color: red;
+}
+
+.statistics-number.failed {
+  background-color: #f0f0f0;
+}
+
+.statistics-number i {
+  font-size: 20px;
+  color: #222;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.statistics-number.failed i {
+  color: red;
+  font-weight: bold;
+}
+
+.statistics-number b {
+  text-transform: uppercase;
+  font-size: 14px;
+  color: gray;
+}
+
+.statistics-number.failed b {
+  color: red;
 }
 
 .duration {
