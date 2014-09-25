@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
   <meta charset='utf-8'>
-  <title>Scenarios</title>
+  <title>Summary</title>
   <link href='style.css' rel='stylesheet'>
 </head>
 <body>
@@ -10,6 +10,7 @@
 <div id='toc'>
 <i class='icon-cancel' onclick='hideToc()'></i>
 <input id='searchfield' type='input' onkeydown='searchChanged(event)'></input>
+<h3><a href='index.html'>Summary</a></h3>
 <h3>Test Classes</h3>
 <ul>
 <li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven")'>com.tngtech.jgiven</h4><ul class='collapsed' id='com.tngtech.jgiven'>
@@ -18,7 +19,7 @@
 <li><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html' >DeSzenarioTest</a></li><li><a href='com.tngtech.jgiven.junit.de.JUnitExecutorTest.html' >JUnitExecutorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report")'>report</h4><ul class='collapsed' id='com.tngtech.jgiven.report'>
 <li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.analysis")'>analysis</h4><ul class='collapsed' id='com.tngtech.jgiven.report.analysis'>
 <li><a href='com.tngtech.jgiven.report.analysis.DifferenceAnalyzerTest.html' >DifferenceAnalyzerTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.html")'>html</h4><ul class='collapsed' id='com.tngtech.jgiven.report.html'>
-<li><a href='com.tngtech.jgiven.report.html.HtmlWriterScenarioTest.html' >HtmlWriterScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a></li><li><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html' >StaticHtmlReportGeneratorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.text")'>text</h4><ul class='collapsed' id='com.tngtech.jgiven.report.text'>
+<li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a></li><li><a href='com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest.html' >ReportModelHtmlWriterScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html' >StaticHtmlReportGeneratorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.text")'>text</h4><ul class='collapsed' id='com.tngtech.jgiven.report.text'>
 <li><a href='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest.html' >PlainTextGeneratorScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html' >PlainTextScenarioWriterTest</a></li></ul></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.testframework")'>testframework</h4><ul class='collapsed' id='com.tngtech.jgiven.testframework'>
 <li><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html' >TestFrameworkExecutionTest</a></li></ul></li></ul></li></ul>
 <h3>Tags</h3>
@@ -54,31 +55,15 @@
 <div id='rightpane'>
 <div id='header'>
 <i id='show-menu-icon' class='icon-menu collapsed' onclick='showToc()'></i>
-<h2>Scenarios</h2>
+<h2>Summary</h2>
 </div>
 <div id='content'>
-<div class='tag tag-Feature'><a href='Feature-Case_Diffs.html'>Case Diffs</a></div>
-<div class='tag tag-Feature'><a href='Feature-Data_Tables.html'>Data Tables</a></div>
-<div class='tag tag-Feature'><a href='Feature-Derived_Parameters.html'>Derived Parameters</a></div>
-<div class='tag tag-Feature'><a href='Feature-Duration.html'>Duration</a></div>
-<div class='tag tag-Feature'><a href='Feature-German_Scenarios.html'>German Scenarios</a></div>
-<div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div>
-<div class='tag tag-Issue'><a href='Issue-_1.html'>Issue-#1</a></div>
-<div class='tag tag-Issue'><a href='Issue-_10.html'>Issue-#10</a></div>
-<div class='tag tag-Issue'><a href='Issue-_25.html'>Issue-#25</a></div>
-<div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div>
-<div class='tag tag-Issue'><a href='Issue-_9.html'>Issue-#9</a></div>
-<div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div>
-<div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div>
-<div class='tag tag-Feature'><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a></div>
-<div class='tag tag-Feature'><a href='Feature-Step_Parameters.html'>Step Parameters</a></div>
-<div class='tag tag-Feature'><a href='Feature-Tags.html'>Tags</a></div>
-<div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div>
+<div class='statistics-line'><div class='statistics-number'><i>10</i><br/><b>classes</b></div><div class='statistics-number'><i>42</i><br/><b>scenarios</b></div><div class='statistics-number'><i>71</i><br/><b>cases</b></div><div class='statistics-number'><i>416</i><br/><b>steps</b></div><div class='statistics-number '><a href='failed.html'><i>0</i><br/><b>failed cases</b></a></div><div class='statistics-number'><i>1.45 s</i><br/><b>total time</b></div><div class='statistics-number'><i>20.41 ms</i><br/><b>time / case</b></div></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.5.1-SNAPSHOT-6513aa - on Sep 24, 2014 10:25:22 PM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.5.1-SNAPSHOT-5bd810 - on Sep 25, 2014 2:44:33 PM</div>
 <script src='report.js'></script>
 </body></html>
