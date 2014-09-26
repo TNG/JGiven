@@ -578,13 +578,27 @@ ul.steps li {
   background-color: yellow;
 }
 
+.show-extended-description {
+  padding: 1px;
+  padding-left:4px;
+  padding-right:4px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  color: gray;
+  font-weight: bold;
+  min-width: 20px;
+  cursor: pointer;
+  font-size: 10px;
+  font-family: monospace;
+  vertical-align: middle;
+}
+
 .extended-description-content {
   position: relative;
   color: #222;
   background-color: rgb(207, 237, 247);
-  /*border: 1px solid lightgray;*/
   border-radius: 3px;
-  /*box-shadow: 1px 1px 3px gray;*/
+  box-shadow: 0px 0px 2px lightgray;
   padding: 7px;
   padding-right: 20px;
   margin-left: 1em;

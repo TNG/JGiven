@@ -145,11 +145,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
 
     @Override
     public void visit( StepModel stepModel ) {
-        String extendedId = "extDesc" + System.identityHashCode( stepModel );
         writer.print( "<li>" );
-        if( stepModel.hasExtendedDescription() ) {
-            writer.print( "<span onmouseover='showExtendedDescription(\"" + extendedId + "\")'>" );
-        }
 
         boolean firstWord = true;
         for( Word word : stepModel.words ) {
@@ -178,11 +174,17 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             writer.print( format( " <span class='badge %s'>%s</span>", WordUtil.camelCase( lowerCase ), lowerCase.replace( '_', ' ' ) ) );
         }
 
-        utils.writeDuration( stepModel.getDurationInNanos() );
-
         if( stepModel.hasExtendedDescription() ) {
-            writer.print( "</span>" );
+            String extendedId = "extDesc" + System.identityHashCode( stepModel );
+            if( stepModel.hasExtendedDescription() ) {
+                writer.print( " <span class='show-extended-description' onclick='showExtendedDescription(\""
+                        + extendedId + "\")'>i</span>" );
+            }
+
+            utils.writeDuration( stepModel.getDurationInNanos() );
             writeExtendedDescription( stepModel, extendedId );
+        } else {
+            utils.writeDuration( stepModel.getDurationInNanos() );
         }
         writer.println( "</li>" );
     }

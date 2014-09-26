@@ -150,9 +150,5 @@ function highlightMatches(text, search) {
 }
 
 function showExtendedDescription(id) {
-   var element = document.getElementById(id);
-
-   if (isCollapsed(element)) {
-      toggle(id);
-   }
+   toggle(id);
 }
