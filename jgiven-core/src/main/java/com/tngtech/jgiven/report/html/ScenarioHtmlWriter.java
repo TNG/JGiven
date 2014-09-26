@@ -146,10 +146,9 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     @Override
     public void visit( StepModel stepModel ) {
         String extendedId = "extDesc" + System.identityHashCode( stepModel );
+        writer.print( "<li>" );
         if( stepModel.hasExtendedDescription() ) {
-            writer.print( "<li class='with-extended-description' onmouseover='showExtendedDescription(\"" + extendedId + "\")'>" );
-        } else {
-            writer.print( "<li>" );
+            writer.print( "<span onmouseover='showExtendedDescription(\"" + extendedId + "\")'>" );
         }
 
         boolean firstWord = true;
@@ -182,16 +181,17 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         utils.writeDuration( stepModel.getDurationInNanos() );
 
         if( stepModel.hasExtendedDescription() ) {
+            writer.print( "</span>" );
             writeExtendedDescription( stepModel, extendedId );
         }
         writer.println( "</li>" );
     }
 
     private void writeExtendedDescription( StepModel stepModel, String id ) {
-        writer.write( "<div id='" + id + "' class='extended-description collapsed'>" );
+        writer.write( "<div id='" + id + "' class='extended-description collapsed'><span class='extended-description-content'>" );
         writer.write( stepModel.getExtendedDescription() );
         writer.write( "<i class='icon-cancel' onclick='toggle(\"" + id + "\")'></i>" );
-        writer.write( "</div>" );
+        writer.write( "</span></div>" );
     }
 
     private String diffClass( Word word ) {

@@ -578,7 +578,7 @@ ul.steps li {
   background-color: yellow;
 }
 
-.extended-description {
+.extended-description-content {
   position: relative;
   color: #222;
   background-color: rgb(207, 237, 247);
@@ -586,10 +586,12 @@ ul.steps li {
   border-radius: 3px;
   /*box-shadow: 1px 1px 3px gray;*/
   padding: 7px;
+  padding-right: 20px;
   margin-left: 1em;
   margin-bottom: 5px;
   font-size: 14px;
   font-style: italic;
+  display: inline-block;
 }
 
 .extended-description .icon-cancel {
