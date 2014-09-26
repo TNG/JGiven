@@ -86,7 +86,8 @@ h2, h2 a {
   margin:0px;
   border-radius:0;
   padding-top:5px;
-  padding-bottom: 0px;
+  padding-bottom: 15px;
+  padding-left: 20px;
 }
 
 #toc {
@@ -216,6 +217,8 @@ h1 {
   font-size: 15px;
   font-weight: bold;
   color: white;
+  padding-left: 20px;
+  padding-top: 10px;
 }
 
 #page {
@@ -256,27 +259,28 @@ h1 {
   background: white;
 }
 
-#header {
-  position: relative;
-  padding: 20px;
-}
-
 #content {
   padding: 20px;
   background: white;
 }
 
 #header {
+  position: relative;
   background-color: #f0f0f0;
   background: #444;
   background: #4B5389;
   background-color: rgb(58, 88, 130);
+  /* box-shadow: 2px 2px 5px gray; */
+  border-bottom: 1px solid lightgray;
 }
 
 #header .description {
   font-size: 18px;
   padding-top:10px;
   color: white;
+  color: black;
+  background-color: rgb(255, 255, 239);
+  padding: 20px;
 }
 
 #content > ul {
@@ -572,6 +576,28 @@ ul.steps li {
 
 .diff {
   background-color: yellow;
+}
+
+.extended-description {
+  position: relative;
+  color: #222;
+  background-color: rgb(207, 237, 247);
+  /*border: 1px solid lightgray;*/
+  border-radius: 3px;
+  /*box-shadow: 1px 1px 3px gray;*/
+  padding: 7px;
+  margin-left: 1em;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.extended-description .icon-cancel {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  color: #aaa;
+  cursor: pointer;
 }
 
 .scenario h4 {

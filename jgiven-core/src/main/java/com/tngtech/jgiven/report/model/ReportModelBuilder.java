@@ -17,6 +17,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.CasesAsTable;
 import com.tngtech.jgiven.annotation.Description;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.IsTag;
@@ -94,23 +95,30 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public void addStepMethod( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
-        String name;
+        StepModel stepModel = new StepModel();
+
         Description description = paramMethod.getAnnotation( Description.class );
         if( description != null ) {
-            name = description.value();
+            stepModel.name = description.value();
         } else {
-            name = nameWithoutUnderlines( paramMethod );
+            stepModel.name = nameWithoutUnderlines( paramMethod );
+        }
+
+        ExtendedDescription extendedDescriptionAnnotation = paramMethod.getAnnotation( ExtendedDescription.class );
+        if( extendedDescriptionAnnotation != null ) {
+            stepModel.setExtendedDescription( extendedDescriptionAnnotation.value() );
         }
 
         List<Formatting<?>> formatters = getFormatters( paramMethod.getParameterAnnotations() );
-        List<Word> words = new StepFormatter( name, arguments, formatters ).buildFormattedWords();
+        stepModel.words = new StepFormatter( stepModel.name, arguments, formatters ).buildFormattedWords();
 
         if( introWord != null ) {
-            words.add( 0, introWord );
+            stepModel.words.add( 0, introWord );
             introWord = null;
         }
 
-        writeStep( name, words, mode );
+        stepModel.setStatus( mode.toStepStatus() );
+        writeStep( stepModel );
     }
 
     @Override
@@ -146,8 +154,8 @@ public class ReportModelBuilder implements ScenarioListener {
         return null;
     }
 
-    public void writeStep( String name, List<Word> words, InvocationMode mode ) {
-        getCurrentScenarioCase().addStep( name, words, mode );
+    public void writeStep( StepModel stepModel ) {
+        getCurrentScenarioCase().addStep( stepModel );
     }
 
     private ScenarioCaseModel getCurrentScenarioCase() {

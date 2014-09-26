@@ -144,8 +144,15 @@ function openMatchingElements(search, element, depth) {
 }
 
 function highlightMatches(text, search) {
-
    var result = text.replace(search, "<span class='diff'>$&</span>");
    console.log("Replaced "+result);
    return result;
+}
+
+function showExtendedDescription(id) {
+   var element = document.getElementById(id);
+
+   if (isCollapsed(element)) {
+      toggle(id);
+   }
 }

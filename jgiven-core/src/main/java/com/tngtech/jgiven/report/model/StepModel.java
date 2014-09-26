@@ -7,14 +7,38 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
 public class StepModel {
+    /**
+     * The original name of this step as it appeared in the Java code.
+     */
     public String name;
+
+    /**
+     * All words of this step including the introduction word.
+     */
     public List<Word> words = Lists.newArrayList();
+
+    /**
+     * The execution status of this step.
+     */
     private StepStatus status = StepStatus.PASSED;
 
     /**
      * The total execution time of the step in nano seconds.
      */
     private long durationInNanos;
+
+    /**
+     * An optional extended description of this step.
+     * Can be {@code null}
+     */
+    private String extendedDescription;
+
+    public StepModel() {}
+
+    public StepModel( String name, List<Word> words ) {
+        this.name = name;
+        this.words = words;
+    }
 
     public void accept( ReportModelVisitor visitor ) {
         visitor.visit( this );
@@ -59,5 +83,17 @@ public class StepModel {
 
     public Word getWord( int i ) {
         return this.words.get( i );
+    }
+
+    public String getExtendedDescription() {
+        return extendedDescription;
+    }
+
+    public boolean hasExtendedDescription() {
+        return extendedDescription != null;
+    }
+
+    public void setExtendedDescription( String extendedDescription ) {
+        this.extendedDescription = extendedDescription;
     }
 }

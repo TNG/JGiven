@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.examples.coffeemachine.steps;
 
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.examples.coffeemachine.CoffeeMachine;
@@ -14,12 +15,15 @@ public class GivenCoffee extends Stage<GivenCoffee> {
     @ProvidedScenarioState
     private int dollars;
 
+    @ExtendedDescription( "An empty coffee machine that is already turned on.<br>"
+            + "The coffee price is set to 2 EUR." )
     public GivenCoffee a_coffee_machine() {
         coffeeMachine = new CoffeeMachine();
         coffeeMachine.on = true;
         return this;
     }
 
+    @ExtendedDescription( "The number of coffees in the machine is set to the given value." )
     public GivenCoffee there_are_$_coffees_left_in_the_machine( int coffees ) {
         coffeeMachine.coffees = coffees;
         return this;

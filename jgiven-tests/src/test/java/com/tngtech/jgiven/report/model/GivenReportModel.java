@@ -7,7 +7,6 @@ import java.util.Arrays;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.impl.intercept.InvocationMode;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
@@ -53,12 +52,13 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         for( String param : scenarioModel.getExplicitParameters() ) {
             scenarioCaseModel.addExplicitArguments( "arg" + scenarioCaseModel.caseNr + i++ );
         }
-        scenarioCaseModel.addStep( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ),
-            InvocationMode.NORMAL );
+
+        scenarioCaseModel
+            .addStep( new StepModel( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ) ) );
         i = 0;
         for( String arg : scenarioCaseModel.getExplicitArguments() ) {
-            scenarioCaseModel.addStep( "something_happens", asList( Word.introWord( "when" ),
-                Word.argWord( "stepArg" + i++, arg ) ), InvocationMode.NORMAL );
+            scenarioCaseModel.addStep( new StepModel( "something_happens", asList( Word.introWord( "when" ),
+                Word.argWord( "stepArg" + i++, arg ) ) ) );
         }
     }
 
@@ -134,8 +134,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF case_$_has_step_$( int ncase, String name ) {
-        getCase( ncase ).addStep( name, Arrays.asList( Word.introWord( "when" ), new Word( name ) ),
-            InvocationMode.NORMAL );
+        getCase( ncase ).addStep( new StepModel( name, Arrays.asList( Word.introWord( "when" ), new Word( name ) ) ) );
         return self();
     }
 
@@ -171,8 +170,8 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( int ncase, String name, String arg, String argName ) {
-        getCase( ncase ).addStep( name, Arrays.asList( Word.introWord( "when" ), new Word( name ), Word.argWord( argName, arg ) ),
-            InvocationMode.NORMAL );
+        getCase( ncase ).addStep(
+            new StepModel( name, Arrays.asList( Word.introWord( "when" ), new Word( name ), Word.argWord( argName, arg ) ) ) );
         return self();
     }
 

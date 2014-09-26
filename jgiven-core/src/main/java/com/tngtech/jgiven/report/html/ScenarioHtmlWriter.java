@@ -145,7 +145,12 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
 
     @Override
     public void visit( StepModel stepModel ) {
-        writer.print( "<li>" );
+        String extendedId = "extDesc" + System.identityHashCode( stepModel );
+        if( stepModel.hasExtendedDescription() ) {
+            writer.print( "<li class='with-extended-description' onmouseover='showExtendedDescription(\"" + extendedId + "\")'>" );
+        } else {
+            writer.print( "<li>" );
+        }
 
         boolean firstWord = true;
         for( Word word : stepModel.words ) {
@@ -176,7 +181,17 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
 
         utils.writeDuration( stepModel.getDurationInNanos() );
 
+        if( stepModel.hasExtendedDescription() ) {
+            writeExtendedDescription( stepModel, extendedId );
+        }
         writer.println( "</li>" );
+    }
+
+    private void writeExtendedDescription( StepModel stepModel, String id ) {
+        writer.write( "<div id='" + id + "' class='extended-description collapsed'>" );
+        writer.write( stepModel.getExtendedDescription() );
+        writer.write( "<i class='icon-cancel' onclick='toggle(\"" + id + "\")'></i>" );
+        writer.write( "</div>" );
     }
 
     private String diffClass( Word word ) {
