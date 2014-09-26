@@ -1,4 +1,19 @@
-# v0.5.0 (not released yet)
+# v0.6.0 (not released yet)
+
+## New Features
+
+* Extended Descriptions for step methods
+
+# v0.5.1
+## New Features
+
+### HTML Report Improvements
+
+* A page for all failed scenarios is now generated [#29](https://github.com/TNG/JGiven/issues/29)
+* Classes and tags are shown in a hierarchical structure that can be searched [#28](https://github.com/TNG/JGiven/issues/28)
+* The front page now contains statistics about the overall report instead of tags [#8](https://github.com/TNG/JGiven/issues/8)
+
+# v0.5.0
 
 ## New Features
 
