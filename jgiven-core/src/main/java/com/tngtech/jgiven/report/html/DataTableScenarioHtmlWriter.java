@@ -29,6 +29,7 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
     public void visitEnd( ScenarioCaseModel scenarioCase ) {
         if( scenarioCase.caseNr == 1 ) {
             writer.println( "</ul>" );
+            writer.println( "</div> <!-- case-content -->" );
             writer.println( "<h4>Cases:</h4>" );
             writer.println( "<table class='data-table'>" );
             writer.println( "<tr>" );
@@ -47,10 +48,10 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
         }
         writer.print( "<td>" );
 
-        writeStatusIcon( scenarioCase.getExecutionStatus() );
-
         if( !scenarioCase.success ) {
             writer.println( "<div class='failed'>Failed: " + scenarioCase.errorMessage + "</div>" );
+        } else {
+            writeStatusIcon( scenarioCase.getExecutionStatus() );
         }
 
         utils.writeDuration( scenarioCase.durationInNanos );

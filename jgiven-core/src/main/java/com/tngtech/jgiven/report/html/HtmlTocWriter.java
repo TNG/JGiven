@@ -46,7 +46,8 @@ public class HtmlTocWriter {
     }
 
     private void writeSearchInput() {
-        writer.println( "<input id='searchfield' type='input' onkeydown='searchChanged(event)'></input>" );
+        writer.println( "<input class='search-input' id='toc-search-input' "
+                + "placeholder='enter regexp to search in toc' onkeydown='searchChanged(event)'></input>" );
     }
 
     private void writePackages() {

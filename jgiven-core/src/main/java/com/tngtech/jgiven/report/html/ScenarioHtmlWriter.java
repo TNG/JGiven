@@ -41,7 +41,9 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
 
         writeStatusIcon( scenarioModel.getExecutionStatus() );
 
+        writer.print( "<span>" );
         writer.print( " " + WordUtil.capitalize( scenarioModel.description ) );
+        writer.print( "</span>" );
 
         int numberOfCases = scenarioModel.getScenarioCases().size();
         if( numberOfCases > 1 ) {
@@ -103,11 +105,12 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         this.scenarioCase = scenarioCase;
         printCaseHeader( scenarioCase );
         String collapsed = scenarioCase.getExplicitArguments().isEmpty() || scenarioModel.isCasesAsTable() ? "" : " collapsed";
-        writer.println( "<ul class='steps" + collapsed + "' id='" + getCaseId() + "'>" );
+        writer.println( "<div class='case-content" + collapsed + "' id='" + getCaseId() + "'>" );
+        writer.println( "<ul class='steps'>" );
     }
 
     private String getCaseId() {
-        return scenarioModel.className + ":" + scenarioModel.description + ":" + scenarioCase.caseNr;
+        return "case" + System.identityHashCode( scenarioCase );
     }
 
     void printCaseHeader( ScenarioCaseModel scenarioCase ) {
@@ -140,6 +143,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             writer.println( "<div class='failed'>Failed: " + scenarioCase.errorMessage + "</div>" );
         }
         writer.println( "</ul>" );
+        writer.println( "</div><!-- case-content -->" );
         writer.println( "</div><!-- case -->" );
     }
 
@@ -160,9 +164,9 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
                 printArg( word );
             } else {
                 if( word.isDifferent() ) {
-                    writer.print( format( "<span class='%s'>%s</span>", diffClass, text ) );
+                    writer.print( format( "<span class='word %s'>%s</span>", diffClass, text ) );
                 } else {
-                    writer.print( text );
+                    writer.print( "<span class='word'>" + text + "</span>" );
                 }
             }
             firstWord = false;

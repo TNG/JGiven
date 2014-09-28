@@ -145,10 +145,14 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
         writer.println( "<div id='rightpane'>" );
         writeHeader( reportModel );
         writer.println( "<div id='content'>" );
+        writer.println( "<input class='search-input' id='content-search-input' size='30'"
+                + " placeholder='enter regexp to search in scenarios'"
+                + " onkeydown='contentSearchChanged(event)'></input>" );
     }
 
     void writeHeader( ReportModel reportModel ) {
         writer.println( "<div id='header'>" );
+        writer.println( "<div id='header-title'>" );
         writer.println( "<i id='show-menu-icon' class='icon-menu collapsed' onclick='showToc()'></i>" );
 
         String packageName = "";
@@ -163,7 +167,7 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
         }
 
         writer.println( format( "<h2>%s</h2>", className ) );
-
+        writer.println( "</div> <!-- #header-title -->" );
         if( !Strings.isNullOrEmpty( reportModel.getDescription() ) ) {
             writer.println( format( "<div class='description'>%s</div>", reportModel.getDescription() ) );
         }

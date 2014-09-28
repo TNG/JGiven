@@ -88,6 +88,12 @@ h2, h2 a {
   padding-top:5px;
   padding-bottom: 15px;
   padding-left: 20px;
+  display: inline-block;
+  float: left;
+}
+
+#content-search-input {
+  margin-bottom: 10px;
 }
 
 #toc {
@@ -140,17 +146,20 @@ h2, h2 a {
   cursor: pointer;
 }
 
-#searchfield, #searchfield:focus {
-  border: 1px solid gray;
-  border-radius: 15px;
-  font-size: 14px;
+#toc-search-input {
   margin-left: 10px;
   margin-top: 5px;
-  padding: 5px 10px;
   width: 90%;
 }
 
-#searchfield:focus {
+.search-input, .search-input:focus {
+  border: 1px solid gray;
+  border-radius: 15px;
+  font-size: 12px;
+  padding: 3px 8px;
+}
+
+.search-input:focus {
   outline: none;
   box-shadow: 0px 0px 3px blue;
 }
@@ -274,6 +283,12 @@ h1 {
   border-bottom: 1px solid lightgray;
 }
 
+#header-title:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 #header .description {
   font-size: 18px;
   padding-top:10px;
@@ -330,8 +345,9 @@ h1 {
   clear: both;
   margin-left: 0px;
   margin-right: 0px;
-  padding-bottom: 0px;
-  margin-bottom: -5px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  margin-bottom: 0px;
   background-color: white;
 }
 
@@ -371,7 +387,7 @@ h1 {
   padding-right: 0px;
   padding-bottom: 0px;
   padding-top: 0px;
-  margin-bottom:10px;
+  margin-bottom: 0px;
   position:relative;
 }
 
@@ -411,7 +427,8 @@ h1 {
   border-radius: 0px;
   text-shadow: none;
   margin-left: 1ex;
-  margin: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
   display: inline-block;
   border-radius: 4px;
   background-color: violet;
@@ -533,7 +550,7 @@ ul.steps {
   list-style-type: none;
   margin-left: 0;
   margin-top: 0;
-  margin-bottom: -10px;
+  margin-bottom: 0px;
   padding: 10px;
   padding-left: 18px;
   padding-botom:0px;
@@ -575,6 +592,12 @@ ul.steps li {
 }
 
 .diff {
+  background-color: rgb(207, 237, 247);
+  padding: 0 5px 0 5px;
+  border-radius: 2px;
+}
+
+.highlight {
   background-color: yellow;
 }
 
@@ -591,6 +614,11 @@ ul.steps li {
   font-size: 10px;
   font-family: monospace;
   vertical-align: middle;
+}
+
+.show-extended-description:hover {
+  color: #222;
+  border-color: #222;
 }
 
 .extended-description-content {
@@ -622,7 +650,6 @@ ul.steps li {
   font-size: 15px;
   padding: 0px;
   padding-left: 5px;
-  padding-top: 10px;
   margin-bottom: 0px;
   margin-left: 10px;
   margin-top: 0px;
