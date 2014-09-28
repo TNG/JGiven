@@ -169,12 +169,17 @@ public class CaseArgumentAnalyser {
         }
 
         for( ParameterReplacement replacement : parameterReplacements ) {
-            scenarioModel.addDerivedParameter( replacement.replacementName );
+            boolean duplicate = scenarioModel.getDerivedParameters().contains( replacement.replacementName );
+            if( !duplicate ) {
+                scenarioModel.addDerivedParameter( replacement.replacementName );
+            }
             for( int i = 0; i < replacement.arguments.size(); i++ ) {
                 Word word = replacement.arguments.get( i );
                 word.getArgumentInfo().setParameterName( replacement.replacementName );
                 word.getArgumentInfo().setDerivedParameter( replacement.isStepParameterName );
-                scenarioModel.getCase( i ).addDerivedArguments( word.getFormattedValue() );
+                if( !duplicate ) {
+                    scenarioModel.getCase( i ).addDerivedArguments( word.getFormattedValue() );
+                }
             }
         }
 

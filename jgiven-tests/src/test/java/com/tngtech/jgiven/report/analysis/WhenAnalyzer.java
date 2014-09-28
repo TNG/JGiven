@@ -9,6 +9,11 @@ public class WhenAnalyzer<SELF extends WhenAnalyzer<?>> extends Stage<SELF> {
     @ScenarioState
     protected ReportModel reportModel;
 
+    public SELF the_argument_analyzer_is_executed() {
+        new CaseArgumentAnalyser().analyze( reportModel.getLastScenarioModel() );
+        return self();
+    }
+
     public SELF the_difference_analyzer_is_executed() {
         new CaseDifferenceAnalyzer().analyze( reportModel.getLastScenarioModel() );
         return self();

@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 
@@ -16,6 +17,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     private boolean analyze = true;
 
+    @ExtendedDescription( "A report model where the analysers have not been executed on" )
     public SELF an_unanalyzed_report_model_with_one_scenario() {
         analyze = false;
         return a_report_model_with_one_scenario();
@@ -80,6 +82,10 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public ReportModel getReportModel() {
         return reportModel;
+    }
+
+    public SELF parameters( String... params ) {
+        return the_scenario_has_parameters( params );
     }
 
     public SELF the_scenario_has_parameters( String... params ) {

@@ -77,4 +77,14 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
         return reportModel.getLastScenarioModel().getCase( caseNr - 1 ).getStep( stepNr - 1 ).getWord( wordNr - 1 );
     }
 
+    public SELF case_$_has_derived_arguments( int caseNr, String... arguments ) {
+        assertThat( reportModel.getLastScenarioModel().getCase( caseNr - 1 ).getDerivedArguments() ).containsExactly( arguments );
+        return self();
+    }
+
+    public SELF the_scenario_has_derived_parameters( String... parameters ) {
+        assertThat( reportModel.getLastScenarioModel().getDerivedParameters() ).containsExactly( parameters );
+        return self();
+    }
+
 }
