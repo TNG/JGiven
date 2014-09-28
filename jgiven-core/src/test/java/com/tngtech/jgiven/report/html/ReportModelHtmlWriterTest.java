@@ -38,12 +38,14 @@ public class ReportModelHtmlWriterTest extends ScenarioTestBase<GivenTestStep, W
         getScenario().finished();
         ReportModel model = getScenario().getModel();
         String string = ReportModelHtmlWriter.toString( model.getLastScenarioModel() );
-        assertThat( string.replace( '\n', ' ' ) ).matches( ".*"
-                + "<h3.*>.*Values can be multiplied.*</h3>.*"
-                + "<li><span class='introWord'>Given</span> <span class='argument'>" + a + "</span>.*and.*" + b + ".*</li>.*"
-                + "<li><span class='introWord'>When</span> both values are multiplied with each other.*</li>.*"
-                + "<li><span class='introWord'>Then</span> the result is.*<span class='argument'>" + expectedResult + "</span>.*</li>.*"
-                + ".*" );
+        assertThat( string.replace( '\n', ' ' ) ).matches(
+            ".*"
+                    + "<h3.*>.*Values can be multiplied.*</h3>.*"
+                    + "<li><span class='introWord'>Given</span> <span class='argument'>" + a + "</span>.*and.*" + b + ".*</li>.*"
+                    + "<li><span class='introWord'>When</span> <span class='word'>both values are multiplied with each other.*</li>.*"
+                    + "<li><span class='introWord'>Then</span> <span class='word'>the result is.*<span class='argument'>" + expectedResult
+                    + "</span>.*</li>.*"
+                    + ".*" );
     }
 
     @DataProvider

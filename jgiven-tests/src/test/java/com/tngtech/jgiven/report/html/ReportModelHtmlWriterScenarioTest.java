@@ -23,9 +23,10 @@ public class ReportModelHtmlWriterScenarioTest extends JGivenScenarioTest<GivenR
     public static Object[][] statusTexts() {
         return new Object[][] {
             { StepStatus.PASSED, "something happens.*</li>" },
-            { StepStatus.FAILED, "something happens <span class='badge failed'>failed</span>.*</li>" },
-            { StepStatus.SKIPPED, "something happens <span class='badge skipped'>skipped</span>.*</li>" },
-            { StepStatus.NOT_IMPLEMENTED_YET, "something happens <span class='badge notImplementedYet'>not implemented yet</span>.*</li>" },
+            { StepStatus.FAILED, "something happens</span> <span class='badge failed'>failed</span>.*</li>" },
+            { StepStatus.SKIPPED, "something happens</span> <span class='badge skipped'>skipped</span>.*</li>" },
+            { StepStatus.NOT_IMPLEMENTED_YET,
+                "something happens</span> <span class='badge notImplementedYet'>not implemented yet</span>.*</li>" },
         };
     }
 
