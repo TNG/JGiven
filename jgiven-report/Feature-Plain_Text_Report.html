@@ -9,7 +9,7 @@
 <div id='leftpane'>
 <div id='toc'>
 <i class='icon-cancel' onclick='hideToc()'></i>
-<input id='searchfield' type='input' onkeydown='searchChanged(event)'></input>
+<input class='search-input' id='toc-search-input' placeholder='enter regexp to search in toc' onkeydown='searchChanged(event)'></input>
 <h3><a href='index.html'>Summary</a></h3>
 <h3>Test Classes</h3>
 <ul>
@@ -18,7 +18,7 @@
 <li><a href='com.tngtech.jgiven.impl.ScenarioExecutorTest.html' >ScenarioExecutorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.junit.de")'>junit.de</h4><ul class='collapsed' id='com.tngtech.jgiven.junit.de'>
 <li><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html' >DeSzenarioTest</a></li><li><a href='com.tngtech.jgiven.junit.de.JUnitExecutorTest.html' >JUnitExecutorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report")'>report</h4><ul class='collapsed' id='com.tngtech.jgiven.report'>
 <li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.analysis")'>analysis</h4><ul class='collapsed' id='com.tngtech.jgiven.report.analysis'>
-<li><a href='com.tngtech.jgiven.report.analysis.DifferenceAnalyzerTest.html' >DifferenceAnalyzerTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.html")'>html</h4><ul class='collapsed' id='com.tngtech.jgiven.report.html'>
+<li><a href='com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest.html' >ArgumentAnalyzerTest</a></li><li><a href='com.tngtech.jgiven.report.analysis.DifferenceAnalyzerTest.html' >DifferenceAnalyzerTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.html")'>html</h4><ul class='collapsed' id='com.tngtech.jgiven.report.html'>
 <li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a></li><li><a href='com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest.html' >ReportModelHtmlWriterScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html' >StaticHtmlReportGeneratorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.text")'>text</h4><ul class='collapsed' id='com.tngtech.jgiven.report.text'>
 <li><a href='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest.html' >PlainTextGeneratorScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html' >PlainTextScenarioWriterTest</a></li></ul></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.testframework")'>testframework</h4><ul class='collapsed' id='com.tngtech.jgiven.testframework'>
 <li><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html' >TestFrameworkExecutionTest</a></li></ul></li></ul></li></ul>
@@ -47,6 +47,7 @@
 <li><a href='Issue-_10.html'>Issue-#10</a>
 <li><a href='Issue-_25.html'>Issue-#25</a>
 <li><a href='Issue-_29.html'>Issue-#29</a>
+<li><a href='Issue-_32.html'>Issue-#32</a>
 <li><a href='Issue-_4.html'>Issue-#4</a>
 <li><a href='Issue-_9.html'>Issue-#9</a>
 </ul>
@@ -55,159 +56,174 @@
 </div> <!-- leftpane -->
 <div id='rightpane'>
 <div id='header'>
+<div id='header-title'>
 <i id='show-menu-icon' class='icon-menu collapsed' onclick='showToc()'></i>
 <div class='packagename'>Feature</div>
 <h2>Plain Text Report</h2>
+</div> <!-- #header-title -->
 <div class='description'>Plain text reports can be generated</div>
 </div>
 <div id='content'>
+<input class='search-input' id='content-search-input' size='30' placeholder='enter regexp to search in scenarios' onkeydown='contentSearchChanged(event)'></input>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:arguments are correctly printed in text reports for data tables")'><i class='icon-ok'></i> Arguments are correctly printed in text reports for data tables <span class='duration'>(5.49 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:arguments are correctly printed in text reports for data tables")'><i class='icon-ok'></i><span> Arguments are correctly printed in text reports for data tables</span> <span class='duration'>(5.30 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a></div><div class='tag tag-Feature'><a href='Feature-Data_Tables.html'>Data Tables</a></div><div class='tag tag-Issue'><a href='Issue-_10.html'>Issue-#10</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:arguments are correctly printed in text reports for data tables'>
 <div class='scenario-content'>
 <div class='case passedCase'>
-<ul class='steps' id='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:arguments are correctly printed in text reports for data tables:1'>
-<li><span class='introWord'>Given</span> a report model with one scenario <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> the scenario has parameters <span class='argument'>param1</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> the scenario has <span class='argument'>2</span> default cases <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> case <span class='argument'>1</span> has arguments <span class='argument'>arg10</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> case <span class='argument'>1</span> has a when step <span class='argument'>some arg step</span> with argument <span class='argument'>arg10</span> and argument name <span class='argument'>aArg</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> case <span class='argument'>2</span> has arguments <span class='argument'>arg20</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> case <span class='argument'>2</span> has a when step <span class='argument'>some arg step</span> with argument <span class='argument'>arg20</span> and argument name <span class='argument'>aArg</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> all cases have a step <span class='argument'>some step</span> with argument <span class='argument'>someArg</span> <span class='duration'>(0.12 ms)</span></li>
-<li><span class='introWord'>When</span> the plain text report is generated <span class='duration'>(1.19 ms)</span></li>
-<li><span class='introWord'>Then</span> the report contains text <span class='argument'>some step &#39;someArg&#39;</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> the report contains text <span class='argument'>some arg step &lt;param1&gt;</span> <span class='duration'>(0.16 ms)</span></li>
+<div class='case-content' id='case1464521352'>
+<ul class='steps'>
+<li><span class='introWord'>Given</span> <span class='word'>a report model with one scenario</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the scenario has parameters</span> <span class='argument'>param1</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the scenario has</span> <span class='argument'>2</span> <span class='word'>default cases</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has arguments</span> <span class='argument'>arg10</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>arg10</span> <span class='word'>and argument name</span> <span class='argument'>aArg</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has arguments</span> <span class='argument'>arg20</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>arg20</span> <span class='word'>and argument name</span> <span class='argument'>aArg</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>all cases have a step</span> <span class='argument'>some step</span> <span class='word'>with argument</span> <span class='argument'>someArg</span> <span class='duration'>(0.13 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the plain text report is generated</span> <span class='duration'>(1.19 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the report contains text</span> <span class='argument'>some step &#39;someArg&#39;</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report contains text</span> <span class='argument'>some arg step &lt;param1&gt;</span> <span class='duration'>(0.17 ms)</span></li>
 </ul>
+</div><!-- case-content -->
 </div><!-- case -->
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html'>com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:cases are generated in text reports")'><i class='icon-ok'></i> Cases are generated in text reports <span class='duration'>(4.04 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:cases are generated in text reports")'><i class='icon-ok'></i><span> Cases are generated in text reports</span> <span class='duration'>(3.78 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:cases are generated in text reports'>
 <div class='scenario-content'>
 <div class='case passedCase'>
-<ul class='steps' id='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:cases are generated in text reports:1'>
-<li><span class='introWord'>Given</span> a report model with one scenario <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> the scenario has <span class='argument'>2</span> default cases <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> case <span class='argument'>1</span> has a when step <span class='argument'>some step</span> with argument <span class='argument'>someArg</span> <span class='duration'>(0.09 ms)</span></li>
-<li><span class='introWord'>When</span> the plain text report is generated <span class='duration'>(0.88 ms)</span></li>
-<li><span class='introWord'>Then</span> the report contains text <span class='argument'>Case 1:</span> <span class='duration'>(0.10 ms)</span></li>
-<li><span class='introWord'>And</span> the report contains text <span class='argument'>Case 2:</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> the report contains text <span class='argument'>When some step &#39;someArg&#39;</span> <span class='duration'>(0.15 ms)</span></li>
+<div class='case-content' id='case84751880'>
+<ul class='steps'>
+<li><span class='introWord'>Given</span> <span class='word'>a report model with one scenario</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the scenario has</span> <span class='argument'>2</span> <span class='word'>default cases</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a when step</span> <span class='argument'>some step</span> <span class='word'>with argument</span> <span class='argument'>someArg</span> <span class='duration'>(0.09 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the plain text report is generated</span> <span class='duration'>(0.82 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the report contains text</span> <span class='argument'>Case 1:</span> <span class='duration'>(0.10 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report contains text</span> <span class='argument'>Case 2:</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report contains text</span> <span class='argument'>When some step &#39;someArg&#39;</span> <span class='duration'>(0.15 ms)</span></li>
 </ul>
+</div><!-- case-content -->
 </div><!-- case -->
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html'>com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:data tables are generated in text reports")'><i class='icon-ok'></i> Data tables are generated in text reports <span class='duration'>(5.56 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:data tables are generated in text reports")'><i class='icon-ok'></i><span> Data tables are generated in text reports</span> <span class='duration'>(5.63 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a></div><div class='tag tag-Feature'><a href='Feature-Data_Tables.html'>Data Tables</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:data tables are generated in text reports'>
 <div class='scenario-content'>
 <div class='case passedCase'>
-<ul class='steps' id='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:data tables are generated in text reports:1'>
-<li><span class='introWord'>Given</span> a report model with one scenario <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> the scenario has <span class='argument'>3</span> default cases <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> case <span class='argument'>1</span> has a when step <span class='argument'>some arg step</span> with argument <span class='argument'>arg10</span> and argument name <span class='argument'>aArg1</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> case <span class='argument'>1</span> has a when step <span class='argument'>another arg step</span> with argument <span class='argument'>arg11</span> and argument name <span class='argument'>aArg2</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> case <span class='argument'>2</span> has a when step <span class='argument'>some arg step</span> with argument <span class='argument'>arg20</span> and argument name <span class='argument'>aArg1</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> case <span class='argument'>2</span> has a when step <span class='argument'>another arg step</span> with argument <span class='argument'>arg21</span> and argument name <span class='argument'>aArg2</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> case <span class='argument'>3</span> has a when step <span class='argument'>some arg step</span> with argument <span class='argument'>arg30</span> and argument name <span class='argument'>aArg1</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> case <span class='argument'>3</span> has a when step <span class='argument'>another arg step</span> with argument <span class='argument'>arg31</span> and argument name <span class='argument'>aArg2</span> <span class='duration'>(0.13 ms)</span></li>
-<li><span class='introWord'>When</span> the plain text report is generated <span class='duration'>(1.03 ms)</span></li>
-<li><span class='introWord'>Then</span> the report contains text <span class='argument'>&lt;aArg1&gt;</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> the report contains text <span class='argument'>&lt;aArg2&gt;</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> the report contains text <span class='argument multiline'><br />    | aArg1 | aArg2 |<br />    +-------+-------+<br />    | arg10 | arg11 |<br />    | arg20 | arg21 |<br />    | arg30 | arg31 |<br /></span> <span class='duration'>(0.15 ms)</span></li>
+<div class='case-content' id='case643189199'>
+<ul class='steps'>
+<li><span class='introWord'>Given</span> <span class='word'>a report model with one scenario</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the scenario has</span> <span class='argument'>3</span> <span class='word'>default cases</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>arg10</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg11</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>arg20</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg21</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>3</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>arg30</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>3</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg31</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.12 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the plain text report is generated</span> <span class='duration'>(1.01 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the report contains text</span> <span class='argument'>&lt;aArg1&gt;</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report contains text</span> <span class='argument'>&lt;aArg2&gt;</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report contains text</span> <span class='argument multiline'><br />    | aArg1 | aArg2 |<br />    +-------+-------+<br />    | arg10 | arg11 |<br />    | arg20 | arg21 |<br />    | arg30 | arg31 |<br /></span> <span class='duration'>(0.15 ms)</span></li>
 </ul>
+</div><!-- case-content -->
 </div><!-- case -->
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html'>com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:ignored steps marked in text reports")'><i class='icon-ok'></i> Ignored steps marked in text reports<span class='badge count'>4</span> <span class='duration'>(27.74 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:ignored steps marked in text reports")'><i class='icon-ok'></i><span> Ignored steps marked in text reports</span><span class='badge count'>4</span> <span class='duration'>(28.72 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:ignored steps marked in text reports'>
 <div class='scenario-content'>
-<ul class='steps' id='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:ignored steps marked in text reports:1'>
-<li><span class='introWord'>Given</span> a report model with one scenario <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> step <span class='argument'>1</span> is named <span class='argument'>something happens</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> step <span class='argument'>1</span> has status <span class='caseArgument'>&lt;status&gt;</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>When</span> the plain text report is generated <span class='duration'>(8.04 ms)</span></li>
-<li><span class='introWord'>Then</span> the report contains text <span class='caseArgument'>&lt;expectedText&gt;</span> <span class='duration'>(8.41 ms)</span></li>
+<div class='case-content' id='case1795672242'>
+<ul class='steps'>
+<li><span class='introWord'>Given</span> <span class='word'>a report model with one scenario</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>is named</span> <span class='argument'>something happens</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>has status</span> <span class='caseArgument'>&lt;status&gt;</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the plain text report is generated</span> <span class='duration'>(8.64 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the report contains text</span> <span class='caseArgument'>&lt;expectedText&gt;</span> <span class='duration'>(8.17 ms)</span></li>
 </ul>
+</div> <!-- case-content -->
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>status</th><th>expectedText</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>PASSED</td><td>something happens</td><td><i class='icon-ok'></i> <span class='duration'>(18.52 ms)</span></td></tr>
+<td>1</td><td>PASSED</td><td>something happens</td><td><i class='icon-ok'></i> <span class='duration'>(19.01 ms)</span></td></tr>
 <tr>
-<td>2</td><td>FAILED</td><td>something happens (failed)</td><td><i class='icon-ok'></i> <span class='duration'>(3.25 ms)</span></td></tr>
+<td>2</td><td>FAILED</td><td>something happens (failed)</td><td><i class='icon-ok'></i> <span class='duration'>(3.38 ms)</span></td></tr>
 <tr>
-<td>3</td><td>SKIPPED</td><td>something happens (skipped)</td><td><i class='icon-ok'></i> <span class='duration'>(3.04 ms)</span></td></tr>
+<td>3</td><td>SKIPPED</td><td>something happens (skipped)</td><td><i class='icon-ok'></i> <span class='duration'>(3.19 ms)</span></td></tr>
 <tr>
-<td>4</td><td>NOT_IMPLEMENTED_YET</td><td>something happens (not implemented yet)</td><td><i class='icon-ok'></i> <span class='duration'>(2.92 ms)</span></td></tr>
+<td>4</td><td>NOT_IMPLEMENTED_YET</td><td>something happens (not implemented yet)</td><td><i class='icon-ok'></i> <span class='duration'>(3.13 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html'>com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest:the plain text reporter generates one file for each test class")'><i class='icon-ok'></i> The plain text reporter generates one file for each test class<span class='badge count'>3</span> <span class='duration'>(27.52 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest:the plain text reporter generates one file for each test class")'><i class='icon-ok'></i><span> The plain text reporter generates one file for each test class</span><span class='badge count'>3</span> <span class='duration'>(27.94 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest:the plain text reporter generates one file for each test class'>
 <div class='scenario-content'>
-<ul class='steps' id='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest:the plain text reporter generates one file for each test class:1'>
-<li><span class='introWord'>Given</span> <span class='caseArgument'>&lt;numberOfReports&gt;</span> report models <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> the reports exist as JSON files <span class='duration'>(0.03 ms)</span></li>
-<li><span class='introWord'>When</span> the plain text reporter is executed <span class='duration'>(1.14 ms)</span></li>
-<li><span class='introWord'>Then</span> a text file exists for each test class <span class='duration'>(0.83 ms)</span></li>
+<div class='case-content' id='case319530586'>
+<ul class='steps'>
+<li><span class='introWord'>Given</span> <span class='caseArgument'>&lt;numberOfReports&gt;</span> <span class='word'>report models</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the reports exist as JSON files</span> <span class='duration'>(0.03 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the plain text reporter is executed</span> <span class='duration'>(1.17 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>a text file exists for each test class</span> <span class='duration'>(0.87 ms)</span></li>
 </ul>
+</div> <!-- case-content -->
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>numberOfReports</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>0</td><td><i class='icon-ok'></i> <span class='duration'>(4.57 ms)</span></td></tr>
+<td>1</td><td>0</td><td><i class='icon-ok'></i> <span class='duration'>(4.85 ms)</span></td></tr>
 <tr>
-<td>2</td><td>1</td><td><i class='icon-ok'></i> <span class='duration'>(8.72 ms)</span></td></tr>
+<td>2</td><td>1</td><td><i class='icon-ok'></i> <span class='duration'>(9.32 ms)</span></td></tr>
 <tr>
-<td>3</td><td>3</td><td><i class='icon-ok'></i> <span class='duration'>(14.24 ms)</span></td></tr>
+<td>3</td><td>3</td><td><i class='icon-ok'></i> <span class='duration'>(13.78 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest.html'>com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.html.ReportGeneratorTest:the report generator can generate text files")'><i class='icon-ok'></i> The report generator can generate text files <span class='duration'>(29.80 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.ReportGeneratorTest:the report generator can generate text files")'><i class='icon-ok'></i><span> The report generator can generate text files</span> <span class='duration'>(96.97 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.ReportGeneratorTest:the report generator can generate text files'>
 <div class='scenario-content'>
 <div class='case passedCase'>
-<ul class='steps' id='com.tngtech.jgiven.report.html.ReportGeneratorTest:the report generator can generate text files:1'>
-<li><span class='introWord'>Given</span> a report model <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> the reports exist as JSON files <span class='duration'>(0.05 ms)</span></li>
-<li><span class='introWord'>When</span> the report generator is executed with format <span class='argument'>TEXT</span> <span class='duration'>(6.77 ms)</span></li>
-<li><span class='introWord'>Then</span> a text file exists for each test class <span class='duration'>(2.99 ms)</span></li>
+<div class='case-content' id='case1211369174'>
+<ul class='steps'>
+<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the reports exist as JSON files</span> <span class='duration'>(0.03 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the report generator is executed with format</span> <span class='argument'>TEXT</span> <span class='duration'>(6.15 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>a text file exists for each test class</span> <span class='duration'>(2.67 ms)</span></li>
 </ul>
+</div><!-- case-content -->
 </div><!-- case -->
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html'>com.tngtech.jgiven.report.html.ReportGeneratorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>6 scenarios, 11 cases, 66 steps, 0 failed cases  <span class='duration'>(100.15 ms)</span></div>
+<div class='statistics'>6 scenarios, 11 cases, 66 steps, 0 failed cases  <span class='duration'>(168.34 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.5.1-SNAPSHOT-d94dec - on Sep 25, 2014 2:49:40 PM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.5.2-SNAPSHOT-840a5e - on Sep 28, 2014 1:25:50 PM</div>
 <script src='report.js'></script>
 </body></html>
