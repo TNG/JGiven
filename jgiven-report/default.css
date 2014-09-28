@@ -86,7 +86,14 @@ h2, h2 a {
   margin:0px;
   border-radius:0;
   padding-top:5px;
-  padding-bottom: 0px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  display: inline-block;
+  float: left;
+}
+
+#content-search-input {
+  margin-bottom: 10px;
 }
 
 #toc {
@@ -139,17 +146,20 @@ h2, h2 a {
   cursor: pointer;
 }
 
-#searchfield, #searchfield:focus {
-  border: 1px solid gray;
-  border-radius: 15px;
-  font-size: 14px;
+#toc-search-input {
   margin-left: 10px;
   margin-top: 5px;
-  padding: 5px 10px;
   width: 90%;
 }
 
-#searchfield:focus {
+.search-input, .search-input:focus {
+  border: 1px solid gray;
+  border-radius: 15px;
+  font-size: 12px;
+  padding: 3px 8px;
+}
+
+.search-input:focus {
   outline: none;
   box-shadow: 0px 0px 3px blue;
 }
@@ -216,6 +226,8 @@ h1 {
   font-size: 15px;
   font-weight: bold;
   color: white;
+  padding-left: 20px;
+  padding-top: 10px;
 }
 
 #page {
@@ -256,27 +268,34 @@ h1 {
   background: white;
 }
 
-#header {
-  position: relative;
-  padding: 20px;
-}
-
 #content {
   padding: 20px;
   background: white;
 }
 
 #header {
+  position: relative;
   background-color: #f0f0f0;
   background: #444;
   background: #4B5389;
   background-color: rgb(58, 88, 130);
+  /* box-shadow: 2px 2px 5px gray; */
+  border-bottom: 1px solid lightgray;
+}
+
+#header-title:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 #header .description {
   font-size: 18px;
   padding-top:10px;
   color: white;
+  color: black;
+  background-color: rgb(255, 255, 239);
+  padding: 20px;
 }
 
 #content > ul {
@@ -326,8 +345,9 @@ h1 {
   clear: both;
   margin-left: 0px;
   margin-right: 0px;
-  padding-bottom: 0px;
-  margin-bottom: -5px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  margin-bottom: 0px;
   background-color: white;
 }
 
@@ -367,7 +387,7 @@ h1 {
   padding-right: 0px;
   padding-bottom: 0px;
   padding-top: 0px;
-  margin-bottom:10px;
+  margin-bottom: 0px;
   position:relative;
 }
 
@@ -407,7 +427,8 @@ h1 {
   border-radius: 0px;
   text-shadow: none;
   margin-left: 1ex;
-  margin: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
   display: inline-block;
   border-radius: 4px;
   background-color: violet;
@@ -529,7 +550,7 @@ ul.steps {
   list-style-type: none;
   margin-left: 0;
   margin-top: 0;
-  margin-bottom: -10px;
+  margin-bottom: 0px;
   padding: 10px;
   padding-left: 18px;
   padding-botom:0px;
@@ -571,7 +592,56 @@ ul.steps li {
 }
 
 .diff {
+  background-color: rgb(207, 237, 247);
+  padding: 0 5px 0 5px;
+  border-radius: 2px;
+}
+
+.highlight {
   background-color: yellow;
+}
+
+.show-extended-description {
+  padding: 1px;
+  padding-left:4px;
+  padding-right:4px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  color: gray;
+  font-weight: bold;
+  min-width: 20px;
+  cursor: pointer;
+  font-size: 10px;
+  font-family: monospace;
+  vertical-align: middle;
+}
+
+.show-extended-description:hover {
+  color: #222;
+  border-color: #222;
+}
+
+.extended-description-content {
+  position: relative;
+  color: #222;
+  background-color: rgb(207, 237, 247);
+  border-radius: 3px;
+  box-shadow: 0px 0px 2px lightgray;
+  padding: 7px;
+  padding-right: 20px;
+  margin-left: 1em;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-style: italic;
+  display: inline-block;
+}
+
+.extended-description .icon-cancel {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  color: #aaa;
+  cursor: pointer;
 }
 
 .scenario h4 {
@@ -580,7 +650,6 @@ ul.steps li {
   font-size: 15px;
   padding: 0px;
   padding-left: 5px;
-  padding-top: 10px;
   margin-bottom: 0px;
   margin-left: 10px;
   margin-top: 0px;
