@@ -29,7 +29,6 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
     public void visitEnd( ScenarioCaseModel scenarioCase ) {
         if( scenarioCase.caseNr == 1 ) {
             writer.println( "</ul>" );
-            writer.println( "</div> <!-- case-content -->" );
             writer.println( "<h4>Cases:</h4>" );
             writer.println( "<table class='data-table'>" );
             writer.println( "<tr>" );

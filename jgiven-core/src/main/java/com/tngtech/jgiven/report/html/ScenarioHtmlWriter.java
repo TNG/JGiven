@@ -104,9 +104,15 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     public void visit( ScenarioCaseModel scenarioCase ) {
         this.scenarioCase = scenarioCase;
         printCaseHeader( scenarioCase );
-        String collapsed = scenarioCase.getExplicitArguments().isEmpty() || scenarioModel.isCasesAsTable() ? "" : " collapsed";
-        writer.println( "<div class='case-content" + collapsed + "' id='" + getCaseId() + "'>" );
+
+        if( hasMultipleExplicitCases() ) {
+            writer.println( "<div class='case-content collapsed' id='" + getCaseId() + "'>" );
+        }
         writer.println( "<ul class='steps'>" );
+    }
+
+    private boolean hasMultipleExplicitCases() {
+        return !this.scenarioCase.getExplicitArguments().isEmpty() && !scenarioModel.isCasesAsTable();
     }
 
     private String getCaseId() {
@@ -143,7 +149,9 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             writer.println( "<div class='failed'>Failed: " + scenarioCase.errorMessage + "</div>" );
         }
         writer.println( "</ul>" );
-        writer.println( "</div><!-- case-content -->" );
+        if( hasMultipleExplicitCases() ) {
+            writer.println( "</div><!-- case-content -->" );
+        }
         writer.println( "</div><!-- case -->" );
     }
 
