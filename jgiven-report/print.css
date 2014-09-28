@@ -12,8 +12,16 @@ h2, .packagename, #header .description {
 }
 
 
-#leftpane {
+#leftpane,
+.search-input,
+.extended-description-content,
+.show-extended-description,
+#show-menu-icon {
   display: none;
+}
+
+#header .description {
+  background: none;
 }
 
 .scenario h3 {
