@@ -9,7 +9,7 @@
 <div id='leftpane'>
 <div id='toc'>
 <i class='icon-cancel' onclick='hideToc()'></i>
-<input id='searchfield' type='input' onkeydown='searchChanged(event)'></input>
+<input class='search-input' id='toc-search-input' placeholder='enter regexp to search in toc' onkeydown='searchChanged(event)'></input>
 <h3><a href='index.html'>Summary</a></h3>
 <h3>Test Classes</h3>
 <ul>
@@ -18,7 +18,7 @@
 <li><a href='com.tngtech.jgiven.impl.ScenarioExecutorTest.html' >ScenarioExecutorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.junit.de")'>junit.de</h4><ul class='collapsed' id='com.tngtech.jgiven.junit.de'>
 <li><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html' >DeSzenarioTest</a></li><li><a href='com.tngtech.jgiven.junit.de.JUnitExecutorTest.html' >JUnitExecutorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report")'>report</h4><ul class='collapsed' id='com.tngtech.jgiven.report'>
 <li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.analysis")'>analysis</h4><ul class='collapsed' id='com.tngtech.jgiven.report.analysis'>
-<li><a href='com.tngtech.jgiven.report.analysis.DifferenceAnalyzerTest.html' >DifferenceAnalyzerTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.html")'>html</h4><ul class='collapsed' id='com.tngtech.jgiven.report.html'>
+<li><a href='com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest.html' >ArgumentAnalyzerTest</a></li><li><a href='com.tngtech.jgiven.report.analysis.DifferenceAnalyzerTest.html' >DifferenceAnalyzerTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.html")'>html</h4><ul class='collapsed' id='com.tngtech.jgiven.report.html'>
 <li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a></li><li><a href='com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest.html' >ReportModelHtmlWriterScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html' >StaticHtmlReportGeneratorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.text")'>text</h4><ul class='collapsed' id='com.tngtech.jgiven.report.text'>
 <li><a href='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest.html' >PlainTextGeneratorScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html' >PlainTextScenarioWriterTest</a></li></ul></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.testframework")'>testframework</h4><ul class='collapsed' id='com.tngtech.jgiven.testframework'>
 <li><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html' >TestFrameworkExecutionTest</a></li></ul></li></ul></li></ul>
@@ -47,6 +47,7 @@
 <li><a href='Issue-_10.html'>Issue-#10</a>
 <li><a href='Issue-_25.html'>Issue-#25</a>
 <li><a href='Issue-_29.html'>Issue-#29</a>
+<li><a href='Issue-_32.html'>Issue-#32</a>
 <li><a href='Issue-_4.html'>Issue-#4</a>
 <li><a href='Issue-_9.html'>Issue-#9</a>
 </ul>
@@ -55,35 +56,40 @@
 </div> <!-- leftpane -->
 <div id='rightpane'>
 <div id='header'>
+<div id='header-title'>
 <i id='show-menu-icon' class='icon-menu collapsed' onclick='showToc()'></i>
 <div class='packagename'>Feature</div>
 <h2>German Scenarios</h2>
+</div> <!-- #header-title -->
 <div class='description'>Scenarios can be written in German</div>
 </div>
 <div id='content'>
+<input class='search-input' id='content-search-input' size='30' placeholder='enter regexp to search in scenarios' onkeydown='contentSearchChanged(event)'></input>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.junit.de.DeSzenarioTest:Szenarien können in deutsch geschrieben werden")'><i class='icon-ok'></i> Szenarien können in deutsch geschrieben werden <span class='duration'>(9.30 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.de.DeSzenarioTest:Szenarien können in deutsch geschrieben werden")'><i class='icon-ok'></i><span> Szenarien können in deutsch geschrieben werden</span> <span class='duration'>(9.61 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-German_Scenarios.html'>German Scenarios</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.junit.de.DeSzenarioTest:Szenarien können in deutsch geschrieben werden'>
 <div class='scenario-content'>
 <div class='case passedCase'>
-<ul class='steps' id='com.tngtech.jgiven.junit.de.DeSzenarioTest:Szenarien können in deutsch geschrieben werden:1'>
-<li><span class='introWord'>Gegeben</span> ein deutsches Projekt <span class='duration'>(6.63 ms)</span></li>
-<li><span class='introWord'>Wenn</span> JGiven verwendet wird <span class='duration'>(2.15 ms)</span></li>
-<li><span class='introWord'>Und</span> die Szenarien in deutsch geschrieben werden <span class='duration'>(0.10 ms)</span></li>
-<li><span class='introWord'>Dann</span> generiert JGiven deutsche Berichte <span class='duration'>(0.07 ms)</span></li>
+<div class='case-content' id='case1275680003'>
+<ul class='steps'>
+<li><span class='introWord'>Gegeben</span> <span class='word'>ein deutsches Projekt</span> <span class='duration'>(6.73 ms)</span></li>
+<li><span class='introWord'>Wenn</span> <span class='word'>JGiven verwendet wird</span> <span class='duration'>(2.29 ms)</span></li>
+<li><span class='introWord'>Und</span> <span class='word'>die Szenarien in deutsch geschrieben werden</span> <span class='duration'>(0.14 ms)</span></li>
+<li><span class='introWord'>Dann</span> <span class='word'>generiert JGiven deutsche Berichte</span> <span class='duration'>(0.07 ms)</span></li>
 </ul>
+</div><!-- case-content -->
 </div><!-- case -->
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html'>com.tngtech.jgiven.junit.de.DeSzenarioTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>1 scenarios, 1 cases, 4 steps, 0 failed cases  <span class='duration'>(9.30 ms)</span></div>
+<div class='statistics'>1 scenarios, 1 cases, 4 steps, 0 failed cases  <span class='duration'>(9.61 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.5.1-SNAPSHOT-d94dec - on Sep 25, 2014 2:49:40 PM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.5.2-SNAPSHOT-840a5e - on Sep 28, 2014 1:25:50 PM</div>
 <script src='report.js'></script>
 </body></html>

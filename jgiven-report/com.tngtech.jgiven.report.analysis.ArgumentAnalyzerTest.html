@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
   <meta charset='utf-8'>
-  <title>Issue.#29</title>
+  <title>com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest</title>
   <link href='style.css' rel='stylesheet'>
 </head>
 <body>
@@ -58,35 +58,41 @@
 <div id='header'>
 <div id='header-title'>
 <i id='show-menu-icon' class='icon-menu collapsed' onclick='showToc()'></i>
-<div class='packagename'>Issue</div>
-<h2>#29</h2>
+<div class='packagename'>com.tngtech.jgiven.report.analysis</div>
+<h2>ArgumentAnalyzerTest</h2>
 </div> <!-- #header-title -->
-<div class='description'>Issue numbers correspond to Issues in GitHub</div>
 </div>
 <div id='content'>
 <input class='search-input' id='content-search-input' size='30' placeholder='enter regexp to search in scenarios' onkeydown='contentSearchChanged(event)'></input>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML report generates one file for all failed scenarios")'><i class='icon-ok'></i><span> The static HTML report generates one file for all failed scenarios</span> <span class='duration'>(11.29 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div><div class='tag tag-Issue'><a href='Issue-_29.html'>Issue-#29</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML report generates one file for all failed scenarios'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest:multiple parameter usages lead to one parameter")'><i class='icon-ok'></i><span> Multiple parameter usages lead to one parameter</span> <span class='duration'>(22.86 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Issue'><a href='Issue-_32.html'>Issue-#32</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest:multiple parameter usages lead to one parameter'>
 <div class='scenario-content'>
 <div class='case passedCase'>
-<div class='case-content' id='case2024562420'>
+<div class='case-content' id='case76318642'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report has</span> <span class='argument'>1</span> <span class='word'>scenarios</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>of scenario</span> <span class='argument'>1</span> <span class='word'>has failed</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(0.03 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the static HTML reporter is executed</span> <span class='duration'>(4.99 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>a file with name</span> <span class='argument'>failed.html</span> <span class='word'>exists</span> <span class='duration'>(1.08 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>an unanalyzed report model with one scenario</span> <span class='show-extended-description' onclick='showExtendedDescription("extDesc639678835")'>i</span> <span class='duration'>(0.09 ms)</span><div id='extDesc639678835' class='extended-description collapsed'><span class='extended-description-content'>A report model where the analysers have not been executed on<i class='icon-cancel' onclick='toggle("extDesc639678835")'></i></span></div></li>
+<li><span class='introWord'>With</span> <span class='word'>parameters</span> <span class='argument'>param1</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the scenario has</span> <span class='argument'>2</span> <span class='word'>cases</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has arguments</span> <span class='argument'>foo</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a step</span> <span class='argument'>some step</span> <span class='word'>with argument</span> <span class='argument'>foo</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a step</span> <span class='argument'>another step</span> <span class='word'>with argument</span> <span class='argument'>foo</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has arguments</span> <span class='argument'>bar</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a step</span> <span class='argument'>some step</span> <span class='word'>with argument</span> <span class='argument'>bar</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a step</span> <span class='argument'>another step</span> <span class='word'>with argument</span> <span class='argument'>bar</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the argument analyzer is executed</span> <span class='duration'>(2.32 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the scenario has derived parameters</span> <span class='argument'>param1</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has derived arguments</span> <span class='argument'>foo</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has derived arguments</span> <span class='argument'>bar</span> <span class='duration'>(0.29 ms)</span></li>
 </ul>
 </div><!-- case-content -->
 </div><!-- case -->
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html'>com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest.html'>com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>1 scenarios, 1 cases, 6 steps, 0 failed cases  <span class='duration'>(11.29 ms)</span></div>
+<div class='statistics'>1 scenarios, 1 cases, 13 steps, 0 failed cases  <span class='duration'>(22.86 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
