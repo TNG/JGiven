@@ -6,7 +6,7 @@
 
 ### Core
 
-* Step methods can now have extended descriptions with the `@ExtendedDescription` tag. The extended description can be shown in the HTML report.
+* Step methods can now have extended descriptions with the `@ExtendedDescription` tag. The extended description can be shown in the HTML report. [#30](https://github.com/TNG/JGiven/issues/30)
 
 ### HTML Report
 
@@ -15,7 +15,7 @@
 
 ## Bug Fixes
 
-* Fixed bug concerning duplicate parameters in data tables #32
+* Fixed bug concerning duplicate parameters in data tables [#32](https://github.com/TNG/JGiven/issues/32)
 
 # v0.5.1
 ## New Features
