@@ -731,11 +731,14 @@ ul.steps li {
 
 .statistics-number a {
   display: inline-block;
-  color: red;
 }
 
 .statistics-number.failed {
   background-color: #f0f0f0;
+}
+
+.statistics-number.failed a {
+  color: red;
 }
 
 .statistics-number i {
