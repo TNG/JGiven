@@ -112,7 +112,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     }
 
     private boolean hasMultipleExplicitCases() {
-        return !this.scenarioCase.getExplicitArguments().isEmpty() && !scenarioModel.isCasesAsTable();
+        return scenarioModel.getScenarioCases().size() > 1 && !scenarioModel.isCasesAsTable();
     }
 
     private String getCaseId() {
