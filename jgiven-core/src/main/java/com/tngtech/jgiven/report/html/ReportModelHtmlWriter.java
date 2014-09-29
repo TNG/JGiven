@@ -145,9 +145,11 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
         writer.println( "<div id='rightpane'>" );
         writeHeader( reportModel );
         writer.println( "<div id='content'>" );
-        writer.println( "<input class='search-input' id='content-search-input' size='30'"
-                + " placeholder='enter regexp to search in scenarios'"
-                + " onkeydown='contentSearchChanged(event)'></input>" );
+        if( !reportModel.getScenarios().isEmpty() ) {
+            writer.println( "<input class='search-input' id='content-search-input' size='30'"
+                    + " placeholder='enter regexp to search in scenarios'"
+                    + " onkeydown='contentSearchChanged(event)'></input>" );
+        }
     }
 
     void writeHeader( ReportModel reportModel ) {

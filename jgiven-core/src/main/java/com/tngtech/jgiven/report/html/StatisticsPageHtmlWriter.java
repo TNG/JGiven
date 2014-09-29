@@ -51,7 +51,10 @@ public class StatisticsPageHtmlWriter {
     private void writeStatistics() {
         printWriter.write( "<div class='statistics-line'>" );
         writeStatisticNumber( statistics.numClasses, "classes" );
-        writeStatisticNumber( statistics.numScenarios, "scenarios" );
+
+        printWriter.write( "<div class='statistics-number'><a href='all.html'><i>"
+                + statistics.numScenarios + "</i><br/><b>scenarios</b></a></div>" );
+
         writeStatisticNumber( statistics.numCases, "cases" );
         writeStatisticNumber( statistics.numSteps, "steps" );
 

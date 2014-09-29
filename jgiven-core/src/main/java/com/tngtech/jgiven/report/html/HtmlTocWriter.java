@@ -38,11 +38,19 @@ public class HtmlTocWriter {
         writer.println( "<div id='toc'>" );
         writer.println( "<i class='icon-cancel' onclick='hideToc()'></i>" );
         writeSearchInput();
-        writer.println( "<h3><a href='index.html'>Summary</a></h3>" );
+        writeSummary();
         writePackages();
         writeTagLinks();
         writer.println( "</div> <!-- toc -->" );
         writer.println( "</div> <!-- leftpane -->" );
+    }
+
+    private void writeSummary() {
+        writer.println( "<h3><a href='index.html'>Summary</a></h3>" );
+        writer.println( "<ul>" );
+        writer.println( "<li><a href='all.html'>All Scenarios</a>" );
+        writer.println( "<li><a href='failed.html'>Failed Scenarios</a>" );
+        writer.println( "</ul>" );
     }
 
     private void writeSearchInput() {

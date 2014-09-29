@@ -97,26 +97,29 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
         HtmlTocWriter tocWriter = new HtmlTocWriter( tagMap, packageToc );
         ReportStatistics totalStatistics = new ReportStatistics();
         List<ScenarioModel> failedScenarios = Lists.newArrayList();
+        List<ScenarioModel> allScenarios = Lists.newArrayList();
 
         for( ModelFile modelFile : models ) {
             ReportModelHtmlWriter modelWriter = ReportModelHtmlWriter.writeModelToFile( modelFile.model, tocWriter, modelFile.file );
             totalStatistics = totalStatistics.add( modelWriter.getStatistics() );
             failedScenarios.addAll( modelFile.model.getFailedScenarios() );
+            allScenarios.addAll( modelFile.model.getScenarios() );
         }
 
         writeTagFiles( tocWriter );
-        writeFailedFile( tocWriter, failedScenarios );
+        writeScenarios( tocWriter, failedScenarios, ".Failed Scenarios", "failed.html" );
+        writeScenarios( tocWriter, allScenarios, ".All Scenarios", "all.html" );
 
         StatisticsPageHtmlWriter statisticsPageHtmlWriter = new StatisticsPageHtmlWriter( tocWriter, totalStatistics );
         statisticsPageHtmlWriter.write( toDir );
 
     }
 
-    private void writeFailedFile( HtmlTocWriter tocWriter, List<ScenarioModel> failedScenarios ) {
+    private void writeScenarios( HtmlTocWriter tocWriter, List<ScenarioModel> failedScenarios, String name, String fileName ) {
         ReportModel reportModel = new ReportModel();
         reportModel.setScenarios( failedScenarios );
-        reportModel.setClassName( ".Failed Scenarios" );
-        ReportModelHtmlWriter.writeModelToFile( reportModel, tocWriter, new File( toDir, "failed.html" ) );
+        reportModel.setClassName( name );
+        ReportModelHtmlWriter.writeModelToFile( reportModel, tocWriter, new File( toDir, fileName ) );
     }
 
     private void writeTagFiles( HtmlTocWriter tocWriter ) {

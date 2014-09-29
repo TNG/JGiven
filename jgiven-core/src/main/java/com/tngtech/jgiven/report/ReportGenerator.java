@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
 import com.tngtech.jgiven.report.html.HtmlReportGenerator;
-import com.tngtech.jgiven.report.html.SingleFileHtmlReportGenerator;
 import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 
@@ -32,8 +31,9 @@ public class ReportGenerator {
 
         public static Format fromStringOrNull( String value ) {
             for( Format format : values() ) {
-                if( format.text.equalsIgnoreCase( value ) )
+                if( format.text.equalsIgnoreCase( value ) ) {
                     return format;
+                }
             }
             return null;
         }
@@ -86,7 +86,6 @@ public class ReportGenerator {
 
         if( format == HTML ) {
             new StaticHtmlReportGenerator().generate( getToDir(), getSourceDir() );
-            new SingleFileHtmlReportGenerator().generate( getToDir(), "allscenarios.html", getSourceDir() );
             if( getCustomCssFile() != null ) {
                 if( !getCustomCssFile().canRead() ) {
                     log.info( "Cannot read customCssFile " + getCustomCssFile() + " skipping" );
