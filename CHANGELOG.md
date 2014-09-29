@@ -1,8 +1,21 @@
 # v0.6.0 (not released yet)
 
+# v0.5.2
+
 ## New Features
 
-* Extended Descriptions for step methods
+### Core
+
+* Step methods can now have extended descriptions with the `@ExtendedDescription` tag. The extended description can be shown in the HTML report.
+
+### HTML Report
+
+* The scenario content can now be searched
+* A page with all scenarios is now generated
+
+## Bug Fixes
+
+* Fixed bug concerning duplicate parameters in data tables #32
 
 # v0.5.1
 ## New Features
