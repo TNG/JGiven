@@ -11,6 +11,10 @@
 <i class='icon-cancel' onclick='hideToc()'></i>
 <input class='search-input' id='toc-search-input' placeholder='enter regexp to search in toc' onkeydown='searchChanged(event)'></input>
 <h3><a href='index.html'>Summary</a></h3>
+<ul>
+<li><a href='all.html'>All Scenarios</a>
+<li><a href='failed.html'>Failed Scenarios</a>
+</ul>
 <h3>Test Classes</h3>
 <ul>
 <li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven")'>com.tngtech.jgiven</h4><ul class='collapsed' id='com.tngtech.jgiven'>
@@ -65,7 +69,7 @@
 <div id='content'>
 <input class='search-input' id='content-search-input' size='30' placeholder='enter regexp to search in scenarios' onkeydown='contentSearchChanged(event)'></input>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML report generates one file for all failed scenarios")'><i class='icon-ok'></i><span> The static HTML report generates one file for all failed scenarios</span> <span class='duration'>(11.28 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML report generates one file for all failed scenarios")'><i class='icon-ok'></i><span> The static HTML report generates one file for all failed scenarios</span> <span class='duration'>(14.00 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div><div class='tag tag-Issue'><a href='Issue-_29.html'>Issue-#29</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML report generates one file for all failed scenarios'>
 <div class='scenario-content'>
@@ -74,9 +78,9 @@
 <li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>the report has</span> <span class='argument'>1</span> <span class='word'>scenarios</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>of scenario</span> <span class='argument'>1</span> <span class='word'>has failed</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(0.03 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the static HTML reporter is executed</span> <span class='duration'>(5.07 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>a file with name</span> <span class='argument'>failed.html</span> <span class='word'>exists</span> <span class='duration'>(1.06 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(0.04 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the static HTML reporter is executed</span> <span class='duration'>(6.74 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>a file with name</span> <span class='argument'>failed.html</span> <span class='word'>exists</span> <span class='duration'>(1.29 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
@@ -84,7 +88,7 @@
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag")'><i class='icon-ok'></i><span> The static HTML reporter generates one file for each tag</span> <span class='duration'>(22.06 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag")'><i class='icon-ok'></i><span> The static HTML reporter generates one file for each tag</span> <span class='duration'>(25.54 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div><div class='tag tag-Feature'><a href='Feature-Tags.html'>Tags</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag'>
 <div class='scenario-content'>
@@ -92,9 +96,9 @@
 <ul class='steps'>
 <li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>the first scenario has tag</span> <span class='argument'>TestTag</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(0.03 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the static HTML reporter is executed</span> <span class='duration'>(15.57 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>a file with name</span> <span class='argument'>TestTag.html</span> <span class='word'>exists</span> <span class='duration'>(1.24 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(0.08 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the static HTML reporter is executed</span> <span class='duration'>(18.06 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>a file with name</span> <span class='argument'>TestTag.html</span> <span class='word'>exists</span> <span class='duration'>(1.78 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
@@ -102,7 +106,7 @@
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag value")'><i class='icon-ok'></i><span> The static HTML reporter generates one file for each tag value</span> <span class='duration'>(15.10 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag value")'><i class='icon-ok'></i><span> The static HTML reporter generates one file for each tag value</span> <span class='duration'>(18.29 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div><div class='tag tag-Feature'><a href='Feature-Tags.html'>Tags</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each tag value'>
 <div class='scenario-content'>
@@ -113,9 +117,9 @@
 <li><span class='introWord'>And</span> <span class='word'>scenario</span> <span class='argument'>1</span> <span class='word'>has tag</span> <span class='argument'>TestTag</span> <span class='word'>with value</span> <span class='argument'>123</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>scenario</span> <span class='argument'>2</span> <span class='word'>has tag</span> <span class='argument'>TestTag</span> <span class='word'>with value</span> <span class='argument'>456</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(0.03 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the static HTML reporter is executed</span> <span class='duration'>(8.20 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the static HTML reporter is executed</span> <span class='duration'>(10.69 ms)</span></li>
 <li><span class='introWord'>Then</span> <span class='word'>a file with name</span> <span class='argument'>TestTag-123.html</span> <span class='word'>exists</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>a file with name</span> <span class='argument'>TestTag-456.html</span> <span class='word'>exists</span> <span class='duration'>(0.23 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>a file with name</span> <span class='argument'>TestTag-456.html</span> <span class='word'>exists</span> <span class='duration'>(0.19 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
@@ -123,14 +127,14 @@
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each test class")'><i class='icon-ok'></i><span> The static HTML reporter generates one file for each test class</span><span class='badge count'>3</span> <span class='duration'>(38.86 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each test class")'><i class='icon-ok'></i><span> The static HTML reporter generates one file for each test class</span><span class='badge count'>3</span> <span class='duration'>(44.52 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML reporter generates one file for each test class'>
 <div class='scenario-content'>
 <ul class='steps'>
 <li><span class='introWord'>Given</span> <span class='caseArgument'>&lt;n&gt;</span> <span class='word'>report models</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the reports exist as JSON files</span> <span class='duration'>(0.03 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the static HTML reporter is executed</span> <span class='duration'>(3.00 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the reports exist as JSON files</span> <span class='duration'>(0.05 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the static HTML reporter is executed</span> <span class='duration'>(3.41 ms)</span></li>
 <li><span class='introWord'>Then</span> <span class='word'>an index file exists</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>an HTML file exists for each test class</span> <span class='duration'>(0.07 ms)</span></li>
 </ul>
@@ -139,22 +143,22 @@
 <tr>
 <th>#</th><th>n</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>0</td><td><i class='icon-ok'></i> <span class='duration'>(7.42 ms)</span></td></tr>
+<td>1</td><td>0</td><td><i class='icon-ok'></i> <span class='duration'>(8.47 ms)</span></td></tr>
 <tr>
-<td>2</td><td>1</td><td><i class='icon-ok'></i> <span class='duration'>(11.81 ms)</span></td></tr>
+<td>2</td><td>1</td><td><i class='icon-ok'></i> <span class='duration'>(13.91 ms)</span></td></tr>
 <tr>
-<td>3</td><td>3</td><td><i class='icon-ok'></i> <span class='duration'>(19.63 ms)</span></td></tr>
+<td>3</td><td>3</td><td><i class='icon-ok'></i> <span class='duration'>(22.14 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html'>com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>4 scenarios, 6 cases, 34 steps, 0 failed cases  <span class='duration'>(87.31 ms)</span></div>
+<div class='statistics'>4 scenarios, 6 cases, 34 steps, 0 failed cases  <span class='duration'>(102.35 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.5.2-SNAPSHOT-edba3b - on Sep 28, 2014 1:42:39 PM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.5.3-SNAPSHOT-97ab56 - on Sep 29, 2014 12:32:31 PM</div>
 <script src='report.js'></script>
 </body></html>
