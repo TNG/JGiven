@@ -9,8 +9,8 @@ import java.io.UnsupportedEncodingException;
 import org.fusesource.jansi.Ansi.Color;
 
 import com.tngtech.jgiven.impl.Config;
+import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
-import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 
@@ -37,7 +37,7 @@ public class PlainTextReporter extends PlainTextWriter {
     }
 
     public PlainTextReporter( boolean withColor ) {
-        this( CommonReportHelper.getPrintWriter( System.out ), withColor );
+        this( PrintWriterUtil.getPrintWriter( System.out ), withColor );
     }
 
     public PlainTextReporter( PrintWriter printWriter, boolean withColor ) {

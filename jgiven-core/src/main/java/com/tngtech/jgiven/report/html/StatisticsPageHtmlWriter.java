@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.PrintWriter;
 
 import com.tngtech.jgiven.impl.util.DurationFormatter;
+import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
-import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 
@@ -27,7 +27,7 @@ public class StatisticsPageHtmlWriter {
 
     private void writeIndexFile( File toDir ) {
         File file = new File( toDir, "index.html" );
-        printWriter = CommonReportHelper.getPrintWriter( file );
+        printWriter = PrintWriterUtil.getPrintWriter( file );
         utils = new HtmlWriterUtils( printWriter );
         try {
             ReportModelHtmlWriter htmlWriter = new ReportModelHtmlWriter( printWriter );

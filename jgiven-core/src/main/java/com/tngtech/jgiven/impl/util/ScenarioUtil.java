@@ -15,7 +15,7 @@ import com.google.common.collect.Lists;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.ParameterNamesNotFoundException;
 import com.thoughtworks.paranamer.Paranamer;
-import com.tngtech.jgiven.impl.NamedArgument;
+import com.tngtech.jgiven.report.model.NamedArgument;
 
 public class ScenarioUtil {
     private static final Logger log = LoggerFactory.getLogger( ScenarioUtil.class );

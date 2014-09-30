@@ -10,10 +10,10 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
-import com.tngtech.jgiven.impl.NamedArgument;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
+import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;
 

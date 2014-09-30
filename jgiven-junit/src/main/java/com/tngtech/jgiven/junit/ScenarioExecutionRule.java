@@ -26,10 +26,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.primitives.Primitives;
-import com.tngtech.jgiven.impl.NamedArgument;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
+import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;
 
 public class ScenarioExecutionRule implements MethodRule {

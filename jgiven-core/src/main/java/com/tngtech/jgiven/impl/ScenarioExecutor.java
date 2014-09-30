@@ -44,6 +44,7 @@ import com.tngtech.jgiven.impl.util.ReflectionUtil.FieldAction;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
 import com.tngtech.jgiven.integration.CanWire;
+import com.tngtech.jgiven.report.model.NamedArgument;
 
 /**
  * Main class of JGiven for executing scenarios.

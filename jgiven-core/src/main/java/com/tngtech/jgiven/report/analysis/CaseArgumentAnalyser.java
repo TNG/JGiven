@@ -176,7 +176,6 @@ public class CaseArgumentAnalyser {
             for( int i = 0; i < replacement.arguments.size(); i++ ) {
                 Word word = replacement.arguments.get( i );
                 word.getArgumentInfo().setParameterName( replacement.replacementName );
-                word.getArgumentInfo().setDerivedParameter( replacement.isStepParameterName );
                 if( !duplicate ) {
                     scenarioModel.getCase( i ).addDerivedArguments( word.getFormattedValue() );
                 }

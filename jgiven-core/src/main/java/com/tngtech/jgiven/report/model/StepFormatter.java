@@ -8,7 +8,6 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.DefaultFormatter;
-import com.tngtech.jgiven.impl.NamedArgument;
 
 public class StepFormatter {
     private final String stepDescription;

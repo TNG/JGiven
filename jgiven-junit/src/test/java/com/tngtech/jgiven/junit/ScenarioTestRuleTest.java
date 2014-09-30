@@ -18,7 +18,7 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderFrameworkMethod;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import com.tngtech.jgiven.impl.NamedArgument;
+import com.tngtech.jgiven.report.model.NamedArgument;
 
 @RunWith( DataProviderRunner.class )
 public class ScenarioTestRuleTest {

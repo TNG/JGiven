@@ -29,7 +29,6 @@ import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.config.TagConfiguration;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
-import com.tngtech.jgiven.impl.NamedArgument;
 import com.tngtech.jgiven.impl.intercept.InvocationMode;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.util.AssertionUtil;

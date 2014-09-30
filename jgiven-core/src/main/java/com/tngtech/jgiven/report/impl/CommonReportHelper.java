@@ -1,17 +1,11 @@
 package com.tngtech.jgiven.report.impl;
 
 import java.io.File;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Optional;
-import com.google.common.base.Throwables;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 import com.tngtech.jgiven.report.json.ScenarioJsonWriter;
@@ -45,22 +39,6 @@ public class CommonReportHelper {
             File reportFile = new File( reportDir, model.getClassName() + ".json" );
             log.info( "Writing scenario report to file " + reportFile.getAbsolutePath() );
             new ScenarioJsonWriter( model ).write( reportFile );
-        }
-    }
-
-    public static PrintWriter getPrintWriter( File file ) {
-        try {
-            return new PrintWriter( file, Charsets.UTF_8.name() );
-        } catch( Exception e ) {
-            throw Throwables.propagate( e );
-        }
-    }
-
-    public static PrintWriter getPrintWriter( OutputStream outputStream ) {
-        try {
-            return new PrintWriter( new OutputStreamWriter( outputStream, Charsets.UTF_8.name() ) );
-        } catch( UnsupportedEncodingException e ) {
-            throw Throwables.propagate( e );
         }
     }
 }

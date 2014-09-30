@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.impl;
+package com.tngtech.jgiven.report.model;
 
 import com.google.common.base.Objects;
 

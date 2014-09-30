@@ -9,7 +9,7 @@ import com.tngtech.jgiven.exception.JGivenInternalDefectException;
 public class AssertionUtil {
 
     public static void assertNotNull( Object o ) {
-        assertNotNull( "Expected a value to not be null, but it apparently was null" );
+        assertNotNull( o, "Expected a value to not be null, but it apparently was null" );
     }
 
     public static void assertNotNull( Object o, String msg ) {

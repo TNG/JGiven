@@ -16,9 +16,9 @@ import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.io.Files;
+import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.impl.util.Version;
-import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
 import com.tngtech.jgiven.report.model.ReportStatistics;
@@ -197,7 +197,7 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
     }
 
     static ReportModelHtmlWriter writeModelToFile( ReportModel model, HtmlTocWriter tocWriter, File file ) {
-        PrintWriter printWriter = CommonReportHelper.getPrintWriter( file );
+        PrintWriter printWriter = PrintWriterUtil.getPrintWriter( file );
         try {
             ReportModelHtmlWriter htmlWriter = new ReportModelHtmlWriter( printWriter );
             htmlWriter.write( model, tocWriter );

@@ -3,7 +3,7 @@ package com.tngtech.jgiven.impl.intercept;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import com.tngtech.jgiven.impl.NamedArgument;
+import com.tngtech.jgiven.report.model.NamedArgument;
 
 public interface ScenarioListener {
 

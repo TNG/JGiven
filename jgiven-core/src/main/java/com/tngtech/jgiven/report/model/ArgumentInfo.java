@@ -14,12 +14,6 @@ public class ArgumentInfo {
     private String parameterName;
 
     /**
-     * Whether this argument is actually a derived parameter.
-     * Note that in that case parameterName is equal to argumentName
-     */
-    private boolean isDerivedParameter;
-
-    /**
      * The name of the argument as declared in the step method.
      * Should never be {@code null}.
      */
@@ -61,14 +55,6 @@ public class ArgumentInfo {
         return argumentName;
     }
 
-    public void setDerivedParameter( boolean isDerivedParameter ) {
-        this.isDerivedParameter = isDerivedParameter;
-    }
-
-    public boolean isDerivedParameter() {
-        return isDerivedParameter;
-    }
-
     public void setFormattedValue( String formattedValue ) {
         this.formattedValue = formattedValue;
     }
@@ -79,7 +65,7 @@ public class ArgumentInfo {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( parameterName, argumentName, isDerivedParameter );
+        return Objects.hashCode( parameterName, argumentName );
     }
 
     @Override
@@ -95,8 +81,6 @@ public class ArgumentInfo {
         }
         ArgumentInfo other = (ArgumentInfo) obj;
         return Objects.equal( parameterName, other.parameterName )
-                && Objects.equal( argumentName, other.argumentName )
-                && ( isDerivedParameter == other.isDerivedParameter );
+                && Objects.equal( argumentName, other.argumentName );
     }
-
 }

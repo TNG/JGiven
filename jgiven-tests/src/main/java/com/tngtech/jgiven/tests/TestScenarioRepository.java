@@ -37,11 +37,11 @@ public class TestScenarioRepository {
                 return false;
             }
 
-            if( numberOfSteps != null && numberOfSteps != criteria.numberOfSteps ) {
+            if( numberOfSteps != null && !numberOfSteps.equals( criteria.numberOfSteps ) ) {
                 return false;
             }
 
-            if( numberOfFailingStages != null && numberOfFailingStages != criteria.numberOfFailingStages ) {
+            if( numberOfFailingStages != null && !numberOfFailingStages.equals( criteria.numberOfFailingStages ) ) {
                 return false;
             }
 
