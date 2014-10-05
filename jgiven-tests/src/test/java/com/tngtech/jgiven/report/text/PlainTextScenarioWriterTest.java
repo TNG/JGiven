@@ -78,6 +78,7 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
 
     @Test
     @FeatureDataTables
+    @Issue( "#34" )
     public void data_tables_are_generated_correctly_in_text_reports() throws UnsupportedEncodingException {
         given()
             .a_report_model_with_one_scenario()
