@@ -12,15 +12,15 @@
 <input class='search-input' id='toc-search-input' placeholder='enter regexp to search in toc' onkeydown='searchChanged(event)'></input>
 <h3><a href='index.html'>Summary</a></h3>
 <ul>
-<li><a href='all.html'>All Scenarios</a>
-<li><a href='failed.html'>Failed Scenarios</a>
+<li><a href='all.html'>All Scenarios <span class='badge count'>45</span></a>
 </ul>
 <h3>Test Classes</h3>
 <ul>
 <li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven")'>com.tngtech.jgiven</h4><ul class='collapsed' id='com.tngtech.jgiven'>
 <li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.impl")'>impl</h4><ul class='collapsed' id='com.tngtech.jgiven.impl'>
-<li><a href='com.tngtech.jgiven.impl.ScenarioExecutorTest.html' >ScenarioExecutorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.junit.de")'>junit.de</h4><ul class='collapsed' id='com.tngtech.jgiven.junit.de'>
-<li><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html' >DeSzenarioTest</a></li><li><a href='com.tngtech.jgiven.junit.de.JUnitExecutorTest.html' >JUnitExecutorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report")'>report</h4><ul class='collapsed' id='com.tngtech.jgiven.report'>
+<li><a href='com.tngtech.jgiven.impl.ScenarioExecutorTest.html' >ScenarioExecutorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.junit")'>junit</h4><ul class='collapsed' id='com.tngtech.jgiven.junit'>
+<li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.junit.de")'>de</h4><ul class='collapsed' id='com.tngtech.jgiven.junit.de'>
+<li><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html' >DeSzenarioTest</a></li></ul></li><li><a href='com.tngtech.jgiven.junit.JUnitExecutorTest.html' >JUnitExecutorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report")'>report</h4><ul class='collapsed' id='com.tngtech.jgiven.report'>
 <li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.analysis")'>analysis</h4><ul class='collapsed' id='com.tngtech.jgiven.report.analysis'>
 <li><a href='com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest.html' >ArgumentAnalyzerTest</a></li><li><a href='com.tngtech.jgiven.report.analysis.DifferenceAnalyzerTest.html' >DifferenceAnalyzerTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.html")'>html</h4><ul class='collapsed' id='com.tngtech.jgiven.report.html'>
 <li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a></li><li><a href='com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest.html' >ReportModelHtmlWriterScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html' >StaticHtmlReportGeneratorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.text")'>text</h4><ul class='collapsed' id='com.tngtech.jgiven.report.text'>
@@ -52,6 +52,8 @@
 <li><a href='Issue-_25.html'>Issue-#25</a>
 <li><a href='Issue-_29.html'>Issue-#29</a>
 <li><a href='Issue-_32.html'>Issue-#32</a>
+<li><a href='Issue-_33.html'>Issue-#33</a>
+<li><a href='Issue-_34.html'>Issue-#34</a>
 <li><a href='Issue-_4.html'>Issue-#4</a>
 <li><a href='Issue-_9.html'>Issue-#9</a>
 </ul>
@@ -69,14 +71,14 @@
 <div id='content'>
 <input class='search-input' id='content-search-input' size='30' placeholder='enter regexp to search in scenarios' onkeydown='contentSearchChanged(event)'></input>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.impl.ScenarioExecutorTest:methods called during stage construction are ignored in the report")'><i class='icon-ok'></i><span> Methods called during stage construction are ignored in the report</span> <span class='duration'>(4.67 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.impl.ScenarioExecutorTest:methods called during stage construction are ignored in the report")'><i class='icon-ok'></i><span> Methods called during stage construction are ignored in the report</span> <span class='duration'>(6.12 ms)</span></h3>
 <div class='tag-line'></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.impl.ScenarioExecutorTest:methods called during stage construction are ignored in the report'>
 <div class='scenario-content'>
 <div class='case passedCase'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>some stage with method called during construction</span> <span class='duration'>(2.02 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the method does not appear in the report</span> <span class='duration'>(2.30 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>some stage with method called during construction</span> <span class='duration'>(4.78 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the method does not appear in the report</span> <span class='duration'>(0.47 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
@@ -84,46 +86,46 @@
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.impl.ScenarioExecutorTest:step methods can have primitive arrays as parameters")'><i class='icon-ok'></i><span> Step methods can have primitive arrays as parameters</span><span class='badge count'>8</span> <span class='duration'>(7.99 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.impl.ScenarioExecutorTest:step methods can have primitive arrays as parameters")'><i class='icon-ok'></i><span> Step methods can have primitive arrays as parameters</span><span class='badge count'>8</span> <span class='duration'>(17.23 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Issue'><a href='Issue-_1.html'>Issue-#1</a></div><div class='tag tag-Feature'><a href='Feature-Step_Parameters.html'>Step Parameters</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.impl.ScenarioExecutorTest:step methods can have primitive arrays as parameters'>
 <div class='scenario-content'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a step method with a primitive</span> <span class='caseArgument'>&lt;type&gt;</span> <span class='word'>array</span> <span class='caseArgument'>&lt;array&gt;</span> <span class='word'>as parameter</span> <span class='duration'>(0.44 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the scenario is executed</span> <span class='duration'>(0.08 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>no exeception is thrown</span> <span class='duration'>(1.62 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a step method with a primitive</span> <span class='caseArgument'>&lt;type&gt;</span> <span class='word'>array</span> <span class='caseArgument'>&lt;array&gt;</span> <span class='word'>as parameter</span> <span class='duration'>(1.19 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the scenario is executed</span> <span class='duration'>(0.24 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>no exeception is thrown</span> <span class='duration'>(0.28 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>type</th><th>array</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>byte</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(2.55 ms)</span></td></tr>
+<td>1</td><td>byte</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(2.76 ms)</span></td></tr>
 <tr>
-<td>2</td><td>char</td><td>a, b, c</td><td><i class='icon-ok'></i> <span class='duration'>(0.78 ms)</span></td></tr>
+<td>2</td><td>char</td><td>a, b, c</td><td><i class='icon-ok'></i> <span class='duration'>(2.20 ms)</span></td></tr>
 <tr>
-<td>3</td><td>short</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(0.93 ms)</span></td></tr>
+<td>3</td><td>short</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(2.64 ms)</span></td></tr>
 <tr>
-<td>4</td><td>int</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(0.72 ms)</span></td></tr>
+<td>4</td><td>int</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(1.95 ms)</span></td></tr>
 <tr>
-<td>5</td><td>long</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(0.69 ms)</span></td></tr>
+<td>5</td><td>long</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(1.87 ms)</span></td></tr>
 <tr>
-<td>6</td><td>double</td><td>1.0, 2.0, 3.0</td><td><i class='icon-ok'></i> <span class='duration'>(0.75 ms)</span></td></tr>
+<td>6</td><td>double</td><td>1.0, 2.0, 3.0</td><td><i class='icon-ok'></i> <span class='duration'>(1.95 ms)</span></td></tr>
 <tr>
-<td>7</td><td>float</td><td>1.0, 2.0, 3.0</td><td><i class='icon-ok'></i> <span class='duration'>(0.77 ms)</span></td></tr>
+<td>7</td><td>float</td><td>1.0, 2.0, 3.0</td><td><i class='icon-ok'></i> <span class='duration'>(2.00 ms)</span></td></tr>
 <tr>
-<td>8</td><td>boolean</td><td>true, false</td><td><i class='icon-ok'></i> <span class='duration'>(0.79 ms)</span></td></tr>
+<td>8</td><td>boolean</td><td>true, false</td><td><i class='icon-ok'></i> <span class='duration'>(1.85 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.impl.ScenarioExecutorTest.html'>com.tngtech.jgiven.impl.ScenarioExecutorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>2 scenarios, 9 cases, 26 steps, 0 failed cases  <span class='duration'>(12.66 ms)</span></div>
+<div class='statistics'>2 scenarios, 9 cases, 26 steps, 0 failed cases  <span class='duration'>(23.35 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.5.3-SNAPSHOT-97ab56 - on Sep 29, 2014 12:32:31 PM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> 0.5.3-SNAPSHOT-296ed3 - on Oct 5, 2014 1:41:00 PM</div>
 <script src='report.js'></script>
 </body></html>
