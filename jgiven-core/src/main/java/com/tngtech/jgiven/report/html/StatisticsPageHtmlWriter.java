@@ -52,20 +52,26 @@ public class StatisticsPageHtmlWriter {
         printWriter.write( "<div class='statistics-line'>" );
         writeStatisticNumber( statistics.numClasses, "classes" );
 
-        printWriter.write( "<div class='statistics-number'><a href='all.html'><i>"
-                + statistics.numScenarios + "</i><br/><b>scenarios</b></a></div>" );
+        writeStatisticsNumberWithLink( statistics.numScenarios, "scenarios", "all.html" );
 
         writeStatisticNumber( statistics.numCases, "cases" );
         writeStatisticNumber( statistics.numSteps, "steps" );
 
-        String failedClass = statistics.numFailedCases > 0 ? "failed" : "";
+        writeStatisticsNumberWithLink( statistics.numPendingScenarios, "pending scenarios", "pending.html" );
+
+        String failedClass = statistics.numFailedScenarios > 0 ? "failed" : "";
         printWriter.write( "<div class='statistics-number " + failedClass + "'><a href='failed.html'><i>"
-                + statistics.numFailedCases + "</i><br/><b>failed cases</b></a></div>" );
+                + statistics.numFailedScenarios + "</i><br/><b>failed scenarios</b></a></div>" );
 
         writeStatisticNumber( DurationFormatter.format( statistics.durationInNanos ), "total time" );
         long averageNanos = statistics.numCases != 0 ? statistics.durationInNanos / statistics.numCases : 0;
         writeStatisticNumber( DurationFormatter.format( averageNanos ), "time / case" );
         printWriter.println( "</div>" );
+    }
+
+    private void writeStatisticsNumberWithLink( int number, String title, String fileName ) {
+        printWriter.write( "<div class='statistics-number'><a href='" + fileName + "'><i>"
+                + number + "</i><br/><b>" + title + "</b></a></div>" );
     }
 
     private void writeStatisticNumber( int number, String name ) {

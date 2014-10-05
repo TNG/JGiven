@@ -161,9 +161,13 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
-    public SELF step_$_has_status( int i, StepStatus status ) {
-        getCase( 1 ).getStep( i - 1 ).setStatus( status );
+    public SELF step_$_of_case_$_has_status( int stepNr, int caseNr, StepStatus status ) {
+        getCase( caseNr ).getStep( stepNr - 1 ).setStatus( status );
         return self();
+    }
+
+    public SELF step_$_has_status( int stepNr, StepStatus status ) {
+        return step_$_of_case_$_has_status( stepNr, 1, status );
     }
 
     public SELF step_$_has_a_duration_of_$_nano_seconds( int i, long durationInNanos ) {

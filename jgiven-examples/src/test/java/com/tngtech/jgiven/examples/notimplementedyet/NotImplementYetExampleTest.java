@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.examples.notimplementedyet;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import com.tngtech.jgiven.annotation.Description;
@@ -14,8 +15,19 @@ public class NotImplementYetExampleTest extends SimpleScenarioTest<NotImplementY
 
     @Test
     @FeatureNotImplementedYet
-    @NotImplementedYet
+    // @NotImplementedYet
     public void tests_that_are_not_implemented_yet_can_be_annotated_with_the_NotImplementedYet_annotation() {
+        given().some_state();
+        when().some_action();
+        then().some_result();
+
+        Assertions.assertThat( true ).isFalse();
+    }
+
+    @Test
+    @FeatureNotImplementedYet
+    @NotImplementedYet
+    public void a_tests_that_are_not_implemented_yet_can_be_annotated_with_the_NotImplementedYet_annotation() {
         given().some_state();
         when().some_action();
         then().some_result();
@@ -23,11 +35,17 @@ public class NotImplementYetExampleTest extends SimpleScenarioTest<NotImplementY
 
     public static class TestSteps {
 
-        public void some_state() {}
+        public TestSteps some_state() {
+            return this;
+        }
 
-        public void some_result() {}
+        public TestSteps some_result() {
+            return this;
+        }
 
-        public void some_action() {}
+        public TestSteps some_action() {
+            return this;
+        }
 
     }
 }

@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.junit.de;
+package com.tngtech.jgiven.junit;
 
 import org.junit.Test;
 

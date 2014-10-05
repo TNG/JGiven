@@ -19,6 +19,7 @@ public class ScenarioModel {
     private boolean casesAsTable;
     private final List<ScenarioCaseModel> scenarioCases = Lists.newArrayList();
     private long durationInNanos;
+    private ExecutionStatus executionStatus;
 
     public void accept( ReportModelVisitor visitor ) {
         visitor.visit( this );
@@ -34,9 +35,12 @@ public class ScenarioModel {
     }
 
     public ExecutionStatus getExecutionStatus() {
-        ExecutionStatusCalculator executionStatusCalculator = new ExecutionStatusCalculator();
-        this.accept( executionStatusCalculator );
-        return executionStatusCalculator.executionStatus();
+        if( executionStatus == null ) {
+            ExecutionStatusCalculator executionStatusCalculator = new ExecutionStatusCalculator();
+            this.accept( executionStatusCalculator );
+            executionStatus = executionStatusCalculator.executionStatus();
+        }
+        return executionStatus;
     }
 
     public ScenarioCaseModel getCase( int i ) {

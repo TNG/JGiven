@@ -164,9 +164,7 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
             className = Files.getFileExtension( reportModel.getClassName() );
         }
 
-        if( !Strings.isNullOrEmpty( packageName ) ) {
-            writer.println( format( "<div class='packagename'>%s</div>", packageName ) );
-        }
+        writer.println( format( "<div class='packagename'>%s</div>", packageName ) );
 
         writer.println( format( "<h2>%s</h2>", className ) );
         writer.println( "</div> <!-- #header-title -->" );

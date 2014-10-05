@@ -34,6 +34,14 @@ public class StatisticsCalculator {
         public void visit( ScenarioModel scenarioModel ) {
             statistics.numScenarios++;
             statistics.durationInNanos += scenarioModel.getDurationInNanos();
+            ExecutionStatus executionStatus = scenarioModel.getExecutionStatus();
+            if( executionStatus == ExecutionStatus.FAILED ) {
+                statistics.numFailedScenarios += 1;
+            } else if( executionStatus == ExecutionStatus.NONE_IMPLEMENTED || executionStatus == ExecutionStatus.PARTIALLY_IMPLEMENTED ) {
+                statistics.numPendingScenarios += 1;
+            } else {
+                statistics.numSuccessfulScenarios += 1;
+            }
         }
 
         @Override

@@ -10,6 +10,7 @@ import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.JGivenScenarioTest;
 import com.tngtech.jgiven.report.WhenReportGenerator;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
+import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.tags.FeatureHtmlReport;
 import com.tngtech.jgiven.tags.FeatureTags;
 import com.tngtech.jgiven.tags.Issue;
@@ -68,4 +69,33 @@ public class StaticHtmlReportGeneratorTest extends
         when().the_static_HTML_reporter_is_executed();
         then().a_file_with_name_$_exists( "failed.html" );
     }
+
+    @Test
+    @Issue( "#33" )
+    public void the_failed_file_generated_by_the_static_HTML_report_generator_contains_scenarios_where_some_cases_are_failed()
+            throws IOException {
+        given().a_report_model()
+            .and().the_report_has_$_scenarios( 1 )
+            .and().the_scenario_has_$_default_cases( 2 )
+            .and().case_$_of_scenario_$_has_failed( 1, 1 )
+            .and().step_$_of_case_$_has_status( 1, 1, StepStatus.FAILED )
+            .and().the_report_exist_as_JSON_file();
+        when().the_static_HTML_reporter_is_executed();
+        then().a_file_with_name_$_exists( "failed.html" )
+            .and().file_$_contains_scenario_$( "failed.html", 1 );
+    }
+
+    @Test
+    @Issue( "#33" )
+    public void the_failed_file_generated_by_the_static_HTML_report_generator_contains_failed_scenarios_where_all_steps_are_successful()
+            throws IOException {
+        given().a_report_model()
+            .and().the_report_has_$_scenarios( 1 )
+            .and().case_$_of_scenario_$_has_failed( 1, 1 )
+            .and().the_report_exist_as_JSON_file();
+        when().the_static_HTML_reporter_is_executed();
+        then().a_file_with_name_$_exists( "failed.html" )
+            .and().file_$_contains_scenario_$( "failed.html", 1 );
+    }
+
 }

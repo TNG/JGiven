@@ -31,6 +31,7 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
     static class ModelFile {
         ReportModel model;
         File file;
+        ReportStatistics statistics;
     }
 
     private final List<ModelFile> models = Lists.newArrayList();
@@ -93,26 +94,38 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
     }
 
     public void writeEnd() {
+        ReportStatistics totalStatistics = calulcateStatistics();
+
         PackageToc packageToc = new PackageTocBuilder( models ).getRootPackageToc();
-        HtmlTocWriter tocWriter = new HtmlTocWriter( tagMap, packageToc );
-        ReportStatistics totalStatistics = new ReportStatistics();
+        HtmlTocWriter tocWriter = new HtmlTocWriter( tagMap, packageToc, totalStatistics );
         List<ScenarioModel> failedScenarios = Lists.newArrayList();
+        List<ScenarioModel> pendingScenarios = Lists.newArrayList();
         List<ScenarioModel> allScenarios = Lists.newArrayList();
 
         for( ModelFile modelFile : models ) {
             ReportModelHtmlWriter modelWriter = ReportModelHtmlWriter.writeModelToFile( modelFile.model, tocWriter, modelFile.file );
-            totalStatistics = totalStatistics.add( modelWriter.getStatistics() );
             failedScenarios.addAll( modelFile.model.getFailedScenarios() );
+            pendingScenarios.addAll( modelFile.model.getPendingScenarios() );
             allScenarios.addAll( modelFile.model.getScenarios() );
         }
 
         writeTagFiles( tocWriter );
-        writeScenarios( tocWriter, failedScenarios, ".Failed Scenarios", "failed.html" );
-        writeScenarios( tocWriter, allScenarios, ".All Scenarios", "all.html" );
+        writeScenarios( tocWriter, failedScenarios, "Failed Scenarios", "failed.html" );
+        writeScenarios( tocWriter, pendingScenarios, "Pending Scenarios", "pending.html" );
+        writeScenarios( tocWriter, allScenarios, "All Scenarios", "all.html" );
 
         StatisticsPageHtmlWriter statisticsPageHtmlWriter = new StatisticsPageHtmlWriter( tocWriter, totalStatistics );
         statisticsPageHtmlWriter.write( toDir );
 
+    }
+
+    private ReportStatistics calulcateStatistics() {
+        ReportStatistics totalStatistics = new ReportStatistics();
+        for( ModelFile modelFile : models ) {
+            modelFile.statistics = new StatisticsCalculator().getStatistics( modelFile.model );
+            totalStatistics = totalStatistics.add( modelFile.statistics );
+        }
+        return totalStatistics;
     }
 
     private void writeScenarios( HtmlTocWriter tocWriter, List<ScenarioModel> failedScenarios, String name, String fileName ) {

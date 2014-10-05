@@ -16,6 +16,7 @@ import com.google.common.collect.Multimaps;
 import com.google.common.collect.Ordering;
 import com.tngtech.jgiven.report.html.PackageTocBuilder.PackageToc;
 import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator.ModelFile;
+import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.Tag;
 
@@ -24,10 +25,12 @@ public class HtmlTocWriter {
     private final Map<Tag, List<ScenarioModel>> tagMap;
     private final PackageToc packageToc;
     private final ImmutableListMultimap<String, Tag> groupedTags;
+    private final ReportStatistics totalStatistics;
 
-    public HtmlTocWriter( Map<Tag, List<ScenarioModel>> tagMap, PackageToc packageToc ) {
+    public HtmlTocWriter( Map<Tag, List<ScenarioModel>> tagMap, PackageToc packageToc, ReportStatistics totalStatistics ) {
         this.tagMap = tagMap;
         this.packageToc = packageToc;
+        this.totalStatistics = totalStatistics;
         groupedTags = getGroupedTags();
     }
 
@@ -48,9 +51,17 @@ public class HtmlTocWriter {
     private void writeSummary() {
         writer.println( "<h3><a href='index.html'>Summary</a></h3>" );
         writer.println( "<ul>" );
-        writer.println( "<li><a href='all.html'>All Scenarios</a>" );
-        writer.println( "<li><a href='failed.html'>Failed Scenarios</a>" );
+        writeLink( totalStatistics.numScenarios, "all.html", "All Scenarios" );
+        writeLink( totalStatistics.numPendingScenarios, "pending.html", "Pending Scenarios" );
+        writeLink( totalStatistics.numFailedScenarios, "failed.html", "Failed Scenarios" );
         writer.println( "</ul>" );
+    }
+
+    private void writeLink( int count, String fileName, String title ) {
+        if( count > 0 ) {
+            writer.print( "<li><a href='" + fileName + "'>" + title );
+            writer.println( " <span class='badge count'>" + count + "</span></a>" );
+        }
     }
 
     private void writeSearchInput() {

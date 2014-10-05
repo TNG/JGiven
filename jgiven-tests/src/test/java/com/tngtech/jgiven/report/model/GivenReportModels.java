@@ -51,4 +51,14 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         givenReportModel.case_$_of_scenario_$_has_failed( caseNr, scenarioNr );
         return self();
     }
+
+    public SELF the_scenario_has_$_default_cases( int ncases ) {
+        givenReportModel.the_scenario_has_$_default_cases( ncases );
+        return self();
+    }
+
+    public SELF step_$_of_case_$_has_status( int stepNr, int caseNr, StepStatus status ) {
+        givenReportModel.step_$_of_case_$_has_status( stepNr, caseNr, status );
+        return self();
+    }
 }

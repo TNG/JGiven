@@ -2,6 +2,7 @@ package com.tngtech.jgiven.report.model;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.List;
 
 import com.google.common.base.Optional;
@@ -101,13 +102,22 @@ public class ReportModel {
     }
 
     public List<ScenarioModel> getFailedScenarios() {
+        return getScenariosWithStatus( ExecutionStatus.FAILED );
+    }
+
+    public List<ScenarioModel> getPendingScenarios() {
+        return getScenariosWithStatus( ExecutionStatus.NONE_IMPLEMENTED, ExecutionStatus.PARTIALLY_IMPLEMENTED );
+    }
+
+    public List<ScenarioModel> getScenariosWithStatus( ExecutionStatus first, ExecutionStatus... rest ) {
+        EnumSet<ExecutionStatus> stati = EnumSet.of( first, rest );
         List<ScenarioModel> result = Lists.newArrayList();
         for( ScenarioModel m : scenarios ) {
-            if( m.getExecutionStatus() == ExecutionStatus.FAILED ) {
+            ExecutionStatus executionStatus = m.getExecutionStatus();
+            if( stati.contains( executionStatus ) ) {
                 result.add( m );
             }
         }
         return result;
     }
-
 }
