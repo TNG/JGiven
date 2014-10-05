@@ -85,14 +85,14 @@ function contentSearchChanged(event) {
    }
 
    searchTimeout = window.setTimeout( function() {
-      var toc = document.getElementById('content');
+      var content = document.getElementById('content');
       var searchfield = document.getElementById('content-search-input');
       var search = searchfield.value;
       console.log("Search for " + search);
-      openMatchingElements(new RegExp(search,'i'), toc, 2, contentElementsToToggle, elementsToBeSearched);
+      openMatchingElements(new RegExp(search,'i'), content, 2, contentElementsToToggle, elementsToBeSearched);
 
       if (search === '') {
-         collapseAll(toc, 1, contentElementsToBeClosed);
+         collapseAll(content, 1, contentElementsToBeClosed);
       }
    }, SEARCH_TIMEOUT);
 }
@@ -136,12 +136,37 @@ function elementsToBeSearched(element) {
 }
 
 function contentElementsToBeClosed(element) {
-   return element.className === 'scenario-body'
-      || element.className === 'case-content';
+   return element.className && (element.className.indexOf('scenario-body') !== -1
+      || element.className.indexOf('case-content') !== -1);
 }
 
 function ulElement(element) {
    return element.tagName === "UL";
+}
+
+function expandAllClicked() {
+   expandAll( document.getElementById('content'), contentElementsToBeClosed )
+}
+
+function expandAll(element, toBeExpanded) {
+   if (isCollapsed(element) && toBeExpanded(element)) {
+      toggleElement(element);
+   }
+
+   expandChildren(element, toBeExpanded);
+}
+
+function expandChildren(element, toBeExpanded) {
+   var child = element.firstChild;
+   while (child) {
+      expandAll(child, toBeExpanded);
+      child = child.nextSibling;
+   }
+}
+
+
+function collapseAllClicked() {
+   collapseAll( document.getElementById('content'), 1, contentElementsToBeClosed);
 }
 
 function collapseAll(element, depth, toBeClosed) {

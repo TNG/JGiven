@@ -23,9 +23,12 @@
   line-height: 1em;
 }
 
-.icon-ok:before { content: '\e800'; } /* '' */
-.icon-cancel:before { content: '\e801'; } /* '' */
-.icon-block:before { content: '\e802'; } /* '' */
-.icon-right-open:before { content: '\e803'; } /* '' */
-.icon-down-open:before { content: '\e804'; } /* '' */
-.icon-menu:before { content: '\e805'; } /* '' */
+.icon-plus-squared-alt:before { content: '\e800'; } /* '' */
+.icon-minus-squared-alt:before { content: '\e801'; } /* '' */
+.icon-attention-alt:before { content: '\e802'; } /* '' */
+.icon-ok:before { content: '\e803'; } /* '' */
+.icon-right-open:before { content: '\e804'; } /* '' */
+.icon-down-open:before { content: '\e805'; } /* '' */
+.icon-block:before { content: '\e806'; } /* '' */
+.icon-cancel:before { content: '\e807'; } /* '' */
+.icon-menu:before { content: '\e808'; } /* '' */

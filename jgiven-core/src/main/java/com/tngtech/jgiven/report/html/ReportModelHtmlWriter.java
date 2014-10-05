@@ -149,6 +149,8 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
             writer.println( "<input class='search-input' id='content-search-input' size='30'"
                     + " placeholder='enter regexp to search in scenarios'"
                     + " onkeydown='contentSearchChanged(event)'></input>" );
+            writer.println("<i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>");
+            writer.println("<i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>");
         }
     }
 

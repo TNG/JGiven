@@ -298,6 +298,11 @@ h1 {
   padding: 20px;
 }
 
+#expand-all-icon, #collapse-all-icon {
+  cursor: pointer;
+  float: right;
+}
+
 #content > ul {
   list-style-type: none;
   padding-left:0px;
