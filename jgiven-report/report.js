@@ -1,5 +1,8 @@
 init();
 
+var SEARCH_TIMEOUT = 250;
+var MAX_HITS = 100;
+
 function init() {
    if (document.location.search.indexOf('toc=0') != -1) {
       hideToc();
@@ -91,7 +94,7 @@ function contentSearchChanged(event) {
       if (search === '') {
          collapseAll(toc, 1, contentElementsToBeClosed);
       }
-   }, 100);
+   }, SEARCH_TIMEOUT);
 }
 
 function contentElementsToToggle(element) {
@@ -117,12 +120,12 @@ function searchChanged(event) {
       var searchfield = document.getElementById('toc-search-input');
       var search = searchfield.value;
       console.log("Search for " + search);
-      openMatchingElements(new RegExp(search,'i'), toc, 0, tocElementsToToggle, elementsToBeSearched);
-
       if (search === '') {
          collapseAll(toc, 0, ulElement);
+      } else {
+         openMatchingElements(new RegExp(search,'i'), toc, 0, tocElementsToToggle, elementsToBeSearched);
       }
-   }, 100);
+   }, SEARCH_TIMEOUT);
 }
 
 function elementsToBeSearched(element) {
@@ -142,13 +145,20 @@ function ulElement(element) {
 }
 
 function collapseAll(element, depth, toBeClosed) {
+   unhighlight(element);
+
    if (depth > 2 && toBeClosed(element) && !isCollapsed(element)) {
       toggleElement(element);
    }
 
-   var children = element.childNodes;
-   for(var i=0; i < children.length; i++) {
-      collapseAll(children[i], depth + 1, toBeClosed);
+   collapseChildren(element, depth, toBeClosed)
+}
+
+function collapseChildren(element, depth, toBeClosed) {
+   var child = element.firstChild;
+   while (child) {
+      collapseAll(child, depth + 1, toBeClosed);
+      child = child.nextSibling;
    }
 }
 
@@ -171,34 +181,48 @@ function openMatchingElements(search, element, depth, shouldToggleElement, shoul
       toggleElement(element);
    }
 
-   if (element.getAttribute) {
-      var originalValue = element.getAttribute("data-original");
-      if (originalValue) {
-         element.innerHTML = originalValue;
+   unhighlight(element);
+
+   var found = 0;
+   var child = element.firstChild;
+   while (child && (depth > 2 || found < MAX_HITS)) {
+      if (openMatchingElements(search, child, depth + 1,shouldToggleElement, shouldSearchElement)) {
+         found++;
       }
+      child = child.nextSibling;
    }
 
-   var found = false;
-   var children = element.childNodes;
-   for(var i=0; i < children.length; i++) {
-      if (openMatchingElements(search, children[i], depth + 1,shouldToggleElement, shouldSearchElement)) {
-         found = true;
-      }
-   }
-
-   if (found) {
+   if (found > 0) {
       if (isCollapsed(element)) {
          toggleElement(element);
       }
-      if (onlyHasTextNode(element)) {
-         element.setAttribute("data-original", element.innerHTML);
-         element.innerHTML = highlightMatches(element.innerHTML, search);
-      }
+      highlightMatches(element, search);
    }
    return found;
 }
 
-function highlightMatches(text, search) {
+function unhighlight(element) {
+   if (element.getAttribute) {
+      var originalValue = element.getAttribute("data-original");
+      if (originalValue) {
+         element.innerHTML = originalValue;
+         element.removeAttribute("data-original");
+      }
+   }
+}
+
+function highlightMatches(element, search) {
+   if (onlyHasTextNode(element)) {
+      var origValue = element.innerHTML;
+      var changedValue = replaceMatches(origValue, search);
+      if (origValue !== changedValue) {
+         element.innerHTML = changedValue;
+         element.setAttribute("data-original", origValue);
+      }
+   }
+}
+
+function replaceMatches(text, search) {
    var result = text.replace(search, "<span class='highlight'>$&</span>");
    return result;
 }
