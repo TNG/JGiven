@@ -78,15 +78,16 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
 
     @Test
     @FeatureDataTables
-    public void data_tables_are_generated_in_text_reports() throws UnsupportedEncodingException {
+    public void data_tables_are_generated_correctly_in_text_reports() throws UnsupportedEncodingException {
         given()
             .a_report_model_with_one_scenario()
             .and().the_scenario_has_$_default_cases( 3 )
-            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "some arg step", "arg10", "aArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "some arg step", "43", "aArg1" )
             .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "another arg step", "arg11", "aArg2" )
-            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "some arg step", "arg20", "aArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "some arg step", "4", "aArg1" )
             .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "another arg step", "arg21", "aArg2" )
-            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 3, "some arg step", "arg30", "aArg1" )
+            .and().case_$_fails_with_error_message( 2, "Some Error" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 3, "some arg step", "1234567", "aArg1" )
             .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 3, "another arg step", "arg31", "aArg2" );
 
         when().the_plain_text_report_is_generated();
@@ -94,10 +95,10 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
         then().the_report_contains_text( "<aArg1>" )
             .and().the_report_contains_text( "<aArg2>" )
             .and().the_report_contains_text( "\n" +
-                    "    | aArg1 | aArg2 |\n" +
-                    "    +-------+-------+\n" +
-                    "    | arg10 | arg11 |\n" +
-                    "    | arg20 | arg21 |\n" +
-                    "    | arg30 | arg31 |\n" );
+                    "    | # |   aArg1 | aArg2 | Status             |\n" +
+                    "    +---+---------+-------+--------------------+\n" +
+                    "    | 1 |      43 | arg11 | Success            |\n" +
+                    "    | 2 |       4 | arg21 | Failed: Some Error |\n" +
+                    "    | 3 | 1234567 | arg31 | Success            |\n" );
     }
 }

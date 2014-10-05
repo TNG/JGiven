@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
+import com.google.common.primitives.Doubles;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
@@ -43,15 +44,25 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
         }
     }
 
+    static class ColumnSpec {
+        int width;
+        boolean leftAligned;
+    }
+
     @Override
     public void visitEnd( ScenarioModel scenarioModel ) {
+        List<List<String>> dataTableModel = getDataTableModel( scenarioModel );
         StringBuilder formatBuilder = new StringBuilder();
         StringBuilder lineBuilder = new StringBuilder();
-        List<Integer> columnWidths = getMaxColumnWidth( scenarioModel );
-        for( int width : columnWidths ) {
-            formatBuilder.append( "| %" + width + "s " );
+        List<ColumnSpec> columnWidths = getColumnSpecs( dataTableModel );
+        for( ColumnSpec spec : columnWidths ) {
+            formatBuilder.append( "| %" );
+            if( spec.leftAligned ) {
+                formatBuilder.append( "-" );
+            }
+            formatBuilder.append( spec.width + "s " );
             lineBuilder.append( "+" );
-            lineBuilder.append( Strings.repeat( "-", width + 2 ) );
+            lineBuilder.append( Strings.repeat( "-", spec.width + 2 ) );
         }
         formatBuilder.append( "|" );
         lineBuilder.append( "+" );
@@ -59,28 +70,61 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
         String formatString = formatBuilder.toString();
         String caseIndent = "    ";
         writer.println( "  Cases:\n" );
-        writer.println( caseIndent + String.format( formatString, scenarioModel.getDerivedParameters().toArray() ) );
+        writer.println( caseIndent + String.format( formatString, dataTableModel.get( 0 ).toArray() ) );
         writer.println( caseIndent + lineBuilder );
-        for( ScenarioCaseModel c : scenarioModel.getScenarioCases() ) {
-            writer.println( caseIndent + String.format( formatString, c.getDerivedArguments().toArray() ) );
+        for( int nrow = 1; nrow < dataTableModel.size(); nrow++ ) {
+            writer.println( caseIndent + String.format( formatString, dataTableModel.get( nrow ).toArray() ) );
         }
     }
 
-    private List<Integer> getMaxColumnWidth( ScenarioModel scenarioModel ) {
-        List<Integer> result = Lists.newArrayList();
-        for( int i = 0; i < scenarioModel.getDerivedParameters().size(); i++ ) {
-            int maxWidth = scenarioModel.getDerivedParameters().get( i ).length();
-            for( ScenarioCaseModel c : scenarioModel.getScenarioCases() ) {
-                if( c.getExplicitArguments().size() > i ) {
-                    int width = c.getExplicitArguments().get( i ).length();
-                    if( width > maxWidth ) {
-                        maxWidth = width;
-                    }
-                }
-            }
-            result.add( maxWidth );
+    private List<List<String>> getDataTableModel( ScenarioModel scenarioModel ) {
+        List<List<String>> result = Lists.newArrayList();
+
+        List<String> headerRow = Lists.newArrayList();
+        headerRow.add( "#" );
+        headerRow.addAll( scenarioModel.getDerivedParameters() );
+        headerRow.add( "Status" );
+        result.add( headerRow );
+
+        int i = 1;
+        for( ScenarioCaseModel c : scenarioModel.getScenarioCases() ) {
+            List<String> row = Lists.newArrayList();
+            row.add( "" + ( i++ ) );
+            row.addAll( c.getDerivedArguments() );
+            row.add( getStatusText( c ) );
+            result.add( row );
         }
         return result;
     }
 
+    private String getStatusText( ScenarioCaseModel c ) {
+        if( c.success ) {
+            return "Success";
+        }
+        return "Failed: " + c.errorMessage;
+    }
+
+    private List<ColumnSpec> getColumnSpecs( List<List<String>> dataTableModel ) {
+        ColumnSpec[] result = new ColumnSpec[dataTableModel.get( 0 ).size()];
+        for( int nrow = 0; nrow < dataTableModel.size(); nrow++ ) {
+            List<String> row = dataTableModel.get( nrow );
+            for( int ncol = 0; ncol < row.size(); ncol++ ) {
+                String value = row.get( ncol );
+                int width = value.length();
+                ColumnSpec spec = result[ncol];
+                if( spec == null ) {
+                    spec = new ColumnSpec();
+                    result[ncol] = spec;
+                }
+                if( width > spec.width ) {
+                    spec.width = width;
+                }
+
+                if( nrow > 0 && Doubles.tryParse( value ) == null ) {
+                    spec.leftAligned = true;
+                }
+            }
+        }
+        return Lists.newArrayList( result );
+    }
 }
