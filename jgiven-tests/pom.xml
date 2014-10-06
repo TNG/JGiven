@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.tngtech.jgiven</groupId>
     <artifactId>jgiven-parent</artifactId>
-    <version>0.5.3-SNAPSHOT</version>
+    <version>0.5.3</version>
     <relativePath>..</relativePath>
   </parent>
   <artifactId>jgiven-tests</artifactId>
