@@ -1,5 +1,17 @@
 # v0.6.0 (not released yet)
 
+# v0.5.3
+
+## Minor new Features
+
+* Text Report: Added status column to data tables [#34](https://github.com/TNG/JGiven/issues/34)
+* HTML Report: Added expand all and collapse all buttons [#37](https://github.com/TNG/JGiven/issues/37)
+
+## Bug Fixes
+
+* HTML Report: Correctly show status of failed scenarios where all steps have been successful [#33](https://github.com/TNG/JGiven/issues/33)
+* HTML Report: Fix issue where in certain cases the content of a scenario was not expandable (no issue number)
+
 # v0.5.2
 
 ## New Features
