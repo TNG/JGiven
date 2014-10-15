@@ -70,4 +70,22 @@ $ mvn verify
 
 HTML reports are then generated into the `target/jgiven-reports/html` directory.
 
+### Gradle
+Currently no Gradle plugin exists for JGiven (feel free to contribute one!). However, you can use the `JavaExec` task instead:
+{% highlight groovy %}
+task jgivenReport(type: JavaExec, dependsOn: 'test') {
+    main = 'com.tngtech.jgiven.report.ReportGenerator'
+    args '--todir=target/jgiven-reports/html'
+    classpath = configurations.testCompile
+}
+{% endhighlight %}
+
+Now run:
+
+{% highlight bash %}
+$ gradle jgivenReport
+{% endhighlight %}
+
+HTML reports are then generated into the `target/jgiven-reports/html` directory.
+
 Next: [Stages and State Injection]({{site.baseurl}}/docs/stages/)
