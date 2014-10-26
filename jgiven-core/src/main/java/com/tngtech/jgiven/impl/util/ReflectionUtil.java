@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Throwables;
@@ -22,9 +20,11 @@ import com.google.common.collect.FluentIterable;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
 import com.tngtech.jgiven.exception.JGivenInjectionException;
 import com.tngtech.jgiven.exception.JGivenUserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ReflectionUtil {
-    private static Logger log = Logger.getLogger( ReflectionUtil.class );
+    private static Logger log = LoggerFactory.getLogger(ReflectionUtil.class);
 
     /**
      * Iterates over all fields of the given class and all its super classes
@@ -151,7 +151,7 @@ public class ReflectionUtil {
     }
 
     public static void invokeMethod( Object object, Method method, String errorDescription ) {
-        log.debug( "Executing method " + method + " of class " + object.getClass() );
+        log.debug( "Executing method %s of class %s", method, object.getClass() );
 
         makeAccessible( method, errorDescription );
 
@@ -225,8 +225,8 @@ public class ReflectionUtil {
             object.setAccessible( true );
         } catch( SecurityException e ) {
             log.debug( "Caught exception: ", e );
-            log.warn( "Could not make " + toReadableString( object ) + errorDescription
-                    + " accessible, trying to access it nevertheless and hoping for the best." );
+            log.warn( "Could not make %s accessible, trying to access it nevertheless and hoping for the best.",
+                    toReadableString( object ), errorDescription );
         }
     }
 
