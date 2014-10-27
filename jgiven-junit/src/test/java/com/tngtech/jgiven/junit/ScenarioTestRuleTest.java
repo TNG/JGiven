@@ -8,6 +8,7 @@ import java.util.List;
 
 import junitparams.internal.InvokeParameterisedMethod;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -89,6 +90,7 @@ public class ScenarioTestRuleTest {
 
     public void testMethodWithTwoParams( String s, int i ) {}
 
+    @Ignore
     @RunWith( Parameterized.class )
     public static class ParameterizedSimpleTest {
         private final Character c;
@@ -100,6 +102,7 @@ public class ScenarioTestRuleTest {
         }
     }
 
+    @Ignore
     @RunWith( Parameterized.class )
     public static class ParameterizedOutOfOrderTest {
         private final String s;
@@ -111,6 +114,7 @@ public class ScenarioTestRuleTest {
         }
     }
 
+    @Ignore
     @RunWith( Parameterized.class )
     public static class ParameterizedWithAdditionalFieldsTest {
         private final static String S = "static";
