@@ -1,0 +1,9 @@
+rootProject.name = 'jgiven'
+
+include ':jgiven-core'
+include ':jgiven-examples'
+//include ':jgiven-maven-plugin'
+include ':jgiven-junit'
+include ':jgiven-testng'
+include ':jgiven-spring'
+include ':jgiven-tests'

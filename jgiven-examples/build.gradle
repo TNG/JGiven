@@ -1,0 +1,13 @@
+
+dependencies {
+    testCompile project(':jgiven-junit')
+    testCompile project(':jgiven-spring')
+    testCompile project(':jgiven-tests')
+    testCompile group: 'org.springframework', name: 'spring-context', version: springVersion
+    testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
+    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
+    testCompile group: 'junit', name: 'junit', version: junitVersion
+    testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
+    testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
+    testCompile group: 'pl.pragmatists', name: 'JUnitParams', version: junitParamsVersion
+}

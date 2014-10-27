@@ -1,0 +1,15 @@
+
+dependencies {
+    compile group: 'com.google.guava', name: 'guava', version: guavaVersion
+    compile group: 'com.google.code.gson', name: 'gson', version: gsonVersion
+    compile group: 'com.thoughtworks.paranamer', name: 'paranamer', version: paranamerVersion
+    compile group: 'cglib', name: 'cglib-nodep', version: cglibVersion
+    compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
+    compile group: 'org.fusesource.jansi', name: 'jansi', version: jansiVersion
+
+    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
+    testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion
+    testCompile group: 'junit', name: 'junit', version: junitVersion
+    testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
+    testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
+}

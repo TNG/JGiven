@@ -1,0 +1,55 @@
+description = 'JGiven - BDD for Java in Java'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}
+
+allprojects  {
+    group = 'com.tngtech.jgiven'
+    version = '0.5.4-SNAPSHOT'
+}
+
+subprojects {
+    apply plugin: 'eclipse'
+    apply plugin: 'jacoco'
+    apply plugin: 'java'
+
+    sourceCompatibility = targetCompatibility = 1.6
+ 
+    ext {
+        junitDataproviderVersion = '1.9.2'
+        junitVersion = '4.9'
+        junitParamsVersion = '1.0.2'
+        testngVersion = '6.8.7'
+        assertjVersion = '1.4.0'
+        slf4jVersion = '1.7.5'
+        cglibVersion = '2.2.2'
+        paranamerVersion = '2.6'
+        jansiVersion = '1.11'
+        gsonVersion = '2.2.4'
+        guavaVersion = '16.0.1'
+        springVersion = '3.2.4.RELEASE'
+        checkstyleVersion = '2.12.1'
+        jacocoVersion = '0.7.1.201405082137'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    artifacts {
+        archives jar
+        archives javadocJar
+        archives sourcesJar
+    }
+}
