@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Throwables;
@@ -20,11 +23,9 @@ import com.google.common.collect.FluentIterable;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
 import com.tngtech.jgiven.exception.JGivenInjectionException;
 import com.tngtech.jgiven.exception.JGivenUserException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ReflectionUtil {
-    private static Logger log = LoggerFactory.getLogger(ReflectionUtil.class);
+    private static Logger log = LoggerFactory.getLogger( ReflectionUtil.class );
 
     /**
      * Iterates over all fields of the given class and all its super classes
@@ -226,7 +227,7 @@ public class ReflectionUtil {
         } catch( SecurityException e ) {
             log.debug( "Caught exception: ", e );
             log.warn( "Could not make %s accessible, trying to access it nevertheless and hoping for the best.",
-                    toReadableString( object ), errorDescription );
+                toReadableString( object ), errorDescription );
         }
     }
 
