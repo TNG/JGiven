@@ -1,7 +1,7 @@
 description = 'JGiven - BDD for Java in Java'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
+    gradleVersion = '2.1'
 }
 
 allprojects  {
@@ -37,6 +37,17 @@ subprojects {
         mavenCentral()
     }
 
+    dependencies {
+        compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
+
+        testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion
+        testCompile group: 'org.slf4j', name: 'slf4j-simple', version: slf4jVersion
+        testCompile group: 'junit', name: 'junit', version: junitVersion
+        testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
+        testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
+    }
+
+
     task javadocJar(type: Jar, dependsOn: javadoc) {
         classifier = 'javadoc'
         from javadoc.destinationDir
@@ -56,4 +67,12 @@ subprojects {
     test {
         systemProperty 'jgiven.report.dir', 'build/report/jgiven/json'
     }
+
+    task jgivenReport(type: JavaExec) {
+        main = 'com.tngtech.jgiven.report.ReportGenerator'
+        args '--dir=build/report/jgiven/json', '--todir=build/report/jgiven/html'
+        classpath = configurations.testCompile
+    }
 }
+
+

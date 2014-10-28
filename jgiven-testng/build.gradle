@@ -6,9 +6,6 @@ dependencies {
        This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
        Please review and delete this closure when resolved. */
     }
-
-    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4jVersion
-    testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
 }
 
 test.useTestNG()
