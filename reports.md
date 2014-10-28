@@ -20,7 +20,7 @@ reports into `target/jgiven-reports/json`.
 To disable JSON report generation set the following Java system property:
 
 {% highlight java %}
-jgiven.report.json=false
+jgiven.report.enabled=false
 {% endhighlight %}
 
 Note that in order to generate HTML reports, JSON reports are required.
