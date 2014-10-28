@@ -7,3 +7,4 @@ target
 .idea
 jgiven-reports
 *.iml
+/.gradle

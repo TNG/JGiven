@@ -12,4 +12,3 @@ dependencies {
     testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
 }
 
-test.useTestNG()

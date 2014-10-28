@@ -15,7 +15,7 @@ subprojects {
     apply plugin: 'java'
 
     sourceCompatibility = targetCompatibility = 1.6
- 
+
     ext {
         junitDataproviderVersion = '1.9.2'
         junitVersion = '4.9'
@@ -51,5 +51,9 @@ subprojects {
         archives jar
         archives javadocJar
         archives sourcesJar
+    }
+
+    test {
+        systemProperty 'jgiven.report.dir', 'build/report/jgiven/json'
     }
 }
