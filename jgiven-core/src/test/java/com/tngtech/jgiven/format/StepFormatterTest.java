@@ -3,8 +3,6 @@ package com.tngtech.jgiven.format;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -63,6 +61,7 @@ public class StepFormatterTest {
 
     @Test
     @UseDataProvider( "formatterTestCases" )
+    @SuppressWarnings( { "unchecked", "rawtypes" } )
     public void testFormatter( String source, List<Object> arguments, ArgumentFormatter<?> formatter, String formatterArg,
             String expectedResult ) {
         List<Formatting<?>> asList = Lists.newArrayList();
@@ -91,10 +90,5 @@ public class StepFormatterTest {
             result.add( w.getFormattedValue() );
         }
         return result;
-    }
-
-    @Test
-    public void testName() throws Exception {
-        System.out.println( DateFormat.getDateTimeInstance().format( new Date() ) );
     }
 }

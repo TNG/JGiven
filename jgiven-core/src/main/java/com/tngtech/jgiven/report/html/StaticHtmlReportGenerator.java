@@ -149,7 +149,7 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
         try {
             ReportModel reportModel = new ReportModel();
             reportModel.setClassName( tag.getName() );
-            if( tag.getValue() != null ) {
+            if( tag.getValues().isEmpty() ) {
                 reportModel.setClassName( reportModel.getClassName() + "." + tag.getValueString() );
             }
             reportModel.setScenarios( value );

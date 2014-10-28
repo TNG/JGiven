@@ -347,16 +347,16 @@ public class ReportModelBuilder implements ScenarioListener {
             if( value != null ) {
                 if( value.getClass().isArray() ) {
                     Object[] array = (Object[]) value;
-                    String[] stringArray = new String[array.length];
-                    for( int i = 0; i < array.length; i++ ) {
-                        stringArray[i] = array[i] + "";
+                    List<String> values = Lists.newArrayList();
+                    for( Object v : array ) {
+                        values.add( String.valueOf( v ) );
                     }
                     if( tagConfig.isExplodeArray() ) {
-                        return getExplodedTags( tag, stringArray );
+                        return getExplodedTags( tag, values );
                     }
-                    tag.setValue( stringArray );
+                    tag.setValue( values );
                 } else {
-                    tag.setValue( value + "" );
+                    tag.setValue( String.valueOf( value ) );
                 }
             }
         } catch( NoSuchMethodException ignore ) {
@@ -368,9 +368,9 @@ public class ReportModelBuilder implements ScenarioListener {
         return Arrays.asList( tag );
     }
 
-    private static List<Tag> getExplodedTags( Tag originalTag, String[] stringArray ) {
+    private static List<Tag> getExplodedTags( Tag originalTag, List<String> values ) {
         List<Tag> result = Lists.newArrayList();
-        for( String singleValue : stringArray ) {
+        for( String singleValue : values ) {
             Tag newTag = new Tag( originalTag.getName(), singleValue );
             newTag.setDescription( originalTag.getDescription() );
             newTag.setPrependType( originalTag.isPrependType() );

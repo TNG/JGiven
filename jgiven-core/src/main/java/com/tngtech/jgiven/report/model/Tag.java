@@ -1,7 +1,11 @@
 package com.tngtech.jgiven.report.model;
 
+import java.util.Collections;
+import java.util.List;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
 
 /**
  * A tag represents a Java annotation of a scenario-test.
@@ -11,7 +15,7 @@ public class Tag {
 
     /**
      * An optional value
-     * Guaranteed to be either of type String or of type String[].
+     * Guaranteed to be either of type {@code String} or of type {@code List<String>}
      */
     private Object value;
 
@@ -50,16 +54,22 @@ public class Tag {
         this.description = description;
     }
 
-    public Object getValue() {
-        return value;
+    @SuppressWarnings( "unchecked" )
+    public List<String> getValues() {
+        if( value == null ) {
+            return Collections.emptyList();
+        }
+        if( value instanceof String ) {
+            return Lists.newArrayList( (String) value );
+        }
+        return (List<String>) value;
     }
 
-    public void setValue( Object value ) {
-        if( value != null && !( value instanceof String ) ) {
-            if( !( value.getClass().isArray() && value.getClass().getComponentType().isAssignableFrom( String.class ) ) ) {
-                throw new IllegalArgumentException( "value is neither null, String nor String[]" );
-            }
-        }
+    public void setValue( List<String> values ) {
+        this.value = values;
+    }
+
+    public void setValue( String value ) {
         this.value = value;
     }
 
@@ -70,7 +80,7 @@ public class Tag {
 
     @Override
     public String toString() {
-        if( getValue() != null ) {
+        if( value != null ) {
             String valueString = getValueString();
             if( prependType ) {
                 return getName() + "-" + valueString;
@@ -81,18 +91,15 @@ public class Tag {
     }
 
     public String getValueString() {
-        if( getValue() == null ) {
+        if( value == null ) {
             return null;
         }
-        if( getValue().getClass().isArray() ) {
-            return Joiner.on( ", " ).join( (String[]) getValue() );
-        }
-        return getValue().toString();
+        return Joiner.on( ", " ).join( getValues() );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getName(), getValue() );
+        return Objects.hashCode( getName(), value );
     }
 
     @Override
@@ -108,7 +115,7 @@ public class Tag {
         }
         Tag other = (Tag) obj;
         return Objects.equal( getName(), other.getName() )
-                && Objects.equal( getValue(), other.getValue() );
+                && Objects.equal( value, other.value );
     }
 
 }

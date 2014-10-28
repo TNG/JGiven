@@ -88,7 +88,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         List<Tag> tags = new ReportModelBuilder().toTags( AnnotationTestClass.class.getAnnotations()[0] );
         assertThat( tags ).hasSize( 1 );
         assertThat( tags.get( 0 ).getName() ).isEqualTo( "AnnotationWithoutValue" );
-        assertThat( tags.get( 0 ).getValue() ).isEqualTo( null );
+        assertThat( tags.get( 0 ).getValues() ).isEmpty();
     }
 
     @IsTag
@@ -105,7 +105,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         List<Tag> tags = new ReportModelBuilder().toTags( AnnotationWithSingleValueTestClass.class.getAnnotations()[0] );
         assertThat( tags ).hasSize( 1 );
         assertThat( tags.get( 0 ).getName() ).isEqualTo( "AnnotationWithSingleValue" );
-        assertThat( tags.get( 0 ).getValue() ).isEqualTo( "testvalue" );
+        assertThat( tags.get( 0 ).getValues() ).containsExactly( "testvalue" );
     }
 
     @IsTag
@@ -122,9 +122,9 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         List<Tag> tags = new ReportModelBuilder().toTags( AnnotationWithArrayValueTestClass.class.getAnnotations()[0] );
         assertThat( tags ).hasSize( 2 );
         assertThat( tags.get( 0 ).getName() ).isEqualTo( "AnnotationWithArray" );
-        assertThat( tags.get( 0 ).getValue() ).isEqualTo( "foo" );
+        assertThat( tags.get( 0 ).getValues() ).containsExactly( "foo" );
         assertThat( tags.get( 1 ).getName() ).isEqualTo( "AnnotationWithArray" );
-        assertThat( tags.get( 1 ).getValue() ).isEqualTo( "bar" );
+        assertThat( tags.get( 1 ).getValues() ).containsExactly( "bar" );
     }
 
     @IsTag( explodeArray = false )
@@ -141,7 +141,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         List<Tag> tags = new ReportModelBuilder().toTags( AnnotationWithoutExplodedArrayValueTestClass.class.getAnnotations()[0] );
         assertThat( tags ).hasSize( 1 );
         assertThat( tags.get( 0 ).getName() ).isEqualTo( "AnnotationWithoutExplodedArray" );
-        assertThat( tags.get( 0 ).getValue() ).isEqualTo( new String[] { "foo", "bar" } );
+        assertThat( tags.get( 0 ).getValues() ).containsExactly( "foo", "bar" );
     }
 
     @IsTag( description = "Some Description" )

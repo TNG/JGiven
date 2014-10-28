@@ -164,14 +164,9 @@ public class HtmlTocWriter {
     }
 
     static String tagToFilename( Tag tag ) {
-        String fileName = escape( tag.getName() );
-        if( tag.getValue() != null ) {
-            if( tag.getValue().getClass().isArray() ) {
-                fileName += "-" + escape( Joiner.on( '-' ).join( (String[]) tag.getValue() ) );
-            } else {
-                fileName += "-" + escape( (String) tag.getValue() );
-            }
-        }
+        List<String> fileNameParts = Lists.newArrayList( tag.getName() );
+        fileNameParts.addAll( tag.getValues() );
+        String fileName = escape( Joiner.on( '-' ).join( fileNameParts ) );
         return fileName.substring( 0, Math.min( fileName.length(), 255 ) ) + ".html";
     }
 

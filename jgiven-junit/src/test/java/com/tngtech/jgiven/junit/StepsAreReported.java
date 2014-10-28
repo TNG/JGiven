@@ -92,7 +92,7 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
         assertThat( model.tags ).hasSize( 1 );
 
         assertThat( model.getTags().get( 0 ).getName() ).isEqualTo( "TestTag" );
-        assertThat( model.getTags().get( 0 ).getValue() ).isEqualTo( new String[] { "foo", "bar", "baz" } );
+        assertThat( model.getTags().get( 0 ).getValues() ).containsExactly( "foo", "bar", "baz" );
     }
 
     @DataProvider
@@ -111,7 +111,7 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
         assertThat( model.tags ).hasSize( 1 );
 
         assertThat( model.getTags().get( 0 ).getName() ).isEqualTo( "TestTag" );
-        assertThat( model.getTags().get( 0 ).getValue() ).isEqualTo( new String[] { "foo", "bar", "baz" } );
+        assertThat( model.getTags().get( 0 ).getValues() ).containsExactly( "foo", "bar", "baz" );
     }
 
     @Test
