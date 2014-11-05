@@ -1,3 +1,4 @@
+description = "Module for using Spring dependency injection together with JGiven"
 
 dependencies {
     compile project(':jgiven-core')

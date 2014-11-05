@@ -25,25 +25,27 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'jacoco'
     apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'signing'
 
     description "${rootProject.description} - Module ${project.name}"
     sourceCompatibility = targetCompatibility = 1.6
 
     ext {
-        junitDataproviderVersion = '1.9.2'
+        junitDataproviderVersion = '1.9.3'
         junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.9' // set default junit version if not set via command line
-        junitParamsVersion = '1.0.2'
+        junitParamsVersion = '1.0.3'
         testngVersion = '6.8.7'
-        assertjVersion = '1.4.0'
-        slf4jVersion = '1.7.5'
+        assertjVersion = '1.7.0'
+        slf4jVersion = '1.7.7'
         cglibVersion = '2.2.2'
-        paranamerVersion = '2.6'
+        paranamerVersion = '2.7'
         jansiVersion = '1.11'
-        gsonVersion = '2.2.4'
-        guavaVersion = '16.0.1'
+        gsonVersion = '2.3'
+        guavaVersion = '18.0'
         springVersion = '3.2.4.RELEASE'
         checkstyleVersion = '2.12.1'
-        jacocoVersion = '0.7.1.201405082137'
+        jacocoVersion = '0.7.2.201409121644'
     }
 
     repositories {
@@ -65,7 +67,7 @@ subprojects {
         manifest = project.manifest().attributes(
             'Built-By': "Gradle ${gradle.gradleVersion}",
             'Build-Date': now.format('yyyy-MM-dd HH:mm:ss.S'), // TODO destroys incremental build feature, but maybe date without time is ok as well?
-            'Copyright': "${now.format('YYYY')} TNG Technology Consulting GmbH",
+            'Copyright': "2013-" + now.format('yyyy') + " TNG Technology Consulting GmbH",
             'Implementation-Title': project.name,
             'Implementation-Version': project.version,
             'Implementation-Vendor': 'TNG Technology Consulting GmbH',
@@ -90,6 +92,12 @@ subprojects {
         archives jar
         archives javadocJar
         archives sourcesJar
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = true // coveralls plugin depends on xml format report
+        }
     }
 
     test {
@@ -119,8 +127,6 @@ subprojects {
     }
 
     // -- build and publish artifacts -------------------------------------------------------------------------------------
-    apply plugin: 'maven'
-    apply plugin: 'signing'
 
     signing {
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
@@ -148,7 +154,6 @@ subprojects {
                 snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
                     authentication(userName: sonatypeUsername, password: sonatypePassword)
                 }
-
                 pom {
                     project {
                         name project.name
@@ -172,7 +177,7 @@ subprojects {
                         developers {
                             developer {
                                 id 'janschaefer'
-                                name 'Jan Schäefer'
+                                name 'Jan Schäfer'
                             }
                         }
                     }
@@ -196,4 +201,5 @@ subprojects {
             }
         }
     }
+
 }

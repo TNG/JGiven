@@ -8,3 +8,4 @@ target
 jgiven-reports
 *.iml
 /.gradle
+artifacts
