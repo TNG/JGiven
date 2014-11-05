@@ -44,4 +44,8 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     public GivenTestStep a_step_with_a_printf_annotation_$( @Formatf( "%.2f" ) double d ) {
         return self();
     }
+
+    public GivenTestStep a_step_with_a_$_parameter( String param ) {
+        return self();
+    }
 }

@@ -13,7 +13,11 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.model.*;
+import com.tngtech.jgiven.report.model.ReportModelVisitor;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.StepModel;
+import com.tngtech.jgiven.report.model.Word;
 
 public class PlainTextScenarioWriter extends PlainTextWriter {
     private static final String INDENT = "   ";
@@ -97,7 +101,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
             intro = withColor( Color.BLUE, Attribute.INTENSITY_BOLD,
                 INDENT + String.format( "%" + maxFillWordLength + "s ", WordUtil.capitalize( words.get( 0 ).getValue() ) ) );
         } else {
-            intro = INDENT + words.get( 0 ).getValue();
+            intro = INDENT + words.get( 0 ).getValue() + " ";
         }
         String rest = joinWords( words.subList( 1, words.size() ) );
 
