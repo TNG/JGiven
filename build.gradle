@@ -20,6 +20,7 @@ allprojects  {
 }
 
 subprojects {
+    apply plugin: 'checkstyle'
     apply plugin: 'com.github.kt3k.coveralls'
     apply plugin: 'eclipse'
     apply plugin: 'jacoco'
@@ -93,6 +94,10 @@ subprojects {
 
     test {
         systemProperty 'jgiven.report.dir', 'build/report/jgiven/json'
+    }
+
+    checkstyle {
+        configFile = file("${rootProject.projectDir}/develop/checkstyle-rules.xml")
     }
 
     jacocoTestReport {
