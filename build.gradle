@@ -31,7 +31,7 @@ subprojects {
 
     ext {
         junitDataproviderVersion = '1.9.2'
-        junitVersion = '4.9'
+        junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.9' // set default junit version if not set via command line
         junitParamsVersion = '1.0.2'
         testngVersion = '6.8.7'
         assertjVersion = '1.4.0'
