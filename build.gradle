@@ -47,7 +47,6 @@ subprojects {
         testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
     }
 
-
     task javadocJar(type: Jar, dependsOn: javadoc) {
         classifier = 'javadoc'
         from javadoc.destinationDir
@@ -76,6 +75,83 @@ subprojects {
 
         classpath = configurations.testCompile
     }
+
+    // -- build and publish artifacts -------------------------------------------------------------------------------------
+    apply plugin: 'maven'
+    apply plugin: 'signing'
+
+    signing {
+        // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
+        required {
+            gradle.taskGraph.hasTask('uploadArchives')
+        }
+        sign configurations.archives
+    }
+
+    ext {
+        sonatypeUsername = (rootProject.hasProperty('sonatypeUsername')) ? rootProject.sonatypeUsername : ''
+        sonatypePassword = (rootProject.hasProperty('sonatypePassword')) ? rootProject.sonatypePassword : ''
+    }
+
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { deployment ->
+                    signing.signPom(deployment)
+                }
+                repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                    // username and password from gradle.properties
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+                snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+
+                pom {
+                    project {
+                        name project.name
+                        packaging 'jar'
+                        url 'https://github.com/TNG/jgiven'
+
+                        scm {
+                            url 'scm:git@github.com:TNG/jgiven.git'
+                            connection 'scm:git@github.com:TNG/jgiven.git'
+                            developerConnection 'scm:git@github.com:TNG/jgiven.git'
+                        }
+
+                        licenses {
+                            license {
+                                name 'The Apache Software License, Version 2.0'
+                                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                                distribution 'repo'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id 'janschaefer'
+                                name 'Jan Schäefer'
+                            }
+                        }
+                    }
+                    whenConfigured { pom ->
+                        pom.dependencies.find{ dep -> dep.groupId == 'junit' && dep.artifactId == 'junit' }.with {
+                            version = '[4.9,4.11]'
+                            scope = 'provided'
+                        }
+                        pom.dependencies.removeAll(pom.dependencies.findAll{ dep -> dep.scope in [ 'test' ] })
+                    }
+                }
+            }
+        }
+    }
+
+    // to be able use project.description which may be overridden in later executed build.gradle of subproject
+    project.afterEvaluate {
+        uploadArchives.repositories {
+            mavenDeployer.pom.project {
+                description = project.description
+            }
+        }
+    }
 }
-
-

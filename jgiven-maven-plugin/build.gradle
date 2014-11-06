@@ -1,5 +1,6 @@
 
 description = 'JGiven Maven Mojo'
+
 dependencies {
     compile group: 'org.apache.maven', name: 'maven-plugin-api', version:'2.0'
     compile project(':jgiven-core')
