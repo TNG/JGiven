@@ -14,6 +14,7 @@ subprojects {
     apply plugin: 'jacoco'
     apply plugin: 'java'
 
+    description "${rootProject.description} - Module ${project.name}"
     sourceCompatibility = targetCompatibility = 1.6
 
     ext {
