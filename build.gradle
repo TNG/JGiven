@@ -59,6 +59,22 @@ subprojects {
         testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
     }
 
+    tasks.withType(Jar) {
+        def now = new Date()
+        manifest = project.manifest().attributes(
+            'Built-By': "Gradle ${gradle.gradleVersion}",
+            'Build-Date': now.format('yyyy-MM-dd HH:mm:ss.S'), // TODO destroys incremental build feature, but maybe date without time is ok as well?
+            'Copyright': "${now.format('YYYY')} TNG Technology Consulting GmbH",
+            'Implementation-Title': project.name,
+            'Implementation-Version': project.version,
+            'Implementation-Vendor': 'TNG Technology Consulting GmbH',
+            'License': 'Apache License v2.0, January 2004',
+            'Specification-Title': project.name,
+            'Specification-Version': project.version,
+            'Specification-Vendor': 'TNG Technology Consulting GmbH',
+        )
+    }
+
     task javadocJar(type: Jar, dependsOn: javadoc) {
         classifier = 'javadoc'
         from javadoc.destinationDir
