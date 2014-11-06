@@ -1,3 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
+    }
+}
+
 description = 'JGiven - BDD for Java in Java'
 
 task wrapper(type: Wrapper) {
@@ -10,6 +20,7 @@ allprojects  {
 }
 
 subprojects {
+    apply plugin: 'com.github.kt3k.coveralls'
     apply plugin: 'eclipse'
     apply plugin: 'jacoco'
     apply plugin: 'java'
@@ -66,6 +77,15 @@ subprojects {
 
     test {
         systemProperty 'jgiven.report.dir', 'build/report/jgiven/json'
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = true // coveralls plugin depends on xml format report
+        }
+    }
+    jacoco {
+        toolVersion = '0.7.1.201405082137'
     }
 
     task jgivenReport(type: JavaExec) {
