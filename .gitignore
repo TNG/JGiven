@@ -9,3 +9,4 @@ jgiven-reports
 *.iml
 /.gradle
 artifacts
+.*.swp

@@ -1,7 +1,35 @@
-
 description = 'JGiven Maven Mojo'
 
 dependencies {
     compile group: 'org.apache.maven', name: 'maven-plugin-api', version:'2.0'
     compile project(':jgiven-core')
 }
+
+task generatePom(type: Copy) {
+    from 'src/main/maven'
+    into 'build/maven'
+    expand(version: project.version)
+}
+
+task generateMavenPlugin(type: Exec, dependsOn: generatePom) {
+    // currenlty it seems to be the more or less only clean solution
+    // to generate a plugin.xml file to use maven directly
+    // if anyone has a better solution please let us know!
+	commandLine 'mvn', '-f', 'build/maven/pom.xml', 'plugin:descriptor'
+}
+
+generateMavenPlugin.onlyIf {
+   // as the generateMavenPlugin task requires mvn, it is only executed
+   // when actually uploading the archives
+   // that way the standard build stays maven-free
+   gradle.taskGraph.hasTask(uploadArchives)
+}
+
+task copyMavenPlugin(type: Copy, dependsOn: generateMavenPlugin) {
+    from('build/maven/target/classes') {
+       include '**/plugin.xml'
+    }
+    into 'build/classes/main'
+}
+
+jar.dependsOn copyMavenPlugin

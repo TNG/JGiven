@@ -8,7 +8,7 @@ buildscript {
     }
 }
 
-description = 'JGiven - BDD for Java in Java'
+description = 'JGiven - BDD in plain Java'
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.1'
@@ -106,15 +106,13 @@ subprojects {
 
     checkstyle {
         configFile = file("${rootProject.projectDir}/develop/checkstyle-rules.xml")
+        showViolations = false
     }
 
     jacocoTestReport {
         reports {
             xml.enabled = true // coveralls plugin depends on xml format report
         }
-    }
-    jacoco {
-        toolVersion = '0.7.1.201405082137'
     }
 
     task jgivenReport(type: JavaExec) {
@@ -158,7 +156,7 @@ subprojects {
                     project {
                         name project.name
                         packaging 'jar'
-                        url 'https://github.com/TNG/jgiven'
+                        url 'http://jgiven.org'
 
                         scm {
                             url 'scm:git@github.com:TNG/jgiven.git'
