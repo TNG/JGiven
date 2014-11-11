@@ -1,0 +1,12 @@
+---
+layout: post
+title:  "Version 0.5.4 Released"
+date:   2014-11-11 15:00:00
+categories: news
+---
+The new version 0.5.4 of JGiven is [released](https://github.com/TNG/JGiven/releases/tag/v0.5.4).
+
+
+
+[jgiven-gh]: https://github.com/TNG/JGiven
+[jgiven]:    http://jgiven.org
