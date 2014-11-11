@@ -28,19 +28,19 @@ To make your class compile, create the following three classes:
 {% highlight java %}
 import com.tngtech.jgiven.Stage;
 
-public class GivenSomeStage<SELF extends GivenSomeStage> extends Stage<SELF> {
+public class GivenSomeStage<SELF extends GivenSomeStage<?>> extends Stage<SELF> {
    public SELF some_state() {
       return self();
    }
 }
 
-public class WhenSomeAction<SELF extends GivenSomeAction> extends Stage<SELF> {
+public class WhenSomeAction<SELF extends GivenSomeAction<?>> extends Stage<SELF> {
    public SELF some_action() {
       return self();
    }
 }
 
-public class ThenSomeOutcome<SELF extends ThenSomeOutcome> extends Stage<SELF> {
+public class ThenSomeOutcome<SELF extends ThenSomeOutcome<?>> extends Stage<SELF> {
    public SELF some_outcome() {
       return self();
    }
