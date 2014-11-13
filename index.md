@@ -45,3 +45,8 @@ Scenario: a pancake can be fried out of an egg milk and flour
 
    Then the resulting meal is a pan cake
 ```
+
+### HTML Report
+
+Besides the plain text report, an HTML report can be generated. An example of such a report is the [JGiven's own report]({{site.baseurl}}/jgiven-report)
+
