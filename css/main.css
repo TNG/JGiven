@@ -34,6 +34,18 @@ a:visited { color: #205caa; }
   zoom: 1;
 }
 
+/* personal */
+
+em {
+    font-style: normal;
+    font-weight: bold;
+}
+
+img {
+  max-width: 750px;
+  box-shadow: 5px 5px 8px gray;
+  border: 5px solid white;
+}
 
 /* Layout Styles */
 /* ----------------------------------------------------------*/
