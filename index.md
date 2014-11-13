@@ -3,15 +3,18 @@ layout: page
 title: JGiven
 ---
 
-## Pragmatic BDD for Java
+## Behavior-Driven Development in Plain Java
 
-* Write Given-When-Then scenarios in plain Java
-* Use all IDE features without the need for any additional plugin
-* No need for additional languages like Groovy or Scala
-* No need to work with text files and regular expressions to bind text to code
-* No need to write tests mixed with HTML
-* No extra test-runner, just use JUnit or TestNG
-* Get reports that business owners and domain experts can read and understand
+JGiven is a developer-centric Behavior-Driven Development (BDD) tool for Java.
+
+### Key facts
+
+* Scenarios are written in plain Java with a _fluent_ Java API - Neither text files, nor Groovy is needed
+* Method names are *parsed at runtime* and define the scenario text - No duplicate text in annotations is needed
+* Scenarios are executed by either *JUnit* or *TestNG* - No extra test runner is needed, thus JGiven works with all existing IDEs and build tools for Java out-of-the-box
+* Scenarios are composed of multiple, *reusable* so-called Stage classes - No more test code duplication
+* Scenarios and steps can be parameterized for writing *data-driven* tests
+* JGiven generates HTMl reports that can be read and understand by domain experts and serve as a *living documentation*
 
 ### Example
 
@@ -48,5 +51,7 @@ Scenario: a pancake can be fried out of an egg milk and flour
 
 ### HTML Report
 
-Besides the plain text report, an HTML report can be generated. An example of such a report is the [JGiven's own report]({{site.baseurl}}/jgiven-report)
-
+Besides the plain text report, an HTML report can be generated. An example of such a report is the [JGiven's own report]({{site.baseurl}}/jgiven-report):
+<p>
+<a href="{{site.baseurl}}/jgiven-report"><img id="jgivenreport" alt="JGiven HTML report of JGiven" src="img/jgivenreport.png" /></a>
+</p>
