@@ -16,7 +16,7 @@ task wrapper(type: Wrapper) {
 
 allprojects  {
     group = 'com.tngtech.jgiven'
-    version = '0.5.4-SNAPSHOT'
+    version = '0.5.5-SNAPSHOT'
 }
 
 subprojects {
