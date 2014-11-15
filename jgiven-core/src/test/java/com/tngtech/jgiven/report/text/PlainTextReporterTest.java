@@ -33,7 +33,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
 
     @Test
     @UseDataProvider( "testData" )
-    public void parameters_are_reported_correctly(int a, int b, int expectedResult) throws Exception {
+    public void parameters_are_reported_correctly( int a, int b, int expectedResult ) throws Exception {
         getScenario().startScenario( "values can be multiplied" );
 
         given().$d_and_$d( a, b );
@@ -70,5 +70,23 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
                     + "    Then something has happend\n"
                     + "     But something else not"
             );
+    }
+
+    @Test
+    public void parameters_are_correctly_replaced_if_there_is_an_intro_word() throws UnsupportedEncodingException {
+        getScenario().startScenario( "test" );
+        GivenTestStep stage = getScenario().addStage( GivenTestStep.class );
+        stage.given().a_step_with_a_$_parameter( "test" );
+        String string = PlainTextReporter.toString( getScenario().getModel() );
+        assertThat( string ).contains( "Given a step with a 'test' parameter" );
+    }
+
+    @Test
+    public void parameters_are_correctly_replaced_if_there_is_no_intro_word() throws UnsupportedEncodingException {
+        getScenario().startScenario( "test" );
+        GivenTestStep stage = getScenario().addStage( GivenTestStep.class );
+        stage.a_step_with_a_$_parameter( "test" );
+        String string = PlainTextReporter.toString( getScenario().getModel() );
+        assertThat( string ).contains( "a step with a 'test' parameter" );
     }
 }
