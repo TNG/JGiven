@@ -1,3 +1,5 @@
+apply plugin: 'sonar-runner'
+
 buildscript {
     repositories {
         mavenCentral()
@@ -11,19 +13,23 @@ buildscript {
 description = 'JGiven - BDD in plain Java'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.1'
+    gradleVersion = '2.2'
 }
 
 allprojects  {
     group = 'com.tngtech.jgiven'
     version = '0.5.5-SNAPSHOT'
+    apply plugin: 'jacoco'
+    repositories {
+        mavenCentral()
+    }
 }
+
 
 subprojects {
     apply plugin: 'checkstyle'
     apply plugin: 'com.github.kt3k.coveralls'
     apply plugin: 'eclipse'
-    apply plugin: 'jacoco'
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'signing'
@@ -46,10 +52,6 @@ subprojects {
         springVersion = '3.2.4.RELEASE'
         checkstyleVersion = '2.12.1'
         jacocoVersion = '0.7.2.201409121644'
-    }
-
-    repositories {
-        mavenCentral()
     }
 
     dependencies {
@@ -94,6 +96,12 @@ subprojects {
         archives sourcesJar
     }
 
+    sonarRunner {
+        sonarProperties {
+            property "sonar.jacoco.reportPath", "${rootProject.projectDir}/build/jacoco/merged.exec"
+        }
+    }
+
     jacocoTestReport {
         reports {
             xml.enabled = true // coveralls plugin depends on xml format report
@@ -107,12 +115,6 @@ subprojects {
     checkstyle {
         configFile = file("${rootProject.projectDir}/develop/checkstyle-rules.xml")
         showViolations = false
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.enabled = true // coveralls plugin depends on xml format report
-        }
     }
 
     task jgivenReport(type: JavaExec) {
@@ -201,3 +203,15 @@ subprojects {
     }
 
 }
+
+task mergeCoverageFiles(type: JacocoMerge) {
+    destinationFile = file("build/jacoco/merged.exec")
+    executionData = fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+}
+
+mergeCoverageFiles.dependsOn {
+    subprojects*.test
+}
+
+tasks.sonarRunner.dependsOn mergeCoverageFiles
+
