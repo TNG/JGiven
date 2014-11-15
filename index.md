@@ -14,7 +14,7 @@ JGiven is a developer-centric Behavior-Driven Development (BDD) tool for Java.
 * Scenarios are executed by either *JUnit* or *TestNG* - No extra test runner is needed, thus JGiven works with all existing IDEs and build tools for Java out-of-the-box
 * Scenarios are composed of multiple, *reusable* so-called Stage classes - No more test code duplication
 * Scenarios and steps can be parameterized for writing *data-driven* tests
-* JGiven generates HTMl reports that can be read and understand by domain experts and serve as a *living documentation*
+* JGiven generates HTML reports that can be read and understand by domain experts and serve as a *living documentation*
 
 ### Example
 
