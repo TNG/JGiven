@@ -10,6 +10,8 @@ buildscript {
     }
 }
 
+apply plugin: 'com.github.kt3k.coveralls'
+
 description = 'JGiven - BDD in plain Java'
 
 task wrapper(type: Wrapper) {
@@ -28,7 +30,6 @@ allprojects  {
 
 subprojects {
     apply plugin: 'checkstyle'
-    apply plugin: 'com.github.kt3k.coveralls'
     apply plugin: 'eclipse'
     apply plugin: 'java'
     apply plugin: 'maven'
@@ -93,12 +94,13 @@ subprojects {
     artifacts {
         archives jar
         archives javadocJar
+
         archives sourcesJar
     }
 
     sonarRunner {
         sonarProperties {
-            property "sonar.jacoco.reportPath", "${rootProject.projectDir}/build/jacoco/merged.exec"
+            property "sonar.jacoco.reportPath", "${rootProject.projectDir}/build/jacoco/jacocoTest.exec"
         }
     }
 
@@ -110,6 +112,10 @@ subprojects {
 
     test {
         systemProperty 'jgiven.report.dir', 'build/report/jgiven/json'
+        jacoco {
+            destinationFile = file("${rootProject.projectDir}/build/jacoco/jacocoTest.exec")
+            classDumpFile = file("${rootProject.projectDir}/build/jacoco/classpathdumps")
+        }
     }
 
     checkstyle {
@@ -204,14 +210,19 @@ subprojects {
 
 }
 
-task mergeCoverageFiles(type: JacocoMerge) {
-    destinationFile = file("build/jacoco/merged.exec")
-    executionData = fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+task overallJacocoReport(type: JacocoReport) {
+    executionData = files("build/jacoco/jacocoTest.exec")
+    sourceDirectories = files("jgiven-core/src/main/java")
+    classDirectories = files("jgiven-core/build/classes/main")
+    reports {
+        xml.enabled = true // coveralls plugin depends on xml format report
+    }
 }
 
-mergeCoverageFiles.dependsOn {
+overallJacocoReport.dependsOn {
     subprojects*.test
 }
 
-tasks.sonarRunner.dependsOn mergeCoverageFiles
+
+coveralls.jacocoReportPath = 'build/reports/jacoco/overallJacocoReport/overallJacocoReport.xml'
 
