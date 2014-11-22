@@ -1,0 +1,19 @@
+{
+  "name": "jgiven-html5-report",
+  "version": "0.0.1",
+  "description": "An HTML5 report for JGiven",
+  "main": "src/main/resources/app.js",
+  "devDependencies": {
+    "bower": "~1.3.12"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "jgiven",
+    "BDD",
+    "Java"
+  ],
+  "author": "Jan Schäfer <jan.schaefer@tngtech.com>",
+  "license": "MIT"
+}

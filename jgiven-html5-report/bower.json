@@ -1,0 +1,30 @@
+{
+  "name": "jgiven-html5-report",
+  "version": "0.0.1",
+  "authors": [
+    "Jan Schäfer <jan.schaefer@tngtech.com>"
+  ],
+  "description": "An HTML5 Report for JGiven",
+  "main": "src/main/resources/app.js.js",
+  "keywords": [
+    "jgiven",
+    "report"
+  ],
+  "license": "MIT",
+  "homepage": "http://jgiven.org",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/main/resources/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.3.3",
+    "fontawesome": "4.2.0",
+    "lodash": "2.4.1",
+    "foundation": "5.4.7"
+  }
+}

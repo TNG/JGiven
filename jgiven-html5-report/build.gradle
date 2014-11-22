@@ -1,0 +1,64 @@
+dependencies {
+    compile project(':jgiven-core')
+}
+
+
+def appDir = "${buildDir}/app/"
+def bowerComponentsDir = "${buildDir}/bower_components/"
+
+task bowerUpdate(type: Exec) {
+    executable = 'bower'
+    args = ['update']
+    inputs.file 'bower.json'
+    outputs.dir bowerComponentsDir
+}
+
+task copyFontFiles(type: Copy) {
+    from bowerComponentsDir + 'fontawesome/fonts'
+    into appDir + 'fonts'
+}
+
+task copyCssFiles(type: Copy) {
+    from bowerComponentsDir
+    include '**/normalize.css'
+    include '**/foundation.css'
+    include '**/font-awesome.min.css'
+    into appDir + 'css'
+    includeEmptyDirs = false
+    eachFile { details ->
+        details.path = details.name
+    }
+}
+
+task copyJsFiles(type: Copy) {
+    from bowerComponentsDir
+    include '**/lodash.min.js'
+    include '**/modernizr.js'
+    include '**/placeholder.js'
+    include '**/fastclick.js'
+    include '**/jquery.min.js'
+    include '**/foundation.min.js'
+    include '**/angular.min.js'
+    into appDir + 'js'
+    includeEmptyDirs = false
+    eachFile { details ->
+        details.path = details.name
+    }
+}
+
+task copyAppFiles(type: Copy) {
+    from 'src/app'
+    into appDir
+}
+
+copyJsFiles.dependsOn bowerUpdate
+copyCssFiles.dependsOn bowerUpdate
+copyFontFiles.dependsOn bowerUpdate
+
+task zipAppDir(type: Zip, dependsOn: [copyJsFiles, copyCssFiles, copyFontFiles, copyAppFiles]) {
+    from appDir
+    archiveName = 'app.zip'
+    destinationDir = new File(buildDir, 'resources/main/com/tngtech/jgiven/report/html5')
+}
+
+jar.dependsOn zipAppDir

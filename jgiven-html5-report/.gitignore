@@ -1,0 +1,7 @@
+all.js
+.#*
+\#*
+node_modules
+.gradle
+src/main/resources/vendor/
+/target

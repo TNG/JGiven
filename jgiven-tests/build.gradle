@@ -4,6 +4,7 @@ description = 'JGiven Tests - Contains BDD tests for JGiven written in JGiven'
 dependencies {
     compile project(':jgiven-junit')
     compile project(':jgiven-testng')
+    compile project(':jgiven-html5-report')
     compile group: 'junit', name: 'junit', version: junitVersion
     compile group: 'org.testng', name: 'testng', version: testngVersion
 

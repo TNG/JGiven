@@ -46,7 +46,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
         htmlReportGenerator.setToDir( targetReportDir );
     }
 
-    public void the_report_generator_is_executed() throws IOException {
+    public void the_report_generator_is_executed() throws Exception {
         createReportGenerator();
         htmlReportGenerator.generate();
     }
@@ -56,7 +56,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
         return self();
     }
 
-    public SELF the_report_generator_is_executed_with_format( Format format ) throws IOException {
+    public SELF the_report_generator_is_executed_with_format( Format format ) throws Exception {
         createReportGenerator();
         htmlReportGenerator.setFormat( format );
         htmlReportGenerator.generate();

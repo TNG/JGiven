@@ -1,7 +1,6 @@
 package com.tngtech.jgiven.maven;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -53,7 +52,7 @@ public class JGivenReportMojo extends AbstractMojo {
             getLog().info( "-------------------------------------------------------------------" );
             getLog().info( "Generated JGiven HTML reports to directory " + outputDirectory );
             getLog().info( "-------------------------------------------------------------------" );
-        } catch( IOException e ) {
+        } catch( Exception e ) {
             throw new MojoExecutionException( "Error while trying to generate HTML reports", e );
         }
     }

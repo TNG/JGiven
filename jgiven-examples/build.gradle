@@ -3,6 +3,7 @@ dependencies {
     testCompile project(':jgiven-junit')
     testCompile project(':jgiven-spring')
     testCompile project(':jgiven-tests')
+    testCompile project(':jgiven-html5-report')
     testCompile group: 'org.springframework', name: 'spring-context', version: springVersion
     testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
     testCompile group: 'pl.pragmatists', name: 'JUnitParams', version: junitParamsVersion

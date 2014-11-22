@@ -127,6 +127,7 @@ subprojects {
         main = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--dir=build/report/jgiven/json',
              '--todir=build/report/jgiven/html',
+             '--format=html5',
              '--customcss=build/resources/test/jgiven/custom.css'
 
         classpath = configurations.testCompile

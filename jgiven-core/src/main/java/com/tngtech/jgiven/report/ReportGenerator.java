@@ -1,8 +1,6 @@
 package com.tngtech.jgiven.report;
 
-import static com.tngtech.jgiven.report.ReportGenerator.Format.HTML;
-import static com.tngtech.jgiven.report.ReportGenerator.Format.JSONP;
-import static com.tngtech.jgiven.report.ReportGenerator.Format.TEXT;
+import static com.tngtech.jgiven.report.ReportGenerator.Format.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,8 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
+import com.tngtech.jgiven.exception.JGivenInstallationException;
+import com.tngtech.jgiven.exception.JGivenInternalDefectException;
 import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator;
-import com.tngtech.jgiven.report.jsonp.JsonpReportGenerator;
+import com.tngtech.jgiven.report.impl.FileGenerator;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 
 public class ReportGenerator {
@@ -22,7 +22,7 @@ public class ReportGenerator {
     public enum Format {
         HTML( "html" ),
         TEXT( "text" ),
-        JSONP( "jsonp" );
+        HTML5( "html5" );
 
         private final String text;
 
@@ -45,7 +45,7 @@ public class ReportGenerator {
     private File customCssFile = null;
     private Format format = HTML;
 
-    public static void main( String... args ) throws IOException {
+    public static void main( String... args ) throws Exception {
         ReportGenerator generator = new ReportGenerator();
         parseArgs( generator, args );
         generator.generate();
@@ -79,32 +79,51 @@ public class ReportGenerator {
         this.format = format;
     }
 
-    public void generate() throws IOException {
+    public void generate() throws Exception {
         if( !getToDir().exists() && !getToDir().mkdirs() ) {
             log.error( "Could not create target directory " + getToDir() );
             return;
         }
 
         if( format == HTML ) {
-            new StaticHtmlReportGenerator().generate( getToDir(), getSourceDir() );
-            if( getCustomCssFile() != null ) {
-                if( !getCustomCssFile().canRead() ) {
-                    log.info( "Cannot read customCssFile " + getCustomCssFile() + " skipping" );
-                } else {
-                    Files.copy( getCustomCssFile(), new File( getToDir(), "custom.css" ) );
-                }
-            }
-        } else if( format == JSONP ) {
-            new JsonpReportGenerator().generate( getToDir(), getSourceDir() );
+            generateStaticHtmlReport();
+        } else if( format == HTML5 ) {
+            generateHtml5Report();
         } else if( format == TEXT ) {
             new PlainTextReportGenerator().generate( getToDir(), getSourceDir() );
         }
 
     }
 
+    private void generateStaticHtmlReport() throws IOException {
+        new StaticHtmlReportGenerator().generate( getToDir(), getSourceDir() );
+        if( getCustomCssFile() != null ) {
+            if( !getCustomCssFile().canRead() ) {
+                log.info( "Cannot read customCssFile " + getCustomCssFile() + " skipping" );
+            } else {
+                Files.copy( getCustomCssFile(), new File( getToDir(), "custom.css" ) );
+            }
+        }
+    }
+
+    private void generateHtml5Report() throws IOException {
+        FileGenerator fileGenerator;
+        try {
+            Class<?> aClass = this.getClass().getClassLoader().loadClass( "com.tngtech.jgiven.report.html5.Html5ReportGenerator" );
+            fileGenerator = (FileGenerator) aClass.newInstance();
+        } catch( ClassNotFoundException e ) {
+            throw new JGivenInstallationException( "The JGiven HTML5 Report Generator seems not to be on the classpath.\n" +
+                    "Ensure that you have a dependency to jgiven-html5-report." );
+        } catch( Exception e ) {
+            throw new JGivenInternalDefectException( "The HTML5 Report Generator could not be instantiated.", e );
+        }
+
+        fileGenerator.generate( getToDir(), getSourceDir() );
+    }
+
     private static void printUsageAndExit() {
         System.err.println( "Options: [--format=<format>] [--dir=<dir>] [--todir=<dir>] [--customcss=<cssfile>]" ); // NOSONAR
-        System.err.println( "  <format> = html or text, default is html" );
+        System.err.println( "  <format> = html, html5, or text, default is html" );
         System.exit( 1 );
     }
 
