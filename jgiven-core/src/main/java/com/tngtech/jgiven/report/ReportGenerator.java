@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.report;
 
 import static com.tngtech.jgiven.report.ReportGenerator.Format.HTML;
+import static com.tngtech.jgiven.report.ReportGenerator.Format.JSONP;
 import static com.tngtech.jgiven.report.ReportGenerator.Format.TEXT;
 
 import java.io.File;
@@ -10,18 +11,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.io.Files;
-import com.tngtech.jgiven.report.html.HtmlReportGenerator;
 import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator;
+import com.tngtech.jgiven.report.jsonp.JsonpReportGenerator;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 
 public class ReportGenerator {
 
-    private static final Logger log = LoggerFactory.getLogger( HtmlReportGenerator.class );
+    private static final Logger log = LoggerFactory.getLogger( ReportGenerator.class );
 
     public enum Format {
         HTML( "html" ),
         TEXT( "text" ),
-        GHERKIN( "gherkin" );
+        JSONP( "jsonp" );
 
         private final String text;
 
@@ -93,6 +94,8 @@ public class ReportGenerator {
                     Files.copy( getCustomCssFile(), new File( getToDir(), "custom.css" ) );
                 }
             }
+        } else if( format == JSONP ) {
+            new JsonpReportGenerator().generate( getToDir(), getSourceDir() );
         } else if( format == TEXT ) {
             new PlainTextReportGenerator().generate( getToDir(), getSourceDir() );
         }
