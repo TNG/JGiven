@@ -1,5 +1,5 @@
 language: java
-before_script:
+before_install:
   - npm install -g bower
 install: "gradle classes"
 script:
