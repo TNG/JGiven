@@ -1,4 +1,6 @@
 language: java
+before_script:
+  - npm install -g bower
 install: "gradle classes"
 script:
   - "gradle test -DjunitVersion=4.9"
