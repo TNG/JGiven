@@ -13,6 +13,7 @@ Uses the power of AngularJS, Foundation, and Font Awesome
 1. Expand/Collapse All Button
 1. Search in scenarios
 1. Extended Description for steps should be nicer
+1. Print Mode
 
 ## Planned features that are not present in the static HTML report
 
