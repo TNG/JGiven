@@ -1,6 +1,6 @@
-var jgivenReportApp = angular.module('jgivenReportApp', []);
+var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize']);
 
-jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $http) {
+jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize) {
   $scope.scenarios = [];
   $scope.classNames = getClassNames();
   $scope.tagScenarioMap = {}; // lazy calculated by getTags()
@@ -14,6 +14,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $scope.currentPage = {
           scenarios: sortByDescription(allScenarios[index].scenarios),
           title: className.className,
+          description: "All scenarios defined in a test class",
           breadcrumbs: className.packageName.split(".")
       };
   };
@@ -23,6 +24,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $scope.currentPage = {
           scenarios: sortByDescription( $scope.tagScenarioMap[key] ),
           title: key,
+          description: tag.description,
           breadcrumbs: ['TAGS',tag.name,tag.value]
       };
   };
@@ -31,18 +33,24 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $scope.currentPage = {
           scenarios: getFailedScenarios(),
           title: "Failed Scenarios",
-          breadcrumbs: ['FAILED SCENARIOS'],
+          description: "All failed scenarios",
+          breadcrumbs: ['FAILED SCENARIOS']
       };
   };
 
-  $scope.toggleScenario = function(nr) {
+  $scope.toggleScenario = function(nr, scenario) {
       console.log("toggle "+nr);
+
+      scenario.expanded = !scenario.expanded;
+
+      /*
       $('#scenario-'+nr).stop(true, true)
           .animate({
               height:"toggle",
               opacity:"toggle"
           },200);
-      $('#toggle-icon-'+nr).toggleClass('fa-rotate-90');
+          */
+      //$('#toggle-icon-'+nr).toggleClass('fa-rotate-90');
   };
 
   $scope.updateNav = function() {

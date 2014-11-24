@@ -56,15 +56,17 @@
        </div>
       </div>
       <div class="small-9 columns scenario-container">
-        <div class="row">
+        <div class="row title">
           <h2>{{currentPage.title}}</h2>
+          <h3 class="description" ng-bind-html="currentPage.description"></h3>
         </div>
         <div class="scenario" ng-repeat="scenario in currentPage.scenarios">
           <div class="row">
             <div class="small-8 column">
               <div class="row">
                 <div class="small-1 column caret-column">
-                  <i id="toggle-icon-{{$index}}" class="fa fa-caret-right toggle" ng-click="toggleScenario($index)"></i>
+                  <i id="toggle-icon-{{$index}}" class="fa fa-caret-right toggle {{scenario.expanded ? 'fa-rotate-90' : ''}}"
+                     ng-click="toggleScenario($index, scenario)"></i>
                 </div>
                 <div class="small-11 column scenario-content-column">
                   <h4>{{scenario.description.capitalize()}}
@@ -73,7 +75,7 @@
                   <span ng-if="!scenario.executionStatus" class="failed label radius alert">FAILED</span>
                   <span class="duration"> ({{ nanosToSeconds(scenario.durationInNanos) }}s)</span>
                   </h4>
-                  <div id="scenario-{{$index}}" class="scenario-content collapsed">
+                  <div ng-if="scenario.expanded" id="scenario-{{$index}}" class="scenario-content">
                     <div ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
                       <h5 ng-if="scenario.scenarioCases.length > 1 && !scenario.casesAsTable">Case {{case.caseNr}}:
                       <span ng-repeat="param in scenario.explicitParameters">
@@ -157,6 +159,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/placeholder.js"></script>
     <script src="js/angular.min.js"></script>
+    <script src="js/angular-sanitize.min.js"></script>
     <script src="js/foundation.min.js"></script>
     <script>
       $(document).foundation();

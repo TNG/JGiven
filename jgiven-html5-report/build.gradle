@@ -8,7 +8,7 @@ def bowerComponentsDir = "${buildDir}/bower_components/"
 
 task bowerUpdate(type: Exec) {
     executable = 'bower'
-    args = ['update']
+    args = ['install']
     inputs.file 'bower.json'
     outputs.dir bowerComponentsDir
 }
@@ -39,6 +39,7 @@ task copyJsFiles(type: Copy) {
     include '**/jquery.min.js'
     include '**/foundation.min.js'
     include '**/angular.min.js'
+    include '**/angular-sanitize.min.js'
     into appDir + 'js'
     includeEmptyDirs = false
     eachFile { details ->
