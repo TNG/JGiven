@@ -42,7 +42,7 @@ public class Html5ReportGenerator implements ReportModelFileHandler, FileGenerat
     }
 
     private void generateAllScenarios( File toDir, File sourceDir ) throws IOException {
-        log.info( "Generating allScenarios.js..." );
+        log.debug( "Generating allScenarios.js..." );
 
         File targetFile = new File( toDir, "allScenarios.js" );
 
@@ -62,7 +62,7 @@ public class Html5ReportGenerator implements ReportModelFileHandler, FileGenerat
     private void unzipApp( File toDir ) throws IOException {
         String appZipPath = "/" + Html5ReportGenerator.class.getPackage().getName().replace( '.', '/' ) + "/app.zip";
 
-        log.info( "Unzipping {}...", appZipPath );
+        log.debug( "Unzipping {}...", appZipPath );
 
         InputStream inputStream = this.getClass().getResourceAsStream( appZipPath );
         ZipInputStream zipInputStream = new ZipInputStream( inputStream );
@@ -73,14 +73,14 @@ public class Html5ReportGenerator implements ReportModelFileHandler, FileGenerat
 
             if( entry.isDirectory() ) {
                 if( !file.exists() ) {
-                    log.info( "Creating directory {}...", file );
+                    log.debug( "Creating directory {}...", file );
                     if( !file.mkdirs() ) {
                         throw new IOException( "Could not create directory " + file );
                     }
                 }
                 continue;
             }
-            log.info( "Unzipping {}...", file );
+            log.debug( "Unzipping {}...", file );
 
             FileOutputStream fileOutputStream = new FileOutputStream( file );
 

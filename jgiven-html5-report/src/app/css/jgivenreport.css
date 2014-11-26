@@ -1,3 +1,8 @@
+h2.subtitle {
+    font-size: 1.1rem;
+    color: #6f6f6f;
+}
+
 h3 {
     font-size: 1.25rem;
     margin-bottom: 2rem;
@@ -20,9 +25,24 @@ h5 {
     margin-bottom: 2rem !important;
 }
 
+.page-icon-bar {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.expand-icon, .collapse-icon, .print-icon {
+    color: #6f6f6f;
+}
+
+.expand-icon:hover, .collapse-icon:hover, .print-icon:hover {
+    color: #008cba;
+}
+
 .caret-column {
     width: 0;
     color: gray;
+    padding-left: 0.5rem;
 }
 
 .scenario-content-column {
@@ -35,6 +55,10 @@ h5 {
     list-style-type: none;
     padding-top: 0.5rem;
     margin-left: 0.5rem;
+}
+
+.has-tip {
+    font-weight: normal !important;
 }
 
 .case-count {
@@ -70,6 +94,11 @@ table.steps tr:hover {
     background-color: #eee;
 }
 
+.class-name {
+    text-align: right;
+    color: #6f6f6f;
+    font-size: 0.8rem;
+}
 
 .check {
     color: green;
@@ -176,4 +205,22 @@ body, .footer-bottom {
 .footer-bottom {
     padding: 10px 0 10px;
     color: #555;
+}
+
+.animate-scenario-toggling.ng-enter, .animate-scenario-toggling.ng-leave {
+    -webkit-transition:0.5s linear all;
+    -moz-transition:0.5s linear all;
+    -o-transition:0.5s linear all;
+    transition:0.5s linear all;
+    opacity:0;
+}
+
+.animate-scenario-toggling.ng-enter,
+.animate-scenario-toggling.ng-leave.ng-leave-active {
+    opacity:0;
+}
+
+.animate-scenario-toggling.ng-leave,
+.animate-scenario-toggling.ng-enter.ng-enter-active {
+    opacity:1;
 }

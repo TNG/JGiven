@@ -1,0 +1,16 @@
+
+.top-bar, .breadcrumbs, .sidebar, .caret-column, .page-icon-bar, .duration, .case-count {
+    display: none;
+}
+
+.has-tip {
+    border-bottom: none;
+}
+
+.scenario-content {
+    opacity: 1 !important;
+}
+
+.word {
+    color: #000;
+}

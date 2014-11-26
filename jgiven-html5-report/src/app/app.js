@@ -1,10 +1,11 @@
-var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize']);
+var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize','mm.foundation']);
+
 
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize) {
   $scope.scenarios = [];
   $scope.classNames = getClassNames();
   $scope.tagScenarioMap = {}; // lazy calculated by getTags()
-  $scope.allTags = getTags();
+  $scope.allTags = groupTagsByType(getTags());
   $scope.tags = $scope.allTags;
   $scope.currentPage;
 
@@ -13,8 +14,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       var className = splitClassName(allScenarios[index].className);
       $scope.currentPage = {
           scenarios: sortByDescription(allScenarios[index].scenarios),
+          subtitle: className.packageName,
           title: className.className,
-          description: "All scenarios defined in a test class",
           breadcrumbs: className.packageName.split(".")
       };
   };
@@ -23,7 +24,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       var key = getTagKey(tag);
       $scope.currentPage = {
           scenarios: sortByDescription( $scope.tagScenarioMap[key] ),
-          title: key,
+          title: tag.value ? tag.value : tag.name,
+          subtitle: tag.value ? tag.name : undefined,
           description: tag.description,
           breadcrumbs: ['TAGS',tag.name,tag.value]
       };
@@ -42,15 +44,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       console.log("toggle "+nr);
 
       scenario.expanded = !scenario.expanded;
-
-      /*
-      $('#scenario-'+nr).stop(true, true)
-          .animate({
-              height:"toggle",
-              opacity:"toggle"
-          },200);
-          */
-      //$('#toggle-icon-'+nr).toggleClass('fa-rotate-90');
   };
 
   $scope.updateNav = function() {
@@ -70,16 +63,55 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.updateToolTips = function() {
-     $rootScope.$on('$viewContentLoaded', function () {
-            console.log('loaded!');
-            console.log($('.has-tip').length,'  Num tips');// likely zero as ng-repeat hasn't completed
+      $rootScope.$on('$viewContentLoaded', function () {
+          console.log('loaded!');
+          console.log($('.has-tip').length, '  Num tips');// likely zero as ng-repeat hasn't completed
 
-            $timeout(function(){
-                $(document).foundation();
-                console.log($('.has-tip').length,'  Num tips after timeout');  // 5
-            },300)
-        });
+          $timeout(function () {
+              $(document).foundation();
+              console.log($('.has-tip').length, '  Num tips after timeout');  // 5
+          }, 300)
+      });
   };
+
+  $scope.printCurrentPage = function printCurrentPage() {
+      $scope.expandAll();
+      $timeout(function() {
+          window.print();
+      },1000);
+  }
+
+  $scope.expandAll = function expandAll() {
+      _.forEach($scope.currentPage.scenarios, function(x) {
+          x.expanded = true;
+      });
+  }
+
+  $scope.collapseAll = function collapseAll() {
+      _.forEach($scope.currentPage.scenarios, function(x) {
+          x.expanded = false;
+      });
+  }
+
+  function groupTagsByType(tagList) {
+      var types = {};
+      _.forEach(tagList, function(x) {
+          var list = types[x.name];
+          if (!list) {
+              list = new Array();
+              types[x.name] = list;
+          }
+          list.push(x);
+      })
+      return _.map(_.sortBy(Object.keys(types), function(key) {
+          return key;
+      }), function(x) {
+         return {
+             type: x,
+             tags: types[x]
+         }
+      });
+  }
 
   function getAllScenarios() {
       return _.flatten( _.map( allScenarios, function(x) {

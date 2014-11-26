@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/foundation.css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <link rel="stylesheet" href="css/jgivenreport.css" />
+    <link rel="stylesheet" href="css/print.css" media="print" />
     <script src="js/modernizr.js"></script>
   </head>
   <body ng-controller="JGivenReportCtrl">
@@ -45,7 +46,14 @@
                <li class="heading"><a href="#">Overview</a></li>
                <li><a href="#" ng-click="showFailedScenarios()">Failed Scenarios</a></li>
                <li class="heading"><a href="#">Tags</a></li>
-               <li ng-repeat="tag in tags"><a href="#" ng-click="updateCurrentPageToTag(tag)">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a></li>
+               <li ng-repeat="tagType in tags">
+                 <span ng-if="tagType.tags.length > 1">{{tagType.type}}</span>
+                 <ul ng-if="tagType.tags.length > 1">
+                   <li ng-repeat="tag in tagType.tags">
+                     <a href="#" ng-click="updateCurrentPageToTag(tag)">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a>
+                   </li>
+                 </ul>
+                 <a ng-if="tagType.tags.length === 1" href="#" ng-click="updateCurrentPageToTag(tagType.tags[0])">{{tagType.tags[0].name}}<span ng-if="tagType.tags[0].value">-{{tagType.tags[0].value}}</span></a>
                <li class="heading"><a href="#">Classes</a></li>
                <li ng-repeat="className in classNames"><a href="#" ng-click="updateCurrentPage(className.index)">
                  {{className.className}}
@@ -57,8 +65,15 @@
       </div>
       <div class="small-9 columns scenario-container">
         <div class="row title">
+          <h2 class="subtitle">{{currentPage.subtitle}}</h2>
           <h2>{{currentPage.title}}</h2>
           <h3 class="description" ng-bind-html="currentPage.description"></h3>
+
+          <div class="page-icon-bar">
+            <a href="#" ng-click="collapseAll()" title="Collapse All"><i class="fa fa-print fa-minus-square-o collapse-icon"></i></a>
+            <a href="#" ng-click="expandAll()" title="Expand All"><i class="fa fa-print fa-plus-square-o expand-icon"></i></a>
+            <a href="#" ng-click="printCurrentPage()" title="Print Page"><i class="fa fa-print print-icon"></i></a>
+          </div>
         </div>
         <div class="scenario" ng-repeat="scenario in currentPage.scenarios">
           <div class="row">
@@ -87,23 +102,24 @@
                           <tr ng-repeat="step in case.steps">
                             <td class="intro-word">{{step.words[0].value.capitalize()}}</td>
                             <td>
-                              <span class="word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}" ng-repeat-start="word in step.words.slice(1)">
-                                <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
-                                  <strong>&lt;{{word.argumentInfo.parameterName}}&gt;</strong>
-                                </span>
+                              <span aria-haspopup="{{ step.extendedDescription ? 'true' : 'false'"
+                                    class="{{ step.extendedDescription ? 'has-tip' : '' }}"
+                                    tooltip-html-unsafe="{{ step.extendedDescription }}">
+                                <span class="word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}" ng-repeat-start="word in step.words.slice(1)">
+                                  <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
+                                    <strong>&lt;{{word.argumentInfo.parameterName}}&gt;</strong>
+                                  </span>
 
-                                <span ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName)" class="{{word.argumentInfo ? 'argument' : ''}}">
-                                  {{ word.value }}
+                                  <span ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName)" class="{{word.argumentInfo ? 'argument' : ''}}">
+                                    {{ word.value }}
+                                  </span>
                                 </span>
+                                <span ng-repeat-end></span>
                               </span>
-                              <span ng-repeat-end></span>
                               <span ng-if="scenario.executionStatus !== 'SUCCESS'">
                                 <i ng-if="step.status === 'PASSED'" class="small-check fa fa-check-square"></i>
                                 <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-times"></i>
                                 <i ng-if="step.status === 'SKIPPED'" class="skipped fa fa-ban"></i>
-                              </span>
-                              <span ng-if="step.extendedDescription">
-                                <i data-tooltip aria-haspopup="true" class="fa fa-info-circle has-tip" title="{{ step.extendedDescription }}"></i>
                               </span>
                               <span ng-if="step.durationInNanos > 10000000" class="duration"> ({{ nanosToSeconds(step.durationInNanos) }}s)</span>
                             </td>
@@ -135,6 +151,8 @@
                         </div>
                       </div>
                     </div>
+
+                    <div class="class-name">{{scenario.className}}</div>
                   </div>
                 </div>
               </div>
@@ -151,7 +169,7 @@
 
     <div class="footer-bottom">
       <div class="small-3 small-centered columns">
-        Generated by JGiven v0.5.4
+        Generated by JGiven 0.5.5
       </div>
     </div>
 
@@ -160,6 +178,8 @@
     <script src="js/placeholder.js"></script>
     <script src="js/angular.min.js"></script>
     <script src="js/angular-sanitize.min.js"></script>
+    <script src="js/angular-animate.min.js"></script>
+    <script src="js/mm-foundation-tpls.min.js"></script>
     <script src="js/foundation.min.js"></script>
     <script>
       $(document).foundation();
