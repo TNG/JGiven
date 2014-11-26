@@ -94,6 +94,10 @@ table.steps tr:hover {
     background-color: #eee;
 }
 
+.diff {
+    font-weight: bold;
+}
+
 .class-name {
     text-align: right;
     color: #6f6f6f;
