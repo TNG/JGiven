@@ -40,7 +40,6 @@ task copyJsFiles(type: Copy) {
     include '**/foundation.min.js'
     include '**/angular.min.js'
     include '**/angular-sanitize.min.js'
-    include '**/angular-animate.min.js'
     include '**/mm-foundation-tpls.min.js'
     into appDir + 'js'
     includeEmptyDirs = false
@@ -52,6 +51,7 @@ task copyJsFiles(type: Copy) {
 task copyAppFiles(type: Copy) {
     from 'src/app'
     into appDir
+    filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [version: version])
 }
 
 copyJsFiles.dependsOn bowerUpdate

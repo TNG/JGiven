@@ -1,19 +1,38 @@
 var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize','mm.foundation']);
 
 
-jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize) {
+jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location) {
   $scope.scenarios = [];
+  $scope.classNameScenarioMap = {};
   $scope.classNames = getClassNames();
   $scope.tagScenarioMap = {}; // lazy calculated by getTags()
   $scope.allTags = groupTagsByType(getTags());
   $scope.tags = $scope.allTags;
   $scope.currentPage;
 
-  $scope.updateCurrentPage = function (index) {
-      console.log("updateCurrentPage "+ index);
-      var className = splitClassName(allScenarios[index].className);
+  $scope.$on('$locationChangeSuccess', function(event) {
+      var part = $location.path().split('/');
+      console.log("Parts:" +part);
+      if (part[1] === 'tag') {
+         $scope.updateCurrentPageToTag({
+             name: part[2],
+             value: part[3]
+         });
+      } else if (part[1] === 'class') {
+          $scope.updateCurrentPageToClassName(part[2]);
+      } else if (part[1] === 'failed') {
+          $scope.showFailedScenarios();
+      }
+  });
+
+  $scope.updateCurrentPageToClassName = function(className) {
+      $scope.updateCurrentPageToTestCase( $scope.classNameScenarioMap[className] );
+  }
+
+  $scope.updateCurrentPageToTestCase = function (testCase) {
+      var className = splitClassName(testCase.className);
       $scope.currentPage = {
-          scenarios: sortByDescription(allScenarios[index].scenarios),
+          scenarios: sortByDescription(testCase.scenarios),
           subtitle: className.packageName,
           title: className.className,
           breadcrumbs: className.packageName.split(".")
@@ -22,6 +41,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.updateCurrentPageToTag = function(tag) {
       var key = getTagKey(tag);
+      console.log("Update current page to tag "+key);
       $scope.currentPage = {
           scenarios: sortByDescription( $scope.tagScenarioMap[key] ),
           title: tag.value ? tag.value : tag.name,
@@ -40,9 +60,11 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       };
   };
 
-  $scope.toggleScenario = function(nr, scenario) {
-      console.log("toggle "+nr);
+  $scope.toggleTagType = function(tagType) {
+      tagType.expanded = !tagType.expanded;
+  };
 
+  $scope.toggleScenario = function(scenario) {
       scenario.expanded = !scenario.expanded;
   };
 
@@ -59,18 +81,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
               return (x.name + '-' + x.value).match( new RegExp($scope.navsearch, "i") );
           }
           return true;
-      });
-  };
-
-  $scope.updateToolTips = function() {
-      $rootScope.$on('$viewContentLoaded', function () {
-          console.log('loaded!');
-          console.log($('.has-tip').length, '  Num tips');// likely zero as ng-repeat hasn't completed
-
-          $timeout(function () {
-              $(document).foundation();
-              console.log($('.has-tip').length, '  Num tips after timeout');  // 5
-          }, 300)
       });
   };
 
@@ -138,6 +148,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           var className = splitClassName( allScenarios[i].className );
           className.index = i;
           res.push(className);
+          $scope.classNameScenarioMap[allScenarios[i].className] = allScenarios[i];
       }
       return _.sortBy( res, function(x) { return x.className; });
   }
@@ -170,8 +181,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.nanosToSeconds = function( nanos ) {
       var secs = nanos / 1000000000;
-      var res = parseFloat(secs).toFixed(2);
-      console.log(res);
+      var res = parseFloat(secs).toFixed(3);
       return res;
   }
 });

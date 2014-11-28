@@ -20,6 +20,11 @@ h5 {
     margin-bottom: 0;
 }
 
+
+ul.tags {
+    list-style: none;
+}
+
 .title {
     border-bottom: 1px solid #ddd;
     margin-bottom: 2rem !important;
@@ -190,7 +195,8 @@ input.search {
 
 .scenario-container {
     padding-top: 1rem;
-    padding-left: 1.5rem;
+    padding-left: 2.5rem;
+    margin-left: 400px;
 }
 
 body, .footer-bottom {
@@ -200,6 +206,11 @@ body, .footer-bottom {
 .sidebar {
     background: none repeat scroll 0 0 #fafafa;
     padding: 10px 20px;
+    position: fixed;
+    top: 76px;
+    bottom: 0;
+    overflow: auto;
+    width:400px;
 }
 
 .side-nav li a:not(.button){
@@ -211,20 +222,5 @@ body, .footer-bottom {
     color: #555;
 }
 
-.animate-scenario-toggling.ng-enter, .animate-scenario-toggling.ng-leave {
-    -webkit-transition:0.5s linear all;
-    -moz-transition:0.5s linear all;
-    -o-transition:0.5s linear all;
-    transition:0.5s linear all;
-    opacity:0;
-}
-
-.animate-scenario-toggling.ng-enter,
-.animate-scenario-toggling.ng-leave.ng-leave-active {
-    opacity:0;
-}
-
-.animate-scenario-toggling.ng-leave,
-.animate-scenario-toggling.ng-enter.ng-enter-active {
-    opacity:1;
-}
+/* avoid showing angularjs expressions on page loading */
+[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}

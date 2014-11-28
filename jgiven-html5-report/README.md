@@ -13,8 +13,6 @@ Uses the power of AngularJS, Foundation, and Font Awesome
 1. Search in scenarios
 1. Overview Page
 1. Statistics Summary on each page
-1. Bookmarking of specific pages
-1. Difference Highlighting
 
 ## Planned features that are not present in the static HTML report
 
