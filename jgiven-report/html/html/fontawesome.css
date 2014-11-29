@@ -1,0 +1,34 @@
+@font-face {
+  font-family: 'fontawesome';
+  src: url('fontawesome.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "fontawesome";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+
+  font-variant: normal;
+  text-transform: none;
+
+  line-height: 1em;
+}
+
+.icon-plus-squared-alt:before { content: '\e800'; } /* '' */
+.icon-minus-squared-alt:before { content: '\e801'; } /* '' */
+.icon-attention-alt:before { content: '\e802'; } /* '' */
+.icon-ok:before { content: '\e803'; } /* '' */
+.icon-right-open:before { content: '\e804'; } /* '' */
+.icon-down-open:before { content: '\e805'; } /* '' */
+.icon-block:before { content: '\e806'; } /* '' */
+.icon-cancel:before { content: '\e807'; } /* '' */
+.icon-menu:before { content: '\e808'; } /* '' */

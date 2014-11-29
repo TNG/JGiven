@@ -1,0 +1,323 @@
+body {
+    height: 100%;
+}
+
+h2.subtitle {
+    font-size: 1.1rem;
+    color: #6f6f6f;
+}
+
+h3 {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    color: #6f6f6f;
+}
+
+h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+}
+
+h5 {
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+.header-fixed {
+    position: fixed;
+    z-index: 1000;
+    top:0;
+    left:0;
+    right:0;
+}
+
+
+ul.tags {
+    list-style: none;
+}
+
+.title {
+    position: relative;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 2rem !important;
+}
+
+.page-icon-bar {
+    position: absolute;
+    top: 0;
+    right: 1rem;
+}
+
+.expand-icon, .collapse-icon, .print-icon {
+    color: #6f6f6f;
+}
+
+.expand-icon:hover, .collapse-icon:hover, .print-icon:hover {
+    color: #008cba;
+}
+
+.caret-column {
+    width: 0;
+    color: gray;
+    padding-left: 0.5rem;
+    padding-top: 0.2rem;
+}
+
+.scenario-content-column {
+    padding-left: 0;
+    width: 96%;
+    float: left !important;
+}
+
+.steps {
+    list-style-type: none;
+    padding-top: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+.has-tip {
+    font-weight: normal !important;
+}
+
+.case-count {
+    vertical-align: text-bottom;
+    vertical-align: -moz-bottom;
+}
+
+table.steps {
+    border: none;
+    border-spacing: 0;
+    padding:0;
+    margin:0;
+    margin-bottom: 0.5rem;
+}
+
+table.steps td {
+    padding: 0.2rem;
+    vertical-align: top;
+    font-size: 1rem;
+}
+
+table.steps td.intro-word {
+    text-align: right;
+    vertical-align: top;
+    font-size: 1rem;
+}
+
+table.steps tr {
+    background-color: white;
+}
+
+table.steps tr:hover {
+    background-color: #eee;
+}
+
+.diff {
+    font-weight: bold;
+}
+
+.class-name {
+    text-align: right;
+    color: #6f6f6f;
+    font-size: 0.8rem;
+}
+
+.check {
+    color: green;
+    font-size: 1rem !important;
+    padding-left: 0.2rem;
+}
+
+.small-check {
+    color: green;
+    font-size: 0.7rem !important;
+}
+
+.duration {
+    font-size: 0.666rem;
+    color: #666;
+}
+
+.failed {
+    color: red;
+    vertical-align: middle;
+    font-size: 0.5rem !important;
+    margin-bottom: 0.2rem;
+}
+
+.failed-icon {
+    color: red;
+    font-size: 0.9rem !important;
+}
+
+.FAILED {
+    color: red;
+}
+
+.SKIPPED {
+    color: #aaa;
+}
+
+.PASSED {
+    color: green;
+}
+
+.skipped {
+    color: #aaa;
+    font-size: 0.7rem !important;
+}
+
+.collapsed {
+    display: none;
+}
+
+.word {
+    color: #333;
+}
+
+.argument {
+    color: black;
+    font-shadow: 1px 1px 1px gray;
+}
+
+.toggle {
+    cursor: pointer;
+}
+
+input.search {
+    position: relative;
+    border-radius: 5rem;
+
+    padding-left: 2rem;
+
+    /* needed for FF */
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#nav-search {
+    height: 1.7rem;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1.5rem;
+    top: 0.8rem;
+    color: #333;
+}
+
+.content {
+    position: relative;
+    background: white;
+    padding-bottom: 5rem;
+    max-width:100%;
+    min-height: 100%;
+    height: 100%;
+}
+
+.scenario {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.scenario-container {
+    position: relative;
+    padding-top: 1rem;
+    padding-left: 2.5rem;
+    margin-left: 350px;
+    margin-top: 76px;
+    margin-right: 15px;
+    padding-bottom: 50px; /* space for footer */
+    min-height: 100%;
+    background-color: white;
+}
+
+body, .footer-bottom {
+    background: none repeat scroll 0 0 white;
+}
+
+.sidebar {
+    background: none repeat scroll 0 0 #fafafa;
+    padding: 0px;
+    position: fixed;
+    top: 76px;
+    bottom: 0;
+    overflow: auto;
+    width:350px;
+}
+
+.side-nav li a:not(.button){
+    padding: 0.5rem 1rem;
+}
+
+.side-nav li li a:not(.button){
+    padding: 0.1rem 1.8rem;
+}
+
+.side-nav li li li a:not(.button){
+    padding: 0.1rem 2.6rem;
+}
+
+.side-nav, .side-nav ul {
+    line-height: 1.2;
+}
+
+.side-nav ul {
+    list-style: none;
+    margin-left: 0;
+}
+
+li.heading, li.subheading {
+    margin-top: 0.5rem;
+}
+
+li.heading ul {
+    text-transform: none;
+}
+
+li.subheading {
+    color: #008cba;
+    font-weight: bold;
+}
+
+li.subheading > ul {
+    padding-top: 0.5rem;
+    padding-left: 0rem;
+    margin-left: 0;
+}
+
+.footer-bottom {
+    position: absolute;
+    padding: 40px 0 2px;
+    color: #555;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    font-size: 0.8rem;
+}
+
+.footer-bottom a {
+    color: #005C7B;
+}
+
+#loading-modal {
+    position: fixed;
+    top: 76px;
+    bottom: 0;
+    left: 0;
+    right:0;
+    background-color: rgba(255,255,255,0.8);
+    z-index: 2000;
+}
+
+#loading-modal > h1 {
+    position: absolute;
+    left: 40%;
+    top: 40%;
+    color: gray;
+}
+
+/* avoid showing angularjs expressions on page loading */
+[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
