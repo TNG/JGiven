@@ -22,6 +22,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           $scope.updateCurrentPageToClassName(part[2]);
       } else if (part[1] === 'failed') {
           $scope.showFailedScenarios();
+      } else if (part[1] === 'search') {
+          $scope.search(part[2]);
       }
   });
 
@@ -77,19 +79,25 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       scenario.expanded = !scenario.expanded;
   };
 
-  $scope.search = function() {
-      console.log("Searching for "+ $scope.navsearch);
+  $scope.searchSubmit = function() {
+      console.log("Searching for " + $scope.navsearch);
+
+      var x = $location.path("search/" + $scope.navsearch);
+  }
+
+  $scope.search = function search(searchString) {
+      console.log("Searching for "+searchString);
 
       $scope.currentPage = {
           scenarios: [],
           title: "Search Results",
-          description: "Searched for '" + $scope.navsearch + "'",
+          description: "Searched for '" + searchString + "'",
           breadcrumbs: ['Search'],
           loading: true
       }
 
       $timeout( function() {
-          $scope.currentPage.scenarios = $scope.findScenarios($scope.navsearch);
+          $scope.currentPage.scenarios = $scope.findScenarios(searchString);
           $scope.currentPage.loading = false;
       },0);
   }
