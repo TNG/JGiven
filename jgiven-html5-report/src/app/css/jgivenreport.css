@@ -226,7 +226,7 @@ input.search {
     position: relative;
     padding-top: 1rem;
     padding-left: 2.5rem;
-    margin-left: 400px;
+    margin-left: 350px;
     margin-top: 76px;
     margin-right: 15px;
     padding-bottom: 50px; /* space for footer */
@@ -245,7 +245,7 @@ body, .footer-bottom {
     top: 76px;
     bottom: 0;
     overflow: auto;
-    width:400px;
+    width:350px;
 }
 
 .side-nav li a:not(.button){

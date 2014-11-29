@@ -4,7 +4,8 @@ mvn clean verify
 git checkout gh-pages
 git pull --rebase
 git rm -r jgiven-report/*
-cp -r jgiven-tests/target/jgiven-reports/html/ jgiven-report
+cp -r jgiven-tests/build/reports/jgiven/html/ jgiven-report
+cp -r jgiven-tests/build/reports/jgiven/html5/ jgiven-report
 git add jgiven-report/
 git commit -m 'added generated jgiven report to gh-pages'
 git push

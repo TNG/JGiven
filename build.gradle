@@ -20,7 +20,7 @@ task wrapper(type: Wrapper) {
 
 allprojects  {
     group = 'com.tngtech.jgiven'
-    version = '0.5.5-SNAPSHOT'
+    version = '0.6.0-SNAPSHOT'
     apply plugin: 'jacoco'
     repositories {
         mavenCentral()
@@ -111,7 +111,7 @@ subprojects {
     }
 
     test {
-        systemProperty 'jgiven.report.dir', 'build/report/jgiven/json'
+        systemProperty 'jgiven.report.dir', 'build/reports/jgiven/json'
         jacoco {
             destinationFile = file("${rootProject.projectDir}/build/jacoco/jacocoTest.exec")
             classDumpFile = file("${rootProject.projectDir}/build/jacoco/classpathdumps")
@@ -125,8 +125,18 @@ subprojects {
 
     task jgivenReport(type: JavaExec) {
         main = 'com.tngtech.jgiven.report.ReportGenerator'
-        args '--dir=build/report/jgiven/json',
-             '--todir=build/report/jgiven/html',
+        args '--dir=build/reports/jgiven/json',
+             '--todir=build/reports/jgiven/html',
+             '--format=html',
+             '--customcss=build/resources/test/jgiven/custom.css'
+
+        classpath = configurations.testCompile
+    }
+
+    task jgivenHtml5Report(type: JavaExec) {
+        main = 'com.tngtech.jgiven.report.ReportGenerator'
+        args '--dir=build/reports/jgiven/json',
+             '--todir=build/reports/jgiven/html5',
              '--format=html5',
              '--customcss=build/resources/test/jgiven/custom.css'
 
