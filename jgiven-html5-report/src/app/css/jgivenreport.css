@@ -61,6 +61,7 @@ ul.tags {
     width: 0;
     color: gray;
     padding-left: 0.5rem;
+    padding-top: 0.2rem;
 }
 
 .scenario-content-column {
@@ -252,7 +253,11 @@ body, .footer-bottom {
 }
 
 .side-nav li li a:not(.button){
-    padding: 0.1rem 0.6rem;
+    padding: 0.1rem 1.8rem;
+}
+
+.side-nav li li li a:not(.button){
+    padding: 0.1rem 2.6rem;
 }
 
 .side-nav, .side-nav ul {
@@ -261,6 +266,7 @@ body, .footer-bottom {
 
 .side-nav ul {
     list-style: none;
+    margin-left: 0;
 }
 
 li.heading, li.subheading {
@@ -277,8 +283,9 @@ li.subheading {
 }
 
 li.subheading > ul {
-    margin-top: 0.5rem;
-    margin-left: 0.8rem;
+    padding-top: 0.5rem;
+    padding-left: 0rem;
+    margin-left: 0;
 }
 
 .footer-bottom {

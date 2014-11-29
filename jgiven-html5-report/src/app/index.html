@@ -55,9 +55,13 @@
            <nav>
              <ul ng-cloak class="side-nav">
                <li class="heading">
-                 <a>Overview</a></li>
-               <li><a href="#failed" >Failed Scenarios</a></li>
-               <li class="divider"></li>
+                 <a ng-click="summaryExpanded = !summaryExpanded">
+                   <i class="fa fa-caret-right toggle {{summaryExpanded ? 'fa-rotate-90' : ''}}"></i>
+                   &nbsp;Summary</a>
+                 <ul ng-if="summaryExpanded">
+                 <li><a href="#failed" >Failed Scenarios</a></li>
+                 </ul>
+               </li>
                <li class="heading" >
                  <a class="toggle" ng-click="tags.expanded = !tags.expanded">
                  <i class="fa fa-caret-right toggle {{tags.expanded ? 'fa-rotate-90' : ''}}"></i>
