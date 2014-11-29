@@ -37,7 +37,6 @@
       </nav>
 
       <nav class="breadcrumbs">
-        <span ng-hide="currentPage.breadcrumbs">Loading...</span>
         <a ng-cloak ng-repeat="b in currentPage.breadcrumbs" href="#" class="{{$last ? 'current' : 'unavailable'}}">{{b}}</a>
       </nav>
     </div>

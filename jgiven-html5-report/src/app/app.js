@@ -12,7 +12,11 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   $scope.tagScenarioMap = {}; // lazy calculated by getTags()
   $scope.allTags = groupTagsByType(getTags());
   $scope.tags = $scope.allTags;
-  $scope.currentPage;
+  $scope.currentPage = {
+      title: "Welcome",
+      breadcrumbs: [''],
+      scenarios: []
+  };
 
   $scope.$on('$locationChangeSuccess', function(event) {
       var part = $location.path().split('/');
