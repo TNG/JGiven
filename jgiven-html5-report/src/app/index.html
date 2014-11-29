@@ -52,7 +52,12 @@
          <div class="sidebar">
            <nav>
              <ul ng-cloak class="side-nav">
-               <li><input id="nav-search" class="search" type="text" placeholder="search in scenarios" ng-model="navsearch" ng-change="updateNav()"/></li>
+               <li>
+                 <form ng-submit="search()">
+                   <input id="nav-search" class="search" type="text" placeholder="search in scenarios" ng-model="navsearch" />
+                 </form>
+               </li>
+
                <li class="heading">Overview</li>
                <li><a href="#failed" >Failed Scenarios</a></li>
                <li class="divider"></li>
@@ -107,6 +112,7 @@
         </div>
 
 
+        <h4 ng-hide="!currentPage.loading">Loading <i class="fa fa-circle-o-notch fa-spin"></i></h4>
         <!-- SCENARIO LIST -->
 
         <div class="scenario" ng-repeat="scenario in currentPage.scenarios">
