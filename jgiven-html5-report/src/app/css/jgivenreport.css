@@ -219,7 +219,19 @@ input.search {
 .scenario {
     border-bottom: 1px solid #ddd;
     padding-bottom: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0rem;
+    padding-top: 0.5rem;
+    margin-left: -0.975rem;
+}
+
+/*
+.scenario:hover {
+    background-color: #eee;
+}
+*/
+
+.scenario-content {
+    background-color: white;
 }
 
 .scenario-container {

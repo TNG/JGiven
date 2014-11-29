@@ -22,10 +22,10 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       var part = $location.path().split('/');
       console.log("Parts:" +part);
       if (part[1] === 'tag') {
-         $scope.updateCurrentPageToTag({
+         $scope.updateCurrentPageToTag( $scope.tagScenarioMap[ getTagKey({
              name: part[2],
              value: part[3]
-         });
+         })].tag);
       } else if (part[1] === 'class') {
           $scope.updateCurrentPageToClassName(part[2]);
       } else if (part[1] === 'failed') {
@@ -53,7 +53,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       var key = getTagKey(tag);
       console.log("Update current page to tag "+key);
       $scope.currentPage = {
-          scenarios: sortByDescription( $scope.tagScenarioMap[key] ),
+          scenarios: sortByDescription( $scope.tagScenarioMap[key].scenarios ),
           title: tag.value ? tag.value : tag.name,
           subtitle: tag.value ? tag.name : undefined,
           description: tag.description,
@@ -273,17 +273,21 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       var res = {};
       var key;
       var scenarioList;
+      var tagEntry;
       _.forEach(allScenarios, function(testCase) {
           _.forEach(testCase.scenarios, function(scenario) {
               _.forEach(scenario.tags, function(tag) {
                   key = getTagKey(tag);
                   res[ key ] = tag;
-                  scenarioList = $scope.tagScenarioMap[ key ];
+                  tagEntry = $scope.tagScenarioMap[ key ];
                   if (!scenarioList) {
-                      scenarioList = new Array();
-                      $scope.tagScenarioMap[ key ] = scenarioList;
+                      tagEntry = {
+                          tag: tag,
+                          scenarios: new Array()
+                      };
+                      $scope.tagScenarioMap[ key ] = tagEntry
                   }
-                  scenarioList.push(scenario);
+                  tagEntry.scenarios.push(scenario);
               });
           });
       });
