@@ -38,13 +38,14 @@ ul.tags {
 }
 
 .title {
+    position: relative;
     border-bottom: 1px solid #ddd;
     margin-bottom: 2rem !important;
 }
 
 .page-icon-bar {
     position: absolute;
-    top: 1rem;
+    top: 0;
     right: 1rem;
 }
 
@@ -229,6 +230,9 @@ body, .footer-bottom {
     bottom: 0;
     overflow: auto;
     width:400px;
+
+    /* ensure that when the footer is visible all nav entries are visible */
+    padding-bottom: 70px;
 }
 
 .side-nav li a:not(.button){
@@ -250,18 +254,41 @@ li.subheading {
 
 li.subheading > ul {
     margin-top: 0.5rem;
-    margin-left:0;
+    margin-left: 0.5rem;
 }
 
 .footer-bottom {
     position: absolute;
-    padding: 10px 0 10px;
+    padding: 5px 0 5px;
     color: #555;
-    bottom:0;
-    left:0;
-    right:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     z-index: 100;
-    border-top: 20px solid white;
+    border-top: 10px solid #fafafa;
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 1px lightgray;
+}
+
+.footer-bottom a {
+    color: #005C7B;
+}
+
+#loading-modal {
+    position: fixed;
+    top: 76px;
+    bottom: 0;
+    left: 0;
+    right:0;
+    background-color: rgba(255,255,255,0.8);
+    z-index: 2000;
+}
+
+#loading-modal > h1 {
+    position: absolute;
+    left: 40%;
+    top: 40%;
+    color: gray;
 }
 
 /* avoid showing angularjs expressions on page loading */

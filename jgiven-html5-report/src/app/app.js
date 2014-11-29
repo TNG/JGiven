@@ -52,10 +52,19 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.showFailedScenarios = function() {
+      var failedScenarios = getFailedScenarios();
+      var description;
+      if (failedScenarios.length === 0) {
+          description = "There are no failed scenarios. Keep rocking!";
+      } else if (failedScenarios.length === 1) {
+          description = "There is only 1 failed scenario. You nearly made it!";
+      } else {
+          description = "There are " + failedScenarios.length + " failed scenarios";
+      }
       $scope.currentPage = {
-          scenarios: getFailedScenarios(),
+          scenarios: failedScenarios,
           title: "Failed Scenarios",
-          description: "All failed scenarios",
+          description: description,
           breadcrumbs: ['FAILED SCENARIOS']
       };
   };
