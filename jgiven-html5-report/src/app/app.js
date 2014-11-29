@@ -61,7 +61,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.toggleTagType = function(tagType) {
-      tagType.expanded = !tagType.expanded;
+      tagType.collapsed = !tagType.collapsed;
   };
 
   $scope.toggleScenario = function(scenario) {

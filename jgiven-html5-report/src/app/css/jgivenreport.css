@@ -127,8 +127,9 @@ table.steps tr:hover {
 
 .failed {
     color: red;
-    vertical-align: text-top;
+    vertical-align: middle;
     font-size: 0.5rem !important;
+    margin-bottom: 0.2rem;
 }
 
 .failed-icon {
@@ -215,6 +216,24 @@ body, .footer-bottom {
 
 .side-nav li a:not(.button){
     padding: 0.1rem 0;
+}
+
+.side-nav, .side-nav ul {
+    line-height: 1.2;
+}
+
+li.heading, li.subheading {
+    margin-top: 1rem;
+}
+
+li.subheading {
+    color: #008cba;
+    font-weight: bold;
+}
+
+li.subheading > ul {
+    margin-top: 0.5rem;
+    margin-left:0;
 }
 
 .footer-bottom {

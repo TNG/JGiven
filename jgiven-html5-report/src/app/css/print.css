@@ -11,6 +11,14 @@
     opacity: 1 !important;
 }
 
+.scenario-container {
+    margin-left: 10px;
+}
+
+a {
+    text-decoration: none !important;
+}
+
 .word {
     color: #000;
 }
