@@ -1,0 +1,236 @@
+<!doctype html>
+<html class="no-js" lang="en" ng-app="jgivenReportApp" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JGiven Report</title>
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/jgivenreport.css" />
+    <link rel="stylesheet" href="css/print.css" media="print" />
+    <script src="js/modernizr.js"></script>
+  </head>
+  <body ng-controller="JGivenReportCtrl">
+
+    <div class="header-fixed">
+      <nav class="top-bar" data-topbar role="navigation">
+        <ul class="title-area">
+          <li class="name">
+            <h1><a href="#">JGiven Reports</a></h1>
+          </li>
+          <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </ul>
+        <section class="top-bar-section">
+          <ul class="right">
+           <li>
+             <div class="small-12 columns">
+               <form ng-submit="searchSubmit()">
+                 <input id="nav-search" class="search" type="text" placeholder="search in scenarios" ng-model="navsearch" >
+                  <i class="fa fa-search search-icon"></i>
+                 </input>
+               </form>
+             </div>
+           </li>
+          </ul>
+        </section>
+      </nav>
+
+      <nav class="breadcrumbs">
+        <a ng-cloak ng-repeat="b in currentPage.breadcrumbs" href="#" class="{{$last ? 'current' : 'unavailable'}}">{{b}}</a>
+      </nav>
+    </div>
+
+    <div class="row content">
+
+      <div id="loading-modal" ng-hide="tags"><h1>Loading <i class="fa fa-circle-o-notch fa-spin"></i></h1></div>
+
+
+      <!-- LEFT NAVIGATION BAR -->
+
+      <div class="" style="padding-left:0px;">
+       <div class="hide-for-small">
+         <div class="sidebar">
+           <nav>
+             <ul ng-cloak class="side-nav">
+               <li class="heading">
+                 <a ng-click="summaryExpanded = !summaryExpanded">
+                   <i class="fa fa-caret-right toggle {{summaryExpanded ? 'fa-rotate-90' : ''}}"></i>
+                   &nbsp;Summary</a>
+                 <ul ng-if="summaryExpanded">
+                 <li><a href="#failed" >Failed Scenarios</a></li>
+                 </ul>
+               </li>
+               <li class="heading" >
+                 <a class="toggle" ng-click="tags.expanded = !tags.expanded">
+                 <i class="fa fa-caret-right toggle {{tags.expanded ? 'fa-rotate-90' : ''}}"></i>
+                 &nbsp;Tags
+                 </a>
+                 <ul ng-if="tags.expanded">
+                   <li class="subheading" ng-repeat="tagType in tags">
+                     <a ng-click="tagType.expanded = !tagType.expanded">
+                     <i class="fa fa-caret-right toggle {{tagType.expanded ? 'fa-rotate-90' : ''}}"></i>
+                     &nbsp;{{tagType.type}}
+                     </a>
+                     <ul ng-if="tagType.tags.length > 1 && tagType.expanded" class="tags">
+                       <li ng-repeat="tag in tagType.tags">
+                         <a href="#tag{{'/' + tagType.type + '/' }}{{tag.value | encodeUri}}">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a>
+                       </li>
+                     </ul>
+                     <a ng-if="tagType.tags.length === 1" href="#" ng-click="updateCurrentPageToTag(tagType.tags[0])">{{tagType.tags[0].name}}<span ng-if="tagType.tags[0].value">-{{tagType.tags[0].value}}</span></a>
+                   </li>
+                 </ul>
+               </li>
+               <li class="heading" >
+                 <a class="toggle" ng-click="classNames.expanded = !classNames.expanded">
+                 <i class="fa fa-caret-right toggle {{classNames.expanded ? 'fa-rotate-90' : ''}}"></i>
+                 &nbsp;Classes</a>
+                 <ul ng-if="classNames.expanded" >
+                   <li ng-repeat="className in classNames"><a href="#class/{{className.packageName + '.' + className.className}}">
+                  {{className.className}}
+                  </a></li>
+                 </ul>
+               </li>
+             </ul>
+           </nav>
+         </div>
+       </div>
+      </div>
+
+
+
+      <!-- RIGHT SCENARIO PAGE -->
+
+      <div ng-cloak class="scenario-container">
+
+
+        <!-- PAGE TITLE -->
+
+        <div class="row title">
+          <h2 class="subtitle">{{currentPage.subtitle}}</h2>
+          <h2>{{currentPage.title}}</h2>
+          <h3 class="description" ng-bind-html="currentPage.description"></h3>
+
+          <div class="page-icon-bar">
+            <a ng-click="collapseAll()" title="Collapse All"><i class="fa fa-print fa-minus-square-o collapse-icon toggle"></i></a>
+            <a ng-click="expandAll()" title="Expand All"><i class="fa fa-print fa-plus-square-o expand-icon toggle"></i></a>
+            <a ng-click="printCurrentPage()" title="Print Page"><i class="fa fa-print print-icon toggle"></i></a>
+          </div>
+        </div>
+
+
+        <h4 ng-hide="!currentPage.loading">Loading <i class="fa fa-circle-o-notch fa-spin"></i></h4>
+        <!-- SCENARIO LIST -->
+
+        <div class="scenario" ng-repeat="scenario in currentPage.scenarios">
+          <div class="row">
+            <div class="small-8 column">
+              <div class="row">
+                <div class="small-1 column caret-column">
+                  <i class="fa fa-caret-right toggle {{scenario.expanded ? 'fa-rotate-90' : ''}}"
+                     ng-click="toggleScenario(scenario)"></i>
+                </div>
+                <div class="small-11 column scenario-content-column">
+                  <h4 class="toggle" ng-click="toggleScenario(scenario)">{{scenario.description.capitalize()}}
+                  <span ng-if="scenario.scenarioCases.length > 1" class="secondary radius label case-count">{{scenario.scenarioCases.length}}</span>
+                  <i ng-if="scenario.executionStatus === 'SUCCESS'" class="check fa fa-check-square"></i>
+                  <span ng-if="!scenario.executionStatus" class="failed label radius alert">FAILED</span>
+                  <span class="duration"> ({{ nanosToSeconds(scenario.durationInNanos) }}s)</span>
+                  </h4>
+                  <div ng-if="scenario.expanded" id="scenario-{{$index}}" class="scenario-content">
+                    <div ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
+                      <h5 ng-if="scenario.scenarioCases.length > 1 && !scenario.casesAsTable">Case {{case.caseNr}}:
+                      <span ng-repeat="param in scenario.explicitParameters">
+                        {{param}} = {{case.explicitArguments[$index]}}<span ng-if="$index != scenario.explicitParameters.length - 1">, </span>
+                      </span>
+                      </h5>
+                      <div class="steps">
+                        <table class="steps">
+                          <tr ng-repeat="step in case.steps">
+                            <td class="intro-word">{{step.words[0].value.capitalize()}}</td>
+                            <td>
+                              <span aria-haspopup="{{ step.extendedDescription ? 'true' : 'false'"
+                                    class="{{ step.extendedDescription ? 'has-tip' : '' }}"
+                                    tooltip-html-unsafe="{{ step.extendedDescription }}">
+                                <span class="word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{word.isDifferent ? 'diff' : ''}}" ng-repeat-start="word in step.words.slice(1)">
+                                  <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
+                                    <strong>&lt;{{word.argumentInfo.parameterName}}&gt;</strong>
+                                  </span>
+
+                                  <span ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName)" class="{{word.argumentInfo ? 'argument' : ''}}">
+                                    {{ word.value }}
+                                  </span>
+                                </span>
+                                <span ng-repeat-end></span>
+                              </span>
+                              <span ng-if="scenario.executionStatus !== 'SUCCESS'">
+                                <i ng-if="step.status === 'PASSED'" class="small-check fa fa-check-square"></i>
+                                <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-times"></i>
+                                <i ng-if="step.status === 'SKIPPED'" class="skipped fa fa-ban"></i>
+                              </span>
+                              <span ng-if="step.durationInNanos > 10000000" class="duration"> ({{ nanosToSeconds(step.durationInNanos) }}s)</span>
+                            </td>
+                          </tr>
+                        </table>
+                        <div ng-if="!scenario.casesAsTable">
+                          <div ng-if="!scenario.scenarioCases[0].success" data-alert class="alert-box alert radius">FAILED: {{case.errorMessage}}</div>
+                        </div>
+                        <div>
+                          <div ng-if="scenario.casesAsTable">
+                            <p></p>
+                            <h6>Cases</h6>
+                            <table>
+                              <tr>
+                                <th>#</th>
+                                <th ng-repeat="param in scenario.derivedParameters">{{param}}</th>
+                                <th>Status</th>
+                              </tr>
+                              <tr ng-repeat="case in scenario.scenarioCases">
+                                <td>{{case.caseNr}}</td>
+                                <td ng-repeat="arg in case.derivedArguments track by $index">{{arg}}</td>
+                                <td ng-if="case.success"><i class="check fa fa-check-square" /></td>
+                                <td ng-if="!case.success">
+                                  <div data-alert class="alert-box alert round">{{case.errorMessage}}</div>
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="class-name"><a href="#class/{{scenario.className}}">{{scenario.className}}</a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="small-4 column tag-column">
+              <span  ng-repeat="tag in scenario.tags">
+                <a href="#tag/{{tag.name + '/' + tag.value}}" ><span class="radius label">{{(tag.prependType ? tag.name + '-' : '') + tag.value}}</span></a>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="small-3 small-centered columns">
+            Generated by <a href="http://jgiven.org">JGiven</a> 0.6.0-SNAPSHOT
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/placeholder.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-sanitize.min.js"></script>
+    <script src="js/mm-foundation-tpls.min.js"></script>
+    <script src="js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+    <script src="js/lodash.min.js"></script>
+    <script src="allScenarios.js" type="text/javascript"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
