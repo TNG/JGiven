@@ -202,6 +202,7 @@ input.search {
     padding-bottom: 5rem;
     max-width:100%;
     min-height: 100%;
+    height: 100%;
 }
 
 .scenario {
@@ -211,15 +212,19 @@ input.search {
 }
 
 .scenario-container {
+    position: relative;
     padding-top: 1rem;
     padding-left: 2.5rem;
     margin-left: 400px;
     margin-top: 76px;
     margin-right: 15px;
+    padding-bottom: 50px; /* space for footer */
+    min-height: 100%;
+    background-color: white;
 }
 
 body, .footer-bottom {
-    background: none repeat scroll 0 0 #aaa;
+    background: none repeat scroll 0 0 white;
 }
 
 .sidebar {
@@ -230,9 +235,6 @@ body, .footer-bottom {
     bottom: 0;
     overflow: auto;
     width:400px;
-
-    /* ensure that when the footer is visible all nav entries are visible */
-    padding-bottom: 70px;
 }
 
 .side-nav li a:not(.button){
@@ -259,15 +261,12 @@ li.subheading > ul {
 
 .footer-bottom {
     position: absolute;
-    padding: 5px 0 5px;
+    padding: 40px 0 2px;
     color: #555;
     bottom: 0;
-    left: 0;
     right: 0;
-    z-index: 100;
-    border-top: 10px solid #fafafa;
-    font-size: 0.9rem;
-    text-shadow: 1px 1px 1px lightgray;
+    left: 0;
+    font-size: 0.8rem;
 }
 
 .footer-bottom a {
