@@ -8,7 +8,6 @@ Uses the power of AngularJS, Foundation, and Font Awesome
 
 ## Currently missing features compared to the static HTML report (TODO)
 
-1. Group Tags and Classes are not collapsed in the Navigation menu
 1. Cases are not collapsed
 1. Search in scenarios
 1. Overview Page
