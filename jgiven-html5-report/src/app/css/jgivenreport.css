@@ -185,7 +185,10 @@ table.steps tr:hover {
 }
 
 input.search {
+    position: relative;
     border-radius: 5rem;
+
+    padding-left: 2rem;
 
     /* needed for FF */
     padding-top: 0;
@@ -194,6 +197,13 @@ input.search {
 
 #nav-search {
     height: 1.7rem;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1.5rem;
+    top: 0.8rem;
+    color: #333;
 }
 
 .content {

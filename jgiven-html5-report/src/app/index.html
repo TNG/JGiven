@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en" ng-app="jgivenReportApp">
+<html class="no-js" lang="en" ng-app="jgivenReportApp" xmlns="http://www.w3.org/1999/html">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,7 +26,9 @@
            <li>
              <div class="small-12 columns">
                <form ng-submit="searchSubmit()">
-                 <input id="nav-search" class="search" type="text" placeholder="search in scenarios" ng-model="navsearch" />
+                 <input id="nav-search" class="search" type="text" placeholder="search in scenarios" ng-model="navsearch" >
+                  <i class="fa fa-search search-icon"></i>
+                 </input>
                </form>
              </div>
            </li>
@@ -69,7 +71,7 @@
                      </a>
                      <ul ng-if="tagType.tags.length > 1 && tagType.expanded" class="tags">
                        <li ng-repeat="tag in tagType.tags">
-                         <a href="#tag{{'/' + tagType.type + '/' + tag.value}}">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a>
+                         <a href="#tag{{'/' + tagType.type + '/' }}{{tag.value | encodeUri}}">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a>
                        </li>
                      </ul>
                      <a ng-if="tagType.tags.length === 1" href="#" ng-click="updateCurrentPageToTag(tagType.tags[0])">{{tagType.tags[0].name}}<span ng-if="tagType.tags[0].value">-{{tagType.tags[0].value}}</span></a>

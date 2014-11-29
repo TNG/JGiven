@@ -1,6 +1,10 @@
 var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize','mm.foundation']);
 
 
+jgivenReportApp.filter('encodeUri', function ($window) {
+    return $window.encodeURIComponent;
+});
+
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location) {
   $scope.scenarios = [];
   $scope.classNameScenarioMap = {};
@@ -99,7 +103,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $timeout( function() {
           $scope.currentPage.scenarios = $scope.findScenarios(searchString);
           $scope.currentPage.loading = false;
-      },250);
+      },1);
   }
 
   $scope.findScenarios = function findScenarios( searchString ) {
