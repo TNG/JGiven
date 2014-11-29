@@ -1,3 +1,7 @@
+body {
+    height: 100%;
+}
+
 h2.subtitle {
     font-size: 1.1rem;
     color: #6f6f6f;
@@ -18,6 +22,14 @@ h5 {
     font-size: 1.1rem;
     margin-top: 0.5rem;
     margin-bottom: 0;
+}
+
+.header-fixed {
+    position: fixed;
+    z-index: 1000;
+    top:0;
+    left:0;
+    right:0;
 }
 
 
@@ -184,8 +196,11 @@ input.search {
 }
 
 .content {
+    position: relative;
     background: white;
     padding-bottom: 5rem;
+    max-width:100%;
+    min-height: 100%;
 }
 
 .scenario {
@@ -198,6 +213,8 @@ input.search {
     padding-top: 1rem;
     padding-left: 2.5rem;
     margin-left: 400px;
+    margin-top: 76px;
+    margin-right: 15px;
 }
 
 body, .footer-bottom {
@@ -237,8 +254,14 @@ li.subheading > ul {
 }
 
 .footer-bottom {
+    position: absolute;
     padding: 10px 0 10px;
     color: #555;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index: 100;
+    border-top: 20px solid white;
 }
 
 /* avoid showing angularjs expressions on page loading */
