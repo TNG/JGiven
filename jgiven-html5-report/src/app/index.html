@@ -21,17 +21,17 @@
           </li>
           <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
         </ul>
-        <!--
         <section class="top-bar-section">
           <ul class="right">
            <li>
-                <div class="small-12 columns">
-                  <input class="search" type="text" placeholder="regexp" />
-                </div>
+             <div class="small-12 columns">
+               <form ng-submit="searchSubmit()">
+                 <input id="nav-search" class="search" type="text" placeholder="search in scenarios" ng-model="navsearch" />
+               </form>
+             </div>
            </li>
           </ul>
         </section>
-        -->
       </nav>
 
       <nav class="breadcrumbs">
@@ -52,38 +52,40 @@
          <div class="sidebar">
            <nav>
              <ul ng-cloak class="side-nav">
-               <li>
-                 <form ng-submit="searchSubmit()">
-                   <input id="nav-search" class="search" type="text" placeholder="search in scenarios" ng-model="navsearch" />
-                 </form>
-               </li>
-
-               <li class="heading">Overview</li>
+               <li class="heading">
+                 <a>Overview</a></li>
                <li><a href="#failed" >Failed Scenarios</a></li>
                <li class="divider"></li>
-               <li class="heading">Tags
-                 <i ng-if="!tags.collapsed" ng-click="tags.collapsed = true" title="Collapse" class="fa fa-print fa-minus-square-o collapse-icon toggle"></i>
-                 <i ng-if="tags.collapsed" ng-click="tags.collapsed = false" title="Expand" class="fa fa-print fa-plus-square-o expand-icon toggle"></i>
-               </li>
-               <li ng-if="!tags.collapsed" class="subheading" ng-repeat="tagType in tags">
-                 {{tagType.type}}
-                 <i ng-if="!tagType.collapsed" ng-click="tagType.collapsed = true" title="Collapse" class="fa fa-print fa-minus-square-o collapse-icon toggle"></i>
-                 <i ng-if="tagType.collapsed" ng-click="tagType.collapsed = false" title="Expand" class="fa fa-print fa-plus-square-o expand-icon toggle"></i>
-
-                 <ul ng-if="tagType.tags.length > 1 && !tagType.collapsed" class="tags">
-                   <li ng-repeat="tag in tagType.tags">
-                     <a href="#tag{{'/' + tagType.type + '/' + tag.value}}">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a>
+               <li class="heading" >
+                 <a class="toggle" ng-click="tags.expanded = !tags.expanded">
+                 <i class="fa fa-caret-right toggle {{tags.expanded ? 'fa-rotate-90' : ''}}"></i>
+                 &nbsp;Tags
+                 </a>
+                 <ul ng-if="tags.expanded">
+                   <li class="subheading" ng-repeat="tagType in tags">
+                     <a ng-click="tagType.expanded = !tagType.expanded">
+                     <i class="fa fa-caret-right toggle {{tagType.expanded ? 'fa-rotate-90' : ''}}"></i>
+                     &nbsp;{{tagType.type}}
+                     </a>
+                     <ul ng-if="tagType.tags.length > 1 && tagType.expanded" class="tags">
+                       <li ng-repeat="tag in tagType.tags">
+                         <a href="#tag{{'/' + tagType.type + '/' + tag.value}}">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a>
+                       </li>
+                     </ul>
+                     <a ng-if="tagType.tags.length === 1" href="#" ng-click="updateCurrentPageToTag(tagType.tags[0])">{{tagType.tags[0].name}}<span ng-if="tagType.tags[0].value">-{{tagType.tags[0].value}}</span></a>
                    </li>
                  </ul>
-                 <a ng-if="tagType.tags.length === 1" href="#" ng-click="updateCurrentPageToTag(tagType.tags[0])">{{tagType.tags[0].name}}<span ng-if="tagType.tags[0].value">-{{tagType.tags[0].value}}</span></a>
-               <li class="divider"></li>
-               <li class="heading">Classes
-                 <i ng-if="!classNames.collapsed" ng-click="classNames.collapsed = true" title="Collapse" class="fa fa-print fa-minus-square-o collapse-icon toggle"></i>
-                 <i ng-if="classNames.collapsed" ng-click="classNames.collapsed = false" title="Expand" class="fa fa-print fa-plus-square-o expand-icon toggle"></i>
                </li>
-               <li ng-if="!classNames.collapsed" ng-repeat="className in classNames"><a href="#class/{{className.packageName + '.' + className.className}}">
-                 {{className.className}}
-               </a></li>
+               <li class="heading" >
+                 <a class="toggle" ng-click="classNames.expanded = !classNames.expanded">
+                 <i class="fa fa-caret-right toggle {{classNames.expanded ? 'fa-rotate-90' : ''}}"></i>
+                 &nbsp;Classes</a>
+                 <ul ng-if="classNames.expanded" >
+                   <li ng-repeat="className in classNames"><a href="#class/{{className.packageName + '.' + className.className}}">
+                  {{className.className}}
+                  </a></li>
+                 </ul>
+               </li>
              </ul>
            </nav>
          </div>
@@ -124,7 +126,7 @@
                      ng-click="toggleScenario(scenario)"></i>
                 </div>
                 <div class="small-11 column scenario-content-column">
-                  <h4>{{scenario.description.capitalize()}}
+                  <h4 class="toggle" ng-click="toggleScenario(scenario)">{{scenario.description.capitalize()}}
                   <span ng-if="scenario.scenarioCases.length > 1" class="secondary radius label case-count">{{scenario.scenarioCases.length}}</span>
                   <i ng-if="scenario.executionStatus === 'SUCCESS'" class="check fa fa-check-square"></i>
                   <span ng-if="!scenario.executionStatus" class="failed label radius alert">FAILED</span>

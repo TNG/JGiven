@@ -92,14 +92,14 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           scenarios: [],
           title: "Search Results",
           description: "Searched for '" + searchString + "'",
-          breadcrumbs: ['Search'],
+          breadcrumbs: ['Search', searchString ],
           loading: true
       }
 
       $timeout( function() {
           $scope.currentPage.scenarios = $scope.findScenarios(searchString);
           $scope.currentPage.loading = false;
-      },0);
+      },250);
   }
 
   $scope.findScenarios = function findScenarios( searchString ) {

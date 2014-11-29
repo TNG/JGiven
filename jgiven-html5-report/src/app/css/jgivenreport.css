@@ -229,7 +229,7 @@ body, .footer-bottom {
 
 .sidebar {
     background: none repeat scroll 0 0 #fafafa;
-    padding: 10px 20px;
+    padding: 0px;
     position: fixed;
     top: 76px;
     bottom: 0;
@@ -238,15 +238,27 @@ body, .footer-bottom {
 }
 
 .side-nav li a:not(.button){
-    padding: 0.1rem 0;
+    padding: 0.5rem 1rem;
+}
+
+.side-nav li li a:not(.button){
+    padding: 0.1rem 0.6rem;
 }
 
 .side-nav, .side-nav ul {
     line-height: 1.2;
 }
 
+.side-nav ul {
+    list-style: none;
+}
+
 li.heading, li.subheading {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
+}
+
+li.heading ul {
+    text-transform: none;
 }
 
 li.subheading {
@@ -256,7 +268,7 @@ li.subheading {
 
 li.subheading > ul {
     margin-top: 0.5rem;
-    margin-left: 0.5rem;
+    margin-left: 0.8rem;
 }
 
 .footer-bottom {
