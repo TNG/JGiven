@@ -1,5 +1,8 @@
 # v0.6.0 (not released yet)
 
+## Bug Fixes
+* Core: An issue has been fixed where methods annotated with `@AfterStage` and `@AfterScenario` could accidentally appear in the report when they have been overriden and not annotated again.
+
 ## Breaking Changes
 
 ### Non-public step methods appear in the report now
