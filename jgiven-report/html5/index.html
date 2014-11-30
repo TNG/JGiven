@@ -26,7 +26,7 @@
            <li>
              <div class="small-12 columns">
                <form ng-submit="searchSubmit()">
-                 <input id="nav-search" class="search" type="text" placeholder="search in scenarios" ng-model="navsearch" >
+                 <input id="nav-search" class="search" type="text" placeholder="search in scenarios" ng-model="nav.search" >
                   <i class="fa fa-search search-icon"></i>
                  </input>
                </form>
@@ -100,7 +100,7 @@
 
         <!-- PAGE TITLE -->
 
-        <div class="row title">
+        <div class="row title" ng-cloak="currentPage.title">
           <h2 class="subtitle">{{currentPage.subtitle}}</h2>
           <h2>{{currentPage.title}}</h2>
           <h3 class="description" ng-bind-html="currentPage.description"></h3>
