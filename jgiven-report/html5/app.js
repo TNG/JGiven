@@ -18,6 +18,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       scenarios: []
   };
   $scope.jgivenReport = jgivenReport;
+  $scope.nav = {};
 
   $scope.$on('$locationChangeSuccess', function(event) {
       var part = $location.path().split('/');
@@ -124,9 +125,9 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.searchSubmit = function() {
-      console.log("Searching for " + $scope.navsearch);
+      console.log("Searching for " + $scope.nav.search);
 
-      var x = $location.path("search/" + $scope.navsearch);
+      var x = $location.path("search/" + $scope.nav.search);
   }
 
   $scope.search = function search(searchString) {
@@ -161,15 +162,15 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.updateNav = function() {
       $scope.classNames = _.filter(getClassNames(), function(x) {
-          if ($scope.navsearch) {
-              return x.className.match( new RegExp($scope.navsearch, "i"));
+          if ($scope.nav.search) {
+              return x.className.match( new RegExp($scope.nav.search, "i"));
           }
           return true;
       });
 
       $scope.tags = _.filter($scope.allTags, function(x) {
-          if ($scope.navsearch) {
-              return (x.name + '-' + x.value).match( new RegExp($scope.navsearch, "i") );
+          if ($scope.nav.search) {
+              return (x.name + '-' + x.value).match( new RegExp($scope.nav.search, "i") );
           }
           return true;
       });
