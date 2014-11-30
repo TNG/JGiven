@@ -17,6 +17,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       breadcrumbs: [''],
       scenarios: []
   };
+  $scope.jgivenReport = jgivenReport;
 
   $scope.$on('$locationChangeSuccess', function(event) {
       var part = $location.path().split('/');
@@ -234,7 +235,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   }
 
   function getAllScenarios() {
-      return _.flatten( _.map( allScenarios, function(x) {
+      return _.flatten( _.map( jgivenReport.scenarios, function(x) {
           return x.scenarios;
       }), true);
   }
@@ -256,6 +257,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   function getClassNames() {
       var res = new Array();
+      var allScenarios = jgivenReport.scenarios;
       for (var i = 0; i < allScenarios.length; i++ ) {
           var className = splitClassName( allScenarios[i].className );
           className.index = i;
@@ -274,13 +276,13 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       var key;
       var scenarioList;
       var tagEntry;
-      _.forEach(allScenarios, function(testCase) {
+      _.forEach(jgivenReport.scenarios, function(testCase) {
           _.forEach(testCase.scenarios, function(scenario) {
               _.forEach(scenario.tags, function(tag) {
                   key = getTagKey(tag);
                   res[ key ] = tag;
                   tagEntry = $scope.tagScenarioMap[ key ];
-                  if (!scenarioList) {
+                  if (!tagEntry) {
                       tagEntry = {
                           tag: tag,
                           scenarios: new Array()
@@ -315,3 +317,13 @@ function splitClassName( fullQualifiedClassName ) {
         packageName: packageName
     };
 }
+
+var jgivenReport = {
+    setMetaData: function setMetaData(metaData) {
+        this.metaData = metaData;
+    },
+
+    setAllScenarios: function setAllScenarios(allScenarios) {
+        this.scenarios = allScenarios;
+    }
+};

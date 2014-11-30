@@ -5,13 +5,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Date;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
+import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.impl.FileGenerator;
@@ -39,20 +42,35 @@ public class Html5ReportGenerator implements ReportModelFileHandler, FileGenerat
 
         unzipApp( toDir );
         generateAllScenarios( toDir, sourceDir );
+        generateMetaData( toDir );
+    }
+
+    static class MetaData {
+        Date created = new Date();
+    }
+
+    private void generateMetaData( File toDir ) throws IOException {
+        File metaDataFile = new File( toDir, "metaData.js" );
+        log.debug( "Generating " + metaDataFile + "..." );
+        MetaData metaData = new MetaData();
+
+        String content = "jgivenReport.setMetaData(" + new Gson().toJson( metaData ) + " );";
+
+        Files.write( content, metaDataFile, Charsets.UTF_8 );
+
     }
 
     private void generateAllScenarios( File toDir, File sourceDir ) throws IOException {
-        log.debug( "Generating allScenarios.js..." );
-
         File targetFile = new File( toDir, "allScenarios.js" );
+        log.debug( "Generating " + targetFile + "..." );
 
         PrintStream printStream = new PrintStream( new FileOutputStream( targetFile ), false, "utf-8" );
         this.writer = printStream;
 
         try {
-            this.writer.append( "var allScenarios = [" );
+            this.writer.append( "jgivenReport.setAllScenarios([" );
             new JsonModelTraverser().traverseModels( sourceDir, this );
-            this.writer.append( "];" );
+            this.writer.append( "]);" );
             printStream.flush();
         } finally {
             ResourceUtil.close( printStream );
