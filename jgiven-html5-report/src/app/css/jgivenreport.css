@@ -53,21 +53,20 @@ ul.tags {
     color: #6f6f6f;
 }
 
-.expand-icon:hover, .collapse-icon:hover, .print-icon:hover {
+.expand-icon:hover, .collapse-icon:hover, .print-icon:hover, .scenario:hover .scenario-link-icon:hover {
     color: #008cba;
 }
 
-.caret-column {
-    width: 0;
-    color: gray;
-    padding-left: 0.5rem;
-    padding-top: 0.2rem;
+.scenario-link-icon {
+    display: none;
 }
 
-.scenario-content-column {
-    padding-left: 0;
-    width: 96%;
-    float: left !important;
+.scenario:hover .scenario-link-icon {
+    display: inline;
+    position: absolute;
+    top: 0.5rem;
+    left: -0.5rem;
+    color: gray;
 }
 
 .steps {
@@ -176,6 +175,14 @@ table.steps tr:hover {
     color: #333;
 }
 
+.word.FAILED {
+    color: red;
+}
+
+.word.SKIPPED {
+    color: gray;
+}
+
 .argument {
     color: black;
     font-shadow: 1px 1px 1px gray;
@@ -249,6 +256,12 @@ input.search {
     min-height: 100%;
     background-color: white;
     border-left: 1px solid #ddd;
+}
+
+.scenario-container.embed {
+    margin-left: 0;
+    margin-top: 0;
+    border-left: none;
 }
 
 body, .footer-bottom {

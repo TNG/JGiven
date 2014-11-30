@@ -29,11 +29,21 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
          })].tag);
       } else if (part[1] === 'class') {
           $scope.updateCurrentPageToClassName(part[2]);
+      } else if (part[1] === 'scenario') {
+          $scope.showScenario(part[2],part[3]);
+      } else if (part[1] === 'all') {
+          $scope.showAllScenarios();
       } else if (part[1] === 'failed') {
           $scope.showFailedScenarios();
       } else if (part[1] === 'search') {
           $scope.search(part[2]);
       }
+
+      var search = $location.search();
+
+      $scope.currentPage.embed = search.embed;
+      $scope.currentPage.print = search.print;
+
   });
 
   $scope.updateCurrentPageToClassName = function(className) {
@@ -60,6 +70,31 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           description: tag.description,
           breadcrumbs: ['TAGS',tag.name,tag.value]
       };
+  };
+
+  $scope.showScenario = function( className, methodName ) {
+      $scope.currentPage = {
+          scenarios: _.filter($scope.classNameScenarioMap[className].scenarios, function(x) {
+              return x.testMethodName === methodName;
+          }),
+          title: methodName,
+          subtitle: className,
+          breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName])
+      }
+  }
+
+  $scope.showAllScenarios = function() {
+      $scope.currentPage = {
+          scenarios: [],
+          title: 'All Scenarios',
+          breadcrumbs: ['ALL SCENARIOS'],
+          loading: true
+      }
+
+      $timeout(function() {
+          $scope.currentPage.scenarios = getAllScenarios();
+          $scope.currentPage.loading = false;
+      }, 0);
   };
 
   $scope.showFailedScenarios = function() {
@@ -141,10 +176,13 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.printCurrentPage = function printCurrentPage() {
-      $scope.expandAll();
+      $location.search("print=true");
       $timeout(function() {
           window.print();
-      },1000);
+          $timeout(function() {
+              $location.search("");
+          }, 0)
+      },0);
   }
 
   $scope.expandAll = function expandAll() {
@@ -253,7 +291,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           x.expanded = false;
       });
   }
-
+00
 
   function getClassNames() {
       var res = new Array();

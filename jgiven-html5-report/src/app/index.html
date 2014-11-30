@@ -13,7 +13,7 @@
   </head>
   <body ng-controller="JGivenReportCtrl">
 
-    <div class="header-fixed">
+    <div class="header-fixed" ng-if="!currentPage.embed">
       <nav class="top-bar" data-topbar role="navigation">
         <ul class="title-area">
           <li class="name">
@@ -48,7 +48,7 @@
 
       <!-- LEFT NAVIGATION BAR -->
 
-      <div class="" style="padding-left:0px;">
+      <div class="" style="padding-left:0px;" ng-if="!currentPage.embed">
        <div class="hide-for-small">
          <div class="sidebar">
            <nav>
@@ -56,7 +56,8 @@
                <li class="heading">
                  <a ng-click="summaryExpanded = !summaryExpanded">Summary</a>
                  <ul ng-if="summaryExpanded">
-                 <li><a href="#failed" >Failed Scenarios</a></li>
+                   <li><a href="#all">All Scenarios</a></li>
+                   <li><a href="#failed" >Failed Scenarios</a></li>
                  </ul>
                </li>
                <li class="heading" >
@@ -94,7 +95,7 @@
 
       <!-- RIGHT SCENARIO PAGE -->
 
-      <div ng-cloak class="scenario-container">
+      <div ng-cloak class="scenario-container {{currentPage.embed ? 'embed' : ''}}">
 
 
         <!-- PAGE TITLE -->
@@ -105,8 +106,8 @@
           <h3 class="description" ng-bind-html="currentPage.description"></h3>
 
           <div class="page-icon-bar">
-            <a ng-click="collapseAll()" title="Collapse All"><i class="fa fa-print fa-minus-square-o collapse-icon toggle"></i></a>
-            <a ng-click="expandAll()" title="Expand All"><i class="fa fa-print fa-plus-square-o expand-icon toggle"></i></a>
+            <a ng-click="collapseAll()" title="Collapse All"><i class="fa fa-minus-square-o collapse-icon toggle"></i></a>
+            <a ng-click="expandAll()" title="Expand All"><i class="fa fa-plus-square-o expand-icon toggle"></i></a>
             <a ng-click="printCurrentPage()" title="Print Page"><i class="fa fa-print print-icon toggle"></i></a>
           </div>
         </div>
@@ -118,13 +119,14 @@
         <div class="scenario {{$last ? 'last' : ''}}" ng-repeat="scenario in currentPage.scenarios">
           <div class="row">
             <div class="small-8 column">
+              <a href="#scenario/{{scenario.className}}/{{scenario.testMethodName}}"><i class="fa fa-link scenario-link-icon" title="Direct link to this scenario"></i></a>
               <h4 class="toggle" ng-click="toggleScenario(scenario)">{{scenario.description.capitalize()}}
               <span ng-if="scenario.scenarioCases.length > 1" class="secondary radius label case-count">{{scenario.scenarioCases.length}}</span>
               <i ng-if="scenario.executionStatus === 'SUCCESS'" class="check fa fa-check-square"></i>
               <span ng-if="!scenario.executionStatus" class="failed label radius alert">FAILED</span>
               <span class="duration"> ({{ nanosToSeconds(scenario.durationInNanos) }}s)</span>
               </h4>
-              <div ng-if="scenario.expanded" id="scenario-{{$index}}" class="scenario-content">
+              <div ng-if="scenario.expanded || currentPage.print" id="scenario-{{$index}}" class="scenario-content">
                 <div ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
                   <h5 ng-if="scenario.scenarioCases.length > 1 && !scenario.casesAsTable">Case {{case.caseNr}}:
                   <span ng-repeat="param in scenario.explicitParameters">
@@ -134,6 +136,7 @@
                   <div class="steps">
                     <table class="steps">
                       <tr ng-repeat="step in case.steps">
+
                         <td class="intro-word">{{step.words[0].value.capitalize()}}</td>
                         <td>
                           <span aria-haspopup="{{ step.extendedDescription ? 'true' : 'false'"
