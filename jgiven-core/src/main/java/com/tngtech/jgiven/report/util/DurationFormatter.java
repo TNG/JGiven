@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.impl.util;
+package com.tngtech.jgiven.report.util;
 
 import java.util.Formatter;
 import java.util.Locale;

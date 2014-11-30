@@ -3,7 +3,7 @@ package com.tngtech.jgiven.report.html;
 import java.io.File;
 import java.io.PrintWriter;
 
-import com.tngtech.jgiven.impl.util.DurationFormatter;
+import com.tngtech.jgiven.report.util.DurationFormatter;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.model.ReportModel;

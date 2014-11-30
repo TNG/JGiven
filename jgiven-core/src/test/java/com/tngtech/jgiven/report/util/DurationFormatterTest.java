@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.impl.util;
+package com.tngtech.jgiven.report.util;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.jgiven.report.util.DurationFormatter;
 
 @RunWith( DataProviderRunner.class )
 public class DurationFormatterTest {
@@ -23,6 +24,6 @@ public class DurationFormatterTest {
         "60000067890, 1.00 min",
     } )
     public void test( long nanos, String expectedResult ) {
-        assertThat( DurationFormatter.format( nanos ) ).isEqualTo( expectedResult );
+        assertThat( DurationFormatter.format(nanos) ).isEqualTo( expectedResult );
     }
 }

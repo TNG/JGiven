@@ -1,10 +1,8 @@
 package com.tngtech.jgiven.impl;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.reverse;
-import static com.tngtech.jgiven.impl.ScenarioExecutor.State.FINISHED;
-import static com.tngtech.jgiven.impl.ScenarioExecutor.State.STARTED;
-import static com.tngtech.jgiven.impl.util.ReflectionUtil.hasAtLeastOneAnnotation;
+import static com.google.common.collect.Lists.*;
+import static com.tngtech.jgiven.impl.ScenarioExecutor.State.*;
+import static com.tngtech.jgiven.impl.util.ReflectionUtil.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -13,8 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import net.sf.cglib.proxy.Enhancer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,11 +36,12 @@ import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.intercept.StepMethodHandler;
 import com.tngtech.jgiven.impl.intercept.StepMethodInterceptor;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
-import com.tngtech.jgiven.impl.util.ReflectionUtil.FieldAction;
-import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
+import com.tngtech.jgiven.impl.util.ReflectionUtil.*;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
 import com.tngtech.jgiven.integration.CanWire;
 import com.tngtech.jgiven.report.model.NamedArgument;
+
+import net.sf.cglib.proxy.Enhancer;
 
 /**
  * Main class of JGiven for executing scenarios.
@@ -202,8 +199,10 @@ public class ScenarioExecutor {
         if( stageState.afterStageCalled ) {
             return;
         }
+        methodInterceptor.enableMethodHandling( false );
         stageState.afterStageCalled = true;
         executeAnnotatedMethods( stage, AfterStage.class );
+        methodInterceptor.enableMethodHandling( true );
     }
 
     StageState getStageState( Object stage ) {
@@ -239,12 +238,14 @@ public class ScenarioExecutor {
     private void executeAnnotatedMethods( Object stage, final Class<? extends Annotation> annotationClass ) throws Throwable {
         log.debug( "Executing methods annotated with @{}", annotationClass.getName() );
         try {
+            methodInterceptor.enableMethodHandling( false );
             ReflectionUtil.forEachMethod( stage, stage.getClass(), annotationClass, new MethodAction() {
                 @Override
                 public void act( Object object, Method method ) throws Exception {
                     ReflectionUtil.invokeMethod( object, method, " with annotation @" + annotationClass.getName() );
                 }
             } );
+            methodInterceptor.enableMethodHandling( true );
         } catch( JGivenUserException e ) {
             throw e.getCause();
         }

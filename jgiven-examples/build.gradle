@@ -10,3 +10,4 @@ dependencies {
 }
 
 test.finalizedBy(jgivenReport)
+test.finalizedBy(jgivenHtml5Report)

@@ -4,7 +4,7 @@ import static java.lang.String.format;
 
 import java.io.PrintWriter;
 
-import com.tngtech.jgiven.impl.util.DurationFormatter;
+import com.tngtech.jgiven.report.util.DurationFormatter;
 
 public class HtmlWriterUtils {
 
