@@ -3,10 +3,10 @@
 ## Breaking Changes
 
 ### Non-public step methods appear in the report now
-So far JGiven only reported public step methods. This behavior can lead to confusion, because it is not obvious that methods that are actually executed do not appear in the report. For this reason this behavior has been changed so that the visibility modifier is not taken into account anymore when reporting step method.
+So far JGiven only reported public step methods. This behavior can lead to confusion, because it is not obvious that methods that are actually executed do not appear in the report. For this reason this behavior has been changed so that the visibility modifier is not taken into account anymore when reporting step methods.
 
 #### How to migrate
-If you have relied on the fact that non-public methods actually do not appear in the report, you can easily port you existing code by adding the `@Hidden` annotation to the corresponding method to explicitly state that the method should be hidden in the report.
+If you have relied on the fact that non-public methods actually do not appear in the report, you can easily port your existing code by adding the `@Hidden` annotation to the corresponding method to explicitly state that the method should be hidden in the report.
 
 # v0.5.4
 
