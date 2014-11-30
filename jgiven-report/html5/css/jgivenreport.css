@@ -9,8 +9,8 @@ h2.subtitle {
 
 h3 {
     font-size: 1.25rem;
-    margin-bottom: 2rem;
-    color: #6f6f6f;
+    margin-bottom: 1.5rem;
+    color: #4f4f4f;
 }
 
 h4 {
@@ -40,7 +40,7 @@ ul.tags {
 .title {
     position: relative;
     border-bottom: 1px solid #ddd;
-    margin-bottom: 2rem !important;
+    margin-bottom: 1rem !important;
 }
 
 .page-icon-bar {
@@ -53,21 +53,20 @@ ul.tags {
     color: #6f6f6f;
 }
 
-.expand-icon:hover, .collapse-icon:hover, .print-icon:hover {
+.expand-icon:hover, .collapse-icon:hover, .print-icon:hover, .scenario:hover .scenario-link-icon:hover {
     color: #008cba;
 }
 
-.caret-column {
-    width: 0;
-    color: gray;
-    padding-left: 0.5rem;
-    padding-top: 0.2rem;
+.scenario-link-icon {
+    display: none;
 }
 
-.scenario-content-column {
-    padding-left: 0;
-    width: 96%;
-    float: left !important;
+.scenario:hover .scenario-link-icon {
+    display: inline;
+    position: absolute;
+    top: 0.5rem;
+    left: -0.5rem;
+    color: gray;
 }
 
 .steps {
@@ -176,6 +175,14 @@ table.steps tr:hover {
     color: #333;
 }
 
+.word.FAILED {
+    color: red;
+}
+
+.word.SKIPPED {
+    color: gray;
+}
+
 .argument {
     color: black;
     font-shadow: 1px 1px 1px gray;
@@ -219,19 +226,42 @@ input.search {
 .scenario {
     border-bottom: 1px solid #ddd;
     padding-bottom: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0rem;
+    padding-top: 0.5rem;
+    margin-left: -0.975rem;
+}
+
+.scenario.last {
+    border-bottom: none;
+}
+
+/*
+.scenario:hover {
+    background-color: #eee;
+}
+*/
+
+.scenario-content {
+    background-color: white;
 }
 
 .scenario-container {
     position: relative;
     padding-top: 1rem;
-    padding-left: 2.5rem;
+    padding-left: 3rem;
     margin-left: 350px;
     margin-top: 76px;
     margin-right: 15px;
     padding-bottom: 50px; /* space for footer */
     min-height: 100%;
     background-color: white;
+    border-left: 1px solid #ddd;
+}
+
+.scenario-container.embed {
+    margin-left: 0;
+    margin-top: 0;
+    border-left: none;
 }
 
 body, .footer-bottom {
@@ -249,7 +279,7 @@ body, .footer-bottom {
 }
 
 .side-nav li a:not(.button){
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.8rem;
 }
 
 .side-nav li li a:not(.button){
@@ -296,6 +326,7 @@ li.subheading > ul {
     right: 0;
     left: 0;
     font-size: 0.8rem;
+    text-align: right;
 }
 
 .footer-bottom a {
