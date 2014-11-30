@@ -2,7 +2,6 @@ package com.tngtech.jgiven.report.model;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -166,18 +165,7 @@ public class ReportModelBuilder implements ScenarioListener {
 
     @Override
     public void stepMethodInvoked( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
-        if( !isStepMethod( paramMethod ) ) {
-            return;
-        }
         addStepMethod( paramMethod, arguments, mode );
-    }
-
-    public boolean isStepMethod( Method paramMethod ) {
-        if( !Modifier.isPublic( paramMethod.getModifiers() ) ) {
-            return false;
-        }
-
-        return true;
     }
 
     public void setMethodName( String methodName ) {
