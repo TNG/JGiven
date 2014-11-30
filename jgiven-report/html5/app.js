@@ -17,22 +17,33 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       breadcrumbs: [''],
       scenarios: []
   };
+  $scope.jgivenReport = jgivenReport;
 
   $scope.$on('$locationChangeSuccess', function(event) {
       var part = $location.path().split('/');
       console.log("Parts:" +part);
       if (part[1] === 'tag') {
-         $scope.updateCurrentPageToTag({
+         $scope.updateCurrentPageToTag( $scope.tagScenarioMap[ getTagKey({
              name: part[2],
              value: part[3]
-         });
+         })].tag);
       } else if (part[1] === 'class') {
           $scope.updateCurrentPageToClassName(part[2]);
+      } else if (part[1] === 'scenario') {
+          $scope.showScenario(part[2],part[3]);
+      } else if (part[1] === 'all') {
+          $scope.showAllScenarios();
       } else if (part[1] === 'failed') {
           $scope.showFailedScenarios();
       } else if (part[1] === 'search') {
           $scope.search(part[2]);
       }
+
+      var search = $location.search();
+
+      $scope.currentPage.embed = search.embed;
+      $scope.currentPage.print = search.print;
+
   });
 
   $scope.updateCurrentPageToClassName = function(className) {
@@ -53,12 +64,37 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       var key = getTagKey(tag);
       console.log("Update current page to tag "+key);
       $scope.currentPage = {
-          scenarios: sortByDescription( $scope.tagScenarioMap[key] ),
+          scenarios: sortByDescription( $scope.tagScenarioMap[key].scenarios ),
           title: tag.value ? tag.value : tag.name,
           subtitle: tag.value ? tag.name : undefined,
           description: tag.description,
           breadcrumbs: ['TAGS',tag.name,tag.value]
       };
+  };
+
+  $scope.showScenario = function( className, methodName ) {
+      $scope.currentPage = {
+          scenarios: _.filter($scope.classNameScenarioMap[className].scenarios, function(x) {
+              return x.testMethodName === methodName;
+          }),
+          title: methodName,
+          subtitle: className,
+          breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName])
+      }
+  }
+
+  $scope.showAllScenarios = function() {
+      $scope.currentPage = {
+          scenarios: [],
+          title: 'All Scenarios',
+          breadcrumbs: ['ALL SCENARIOS'],
+          loading: true
+      }
+
+      $timeout(function() {
+          $scope.currentPage.scenarios = getAllScenarios();
+          $scope.currentPage.loading = false;
+      }, 0);
   };
 
   $scope.showFailedScenarios = function() {
@@ -140,10 +176,13 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.printCurrentPage = function printCurrentPage() {
-      $scope.expandAll();
+      $location.search("print=true");
       $timeout(function() {
           window.print();
-      },1000);
+          $timeout(function() {
+              $location.search("");
+          }, 0)
+      },0);
   }
 
   $scope.expandAll = function expandAll() {
@@ -234,7 +273,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   }
 
   function getAllScenarios() {
-      return _.flatten( _.map( allScenarios, function(x) {
+      return _.flatten( _.map( jgivenReport.scenarios, function(x) {
           return x.scenarios;
       }), true);
   }
@@ -252,10 +291,11 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           x.expanded = false;
       });
   }
-
+00
 
   function getClassNames() {
       var res = new Array();
+      var allScenarios = jgivenReport.scenarios;
       for (var i = 0; i < allScenarios.length; i++ ) {
           var className = splitClassName( allScenarios[i].className );
           className.index = i;
@@ -273,17 +313,21 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       var res = {};
       var key;
       var scenarioList;
-      _.forEach(allScenarios, function(testCase) {
+      var tagEntry;
+      _.forEach(jgivenReport.scenarios, function(testCase) {
           _.forEach(testCase.scenarios, function(scenario) {
               _.forEach(scenario.tags, function(tag) {
                   key = getTagKey(tag);
                   res[ key ] = tag;
-                  scenarioList = $scope.tagScenarioMap[ key ];
-                  if (!scenarioList) {
-                      scenarioList = new Array();
-                      $scope.tagScenarioMap[ key ] = scenarioList;
+                  tagEntry = $scope.tagScenarioMap[ key ];
+                  if (!tagEntry) {
+                      tagEntry = {
+                          tag: tag,
+                          scenarios: new Array()
+                      };
+                      $scope.tagScenarioMap[ key ] = tagEntry
                   }
-                  scenarioList.push(scenario);
+                  tagEntry.scenarios.push(scenario);
               });
           });
       });
@@ -311,3 +355,13 @@ function splitClassName( fullQualifiedClassName ) {
         packageName: packageName
     };
 }
+
+var jgivenReport = {
+    setMetaData: function setMetaData(metaData) {
+        this.metaData = metaData;
+    },
+
+    setAllScenarios: function setAllScenarios(allScenarios) {
+        this.scenarios = allScenarios;
+    }
+};
