@@ -53,5 +53,5 @@ Scenario: a pancake can be fried out of an egg milk and flour
 
 Besides the plain text report, an HTML report can be generated. An example of such a report is the [JGiven's own report]({{site.baseurl}}/jgiven-report):
 <p>
-<a href="{{site.baseurl}}/jgiven-report"><img id="jgivenreport" alt="JGiven HTML report of JGiven" src="img/jgivenreport.png" /></a>
+<a href="{{site.baseurl}}/jgiven-report/html"><img id="jgivenreport" alt="JGiven HTML report of JGiven" src="img/jgivenreport.png" /></a>
 </p>
