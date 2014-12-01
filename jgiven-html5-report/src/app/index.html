@@ -64,7 +64,7 @@
                  <a class="toggle" ng-click="tags.expanded = !tags.expanded">Tags</a>
                  <ul ng-if="tags.expanded">
                    <li class="subheading" ng-repeat="tagType in tags">
-                     <a ng-click="tagType.expanded = !tagType.expanded">
+                     <a ng-if="tagType.tags.length > 1" ng-click="tagType.expanded = !tagType.expanded">
                      <i class="fa fa-caret-right toggle {{tagType.expanded ? 'fa-rotate-90' : ''}}"></i>
                      &nbsp;{{tagType.type}}
                      </a>
@@ -73,7 +73,9 @@
                          <a href="#tag{{'/' + tagType.type + '/' }}{{tag.value | encodeUri}}">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a>
                        </li>
                      </ul>
-                     <a ng-if="tagType.tags.length === 1" href="#" ng-click="updateCurrentPageToTag(tagType.tags[0])">{{tagType.tags[0].name}}<span ng-if="tagType.tags[0].value">-{{tagType.tags[0].value}}</span></a>
+                     <a ng-if="tagType.tags.length === 1" href="#tag{{'/' + tagType.type}}" ng-click="updateCurrentPageToTag(tagType.tags[0])">
+                       <i class="fa fa-caret-right" style="visibility: hidden"></i>
+                       &nbsp;{{tagType.tags[0].name}}<span ng-if="tagType.tags[0].value">-{{tagType.tags[0].value}}</span></a>
                    </li>
                  </ul>
                </li>
@@ -194,7 +196,7 @@
             </div>
             <div class="small-4 column tag-column">
               <span  ng-repeat="tag in scenario.tags">
-                <a href="#tag/{{tag.name + '/' + tag.value}}" ><span class="radius label">{{(tag.prependType ? tag.name + '-' : '') + tag.value}}</span></a>
+                <a href="#tag/{{tag.name + '/' + tag.value}}" ><span class="radius label">{{tagToString(tag)}}</span></a>
               </span>
             </div>
           </div>
