@@ -120,7 +120,7 @@
 
         <div class="scenario {{$last ? 'last' : ''}}" ng-repeat="scenario in currentPage.scenarios">
           <div class="row">
-            <div class="small-8 column">
+            <div class="small-12 large-8 xlarge-6 column">
               <a href="#scenario/{{scenario.className}}/{{scenario.testMethodName}}"><i class="fa fa-link scenario-link-icon" title="Direct link to this scenario"></i></a>
               <h4 class="toggle" ng-click="toggleScenario(scenario)">{{scenario.description.capitalize()}}
               <span ng-if="scenario.scenarioCases.length > 1" class="secondary radius label case-count">{{scenario.scenarioCases.length}}</span>
@@ -194,7 +194,7 @@
                 <div class="class-name"><a href="#class/{{scenario.className}}">{{scenario.className}}</a></div>
               </div>
             </div>
-            <div class="small-4 column tag-column">
+            <div class="small-12 large-4 xlarge-6 column tag-column">
               <span  ng-repeat="tag in scenario.tags">
                 <a href="#tag/{{tag.name + '/' + tag.value}}" ><span class="radius label">{{tagToString(tag)}}</span></a>
               </span>

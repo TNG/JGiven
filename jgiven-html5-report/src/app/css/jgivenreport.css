@@ -235,12 +235,6 @@ input.search {
     border-bottom: none;
 }
 
-/*
-.scenario:hover {
-    background-color: #eee;
-}
-*/
-
 .scenario-content {
     background-color: white;
 }
@@ -249,7 +243,7 @@ input.search {
     position: relative;
     padding-top: 1rem;
     padding-left: 3rem;
-    margin-left: 350px;
+    margin-left: 25rem;
     margin-top: 76px;
     margin-right: 15px;
     padding-bottom: 50px; /* space for footer */
@@ -275,7 +269,7 @@ body, .footer-bottom {
     top: 76px;
     bottom: 0;
     overflow: auto;
-    width:350px;
+    width: 25rem;
 }
 
 .side-nav li a:not(.button){
@@ -299,9 +293,14 @@ body, .footer-bottom {
     margin-left: 0;
 }
 
-li.heading, li.subheading {
+li.heading {
     margin-top: 0.5rem;
 }
+
+li.subheading {
+    margin-top: 0.2rem;
+}
+
 
 li.heading ul {
     text-transform: none;
@@ -348,6 +347,29 @@ li.subheading > ul {
     left: 40%;
     top: 40%;
     color: gray;
+}
+
+
+@media only screen and (max-width: 64em) {
+    .scenario-container {
+        margin-left: 0;
+        padding-left: 2rem;
+        border-left: none;
+    }
+
+    .sidebar {
+        visibility: hidden;
+    }
+}
+
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+    .scenario-container {  margin-left: 15rem;  }
+    .sidebar { width: 15rem; }
+}
+
+@media only screen and (min-width: 90.063em) and (max-width: 120em) {
+    .scenario-container {  margin-left: 21rem;  }
+    .sidebar { width: 21rem; }
 }
 
 /* avoid showing angularjs expressions on page loading */
