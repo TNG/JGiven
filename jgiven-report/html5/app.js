@@ -340,12 +340,31 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       var secs = nanos / 1000000000;
       var res = parseFloat(secs).toFixed(3);
       return res;
-  }
+  };
+
+  $scope.tagToString = function tagToString(tag) {
+      var res = '';
+
+      if (!tag.value || tag.prependType) {
+          res = tag.name;
+      }
+
+      if (tag.value) {
+          if (res) {
+              res += '-';
+          }
+          res += tag.value;
+      }
+
+      return res;
+  };
+
 });
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
 
 function splitClassName( fullQualifiedClassName ) {
     var index = fullQualifiedClassName.lastIndexOf('.');
