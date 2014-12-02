@@ -74,37 +74,37 @@
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:data tables are generated correctly in text reports")'><i class='icon-ok'></i><span> Data tables are generated correctly in text reports</span> <span class='duration'>(5.78 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:data tables are generated correctly in text reports")'><i class='icon-ok'></i><span> Data tables are generated correctly in text reports</span> <span class='duration'>(11.97 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a></div><div class='tag tag-Feature'><a href='Feature-Data_Tables.html'>Data Tables</a></div><div class='tag tag-Issue'><a href='Issue-_34.html'>Issue-#34</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:data tables are generated correctly in text reports'>
 <div class='scenario-content'>
 <div class='case passedCase'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a report model with one scenario</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the scenario has</span> <span class='argument'>3</span> <span class='word'>default cases</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>43</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg11</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>4</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg21</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>fails with error message</span> <span class='argument'>Some Error</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>3</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>1234567</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>3</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg31</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.12 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the plain text report is generated</span> <span class='duration'>(1.04 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the report contains text</span> <span class='argument'>&lt;aArg1&gt;</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report contains text</span> <span class='argument'>&lt;aArg2&gt;</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report contains text</span> <span class='argument multiline'><br />    | # |   aArg1 | aArg2 | Status             |<br />    +---+---------+-------+--------------------+<br />    | 1 |      43 | arg11 | Success            |<br />    | 2 |       4 | arg21 | Failed: Some Error |<br />    | 3 | 1234567 | arg31 | Success            |<br /></span> <span class='duration'>(0.15 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a report model with one scenario</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the scenario has</span> <span class='argument'>3</span> <span class='word'>default cases</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>43</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg11</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>4</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg21</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>fails with error message</span> <span class='argument'>Some Error</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>3</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>1234567</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>3</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg31</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.61 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the plain text report is generated</span> <span class='duration'>(2.07 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the report contains text</span> <span class='argument'>&lt;aArg1&gt;</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report contains text</span> <span class='argument'>&lt;aArg2&gt;</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report contains text</span> <span class='argument multiline'><br />    | # |   aArg1 | aArg2 | Status             |<br />    +---+---------+-------+--------------------+<br />    | 1 |      43 | arg11 | Success            |<br />    | 2 |       4 | arg21 | Failed: Some Error |<br />    | 3 | 1234567 | arg31 | Success            |<br /></span> <span class='duration'>(0.30 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html'>com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>1 scenarios, 1 cases, 13 steps, 0 failed cases  <span class='duration'>(5.78 ms)</span></div>
+<div class='statistics'>1 scenarios, 1 cases, 13 steps, 0 failed cases  <span class='duration'>(11.97 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Nov 30, 2014 4:56:40 PM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 2, 2014 10:37:07 PM</div>
 <script src='report.js'></script>
 </body></html>
