@@ -349,16 +349,26 @@ li.subheading > ul {
     color: gray;
 }
 
+.off-canvas-wrap, .inner-wrap {
+    height: 100%;
+}
 
 @media only screen and (max-width: 64em) {
     .scenario-container {
         margin-left: 0;
         padding-left: 2rem;
         border-left: none;
+        margin-top: 0;
     }
 
-    .sidebar {
-        visibility: hidden;
+    .sidebar, .header-fixed, .page-icon-bar, .scenario-link-icon {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 64.063em) {
+    .tab-bar {
+        display:none;
     }
 }
 
