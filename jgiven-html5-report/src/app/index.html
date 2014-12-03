@@ -196,7 +196,8 @@
                             <td>
                               <span aria-haspopup="{{ step.extendedDescription ? 'true' : 'false'"
                                     class="{{ step.extendedDescription ? 'has-tip' : '' }}"
-                                    tooltip-html-unsafe="{{ step.extendedDescription }}">
+                                    tooltip-html-unsafe="{{ step.extendedDescription }}"
+                                    tooltip-popup-delay="250">
                                 <span class="word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{word.isDifferent ? 'diff' : ''}}" ng-repeat-start="word in step.words.slice(1)">
                                   <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
                                     <strong>&lt;{{word.argumentInfo.parameterName}}&gt;</strong>
