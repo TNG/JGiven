@@ -1,4 +1,4 @@
-var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize','mm.foundation']);
+var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize','mm.foundation','mm.foundation.offcanvas']);
 
 
 jgivenReportApp.filter('encodeUri', function ($window) {
@@ -22,7 +22,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.$on('$locationChangeSuccess', function(event) {
       var part = $location.path().split('/');
-      console.log("Parts:" +part);
+      console.log("Location change: " +part);
       if (part[1] === 'tag') {
          $scope.updateCurrentPageToTag( $scope.tagScenarioMap[ getTagKey({
              name: part[2],
@@ -46,6 +46,10 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $scope.currentPage.print = search.print;
 
   });
+
+  $scope.currentPath = function() {
+      return $location.path();
+  }
 
   $scope.updateCurrentPageToClassName = function(className) {
       $scope.updateCurrentPageToTestCase( $scope.classNameScenarioMap[className] );
