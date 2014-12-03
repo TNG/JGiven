@@ -247,9 +247,9 @@ input.search {
     margin-top: 76px;
     margin-right: 15px;
     padding-bottom: 50px; /* space for footer */
-    min-height: 100%;
     background-color: white;
     border-left: 1px solid #ddd;
+    min-height: 100%;
 }
 
 .scenario-container.embed {
@@ -351,6 +351,11 @@ li.subheading > ul {
 
 .off-canvas-wrap, .inner-wrap {
     min-height: 100%;
+    height: 100%;
+}
+
+.off-canvas-wrap {
+   overflow: auto;
 }
 
 @media only screen and (max-width: 64em) {
