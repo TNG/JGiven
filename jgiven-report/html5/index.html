@@ -56,7 +56,7 @@
 
         <nav class="tab-bar">
           <section class="left-small">
-            <a class="left-off-canvas-toggle menu-icon" href="#"><span></span></a>
+            <a class="left-off-canvas-toggle menu-icon" href="#{{currentPath()}}"><span></span></a>
           </section>
 
           <div class="right tab-bar-section">
@@ -76,9 +76,9 @@
 
             <li><label>Tags</label></li>
             <li ng-repeat="tagType in tags" class="{{tagType.tags.length > 1 ? 'has-submenu' : ''}}">
-              <a ng-if="tagType.tags.length > 1">{{tagType.type}}</a>
+              <a ng-if="tagType.tags.length > 1" href="#{{currentPath()}}">{{tagType.type}}</a>
               <ul ng-if="tagType.tags.length > 1" class="left-submenu">
-                <li class="back"><a href="#">Back</a></li>
+                <li class="back"><a href="#{{currentPath()}}">Back</a></li>
                 <li><label>Test</label></li>
                 <li ng-repeat="tag in tagType.tags">
                   <a href="#tag{{'/' + tagType.type + '/' }}{{tag.value | encodeUri}}">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a>
