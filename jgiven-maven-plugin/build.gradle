@@ -3,6 +3,7 @@ description = 'JGiven Maven Mojo'
 dependencies {
     compile group: 'org.apache.maven', name: 'maven-plugin-api', version:'2.0'
     compile project(':jgiven-core')
+    runtime project(':jgiven-html5-report')
 }
 
 task generatePom(type: Copy) {
@@ -32,4 +33,16 @@ task copyMavenPlugin(type: Copy, dependsOn: generateMavenPlugin) {
     into 'build/classes/main'
 }
 
-jar.dependsOn copyMavenPlugin
+task copyPom(type: Copy, dependsOn: generatePom) {
+    from('build/maven') {
+       include '**/pom.*'
+       filter { line ->
+           line.replaceAll("<version>.*</version>","")
+       }
+    }
+    into 'build/classes/main/META-INF/maven/com.tngtech.jgiven/jgiven-maven-plugin'
+    includeEmptyDirs = false
+
+}
+
+jar.dependsOn copyMavenPlugin, copyPom

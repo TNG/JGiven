@@ -31,6 +31,12 @@ public class JGivenReportMojo extends AbstractMojo {
      */
     private File customCssFile;
 
+    /**
+     * The format of the generated report. Can be one of html, html5, and text
+     * @parameter expression="html"
+     */
+    private String format;
+
     @Override
     public void execute() throws MojoExecutionException {
         try {
@@ -46,7 +52,7 @@ public class JGivenReportMojo extends AbstractMojo {
             ReportGenerator generator = new ReportGenerator();
             generator.setToDir( outputDirectory );
             generator.setSourceDir( sourceDirectory );
-            generator.setFormat( ReportGenerator.Format.HTML );
+            generator.setFormat( ReportGenerator.Format.fromStringOrNull( format ) );
             generator.setCustomCssFile( customCssFile );
             generator.generate();
             getLog().info( "-------------------------------------------------------------------" );

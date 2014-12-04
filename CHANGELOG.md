@@ -11,6 +11,9 @@ So far JGiven only reported public step methods. This behavior can lead to confu
 #### How to migrate
 If you have relied on the fact that non-public methods actually do not appear in the report, you can easily port your existing code by adding the `@Hidden` annotation to the corresponding method to explicitly state that the method should be hidden in the report.
 
+### Removed deprecated `Schritte` class (only used for German scenarios)
+Use `Stufe` class instead
+
 # v0.5.4
 
 tbd
