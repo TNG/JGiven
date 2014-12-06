@@ -9,7 +9,7 @@ A JGiven scenario consists of multiple stages. Typically there is a stage for ea
 Stage classes are POJOs that follow the fluent-interface pattern. This means that all methods return the this-reference. In order to work together with inheritance, a stage class should have a type parameter SELF that extends the stage class itself. JGiven also provides the helper class Stage that provides a self() method to return the SELF type parameter. This is best understood by an example:
 
 {% highlight java %}
-public class GivenIngredients<SELF extends GivenIngredients> extends Stage<SELF> {
+public class GivenIngredients<SELF extends GivenIngredients<?>> extends Stage<SELF> {
    List<String> ingredients = new ArrayList<String>();
 
    public SELF an_egg() {
@@ -25,7 +25,7 @@ Stages share state by using injection. This works by annotating the fields with 
 For example, to be able to access the value of the ingredients field of the GivenIngredients stage in the WhenCook stage one has to annotate that field accordingly:
 
 {% highlight java %}
-public class GivenIngredients<SELF extends GivenIngredients> extends Stage<SELF> {
+public class GivenIngredients<SELF extends GivenIngredients<?>> extends Stage<SELF> {
    @ScenarioState
    List<String> ingredients = new ArrayList<String>();
    ...
@@ -33,7 +33,7 @@ public class GivenIngredients<SELF extends GivenIngredients> extends Stage<SELF>
 {% endhighlight %}
 
 {% highlight java %}
-public class WhenCook<SELF extends WhenCook> extends Stage<SELF> {
+public class WhenCook<SELF extends WhenCook<?>> extends Stage<SELF> {
    @ExpectedScenarioState
    List<String> ingredients = new ArrayList<String>();
 
