@@ -358,6 +358,10 @@ li.subheading > ul {
    overflow: auto;
 }
 
+.page-statistics {
+    color: gray;
+}
+
 @media only screen and (max-width: 64em) {
     .scenario-container {
         margin-left: 0;

@@ -166,6 +166,11 @@
                 <a ng-click="expandAll()" title="Expand All"><i class="fa fa-plus-square-o expand-icon toggle"></i></a>
                 <a ng-click="printCurrentPage()" title="Print Page"><i class="fa fa-print print-icon toggle"></i></a>
               </div>
+
+              <div ng-if="{{currentPage.statistics}}" class="page-statistics">{{currentPage.statistics.count}} scenario{{currentPage.statistics.count > 1 ? 's' :''}},
+              of which {{currentPage.statistics.success}} were successful, {{currentPage.statistics.failed}} failed,
+                and {{currentPage.statistics.pending}} are pending. Total time: {{nanosToSeconds(currentPage.statistics.totalNanos)}}s
+              </div>
             </div>
 
 

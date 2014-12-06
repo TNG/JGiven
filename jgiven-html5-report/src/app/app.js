@@ -61,7 +61,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           scenarios: sortByDescription(testCase.scenarios),
           subtitle: className.packageName,
           title: className.className,
-          breadcrumbs: className.packageName.split(".")
+          breadcrumbs: className.packageName.split("."),
+          statistics: $scope.gatherStatistics( this.scenarios )
       };
   };
 
@@ -73,7 +74,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           title: tag.value ? tag.value : tag.name,
           subtitle: tag.value ? tag.name : undefined,
           description: tag.description,
-          breadcrumbs: ['TAGS',tag.name,tag.value]
+          breadcrumbs: ['TAGS',tag.name,tag.value],
+          statistics: $scope.gatherStatistics( this.scenarios )
       };
   };
 
@@ -84,7 +86,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           }),
           title: methodName,
           subtitle: className,
-          breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName])
+          breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName]),
+          statistics: $scope.gatherStatistics( this.scenarios )
       }
   }
 
@@ -99,6 +102,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $timeout(function() {
           $scope.currentPage.scenarios = getAllScenarios();
           $scope.currentPage.loading = false;
+          $scope.currentPage.statistics = $scope.gatherStatistics( $scope.currentPage.scenarios );
       }, 0);
   };
 
@@ -116,7 +120,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           scenarios: failedScenarios,
           title: "Failed Scenarios",
           description: description,
-          breadcrumbs: ['FAILED SCENARIOS']
+          breadcrumbs: ['FAILED SCENARIOS'],
+          statistics: $scope.gatherStatistics( this.scenarios )
       };
   };
 
@@ -148,7 +153,30 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $timeout( function() {
           $scope.currentPage.scenarios = $scope.findScenarios(searchString);
           $scope.currentPage.loading = false;
+          $scope.currentPage.statistics = $scope.gatherStatistics($scope.currentPage.scenarios);
       },1);
+  }
+
+  $scope.gatherStatistics = function gatherStatistics( scenarios ) {
+      var statistics = {
+          count: scenarios.length,
+          failed: 0,
+          pending: 0,
+          success: 0,
+          totalNanos: 0
+      };
+
+      _.forEach( scenarios, function(x) {
+          statistics.totalNanos += x.durationInNanos;
+          if (x.executionStatus === 'SUCCESS') {
+              statistics.success++;
+          } else if (x.executionStatus === 'FAILED') {
+              statistics.failed++;
+          } else {
+              statistics.pending++;
+          }
+      });
+      return statistics;
   }
 
   $scope.findScenarios = function findScenarios( searchString ) {
