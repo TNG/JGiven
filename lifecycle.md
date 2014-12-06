@@ -108,7 +108,7 @@ public class MyStage {
 
    protected CustomerBuilder customerBuilder;
 
-   @ProviderScenarioState
+   @ProvidedScenarioState
    protected Customer customer;
 
    public MyStage a_customer() {
