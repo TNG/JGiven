@@ -58,4 +58,4 @@ public void coffee_is_not_served( int coffees, int dollars) {
 }
 {% endhighlight %}
 
-Back: [Stages and Stage Injection]({{site.baseurl}}/docs/stages/)
+Back: [Life-Cycle Methods]({{site.baseurl}}/docs/lifecycle/)
