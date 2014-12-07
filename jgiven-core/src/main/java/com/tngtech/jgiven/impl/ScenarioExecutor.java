@@ -293,14 +293,16 @@ public class ScenarioExecutor {
         if( state == FINISHED ) {
             return;
         }
-        if( state != STARTED ) {
-            throw new IllegalStateException( "The Scenario must be in state STARTED in order to finish it, but it is in state " + state );
-        }
+
+        State previousState = state;
+
         state = FINISHED;
         methodInterceptor.enableMethodHandling( false );
 
         try {
-            callFinishLifeCycleMethods();
+            if( previousState == STARTED ) {
+                callFinishLifeCycleMethods();
+            }
         } finally {
             listener.scenarioFinished();
         }

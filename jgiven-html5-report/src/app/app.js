@@ -1,4 +1,4 @@
-var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize','mm.foundation','mm.foundation.offcanvas']);
+var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize','mm.foundation','mm.foundation.offcanvas','chart.js']);
 
 
 jgivenReportApp.filter('encodeUri', function ($window) {
@@ -8,17 +8,34 @@ jgivenReportApp.filter('encodeUri', function ($window) {
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location) {
   $scope.scenarios = [];
   $scope.classNameScenarioMap = {};
-  $scope.classNames = getClassNames();
+  $scope.classNames;
   $scope.tagScenarioMap = {}; // lazy calculated by getTags()
-  $scope.allTags = groupTagsByType(getTags());
-  $scope.tags = $scope.allTags;
-  $scope.currentPage = {
-      title: "Welcome",
-      breadcrumbs: [''],
-      scenarios: []
-  };
+  $scope.allTags;
+  $scope.tags;
+  $scope.currentPage;
   $scope.jgivenReport = jgivenReport;
   $scope.nav = {};
+
+  $scope.init = function() {
+      $scope.classNames = getClassNames();
+      $scope.allTags = groupTagsByType(getTags());
+      $scope.tags = $scope.allTags;
+
+      $scope.showSummaryPage();
+  };
+
+  $scope.showSummaryPage = function() {
+      var scenarios = getAllScenarios();
+
+      $scope.currentPage = {
+          title: "Welcome",
+          breadcrumbs: [''],
+          scenarios: [],
+          statistics: $scope.gatherStatistics(scenarios),
+          summary: true
+      };
+
+  }
 
   $scope.$on('$locationChangeSuccess', function(event) {
       var part = $location.path().split('/');
@@ -57,37 +74,40 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.updateCurrentPageToTestCase = function (testCase) {
       var className = splitClassName(testCase.className);
+      var scenarios = sortByDescription(testCase.scenarios);
       $scope.currentPage = {
-          scenarios: sortByDescription(testCase.scenarios),
+          scenarios: scenarios,
           subtitle: className.packageName,
           title: className.className,
           breadcrumbs: className.packageName.split("."),
-          statistics: $scope.gatherStatistics( this.scenarios )
+          statistics: $scope.gatherStatistics( scenarios )
       };
   };
 
   $scope.updateCurrentPageToTag = function(tag) {
       var key = getTagKey(tag);
+      var scenarios = sortByDescription( $scope.tagScenarioMap[key].scenarios );
       console.log("Update current page to tag "+key);
       $scope.currentPage = {
-          scenarios: sortByDescription( $scope.tagScenarioMap[key].scenarios ),
+          scenarios: scenarios,
           title: tag.value ? tag.value : tag.name,
           subtitle: tag.value ? tag.name : undefined,
           description: tag.description,
           breadcrumbs: ['TAGS',tag.name,tag.value],
-          statistics: $scope.gatherStatistics( this.scenarios )
+          statistics: $scope.gatherStatistics( scenarios )
       };
   };
 
   $scope.showScenario = function( className, methodName ) {
+      var scenarios = sortByDescription(_.filter($scope.classNameScenarioMap[className].scenarios, function(x) {
+          return x.testMethodName === methodName;
+      }));
       $scope.currentPage = {
-          scenarios: _.filter($scope.classNameScenarioMap[className].scenarios, function(x) {
-              return x.testMethodName === methodName;
-          }),
+          scenarios: scenarios,
           title: methodName,
           subtitle: className,
           breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName]),
-          statistics: $scope.gatherStatistics( this.scenarios )
+          statistics: $scope.gatherStatistics( scenarios )
       }
   }
 
@@ -121,7 +141,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           title: "Failed Scenarios",
           description: description,
           breadcrumbs: ['FAILED SCENARIOS'],
-          statistics: $scope.gatherStatistics( this.scenarios )
+          statistics: $scope.gatherStatistics( failedScenarios )
       };
   };
 
@@ -176,6 +196,9 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
               statistics.pending++;
           }
       });
+
+      statistics.chartData = [statistics.success, statistics.failed, statistics.pending];
+
       return statistics;
   }
 
@@ -324,7 +347,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           x.expanded = false;
       });
   }
-00
 
   function getClassNames() {
       var res = new Array();
@@ -391,7 +413,29 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       return res;
   };
 
+  $scope.init();
+
 });
+
+jgivenReportApp.controller('SummaryCtrl', function ($scope) {
+    var red = Chart.defaults.global.colours[2];
+    var blue = Chart.defaults.global.colours[0];
+    var green = {
+        fillColor: 'rgba(0,150,0,0.5)',
+        strokeColor: 'rgba(0,150,0,0.7)'
+    };
+    var gray = Chart.defaults.global.colours[6];
+
+    $scope.labels = ['Successful', 'Failed', 'Pending'];
+    $scope.colours = [green, red, gray];
+    $scope.options = {
+        percentageInnerCutout : 60,
+        animationEasing : "easeInOutCubic",
+        animationSteps : 50
+    };
+
+});
+
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);

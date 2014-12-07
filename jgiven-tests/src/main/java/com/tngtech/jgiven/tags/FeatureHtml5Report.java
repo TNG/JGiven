@@ -5,11 +5,11 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.tngtech.jgiven.annotation.IsTag;
 
-@IsTag( type = "Feature", value = "Static HTML Report",
-    description = "In order to show JGiven scenarios to non-developers<br>"
+@IsTag( type = "Feature", value = "HTML5 Report",
+    description = "In order to have an interactive JGiven report for non-developers<br>"
             + "As a developer,<br>"
-            + "I want that JGiven generates static HTML reports" )
+            + "I want that JGiven generates HTML5 reports" )
 @Retention( RetentionPolicy.RUNTIME )
-public @interface FeatureHtmlReport {
+public @interface FeatureHtml5Report {
 
 }

@@ -26,9 +26,12 @@ public class Html5ReportGenerator implements ReportModelFileHandler, FileGenerat
     private static final Logger log = LoggerFactory.getLogger( Html5ReportGenerator.class );
 
     private Appendable writer;
+    private MetaData metaData = new MetaData();
 
     @Override
     public void handleReportModel( ReportModel model, File file ) {
+        model.calculateExecutionStatus();
+
         new Gson().toJson( model, writer );
         try {
             writer.append( "," );

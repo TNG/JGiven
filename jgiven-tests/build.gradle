@@ -10,6 +10,8 @@ dependencies {
 
     testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
     testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.43.0'
+    testCompile group: 'com.github.detro.ghostdriver', name: 'phantomjsdriver', version: '1.1.0'
 }
 
 test.finalizedBy(jgivenReport)

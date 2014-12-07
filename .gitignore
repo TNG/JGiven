@@ -11,3 +11,4 @@ jgiven-reports
 artifacts
 .*.swp
 /test-output
+phantomjsdriver.log

@@ -23,6 +23,7 @@ task copyCssFiles(type: Copy) {
     include '**/normalize.css'
     include '**/foundation.css'
     include '**/font-awesome.min.css'
+    include '**/angular-chart.css'
     into appDir + 'css'
     includeEmptyDirs = false
     eachFile { details ->
@@ -37,9 +38,11 @@ task copyJsFiles(type: Copy) {
     include '**/placeholder.js'
     include '**/fastclick.js'
     include '**/jquery.min.js'
+    include '**/Chart.min.js'
     include '**/foundation.min.js'
     include '**/angular.min.js'
     include '**/angular-sanitize.min.js'
+    include '**/angular-chart.js'
     include '**/mm-foundation-tpls.min.js'
     into appDir + 'js'
     includeEmptyDirs = false

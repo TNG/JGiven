@@ -31,7 +31,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     protected ReportGenerator htmlReportGenerator;
 
     @BeforeStage
-    protected void setupTargetReportDir() throws IOException {
+    public void setupTargetReportDir() throws IOException {
         targetReportDir = temporaryFolderRule.newFolder( "targetReportDir" );
     }
 
@@ -61,5 +61,9 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
         htmlReportGenerator.setFormat( format );
         htmlReportGenerator.generate();
         return self();
+    }
+
+    public SELF the_HTML5_report_has_been_generated() throws Exception {
+        return the_report_generator_is_executed_with_format( Format.HTML5 );
     }
 }
