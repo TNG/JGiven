@@ -14,14 +14,12 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.annotation.CasesAsTable;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
-import com.tngtech.jgiven.annotation.ScenarioDescription;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
 import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.config.DefaultConfiguration;
@@ -263,17 +261,11 @@ public class ReportModelBuilder implements ScenarioListener {
     private void readAnnotations( Method method ) {
         String scenarioDescription = method.getName();
 
-        if( method.isAnnotationPresent( ScenarioDescription.class ) ) {
-            scenarioDescription = method.getAnnotation( ScenarioDescription.class ).value();
-        } else if( method.isAnnotationPresent( Description.class ) ) {
+        if( method.isAnnotationPresent( Description.class ) ) {
             scenarioDescription = method.getAnnotation( Description.class ).value();
         }
 
         scenarioStarted( scenarioDescription );
-
-        if( method.isAnnotationPresent( CasesAsTable.class ) ) {
-            currentScenarioModel.setCasesAsTable( true );
-        }
 
         if( method.isAnnotationPresent( NotImplementedYet.class ) ) {
             currentScenarioModel.notImplementedYet = true;

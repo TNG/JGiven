@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.junit;
 
-import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.NAME;
-import static org.assertj.core.api.Assertions.assertThat;
+import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
@@ -13,7 +13,6 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
-import com.tngtech.jgiven.annotation.CasesAsTable;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
@@ -168,19 +167,6 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         public void after() {
             throw new IllegalStateException( "AfterRule" );
         }
-    }
-
-    @Test
-    @CasesAsTable
-    public void CasesAsTable_annotation_is_evaluated() {
-        given().something();
-        assertThat( getScenario().getModel().getLastScenarioModel().isCasesAsTable() ).isTrue();
-    }
-
-    @Test
-    public void CasesAsTable_annotation_is_false_by_default() {
-        given().something();
-        assertThat( getScenario().getModel().getLastScenarioModel().isCasesAsTable() ).isFalse();
     }
 
     @SuppressWarnings( "serial" )

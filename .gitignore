@@ -10,3 +10,4 @@ jgiven-reports
 /.gradle
 artifacts
 .*.swp
+/test-output

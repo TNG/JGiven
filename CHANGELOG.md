@@ -14,6 +14,12 @@ If you have relied on the fact that non-public methods actually do not appear in
 ### Removed deprecated `Schritte` class (only used for German scenarios)
 Use `Stufe` class instead
 
+### Removed `@CasesAsTable` annotation
+As data tables are the default this annotation had no effect anymore, you can safely delete all usages.
+
+### Removed `@ScenarioDescription` annotation
+The annotation is now just called `@Description`.
+
 # v0.5.4
 
 tbd

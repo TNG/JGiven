@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.junit;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,8 +15,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
-import com.tngtech.jgiven.annotation.ScenarioDescription;
-import com.tngtech.jgiven.junit.StepsAreReported.TestSteps;
+import com.tngtech.jgiven.junit.StepsAreReportedTest.TestSteps;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
@@ -24,7 +23,7 @@ import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.Word;
 
 @RunWith( DataProviderRunner.class )
-public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
+public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
 
     @Test
     public void given_steps_are_reported() {
@@ -34,7 +33,7 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
         getScenario().finished();
         ScenarioModel model = getScenario().getModel().getLastScenarioModel();
 
-        assertThat( model.className ).isEqualTo( StepsAreReported.class.getName() );
+        assertThat( model.className ).isEqualTo( StepsAreReportedTest.class.getName() );
         assertThat( model.testMethodName ).isEqualTo( "given_steps_are_reported" );
         assertThat( model.description ).isEqualTo( "given steps are reported" );
         assertThat( model.getExplicitParameters() ).isEmpty();
@@ -112,14 +111,6 @@ public class StepsAreReported extends ScenarioTest<TestSteps, TestSteps, TestSte
 
         assertThat( model.getTags().get( 0 ).getName() ).isEqualTo( "TestTag" );
         assertThat( model.getTags().get( 0 ).getValues() ).containsExactly( "foo", "bar", "baz" );
-    }
-
-    @Test
-    @ScenarioDescription( "Some other description" )
-    public void ScenarioDescription_annotation_is_evaluated() {
-        given().some_test_step();
-        getScenario().finished();
-        assertThat( getScenario().getModel().getLastScenarioModel().description ).isEqualTo( "Some other description" );
     }
 
     public static class TestSteps extends Stage<TestSteps> {
