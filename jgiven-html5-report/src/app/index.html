@@ -198,12 +198,12 @@
                   </h4>
                   <div ng-if="scenario.expanded || currentPage.print" id="scenario-{{$index}}" class="scenario-content">
                     <div ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
-                      <h5 ng-if="scenario.scenarioCases.length > 1 && !scenario.casesAsTable">Case {{case.caseNr}}:
+                      <h5 class="toggle" ng-click="case.expanded = !case.expanded" ng-if="scenario.scenarioCases.length > 1 && !scenario.casesAsTable">Case {{case.caseNr}}:
                       <span ng-repeat="param in scenario.explicitParameters">
                         {{param}} = {{case.explicitArguments[$index]}}<span ng-if="$index != scenario.explicitParameters.length - 1">, </span>
                       </span>
                       </h5>
-                      <div class="steps">
+                      <div ng-if="scenario.scenarioCases.length === 1 || scenario.casesAsTable || case.expanded" class="steps">
                         <table class="steps">
                           <tr ng-repeat="step in case.steps">
 
