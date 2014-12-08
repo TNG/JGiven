@@ -9,7 +9,6 @@ Uses the power of AngularJS, Foundation, and Font Awesome
 ## Currently missing features compared to the static HTML report (TODO)
 
 1. Overview Page
-1. Statistics Summary on each page
 
 ## Planned features that are not present in the static HTML report
 

@@ -431,7 +431,8 @@ jgivenReportApp.controller('SummaryCtrl', function ($scope) {
     $scope.options = {
         percentageInnerCutout : 60,
         animationEasing : "easeInOutCubic",
-        animationSteps : 50
+        animationSteps : 50,
+        segmentShowStroke: false
     };
 
 });
