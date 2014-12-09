@@ -193,6 +193,22 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     }
 
     @Test
+    public void After_methods_are_called_even_if_step_fails() {
+        given().someFailingStep();
+
+        try {
+            given().afterScenarioCalled = 0;
+            getScenario().finished();
+        } catch( IllegalStateException e ) {
+            assertThat( e.getMessage() ).isEqualTo( "failed step" );
+        }
+
+        assertThat( given().afterCalled ).isEqualTo( 1 );
+        assertThat( given().afterScenarioCalled ).isEqualTo( 1 );
+        assertThat( given().rule.afterCalled ).isEqualTo( 1 );
+    }
+
+    @Test
     @ConfiguredTag
     public void configured_tags_are_reported() {
         given().something();

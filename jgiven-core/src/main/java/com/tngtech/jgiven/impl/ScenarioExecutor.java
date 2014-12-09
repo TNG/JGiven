@@ -60,6 +60,12 @@ public class ScenarioExecutor {
     private boolean beforeStepsWereExecuted;
 
     /**
+     * Whether life cycle methods should be executed. 
+     * This is only false for scenarios that are annotated with @NotImplementedYet
+     */
+    private boolean executeLifeCycleMethods = true;
+
+    /**
      * Measures the stack depth of methods called on the step definition object.
      * Only the top-level method calls are used for reporting.
      */
@@ -199,10 +205,8 @@ public class ScenarioExecutor {
         if( stageState.afterStageCalled ) {
             return;
         }
-        methodInterceptor.enableMethodHandling( false );
         stageState.afterStageCalled = true;
         executeAnnotatedMethods( stage, AfterStage.class );
-        methodInterceptor.enableMethodHandling( true );
     }
 
     StageState getStageState( Object stage ) {
@@ -236,7 +240,12 @@ public class ScenarioExecutor {
     }
 
     private void executeAnnotatedMethods( Object stage, final Class<? extends Annotation> annotationClass ) throws Throwable {
+        if( !executeLifeCycleMethods ) {
+            return;
+        }
+
         log.debug( "Executing methods annotated with @{}", annotationClass.getName() );
+        boolean previousMethodExecution = methodInterceptor.enableMethodExecution( true );
         try {
             methodInterceptor.enableMethodHandling( false );
             ReflectionUtil.forEachMethod( stage, stage.getClass(), annotationClass, new MethodAction() {
@@ -248,10 +257,16 @@ public class ScenarioExecutor {
             methodInterceptor.enableMethodHandling( true );
         } catch( JGivenUserException e ) {
             throw e.getCause();
+        } finally {
+            methodInterceptor.enableMethodExecution( previousMethodExecution );
         }
     }
 
     private void invokeRuleMethod( Object rule, String methodName ) throws Throwable {
+        if( !executeLifeCycleMethods ) {
+            return;
+        }
+
         Optional<Method> optionalMethod = ReflectionUtil.findMethodTransitively( rule.getClass(), methodName );
         if( !optionalMethod.isPresent() ) {
             log.debug( "Class {} has no {} method, but was used as ScenarioRule!", rule.getClass(), methodName );
@@ -365,7 +380,7 @@ public class ScenarioExecutor {
                 @Override
                 public void act( Object object, Field field ) throws Exception {
                     Object steps = addStage( field.getType() );
-                    ReflectionUtil.setField( field, object, steps, ", annoted with @ScenarioStage" );
+                    ReflectionUtil.setField( field, object, steps, ", annotated with @ScenarioStage" );
                 }
             } );
     }
@@ -401,6 +416,7 @@ public class ScenarioExecutor {
                 failIfPass();
             } else if( !annotation.executeSteps() ) {
                 methodInterceptor.disableMethodExecution();
+                executeLifeCycleMethods = false;
             }
             suppressExceptions = true;
         }

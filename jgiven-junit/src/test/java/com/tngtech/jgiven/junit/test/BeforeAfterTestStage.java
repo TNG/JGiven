@@ -4,6 +4,7 @@ import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.ScenarioRule;
 
 public class BeforeAfterTestStage {
 
@@ -11,6 +12,9 @@ public class BeforeAfterTestStage {
     public int afterCalled;
     public static int beforeScenarioCalled;
     public static int afterScenarioCalled;
+
+    @ScenarioRule
+    public RuleForTesting rule = new RuleForTesting();
 
     @BeforeStage
     public void before() {
@@ -33,4 +37,22 @@ public class BeforeAfterTestStage {
     }
 
     public void something() {}
+
+    public void someFailingStep() {
+        throw new IllegalStateException( "failed step" );
+    }
+
+    public class RuleForTesting {
+        public int afterCalled;
+        public int beforeCalled;
+
+        public void before() {
+            this.beforeCalled++;
+        }
+
+        public void after() {
+            this.afterCalled++;
+        }
+    }
+
 }
