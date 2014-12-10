@@ -1,4 +1,4 @@
-var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize','mm.foundation','mm.foundation.offcanvas']);
+var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize','mm.foundation','mm.foundation.offcanvas','chart.js']);
 
 
 jgivenReportApp.filter('encodeUri', function ($window) {
@@ -8,22 +8,41 @@ jgivenReportApp.filter('encodeUri', function ($window) {
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location) {
   $scope.scenarios = [];
   $scope.classNameScenarioMap = {};
-  $scope.classNames = getClassNames();
+  $scope.classNames;
   $scope.tagScenarioMap = {}; // lazy calculated by getTags()
-  $scope.allTags = groupTagsByType(getTags());
-  $scope.tags = $scope.allTags;
-  $scope.currentPage = {
-      title: "Welcome",
-      breadcrumbs: [''],
-      scenarios: []
-  };
+  $scope.allTags;
+  $scope.tags;
+  $scope.currentPage;
   $scope.jgivenReport = jgivenReport;
   $scope.nav = {};
+
+  $scope.init = function() {
+      $scope.classNames = getClassNames();
+      $scope.allTags = groupTagsByType(getTags());
+      $scope.tags = $scope.allTags;
+
+      $scope.showSummaryPage();
+  };
+
+  $scope.showSummaryPage = function() {
+      var scenarios = getAllScenarios();
+
+      $scope.currentPage = {
+          title: "Welcome",
+          breadcrumbs: [''],
+          scenarios: [],
+          statistics: $scope.gatherStatistics(scenarios),
+          summary: true
+      };
+
+  }
 
   $scope.$on('$locationChangeSuccess', function(event) {
       var part = $location.path().split('/');
       console.log("Location change: " +part);
-      if (part[1] === 'tag') {
+      if (part[1] === '') {
+          $scope.showSummaryPage();
+      } else if (part[1] === 'tag') {
          $scope.updateCurrentPageToTag( $scope.tagScenarioMap[ getTagKey({
              name: part[2],
              value: part[3]
@@ -36,6 +55,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           $scope.showAllScenarios();
       } else if (part[1] === 'failed') {
           $scope.showFailedScenarios();
+      } else if (part[1] === 'pending') {
+          $scope.showPendingScenarios();
       } else if (part[1] === 'search') {
           $scope.search(part[2]);
       }
@@ -57,34 +78,40 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.updateCurrentPageToTestCase = function (testCase) {
       var className = splitClassName(testCase.className);
+      var scenarios = sortByDescription(testCase.scenarios);
       $scope.currentPage = {
-          scenarios: sortByDescription(testCase.scenarios),
+          scenarios: scenarios,
           subtitle: className.packageName,
           title: className.className,
-          breadcrumbs: className.packageName.split(".")
+          breadcrumbs: className.packageName.split("."),
+          statistics: $scope.gatherStatistics( scenarios )
       };
   };
 
   $scope.updateCurrentPageToTag = function(tag) {
       var key = getTagKey(tag);
+      var scenarios = sortByDescription( $scope.tagScenarioMap[key].scenarios );
       console.log("Update current page to tag "+key);
       $scope.currentPage = {
-          scenarios: sortByDescription( $scope.tagScenarioMap[key].scenarios ),
+          scenarios: scenarios,
           title: tag.value ? tag.value : tag.name,
           subtitle: tag.value ? tag.name : undefined,
           description: tag.description,
-          breadcrumbs: ['TAGS',tag.name,tag.value]
+          breadcrumbs: ['TAGS',tag.name,tag.value],
+          statistics: $scope.gatherStatistics( scenarios )
       };
   };
 
   $scope.showScenario = function( className, methodName ) {
+      var scenarios = sortByDescription(_.filter($scope.classNameScenarioMap[className].scenarios, function(x) {
+          return x.testMethodName === methodName;
+      }));
       $scope.currentPage = {
-          scenarios: _.filter($scope.classNameScenarioMap[className].scenarios, function(x) {
-              return x.testMethodName === methodName;
-          }),
+          scenarios: scenarios,
           title: methodName,
           subtitle: className,
-          breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName])
+          breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName]),
+          statistics: $scope.gatherStatistics( scenarios )
       }
   }
 
@@ -99,26 +126,43 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $timeout(function() {
           $scope.currentPage.scenarios = getAllScenarios();
           $scope.currentPage.loading = false;
+          $scope.currentPage.statistics = $scope.gatherStatistics( $scope.currentPage.scenarios );
       }, 0);
+  };
+
+  $scope.showPendingScenarios = function() {
+      var pendingScenarios = getPendingScenarios();
+      var description = getDescription( pendingScenarios.length, "pending");
+      $scope.currentPage = {
+          scenarios: pendingScenarios,
+          title: "Pending Scenarios",
+          description: description,
+          breadcrumbs: ['PENDING SCENARIOS'],
+          statistics: $scope.gatherStatistics( pendingScenarios )
+      };
   };
 
   $scope.showFailedScenarios = function() {
       var failedScenarios = getFailedScenarios();
-      var description;
-      if (failedScenarios.length === 0) {
-          description = "There are no failed scenarios. Keep rocking!";
-      } else if (failedScenarios.length === 1) {
-          description = "There is only 1 failed scenario. You nearly made it!";
-      } else {
-          description = "There are " + failedScenarios.length + " failed scenarios";
-      }
+      var description = getDescription( failedScenarios.length, "failed");
       $scope.currentPage = {
           scenarios: failedScenarios,
           title: "Failed Scenarios",
           description: description,
-          breadcrumbs: ['FAILED SCENARIOS']
+          breadcrumbs: ['FAILED SCENARIOS'],
+          statistics: $scope.gatherStatistics( failedScenarios )
       };
   };
+
+  function getDescription( count, status ) {
+      if (count === 0) {
+          return "There are no " + status +" scenarios. Keep rocking!";
+      } else if (count === 1) {
+          return "There is only 1 "+status+" scenario. You nearly made it!";
+      } else {
+          return "There are " + count + " " + status +" scenarios";
+      }
+  }
 
   $scope.toggleTagType = function(tagType) {
       tagType.collapsed = !tagType.collapsed;
@@ -148,7 +192,35 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $timeout( function() {
           $scope.currentPage.scenarios = $scope.findScenarios(searchString);
           $scope.currentPage.loading = false;
+          $scope.currentPage.statistics = $scope.gatherStatistics($scope.currentPage.scenarios);
       },1);
+  }
+
+  $scope.gatherStatistics = function gatherStatistics( scenarios ) {
+      var statistics = {
+          count: scenarios.length,
+          failed: 0,
+          pending: 0,
+          success: 0,
+          totalNanos: 0
+      };
+
+      _.forEach( scenarios, function(x) {
+          statistics.totalNanos += x.durationInNanos;
+          if (x.executionStatus === 'SUCCESS') {
+              statistics.success++;
+          } else if (x.executionStatus === 'FAILED') {
+              statistics.failed++;
+          } else {
+              statistics.pending++;
+          }
+      });
+
+      $timeout( function() {
+          statistics.chartData = [statistics.success, statistics.failed, statistics.pending];
+      }, 0);
+
+      return statistics;
   }
 
   $scope.findScenarios = function findScenarios( searchString ) {
@@ -283,10 +355,20 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       }), true);
   }
 
+  function getPendingScenarios() {
+      return getScenariosWhere( function(x) {
+          return x.executionStatus !== "FAILED" && x.executionStatus !== "SUCCESS";
+      });
+  }
+
   function getFailedScenarios() {
-      return sortByDescription(_.filter( getAllScenarios(), function(x) {
-          return x.executionStatus !== "SUCCESS";
-      }));
+      return getScenariosWhere( function(x) {
+          return x.executionStatus === "FAILED";
+      });
+  }
+
+  function getScenariosWhere( filter ) {
+      return sortByDescription(_.filter( getAllScenarios(), filter ));
   }
 
   function sortByDescription( scenarios ) {
@@ -296,7 +378,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           x.expanded = false;
       });
   }
-00
 
   function getClassNames() {
       var res = new Array();
@@ -363,7 +444,34 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       return res;
   };
 
+  $scope.init();
+
 });
+
+jgivenReportApp.controller('SummaryCtrl', function ($scope) {
+    var red = Chart.defaults.global.colours[2];
+    var blue = Chart.defaults.global.colours[0];
+    var green = {
+        fillColor: 'rgba(0,150,0,0.5)',
+        strokeColor: 'rgba(0,150,0,0.7)',
+        pointColor: "rgba(0,150,0,1)",
+        pointStrokeColor: "#fff",
+        pointHighlightFill: "#fff",
+        pointHighlightStroke: "rgba(0,150,0,0.8)"
+    };
+    var gray = Chart.defaults.global.colours[6];
+
+    $scope.labels = ['Successful', 'Failed', 'Pending'];
+    $scope.colours = [green, red, gray];
+    $scope.options = {
+        percentageInnerCutout : 60,
+        animationEasing : "easeInOutCubic",
+        animationSteps : 50,
+        segmentShowStroke: false
+    };
+
+});
+
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
