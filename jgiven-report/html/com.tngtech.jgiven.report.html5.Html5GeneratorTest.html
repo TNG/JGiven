@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
   <meta charset='utf-8'>
-  <title>Issue</title>
+  <title>com.tngtech.jgiven.report.html5.Html5GeneratorTest</title>
   <link href='style.css' rel='stylesheet'>
 </head>
 <body>
@@ -66,42 +66,53 @@
 <div id='header'>
 <div id='header-title'>
 <i id='show-menu-icon' class='icon-menu collapsed' onclick='showToc()'></i>
-<div class='packagename'></div>
-<h2>Issue</h2>
+<div class='packagename'>com.tngtech.jgiven.report.html5</div>
+<h2>Html5GeneratorTest</h2>
 </div> <!-- #header-title -->
-<div class='description'>Issue numbers correspond to Issues in GitHub</div>
 </div>
 <div id='content'>
 <input class='search-input' id='content-search-input' size='30' placeholder='enter regexp to search in scenarios' onkeydown='contentSearchChanged(event)'></input>
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:data tables are generated correctly in text reports")'><i class='icon-ok'></i><span> Data tables are generated correctly in text reports</span> <span class='duration'>(5.46 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a></div><div class='tag tag-Feature'><a href='Feature-Data_Tables.html'>Data Tables</a></div><div class='tag tag-Issue'><a href='Issue-_34.html'>Issue-#34</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest:data tables are generated correctly in text reports'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html5.Html5GeneratorTest:the statistics on the welcome page of the HTML5 report is correct")'><i class='icon-ok'></i><span> The statistics on the welcome page of the HTML5 report is correct</span> <span class='duration'>(279.42 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-HTML5_Report.html'>HTML5 Report</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html5.Html5GeneratorTest:the statistics on the welcome page of the HTML5 report is correct'>
 <div class='scenario-content'>
 <div class='case passedCase'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a report model with one scenario</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the scenario has</span> <span class='argument'>3</span> <span class='word'>default cases</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>43</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.02 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg11</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>4</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg21</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>fails with error message</span> <span class='argument'>Some Error</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>3</span> <span class='word'>has a when step</span> <span class='argument'>some arg step</span> <span class='word'>with argument</span> <span class='argument'>1234567</span> <span class='word'>and argument name</span> <span class='argument'>aArg1</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>3</span> <span class='word'>has a when step</span> <span class='argument'>another arg step</span> <span class='word'>with argument</span> <span class='argument'>arg31</span> <span class='word'>and argument name</span> <span class='argument'>aArg2</span> <span class='duration'>(0.25 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the plain text report is generated</span> <span class='duration'>(1.03 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the report contains text</span> <span class='argument'>&lt;aArg1&gt;</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report contains text</span> <span class='argument'>&lt;aArg2&gt;</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report contains text</span> <span class='argument multiline'><br />    | # |   aArg1 | aArg2 | Status             |<br />    +---+---------+-------+--------------------+<br />    | 1 |      43 | arg11 | Success            |<br />    | 2 |       4 | arg21 | Failed: Some Error |<br />    | 3 | 1234567 | arg31 | Success            |<br /></span> <span class='duration'>(0.13 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report has</span> <span class='argument'>3</span> <span class='word'>scenarios</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>of case</span> <span class='argument'>1</span> <span class='word'>has status</span> <span class='argument'>FAILED</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(2.03 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the HTML5 report has been generated</span> <span class='duration'>(24.05 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the index page is opened</span> <span class='duration'>(218.05 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the page statistics line contains text</span> <span class='argument'>3 scenarios, of which 2 were successful, 1 failed, and 0 are pending</span> <span class='duration'>(24.18 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html'>com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html5.Html5GeneratorTest.html'>com.tngtech.jgiven.report.html5.Html5GeneratorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>1 scenarios, 1 cases, 13 steps, 0 failed cases  <span class='duration'>(5.46 ms)</span></div>
+<div class='scenario'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html5.Html5GeneratorTest:the welcome page of the HTML5 report can be opened")'><i class='icon-ok'></i><span> The welcome page of the HTML5 report can be opened</span> <span class='duration'>(607.87 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-HTML5_Report.html'>HTML5 Report</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html5.Html5GeneratorTest:the welcome page of the HTML5 report can be opened'>
+<div class='scenario-content'>
+<div class='case passedCase'>
+<ul class='steps'>
+<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(3.92 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(14.71 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the HTML5 report has been generated</span> <span class='duration'>(45.60 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the index page is opened</span> <span class='duration'>(254.95 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the page title is</span> <span class='argument'>Welcome</span> <span class='duration'>(97.51 ms)</span></li>
+</ul>
+</div><!-- case -->
+</div> <!-- scenario-content -->
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html5.Html5GeneratorTest.html'>com.tngtech.jgiven.report.html5.Html5GeneratorTest</a></div>
+</div> <!-- scenario-body --> 
+</div>
+<div class='statistics'>2 scenarios, 2 cases, 12 steps, 0 failed cases  <span class='duration'>(887.29 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
