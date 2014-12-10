@@ -41,8 +41,8 @@ To see how the generated report looks like have a look at the
 [HTML report of JGiven itself]({{ site.baseurl }}/jgiven-report/html)
 
 ### HTML 5 Report
-There is an alternative HTML report based on modern CSS and Javascript frameworks which is provided by the {{jgiven-html5-report}} dependency.
-If that dependency is on the classpath you can generate the HTML5 report by setting the {{--format}} parameter to {{html5}}:
+There is an alternative HTML report based on modern CSS and Javascript frameworks which is provided by the `jgiven-html5-report` dependency.
+If that dependency is on the classpath you can generate the HTML5 report by setting the `--format` parameter to `html5`:
 
 {% highlight java %}
 java com.tngtech.jgiven.report.ReportGenerator \
