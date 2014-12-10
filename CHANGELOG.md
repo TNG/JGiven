@@ -1,7 +1,13 @@
-# v0.6.0 (not released yet)
+# v0.6.0
+
+## Major new Features
+
+### HTML5 Report
+There is a new HTML5 report that is completely written from scratch. Instead of mutliple static HTML pages it only consists of a single HTML page that dynamically loads its content from a single jsonp file that contains the model of the scenario report. As a result the overall size of the generated files is much smaller. In addition, the new report is based on Foundation, which is a modern CSS framework, so the new report also looks much nicer then the old static one. One of the main new features is also that the HTML5 report has a full text search built in that works without having to open all scenarios in a single HTML page. As it heavily relies on JavaScript, don't expect that it works on old Browsers.
 
 ## Bug Fixes
 * Core: An issue has been fixed where methods annotated with `@AfterStage` and `@AfterScenario` could accidentally appear in the report when they have been overriden and not annotated again.
+* Core: An issue has been fixed where methods annotated with `@AfterStage` and `@AfterScenario` have not been executed when an exception has been thrown (#46)
 
 ## Breaking Changes
 
