@@ -12,7 +12,7 @@
 <input class='search-input' id='toc-search-input' placeholder='enter regexp to search in toc' onkeydown='searchChanged(event)'></input>
 <h3><a href='index.html'>Summary</a></h3>
 <ul>
-<li><a href='all.html'>All Scenarios <span class='badge count'>45</span></a>
+<li><a href='all.html'>All Scenarios <span class='badge count'>47</span></a>
 </ul>
 <h3>Test Classes</h3>
 <ul>
@@ -23,7 +23,8 @@
 <li><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html' >DeSzenarioTest</a></li></ul></li><li><a href='com.tngtech.jgiven.junit.JUnitExecutorTest.html' >JUnitExecutorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report")'>report</h4><ul class='collapsed' id='com.tngtech.jgiven.report'>
 <li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.analysis")'>analysis</h4><ul class='collapsed' id='com.tngtech.jgiven.report.analysis'>
 <li><a href='com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest.html' >ArgumentAnalyzerTest</a></li><li><a href='com.tngtech.jgiven.report.analysis.DifferenceAnalyzerTest.html' >DifferenceAnalyzerTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.html")'>html</h4><ul class='collapsed' id='com.tngtech.jgiven.report.html'>
-<li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a></li><li><a href='com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest.html' >ReportModelHtmlWriterScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html' >StaticHtmlReportGeneratorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.text")'>text</h4><ul class='collapsed' id='com.tngtech.jgiven.report.text'>
+<li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a></li><li><a href='com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest.html' >ReportModelHtmlWriterScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html' >StaticHtmlReportGeneratorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.html5")'>html5</h4><ul class='collapsed' id='com.tngtech.jgiven.report.html5'>
+<li><a href='com.tngtech.jgiven.report.html5.Html5GeneratorTest.html' >Html5GeneratorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.text")'>text</h4><ul class='collapsed' id='com.tngtech.jgiven.report.text'>
 <li><a href='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest.html' >PlainTextGeneratorScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html' >PlainTextScenarioWriterTest</a></li></ul></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.testframework")'>testframework</h4><ul class='collapsed' id='com.tngtech.jgiven.testframework'>
 <li><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html' >TestFrameworkExecutionTest</a></li></ul></li></ul></li></ul>
 <h3>Tags</h3>
@@ -36,10 +37,11 @@
 <li><a href='Feature-Derived_Parameters.html'>Derived Parameters</a>
 <li><a href='Feature-Duration.html'>Duration</a>
 <li><a href='Feature-German_Scenarios.html'>German Scenarios</a>
-<li><a href='Feature-Html_Report_Generation.html'>Html Report Generation</a>
+<li><a href='Feature-HTML5_Report.html'>HTML5 Report</a>
 <li><a href='Feature-JUnit.html'>JUnit</a>
 <li><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a>
 <li><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a>
+<li><a href='Feature-Static_HTML_Report.html'>Static HTML Report</a>
 <li><a href='Feature-Step_Parameters.html'>Step Parameters</a>
 <li><a href='Feature-Tags.html'>Tags</a>
 <li><a href='Feature-TestNG.html'>TestNG</a>
@@ -73,37 +75,37 @@
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest:the plain text reporter generates one file for each test class")'><i class='icon-ok'></i><span> The plain text reporter generates one file for each test class</span><span class='badge count'>3</span> <span class='duration'>(62.10 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest:the plain text reporter generates one file for each test class")'><i class='icon-ok'></i><span> The plain text reporter generates one file for each test class</span><span class='badge count'>3</span> <span class='duration'>(26.44 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest:the plain text reporter generates one file for each test class'>
 <div class='scenario-content'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='caseArgument'>&lt;numberOfReports&gt;</span> <span class='word'>report models</span> <span class='duration'>(0.02 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the reports exist as JSON files</span> <span class='duration'>(0.19 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the plain text reporter is executed</span> <span class='duration'>(2.98 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>a text file exists for each test class</span> <span class='duration'>(2.79 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='caseArgument'>&lt;numberOfReports&gt;</span> <span class='word'>report models</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the reports exist as JSON files</span> <span class='duration'>(0.09 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the plain text reporter is executed</span> <span class='duration'>(1.10 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>a text file exists for each test class</span> <span class='duration'>(0.78 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>numberOfReports</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>0</td><td><i class='icon-ok'></i> <span class='duration'>(12.59 ms)</span></td></tr>
+<td>1</td><td>0</td><td><i class='icon-ok'></i> <span class='duration'>(4.48 ms)</span></td></tr>
 <tr>
-<td>2</td><td>1</td><td><i class='icon-ok'></i> <span class='duration'>(17.44 ms)</span></td></tr>
+<td>2</td><td>1</td><td><i class='icon-ok'></i> <span class='duration'>(7.82 ms)</span></td></tr>
 <tr>
-<td>3</td><td>3</td><td><i class='icon-ok'></i> <span class='duration'>(32.07 ms)</span></td></tr>
+<td>3</td><td>3</td><td><i class='icon-ok'></i> <span class='duration'>(14.13 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest.html'>com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>1 scenarios, 3 cases, 12 steps, 0 failed cases  <span class='duration'>(62.10 ms)</span></div>
+<div class='statistics'>1 scenarios, 3 cases, 12 steps, 0 failed cases  <span class='duration'>(26.44 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 3, 2014 3:05:49 AM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 10, 2014 10:17:28 AM</div>
 <script src='report.js'></script>
 </body></html>
