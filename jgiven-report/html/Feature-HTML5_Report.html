@@ -12,7 +12,7 @@
 <input class='search-input' id='toc-search-input' placeholder='enter regexp to search in toc' onkeydown='searchChanged(event)'></input>
 <h3><a href='index.html'>Summary</a></h3>
 <ul>
-<li><a href='all.html'>All Scenarios <span class='badge count'>47</span></a>
+<li><a href='all.html'>All Scenarios <span class='badge count'>48</span></a>
 </ul>
 <h3>Test Classes</h3>
 <ul>
@@ -57,6 +57,7 @@
 <li><a href='Issue-_33.html'>Issue-#33</a>
 <li><a href='Issue-_34.html'>Issue-#34</a>
 <li><a href='Issue-_4.html'>Issue-#4</a>
+<li><a href='Issue-_47.html'>Issue-#47</a>
 <li><a href='Issue-_9.html'>Issue-#9</a>
 </ul>
 </ul>
@@ -76,7 +77,35 @@
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.html5.Html5GeneratorTest:the statistics on the welcome page of the HTML5 report is correct")'><i class='icon-ok'></i><span> The statistics on the welcome page of the HTML5 report is correct</span> <span class='duration'>(279.42 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html5.Html5GeneratorTest:clicking on tag labels opens the tag page")'><i class='icon-ok'></i><span> Clicking on tag labels opens the tag page</span><span class='badge count'>2</span> <span class='duration'>(740.71 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-HTML5_Report.html'>HTML5 Report</a></div><div class='tag tag-Issue'><a href='Issue-_47.html'>Issue-#47</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html5.Html5GeneratorTest:clicking on tag labels opens the tag page'>
+<div class='scenario-content'>
+<ul class='steps'>
+<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>scenario</span> <span class='argument'>1</span> <span class='word'>has tag</span> <span class='argument'>testtag</span> <span class='word'>with value</span> <span class='argument'>#42</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the tag has prependType set to</span> <span class='caseArgument'>&lt;prependType&gt;</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(2.12 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the HTML5 report has been generated</span> <span class='duration'>(21.31 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the All Scenarios page is opened</span> <span class='duration'>(0.13 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the tag with name</span> <span class='caseArgument'>&lt;tagName&gt;</span> <span class='word'>is clicked</span> <span class='duration'>(47.96 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the page title is</span> <span class='caseArgument'>&lt;tagName&gt;</span> <span class='duration'>(17.37 ms)</span></li>
+</ul>
+<h4>Cases:</h4>
+<table class='data-table'>
+<tr>
+<th>#</th><th>prependType</th><th>tagName</th><th>Status</th></tr>
+<tr>
+<td>1</td><td>true</td><td>testtag-#42</td><td><i class='icon-ok'></i> <span class='duration'>(368.98 ms)</span></td></tr>
+<tr>
+<td>2</td><td>false</td><td>#42</td><td><i class='icon-ok'></i> <span class='duration'>(371.72 ms)</span></td></tr>
+</table>
+</div> <!-- scenario-content -->
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html5.Html5GeneratorTest.html'>com.tngtech.jgiven.report.html5.Html5GeneratorTest</a></div>
+</div> <!-- scenario-body --> 
+</div>
+<div class='scenario'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html5.Html5GeneratorTest:the statistics on the welcome page of the HTML5 report is correct")'><i class='icon-ok'></i><span> The statistics on the welcome page of the HTML5 report is correct</span> <span class='duration'>(270.31 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-HTML5_Report.html'>HTML5 Report</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html5.Html5GeneratorTest:the statistics on the welcome page of the HTML5 report is correct'>
 <div class='scenario-content'>
@@ -85,10 +114,10 @@
 <li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>the report has</span> <span class='argument'>3</span> <span class='word'>scenarios</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>of case</span> <span class='argument'>1</span> <span class='word'>has status</span> <span class='argument'>FAILED</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(2.03 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the HTML5 report has been generated</span> <span class='duration'>(24.05 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the index page is opened</span> <span class='duration'>(218.05 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the page statistics line contains text</span> <span class='argument'>3 scenarios, of which 2 were successful, 1 failed, and 0 are pending</span> <span class='duration'>(24.18 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(2.15 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the HTML5 report has been generated</span> <span class='duration'>(24.13 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the index page is opened</span> <span class='duration'>(208.65 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the page statistics line contains text</span> <span class='argument'>3 scenarios, of which 2 were successful, 1 failed, and 0 are pending</span> <span class='duration'>(22.98 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
@@ -96,29 +125,29 @@
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.html5.Html5GeneratorTest:the welcome page of the HTML5 report can be opened")'><i class='icon-ok'></i><span> The welcome page of the HTML5 report can be opened</span> <span class='duration'>(607.87 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html5.Html5GeneratorTest:the welcome page of the HTML5 report can be opened")'><i class='icon-ok'></i><span> The welcome page of the HTML5 report can be opened</span> <span class='duration'>(533.05 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-HTML5_Report.html'>HTML5 Report</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html5.Html5GeneratorTest:the welcome page of the HTML5 report can be opened'>
 <div class='scenario-content'>
 <div class='case passedCase'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(3.92 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(14.71 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the HTML5 report has been generated</span> <span class='duration'>(45.60 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the index page is opened</span> <span class='duration'>(254.95 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the page title is</span> <span class='argument'>Welcome</span> <span class='duration'>(97.51 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(2.86 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(13.19 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the HTML5 report has been generated</span> <span class='duration'>(38.18 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the index page is opened</span> <span class='duration'>(219.46 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the page title is</span> <span class='argument'>Welcome</span> <span class='duration'>(94.86 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.html5.Html5GeneratorTest.html'>com.tngtech.jgiven.report.html5.Html5GeneratorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>2 scenarios, 2 cases, 12 steps, 0 failed cases  <span class='duration'>(887.29 ms)</span></div>
+<div class='statistics'>3 scenarios, 4 cases, 28 steps, 0 failed cases  <span class='duration'>(1.54 s)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 10, 2014 10:17:28 AM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 10, 2014 9:12:38 PM</div>
 <script src='report.js'></script>
 </body></html>

@@ -94,8 +94,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       console.log("Update current page to tag "+key);
       $scope.currentPage = {
           scenarios: scenarios,
-          title: tag.value ? tag.value : tag.name,
-          subtitle: tag.value ? tag.name : undefined,
+          title: tag.value ? (tag.prependType ? tag.name + '-' : '') + tag.value : tag.name,
+          subtitle: tag.value && !tag.prependType ? tag.name : undefined,
           description: tag.description,
           breadcrumbs: ['TAGS',tag.name,tag.value],
           statistics: $scope.gatherStatistics( scenarios )
