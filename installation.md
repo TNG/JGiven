@@ -38,5 +38,17 @@ JGiven requires at least JUnit v4.9, while the recommended version is 4.11.
 
 Note that `jgiven-testng` does not directly depend on TestNG, thus you also must have a dependency to TestNG itself.
 
+#### HTML5 Report
+JGiven provides a basic static HTML report. In order to get a model HTML5-based report you have to add the following dependency:
+
+```
+<dependency>
+   <groupId>com.tngtech.jgiven</groupId>
+   <artifactId>jgiven-html5-report</artifactId>
+   <version>{{ site.version }}</version>
+   <scope>test</scope>
+</dependency>
+```
+
 
 Next: [Getting Started]({{site.baseurl}}/docs/gettingstarted/)
