@@ -43,6 +43,10 @@ ul.tags {
     margin-bottom: 1rem !important;
 }
 
+.title-column {
+    padding: 0;
+}
+
 .page-icon-bar {
     position: absolute;
     top: 0;
@@ -356,6 +360,20 @@ li.subheading > ul {
 
 .off-canvas-wrap {
    overflow: auto;
+}
+
+.page-statistics {
+    color: gray;
+}
+
+.statistics-chart-column {
+    text-align: right;
+}
+
+.statistics-chart {
+    width: 15em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 @media only screen and (max-width: 64em) {
