@@ -12,7 +12,7 @@
 <input class='search-input' id='toc-search-input' placeholder='enter regexp to search in toc' onkeydown='searchChanged(event)'></input>
 <h3><a href='index.html'>Summary</a></h3>
 <ul>
-<li><a href='all.html'>All Scenarios <span class='badge count'>47</span></a>
+<li><a href='all.html'>All Scenarios <span class='badge count'>48</span></a>
 </ul>
 <h3>Test Classes</h3>
 <ul>
@@ -57,6 +57,7 @@
 <li><a href='Issue-_33.html'>Issue-#33</a>
 <li><a href='Issue-_34.html'>Issue-#34</a>
 <li><a href='Issue-_4.html'>Issue-#4</a>
+<li><a href='Issue-_47.html'>Issue-#47</a>
 <li><a href='Issue-_9.html'>Issue-#9</a>
 </ul>
 </ul>
@@ -76,7 +77,7 @@
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:after stage methods of stages following failing stages are ignored")'><i class='icon-ok'></i><span> After stage methods of stages following failing stages are ignored</span><span class='badge count'>2</span> <span class='duration'>(48.09 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:after stage methods of stages following failing stages are ignored")'><i class='icon-ok'></i><span> After stage methods of stages following failing stages are ignored</span><span class='badge count'>2</span> <span class='duration'>(52.69 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:after stage methods of stages following failing stages are ignored'>
 <div class='scenario-content'>
@@ -85,34 +86,7 @@
 <li><span class='introWord'>And</span> <span class='word'>the test has</span> <span class='argument'>2</span> <span class='word'>failing stages</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>stage</span> <span class='argument'>2</span> <span class='word'>has a failing after stage method</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>fails</span> <span class='duration'>(0.16 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(19.93 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test fails</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>is reported as failed</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>2</span> <span class='word'>is reported as skipped</span> <span class='duration'>(0.27 ms)</span></li>
-</ul>
-<h4>Cases:</h4>
-<table class='data-table'>
-<tr>
-<th>#</th><th>testFramework</th><th>Status</th></tr>
-<tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(23.62 ms)</span></td></tr>
-<tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(24.47 ms)</span></td></tr>
-</table>
-</div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
-</div> <!-- scenario-body --> 
-</div>
-<div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:all steps of stages following failing stages are ignored")'><i class='icon-ok'></i><span> All steps of stages following failing stages are ignored</span><span class='badge count'>2</span> <span class='duration'>(27.98 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:all steps of stages following failing stages are ignored'>
-<div class='scenario-content'>
-<ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a failing test with</span> <span class='argument'>2</span> <span class='word'>steps</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test has</span> <span class='argument'>2</span> <span class='word'>failing stages</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>fails</span> <span class='duration'>(0.16 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.62 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(17.33 ms)</span></li>
 <li><span class='introWord'>Then</span> <span class='word'>the test fails</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>is reported as failed</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>2</span> <span class='word'>is reported as skipped</span> <span class='duration'>(0.20 ms)</span></li>
@@ -122,163 +96,190 @@
 <tr>
 <th>#</th><th>testFramework</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(6.49 ms)</span></td></tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(20.33 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(21.49 ms)</span></td></tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(32.37 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:description annotations on test classes are evaluated")'><i class='icon-ok'></i><span> Description annotations on test classes are evaluated</span><span class='badge count'>2</span> <span class='duration'>(36.20 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:all steps of stages following failing stages are ignored")'><i class='icon-ok'></i><span> All steps of stages following failing stages are ignored</span><span class='badge count'>2</span> <span class='duration'>(25.96 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:all steps of stages following failing stages are ignored'>
+<div class='scenario-content'>
+<ul class='steps'>
+<li><span class='introWord'>Given</span> <span class='word'>a failing test with</span> <span class='argument'>2</span> <span class='word'>steps</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the test has</span> <span class='argument'>2</span> <span class='word'>failing stages</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>fails</span> <span class='duration'>(0.15 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.50 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the test fails</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>is reported as failed</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>2</span> <span class='word'>is reported as skipped</span> <span class='duration'>(0.17 ms)</span></li>
+</ul>
+<h4>Cases:</h4>
+<table class='data-table'>
+<tr>
+<th>#</th><th>testFramework</th><th>Status</th></tr>
+<tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(6.16 ms)</span></td></tr>
+<tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(19.80 ms)</span></td></tr>
+</table>
+</div> <!-- scenario-content -->
+<div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
+</div> <!-- scenario-body --> 
+</div>
+<div class='scenario'>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:description annotations on test classes are evaluated")'><i class='icon-ok'></i><span> Description annotations on test classes are evaluated</span><span class='badge count'>2</span> <span class='duration'>(23.08 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:description annotations on test classes are evaluated'>
 <div class='scenario-content'>
 <ul class='steps'>
 <li><span class='introWord'>Given</span> <span class='word'>a test class</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test class has a description annotation with value</span> <span class='argument'>Test Description</span> <span class='duration'>(0.32 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(11.39 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the description of the report model is</span> <span class='argument'>Test Description</span> <span class='duration'>(1.37 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the test class has a description annotation with value</span> <span class='argument'>Test Description</span> <span class='duration'>(0.21 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(8.67 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the description of the report model is</span> <span class='argument'>Test Description</span> <span class='duration'>(0.94 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>testFramework</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(14.52 ms)</span></td></tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(10.91 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(21.68 ms)</span></td></tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(12.16 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet are ignored")'><i class='icon-ok'></i><span> Failing tests annotated with NotImplementedYet are ignored</span><span class='badge count'>2</span> <span class='duration'>(389.63 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet are ignored")'><i class='icon-ok'></i><span> Failing tests annotated with NotImplementedYet are ignored</span><span class='badge count'>2</span> <span class='duration'>(312.10 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet are ignored'>
 <div class='scenario-content'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a failing test</span> <span class='duration'>(0.08 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.10 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(45.56 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(14.66 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a failing test</span> <span class='duration'>(0.09 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.12 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(47.83 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(13.23 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>testFramework</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(72.85 ms)</span></td></tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(72.42 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(316.78 ms)</span></td></tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(239.67 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with executeSteps set to true are ignored")'><i class='icon-ok'></i><span> Failing tests annotated with NotImplementedYet with executeSteps set to true are ignored</span><span class='badge count'>2</span> <span class='duration'>(25.53 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with executeSteps set to true are ignored")'><i class='icon-ok'></i><span> Failing tests annotated with NotImplementedYet with executeSteps set to true are ignored</span><span class='badge count'>2</span> <span class='duration'>(22.88 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with executeSteps set to true are ignored'>
 <div class='scenario-content'>
 <ul class='steps'>
 <li><span class='introWord'>Given</span> <span class='word'>a failing test</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>With</span> <span class='word'>executeSteps set to true</span> <span class='duration'>(0.09 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.44 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(0.63 ms)</span></li>
+<li><span class='introWord'>With</span> <span class='word'>executeSteps set to true</span> <span class='duration'>(0.08 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(2.84 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(0.57 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>testFramework</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(5.33 ms)</span></td></tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(4.52 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(20.19 ms)</span></td></tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(18.36 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored")'><i class='icon-ok'></i><span> Failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored</span><span class='badge count'>2</span> <span class='duration'>(33.32 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored")'><i class='icon-ok'></i><span> Failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored</span><span class='badge count'>2</span> <span class='duration'>(28.53 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored'>
 <div class='scenario-content'>
 <ul class='steps'>
 <li><span class='introWord'>Given</span> <span class='word'>a failing test</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>With</span> <span class='word'>failIfPassed set to true</span> <span class='duration'>(0.06 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.69 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(0.65 ms)</span></li>
+<li><span class='introWord'>With</span> <span class='word'>failIfPassed set to true</span> <span class='duration'>(0.04 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.15 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(0.60 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>testFramework</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(5.67 ms)</span></td></tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(4.92 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(27.65 ms)</span></td></tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(23.60 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing steps before failing steps are reported as passed")'><i class='icon-ok'></i><span> Passing steps before failing steps are reported as passed</span><span class='badge count'>2</span> <span class='duration'>(36.98 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing steps before failing steps are reported as passed")'><i class='icon-ok'></i><span> Passing steps before failing steps are reported as passed</span><span class='badge count'>2</span> <span class='duration'>(32.21 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing steps before failing steps are reported as passed'>
 <div class='scenario-content'>
 <ul class='steps'>
 <li><span class='introWord'>Given</span> <span class='word'>a failing test with</span> <span class='argument'>2</span> <span class='word'>steps</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>2</span> <span class='word'>fails</span> <span class='duration'>(0.18 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(10.66 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>2</span> <span class='word'>fails</span> <span class='duration'>(0.12 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(9.09 ms)</span></li>
 <li><span class='introWord'>Then</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>is reported as passed</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>2</span> <span class='word'>is reported as failed</span> <span class='duration'>(0.23 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>2</span> <span class='word'>is reported as failed</span> <span class='duration'>(0.18 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>testFramework</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(13.45 ms)</span></td></tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(11.51 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(23.53 ms)</span></td></tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(20.71 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet are ignored")'><i class='icon-ok'></i><span> Passing tests annotated with NotImplementedYet are ignored</span><span class='badge count'>2</span> <span class='duration'>(48.49 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet are ignored")'><i class='icon-ok'></i><span> Passing tests annotated with NotImplementedYet are ignored</span><span class='badge count'>2</span> <span class='duration'>(41.53 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet are ignored'>
 <div class='scenario-content'>
 <ul class='steps'>
 <li><span class='introWord'>Given</span> <span class='word'>a passing test</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.06 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.69 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(6.93 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.05 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(2.90 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(0.72 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>testFramework</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(13.14 ms)</span></td></tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(4.80 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(35.35 ms)</span></td></tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(36.73 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail")'><i class='icon-ok'></i><span> Passing tests annotated with NotImplementedYet with failIfPassed set to true fail</span><span class='badge count'>2</span> <span class='duration'>(67.65 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail")'><i class='icon-ok'></i><span> Passing tests annotated with NotImplementedYet with failIfPassed set to true fail</span><span class='badge count'>2</span> <span class='duration'>(59.33 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail'>
 <div class='scenario-content'>
@@ -286,83 +287,83 @@
 <li><span class='introWord'>Given</span> <span class='word'>a passing test</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.06 ms)</span></li>
 <li><span class='introWord'>With</span> <span class='word'>failIfPassed set to true</span> <span class='duration'>(0.09 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(12.59 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test fails with message</span> <span class='argument'>Test succeeded, but failIfPassed set to true</span> <span class='duration'>(1.23 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(11.29 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the test fails with message</span> <span class='argument'>Test succeeded, but failIfPassed set to true</span> <span class='duration'>(1.09 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>testFramework</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(15.30 ms)</span></td></tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(13.70 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(52.34 ms)</span></td></tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(45.62 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:steps following failing steps are reported as skipped")'><i class='icon-ok'></i><span> Steps following failing steps are reported as skipped</span><span class='badge count'>2</span> <span class='duration'>(31.04 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:steps following failing steps are reported as skipped")'><i class='icon-ok'></i><span> Steps following failing steps are reported as skipped</span><span class='badge count'>2</span> <span class='duration'>(27.30 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:steps following failing steps are reported as skipped'>
 <div class='scenario-content'>
 <ul class='steps'>
 <li><span class='introWord'>Given</span> <span class='word'>a failing test with</span> <span class='argument'>3</span> <span class='word'>steps</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>fails</span> <span class='duration'>(0.21 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(4.16 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>is reported as failed</span> <span class='duration'>(0.07 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>fails</span> <span class='duration'>(0.17 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.60 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>is reported as failed</span> <span class='duration'>(0.06 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>2</span> <span class='word'>is reported as skipped</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>3</span> <span class='word'>is reported as skipped</span> <span class='duration'>(0.21 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>3</span> <span class='word'>is reported as skipped</span> <span class='duration'>(0.15 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>testFramework</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(7.31 ms)</span></td></tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(6.11 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(23.73 ms)</span></td></tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(21.19 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:tag annotations appear in the report model")'><i class='icon-ok'></i><span> Tag annotations appear in the report model</span><span class='badge count'>2</span> <span class='duration'>(30.23 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:tag annotations appear in the report model")'><i class='icon-ok'></i><span> Tag annotations appear in the report model</span><span class='badge count'>2</span> <span class='duration'>(26.66 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-Tags.html'>Tags</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:tag annotations appear in the report model'>
 <div class='scenario-content'>
 <ul class='steps'>
 <li><span class='introWord'>Given</span> <span class='word'>a test</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test has a tag annotation named</span> <span class='argument'>TestTag</span> <span class='duration'>(0.35 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.68 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the report model contains a tag named</span> <span class='argument'>TestTag</span> <span class='duration'>(7.58 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the test has a tag annotation named</span> <span class='argument'>TestTag</span> <span class='duration'>(0.49 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(2.99 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the report model contains a tag named</span> <span class='argument'>TestTag</span> <span class='duration'>(5.97 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>testFramework</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(13.33 ms)</span></td></tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(10.60 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(16.90 ms)</span></td></tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(16.06 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutorTest:test classes with only ignored test result in a valid report")'><i class='icon-ok'></i><span> Test classes with only ignored test result in a valid report</span> <span class='duration'>(4.04 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutorTest:test classes with only ignored test result in a valid report")'><i class='icon-ok'></i><span> Test classes with only ignored test result in a valid report</span> <span class='duration'>(3.73 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_25.html'>Issue-#25</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.junit.JUnitExecutorTest:test classes with only ignored test result in a valid report'>
 <div class='scenario-content'>
 <div class='case passedCase'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a test class with all tests ignored</span> <span class='duration'>(0.73 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test class is executed with JUnit</span> <span class='duration'>(2.34 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a test class with all tests ignored</span> <span class='duration'>(0.63 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test class is executed with JUnit</span> <span class='duration'>(2.16 ms)</span></li>
 <li><span class='introWord'>Then</span> <span class='word'>the report model contains</span> <span class='argument'>0</span> <span class='word'>scenarios</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report model has a valid class name</span> <span class='duration'>(0.10 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report model has a valid class name</span> <span class='duration'>(0.09 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
@@ -370,31 +371,31 @@
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:the error message of a failing step is reported")'><i class='icon-ok'></i><span> The error message of a failing step is reported</span><span class='badge count'>2</span> <span class='duration'>(31.38 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:the error message of a failing step is reported")'><i class='icon-ok'></i><span> The error message of a failing step is reported</span><span class='badge count'>2</span> <span class='duration'>(24.76 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:the error message of a failing step is reported'>
 <div class='scenario-content'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a failing test</span> <span class='duration'>(0.46 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(4.00 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the case is marked as failed</span> <span class='duration'>(0.02 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>an error message is stored in the report</span> <span class='duration'>(0.11 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a failing test</span> <span class='duration'>(0.47 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(4.07 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the case is marked as failed</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>an error message is stored in the report</span> <span class='duration'>(0.10 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>testFramework</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(5.86 ms)</span></td></tr>
+<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(5.94 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(25.52 ms)</span></td></tr>
+<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(18.82 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutorTest:the JUnit Parameterized runner creates correct cases")'><i class='icon-ok'></i><span> The JUnit Parameterized runner creates correct cases</span> <span class='duration'>(11.59 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutorTest:the JUnit Parameterized runner creates correct cases")'><i class='icon-ok'></i><span> The JUnit Parameterized runner creates correct cases</span> <span class='duration'>(11.24 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.junit.JUnitExecutorTest:the JUnit Parameterized runner creates correct cases'>
 <div class='scenario-content'>
@@ -402,7 +403,7 @@
 <ul class='steps'>
 <li><span class='introWord'>Given</span> <span class='word'>a JUnit test class with the Parameterized Runner</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>the test class has</span> <span class='argument'>2</span> <span class='word'>parameters</span> <span class='duration'>(0.23 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test class is executed with JUnit</span> <span class='duration'>(9.11 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test class is executed with JUnit</span> <span class='duration'>(8.76 ms)</span></li>
 <li><span class='introWord'>Then</span> <span class='word'>the report model contains one scenario for each test method</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>each scenario contains</span> <span class='argument'>2</span> <span class='word'>cases</span> <span class='duration'>(0.40 ms)</span></li>
 </ul>
@@ -411,12 +412,12 @@
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutorTest.html'>com.tngtech.jgiven.junit.JUnitExecutorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>14 scenarios, 26 cases, 131 steps, 0 failed cases  <span class='duration'>(822.15 ms)</span></div>
+<div class='statistics'>14 scenarios, 26 cases, 131 steps, 0 failed cases  <span class='duration'>(692.00 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 10, 2014 10:17:28 AM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 10, 2014 9:12:38 PM</div>
 <script src='report.js'></script>
 </body></html>
