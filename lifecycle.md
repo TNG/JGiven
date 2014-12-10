@@ -77,7 +77,7 @@ public class WebDriverRule {
 
 public class MyStage {
    @ScenarioRule
-   protected WebDriverRule webDriverRule = new WebDriverRules();
+   protected WebDriverRule webDriverRule = new WebDriverRule();
 }
 {% endhighlight %}
 
