@@ -47,6 +47,11 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         return self();
     }
 
+    public SELF the_tag_has_prependType_set_to( boolean prependType ) {
+        givenReportModel.the_tag_has_prependTpe_set_to( prependType );
+        return self();
+    }
+
     public SELF case_$_of_scenario_$_has_failed( int caseNr, int scenarioNr ) {
         givenReportModel.case_$_of_scenario_$_has_failed( caseNr, scenarioNr );
         return self();

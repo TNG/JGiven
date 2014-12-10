@@ -13,8 +13,8 @@ public class ThenHtml5Report<SELF extends ThenHtml5Report<?>> extends Stage<SELF
     @ExpectedScenarioState
     protected WebDriver webDriver;
 
-    public SELF the_page_title_is( String welcome ) {
-        assertThat( webDriver.findElement( By.id( "page-title" ) ).getText() ).isEqualTo( welcome );
+    public SELF the_page_title_is( String pageTitle ) {
+        assertThat( webDriver.findElement( By.id( "page-title" ) ).getText() ).isEqualTo( pageTitle );
         return self();
     }
 

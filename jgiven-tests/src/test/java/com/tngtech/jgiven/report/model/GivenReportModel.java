@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.model;
 
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 
 import java.util.Arrays;
 
@@ -16,6 +16,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     protected ReportModel reportModel;
 
     private boolean analyze = true;
+    private Tag latestTag;
 
     @ExtendedDescription( "A report model where the analysers have not been executed on" )
     public SELF an_unanalyzed_report_model_with_one_scenario() {
@@ -190,8 +191,13 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF scenario_$_has_tag_$_with_value_$( int i, String name, String value ) {
-        reportModel.getScenarios().get( i - 1 ).tags.add( new Tag( name, value ).setPrependType( true ) );
+        latestTag = new Tag( name, value ).setPrependType( true );
+        reportModel.getScenarios().get( i - 1 ).tags.add( latestTag );
         return self();
+    }
+
+    public void the_tag_has_prependTpe_set_to( boolean prependType ) {
+        latestTag.setPrependType( prependType );
     }
 
     @AfterStage
@@ -200,4 +206,5 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
             new CaseArgumentAnalyser().analyze( reportModel );
         }
     }
+
 }
