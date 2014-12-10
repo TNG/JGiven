@@ -55,6 +55,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           $scope.showAllScenarios();
       } else if (part[1] === 'failed') {
           $scope.showFailedScenarios();
+      } else if (part[1] === 'pending') {
+          $scope.showPendingScenarios();
       } else if (part[1] === 'search') {
           $scope.search(part[2]);
       }
@@ -128,16 +130,21 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       }, 0);
   };
 
+  $scope.showPendingScenarios = function() {
+      var pendingScenarios = getPendingScenarios();
+      var description = getDescription( pendingScenarios.length, "pending");
+      $scope.currentPage = {
+          scenarios: pendingScenarios,
+          title: "Pending Scenarios",
+          description: description,
+          breadcrumbs: ['PENDING SCENARIOS'],
+          statistics: $scope.gatherStatistics( pendingScenarios )
+      };
+  };
+
   $scope.showFailedScenarios = function() {
       var failedScenarios = getFailedScenarios();
-      var description;
-      if (failedScenarios.length === 0) {
-          description = "There are no failed scenarios. Keep rocking!";
-      } else if (failedScenarios.length === 1) {
-          description = "There is only 1 failed scenario. You nearly made it!";
-      } else {
-          description = "There are " + failedScenarios.length + " failed scenarios";
-      }
+      var description = getDescription( failedScenarios.length, "failed");
       $scope.currentPage = {
           scenarios: failedScenarios,
           title: "Failed Scenarios",
@@ -146,6 +153,16 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           statistics: $scope.gatherStatistics( failedScenarios )
       };
   };
+
+  function getDescription( count, status ) {
+      if (count === 0) {
+          return "There are no " + status +" scenarios. Keep rocking!";
+      } else if (count === 1) {
+          return "There is only 1 "+status+" scenario. You nearly made it!";
+      } else {
+          return "There are " + count + " " + status +" scenarios";
+      }
+  }
 
   $scope.toggleTagType = function(tagType) {
       tagType.collapsed = !tagType.collapsed;
@@ -199,7 +216,9 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           }
       });
 
-      statistics.chartData = [statistics.success, statistics.failed, statistics.pending];
+      $timeout( function() {
+          statistics.chartData = [statistics.success, statistics.failed, statistics.pending];
+      }, 0);
 
       return statistics;
   }
@@ -336,10 +355,20 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       }), true);
   }
 
+  function getPendingScenarios() {
+      return getScenariosWhere( function(x) {
+          return x.executionStatus !== "FAILED" && x.executionStatus !== "SUCCESS";
+      });
+  }
+
   function getFailedScenarios() {
-      return sortByDescription(_.filter( getAllScenarios(), function(x) {
-          return x.executionStatus !== "SUCCESS";
-      }));
+      return getScenariosWhere( function(x) {
+          return x.executionStatus === "FAILED";
+      });
+  }
+
+  function getScenariosWhere( filter ) {
+      return sortByDescription(_.filter( getAllScenarios(), filter ));
   }
 
   function sortByDescription( scenarios ) {
@@ -424,7 +453,11 @@ jgivenReportApp.controller('SummaryCtrl', function ($scope) {
     var blue = Chart.defaults.global.colours[0];
     var green = {
         fillColor: 'rgba(0,150,0,0.5)',
-        strokeColor: 'rgba(0,150,0,0.7)'
+        strokeColor: 'rgba(0,150,0,0.7)',
+        pointColor: "rgba(0,150,0,1)",
+        pointStrokeColor: "#fff",
+        pointHighlightFill: "#fff",
+        pointHighlightStroke: "rgba(0,150,0,0.8)"
     };
     var gray = Chart.defaults.global.colours[6];
 

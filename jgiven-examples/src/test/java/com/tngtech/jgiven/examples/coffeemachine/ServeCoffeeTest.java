@@ -134,4 +134,12 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
         }
 
     }
+
+    @Test
+    public void a_failing_scenario_for_demonstration_purposes() {
+        given().a_coffee_machine()
+            .and().there_are_no_more_coffees_left();
+        when().I_press_the_coffee_button();
+        then().I_should_be_served_a_coffee();
+    }
 }
