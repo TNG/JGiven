@@ -127,10 +127,11 @@
                          </a>
                          <ul ng-if="tagType.tags.length > 1 && tagType.expanded" class="tags">
                            <li ng-repeat="tag in tagType.tags">
-                             <a href="#tag{{'/' + tagType.type + '/' }}{{tag.value | encodeUri}}">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a>
+                             <a href="#tag{{'/' + tagType.type + '/'}}{{tag.value | encodeUri}}">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a>
                            </li>
                          </ul>
-                         <a ng-if="tagType.tags.length === 1" href="#tag{{'/' + tagType.type}}">
+                         <a ng-if="tagType.tags.length === 1"
+                            href="#tag{{'/' + tagType.type }}{{tagType.tags[0].value ? '/' + tagType.tags[0].value : '' | encodeUri}}">
                            <i class="fa fa-caret-right" style="visibility: hidden"></i>
                            &nbsp;{{tagType.tags[0].name}}<span ng-if="tagType.tags[0].value">-{{tagType.tags[0].value}}</span></a>
                        </li>
@@ -267,8 +268,8 @@
                   </div>
                 </div>
                 <div class="small-12 large-4 xlarge-6 column tag-column">
-                  <span  ng-repeat="tag in scenario.tags">
-                    <a href="#tag/{{tag.name + '/' + tag.value}}" ><span class="radius label">{{tagToString(tag)}}</span></a>
+                  <span  ng-repeat="tag in scenario.tags" class="tag">
+                    <a href="#tag/{{tag.name + '/' + tag.value | encodeUri}}" ><span class="radius label">{{tagToString(tag)}}</span></a>
                   </span>
                 </div>
               </div>
