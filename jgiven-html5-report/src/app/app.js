@@ -124,7 +124,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       }
 
       $timeout(function() {
-          $scope.currentPage.scenarios = getAllScenarios();
+          $scope.currentPage.scenarios = sortByDescription(getAllScenarios());
           $scope.currentPage.loading = false;
           $scope.currentPage.statistics = $scope.gatherStatistics( $scope.currentPage.scenarios );
       }, 0);
@@ -373,7 +373,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   function sortByDescription( scenarios ) {
       return _.forEach(_.sortBy(scenarios, function(x) {
-          return x.description;
+          return x.description.toLowerCase();
       }), function(x) {
           x.expanded = false;
       });
