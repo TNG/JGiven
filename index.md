@@ -42,10 +42,8 @@ Scenario: a pancake can be fried out of an egg milk and flour
   Given an egg
     And some milk
     And the ingredient flour
-
    When the cook mangles everything to a dough
     And the cook fries the dough in a pan
-
    Then the resulting meal is a pan cake
 ```
 
