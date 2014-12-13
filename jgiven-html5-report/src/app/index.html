@@ -255,7 +255,7 @@
                                 <td ng-repeat="arg in case.derivedArguments track by $index">{{arg}}</td>
                                 <td ng-if="case.success"><i class="check fa fa-check-square" /></td>
                                 <td ng-if="!case.success">
-                                  <div data-alert class="alert-box alert round">{{case.errorMessage}}</div>
+                                  <div data-alert class="alert-box alert">{{case.errorMessage}}</div>
                                 </td>
                               </tr>
                             </table>
