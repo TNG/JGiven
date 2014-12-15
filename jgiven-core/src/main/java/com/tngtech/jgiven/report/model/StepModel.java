@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.report.model;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Joiner;
@@ -95,5 +96,9 @@ public class StepModel {
 
     public void setExtendedDescription( String extendedDescription ) {
         this.extendedDescription = extendedDescription;
+    }
+
+    public Iterable<Word> getWords() {
+        return Collections.unmodifiableList( words );
     }
 }

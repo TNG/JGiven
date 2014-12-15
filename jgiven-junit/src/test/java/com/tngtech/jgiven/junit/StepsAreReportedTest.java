@@ -13,6 +13,7 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.junit.StepsAreReportedTest.TestSteps;
@@ -113,6 +114,26 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         assertThat( model.getTags().get( 0 ).getValues() ).containsExactly( "foo", "bar", "baz" );
     }
 
+    @Test
+    public void hidden_steps_do_not_appear_in_the_report() {
+        given().aHiddenStep();
+
+        getScenario().finished();
+
+        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        assertThat( model.getCase( 0 ).getSteps() ).isEmpty();
+    }
+
+    @Test
+    public void hidden_arguments_do_not_appear_in_the_report() {
+        given().a_step_with_a_hidden_argument( "test arg" );
+
+        getScenario().finished();
+
+        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        assertThat( model.getCase( 0 ).getStep( 0 ).getWords() ).hasSize( 2 );
+    }
+
     public static class TestSteps extends Stage<TestSteps> {
         public void some_test_step() {
 
@@ -125,6 +146,13 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         public void a_step_fails() {
             assertThat( true ).isFalse();
+        }
+
+        @Hidden
+        public void aHiddenStep() {}
+
+        public void a_step_with_a_hidden_argument( @Hidden String arg ) {
+
         }
     }
 

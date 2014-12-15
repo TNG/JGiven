@@ -18,6 +18,7 @@ import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Formatf;
+import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
@@ -105,8 +106,10 @@ public class ReportModelBuilder implements ScenarioListener {
             stepModel.setExtendedDescription( extendedDescriptionAnnotation.value() );
         }
 
+        List<NamedArgument> nonHiddenArguments = filterHiddenArguments( arguments, paramMethod.getParameterAnnotations() );
+
         List<Formatting<?>> formatters = getFormatters( paramMethod.getParameterAnnotations() );
-        stepModel.words = new StepFormatter( stepModel.name, arguments, formatters ).buildFormattedWords();
+        stepModel.words = new StepFormatter( stepModel.name, nonHiddenArguments, formatters ).buildFormattedWords();
 
         if( introWord != null ) {
             stepModel.words.add( 0, introWord );
@@ -115,6 +118,16 @@ public class ReportModelBuilder implements ScenarioListener {
 
         stepModel.setStatus( mode.toStepStatus() );
         writeStep( stepModel );
+    }
+
+    private List<NamedArgument> filterHiddenArguments( List<NamedArgument> arguments, Annotation[][] parameterAnnotations ) {
+        List<NamedArgument> result = Lists.newArrayList();
+        for( int i = 0; i < parameterAnnotations.length; i++ ) {
+            if( !isHidden( parameterAnnotations[i] ) ) {
+                result.add( arguments.get( i ) );
+            }
+        }
+        return result;
     }
 
     @Override
@@ -127,9 +140,20 @@ public class ReportModelBuilder implements ScenarioListener {
     private List<Formatting<?>> getFormatters( Annotation[][] parameterAnnotations ) {
         List<Formatting<?>> res = Lists.newArrayList();
         for( Annotation[] annotations : parameterAnnotations ) {
-            res.add( getFormatting( annotations ) );
+            if( !isHidden( annotations ) ) {
+                res.add( getFormatting( annotations ) );
+            }
         }
         return res;
+    }
+
+    private boolean isHidden( Annotation[] annotations ) {
+        for( Annotation annotation : annotations ) {
+            if( annotation instanceof Hidden ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @SuppressWarnings( { "rawtypes", "unchecked" } )
@@ -141,7 +165,7 @@ public class ReportModelBuilder implements ScenarioListener {
                     return new Formatting( arg.value().newInstance(), arg.args() );
                 } else if( annotation instanceof Formatf ) {
                     Formatf arg = (Formatf) annotation;
-                    return new Formatting( PrintfFormatter.class.newInstance(), arg.value() );
+                    return new Formatting( new PrintfFormatter(), arg.value() );
                 }
             } catch( Exception e ) {
                 throw Throwables.propagate( e );
@@ -156,7 +180,7 @@ public class ReportModelBuilder implements ScenarioListener {
 
     private ScenarioCaseModel getCurrentScenarioCase() {
         if( currentScenarioCase == null ) {
-            scenarioStarted( "An Undescribed Scenario" );
+            scenarioStarted( "A Scenario" );
         }
         return currentScenarioCase;
     }

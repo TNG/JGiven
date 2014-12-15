@@ -1,3 +1,9 @@
+# v0.6.1
+## New Features
+
+### `@Hidden` annotation can be applied to step parameters
+Step parameters can now be hidden in the report if they are annotated with the `@Hidden` annotation.
+
 # v0.6.0
 
 ## Major new Features

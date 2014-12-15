@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.junit;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 

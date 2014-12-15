@@ -63,6 +63,10 @@ public class ScenarioCaseModel {
         return steps.get( i );
     }
 
+    public Iterable<StepModel> getSteps() {
+        return Collections.unmodifiableList( steps );
+    }
+
     public void setDurationInNanos( long durationInNanos ) {
         this.durationInNanos = durationInNanos;
     }
