@@ -11,7 +11,6 @@ permalink: /docs/
 * [Stages and State Injection]({{site.baseurl}}/docs/stages/)
 * [Life-Cycle Methods]({{site.baseurl}}/docs/lifecycle/)
 * [Parameters]({{site.baseurl}}/docs/parameters/)
-* Data Tables (tbd)
 * Tags (tbd)
 
 ## Examples
