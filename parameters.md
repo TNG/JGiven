@@ -4,22 +4,18 @@ title: Parameters
 permalink: /docs/parameters/
 ---
 
-Method parameters are by default added to the end of the sentence as shown in the example above.
-
-## Parameters within a sentence
+## Step Parameters
+Step method can have parameters. By default, parameters of step methods are added to the end of the sentence in the report. However, it is also possible to add parameters at arbitrary places in a scentence by using the `$` character.
 
 Take the following example:
 {% highlight java %}
 Given <neggs> eggs
 {% endhighlight %}
-This cannot be written directly as a single method name because parameters can only come at the end of the method.
-JGiven solves this problem by using the $ character as follows:
+The corresponding Java code looks as follows:
 {% highlight java %}
-given().$_eggs(neggs);
+given().$_eggs( neggs );
 {% endhighlight %}
-This is not perfectly readable at first glance, but as soon as you are used to reading $ as a parameter it comes quite natural.
-The generated report will replace the $ with the corresponding parameter.
-So the generated report will look as follows (given neggs is 5):
+The generated report will replace `$` with the corresponding parameter. So the generated report will look as follows (given `neggs` is 5):
 
 {% highlight java %}
 Given 5 eggs
