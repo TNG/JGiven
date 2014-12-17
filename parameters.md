@@ -42,20 +42,25 @@ It is similar to the way parameterized tests work in [TestNG](http://testng.org)
 
 {% highlight java %}
 @Test
-@DataProvider( {
-    "1, 1",
-    "0, 2",
-    "1, 2",
-} )
-public void coffee_is_not_served( int coffees, int dollars) {
-    given().there_are_$_coffees_left_in_the_machine( coffees ).
-        and().the_coffee_costs_$_dollar( 2 );
+@DataProvider( { "1", "3", "10" } )
+public void serving_a_coffee_reduces_the_number_of_available_coffees_by_one( int initialCoffees ) {
+    given().a_coffee_machine().
+        and().there_are_$_coffees_left_in_the_machine( initialCoffees ).
 
-    when().I_deposit_$_dollar( dollars ).
+    when().I_insert_$_one_euro_coins( 2 ).
         and().I_press_the_coffee_button();
 
-    then().I_should_not_be_served_a_coffee();
+    then().a_coffee_should_be_served().
+        and().there_are_$_coffees_left_in_the_machine( initialCoffees - 1 );
 }
 {% endhighlight %}
+
+## Data Tables
+
+Whenever the same scenario is executed multiple times with different parameters, JGiven generates a *data table*. For the above example JGiven will generate the following report:
+
+<img alt="Data table example" src="{{site.baseurl}}/img/datatableexample.png" />
+
+The interesting aspect here is that, although the test itself has only 1 parameter `initialCoffees`, the scenario itself is actually parameterized by 2 parameters `initialCoffees` and `coffeesLeft`. The second parameter is _derived_ from the first parameter. JGiven generates for all parameters that are not the same for all cases a column in the data table. If the parameter is derived, the name of the placeholder is the name of the parameter of the invoked step method.
 
 Back: [Life-Cycle Methods]({{site.baseurl}}/docs/lifecycle/)
