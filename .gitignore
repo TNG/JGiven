@@ -22,3 +22,5 @@ out
 generatedSrc
 .vscode
 _site
+\#*
+.#*
