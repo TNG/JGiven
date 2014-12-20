@@ -34,4 +34,7 @@ public class GivenTestStep extends Stage<GivenTestStep> {
 
     public void a_third_integer_value( int thirdArg ) {}
 
+    public void something() {
+
+    }
 }

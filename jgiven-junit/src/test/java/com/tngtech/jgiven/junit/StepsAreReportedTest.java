@@ -27,7 +27,7 @@ import com.tngtech.jgiven.report.model.Word;
 public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
 
     @Test
-    public void given_steps_are_reported() {
+    public void given_steps_are_reported() throws Throwable {
 
         given().some_test_step();
 
@@ -54,7 +54,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
     }
 
     @Test
-    public void steps_annotated_with_NotImplementedYet_are_recognized() {
+    public void steps_annotated_with_NotImplementedYet_are_recognized() throws Throwable {
         given().some_not_implemented_step();
 
         getScenario().finished();
@@ -66,7 +66,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
     }
 
     @Test
-    public void if_some_steps_are_not_implemented_then_scenario_status_is_partially() {
+    public void if_some_steps_are_not_implemented_then_scenario_status_is_partially() throws Throwable {
         given().some_test_step();
         given().some_not_implemented_step();
 
@@ -84,7 +84,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
     @Test
     @TestTag( { "foo", "bar", "baz" } )
-    public void annotations_are_translated_to_tags() {
+    public void annotations_are_translated_to_tags() throws Throwable {
         given().some_test_step();
         getScenario().finished();
 
@@ -103,7 +103,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
     @Test
     @TestTag( { "foo", "bar", "baz" } )
     @UseDataProvider( "testValues" )
-    public void annotations_are_translated_to_tags_only_once( int n ) {
+    public void annotations_are_translated_to_tags_only_once( int n ) throws Throwable {
         given().some_test_step();
         getScenario().finished();
 
@@ -115,7 +115,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
     }
 
     @Test
-    public void hidden_steps_do_not_appear_in_the_report() {
+    public void hidden_steps_do_not_appear_in_the_report() throws Throwable {
         given().aHiddenStep();
 
         getScenario().finished();
@@ -125,7 +125,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
     }
 
     @Test
-    public void hidden_arguments_do_not_appear_in_the_report() {
+    public void hidden_arguments_do_not_appear_in_the_report() throws Throwable {
         given().a_step_with_a_hidden_argument( "test arg" );
 
         getScenario().finished();

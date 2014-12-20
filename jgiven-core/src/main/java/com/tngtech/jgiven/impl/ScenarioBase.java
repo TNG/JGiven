@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.impl;
 
-import com.google.common.base.Throwables;
 import com.tngtech.jgiven.integration.CanWire;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;
@@ -25,12 +24,13 @@ public class ScenarioBase {
         return executor.addStage( stepsClass );
     }
 
-    public void finished() {
-        try {
-            executor.finished();
-        } catch( Throwable e ) {
-            throw Throwables.propagate( e );
-        }
+    /**
+     * Finishes the scenario.
+     * 
+     * @throws Throwable in case some exception has been thrown during the execution of the scenario
+     */
+    public void finished() throws Throwable {
+        executor.finished();
     }
 
     public ScenarioExecutor getExecutor() {

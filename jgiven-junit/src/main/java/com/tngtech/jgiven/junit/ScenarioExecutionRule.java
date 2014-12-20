@@ -1,9 +1,8 @@
 package com.tngtech.jgiven.junit;
 
-import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
-import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
-import static java.lang.String.format;
-import static org.junit.Assume.assumeTrue;
+import static com.tngtech.jgiven.report.model.ExecutionStatus.*;
+import static java.lang.String.*;
+import static org.junit.Assume.*;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
@@ -20,11 +19,13 @@ import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.MultipleFailureException;
 import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Primitives;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
@@ -67,15 +68,22 @@ public class ScenarioExecutionRule implements MethodRule {
         };
     }
 
-    protected void succeeded() {
+    protected void succeeded() throws Throwable {
         scenario.finished();
 
         // ignore test when scenario is not implemented
         assumeTrue( EnumSet.of( SUCCESS, FAILED ).contains( scenario.getModel().getLastScenarioModel().getExecutionStatus() ) );
     }
 
-    protected void failed( Throwable e ) {
-        scenario.getExecutor().failed( e );
+    protected void failed( Throwable e ) throws Throwable {
+        if( scenario.getExecutor().hasFailed() ) {
+            Throwable failedException = scenario.getExecutor().getFailedException();
+            List<Throwable> errors = Lists.newArrayList( failedException, e );
+            scenario.getExecutor().setFailedException( new MultipleFailureException( errors ) );
+        } else {
+            scenario.getExecutor().failed( e );
+        }
+
         scenario.finished();
     }
 
@@ -153,7 +161,7 @@ public class ScenarioExecutionRule implements MethodRule {
      * Searches for all arguments of the given {@link Parameterized} test class by retrieving the values of all
      * non-static instance fields and comparing their types with the constructor arguments. The order of resulting
      * parameters corresponds to the order of the constructor argument types (which is equal to order of the provided
-     * data of the method annotated with {@link Parameters}). If the constructor contains multiple arguments of the same
+     * data of the method annotated with {@link Parameterized}). If the constructor contains multiple arguments of the same
      * type, the order of {@link ReflectionUtil#getAllNonStaticFieldValuesFrom(Class, Object, String)} is used.
      *
      * @param constructor {@link Constructor} from which argument types should be retrieved

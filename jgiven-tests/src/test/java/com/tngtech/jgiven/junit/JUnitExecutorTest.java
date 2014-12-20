@@ -30,4 +30,12 @@ public class JUnitExecutorTest extends JGivenScenarioTest<GivenScenarioTest<?>, 
             .and().the_report_model_has_a_valid_class_name();
     }
 
+    @Test
+    @Issue( "#49" )
+    public void exception_in_scenario_is_not_hidden_by_exception_in_JUnit_after_method() {
+        given().a_test_class_with_a_failing_scenario_and_a_failing_after_stage();
+        when().the_test_class_is_executed_with_JUnit();
+        then().the_test_fails_with_message( "assertion failed in test step" );
+    }
+
 }

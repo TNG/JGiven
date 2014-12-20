@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.html;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +28,7 @@ public class ReportModelHtmlWriterTest extends ScenarioTestBase<GivenTestStep, W
 
     @Test
     @UseDataProvider( "testData" )
-    public void HTML_report_is_correctly_generated_for_scenarios( int a, int b, int expectedResult ) {
+    public void HTML_report_is_correctly_generated_for_scenarios( int a, int b, int expectedResult ) throws Throwable {
         getScenario().startScenario( "values can be multiplied" );
 
         given().$d_and_$d( a, b );

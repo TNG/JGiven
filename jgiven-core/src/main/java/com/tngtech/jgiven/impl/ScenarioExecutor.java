@@ -385,10 +385,26 @@ public class ScenarioExecutor {
             } );
     }
 
-    public void failed( Throwable e ) {
-        listener.scenarioFailed( e );
-        methodInterceptor.disableMethodExecution();
+    public boolean hasFailed() {
+        return failedException != null;
+    }
+
+    public Throwable getFailedException() {
+        return failedException;
+    }
+
+    public void setFailedException( Exception e ) {
         failedException = e;
+    }
+
+    public void failed( Throwable e ) {
+        if( hasFailed() ) {
+            log.error( e.getMessage(), e );
+        } else {
+            listener.scenarioFailed( e );
+            methodInterceptor.disableMethodExecution();
+            failedException = e;
+        }
     }
 
     /**

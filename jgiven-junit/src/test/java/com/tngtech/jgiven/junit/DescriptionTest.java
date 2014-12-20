@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.junit;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ import com.tngtech.jgiven.junit.test.WhenTestStep;
 public class DescriptionTest extends ScenarioTest<GivenTestStep, WhenTestStep, ThenTestStep> {
 
     @Test
-    public void descriptions_on_test_classes_are_evaluated() {
+    public void descriptions_on_test_classes_are_evaluated() throws Throwable {
         given().some_boolean_value( true );
 
         getScenario().finished();

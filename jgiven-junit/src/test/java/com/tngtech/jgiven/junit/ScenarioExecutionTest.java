@@ -182,7 +182,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     }
 
     @Test( expected = SomeExceptionInAfterStage.class )
-    public void AfterStage_methods_of_the_last_stage_are_executed() {
+    public void AfterStage_methods_of_the_last_stage_are_executed() throws Throwable {
         AssertionInAfterStage stage = addStage( AssertionInAfterStage.class );
         given().something();
         stage.then().something();
@@ -193,7 +193,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     }
 
     @Test
-    public void After_methods_are_called_even_if_step_fails() {
+    public void After_methods_are_called_even_if_step_fails() throws Throwable {
         given().someFailingStep();
 
         try {
@@ -210,7 +210,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     @Test
     @ConfiguredTag
-    public void configured_tags_are_reported() {
+    public void configured_tags_are_reported() throws Throwable {
         given().something();
         getScenario().finished();
         List<Tag> tags = getScenario().getModel().getLastScenarioModel().getTags();
@@ -222,7 +222,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     @Test
     @Description( "@Description annotations are evaluated" )
-    public void description_annotations_are_evaluated() {
+    public void description_annotations_are_evaluated() throws Throwable {
         given().something();
         getScenario().finished();
         String description = getScenario().getModel().getLastScenarioModel().description;

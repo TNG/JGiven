@@ -7,7 +7,7 @@ public class WhenTestStage extends Stage<WhenTestStage> {
     public void something_happens() {}
 
     public void a_step_fails() {
-        throw new AssertionError( "some assertion" );
+        throw new AssertionError( "assertion failed in test step" );
     }
 
 }

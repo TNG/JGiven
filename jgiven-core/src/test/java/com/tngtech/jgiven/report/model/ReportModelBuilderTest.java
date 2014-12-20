@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.report.model;
 
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
+import static java.util.Arrays.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -36,7 +36,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
 
     @Test
     @UseDataProvider( "testData" )
-    public void test( int a, int b, int expectedResult ) {
+    public void test( int a, int b, int expectedResult ) throws Throwable {
         String description = "values can be multiplied";
         getScenario().startScenario( description );
 
@@ -173,7 +173,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
 
     @Test
     @UseDataProvider( "argumentTestData" )
-    public void testArrayArguments( Object argument, String expected ) {
+    public void testArrayArguments( Object argument, String expected ) throws Throwable {
         getScenario().startScenario( "test" );
 
         given().an_array( argument );
@@ -184,7 +184,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
     }
 
     @Test
-    public void the_Description_annotation_is_evaluated() {
+    public void the_Description_annotation_is_evaluated() throws Throwable {
         getScenario().startScenario( "Scenario with a @Description tag" );
         given().a_step_with_a_description();
         getScenario().finished();
@@ -193,7 +193,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
     }
 
     @Test
-    public void printf_annotation_uses_the_PrintfFormatter() {
+    public void printf_annotation_uses_the_PrintfFormatter() throws Throwable {
         getScenario().startScenario( "printf_annotation_uses_the_PrintfFormatter" );
         given().a_step_with_a_printf_annotation_$( 5.2 );
         getScenario().finished();

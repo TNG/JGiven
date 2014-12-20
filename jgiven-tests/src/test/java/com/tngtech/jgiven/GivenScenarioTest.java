@@ -110,4 +110,8 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
     public void a_test_class_with_all_tests_ignored() {
         testScenario = TestScenarioRepository.testClassWithOnlyIgnoredTests();
     }
+
+    public void a_test_class_with_a_failing_scenario_and_a_failing_after_stage() {
+        testScenario = TestScenarioRepository.testClassWithAFailingScenarioAndAFailingAfterStage();
+    }
 }

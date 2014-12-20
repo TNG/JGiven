@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.Description;
 
 public class TestScenarioRepository {
+
     public static class SearchCriteria {
         public boolean notImplementedYet = false;
         public boolean failing = false;
@@ -259,4 +260,9 @@ public class TestScenarioRepository {
     public static TestScenario testClassWithOnlyIgnoredTests() {
         return new TestScenario( TestClassWithOnlyIgnoredTests.class );
     }
+
+    public static TestScenario testClassWithAFailingScenarioAndAFailingAfterStage() {
+        return new TestScenario( TestWithExceptionsInAfterMethod.class );
+    }
+
 }

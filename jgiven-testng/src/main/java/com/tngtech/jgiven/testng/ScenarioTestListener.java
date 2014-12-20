@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.testng;
 
-import static java.util.Arrays.asList;
+import static java.util.Arrays.*;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import com.google.common.base.Throwables;
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
@@ -58,7 +59,11 @@ public class ScenarioTestListener implements ITestListener {
     public void onTestSkipped( ITestResult paramITestResult ) {}
 
     private void testFinished() {
-        scenario.finished();
+        try {
+            scenario.finished();
+        } catch( Throwable throwable ) {
+            throw Throwables.propagate( throwable );
+        }
     }
 
     @Override
