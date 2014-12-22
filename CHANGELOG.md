@@ -5,8 +5,9 @@
 Step parameters can now be hidden in the report if they are annotated with the `@Hidden` annotation.
 
 ## Bug Fixes
-* Exceptions that are thrown after a scenario has been executed, e.g., in `@After`-annotated methods in JUnit, are not hiding the original exception thrown in the scenario (#49).
-* Split the JSON model into multiple files to avoid `script too large` errors in Firefox (#51)
+* Core: Exceptions that are thrown after a scenario has been executed, e.g., in `@After`-annotated methods in JUnit, are not hiding the original exception thrown in the scenario (#49).
+* HTML5 Report: Split the JSON model into multiple files to avoid `script too large` errors in Firefox (#51)
+* HTML5 Report: Fixed issue with the encoding of tag URLs (#47)
 
 # v0.6.0
 
