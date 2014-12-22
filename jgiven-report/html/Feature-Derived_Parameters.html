@@ -12,7 +12,7 @@
 <input class='search-input' id='toc-search-input' placeholder='enter regexp to search in toc' onkeydown='searchChanged(event)'></input>
 <h3><a href='index.html'>Summary</a></h3>
 <ul>
-<li><a href='all.html'>All Scenarios <span class='badge count'>48</span></a>
+<li><a href='all.html'>All Scenarios <span class='badge count'>49</span></a>
 </ul>
 <h3>Test Classes</h3>
 <ul>
@@ -58,6 +58,7 @@
 <li><a href='Issue-_34.html'>Issue-#34</a>
 <li><a href='Issue-_4.html'>Issue-#4</a>
 <li><a href='Issue-_47.html'>Issue-#47</a>
+<li><a href='Issue-_49.html'>Issue-#49</a>
 <li><a href='Issue-_9.html'>Issue-#9</a>
 </ul>
 </ul>
@@ -77,7 +78,7 @@
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest:when data tables are generated then step parameter placeholders are correct in HTML reports")'><i class='icon-ok'></i><span> When data tables are generated then step parameter placeholders are correct in HTML reports</span> <span class='duration'>(32.78 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest:when data tables are generated then step parameter placeholders are correct in HTML reports")'><i class='icon-ok'></i><span> When data tables are generated then step parameter placeholders are correct in HTML reports</span> <span class='duration'>(50.10 ms)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Static_HTML_Report.html'>Static HTML Report</a></div><div class='tag tag-Feature'><a href='Feature-Data_Tables.html'>Data Tables</a></div><div class='tag tag-Feature'><a href='Feature-Derived_Parameters.html'>Derived Parameters</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest:when data tables are generated then step parameter placeholders are correct in HTML reports'>
 <div class='scenario-content'>
@@ -91,25 +92,25 @@
 <li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a when step</span> <span class='argument'>uses the second parameter</span> <span class='word'>with argument</span> <span class='argument'>b</span> <span class='word'>and argument name</span> <span class='argument'>stepArg2</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has arguments</span> <span class='argument'>x2, y2</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>uses the first parameter</span> <span class='word'>with argument</span> <span class='argument'>c</span> <span class='word'>and argument name</span> <span class='argument'>stepArg1</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>uses the second parameter</span> <span class='word'>with argument</span> <span class='argument'>d</span> <span class='word'>and argument name</span> <span class='argument'>stepArg2</span> <span class='duration'>(0.31 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the HTML report is generated</span> <span class='duration'>(1.71 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the HTML report contains pattern</span> <span class='argument'>uses the first parameter.*&amp;lt;stepArg1&amp;gt;.*second</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a when step</span> <span class='argument'>uses the second parameter</span> <span class='word'>with argument</span> <span class='argument'>d</span> <span class='word'>and argument name</span> <span class='argument'>stepArg2</span> <span class='duration'>(0.49 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the HTML report is generated</span> <span class='duration'>(2.62 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the HTML report contains pattern</span> <span class='argument'>uses the first parameter.*&amp;lt;stepArg1&amp;gt;.*second</span> <span class='duration'>(0.02 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>the HTML report contains pattern</span> <span class='argument'>uses the second parameter.*&amp;lt;stepArg2&amp;gt;.*Cases</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the HTML report contains a data table with header values</span> <span class='argument'>stepArg1, stepArg2</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>line</span> <span class='argument'>1</span> <span class='word'>of the data table has arguments</span> <span class='argument'>a, b</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>line</span> <span class='argument'>2</span> <span class='word'>of the data table has arguments</span> <span class='argument'>c, d</span> <span class='duration'>(8.37 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the HTML report contains a data table with header values</span> <span class='argument'>stepArg1, stepArg2</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>line</span> <span class='argument'>1</span> <span class='word'>of the data table has arguments</span> <span class='argument'>a, b</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>line</span> <span class='argument'>2</span> <span class='word'>of the data table has arguments</span> <span class='argument'>c, d</span> <span class='duration'>(13.00 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest.html'>com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>1 scenarios, 1 cases, 15 steps, 0 failed cases  <span class='duration'>(32.78 ms)</span></div>
+<div class='statistics'>1 scenarios, 1 cases, 15 steps, 0 failed cases  <span class='duration'>(50.10 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 10, 2014 9:12:38 PM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 22, 2014 10:08:27 PM</div>
 <script src='report.js'></script>
 </body></html>
