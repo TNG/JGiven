@@ -489,8 +489,17 @@ function splitClassName( fullQualifiedClassName ) {
 }
 
 var jgivenReport = {
+    scenarios: new Array(),
+
     setMetaData: function setMetaData(metaData) {
         this.metaData = metaData;
+        _.forEach(metaData.data, function(x) {
+            document.writeln("<script src='data/"+x+"'></script>");
+        });
+    },
+
+    addScenarios: function addScenarios(scenarios) {
+       this.scenarios = this.scenarios.concat(scenarios);
     },
 
     setAllScenarios: function setAllScenarios(allScenarios) {

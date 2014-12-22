@@ -4,6 +4,10 @@
 ### `@Hidden` annotation can be applied to step parameters
 Step parameters can now be hidden in the report if they are annotated with the `@Hidden` annotation.
 
+## Bug Fixes
+* Exceptions that are thrown after a scenario has been executed, e.g., in `@After`-annotated methods in JUnit, are not hiding the original exception thrown in the scenario (#49).
+* Split the JSON model into multiple files to avoid `script too large` errors in Firefox (#51)
+
 # v0.6.0
 
 ## Major new Features
