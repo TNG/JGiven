@@ -197,7 +197,7 @@
                     <span ng-if="scenario.scenarioCases.length > 1" class="secondary radius label case-count">{{scenario.scenarioCases.length}}</span>
                     <i ng-if="scenario.executionStatus === 'SUCCESS'" class="check fa fa-check-square"></i>
                     <span ng-if="scenario.executionStatus === 'FAILED'" class="failed label radius alert">FAILED</span>
-                    <span ng-if="scenario.executionStatus === 'NONE_IMPLEMENTED' || scenario.executionStatus === 'PARTIALLY_IMPLEMENTED'" class="label radius secondary">PENDING</span>
+                    <span ng-if="scenario.executionStatus === 'NONE_IMPLEMENTED' || scenario.executionStatus === 'PARTIALLY_IMPLEMENTED'" class="pending label radius secondary">PENDING</span>
                     <span class="duration"> ({{ nanosToSeconds(scenario.durationInNanos) }}s)</span>
                   </h4>
                   <div ng-if="scenario.expanded || currentPage.print" id="scenario-{{$index}}" class="scenario-content">
@@ -211,7 +211,7 @@
                         <table class="steps">
                           <tr ng-repeat="step in case.steps">
 
-                            <td class="intro-word">{{step.words[0].value.capitalize()}}</td>
+                            <td class="intro-word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}">{{step.words[0].value.capitalize()}}</td>
                             <td>
                               <span aria-haspopup="{{ step.extendedDescription ? 'true' : 'false'"
                                     class="{{ step.extendedDescription ? 'has-tip' : '' }}"
@@ -255,7 +255,7 @@
                                 <td ng-repeat="arg in case.derivedArguments track by $index">{{arg}}</td>
                                 <td ng-if="case.success"><i class="check fa fa-check-square" /></td>
                                 <td ng-if="!case.success">
-                                  <div data-alert class="alert-box alert round">{{case.errorMessage}}</div>
+                                  <div data-alert class="alert-box alert">{{case.errorMessage}}</div>
                                 </td>
                               </tr>
                             </table>
@@ -298,6 +298,5 @@
     <script src="js/lodash.min.js"></script>
     <script src="app.js"></script>
     <script src="metaData.js"></script>
-    <script src="allScenarios.js"></script>
   </body>
 </html>
