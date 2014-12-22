@@ -12,7 +12,7 @@
 <input class='search-input' id='toc-search-input' placeholder='enter regexp to search in toc' onkeydown='searchChanged(event)'></input>
 <h3><a href='index.html'>Summary</a></h3>
 <ul>
-<li><a href='all.html'>All Scenarios <span class='badge count'>48</span></a>
+<li><a href='all.html'>All Scenarios <span class='badge count'>49</span></a>
 </ul>
 <h3>Test Classes</h3>
 <ul>
@@ -58,6 +58,7 @@
 <li><a href='Issue-_34.html'>Issue-#34</a>
 <li><a href='Issue-_4.html'>Issue-#4</a>
 <li><a href='Issue-_47.html'>Issue-#47</a>
+<li><a href='Issue-_49.html'>Issue-#49</a>
 <li><a href='Issue-_9.html'>Issue-#9</a>
 </ul>
 </ul>
@@ -76,16 +77,15 @@
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutorTest:test classes with only ignored test result in a valid report")'><i class='icon-ok'></i><span> Test classes with only ignored test result in a valid report</span> <span class='duration'>(3.73 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_25.html'>Issue-#25</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.junit.JUnitExecutorTest:test classes with only ignored test result in a valid report'>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutorTest:exception in scenario is not hidden by exception in JUnit after method")'><i class='icon-ok'></i><span> Exception in scenario is not hidden by exception in JUnit after method</span> <span class='duration'>(6.52 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_49.html'>Issue-#49</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.junit.JUnitExecutorTest:exception in scenario is not hidden by exception in JUnit after method'>
 <div class='scenario-content'>
 <div class='case passedCase'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a test class with all tests ignored</span> <span class='duration'>(0.63 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test class is executed with JUnit</span> <span class='duration'>(2.16 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the report model contains</span> <span class='argument'>0</span> <span class='word'>scenarios</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report model has a valid class name</span> <span class='duration'>(0.09 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a test class with a failing scenario and a failing after stage</span> <span class='duration'>(0.96 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test class is executed with JUnit</span> <span class='duration'>(4.39 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the test fails with message</span> <span class='argument'>assertion failed in test step</span> <span class='duration'>(0.71 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
@@ -93,29 +93,46 @@
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutorTest:the JUnit Parameterized runner creates correct cases")'><i class='icon-ok'></i><span> The JUnit Parameterized runner creates correct cases</span> <span class='duration'>(11.24 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.junit.JUnitExecutorTest:the JUnit Parameterized runner creates correct cases'>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutorTest:test classes with only ignored test result in a valid report")'><i class='icon-ok'></i><span> Test classes with only ignored test result in a valid report</span> <span class='duration'>(5.49 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_25.html'>Issue-#25</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.junit.JUnitExecutorTest:test classes with only ignored test result in a valid report'>
 <div class='scenario-content'>
 <div class='case passedCase'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a JUnit test class with the Parameterized Runner</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test class has</span> <span class='argument'>2</span> <span class='word'>parameters</span> <span class='duration'>(0.23 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test class is executed with JUnit</span> <span class='duration'>(8.76 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the report model contains one scenario for each test method</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>each scenario contains</span> <span class='argument'>2</span> <span class='word'>cases</span> <span class='duration'>(0.40 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a test class with all tests ignored</span> <span class='duration'>(0.91 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test class is executed with JUnit</span> <span class='duration'>(3.17 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the report model contains</span> <span class='argument'>0</span> <span class='word'>scenarios</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report model has a valid class name</span> <span class='duration'>(0.14 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutorTest.html'>com.tngtech.jgiven.junit.JUnitExecutorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>2 scenarios, 2 cases, 9 steps, 0 failed cases  <span class='duration'>(14.97 ms)</span></div>
+<div class='scenario'>
+<h3 onclick='toggle("com.tngtech.jgiven.junit.JUnitExecutorTest:the JUnit Parameterized runner creates correct cases")'><i class='icon-ok'></i><span> The JUnit Parameterized runner creates correct cases</span> <span class='duration'>(16.94 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.junit.JUnitExecutorTest:the JUnit Parameterized runner creates correct cases'>
+<div class='scenario-content'>
+<div class='case passedCase'>
+<ul class='steps'>
+<li><span class='introWord'>Given</span> <span class='word'>a JUnit test class with the Parameterized Runner</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the test class has</span> <span class='argument'>2</span> <span class='word'>parameters</span> <span class='duration'>(0.32 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the test class is executed with JUnit</span> <span class='duration'>(13.45 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the report model contains one scenario for each test method</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>each scenario contains</span> <span class='argument'>2</span> <span class='word'>cases</span> <span class='duration'>(0.57 ms)</span></li>
+</ul>
+</div><!-- case -->
+</div> <!-- scenario-content -->
+<div class='scenario-footer'><a href='com.tngtech.jgiven.junit.JUnitExecutorTest.html'>com.tngtech.jgiven.junit.JUnitExecutorTest</a></div>
+</div> <!-- scenario-body --> 
+</div>
+<div class='statistics'>3 scenarios, 3 cases, 12 steps, 0 failed cases  <span class='duration'>(28.95 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 10, 2014 9:12:38 PM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 22, 2014 10:08:27 PM</div>
 <script src='report.js'></script>
 </body></html>
