@@ -163,7 +163,11 @@ table.steps tr:hover {
 }
 
 .PASSED {
-    color: green;
+}
+
+.pending {
+    vertical-align: middle;
+    margin-bottom: 0.2rem;
 }
 
 .skipped {
@@ -184,7 +188,7 @@ table.steps tr:hover {
 }
 
 .word.SKIPPED {
-    color: gray;
+    color: gray !important;
 }
 
 .argument {
