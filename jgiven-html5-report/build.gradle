@@ -18,6 +18,10 @@ task copyFontFiles(type: Copy) {
     into appDir + 'fonts'
 }
 
+task deleteCssFiles(type: Delete) {
+    delete appDir + 'css'
+}
+
 task copyCssFiles(type: Copy) {
     from bowerComponentsDir
     include '**/normalize.css'
@@ -58,8 +62,9 @@ task copyAppFiles(type: Copy) {
 }
 
 copyJsFiles.dependsOn bowerUpdate
-copyCssFiles.dependsOn bowerUpdate
+copyCssFiles.dependsOn bowerUpdate, deleteCssFiles
 copyFontFiles.dependsOn bowerUpdate
+copyAppFiles.dependsOn deleteCssFiles
 
 task zipAppDir(type: Zip, dependsOn: [copyJsFiles, copyCssFiles, copyFontFiles, copyAppFiles]) {
     from appDir
