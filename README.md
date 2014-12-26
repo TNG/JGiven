@@ -5,8 +5,9 @@
 [![Maven Central](http://img.shields.io/maven-central/v/com.tngtech.jgiven/jgiven-junit.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.tngtech.jgiven/jgiven-junit)
 
 
+## What is JGiven
 
-JGiven is a pragmatic BDD tool for Java.
+JGiven is a *developer friendly* and *pragmatic* BDD tool for Java. Developers write scenarios in plain Java using a fluent, domain-specific API, JGiven generates reports that are readable by domain experts.
 
 ## Why another BDD tool?
 
@@ -20,7 +21,7 @@ Finally, there are specification testing frameworks like [Spock](http://spock.or
 
 ## BDD with JGiven
 
-* Scenarios are written as standard Java code (no extra language like Scala or Groovy needed, no IDE plugin needed)
+* Scenarios are written in standard Java code using a fluent, domain-specific API (no extra language like Scala or Groovy needed, no IDE plugin needed)
 * Java method names and parameters are parsed during test execution (no extra annotations needed)
 * Scenarios are executed by either JUnit or TestNG (no extra test runner needed)
 * Scenarios consist of so-called stages, which share state by injection, providing a modular way of writing Scenarios.
