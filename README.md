@@ -5,7 +5,7 @@
 [![Maven Central](http://img.shields.io/maven-central/v/com.tngtech.jgiven/jgiven-junit.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.tngtech.jgiven/jgiven-junit)
 
 
-## What is JGiven
+## What is JGiven?
 
 JGiven is a *developer friendly* and *pragmatic* BDD tool for Java. Developers write scenarios in plain Java using a fluent, domain-specific API, JGiven generates reports that are readable by domain experts.
 
