@@ -5,17 +5,11 @@ import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
 import static java.lang.String.format;
 
 import java.io.PrintWriter;
+import java.util.List;
 
 import com.google.common.html.HtmlEscapers;
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.model.ExecutionStatus;
-import com.tngtech.jgiven.report.model.ReportModelVisitor;
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.StepModel;
-import com.tngtech.jgiven.report.model.StepStatus;
-import com.tngtech.jgiven.report.model.Tag;
-import com.tngtech.jgiven.report.model.Word;
+import com.tngtech.jgiven.report.model.*;
 
 public class ScenarioHtmlWriter extends ReportModelVisitor {
     final PrintWriter writer;
@@ -164,17 +158,22 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             if( !firstWord ) {
                 writer.print( ' ' );
             }
-            String text = HtmlEscapers.htmlEscaper().escape( word.getValue() );
-            String diffClass = diffClass( word );
-            if( firstWord && word.isIntroWord() ) {
-                writer.print( format( "<span class='introWord'>%s</span>", WordUtil.capitalize( text ) ) );
-            } else if( word.isArg() ) {
-                printArg( word );
+
+            if( word.isDataTable() ) {
+                writeDataTable( word );
             } else {
-                if( word.isDifferent() ) {
-                    writer.print( format( "<span class='word %s'>%s</span>", diffClass, text ) );
+                String text = HtmlEscapers.htmlEscaper().escape( word.getValue() );
+                String diffClass = diffClass( word );
+                if( firstWord && word.isIntroWord() ) {
+                    writer.print( format( "<span class='introWord'>%s</span>", WordUtil.capitalize( text ) ) );
+                } else if( word.isArg() ) {
+                    printArg( word );
                 } else {
-                    writer.print( "<span class='word'>" + text + "</span>" );
+                    if( word.isDifferent() ) {
+                        writer.print( format( "<span class='word %s'>%s</span>", diffClass, text ) );
+                    } else {
+                        writer.print( "<span class='word'>" + text + "</span>" );
+                    }
                 }
             }
             firstWord = false;
@@ -201,6 +200,30 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         writer.println( "</li>" );
     }
 
+    private void writeDataTable( Word word ) {
+        writer.println( "<table class='data-table'>" );
+
+        boolean header = true;
+        for( List<String> row : word.getArgumentInfo().getTableValue() ) {
+            writer.println( "<tr>" );
+
+            for( String value : row ) {
+                writer.println( header ? "<th>" : "<td>" );
+
+                String escapedValue = escapeToHtml( value );
+                String multiLine = value.contains( "<br />" ) ? " multiline" : "";
+                writer.print( format( "<span class='%s'>%s</span>", multiLine, escapedValue ) );
+
+                writer.println( header ? "</th>" : "</td>" );
+            }
+
+            writer.println( "</tr>" );
+            header = false;
+        }
+
+        writer.println( "</table>" );
+    }
+
     private void writeExtendedDescription( StepModel stepModel, String id ) {
         writer.write( "<div id='" + id + "' class='extended-description collapsed'><span class='extended-description-content'>" );
         writer.write( stepModel.getExtendedDescription() );
@@ -215,6 +238,10 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     private void printArg( Word word ) {
         String value = word.getArgumentInfo().isParameter() ? formatCaseArgument( word ) : HtmlEscapers.htmlEscaper().escape(
             word.getFormattedValue() );
+        printArgValue( word, value );
+    }
+
+    private void printArgValue( Word word, String value ) {
         value = escapeToHtml( value );
         String multiLine = value.contains( "<br />" ) ? " multiline" : "";
         String caseClass = word.getArgumentInfo().isParameter() ? "caseArgument" : "argument";

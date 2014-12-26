@@ -133,4 +133,7 @@ public class Word {
         return isDifferent;
     }
 
+    public boolean isDataTable() {
+        return isArg() && getArgumentInfo().isDataTable();
+    }
 }
