@@ -70,6 +70,19 @@ Start by reading the [documentation](http://jgiven.org/docs/) section on JGiven'
 JGiven is published under the Apache License 2.0, see
 http://www.apache.org/licenses/LICENSE-2.0 for details.
 
+## Building and Testing JGiven itself
+After you have cloned the Git repository execute the following command to build and test JGiven:
+
+```
+./gradlew test
+```
+
+The following software is required for building and running the tests:
+
+* JDK 1.6 (`JAVA_HOME` and `PATH` should be set accordingly)
+* Gradle (is automatically downloaded by the `gradlew` script)
+* Bower (required for the HTML5 report generator, can be installed with `sudo npm install -g bower`)
+* PhantomJS (required for the Selenium tests of the HTML5 report, can be installed under Ubuntu with `sudo apt-get install phantomjs`)
 
 ## Contributing
 
