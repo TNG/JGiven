@@ -1,3 +1,61 @@
+# v0.6.2
+## New Features
+
+### Data tables as parameters
+* Step parameters can now be annotated with `@Table`.
+* Such parameters are stored as a table instead of a plain string in the report model.
+* Reporters present these parameters as data tables instead of plain strings.
+* The type of these parameters can be
+** A list of list (actually all types implementing Iterable are supported)
+** A two-dimensional array
+** A list or array of POJOs. In this case each POJO represents a single row and the fields of the POJOs are taken as columns
+
+#### Example
+
+##### POJO
+```
+class CoffeeWithPrice {
+    String name;
+    double price_in_EUR;
+    CoffeeWithPrice(String name, double priceInEur) {
+        this.name = name;
+        this.price_in_EUR = priceInEur;
+    }
+}
+```
+#### The Step Method
+```
+public SELF the_prices_of_the_coffees_are( @Table CoffeeWithPrice... prices ) {
+   ...
+}
+```
+#### Invocation of the step method
+```
+   given().the_prices_of_the_coffees_are(
+       new CoffeeWithPrice("Espresso", 2.0),
+       new CoffeeWithPrice("Cappuccino", 2.5));
+```
+#### Text Report
+```
+   Given the prices of the coffees are
+
+     | name       | price in EUR |
+     +------------+--------------+
+     | Espresso   | 2.0          |
+     | Cappuccino | 2.5          |
+```
+
+#### Without POJO
+The same effect can be achieved without a POJO by using a two-dimensional array or a list of list.
+```
+   given().the_prices_of_the_coffees_are( new Object[][] {
+       { "name", "price in EUR" },
+       { "Espresso", 2.0 },
+       { "Cappuccino", 2.5}});
+```
+
+
+
 # v0.6.1
 ## New Features
 
