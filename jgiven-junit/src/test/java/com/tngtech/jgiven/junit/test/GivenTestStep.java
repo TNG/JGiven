@@ -2,6 +2,7 @@ package com.tngtech.jgiven.junit.test;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.Table;
 
 public class GivenTestStep extends Stage<GivenTestStep> {
 
@@ -36,5 +37,19 @@ public class GivenTestStep extends Stage<GivenTestStep> {
 
     public void something() {
 
+    }
+
+    public static class CoffeePrice {
+        String name;
+        double price_in_EUR;
+
+        public CoffeePrice( String name, double priceInEur ) {
+            this.name = name;
+            this.price_in_EUR = priceInEur;
+        }
+    }
+
+    public GivenTestStep the_following_data( @Table CoffeePrice... data ) {
+        return this;
     }
 }

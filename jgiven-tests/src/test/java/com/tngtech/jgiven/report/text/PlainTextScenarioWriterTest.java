@@ -102,4 +102,20 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
                     "    | 2 |       4 | arg21 | Failed: Some Error |\n" +
                     "    | 3 | 1234567 | arg31 | Success            |\n" );
     }
+
+    @Test
+    @FeatureDataTables
+    public void table_annotations_at_parameters_lead_to_data_tables_in_the_report() throws UnsupportedEncodingException {
+        given().a_report_model_with_one_scenario()
+            .and().step_$_of_case_$_has_a_table_argument_with_value( 1, 1, new String[][] {
+                { "foo", "bar" },
+                { "1", "a" },
+                { "2", "b" } } );
+        when().the_plain_text_report_is_generated();
+        then().the_report_contains_text( "\n" +
+                "     | foo | bar |\n" +
+                "     +-----+-----+\n" +
+                "     |   1 | a   |\n" +
+                "     |   2 | b   |\n" );
+    }
 }

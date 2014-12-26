@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.report.model;
 
+import java.util.List;
+
 import com.google.common.base.Objects;
 
 public class ArgumentInfo {
@@ -24,6 +26,12 @@ public class ArgumentInfo {
      * Can be {@code null}
      */
     private String formattedValue;
+
+    /**
+     * Is set when the value of the argument is a table value,
+     * otherwise is {@code null}
+     */
+    private List<List<String>> tableValue;
 
     public void setParameterName( String parameterName ) {
         this.parameterName = parameterName;
@@ -63,6 +71,18 @@ public class ArgumentInfo {
         return formattedValue;
     }
 
+    public void setTableValue( List<List<String>> tableValue ) {
+        this.tableValue = tableValue;
+    }
+
+    public List<List<String>> getTableValue() {
+        return tableValue;
+    }
+
+    public boolean isDataTable() {
+        return tableValue != null;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hashCode( parameterName, argumentName );
@@ -83,4 +103,5 @@ public class ArgumentInfo {
         return Objects.equal( parameterName, other.parameterName )
                 && Objects.equal( argumentName, other.argumentName );
     }
+
 }

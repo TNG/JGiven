@@ -13,11 +13,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.model.ReportModelVisitor;
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.StepModel;
-import com.tngtech.jgiven.report.model.Word;
+import com.tngtech.jgiven.report.model.*;
 
 public class PlainTextScenarioWriter extends PlainTextWriter {
     private static final String INDENT = "   ";
@@ -103,7 +99,18 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
         } else {
             intro = INDENT + words.get( 0 ).getValue() + " ";
         }
-        String rest = joinWords( words.subList( 1, words.size() ) );
+
+        int restSize = words.size();
+        boolean printDataTable = false;
+        if( words.size() > 1 ) {
+            Word lastWord = words.get( words.size() - 1 );
+            if( lastWord.isArg() && lastWord.getArgumentInfo().isDataTable() ) {
+                restSize = restSize - 1;
+                printDataTable = true;
+            }
+
+        }
+        String rest = joinWords( words.subList( 1, restSize ) );
 
         if( stepModel.isNotImplementedYet() ) {
             rest = withColor( Color.BLACK, true, Attribute.INTENSITY_FAINT, rest + " (not implemented yet)" );
@@ -114,6 +121,18 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
             rest += withColor( Color.RED, true, Attribute.INTENSITY_BOLD, " (failed)" );
         }
         writer.println( intro + rest );
+
+        if( printDataTable ) {
+            writer.println();
+            printDataTable( words.get( words.size() - 1 ) );
+        }
+    }
+
+    private void printDataTable( Word word ) {
+        PlainTextTableWriter plainTextTableWriter = new PlainTextTableWriter( writer, withColor );
+        String indent = INDENT + "  ";
+        plainTextTableWriter.writeDataTable( word.getArgumentInfo().getTableValue(), indent );
+        writer.println();
     }
 
     private String joinWords( List<Word> words ) {

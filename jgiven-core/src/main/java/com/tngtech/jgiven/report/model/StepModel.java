@@ -38,7 +38,7 @@ public class StepModel {
 
     public StepModel( String name, List<Word> words ) {
         this.name = name;
-        this.words = words;
+        this.words = Lists.newArrayList( words );
     }
 
     public void accept( ReportModelVisitor visitor ) {
@@ -100,5 +100,9 @@ public class StepModel {
 
     public Iterable<Word> getWords() {
         return Collections.unmodifiableList( words );
+    }
+
+    public Word getLastWord() {
+        return words.get( words.size() - 1 );
     }
 }

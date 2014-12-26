@@ -1,13 +1,20 @@
 package com.tngtech.jgiven.report.model;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.base.Function;
 import com.google.common.base.Splitter;
+import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.DefaultFormatter;
+import com.tngtech.jgiven.format.TableFormatter;
+import com.tngtech.jgiven.impl.util.ReflectionUtil;
 
 public class StepFormatter {
     private final String stepDescription;
@@ -64,9 +71,91 @@ public class StepFormatter {
         for( int i = argCount; i < arguments.size(); i++ ) {
             Object value = arguments.get( i ).value;
             String formattedValue = formatUsingFormatterOrNull( formatters.get( i ), value );
-            formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ), formattedValue ) );
+            if( formattedValue == null
+                    && formatters.get( i ) != null
+                    && ( formatters.get( i ).formatter instanceof TableFormatter ) ) {
+                formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ), toTableValue( value ) ) );
+            } else {
+                formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ), formattedValue ) );
+            }
         }
         return formattedWords;
+    }
+
+    public static List<List<String>> toTableValue( Object tableValue ) {
+        List<List<String>> result = Lists.newArrayList();
+
+        Iterable<?> rows = toIterable( tableValue );
+
+        boolean first = true;
+        int ncols = 0;
+        for( Object row : rows ) {
+            if( first ) {
+                if( toIterable( row ) == null ) {
+                    return pojosToTableValue( tableValue );
+                }
+            }
+            List<String> values = toStringList( row );
+            if( !first && ncols != values.size() ) {
+                throw new JGivenWrongUsageException( "Number of columns in @Table annotated parameter is not equal for all rows. Expected "
+                        + ncols + " got " + values.size() );
+            }
+            ncols = values.size();
+            result.add( values );
+            first = false;
+        }
+
+        return result;
+    }
+
+    private static List<List<String>> pojosToTableValue( Object tableValue ) {
+        List<List<String>> list = Lists.newArrayList();
+
+        Iterable<?> objects = toIterable( tableValue );
+        Object first = objects.iterator().next();
+        List<Field> fields = ReflectionUtil.getAllNonStaticFields( first.getClass() );
+        list.add( getFieldNames( fields ) );
+
+        for( Object o : objects ) {
+            list.add( toStringList( ReflectionUtil.getAllFieldValues( o, fields, "" ) ) );
+        }
+
+        return list;
+    }
+
+    private static List<String> getFieldNames( List<Field> fields ) {
+        return FluentIterable.from( ReflectionUtil.getAllFieldNames( fields ) )
+            .transform( new Function<String, String>() {
+                @Override
+                public String apply( String input ) {
+                    return input.replace( '_', ' ' );
+                }
+            } ).toList();
+    }
+
+    private static List<String> toStringList( Object row ) {
+        List<String> list = Lists.newArrayList();
+
+        Iterable<?> objects = toIterable( row );
+        if( objects == null ) {
+            throw new JGivenWrongUsageException( "@Table annotated argument cannot be converted to a data table." );
+        }
+        for( Object o : objects ) {
+            list.add( toDefaultStringFormat( o ) );
+        }
+
+        return list;
+    }
+
+    private static Iterable<?> toIterable( Object value ) {
+        if( value instanceof Iterable<?> ) {
+            return (Iterable<?>) value;
+        }
+        if( value.getClass().isArray() ) {
+            Object[] array = (Object[]) value;
+            return Arrays.asList( array );
+        }
+        return null;
     }
 
     private int findArgumentEnd( int i, List<String> words ) {
@@ -107,7 +196,7 @@ public class StepFormatter {
         return argumentFormatter.format( (T) value );
     }
 
-    private String toDefaultStringFormat( Object value ) {
+    private static String toDefaultStringFormat( Object value ) {
         return new DefaultFormatter<Object>().format( value );
     }
 }

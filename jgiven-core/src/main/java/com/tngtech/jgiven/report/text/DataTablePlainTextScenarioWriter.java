@@ -3,9 +3,7 @@ package com.tngtech.jgiven.report.text;
 import java.io.PrintWriter;
 import java.util.List;
 
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.primitives.Doubles;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
@@ -44,37 +42,15 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
         }
     }
 
-    static class ColumnSpec {
-        int width;
-        boolean leftAligned;
-    }
-
     @Override
     public void visitEnd( ScenarioModel scenarioModel ) {
-        List<List<String>> dataTableModel = getDataTableModel( scenarioModel );
-        StringBuilder formatBuilder = new StringBuilder();
-        StringBuilder lineBuilder = new StringBuilder();
-        List<ColumnSpec> columnWidths = getColumnSpecs( dataTableModel );
-        for( ColumnSpec spec : columnWidths ) {
-            formatBuilder.append( "| %" );
-            if( spec.leftAligned ) {
-                formatBuilder.append( "-" );
-            }
-            formatBuilder.append( spec.width + "s " );
-            lineBuilder.append( "+" );
-            lineBuilder.append( Strings.repeat( "-", spec.width + 2 ) );
-        }
-        formatBuilder.append( "|" );
-        lineBuilder.append( "+" );
-
-        String formatString = formatBuilder.toString();
-        String caseIndent = "    ";
         writer.println( "  Cases:\n" );
-        writer.println( caseIndent + String.format( formatString, dataTableModel.get( 0 ).toArray() ) );
-        writer.println( caseIndent + lineBuilder );
-        for( int nrow = 1; nrow < dataTableModel.size(); nrow++ ) {
-            writer.println( caseIndent + String.format( formatString, dataTableModel.get( nrow ).toArray() ) );
-        }
+
+        List<List<String>> dataTableModel = getDataTableModel( scenarioModel );
+        PlainTextTableWriter dataTableWriter = new PlainTextTableWriter(writer, withColor);
+
+        String caseIndent = "    ";
+        dataTableWriter.writeDataTable( dataTableModel, caseIndent );
     }
 
     private List<List<String>> getDataTableModel( ScenarioModel scenarioModel ) {
@@ -104,27 +80,4 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
         return "Failed: " + c.errorMessage;
     }
 
-    private List<ColumnSpec> getColumnSpecs( List<List<String>> dataTableModel ) {
-        ColumnSpec[] result = new ColumnSpec[dataTableModel.get( 0 ).size()];
-        for( int nrow = 0; nrow < dataTableModel.size(); nrow++ ) {
-            List<String> row = dataTableModel.get( nrow );
-            for( int ncol = 0; ncol < row.size(); ncol++ ) {
-                String value = row.get( ncol );
-                int width = value.length();
-                ColumnSpec spec = result[ncol];
-                if( spec == null ) {
-                    spec = new ColumnSpec();
-                    result[ncol] = spec;
-                }
-                if( width > spec.width ) {
-                    spec.width = width;
-                }
-
-                if( nrow > 0 && Doubles.tryParse( value ) == null ) {
-                    spec.leftAligned = true;
-                }
-            }
-        }
-        return Lists.newArrayList( result );
-    }
 }

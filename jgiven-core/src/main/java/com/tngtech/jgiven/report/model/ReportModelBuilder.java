@@ -14,19 +14,14 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.annotation.ExtendedDescription;
-import com.tngtech.jgiven.annotation.Format;
-import com.tngtech.jgiven.annotation.Formatf;
-import com.tngtech.jgiven.annotation.Hidden;
-import com.tngtech.jgiven.annotation.IsTag;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
 import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.config.TagConfiguration;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
+import com.tngtech.jgiven.format.TableFormatter;
 import com.tngtech.jgiven.impl.intercept.InvocationMode;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
@@ -166,6 +161,8 @@ public class ReportModelBuilder implements ScenarioListener {
                 } else if( annotation instanceof Formatf ) {
                     Formatf arg = (Formatf) annotation;
                     return new Formatting( new PrintfFormatter(), arg.value() );
+                } else if( annotation instanceof Table ) {
+                    return new Formatting( new TableFormatter() );
                 }
             } catch( Exception e ) {
                 throw Throwables.propagate( e );

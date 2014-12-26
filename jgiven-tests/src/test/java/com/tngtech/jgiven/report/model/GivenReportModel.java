@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.model;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 import java.util.Arrays;
 
@@ -8,6 +8,7 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
@@ -164,6 +165,11 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF step_$_of_case_$_has_status( int stepNr, int caseNr, StepStatus status ) {
         getCase( caseNr ).getStep( stepNr - 1 ).setStatus( status );
+        return self();
+    }
+
+    public SELF step_$_of_case_$_has_a_table_argument_with_value( int stepNr, int caseNr, @Table String[][] dataTable ) {
+        getCase( caseNr ).getStep( stepNr - 1 ).addWords( Word.argWord( "dataTable", "foo", StepFormatter.toTableValue( dataTable ) ) );
         return self();
     }
 

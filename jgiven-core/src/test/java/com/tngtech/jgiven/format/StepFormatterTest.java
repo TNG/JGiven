@@ -1,8 +1,11 @@
 package com.tngtech.jgiven.format;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -13,6 +16,8 @@ import com.google.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.jgiven.DataTables;
+import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.StepFormatter;
 import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
@@ -64,7 +69,7 @@ public class StepFormatterTest {
     @SuppressWarnings( { "unchecked", "rawtypes" } )
     public void testFormatter( String source, List<Object> arguments, ArgumentFormatter<?> formatter, String formatterArg,
             String expectedResult ) {
-        List<Formatting<?>> asList = Lists.newArrayList();
+        List<Formatting<?>> asList = newArrayList();
         if( formatter != null ) {
             asList.add( new Formatting( formatter, formatterArg ) );
         } else {
@@ -72,7 +77,7 @@ public class StepFormatterTest {
                 asList.add( null );
             }
         }
-        List<NamedArgument> namedArguments = Lists.newArrayList();
+        List<NamedArgument> namedArguments = newArrayList();
         for( Object o : arguments ) {
             namedArguments.add( new NamedArgument( "foo", o ) );
         }
@@ -85,10 +90,58 @@ public class StepFormatterTest {
     }
 
     private List<String> toFormattedValues( List<Word> formattedWords ) {
-        List<String> result = Lists.newArrayList();
+        List<String> result = newArrayList();
         for( Word w : formattedWords ) {
             result.add( w.getFormattedValue() );
         }
         return result;
+    }
+
+    @Test
+    public void testToTableValue() {
+        // has neither rows nor columns
+        assertThat( StepFormatter.toTableValue( new Object[][] {} ) ).isEmpty();
+
+        // no columns
+        assertThat( StepFormatter.toTableValue( new Object[][] { {} } ) ).hasSize( 1 );
+
+        try {
+            // rows with non-collection type
+            StepFormatter.toTableValue( new Object[] { new Object[] {}, 5 } );
+            assertThat( false ).as( "Exception should have been thrown" ).isTrue();
+        } catch( JGivenWrongUsageException e ) {}
+
+        try {
+            // not the same column number in all rows
+            StepFormatter.toTableValue( new Object[][] { { 1, 2 }, { 1 } } );
+            assertThat( false ).as( "Exception should have been thrown" ).isTrue();
+        } catch( JGivenWrongUsageException e ) {}
+
+        // string array
+        assertThat( StepFormatter.toTableValue( new String[][] { { "1" } } ) )
+            .containsExactly( Arrays.asList( "1" ) );
+
+        // mixed array
+        assertThat( StepFormatter.toTableValue( new Object[][] { { "a" }, { 3 } } ) )
+            .containsExactly( Arrays.asList( "a" ), Arrays.asList( "3" ) );
+
+        // 2 columns
+        assertThat( StepFormatter.toTableValue( new Object[][] { { 1, 2 }, { 3, 4 } } ) )
+            .containsExactly( Arrays.asList( "1", "2" ), Arrays.asList( "3", "4" ) );
+
+        // DataTable
+        assertThat( StepFormatter.toTableValue( DataTables.table( 2, 1, 2, 3, 4 ) ) )
+            .containsExactly( Arrays.asList( "1", "2" ), Arrays.asList( "3", "4" ) );
+
+        ArrayList arrayList = new ArrayList();
+        arrayList.add( newArrayList( 5 ) );
+        assertThat( StepFormatter.toTableValue( arrayList ) )
+            .containsExactly(Arrays.asList("5"));
+
+        assertThat( StepFormatter.toTableValue( new Object[][] { { 1, 2 }, { 3, 4 } } ) )
+            .isEqualTo( Lists.newArrayList(
+                Lists.newArrayList( "1", "2" ),
+                Lists.newArrayList( "3", "4" ) )
+            );
     }
 }

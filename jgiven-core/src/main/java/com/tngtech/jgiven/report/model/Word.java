@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.report.model;
 
+import java.util.List;
+
 import com.google.common.base.Objects;
 
 /**
@@ -38,7 +40,7 @@ public class Word {
     }
 
     public static Word argWord( String argumentName, String value ) {
-        return argWord( argumentName, value, null );
+        return argWord( argumentName, value, (String) null );
     }
 
     public static Word argWord( String argumentName, String value, String formattedValue ) {
@@ -46,6 +48,14 @@ public class Word {
         word.argumentInfo = new ArgumentInfo();
         word.argumentInfo.setArgumentName( argumentName );
         word.argumentInfo.setFormattedValue( formattedValue );
+        return word;
+    }
+
+    public static Word argWord( String argumentName, String value, List<List<String>> tableValue ) {
+        Word word = new Word( value );
+        word.argumentInfo = new ArgumentInfo();
+        word.argumentInfo.setArgumentName( argumentName );
+        word.argumentInfo.setTableValue( tableValue );
         return word;
     }
 

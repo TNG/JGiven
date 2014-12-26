@@ -1,18 +1,14 @@
 package com.tngtech.jgiven.junit;
 
-import static com.tngtech.jgiven.report.model.ExecutionStatus.*;
-import static java.lang.String.*;
-import static org.junit.Assume.*;
+import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
+import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
+import static java.lang.String.format;
+import static org.junit.Assume.assumeTrue;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.MethodRule;
@@ -179,9 +175,10 @@ public class ScenarioExecutionRule implements MethodRule {
     }
 
     private static List<Object> getTypeMatchingValuesInOrderOf( Class<?>[] expectedClasses, List<Object> values ) {
+        List<Object> valuesCopy = Lists.newArrayList( values );
         List<Object> result = new ArrayList<Object>();
         for( Class<?> argumentClass : expectedClasses ) {
-            for( Iterator<Object> iterator = values.iterator(); iterator.hasNext(); ) {
+            for( Iterator<Object> iterator = valuesCopy.iterator(); iterator.hasNext(); ) {
                 Object value = iterator.next();
                 if( Primitives.wrap( argumentClass ).isInstance( value ) ) {
                     result.add( value );
@@ -191,7 +188,7 @@ public class ScenarioExecutionRule implements MethodRule {
             }
         }
         if( result.size() < expectedClasses.length ) {
-            log.warn( format( "Couldn't find matching values in '%s' for expected classes '%s',", values,
+            log.warn( format( "Couldn't find matching values in '%s' for expected classes '%s',", valuesCopy,
                 Arrays.toString( expectedClasses ) ) );
         }
         return result;

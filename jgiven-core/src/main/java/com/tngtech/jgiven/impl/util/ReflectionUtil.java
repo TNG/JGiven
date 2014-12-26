@@ -3,23 +3,19 @@ package com.tngtech.jgiven.impl.util;
 import static java.lang.String.format;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
+import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Throwables;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.Lists;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
 import com.tngtech.jgiven.exception.JGivenInjectionException;
 import com.tngtech.jgiven.exception.JGivenUserException;
@@ -185,24 +181,51 @@ public class ReflectionUtil {
      * @param errorDescription customizable part of logged error message
      * @return a {@link List} containing all the found field values (never {@code null})
      */
-    public static List<Object> getAllNonStaticFieldValuesFrom( final Class<?> clazz, Object target, final String errorDescription ) {
-        final List<Object> fieldValues = new ArrayList<Object>();
+    public static List<Object> getAllNonStaticFieldValuesFrom( final Class<?> clazz, final Object target, final String errorDescription ) {
+        return getAllFieldValues( target, getAllNonStaticFields( clazz ), errorDescription );
+    }
 
-        forEachField( target, clazz, nonStaticField(), new FieldAction() {
+    private static Function<Field, Object> getFieldValueFunction( final Object target, final String errorDescription ) {
+        return new Function<Field, Object>() {
             @Override
-            public void act( Object target, Field field ) throws Exception {
+            public Object apply( Field field ) {
                 makeAccessible( field, "" );
                 try {
-                    fieldValues.add( field.get( target ) );
+                    return field.get( target );
                 } catch( IllegalAccessException e ) {
                     log.warn(
-                        format( "Not able to access field '%s' containing in '%s'." + errorDescription, field.getName(),
-                            clazz.getSimpleName() ), e );
+                        format( "Not able to access field '%s'." + errorDescription, toReadableString( field ) ), e );
+                    return null;
                 }
+            }
+        };
+    }
+
+    public static List<Field> getAllNonStaticFields( Class<?> clazz ) {
+        final List<Field> result = Lists.newArrayList();
+
+        forEachField( null, clazz, nonStaticField(), new FieldAction() {
+            @Override
+            public void act( Object target, Field field ) throws Exception {
+                result.add( field );
             }
         } );
 
-        return fieldValues;
+        return result;
+    }
+
+    public static List<Object> getAllFieldValues( Object target, List<Field> fields, String errorDescription ) {
+        return FluentIterable.from( fields ).transform(
+            getFieldValueFunction( target, errorDescription ) ).toList();
+    }
+
+    public static List<String> getAllFieldNames( List<Field> fields ) {
+        return FluentIterable.from( fields ).transform( new Function<Field, String>() {
+            @Override
+            public String apply( Field input ) {
+                return input.getName();
+            }
+        } ).toList();
     }
 
     public static void setField( Field field, Object object, Object value, String errorDescription ) {
