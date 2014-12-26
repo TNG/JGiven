@@ -6,9 +6,9 @@
 * Such parameters are stored as a table instead of a plain string in the report model.
 * Reporters present these parameters as data tables instead of plain strings.
 * The type of these parameters can be
-** A list of list (actually all types implementing Iterable are supported)
-** A two-dimensional array
-** A list or array of POJOs. In this case each POJO represents a single row and the fields of the POJOs are taken as columns
+  * A list of list (actually all types implementing Iterable are supported)
+  * A two-dimensional array
+  * A list or array of POJOs. In this case each POJO represents a single row and the fields of the POJOs are taken as columns
 
 #### Example
 
