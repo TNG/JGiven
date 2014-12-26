@@ -20,10 +20,10 @@ import com.tngtech.jgiven.format.PrintfFormatter;
  * <pre>{@code
  *     class CoffeeWithPrice {
  *         String name;
- *         double priceInEur;
+ *         double price_in_EUR;
  *         CoffeeWithPrice(String name, double priceInEur) {
  *            this.name = name;
- *            this.priceInEur = priceInEur;
+ *            this.price_in_EUR = priceInEur;
  *         }
  *     }
  * }</pre>
@@ -43,10 +43,10 @@ import com.tngtech.jgiven.format.PrintfFormatter;
  * <pre>{@code
  *     Given the prices of the coffees are
  *     
- *          | name       | priceInEur |
- *          +------------+------------+
- *          | Espresso   | 2.0        |
- *          | Cappuccino | 2.5        |
+ *          | name       | price in EUR |
+ *          +------------+--------------+
+ *          | Espresso   | 2.0          |
+ *          | Cappuccino | 2.5          |
  * 
  * 
  * }</pre>
