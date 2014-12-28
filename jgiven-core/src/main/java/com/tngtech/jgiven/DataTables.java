@@ -23,7 +23,7 @@ public class DataTables {
      * @param numberOfColumns the number of columns the resulting table should have
      * @param data            the data of the table represented as a one-dimensional list,
      *                        the number of entries must be a multiple of {@code numberOfColumns}.
-     *                        The first {@numberOfColumns} elements are taken as the header of the table,
+     *                        The first {@code numberOfColumns} elements are taken as the header of the table,
      *                        the remaining values as data
      * @return a list of list that contains the same data as {@code data}, but in a two-dimensional form
      * @throws java.lang.IllegalArgumentException if {@code data.length % numberOfColumns != 0} 
