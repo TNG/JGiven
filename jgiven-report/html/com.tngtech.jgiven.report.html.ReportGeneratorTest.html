@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
   <meta charset='utf-8'>
-  <title>Issue</title>
+  <title>com.tngtech.jgiven.report.html.ReportGeneratorTest</title>
   <link href='style.css' rel='stylesheet'>
 </head>
 <body>
@@ -69,71 +69,57 @@
 <div id='header'>
 <div id='header-title'>
 <i id='show-menu-icon' class='icon-menu collapsed' onclick='showToc()'></i>
-<div class='packagename'></div>
-<h2>Issue</h2>
+<div class='packagename'>com.tngtech.jgiven.report.html</div>
+<h2>ReportGeneratorTest</h2>
 </div> <!-- #header-title -->
-<div class='description'>Issue numbers correspond to Issues in GitHub</div>
 </div>
 <div id='content'>
 <input class='search-input' id='content-search-input' size='30' placeholder='enter regexp to search in scenarios' onkeydown='contentSearchChanged(event)'></input>
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored")'><i class='icon-ok'></i><span> Failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored</span><span class='badge count'>2</span> <span class='duration'>(29.74 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.ReportGeneratorTest:the report generator can generate HTML files")'><i class='icon-ok'></i><span> The report generator can generate HTML files</span> <span class='duration'>(38.30 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Static_HTML_Report.html'>Static HTML Report</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.ReportGeneratorTest:the report generator can generate HTML files'>
 <div class='scenario-content'>
+<div class='case passedCase'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a failing test</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>With</span> <span class='word'>failIfPassed set to true</span> <span class='duration'>(0.03 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.13 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(0.60 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the reports exist as JSON files</span> <span class='duration'>(1.89 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a custom CSS file</span> <span class='duration'>(0.10 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the report generator is executed with format</span> <span class='argument'>HTML</span> <span class='duration'>(18.25 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>an index file exists</span> <span class='duration'>(0.09 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the custom CSS file is copied to the target directory</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>an HTML file exists for each test class</span> <span class='duration'>(0.12 ms)</span></li>
 </ul>
-<h4>Cases:</h4>
-<table class='data-table'>
-<tr>
-<th>#</th><th>testFramework</th><th>Status</th></tr>
-<tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(4.87 ms)</span></td></tr>
-<tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(24.88 ms)</span></td></tr>
-</table>
+</div><!-- case -->
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html'>com.tngtech.jgiven.report.html.ReportGeneratorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail")'><i class='icon-ok'></i><span> Passing tests annotated with NotImplementedYet with failIfPassed set to true fail</span><span class='badge count'>2</span> <span class='duration'>(67.45 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.ReportGeneratorTest:the report generator can generate text files")'><i class='icon-ok'></i><span> The report generator can generate text files</span> <span class='duration'>(23.32 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Plain_Text_Report.html'>Plain Text Report</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.ReportGeneratorTest:the report generator can generate text files'>
 <div class='scenario-content'>
+<div class='case passedCase'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a passing test</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.07 ms)</span></li>
-<li><span class='introWord'>With</span> <span class='word'>failIfPassed set to true</span> <span class='duration'>(0.10 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(10.46 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test fails with message</span> <span class='argument'>Test succeeded, but failIfPassed set to true</span> <span class='duration'>(1.28 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the reports exist as JSON files</span> <span class='duration'>(1.92 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the report generator is executed with format</span> <span class='argument'>TEXT</span> <span class='duration'>(6.19 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>a text file exists for each test class</span> <span class='duration'>(2.84 ms)</span></li>
 </ul>
-<h4>Cases:</h4>
-<table class='data-table'>
-<tr>
-<th>#</th><th>testFramework</th><th>Status</th></tr>
-<tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(13.15 ms)</span></td></tr>
-<tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(54.30 ms)</span></td></tr>
-</table>
+</div><!-- case -->
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html'>com.tngtech.jgiven.report.html.ReportGeneratorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>2 scenarios, 4 cases, 20 steps, 0 failed cases  <span class='duration'>(97.19 ms)</span></div>
+<div class='statistics'>2 scenarios, 2 cases, 11 steps, 0 failed cases  <span class='duration'>(61.62 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 28, 2014 6:43:48 PM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Dec 28, 2014 6:43:47 PM</div>
 <script src='report.js'></script>
 </body></html>
