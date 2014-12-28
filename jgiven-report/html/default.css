@@ -591,9 +591,14 @@ ul.steps li {
   font-family: monospace;
   border: 1px solid lightgray;
   background-color: white;
-  display: inline-table;
+  display: table;
   white-space: pre;
   margin: 5px;
+  margin-left: 3.3em;
+}
+
+.steps .data-table {
+  margin-left: 3.3em;
 }
 
 .diff {
