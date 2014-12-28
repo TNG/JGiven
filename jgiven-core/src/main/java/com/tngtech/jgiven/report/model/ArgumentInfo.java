@@ -1,7 +1,5 @@
 package com.tngtech.jgiven.report.model;
 
-import java.util.List;
-
 import com.google.common.base.Objects;
 
 public class ArgumentInfo {

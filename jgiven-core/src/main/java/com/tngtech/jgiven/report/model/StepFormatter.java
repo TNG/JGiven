@@ -77,7 +77,8 @@ public class StepFormatter {
                     && formatters.get( i ) != null
                     && ( formatters.get( i ).formatter instanceof TableFormatter ) ) {
                 Table tableAnnotation = ((TableFormatter)formatters.get( i ).formatter).tableAnnotation;
-                formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ), toTableValue( value, tableAnnotation ) ) );
+                formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ),
+                        toTableValue( value, tableAnnotation ) ) );
             } else {
                 formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ), formattedValue ) );
             }

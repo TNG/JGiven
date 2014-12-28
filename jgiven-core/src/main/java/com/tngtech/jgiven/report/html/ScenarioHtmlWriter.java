@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import com.google.common.html.HtmlEscapers;
-import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.annotation.Table.HeaderType;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.*;

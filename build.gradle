@@ -126,6 +126,7 @@ subprojects {
     checkstyle {
         configFile = file("${rootProject.projectDir}/develop/checkstyle-rules.xml")
         showViolations = false
+        ignoreFailures = true
     }
 
     task jgivenReport(type: JavaExec) {

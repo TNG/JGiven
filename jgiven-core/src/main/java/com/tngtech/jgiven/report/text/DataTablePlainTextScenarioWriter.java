@@ -7,8 +7,6 @@ import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.report.model.*;
 
-import javax.xml.crypto.Data;
-
 public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
 
     public DataTablePlainTextScenarioWriter( PrintWriter writer, boolean withColor ) {

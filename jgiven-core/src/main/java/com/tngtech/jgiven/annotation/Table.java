@@ -2,9 +2,6 @@ package com.tngtech.jgiven.annotation;
 
 import java.lang.annotation.*;
 
-import com.tngtech.jgiven.format.ArgumentFormatter;
-import com.tngtech.jgiven.format.PrintfFormatter;
-
 import static com.tngtech.jgiven.annotation.Table.HeaderType.HORIZONTAL;
 
 /**
@@ -156,7 +153,6 @@ public @interface Table {
      *     | b1 | b2 | b3 |
      *     | c1 | c2 | c3 |
      * </pre>
-     * @return
      */
     boolean transpose() default false;
 

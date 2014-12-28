@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.report.model;
 
-import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.annotation.Table.HeaderType;
 
 import java.util.List;
