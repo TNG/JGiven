@@ -79,56 +79,25 @@
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored")'><i class='icon-ok'></i><span> Failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored</span><span class='badge count'>2</span> <span class='duration'>(29.74 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML report generates one file for all failed scenarios")'><i class='icon-ok'></i><span> The static HTML report generates one file for all failed scenarios</span> <span class='duration'>(11.89 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Static_HTML_Report.html'>Static HTML Report</a></div><div class='tag tag-Issue'><a href='Issue-_29.html'>Issue-#29</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML report generates one file for all failed scenarios'>
 <div class='scenario-content'>
+<div class='case passedCase'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a failing test</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>With</span> <span class='word'>failIfPassed set to true</span> <span class='duration'>(0.03 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.13 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(0.60 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report has</span> <span class='argument'>1</span> <span class='word'>scenarios</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>of scenario</span> <span class='argument'>1</span> <span class='word'>has failed</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(1.74 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the static HTML reporter is executed</span> <span class='duration'>(6.04 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>a file with name</span> <span class='argument'>failed.html</span> <span class='word'>exists</span> <span class='duration'>(1.11 ms)</span></li>
 </ul>
-<h4>Cases:</h4>
-<table class='data-table'>
-<tr>
-<th>#</th><th>testFramework</th><th>Status</th></tr>
-<tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(4.87 ms)</span></td></tr>
-<tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(24.88 ms)</span></td></tr>
-</table>
+</div><!-- case -->
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html'>com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail")'><i class='icon-ok'></i><span> Passing tests annotated with NotImplementedYet with failIfPassed set to true fail</span><span class='badge count'>2</span> <span class='duration'>(67.45 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail'>
-<div class='scenario-content'>
-<ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a passing test</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.07 ms)</span></li>
-<li><span class='introWord'>With</span> <span class='word'>failIfPassed set to true</span> <span class='duration'>(0.10 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(10.46 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test fails with message</span> <span class='argument'>Test succeeded, but failIfPassed set to true</span> <span class='duration'>(1.28 ms)</span></li>
-</ul>
-<h4>Cases:</h4>
-<table class='data-table'>
-<tr>
-<th>#</th><th>testFramework</th><th>Status</th></tr>
-<tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(13.15 ms)</span></td></tr>
-<tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(54.30 ms)</span></td></tr>
-</table>
-</div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
-</div> <!-- scenario-body --> 
-</div>
-<div class='statistics'>2 scenarios, 4 cases, 20 steps, 0 failed cases  <span class='duration'>(97.19 ms)</span></div>
+<div class='statistics'>1 scenarios, 1 cases, 6 steps, 0 failed cases  <span class='duration'>(11.89 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->

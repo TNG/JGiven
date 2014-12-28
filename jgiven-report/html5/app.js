@@ -444,6 +444,17 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       return res;
   };
 
+  $scope.isHeaderCell = function( rowIndex, columnIndex, headerType ) {
+    console.log(headerType);
+    if (rowIndex === 0 && (headerType === 'HORIZONTAL' || headerType === 'BOTH')) {
+       return true;
+    }
+    if (columnIndex === 0 && (headerType === 'VERTICAL' || headerType === 'BOTH')) {
+       return true;
+    }
+    return false;
+  };
+
   $scope.init();
 
 });

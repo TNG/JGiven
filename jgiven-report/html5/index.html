@@ -222,15 +222,13 @@
                                     <strong>&lt;{{word.argumentInfo.parameterName}}&gt;</strong>
                                   </span>
 
-                                  <span ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName) && !word.argumentInfo.tableValue"
+                                  <span ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName) && !word.argumentInfo.dataTable"
                                         class="{{word.argumentInfo ? 'argument' : ''}} {{ word.value.indexOf('\n') > -1 ? 'multiline' : ''}}"
                                           >{{ word.argumentInfo.formattedValue || word.value }}</span> <!-- do not change formatting here, it is important for multiline values -->
-                                  <table class="table-value" ng-if="word.argumentInfo.tableValue">
-                                    <tr>
-                                      <th ng-repeat="value in word.argumentInfo.tableValue[0]">{{ value }}</th>
-                                    </tr>
-                                    <tr ng-repeat="row in word.argumentInfo.tableValue.slice(1)">
-                                      <td ng-repeat="value in row">{{ value }}</td>
+                                  <table class="table-value" ng-if="word.argumentInfo.dataTable">
+                                    <tr ng-repeat="row in word.argumentInfo.dataTable.data">
+                                      <td class="{{ isHeaderCell($parent.$index, $index, word.argumentInfo.dataTable.headerType) ? 'header-cell' : '' }}"
+                                          ng-repeat="value in row">{{ value }}</td>
                                     </tr>
                                   </table>
                                 </span>
