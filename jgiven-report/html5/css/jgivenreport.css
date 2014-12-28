@@ -96,24 +96,39 @@ table.steps {
     margin-bottom: 0.5rem;
 }
 
-table.steps td {
+td.steps {
     padding: 0.2rem;
     vertical-align: top;
     font-size: 1rem;
 }
 
-table.steps td.intro-word {
+td.steps.intro-word {
     text-align: right;
     vertical-align: top;
     font-size: 1rem;
 }
 
-table.steps tr {
+table.steps tr.steps {
     background-color: white;
 }
 
-table.steps tr:hover {
+table.steps tr.steps:hover {
     background-color: #eee;
+}
+
+.table-value {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.multiline {
+    font-family: monospace;
+    border: 1px solid lightgray;
+    background-color: white;
+    display: table;
+    white-space: pre;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .diff {
