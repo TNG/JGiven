@@ -121,6 +121,10 @@ table.steps tr.steps:hover {
     margin-bottom: 0.5rem;
 }
 
+.header-cell {
+    font-weight: 700;
+}
+
 .multiline {
     font-family: monospace;
     border: 1px solid lightgray;
