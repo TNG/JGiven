@@ -79,56 +79,32 @@
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored")'><i class='icon-ok'></i><span> Failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored</span><span class='badge count'>2</span> <span class='duration'>(29.74 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest:multiple parameter usages lead to one parameter")'><i class='icon-ok'></i><span> Multiple parameter usages lead to one parameter</span> <span class='duration'>(17.32 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Issue'><a href='Issue-_32.html'>Issue-#32</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest:multiple parameter usages lead to one parameter'>
 <div class='scenario-content'>
+<div class='case passedCase'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a failing test</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>With</span> <span class='word'>failIfPassed set to true</span> <span class='duration'>(0.03 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.13 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(0.60 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>an unanalyzed report model with one scenario</span> <span class='show-extended-description' onclick='showExtendedDescription("extDesc44937684")'>i</span> <span class='duration'>(0.08 ms)</span><div id='extDesc44937684' class='extended-description collapsed'><span class='extended-description-content'>A report model where the analysers have not been executed on<i class='icon-cancel' onclick='toggle("extDesc44937684")'></i></span></div></li>
+<li><span class='introWord'>With</span> <span class='word'>parameters</span> <span class='argument'>param1</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the scenario has</span> <span class='argument'>2</span> <span class='word'>cases</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has arguments</span> <span class='argument'>foo</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a step</span> <span class='argument'>some step</span> <span class='word'>with argument</span> <span class='argument'>foo</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has a step</span> <span class='argument'>another step</span> <span class='word'>with argument</span> <span class='argument'>foo</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has arguments</span> <span class='argument'>bar</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a step</span> <span class='argument'>some step</span> <span class='word'>with argument</span> <span class='argument'>bar</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has a step</span> <span class='argument'>another step</span> <span class='word'>with argument</span> <span class='argument'>bar</span> <span class='duration'>(0.26 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the argument analyzer is executed</span> <span class='duration'>(0.96 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the scenario has derived parameters</span> <span class='argument'>param1</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>has derived arguments</span> <span class='argument'>foo</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>2</span> <span class='word'>has derived arguments</span> <span class='argument'>bar</span> <span class='duration'>(0.28 ms)</span></li>
 </ul>
-<h4>Cases:</h4>
-<table class='data-table'>
-<tr>
-<th>#</th><th>testFramework</th><th>Status</th></tr>
-<tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(4.87 ms)</span></td></tr>
-<tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(24.88 ms)</span></td></tr>
-</table>
+</div><!-- case -->
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest.html'>com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail")'><i class='icon-ok'></i><span> Passing tests annotated with NotImplementedYet with failIfPassed set to true fail</span><span class='badge count'>2</span> <span class='duration'>(67.45 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail'>
-<div class='scenario-content'>
-<ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a passing test</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.07 ms)</span></li>
-<li><span class='introWord'>With</span> <span class='word'>failIfPassed set to true</span> <span class='duration'>(0.10 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(10.46 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test fails with message</span> <span class='argument'>Test succeeded, but failIfPassed set to true</span> <span class='duration'>(1.28 ms)</span></li>
-</ul>
-<h4>Cases:</h4>
-<table class='data-table'>
-<tr>
-<th>#</th><th>testFramework</th><th>Status</th></tr>
-<tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(13.15 ms)</span></td></tr>
-<tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(54.30 ms)</span></td></tr>
-</table>
-</div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
-</div> <!-- scenario-body --> 
-</div>
-<div class='statistics'>2 scenarios, 4 cases, 20 steps, 0 failed cases  <span class='duration'>(97.19 ms)</span></div>
+<div class='statistics'>1 scenarios, 1 cases, 13 steps, 0 failed cases  <span class='duration'>(17.32 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
