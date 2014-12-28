@@ -37,7 +37,7 @@ public class CommonReportHelper {
                 log.error( "Could not create report directory " + reportDir );
             }
             File reportFile = new File( reportDir, model.getClassName() + ".json" );
-            log.info( "Writing scenario report to file " + reportFile.getAbsolutePath() );
+            log.debug( "Writing scenario report to file " + reportFile.getAbsolutePath() );
             new ScenarioJsonWriter( model ).write( reportFile );
         }
     }

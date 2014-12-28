@@ -76,10 +76,12 @@ public class StepMethodInterceptor implements MethodInterceptor {
         // convention and returns the receiver object. If not, we fall back to null
         // and hope for the best.
         if( !method.getReturnType().isAssignableFrom( receiver.getClass() ) ) {
-            log.warn( "The step method " + method.getName()
-                    + " of class " + method.getDeclaringClass().getSimpleName()
-                    + " does not follow the fluent interface convention of returning "
-                    + "the receiver object. Please change the return type to the SELF type parameter." );
+            if( method.getReturnType() != Void.class ) {
+                log.warn( "The step method " + method.getName()
+                        + " of class " + method.getDeclaringClass().getSimpleName()
+                        + " does not follow the fluent interface convention of returning "
+                        + "the receiver object. Please change the return type to the SELF type parameter." );
+            }
             return null;
         }
 
@@ -87,6 +89,10 @@ public class StepMethodInterceptor implements MethodInterceptor {
     }
 
     private InvocationMode getInvocationMode( Object receiver, Method method ) {
+        if( method.getDeclaringClass() == Object.class ) {
+            return NORMAL;
+        }
+
         if( !methodExecutionEnabled ) {
             return SKIPPED;
 

@@ -37,7 +37,7 @@ public class PlainTextReporter extends PlainTextWriter {
     }
 
     public PlainTextReporter( boolean withColor ) {
-        this( PrintWriterUtil.getPrintWriter( System.out ), withColor );
+        this( PrintWriterUtil.getPrintWriter( System.out, withColor ), withColor );
     }
 
     public PlainTextReporter( PrintWriter printWriter, boolean withColor ) {

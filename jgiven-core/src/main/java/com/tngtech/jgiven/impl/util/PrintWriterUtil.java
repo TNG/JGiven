@@ -1,10 +1,8 @@
 package com.tngtech.jgiven.impl.util;
 
-import java.io.File;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+
+import org.fusesource.jansi.AnsiConsole;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
@@ -19,7 +17,10 @@ public class PrintWriterUtil {
         }
     }
 
-    public static PrintWriter getPrintWriter( OutputStream outputStream ) {
+    public static PrintWriter getPrintWriter( OutputStream outputStream, boolean withColor ) {
+        if( withColor ) {
+            outputStream = AnsiConsole.wrapOutputStream( outputStream );
+        }
         try {
             return new PrintWriter( new OutputStreamWriter( outputStream, Charsets.UTF_8.name() ) );
         } catch( UnsupportedEncodingException e ) {

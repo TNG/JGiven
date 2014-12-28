@@ -25,14 +25,6 @@ public class Config {
         return INSTANCE;
     }
 
-    public boolean isReportEnabled() {
-        return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_REPORT_ENABLED, TRUE ) );
-    }
-
-    public void setReportEnabled( boolean enabled ) {
-        System.setProperty( JGIVEN_REPORT_ENABLED, "" + enabled );
-    }
-
     public Optional<File> getReportDir() {
         String reportDirName = System.getProperty( JGIVEN_REPORT_DIR );
         if( reportDirName == null ) {
@@ -56,8 +48,16 @@ public class Config {
         return Optional.of( reportDir );
     }
 
+    public boolean isReportEnabled() {
+        return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_REPORT_ENABLED, FALSE ) );
+    }
+
+    public void setReportEnabled( boolean enabled ) {
+        System.setProperty( JGIVEN_REPORT_ENABLED, "" + enabled );
+    }
+
     public boolean textColorEnabled() {
-        return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_REPORT_TEXT_COLOR, FALSE ) );
+        return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_REPORT_TEXT_COLOR, TRUE ) );
     }
 
     public boolean textReport() {

@@ -113,11 +113,15 @@ subprojects {
 
     test {
         systemProperty 'jgiven.report.dir', 'build/reports/jgiven/json'
+        systemProperty 'org.slf4j.simpleLogger.defaultLogLevel', 'warn'
         jacoco {
             destinationFile = file("${rootProject.projectDir}/build/jacoco/jacocoTest.exec")
             classDumpFile = file("${rootProject.projectDir}/build/jacoco/classpathdumps")
         }
-    }
+        testLogging {
+            showStandardStreams = true
+        }
+   }
 
     checkstyle {
         configFile = file("${rootProject.projectDir}/develop/checkstyle-rules.xml")
