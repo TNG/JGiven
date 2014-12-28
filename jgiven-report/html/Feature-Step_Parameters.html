@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
   <meta charset='utf-8'>
-  <title>Issue</title>
+  <title>Feature</title>
   <link href='style.css' rel='stylesheet'>
 </head>
 <body>
@@ -70,65 +70,50 @@
 <div id='header-title'>
 <i id='show-menu-icon' class='icon-menu collapsed' onclick='showToc()'></i>
 <div class='packagename'></div>
-<h2>Issue</h2>
+<h2>Feature</h2>
 </div> <!-- #header-title -->
-<div class='description'>Issue numbers correspond to Issues in GitHub</div>
+<div class='description'>Steps can have parameters</div>
 </div>
 <div id='content'>
 <input class='search-input' id='content-search-input' size='30' placeholder='enter regexp to search in scenarios' onkeydown='contentSearchChanged(event)'></input>
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored")'><i class='icon-ok'></i><span> Failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored</span><span class='badge count'>2</span> <span class='duration'>(29.74 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:failing tests annotated with NotImplementedYet with failIfPassed set to true are ignored'>
+<h3 onclick='toggle("com.tngtech.jgiven.impl.ScenarioExecutorTest:step methods can have primitive arrays as parameters")'><i class='icon-ok'></i><span> Step methods can have primitive arrays as parameters</span><span class='badge count'>8</span> <span class='duration'>(4.93 ms)</span></h3>
+<div class='tag-line'><div class='tag tag-Issue'><a href='Issue-_1.html'>Issue-#1</a></div><div class='tag tag-Feature'><a href='Feature-Step_Parameters.html'>Step Parameters</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.impl.ScenarioExecutorTest:step methods can have primitive arrays as parameters'>
 <div class='scenario-content'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a failing test</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>With</span> <span class='word'>failIfPassed set to true</span> <span class='duration'>(0.03 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(3.13 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test is ignored</span> <span class='duration'>(0.60 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a step method with a primitive</span> <span class='caseArgument'>&lt;type&gt;</span> <span class='word'>array</span> <span class='caseArgument'>&lt;array&gt;</span> <span class='word'>as parameter</span> <span class='duration'>(0.34 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the scenario is executed</span> <span class='duration'>(0.07 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>no exeception is thrown</span> <span class='duration'>(0.09 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
-<th>#</th><th>testFramework</th><th>Status</th></tr>
+<th>#</th><th>type</th><th>array</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(4.87 ms)</span></td></tr>
+<td>1</td><td>byte</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(0.81 ms)</span></td></tr>
 <tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(24.88 ms)</span></td></tr>
+<td>2</td><td>char</td><td>a, b, c</td><td><i class='icon-ok'></i> <span class='duration'>(0.57 ms)</span></td></tr>
+<tr>
+<td>3</td><td>short</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(0.77 ms)</span></td></tr>
+<tr>
+<td>4</td><td>int</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(0.57 ms)</span></td></tr>
+<tr>
+<td>5</td><td>long</td><td>1, 2, 3</td><td><i class='icon-ok'></i> <span class='duration'>(0.53 ms)</span></td></tr>
+<tr>
+<td>6</td><td>double</td><td>1.0, 2.0, 3.0</td><td><i class='icon-ok'></i> <span class='duration'>(0.57 ms)</span></td></tr>
+<tr>
+<td>7</td><td>float</td><td>1.0, 2.0, 3.0</td><td><i class='icon-ok'></i> <span class='duration'>(0.58 ms)</span></td></tr>
+<tr>
+<td>8</td><td>boolean</td><td>true, false</td><td><i class='icon-ok'></i> <span class='duration'>(0.52 ms)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.impl.ScenarioExecutorTest.html'>com.tngtech.jgiven.impl.ScenarioExecutorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail")'><i class='icon-ok'></i><span> Passing tests annotated with NotImplementedYet with failIfPassed set to true fail</span><span class='badge count'>2</span> <span class='duration'>(67.45 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-TestNG.html'>TestNG</a></div><div class='tag tag-Feature'><a href='Feature-JUnit.html'>JUnit</a></div><div class='tag tag-Issue'><a href='Issue-_4.html'>Issue-#4</a></div><div class='tag tag-Feature'><a href='Feature-NotImplementedYet_Annotation.html'>NotImplementedYet Annotation</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest:passing tests annotated with NotImplementedYet with failIfPassed set to true fail'>
-<div class='scenario-content'>
-<ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a passing test</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the test is annotated with NotImplementedYet</span> <span class='duration'>(0.07 ms)</span></li>
-<li><span class='introWord'>With</span> <span class='word'>failIfPassed set to true</span> <span class='duration'>(0.10 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the test is executed with</span> <span class='caseArgument'>&lt;testFramework&gt;</span> <span class='duration'>(10.46 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the test fails with message</span> <span class='argument'>Test succeeded, but failIfPassed set to true</span> <span class='duration'>(1.28 ms)</span></li>
-</ul>
-<h4>Cases:</h4>
-<table class='data-table'>
-<tr>
-<th>#</th><th>testFramework</th><th>Status</th></tr>
-<tr>
-<td>1</td><td>JUnit</td><td><i class='icon-ok'></i> <span class='duration'>(13.15 ms)</span></td></tr>
-<tr>
-<td>2</td><td>TestNG</td><td><i class='icon-ok'></i> <span class='duration'>(54.30 ms)</span></td></tr>
-</table>
-</div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.testframework.TestFrameworkExecutionTest.html'>com.tngtech.jgiven.testframework.TestFrameworkExecutionTest</a></div>
-</div> <!-- scenario-body --> 
-</div>
-<div class='statistics'>2 scenarios, 4 cases, 20 steps, 0 failed cases  <span class='duration'>(97.19 ms)</span></div>
+<div class='statistics'>1 scenarios, 8 cases, 24 steps, 0 failed cases  <span class='duration'>(4.93 ms)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
