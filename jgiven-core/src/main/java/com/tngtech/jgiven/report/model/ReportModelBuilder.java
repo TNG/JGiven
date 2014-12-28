@@ -162,7 +162,8 @@ public class ReportModelBuilder implements ScenarioListener {
                     Formatf arg = (Formatf) annotation;
                     return new Formatting( new PrintfFormatter(), arg.value() );
                 } else if( annotation instanceof Table ) {
-                    return new Formatting( new TableFormatter() );
+                    Table tableAnnotation = (Table) annotation;
+                    return new Formatting( new TableFormatter(tableAnnotation) );
                 }
             } catch( Exception e ) {
                 throw Throwables.propagate( e );

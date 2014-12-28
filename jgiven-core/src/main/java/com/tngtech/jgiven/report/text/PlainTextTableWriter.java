@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
+import com.tngtech.jgiven.report.model.DataTable;
 
 public class PlainTextTableWriter extends PlainTextWriter {
 
@@ -18,10 +19,14 @@ public class PlainTextTableWriter extends PlainTextWriter {
         boolean leftAligned;
     }
 
-    public void writeDataTable( List<List<String>> tableModel, String indent ) {
+    public void writeDataTable( DataTable dataTable, String indent ) {
         StringBuilder formatBuilder = new StringBuilder();
         StringBuilder lineBuilder = new StringBuilder();
-        List<ColumnSpec> columnWidths = getColumnSpecs( tableModel );
+
+        List<List<String>> tableModel = dataTable.getData();
+        List<ColumnSpec> columnWidths = getColumnSpecs(tableModel);
+
+
         for( ColumnSpec spec : columnWidths ) {
             formatBuilder.append( "| %" );
             if( spec.leftAligned ) {
@@ -36,7 +41,9 @@ public class PlainTextTableWriter extends PlainTextWriter {
 
         String formatString = formatBuilder.toString();
         writer.println( indent + String.format(formatString, tableModel.get(0).toArray()) );
-        writer.println( indent + lineBuilder );
+        if (dataTable.getHeaderType().isHorizontal()) {
+            writer.println(indent + lineBuilder);
+        }
         for( int nrow = 1; nrow < tableModel.size(); nrow++ ) {
             writer.println( indent + String.format( formatString, tableModel.get( nrow ).toArray() ) );
         }

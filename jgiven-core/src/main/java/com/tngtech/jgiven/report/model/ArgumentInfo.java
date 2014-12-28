@@ -28,10 +28,10 @@ public class ArgumentInfo {
     private String formattedValue;
 
     /**
-     * Is set when the value of the argument is a table value,
+     * Is set when the value of the argument is a data table value,
      * otherwise is {@code null}
      */
-    private List<List<String>> tableValue;
+    private DataTable dataTable;
 
     public void setParameterName( String parameterName ) {
         this.parameterName = parameterName;
@@ -71,21 +71,21 @@ public class ArgumentInfo {
         return formattedValue;
     }
 
-    public void setTableValue( List<List<String>> tableValue ) {
-        this.tableValue = tableValue;
+    public void setDataTable( DataTable dataTable) {
+        this.dataTable = dataTable;
     }
 
-    public List<List<String>> getTableValue() {
-        return tableValue;
+    public DataTable getDataTable() {
+        return dataTable;
     }
 
     public boolean isDataTable() {
-        return tableValue != null;
+        return dataTable != null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( parameterName, argumentName );
+        return Objects.hashCode( parameterName, argumentName, dataTable );
     }
 
     @Override
@@ -101,7 +101,8 @@ public class ArgumentInfo {
         }
         ArgumentInfo other = (ArgumentInfo) obj;
         return Objects.equal( parameterName, other.parameterName )
-                && Objects.equal( argumentName, other.argumentName );
+                && Objects.equal( argumentName, other.argumentName )
+                && Objects.equal( dataTable, other.dataTable );
     }
 
 }

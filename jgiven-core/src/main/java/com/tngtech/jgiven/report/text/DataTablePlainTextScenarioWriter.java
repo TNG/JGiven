@@ -4,10 +4,10 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.StepModel;
-import com.tngtech.jgiven.report.model.Word;
+import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.report.model.*;
+
+import javax.xml.crypto.Data;
 
 public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
 
@@ -46,14 +46,14 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
     public void visitEnd( ScenarioModel scenarioModel ) {
         writer.println( "  Cases:\n" );
 
-        List<List<String>> dataTableModel = getDataTableModel( scenarioModel );
+        DataTable dataTableModel = getDataTableModel( scenarioModel );
         PlainTextTableWriter dataTableWriter = new PlainTextTableWriter(writer, withColor);
 
         String caseIndent = "    ";
         dataTableWriter.writeDataTable( dataTableModel, caseIndent );
     }
 
-    private List<List<String>> getDataTableModel( ScenarioModel scenarioModel ) {
+    private DataTable getDataTableModel( ScenarioModel scenarioModel ) {
         List<List<String>> result = Lists.newArrayList();
 
         List<String> headerRow = Lists.newArrayList();
@@ -70,7 +70,7 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
             row.add( getStatusText( c ) );
             result.add( row );
         }
-        return result;
+        return new DataTable(Table.HeaderType.HORIZONTAL, result);
     }
 
     private String getStatusText( ScenarioCaseModel c ) {

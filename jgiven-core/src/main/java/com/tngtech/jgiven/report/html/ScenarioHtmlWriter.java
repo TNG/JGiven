@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import com.google.common.html.HtmlEscapers;
+import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.annotation.Table.HeaderType;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.*;
 
@@ -203,22 +205,27 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     private void writeDataTable( Word word ) {
         writer.println( "<table class='data-table'>" );
 
-        boolean header = true;
-        for( List<String> row : word.getArgumentInfo().getTableValue() ) {
+        boolean firstRow = true;
+        DataTable dataTable = word.getArgumentInfo().getDataTable();
+        HeaderType headerType = dataTable.getHeaderType();
+        for( List<String> row : dataTable.getData()) {
             writer.println( "<tr>" );
 
+            boolean firstColumn = true;
             for( String value : row ) {
-                writer.println( header ? "<th>" : "<td>" );
+                boolean th = firstRow && headerType.isHorizontal() || firstColumn && headerType.isVertical();
+                writer.println(th ? "<th>" : "<td>");
 
                 String escapedValue = escapeToHtml( value );
                 String multiLine = value.contains( "<br />" ) ? " multiline" : "";
-                writer.print( format( "<span class='%s'>%s</span>", multiLine, escapedValue ) );
+                writer.print(format("<span class='%s'>%s</span>", multiLine, escapedValue));
 
-                writer.println( header ? "</th>" : "</td>" );
+                writer.println( th ? "</th>" : "</td>" );
+                firstColumn = false;
             }
 
             writer.println( "</tr>" );
-            header = false;
+            firstRow = false;
         }
 
         writer.println( "</table>" );

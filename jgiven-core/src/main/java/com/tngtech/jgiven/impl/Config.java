@@ -49,7 +49,7 @@ public class Config {
     }
 
     public boolean isReportEnabled() {
-        return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_REPORT_ENABLED, FALSE ) );
+        return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_REPORT_ENABLED, TRUE ) );
     }
 
     public void setReportEnabled( boolean enabled ) {

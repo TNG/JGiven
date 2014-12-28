@@ -2,6 +2,7 @@ package com.tngtech.jgiven.report.text;
 
 import java.io.UnsupportedEncodingException;
 
+import com.tngtech.jgiven.annotation.Table;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -106,17 +107,24 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
     @Test
     @Issue("#52")
     @FeatureDataTables
-    public void table_annotations_at_parameters_lead_to_data_tables_in_the_report() throws UnsupportedEncodingException {
+    @DataProvider( {
+            "VERTICAL, false",
+            "HORIZONTAL, true",
+            "NONE, false",
+            "BOTH, true"
+    })
+    public void table_annotations_at_parameters_lead_to_data_tables_in_the_report(Table.HeaderType headerType, boolean hasHeaderLine) throws UnsupportedEncodingException {
         given().a_report_model_with_one_scenario()
-            .and().step_$_of_case_$_has_a_table_argument_with_value( 1, 1, new String[][] {
-                { "foo", "bar" },
-                { "1", "a" },
-                { "2", "b" } } );
+                .and().step_$_of_case_$_has_a_table_argument_with_value(1, 1, new String[][]{
+                {"foo", "bar"},
+                {"1", "a"},
+                {"2", "b"}})
+                .with().header_type_set_to(headerType);
         when().the_plain_text_report_is_generated();
-        then().the_report_contains_text( "\n" +
+        then().the_report_contains_text("\n" +
                 "     | foo | bar |\n" +
-                "     +-----+-----+\n" +
+                (hasHeaderLine ? "     +-----+-----+\n" : "") +
                 "     |   1 | a   |\n" +
-                "     |   2 | b   |\n" );
+                "     |   2 | b   |\n");
     }
 }

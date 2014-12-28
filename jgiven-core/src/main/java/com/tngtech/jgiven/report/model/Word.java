@@ -51,11 +51,11 @@ public class Word {
         return word;
     }
 
-    public static Word argWord( String argumentName, String value, List<List<String>> tableValue ) {
+    public static Word argWord( String argumentName, String value, DataTable dataTable ) {
         Word word = new Word( value );
         word.argumentInfo = new ArgumentInfo();
         word.argumentInfo.setArgumentName( argumentName );
-        word.argumentInfo.setTableValue( tableValue );
+        word.argumentInfo.setDataTable(dataTable);
         return word;
     }
 

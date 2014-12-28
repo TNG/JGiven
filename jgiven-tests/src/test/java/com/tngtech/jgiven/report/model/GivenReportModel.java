@@ -3,7 +3,9 @@ package com.tngtech.jgiven.report.model;
 import static java.util.Arrays.asList;
 
 import java.util.Arrays;
+import java.util.List;
 
+import com.beust.jcommander.internal.Lists;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
@@ -18,6 +20,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     private boolean analyze = true;
     private Tag latestTag;
+    private Word latestWord;
 
     @ExtendedDescription( "A report model where the analysers have not been executed on" )
     public SELF an_unanalyzed_report_model_with_one_scenario() {
@@ -169,8 +172,22 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF step_$_of_case_$_has_a_table_argument_with_value( int stepNr, int caseNr, @Table String[][] dataTable ) {
-        getCase( caseNr ).getStep( stepNr - 1 ).addWords( Word.argWord( "dataTable", "foo", StepFormatter.toTableValue( dataTable ) ) );
+        latestWord = Word.argWord("dataTable", "foo", toDataTable(dataTable));
+        getCase( caseNr ).getStep( stepNr - 1 ).addWords(latestWord);
         return self();
+    }
+
+    private DataTable toDataTable(String[][] dataTable) {
+        List<List<String>> listOfList = Lists.newArrayList();
+
+        for (int i = 0; i< dataTable.length; i++) {
+            listOfList.add(Lists.<String>newArrayList());
+            for (int j = 0; j < dataTable[i].length; j++) {
+                listOfList.get(i).add(dataTable[i][j]);
+            }
+        }
+
+        return new DataTable(Table.HeaderType.HORIZONTAL, listOfList);
     }
 
     public SELF step_$_has_status( int stepNr, StepStatus status ) {
@@ -213,4 +230,11 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         }
     }
 
+    public void transpose_set_to(boolean b) {
+    }
+
+    public SELF header_type_set_to(Table.HeaderType headerType) {
+        latestWord.getArgumentInfo().getDataTable().setHeaderType(headerType);
+        return self();
+    }
 }

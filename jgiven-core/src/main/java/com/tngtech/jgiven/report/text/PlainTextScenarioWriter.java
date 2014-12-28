@@ -131,7 +131,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     private void printDataTable( Word word ) {
         PlainTextTableWriter plainTextTableWriter = new PlainTextTableWriter( writer, withColor );
         String indent = INDENT + "  ";
-        plainTextTableWriter.writeDataTable( word.getArgumentInfo().getTableValue(), indent );
+        plainTextTableWriter.writeDataTable( word.getArgumentInfo().getDataTable(), indent );
         writer.println();
     }
 

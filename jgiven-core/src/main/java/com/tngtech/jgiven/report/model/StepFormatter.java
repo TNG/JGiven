@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
 import com.google.common.base.Function;
 import com.google.common.base.Splitter;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.DefaultFormatter;
@@ -74,7 +76,8 @@ public class StepFormatter {
             if( formattedValue == null
                     && formatters.get( i ) != null
                     && ( formatters.get( i ).formatter instanceof TableFormatter ) ) {
-                formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ), toTableValue( value ) ) );
+                Table tableAnnotation = ((TableFormatter)formatters.get( i ).formatter).tableAnnotation;
+                formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ), toTableValue( value, tableAnnotation ) ) );
             } else {
                 formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ), formattedValue ) );
             }
@@ -82,17 +85,20 @@ public class StepFormatter {
         return formattedWords;
     }
 
-    public static List<List<String>> toTableValue( Object tableValue ) {
+    public static DataTable toTableValue(Object tableValue, Table tableAnnotation) {
         List<List<String>> result = Lists.newArrayList();
 
         Iterable<?> rows = toIterable( tableValue );
+        if (rows == null) {
+            rows = ImmutableList.of(tableValue);
+        }
 
         boolean first = true;
         int ncols = 0;
         for( Object row : rows ) {
             if( first ) {
                 if( toIterable( row ) == null ) {
-                    return pojosToTableValue( tableValue );
+                    return pojosToTableValue( tableValue, tableAnnotation );
                 }
             }
             List<String> values = toStringList( row );
@@ -105,13 +111,17 @@ public class StepFormatter {
             first = false;
         }
 
-        return result;
+        result = tableAnnotation.transpose() ? transpose(result) : result;
+        return new DataTable(tableAnnotation.header(), result);
     }
 
-    private static List<List<String>> pojosToTableValue( Object tableValue ) {
+    private static DataTable pojosToTableValue(Object tableValue, Table tableAnnotation) {
         List<List<String>> list = Lists.newArrayList();
 
         Iterable<?> objects = toIterable( tableValue );
+        if (objects == null) {
+            objects = ImmutableList.of(tableValue);
+        }
         Object first = objects.iterator().next();
         List<Field> fields = ReflectionUtil.getAllNonStaticFields( first.getClass() );
         list.add( getFieldNames( fields ) );
@@ -120,7 +130,24 @@ public class StepFormatter {
             list.add( toStringList( ReflectionUtil.getAllFieldValues( o, fields, "" ) ) );
         }
 
-        return list;
+        list = tableAnnotation.transpose() || tableAnnotation.header().isVertical() ? transpose(list) : list;
+        return new DataTable(tableAnnotation.header(), list);
+    }
+
+    static List<List<String>> transpose(List<List<String>> list) {
+        List<List<String>> transposed = Lists.newArrayList();
+
+        for (int rowIdx = 0; rowIdx < list.size(); rowIdx++) {
+            List<String> row = list.get(rowIdx);
+            for (int colIdx = 0; colIdx < row.size(); colIdx++ ) {
+                if (rowIdx == 0) {
+                    transposed.add(Lists.<String>newArrayList());
+                }
+                transposed.get(colIdx).add(row.get(colIdx));
+            }
+        }
+
+        return transposed;
     }
 
     private static List<String> getFieldNames( List<Field> fields ) {

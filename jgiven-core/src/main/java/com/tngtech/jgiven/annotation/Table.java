@@ -5,6 +5,8 @@ import java.lang.annotation.*;
 import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
 
+import static com.tngtech.jgiven.annotation.Table.HeaderType.HORIZONTAL;
+
 /**
  * Marks the parameter of a step method as a data table.
  * Such parameters are represented as tables in the report.
@@ -42,13 +44,13 @@ import com.tngtech.jgiven.format.PrintfFormatter;
  * <h4>Text Report</h4>
  * <pre>{@code
  *     Given the prices of the coffees are
- *     
+ *
  *          | name       | price in EUR |
  *          +------------+--------------+
  *          | Espresso   | 2.0          |
  *          | Cappuccino | 2.5          |
- * 
- * 
+ *
+ *
  * }</pre>
  *
  */
@@ -56,10 +58,153 @@ import com.tngtech.jgiven.format.PrintfFormatter;
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.PARAMETER )
 public @interface Table {
-    Class<? extends ArgumentFormatter<?>> value() default PrintfFormatter.class;
+    /**
+     * Specifies the header type of the table. Default is {@code HORIZONTAL}.
+     * <p>
+     * That is explained best by an example. <br>
+     * Given the following table argument:
+     * <pre>
+     * {@code new Object[][] {
+     *     { "a1", "a2", "a3" },
+     *     { "b1", "b2", "b3" },
+     *     { "c1", "c2", "c3" }}
+     * }
+     * </pre>
+     * Then the header type argument has the following effect.
+     * <h3>{@code HeaderType.NONE}</h3>
+     * This simply specifies the the table has no header. The plain text report will produce the following output.
+     * <pre>
+     *     | a1 | a2 | a3 |
+     *     | b1 | b2 | b3 |
+     *     | c1 | c2 | c3 |
+     * </pre>
+     * <h3>{@code HeaderType.HORIZONTAL}</h3>
+     * Specifies that the first <em>row</em> represents the header.
+     * <pre>
+     *     | a1 | a2 | a3 |
+     *     +----+----+----+
+     *     | b1 | b2 | b3 |
+     *     | c1 | c2 | c3 |
+     * </pre>
+     * <h3>{@code HeaderType.VERTICAL}</h3>
+     * Specifies that the first <em>column</em> represents the header. Thus elements a1, b1, and c1.
+     * The plain text report will produce the same output as for header type NONE, however, the HTML report will
+     * render the first column as a header.
+     * <pre>
+     *     | a1 | a2 | a3 |
+     *     | b1 | b2 | b3 |
+     *     | c1 | c2 | c3 |
+     * </pre>
+     * <h3>{@code HeaderType.BOTH}</h3>
+     * Specifies that the first <em>row</em> and the first <em>column</em> are headers.
+     * The plain text report will produce the same output as for header type HORIZONTAL, however, the HTML report will
+     * render the first row and the first column as headers.
+     * <pre>
+     *     | a1 | a2 | a3 |
+     *     +----+----+----+
+     *     | b1 | b2 | b3 |
+     *     | c1 | c2 | c3 |
+     * </pre>
+     * </p>
+     *
+     * <h2>Effect on POJO lists</h2>
+     * When the data is given by a list of POJOs then setting the header type to {@code VERTICAL} will also
+     * <em>transpose</em> the table. For example
+     * <p>
+     * Given the following POJO list.
+     * <pre>{@code new CoffeeWithPrice[] {
+     *         new CoffeeWithPrice("Espresso", 2.0),
+     *         new CoffeeWithPrice("Cappuccino", 2.5)}
+     * }</pre>
+     * When setting the header type to {@code VERTICAL}</br>
+     * Then the report will present the following table
+     * <pre>{@code
+     *     | name         | Espresso | Cappuccino |
+     *     | price in EUR | 2.0      | 2.5        |
+     * }</pre>
+     * <p>
+     * The header type {@code BOTH} <em>cannot</em> be applied to POJO lists
+     * </p>
+     *
+     * @return the header type of the table.
+     */
+    HeaderType header() default HORIZONTAL;
 
     /**
-     * Optional arguments for the ArgumentFormatter.
+     * Whether to transpose the resulting table in the report or not.
+     * <h2>Example</h2>
+     * Given the following data.
+     * <pre>
+     * {@code new Object[][] {
+     *     { "a1", "a2", "a3" },
+     *     { "b1", "b2", "b3" },
+     *     { "c1", "c2", "c3" }}
+     * }
+     * </pre>
+     * When transpose is set to {@code true}
+     * Then the table in the report will look as follows:
+     * <pre>
+     *     | a1 | b1 | c1 |
+     *     +----+----+----+
+     *     | a2 | b2 | c2 |
+     *     | a3 | b3 | c3 |
+     * </pre>
+     * instead of
+     * <pre>
+     *     | a1 | a2 | a3 |
+     *     +----+----+----+
+     *     | b1 | b2 | b3 |
+     *     | c1 | c2 | c3 |
+     * </pre>
+     * @return
      */
-    String[] args() default {};
+    boolean transpose() default false;
+
+    /**
+     * Specifies which fields should be excluded in the report.
+     * Makes only sense when supplying a list of POJOs.
+     * <p>
+     * <b>This feature is not implemented yet!</b>
+     * </p>
+     */
+    String[] excludeFields() default {};
+
+    /**
+     * Specifies which fields should be included in the report.
+     * Makes only sense when supplying a list of POJOs.
+     * <p>
+     * <b>This feature is not implemented yet!</b>
+     * </p>
+     */
+    String[] includeFields() default {};
+
+    enum HeaderType {
+        /**
+         * The table has no header
+         */
+        NONE,
+
+        /**
+         * Treat the first row as a header
+         */
+        HORIZONTAL,
+
+        /**
+         * Treat the first column as a header
+         */
+        VERTICAL,
+
+        /**
+         * Treat both, the first row and the first column as headers
+         */
+        BOTH;
+
+        public boolean isHorizontal() {
+            return this == HORIZONTAL || this == BOTH;
+        }
+
+        public boolean isVertical() {
+            return this == VERTICAL || this == BOTH;
+        }
+    }
 }
