@@ -81,21 +81,42 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   });
 
-  $scope.addBookmark = function () {
-    var name = $scope.currentPage.title;
-    if (name === 'Search Results') {
-       name = $scope.currentPage.description;
-    }
+  $scope.toggleBookmark = function () {
+    if ($scope.isBookmarked()) {
+       $scope.removeCurrentBookmark();
+    } else {
+      var name = $scope.currentPage.title;
+      if (name === 'Search Results') {
+        name = $scope.currentPage.description;
+      }
 
-    $scope.bookmarks.push({
-      name: name,
-      url: $location.path()
-    });
+      $scope.bookmarks.push({
+        name: name,
+        url: $location.path()
+      });
+    }
+  };
+
+  $scope.removeCurrentBookmark = function() {
+    $scope.removeBookmark( $scope.findBookmarkIndex() );
   };
 
   $scope.removeBookmark = function (index) {
     $scope.bookmarks.splice(index, 1);
   };
+
+  $scope.isBookmarked = function() {
+    return $scope.findBookmarkIndex() !== -1;
+  };
+
+  $scope.findBookmarkIndex = function() {
+    for (var i = 0; i < $scope.bookmarks.length; i++) {
+      if ($scope.bookmarks[i].url === $location.path()) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
   $scope.currentPath = function() {
       return $location.path();

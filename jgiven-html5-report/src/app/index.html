@@ -154,7 +154,9 @@
                    <!-- BOOKMARKS -->
 
                    <li class="heading" ng-if="bookmarks.length > 0">
-                     <a class="toggle" ng-click="bookmarks.expanded = !bookmarks.expanded">Bookmarks</a>
+                     <a class="toggle" ng-click="bookmarks.expanded = !bookmarks.expanded">Bookmarks
+                     <span class="label secondary round nav-count">{{bookmarks.length}}</span>
+                     </a>
                      <ul ng-if="bookmarks.expanded" >
                        <li ng-repeat="bookmark in bookmarks"><a href="#{{bookmark.url}}">
                          {{bookmark.name}}
@@ -202,7 +204,7 @@
                 <a ng-click="collapseAll()" title="Collapse All"><i class="fa fa-minus-square-o collapse-icon toggle"></i></a>
                 <a ng-click="expandAll()" title="Expand All"><i class="fa fa-plus-square-o expand-icon toggle"></i></a>
                 <a ng-click="printCurrentPage()" title="Print Page"><i class="fa fa-print print-icon toggle"></i></a>
-                <a ng-click="addBookmark()" title="Add Bookmark"><i class="fa fa-bookmark bookmark-icon toggle"></i></a>
+                <a ng-click="toggleBookmark()" title="Add Bookmark"><i class="fa fa-bookmark add-bookmark-icon toggle {{isBookmarked() ? 'bookmarked' : ''}}"></i></a>
               </div>
             </div>
 
