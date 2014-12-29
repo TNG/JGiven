@@ -47,6 +47,7 @@ task copyJsFiles(type: Copy) {
     include '**/angular.min.js'
     include '**/angular-sanitize.min.js'
     include '**/angular-chart.js'
+    include '**/angular-local-storage.js'
     include '**/mm-foundation-tpls.min.js'
     into appDir + 'js'
     includeEmptyDirs = false
