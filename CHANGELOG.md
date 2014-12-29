@@ -54,7 +54,8 @@ The same effect can be achieved without a POJO by using a two-dimensional array 
        { "Cappuccino", 2.5}});
 ```
 
-
+### Bookmarks in the HTML5 Report
+The HTML5 report now allows you to make bookmarks of arbitrary pages. The bookmarks are stored in the local storage of the browser.
 
 # v0.6.1
 ## New Features
