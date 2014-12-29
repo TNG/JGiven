@@ -12,12 +12,28 @@ import java.lang.annotation.Target;
  * or a comma-separated list of values.
  * <p>
  * <strong>Note that the annotation must have retention policy RUNTIME</strong>
+ * <h2>Example</h2>
+ * <pre>
+ * {@literal @}IsTag
+ * {@literal @}Retention( RetentionPolicy.RUNTIME )
+ * public {@literal @}interface Issue {
+ *  String[] value();
+ * }
+ * </pre>
  */
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.ANNOTATION_TYPE )
 public @interface IsTag {
     /**
      * If the annotation has a value and the value is an array, whether or not to explode that array to multiple tags or not.
+     * <h2>Example</h2>
+     * Take the following tag annotation
+     * <pre>
+     *   {@literal @}Issue( { "#23", "#12" } )
+     * </pre>
+     * When {@code explodeArray} is set to {@code true}
+     * Then in the report there will be two tags 'Issue-#23' and 'Issue-#12'
+     * instead of one tag 'Issue-#23,#12'
      */
     boolean explodeArray() default true;
 

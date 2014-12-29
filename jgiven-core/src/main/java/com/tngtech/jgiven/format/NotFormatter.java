@@ -10,7 +10,7 @@ package com.tngtech.jgiven.format;
  *
  * <h1>Example:</h1>
  * <pre>
- * then().the_coffee_should_$$not_be_served( coffeeServed )
+ * then().the_coffee_should_$_be_served( coffeeServed )
  * </pre>
  * <h2>Result:</h2>
  * <h3>coffeeServed == false</h3>

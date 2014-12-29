@@ -5,20 +5,20 @@ import java.util.Arrays;
 import com.google.common.collect.Iterables;
 
 /**
- * This class can be used for step arguments that should be represented as a table.
+ * A utility class to create data tables.
  */
 public class DataTables {
 
     /**
-     * Creates a {@code DataTable} with {@code numberOfColumns} columns from the given {@code data} including the header 
+     * Creates a table, i.e. a list of lists, with {@code numberOfColumns} columns from the given {@code data} including the header.
      * <p/>
      * Example:
-     * <pre>
+     * <pre>{@code
      *     table(2,
      *        "name", "age", // header
      *        "Peter", 20,   // first row of data
      *        "Susan", 35);  // second row of data
-     * </pre>
+     * }</pre>
      *
      * @param numberOfColumns the number of columns the resulting table should have
      * @param data            the data of the table represented as a one-dimensional list,

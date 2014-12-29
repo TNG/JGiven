@@ -8,6 +8,12 @@ import com.tngtech.jgiven.base.StageBase;
  */
 public class Stufe<SELF extends Stufe<?>> extends StageBase<SELF> {
 
+
+    @IntroWord
+    public SELF angenommen() {
+        return self();
+    }
+
     @IntroWord
     public SELF gegeben() {
         return self();
