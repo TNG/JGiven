@@ -65,12 +65,14 @@ ul.tags {
 
 .remove-bookmark-icon {
     float: right;
+    color: #aaa;
 }
 
 .bookmarked {
     color: darkred;
     font-weight: bold;
     font-size: 1.2rem;
+    text-shadow: 2px 2px 3px #aaa;
 }
 
 .scenario-link-icon {
