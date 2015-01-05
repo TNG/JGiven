@@ -53,12 +53,26 @@ ul.tags {
     right: 1rem;
 }
 
-.expand-icon, .collapse-icon, .print-icon {
+.expand-icon, .collapse-icon, .print-icon, .remove-bookmark-icon, .add-bookmark-icon {
     color: #6f6f6f;
 }
 
-.expand-icon:hover, .collapse-icon:hover, .print-icon:hover, .scenario:hover .scenario-link-icon:hover {
+.expand-icon:hover, .collapse-icon:hover, .print-icon:hover,
+    .scenario:hover .scenario-link-icon:hover,
+    .remove-bookmark-icon:hover, .add-bookmark-icon:hover {
     color: #008cba;
+}
+
+.remove-bookmark-icon {
+    float: right;
+    color: #aaa;
+}
+
+.bookmarked {
+    color: darkred;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-shadow: 2px 2px 3px #aaa;
 }
 
 .scenario-link-icon {
@@ -83,9 +97,12 @@ ul.tags {
     font-weight: normal !important;
 }
 
-.case-count {
+.case-count, .nav-count {
     vertical-align: text-bottom;
-    vertical-align: -moz-bottom;
+}
+
+.nav-count {
+    float: right;
 }
 
 table.steps {
