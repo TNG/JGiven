@@ -1,11 +1,18 @@
-var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize','mm.foundation','mm.foundation.offcanvas','chart.js']);
+'use strict';
+
+var jgivenReportApp = angular.module('jgivenReportApp', ['ngSanitize','mm.foundation','mm.foundation.offcanvas',
+  'chart.js','LocalStorageModule'])
+  .config(['localStorageServiceProvider', function(localStorageServiceProvider){
+    localStorageServiceProvider.setPrefix('jgiven');
+  }])
+
 
 
 jgivenReportApp.filter('encodeUri', function ($window) {
     return $window.encodeURIComponent;
 });
 
-jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location) {
+jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location, localStorageService) {
   $scope.scenarios = [];
   $scope.classNameScenarioMap = {};
   $scope.classNames;
@@ -15,11 +22,17 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   $scope.currentPage;
   $scope.jgivenReport = jgivenReport;
   $scope.nav = {};
+  $scope.bookmarks = [];
 
   $scope.init = function() {
       $scope.classNames = getClassNames();
       $scope.allTags = groupTagsByType(getTags());
       $scope.tags = $scope.allTags;
+
+      $scope.bookmarks = localStorageService.get('bookmarks') || [];
+      $scope.$watch('bookmarks', function () {
+        localStorageService.set('bookmarks', $scope.bookmarks);
+      }, true);
 
       $scope.showSummaryPage();
   };
@@ -67,6 +80,43 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $scope.currentPage.print = search.print;
 
   });
+
+  $scope.toggleBookmark = function () {
+    if ($scope.isBookmarked()) {
+       $scope.removeCurrentBookmark();
+    } else {
+      var name = $scope.currentPage.title;
+      if (name === 'Search Results') {
+        name = $scope.currentPage.description;
+      }
+
+      $scope.bookmarks.push({
+        name: name,
+        url: $location.path()
+      });
+    }
+  };
+
+  $scope.removeCurrentBookmark = function() {
+    $scope.removeBookmark( $scope.findBookmarkIndex() );
+  };
+
+  $scope.removeBookmark = function (index) {
+    $scope.bookmarks.splice(index, 1);
+  };
+
+  $scope.isBookmarked = function() {
+    return $scope.findBookmarkIndex() !== -1;
+  };
+
+  $scope.findBookmarkIndex = function() {
+    for (var i = 0; i < $scope.bookmarks.length; i++) {
+      if ($scope.bookmarks[i].url === $location.path()) {
+        return i;
+      }
+    }
+    return -1;
+  }
 
   $scope.currentPath = function() {
       return $location.path();
