@@ -6,6 +6,9 @@ import com.google.common.base.Objects;
  * Represents a part of a step.
  */
 public class Word {
+    /**
+     * The string representation of this word formatted with the default string formatter.
+     */
     private String value;
 
     /**
@@ -37,10 +40,6 @@ public class Word {
         this.setIntroWord( isIntroWord );
     }
 
-    public static Word argWord( String argumentName, String value ) {
-        return argWord( argumentName, value, (String) null );
-    }
-
     public static Word argWord( String argumentName, String value, String formattedValue ) {
         Word word = new Word( value );
         word.argumentInfo = new ArgumentInfo();
@@ -53,7 +52,7 @@ public class Word {
         Word word = new Word( value );
         word.argumentInfo = new ArgumentInfo();
         word.argumentInfo.setArgumentName( argumentName );
-        word.argumentInfo.setDataTable(dataTable);
+        word.argumentInfo.setDataTable( dataTable );
         return word;
     }
 

@@ -2,7 +2,7 @@ package com.tngtech.jgiven.report.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Set;
+import java.util.List;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
@@ -45,7 +45,7 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
     }
 
     public void the_report_model_contains_a_tag_named( String tagName ) {
-        Set<Tag> tags = reportModel.getLastScenarioModel().tags;
+        List<Tag> tags = reportModel.getLastScenarioModel().getTags();
         assertThat( tags ).isNotEmpty();
         assertThat( tags ).extracting( "name" ).contains( tagName );
     }

@@ -29,7 +29,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     @Override
     public void visit( ScenarioModel scenarioModel ) {
         writer.print( "\n" + withColor( MAGENTA, INTENSITY_BOLD, " Scenario: " ) );
-        println( Color.MAGENTA, scenarioModel.description + "\n" );
+        println( Color.MAGENTA, scenarioModel.getDescription() + "\n" );
         currentScenarioModel = scenarioModel;
     }
 
@@ -52,7 +52,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     }
 
     protected void printCaseLine( ScenarioCaseModel scenarioCase ) {
-        writer.print( "  Case " + scenarioCase.caseNr + ": " );
+        writer.print( "  Case " + scenarioCase.getCaseNr() + ": " );
         List<String> arguments = scenarioCase.getExplicitArguments();
         if( !arguments.isEmpty() ) {
             List<String> parameterNames = currentScenarioModel.getExplicitParameters();
@@ -146,14 +146,14 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     protected String wordToString( Word word ) {
         if( word.isArg() && !isInt( word ) ) {
-            return "'" + word.getValue() + "'";
+            return "'" + word.getFormattedValue() + "'";
         }
         return word.getValue();
     }
 
     private boolean isInt( Word word ) {
         try {
-            Integer.valueOf( word.getValue() );
+            Integer.valueOf( word.getFormattedValue() );
             return true;
         } catch( NumberFormatException e ) {
             return false;

@@ -225,7 +225,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     public void description_annotations_are_evaluated() throws Throwable {
         given().something();
         getScenario().finished();
-        String description = getScenario().getModel().getLastScenarioModel().description;
+        String description = getScenario().getModel().getLastScenarioModel().getDescription();
         assertThat( description ).isEqualTo( "@Description annotations are evaluated" );
     }
 

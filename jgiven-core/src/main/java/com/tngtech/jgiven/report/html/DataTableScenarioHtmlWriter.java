@@ -15,7 +15,7 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
 
     @Override
     public void visit( ScenarioCaseModel scenarioCase ) {
-        if( scenarioCase.caseNr == 1 ) {
+        if( scenarioCase.getCaseNr() == 1 ) {
             super.visit( scenarioCase );
         } else {
             this.scenarioCase = scenarioCase;
@@ -27,7 +27,7 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
 
     @Override
     public void visitEnd( ScenarioCaseModel scenarioCase ) {
-        if( scenarioCase.caseNr == 1 ) {
+        if( scenarioCase.getCaseNr() == 1 ) {
             writer.println( "</ul>" );
             writer.println( "<h4>Cases:</h4>" );
             writer.println( "<table class='data-table'>" );
@@ -41,7 +41,7 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
         }
 
         writer.println( "<tr>" );
-        writer.print( "<td>" + scenarioCase.caseNr + "</td>" );
+        writer.print( "<td>" + scenarioCase.getCaseNr() + "</td>" );
         for( String arg : scenarioCase.getDerivedArguments() ) {
             writer.print( "<td>" + arg + "</td>" );
         }
@@ -68,13 +68,13 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
 
     @Override
     public void visit( StepModel stepModel ) {
-        if( scenarioCase.caseNr == 1 ) {
+        if( scenarioCase.getCaseNr() == 1 ) {
             super.visit( stepModel );
         }
     }
 
     @Override
-    String formatCaseArgument( Word value ) {
+    String formatValue(Word value) {
         String paramName = findParameterName( value );
         return "&lt;" + paramName + "&gt;";
     }

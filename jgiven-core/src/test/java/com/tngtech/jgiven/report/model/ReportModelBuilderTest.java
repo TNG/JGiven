@@ -47,23 +47,23 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         getScenario().finished();
         ScenarioModel model = getScenario().getModel().getLastScenarioModel();
 
-        assertThat( model.description ).isEqualTo( description );
+        assertThat(model.getDescription()).isEqualTo( description );
 
         ScenarioCaseModel case0 = model.getCase( 0 );
         assertThat( case0.success ).isTrue();
-        assertThat( case0.caseNr ).isEqualTo( 1 );
+        assertThat(case0.getCaseNr()).isEqualTo( 1 );
         assertThat( case0.getExplicitArguments() ).isEmpty();
-        assertThat( case0.steps ).hasSize( 3 );
-        assertThat( case0.steps ).extracting( "failed" ).isEqualTo( asList( false, false, false ) );
-        assertThat( case0.steps ).extracting( "notImplementedYet" ).isEqualTo( asList( false, false, false ) );
-        assertThat( case0.steps ).extracting( "skipped" ).isEqualTo( asList( false, false, false ) );
+        assertThat(case0.getSteps()).hasSize( 3 );
+        assertThat(case0.getSteps()).extracting( "failed" ).isEqualTo( asList( false, false, false ) );
+        assertThat(case0.getSteps()).extracting( "notImplementedYet" ).isEqualTo( asList( false, false, false ) );
+        assertThat(case0.getSteps()).extracting( "skipped" ).isEqualTo( asList( false, false, false ) );
 
-        StepModel step0 = case0.steps.get( 0 );
+        StepModel step0 = case0.getSteps().get(0);
         assertThat( step0.words ).hasSize( 4 );
         assertThat( step0.getCompleteSentence() ).isEqualTo( "Given " + a + " and " + b );
         assertThat( extractIsArg( step0.words ) ).isEqualTo( Arrays.asList( false, true, false, true ) );
 
-        StepModel step2 = case0.steps.get( 2 );
+        StepModel step2 = case0.getSteps().get(2);
         assertThat( step2.words ).hasSize( 3 );
         assertThat( extractIsArg( step2.words ) ).isEqualTo( Arrays.asList( false, false, true ) );
     }

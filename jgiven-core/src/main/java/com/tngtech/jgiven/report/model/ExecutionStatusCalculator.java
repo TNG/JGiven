@@ -8,7 +8,7 @@ final class ExecutionStatusCalculator extends ReportModelVisitor {
 
     @Override
     public void visit( ScenarioModel scenarioModel ) {
-        if( scenarioModel.notImplementedYet ) {
+        if(scenarioModel.isNotImplementedYet()) {
             status = ExecutionStatus.NONE_IMPLEMENTED;
         }
     }

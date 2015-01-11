@@ -42,8 +42,8 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     private void createReportGenerator() {
         htmlReportGenerator = new ReportGenerator();
         htmlReportGenerator.setCustomCssFile( customCssFile );
-        htmlReportGenerator.setSourceDir( jsonReportDirectory );
-        htmlReportGenerator.setToDir( targetReportDir );
+        htmlReportGenerator.setSourceDirectory(jsonReportDirectory);
+        htmlReportGenerator.setTargetDirectory(targetReportDir);
     }
 
     public void the_report_generator_is_executed() throws Exception {
@@ -52,7 +52,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     }
 
     public SELF the_plain_text_reporter_is_executed() {
-        new PlainTextReportGenerator().generate( targetReportDir, jsonReportDirectory );
+        new PlainTextReportGenerator().generate(jsonReportDirectory, targetReportDir);
         return self();
     }
 

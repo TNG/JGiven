@@ -43,9 +43,9 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     private void createScenarioModel( String description, String testMethodName ) {
         ScenarioModel scenarioModel = new ScenarioModel();
-        scenarioModel.className = reportModel.getClassName();
-        scenarioModel.description = description;
-        scenarioModel.testMethodName = testMethodName;
+        scenarioModel.setClassName( reportModel.getClassName() );
+        scenarioModel.setDescription( description );
+        scenarioModel.setTestMethodName( testMethodName );
 
         addDefaultCase( scenarioModel );
 
@@ -57,15 +57,16 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         scenarioModel.addCase( scenarioCaseModel );
         int i = 0;
         for( String param : scenarioModel.getExplicitParameters() ) {
-            scenarioCaseModel.addExplicitArguments( "arg" + scenarioCaseModel.caseNr + i++ );
+            scenarioCaseModel.addExplicitArguments( "arg" + scenarioCaseModel.getCaseNr() + i++ );
         }
 
         scenarioCaseModel
             .addStep( new StepModel( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ) ) );
         i = 0;
         for( String arg : scenarioCaseModel.getExplicitArguments() ) {
+            String argumentName = "stepArg" + i++;
             scenarioCaseModel.addStep( new StepModel( "something_happens", asList( Word.introWord( "when" ),
-                Word.argWord( "stepArg" + i++, arg ) ) ) );
+                Word.argWord( argumentName, arg, (String) null ) ) ) );
         }
     }
 
@@ -73,7 +74,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         a_report_model();
         reportModel.setClassName( name );
         for( ScenarioModel model : reportModel.getScenarios() ) {
-            model.className = name;
+            model.setClassName( name );
         }
         return self();
     }
@@ -172,22 +173,22 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF step_$_of_case_$_has_a_table_argument_with_value( int stepNr, int caseNr, @Table String[][] dataTable ) {
-        latestWord = Word.argWord("dataTable", "foo", toDataTable(dataTable));
-        getCase( caseNr ).getStep( stepNr - 1 ).addWords(latestWord);
+        latestWord = Word.argWord( "dataTable", "foo", toDataTable( dataTable ) );
+        getCase( caseNr ).getStep( stepNr - 1 ).addWords( latestWord );
         return self();
     }
 
-    private DataTable toDataTable(String[][] dataTable) {
+    private DataTable toDataTable( String[][] dataTable ) {
         List<List<String>> listOfList = Lists.newArrayList();
 
-        for (int i = 0; i< dataTable.length; i++) {
-            listOfList.add(Lists.<String>newArrayList());
-            for (int j = 0; j < dataTable[i].length; j++) {
-                listOfList.get(i).add(dataTable[i][j]);
+        for( int i = 0; i < dataTable.length; i++ ) {
+            listOfList.add( Lists.<String>newArrayList() );
+            for( int j = 0; j < dataTable[i].length; j++ ) {
+                listOfList.get( i ).add( dataTable[i][j] );
             }
         }
 
-        return new DataTable(Table.HeaderType.HORIZONTAL, listOfList);
+        return new DataTable( Table.HeaderType.HORIZONTAL, listOfList );
     }
 
     public SELF step_$_has_status( int stepNr, StepStatus status ) {
@@ -204,8 +205,10 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( int ncase, String name, String arg, String argName ) {
-        getCase( ncase ).addStep(
-            new StepModel( name, Arrays.asList( Word.introWord( "when" ), new Word( name ), Word.argWord( argName, arg ) ) ) );
+        getCase( ncase )
+            .addStep(
+                    new StepModel(name,
+                            Arrays.asList(Word.introWord("when"), new Word(name), Word.argWord(argName, arg, (String) null))));
         return self();
     }
 
@@ -215,7 +218,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF scenario_$_has_tag_$_with_value_$( int i, String name, String value ) {
         latestTag = new Tag( name, value ).setPrependType( true );
-        reportModel.getScenarios().get( i - 1 ).tags.add( latestTag );
+        reportModel.getScenarios().get( i - 1 ).addTag( latestTag );
         return self();
     }
 
@@ -230,11 +233,10 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         }
     }
 
-    public void transpose_set_to(boolean b) {
-    }
+    public void transpose_set_to( boolean b ) {}
 
-    public SELF header_type_set_to(Table.HeaderType headerType) {
-        latestWord.getArgumentInfo().getDataTable().setHeaderType(headerType);
+    public SELF header_type_set_to( Table.HeaderType headerType ) {
+        latestWord.getArgumentInfo().getDataTable().setHeaderType( headerType );
         return self();
     }
 }

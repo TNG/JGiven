@@ -15,8 +15,8 @@ public class ReportGeneratorArgumentTest {
                 "--todir=target/dir",
                 "--customcss=my/custom/file.css" }
             );
-        Assertions.assertThat( generator.getSourceDir() ).isEqualTo( new File( "source/dir" ) );
-        Assertions.assertThat( generator.getToDir() ).isEqualTo( new File( "target/dir" ) );
+        Assertions.assertThat( generator.getSourceDirectory() ).isEqualTo( new File( "source/dir" ) );
+        Assertions.assertThat( generator.getTargetDirectory() ).isEqualTo( new File( "target/dir" ) );
         Assertions.assertThat( generator.getCustomCssFile() ).isEqualTo( new File( "my/custom/file.css" ) );
     }
 }

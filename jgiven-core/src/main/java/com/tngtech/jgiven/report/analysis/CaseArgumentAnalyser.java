@@ -53,7 +53,7 @@ public class CaseArgumentAnalyser {
             }
 
         } catch( IndexOutOfBoundsException e ) {
-            log.info( "Scenario model " + scenarioModel.className + "." + scenarioModel.testMethodName + " has no homogene cases."
+            log.info( "Scenario model " + scenarioModel.getClassName() + "." + scenarioModel.getTestMethodName() + " has no homogene cases."
                     + " Cannot analyse argument cases" );
             scenarioModel.setCasesAsTable( false );
         }
@@ -264,8 +264,8 @@ public class CaseArgumentAnalyser {
         }
 
         @Override
-        public void visit( StepModel methodModel ) {
-            for( Word word : methodModel.words ) {
+        public void visit( StepModel stepModel) {
+            for( Word word : stepModel.words ) {
                 if( word.isArg() ) {
                     ArgumentHolder holder = new ArgumentHolder();
                     holder.word = word;

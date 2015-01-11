@@ -38,7 +38,7 @@ public class ReportModel {
         Collections.sort( sorted, new Comparator<ScenarioModel>() {
             @Override
             public int compare( ScenarioModel o1, ScenarioModel o2 ) {
-                return o1.description.toLowerCase().compareTo( o2.description.toLowerCase() );
+                return o1.getDescription().toLowerCase().compareTo( o2.getDescription().toLowerCase() );
             }
         } );
         return sorted;
@@ -50,7 +50,7 @@ public class ReportModel {
 
     public Optional<ScenarioModel> findScenarioModel( String scenarioDescription ) {
         for( ScenarioModel model : getScenarios() ) {
-            if( model.description.equals( scenarioDescription ) ) {
+            if( model.getDescription().equals( scenarioDescription ) ) {
                 return Optional.of( model );
             }
         }
@@ -58,7 +58,7 @@ public class ReportModel {
     }
 
     public StepModel getFirstStepModelOfLastScenario() {
-        return getLastScenarioModel().getCase( 0 ).steps.get( 0 );
+        return getLastScenarioModel().getCase( 0 ).getStep( 0 );
     }
 
     public void addScenarioModel( ScenarioModel currentScenarioModel ) {

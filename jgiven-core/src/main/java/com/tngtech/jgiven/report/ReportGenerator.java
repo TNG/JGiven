@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.exception.JGivenInstallationException;
 import com.tngtech.jgiven.exception.JGivenInternalDefectException;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
 import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator;
 import com.tngtech.jgiven.report.impl.FileGenerator;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
@@ -22,6 +23,7 @@ public class ReportGenerator {
     public enum Format {
         HTML( "html" ),
         TEXT( "text" ),
+        ASCIIDOC( "asciidoc" ),
         HTML5( "html5" );
 
         private final String text;
@@ -40,8 +42,8 @@ public class ReportGenerator {
         }
     }
 
-    private File sourceDir = new File( "." );
-    private File toDir = new File( "." );
+    private File sourceDirectory = new File( "." );
+    private File targetDirectory = new File( "." );
     private File customCssFile = null;
     private Format format = HTML;
 
@@ -55,10 +57,16 @@ public class ReportGenerator {
         for( String arg : args ) {
             if( arg.equals( "-h" ) || arg.equals( "--help" ) ) {
                 printUsageAndExit();
-            } else if( arg.startsWith( "--dir=" ) ) {
-                generator.setSourceDir( new File( arg.split( "=" )[1] ) );
-            } else if( arg.startsWith( "--todir=" ) ) {
-                generator.setToDir( new File( arg.split( "=" )[1] ) );
+            } else if( arg.startsWith( "--dir=" ) || arg.startsWith( "--sourceDir=" ) ) {
+                generator.setSourceDirectory( new File( arg.split( "=" )[1] ) );
+                if( arg.startsWith( "--dir=" ) ) {
+                    System.err.println( "DEPRECATION WARNING: --dir is deprecated, please use --sourceDir instead" );
+                }
+            } else if( arg.startsWith( "--todir=" ) || arg.startsWith( "--targetDir=" ) ) {
+                generator.setTargetDirectory( new File( arg.split( "=" )[1] ) );
+                if( arg.startsWith( "--todir=" ) ) {
+                    System.err.println( "DEPRECATION WARNING: --todir is deprecated, please use--targetDir instead" );
+                }
             } else if( arg.startsWith( "--customcss=" ) ) {
                 generator.setCustomCssFile( new File( arg.split( "=" )[1] ) );
             } else if( arg.startsWith( "--format=" ) ) {
@@ -80,8 +88,8 @@ public class ReportGenerator {
     }
 
     public void generate() throws Exception {
-        if( !getToDir().exists() && !getToDir().mkdirs() ) {
-            log.error( "Could not create target directory " + getToDir() );
+        if( !getTargetDirectory().exists() && !getTargetDirectory().mkdirs() ) {
+            log.error( "Could not create target directory " + getTargetDirectory() );
             return;
         }
 
@@ -90,18 +98,20 @@ public class ReportGenerator {
         } else if( format == HTML5 ) {
             generateHtml5Report();
         } else if( format == TEXT ) {
-            new PlainTextReportGenerator().generate( getToDir(), getSourceDir() );
+            new PlainTextReportGenerator().generate( getSourceDirectory(), getTargetDirectory() );
+        } else if( format == ASCIIDOC ) {
+            new AsciiDocReportGenerator().generate( getSourceDirectory(), getTargetDirectory() );
         }
 
     }
 
     private void generateStaticHtmlReport() throws IOException {
-        new StaticHtmlReportGenerator().generate( getToDir(), getSourceDir() );
+        new StaticHtmlReportGenerator().generate( getTargetDirectory(), getSourceDirectory() );
         if( getCustomCssFile() != null ) {
             if( !getCustomCssFile().canRead() ) {
                 log.info( "Cannot read customCssFile " + getCustomCssFile() + " skipping" );
             } else {
-                Files.copy( getCustomCssFile(), new File( getToDir(), "custom.css" ) );
+                Files.copy( getCustomCssFile(), new File( getTargetDirectory(), "custom.css" ) );
             }
         }
     }
@@ -118,29 +128,29 @@ public class ReportGenerator {
             throw new JGivenInternalDefectException( "The HTML5 Report Generator could not be instantiated.", e );
         }
 
-        fileGenerator.generate( getToDir(), getSourceDir() );
+        fileGenerator.generate( getTargetDirectory(), getSourceDirectory() );
     }
 
     private static void printUsageAndExit() {
-        System.err.println( "Options: [--format=<format>] [--dir=<dir>] [--todir=<dir>] [--customcss=<cssfile>]" ); // NOSONAR
+        System.err.println( "Options: [--format=<format>] [--sourceDir=<dir>] [--targetDir=<dir>] [--customcss=<cssfile>]" ); // NOSONAR
         System.err.println( "  <format> = html, html5, or text, default is html" );
         System.exit( 1 );
     }
 
-    public File getSourceDir() {
-        return sourceDir;
+    public File getSourceDirectory() {
+        return sourceDirectory;
     }
 
-    public void setSourceDir( File sourceDir ) {
-        this.sourceDir = sourceDir;
+    public void setSourceDirectory( File sourceDirectory ) {
+        this.sourceDirectory = sourceDirectory;
     }
 
-    public File getToDir() {
-        return toDir;
+    public File getTargetDirectory() {
+        return targetDirectory;
     }
 
-    public void setToDir( File toDir ) {
-        this.toDir = toDir;
+    public void setTargetDirectory( File targetDirectory ) {
+        this.targetDirectory = targetDirectory;
     }
 
     public File getCustomCssFile() {

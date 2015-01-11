@@ -42,7 +42,7 @@ public class ThenHtmlOutput extends Stage<ThenHtmlOutput> {
         StringBuilder patternBuilder = new StringBuilder();
         patternBuilder.append( ".*<table class='data-table'>.*" );
         for( ScenarioCaseModel caseModel : reportModel.getLastScenarioModel().getScenarioCases() ) {
-            patternBuilder.append( getPatternForTableLine( caseModel.caseNr, caseModel.getExplicitArguments() ) );
+            patternBuilder.append( getPatternForTableLine(caseModel.getCaseNr(), caseModel.getExplicitArguments() ) );
         }
         patternBuilder.append( "\\s*</table>.*" );
         return the_HTML_report_contains_pattern( patternBuilder.toString() );

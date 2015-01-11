@@ -9,11 +9,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 public class ScenarioModel {
-    public String className;
-    public String testMethodName;
-    public String description;
-    public Set<Tag> tags = Sets.newLinkedHashSet();
-    public boolean notImplementedYet;
+    private String className;
+    private String testMethodName;
+    private String description;
+    private Set<Tag> tags = Sets.newLinkedHashSet();
+    private boolean notImplementedYet;
     private List<String> explicitParameters = Lists.newArrayList();
     private List<String> derivedParameters = Lists.newArrayList();
     private boolean casesAsTable;
@@ -30,7 +30,7 @@ public class ScenarioModel {
     }
 
     public void addCase( ScenarioCaseModel scenarioCase ) {
-        scenarioCase.caseNr = scenarioCases.size() + 1;
+        scenarioCase.setCaseNr(scenarioCases.size() + 1);
         scenarioCases.add( scenarioCase );
     }
 
@@ -49,6 +49,10 @@ public class ScenarioModel {
 
     public void addTag( Tag tag ) {
         tags.add( tag );
+    }
+
+    public void addTags( List<Tag> tags ) {
+        this.tags.addAll( tags );
     }
 
     public void addParameterNames( String... params ) {
@@ -102,6 +106,42 @@ public class ScenarioModel {
 
     public List<String> getDerivedParameters() {
         return Collections.unmodifiableList( derivedParameters );
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName( String className ) {
+        this.className = className;
+    }
+
+    public String getTestMethodName() {
+        return testMethodName;
+    }
+
+    public void setTestMethodName( String testMethodName ) {
+        this.testMethodName = testMethodName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription( String description ) {
+        this.description = description;
+    }
+
+    public void setTags( Set<Tag> tags ) {
+        this.tags = tags;
+    }
+
+    public boolean isNotImplementedYet() {
+        return notImplementedYet;
+    }
+
+    public void setNotImplementedYet( boolean notImplementedYet ) {
+        this.notImplementedYet = notImplementedYet;
     }
 
 }

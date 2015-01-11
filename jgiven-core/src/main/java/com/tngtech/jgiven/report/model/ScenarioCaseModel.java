@@ -7,8 +7,15 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 public class ScenarioCaseModel {
-    public int caseNr;
-    public List<StepModel> steps = Lists.newArrayList();
+    /**
+     * The number of the case starting with 0
+     */
+    private int caseNr;
+
+    /**
+     * The steps of this case
+     */
+    private List<StepModel> steps = Lists.newArrayList();
 
     /**
      * The arguments that have been explicitly passed to a scenario test.
@@ -36,7 +43,7 @@ public class ScenarioCaseModel {
 
     public void accept( ReportModelVisitor visitor ) {
         visitor.visit( this );
-        for( StepModel step : steps ) {
+        for( StepModel step : getSteps() ) {
             step.accept( visitor );
         }
         visitor.visitEnd( this );
@@ -63,7 +70,7 @@ public class ScenarioCaseModel {
         return steps.get( i );
     }
 
-    public Iterable<StepModel> getSteps() {
+    public List<StepModel> getSteps() {
         return Collections.unmodifiableList( steps );
     }
 
@@ -89,4 +96,15 @@ public class ScenarioCaseModel {
         return Collections.unmodifiableList( derivedArguments );
     }
 
+    public int getCaseNr() {
+        return caseNr;
+    }
+
+    public void setCaseNr( int caseNr ) {
+        this.caseNr = caseNr;
+    }
+
+    public void setSteps( List<StepModel> steps ) {
+        this.steps = steps;
+    }
 }

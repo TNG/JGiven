@@ -23,19 +23,19 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
         then().you_get_sugar_milk();
 
         ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
-        assertThat( scenarioModel.description ).isEqualTo( "Milk and Sugar are mixed to Sugar Milk" );
-        assertThat( scenarioModel.testMethodName ).isEqualTo( "Milk_and_Sugar_are_mixed_to_Sugar_Milk" );
-        assertThat( scenarioModel.className ).isEqualTo( getClass().getName() );
+        assertThat(scenarioModel.getDescription()).isEqualTo( "Milk and Sugar are mixed to Sugar Milk" );
+        assertThat(scenarioModel.getTestMethodName()).isEqualTo( "Milk_and_Sugar_are_mixed_to_Sugar_Milk" );
+        assertThat(scenarioModel.getClassName()).isEqualTo( getClass().getName() );
         assertThat( scenarioModel.getExplicitParameters() ).isEmpty();
         assertThat( scenarioModel.getScenarioCases() ).hasSize( 1 );
 
         ScenarioCaseModel scenarioCaseModel = scenarioModel.getCase( 0 );
         assertThat( scenarioCaseModel.getExplicitArguments() ).isEmpty();
-        assertThat( scenarioCaseModel.caseNr ).isEqualTo( 1 );
+        assertThat(scenarioCaseModel.getCaseNr()).isEqualTo( 1 );
         assertThat( scenarioCaseModel.errorMessage ).isNull();
         assertThat( scenarioCaseModel.success ).isTrue();
 
-        List<StepModel> steps = scenarioCaseModel.steps;
+        List<StepModel> steps = scenarioCaseModel.getSteps();
         assertThat( steps ).hasSize( 4 );
         assertThat( steps.get( 0 ).getCompleteSentence() ).isEqualTo( "Given milk" );
         assertThat( steps.get( 1 ).getCompleteSentence() ).isEqualTo( "and sugar" );

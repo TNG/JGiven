@@ -3,10 +3,12 @@ apply plugin: 'sonar-runner'
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.2'
     }
 }
 
@@ -35,6 +37,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'signing'
+    apply plugin: 'org.asciidoctor.convert'
 
     description "${rootProject.description} - Module ${project.name}"
     sourceCompatibility = targetCompatibility = 1.6
@@ -148,6 +151,26 @@ subprojects {
 
         classpath = configurations.testCompile
     }
+
+    task jgivenAsciiDocReport(type: JavaExec) {
+        main = 'com.tngtech.jgiven.report.ReportGenerator'
+        args '--sourceDir=build/reports/jgiven/json',
+             '--targetDir=build/reports/jgiven/asciidoc',
+             '--format=asciidoc'
+
+        classpath = configurations.testCompile
+    }
+
+    asciidoctor.sourceDir= new File('build/reports/jgiven/asciidoc')
+    asciidoctor.outputDir= new File('build/reports/jgiven/htmladoc')
+    asciidoctor.attributes toc: ''
+
+    task copyAsciiDoc(type: Copy, dependsOn: jgivenAsciiDocReport) {
+        from 'src/asciidoc'
+        into 'build/reports/jgiven/asciidoc'
+    }
+
+    copyAsciiDoc.finalizedBy(asciidoctor)
 
     // -- build and publish artifacts -------------------------------------------------------------------------------------
 

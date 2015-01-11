@@ -53,7 +53,7 @@ public class StatisticsCalculator {
         }
 
         @Override
-        public void visit( StepModel methodModel ) {
+        public void visit( StepModel stepModel) {
             statistics.numSteps++;
         }
 

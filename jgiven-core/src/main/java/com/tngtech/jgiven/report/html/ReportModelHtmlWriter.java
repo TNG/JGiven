@@ -61,7 +61,7 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
     }
 
     public void write( ScenarioModel model ) {
-        writeHtmlHeader( model.className );
+        writeHtmlHeader(model.getClassName());
         model.accept( this );
         writeHtmlFooter();
     }

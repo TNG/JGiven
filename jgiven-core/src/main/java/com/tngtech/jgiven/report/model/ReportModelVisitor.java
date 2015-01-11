@@ -6,7 +6,7 @@ public class ReportModelVisitor {
 
     public void visit( ScenarioModel scenarioModel ) {}
 
-    public void visit( StepModel methodModel ) {}
+    public void visit( StepModel stepModel ) {}
 
     public void visit( ScenarioCaseModel scenarioCase ) {}
 

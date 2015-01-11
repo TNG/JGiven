@@ -30,14 +30,14 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         this.scenarioModel = scenarioModel;
         writer.println( "<div class='scenario'>" );
 
-        String id = scenarioModel.className + ":" + scenarioModel.description;
+        String id = scenarioModel.getClassName() + ":" + scenarioModel.getDescription();
 
         writer.print( format( "<h3 onclick='toggle(\"%s\")'>", id ) );
 
         writeStatusIcon( scenarioModel.getExecutionStatus() );
 
         writer.print( "<span>" );
-        writer.print( " " + WordUtil.capitalize( scenarioModel.description ) );
+        writer.print( " " + WordUtil.capitalize( scenarioModel.getDescription() ) );
         writer.print( "</span>" );
 
         int numberOfCases = scenarioModel.getScenarioCases().size();
@@ -70,7 +70,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
 
     private void writeTagLine( ScenarioModel scenarioModel ) {
         writer.print( "<div class='tag-line'>" );
-        for( Tag tag : scenarioModel.tags ) {
+        for( Tag tag : scenarioModel.getTags() ) {
             printTag( tag );
         }
         writer.println( "</div>" );
@@ -90,7 +90,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         writer.println( "</div> <!-- scenario-content -->" );
 
         writer.println( format( "<div class='scenario-footer'><a href='%s.html'>%s</a></div>",
-            scenarioModel.className, scenarioModel.className ) );
+            scenarioModel.getClassName(), scenarioModel.getClassName() ) );
         writer.println( "</div> <!-- scenario-body --> " );
         writer.println( "</div>" );
     }
@@ -119,7 +119,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         if( scenarioModel.getScenarioCases().size() > 1 ) {
             writer.print( format( "<h4 onclick='toggle(\"%s\")'>", getCaseId() ) );
             writeStatusIcon( scenarioCase.success );
-            writer.print( format( " Case %d: ", scenarioCase.caseNr ) );
+            writer.print( format( " Case %d: ", scenarioCase.getCaseNr()) );
 
             for( int i = 0; i < scenarioCase.getExplicitArguments().size(); i++ ) {
                 if( scenarioModel.getExplicitParameters().size() > i ) {
@@ -207,17 +207,17 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         boolean firstRow = true;
         DataTable dataTable = word.getArgumentInfo().getDataTable();
         HeaderType headerType = dataTable.getHeaderType();
-        for( List<String> row : dataTable.getData()) {
+        for( List<String> row : dataTable.getData() ) {
             writer.println( "<tr>" );
 
             boolean firstColumn = true;
             for( String value : row ) {
                 boolean th = firstRow && headerType.isHorizontal() || firstColumn && headerType.isVertical();
-                writer.println(th ? "<th>" : "<td>");
+                writer.println( th ? "<th>" : "<td>" );
 
                 String escapedValue = escapeToHtml( value );
                 String multiLine = value.contains( "<br />" ) ? " multiline" : "";
-                writer.print(format("<span class='%s'>%s</span>", multiLine, escapedValue));
+                writer.print( format( "<span class='%s'>%s</span>", multiLine, escapedValue ) );
 
                 writer.println( th ? "</th>" : "</td>" );
                 firstColumn = false;
@@ -242,7 +242,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     }
 
     private void printArg( Word word ) {
-        String value = word.getArgumentInfo().isParameter() ? formatCaseArgument( word ) : HtmlEscapers.htmlEscaper().escape(
+        String value = word.getArgumentInfo().isParameter() ? formatValue( word ) : HtmlEscapers.htmlEscaper().escape(
             word.getFormattedValue() );
         printArgValue( word, value );
     }
@@ -258,7 +258,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         return value.replaceAll( "(\r\n|\n)", "<br />" );
     }
 
-    String formatCaseArgument( Word word ) {
+    String formatValue( Word word ) {
         return HtmlEscapers.htmlEscaper().escape( word.getValue() );
     }
 }

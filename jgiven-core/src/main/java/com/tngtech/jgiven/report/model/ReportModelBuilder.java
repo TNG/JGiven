@@ -73,12 +73,12 @@ public class ReportModelBuilder implements ScenarioListener {
 
         if( currentScenarioModel == null ) {
             currentScenarioModel = new ScenarioModel();
-            currentScenarioModel.className = reportModel.getClassName();
+            currentScenarioModel.setClassName( reportModel.getClassName() );
             reportModel.getScenarios().add( currentScenarioModel );
         }
 
         currentScenarioModel.addCase( currentScenarioCase );
-        currentScenarioModel.description = readableDescription;
+        currentScenarioModel.setDescription( readableDescription );
     }
 
     private String camelCaseToReadableText( String camelCase ) {
@@ -163,7 +163,7 @@ public class ReportModelBuilder implements ScenarioListener {
                     return new Formatting( new PrintfFormatter(), arg.value() );
                 } else if( annotation instanceof Table ) {
                     Table tableAnnotation = (Table) annotation;
-                    return new Formatting( new TableFormatter(tableAnnotation) );
+                    return new Formatting( new TableFormatter( tableAnnotation ) );
                 }
             } catch( Exception e ) {
                 throw Throwables.propagate( e );
@@ -189,7 +189,7 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public void setMethodName( String methodName ) {
-        currentScenarioModel.testMethodName = methodName;
+        currentScenarioModel.setTestMethodName( methodName );
     }
 
     public void setArguments( List<String> arguments ) {
@@ -222,16 +222,16 @@ public class ReportModelBuilder implements ScenarioListener {
 
     @Override
     public void stepMethodFailed( Throwable t ) {
-        if( !currentScenarioCase.steps.isEmpty() ) {
-            currentScenarioCase.steps.get( currentScenarioCase.steps.size() - 1 )
+        if( !currentScenarioCase.getSteps().isEmpty() ) {
+            currentScenarioCase.getStep( currentScenarioCase.getSteps().size() - 1 )
                 .setStatus( StepStatus.FAILED );
         }
     }
 
     @Override
     public void stepMethodFinished( long durationInNanos ) {
-        if( !currentScenarioCase.steps.isEmpty() ) {
-            currentScenarioCase.steps.get( currentScenarioCase.steps.size() - 1 ).setDurationInNanos( durationInNanos );
+        if( !currentScenarioCase.getSteps().isEmpty() ) {
+            currentScenarioCase.getSteps().get( currentScenarioCase.getSteps().size() - 1 ).setDurationInNanos( durationInNanos );
         }
     }
 
@@ -290,10 +290,10 @@ public class ReportModelBuilder implements ScenarioListener {
         scenarioStarted( scenarioDescription );
 
         if( method.isAnnotationPresent( NotImplementedYet.class ) ) {
-            currentScenarioModel.notImplementedYet = true;
+            currentScenarioModel.setNotImplementedYet( true );
         }
 
-        if( currentScenarioCase.caseNr == 1 ) {
+        if( currentScenarioCase.getCaseNr() == 1 ) {
             addTags( method.getDeclaringClass().getAnnotations() );
             addTags( method.getAnnotations() );
         }
@@ -301,7 +301,7 @@ public class ReportModelBuilder implements ScenarioListener {
 
     private void addTags( Annotation[] annotations ) {
         for( Annotation annotation : annotations ) {
-            this.currentScenarioModel.tags.addAll( toTags( annotation ) );
+            this.currentScenarioModel.addTags( toTags( annotation ) );
         }
     }
 

@@ -15,7 +15,7 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
 
     @Override
     public void visit( StepModel stepModel ) {
-        if( currentCaseModel.caseNr > 1 ) {
+        if( currentCaseModel.getCaseNr() > 1 ) {
             return;
         }
         super.visit( stepModel );
@@ -35,7 +35,7 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
 
     @Override
     public void visitEnd( ScenarioCaseModel scenarioCase ) {
-        if( scenarioCase.caseNr == 1 ) {
+        if( scenarioCase.getCaseNr() == 1 ) {
             super.visitEnd( scenarioCase );
         }
     }

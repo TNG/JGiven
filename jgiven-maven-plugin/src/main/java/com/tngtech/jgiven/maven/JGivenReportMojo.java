@@ -50,8 +50,8 @@ public class JGivenReportMojo extends AbstractMojo {
             }
             getLog().info( "Generating HTML reports to " + outputDirectory + "..." );
             ReportGenerator generator = new ReportGenerator();
-            generator.setToDir( outputDirectory );
-            generator.setSourceDir( sourceDirectory );
+            generator.setTargetDirectory(outputDirectory);
+            generator.setSourceDirectory(sourceDirectory);
             generator.setFormat( ReportGenerator.Format.fromStringOrNull( format ) );
             generator.setCustomCssFile( customCssFile );
             generator.generate();

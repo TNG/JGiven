@@ -82,7 +82,7 @@ public class StaticHtmlReportGenerator implements ReportModelFileHandler {
             models.add( modelFile );
 
             for( ScenarioModel scenario : model.getScenarios() ) {
-                for( Tag tag : scenario.tags ) {
+                for( Tag tag : scenario.getTags()) {
                     addToMap( tag, scenario );
                 }
             }

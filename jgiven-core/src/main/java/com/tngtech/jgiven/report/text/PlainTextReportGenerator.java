@@ -6,18 +6,15 @@ import java.io.PrintWriter;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
-import com.tngtech.jgiven.report.json.JsonModelTraverser;
-import com.tngtech.jgiven.report.json.ReportModelFileHandler;
+import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.model.ReportModel;
 
-public class PlainTextReportGenerator implements ReportModelFileHandler {
-
-    private File toDir;
+public class PlainTextReportGenerator extends AbstractReportGenerator {
 
     @Override
     public void handleReportModel( ReportModel model, File file ) {
         String targetFileName = Files.getNameWithoutExtension( file.getName() ) + ".feature";
-        PrintWriter printWriter = PrintWriterUtil.getPrintWriter( new File( toDir, targetFileName ) );
+        PrintWriter printWriter = PrintWriterUtil.getPrintWriter( new File( targetDirectory, targetFileName ) );
 
         try {
             model.accept( new PlainTextScenarioWriter( printWriter, false ) );
@@ -26,8 +23,8 @@ public class PlainTextReportGenerator implements ReportModelFileHandler {
         }
     }
 
-    public void generate( File toDir, File sourceDir ) {
-        this.toDir = toDir;
-        new JsonModelTraverser().traverseModels( sourceDir, this );
+    @Override
+    public void generationFinished( File targetDirectory ) {
+        // nothing to do
     }
 }
