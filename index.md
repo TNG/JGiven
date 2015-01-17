@@ -47,9 +47,13 @@ Scenario: a pancake can be fried out of an egg milk and flour
    Then the resulting meal is a pan cake
 ```
 
+Further examples can be found in the [jgiven-examples](https://github.com/TNG/JGiven/tree/master/jgiven-examples/src/test/java/com/tngtech/jgiven/examples) module of JGiven.
+
+
 ### HTML Report
 
 Besides the plain text report, a HTML reports can be generated. Currently two different HTML reports can be generated one consisting of static HTML pages and a modern HTML5 report. An example of such a report is the [JGiven's own report]({{site.baseurl}}/jgiven-report/html5):
 <p>
 <a href="{{site.baseurl}}/jgiven-report/html5"><img id="jgivenreport" alt="JGiven HTML5 report of JGiven" src="img/html5report.png" /></a>
 </p>
+The source code of the corresponding JGiven tests are in the [jgiven-tests](https://github.com/TNG/JGiven/tree/master/jgiven-tests) module of the JGiven project.
