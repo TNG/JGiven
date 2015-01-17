@@ -4,7 +4,7 @@ title:  "Version 0.6.2 Released"
 date:   2015-01-05 21:00:00
 categories: news
 ---
-We are happy to announce that the new version 0.6.2 of JGiven has been released. Most notably, step parameters can now be data tables. For details see the [release notes](https://github.com/TNG/JGiven/releases/tag/v0.6.2).
+We are happy to announce that the new version 0.6.2 of JGiven has been released. Most notably, step parameters can now be data tables and the HTML5 report now has a bookmark feature. For details see the [release notes](https://github.com/TNG/JGiven/releases/tag/v0.6.2).
 
 
 
