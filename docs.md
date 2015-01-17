@@ -4,6 +4,8 @@ title: Documentation
 permalink: /docs/
 ---
 
+## User Guide
+
 * [Installation]({{site.baseurl}}/docs/installation/)
 * [Getting Started]({{site.baseurl}}/docs/gettingstarted/)
 * [Report Generation]({{site.baseurl}}/docs/reportgeneration/)
@@ -12,3 +14,6 @@ permalink: /docs/
 * [Parameters]({{site.baseurl}}/docs/parameters/)
 * [Tags]({{site.baseurl}}/docs/tags/)
 
+## API Documentation
+
+* [JavaDoc]({{site.baseurl}}/javadoc/)
