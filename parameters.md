@@ -4,18 +4,22 @@ title: Parameters
 permalink: /docs/parameters/
 ---
 
-## Step Parameters
-Step method can have parameters. By default, parameters of step methods are added to the end of the sentence in the report. However, it is also possible to add parameters at arbitrary places in a scentence by using the `$` character.
+Method parameters are by default added to the end of the sentence as shown in the example above.
+
+## Parameters within a sentence
 
 Take the following example:
 {% highlight java %}
 Given <neggs> eggs
 {% endhighlight %}
-The corresponding Java code looks as follows:
+This cannot be written directly as a single method name because parameters can only come at the end of the method.
+JGiven solves this problem by using the $ character as follows:
 {% highlight java %}
-given().$_eggs( neggs );
+given().$_eggs(neggs);
 {% endhighlight %}
-The generated report will replace `$` with the corresponding parameter. So the generated report will look as follows (given `neggs` is 5):
+This is not perfectly readable at first glance, but as soon as you are used to reading $ as a parameter it comes quite natural.
+The generated report will replace the $ with the corresponding parameter.
+So the generated report will look as follows (given neggs is 5):
 
 {% highlight java %}
 Given 5 eggs
@@ -38,25 +42,20 @@ It is similar to the way parameterized tests work in [TestNG](http://testng.org)
 
 {% highlight java %}
 @Test
-@DataProvider( { "1", "3", "10" } )
-public void serving_a_coffee_reduces_the_number_of_available_coffees_by_one( int initialCoffees ) {
-    given().a_coffee_machine().
-        and().there_are_$_coffees_left_in_the_machine( initialCoffees ).
+@DataProvider( {
+    "1, 1",
+    "0, 2",
+    "1, 2",
+} )
+public void coffee_is_not_served( int coffees, int dollars) {
+    given().there_are_$_coffees_left_in_the_machine( coffees ).
+        and().the_coffee_costs_$_dollar( 2 );
 
-    when().I_insert_$_one_euro_coins( 2 ).
+    when().I_deposit_$_dollar( dollars ).
         and().I_press_the_coffee_button();
 
-    then().a_coffee_should_be_served().
-        and().there_are_$_coffees_left_in_the_machine( initialCoffees - 1 );
+    then().I_should_not_be_served_a_coffee();
 }
 {% endhighlight %}
 
-## Data Tables
-
-Whenever the same scenario is executed multiple times with different parameters, JGiven generates a *data table*. For the above example JGiven will generate the following report:
-
-<img alt="Data table example" src="{{site.baseurl}}/img/datatableexample.png" />
-
-The interesting aspect here is that, although the test itself has only 1 parameter `initialCoffees`, the scenario itself is actually parameterized by 2 parameters `initialCoffees` and `coffeesLeft`. The second parameter is _derived_ from the first parameter. JGiven generates for all parameters that are not the same for all cases a column in the data table. If the parameter is derived, the name of the placeholder is the name of the parameter of the invoked step method.
-
-Back: [Life-Cycle Methods]({{site.baseurl}}/docs/lifecycle/)
+Back: [Life-Cycle Methods]({{site.baseurl}}/docs/lifecycle/) - Next: [Tags]({{site.baseurl}}/docs/tags/)
