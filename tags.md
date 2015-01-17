@@ -6,7 +6,7 @@ permalink: /docs/tags/
 
 Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the `@IsTag` annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.
 
-Let's say you want to know which scenarios covers the coffee feature. To do so you define a new Java annotation:
+Let's say you want to know which scenarios covers the _coffee_ feature. To do so you define a new Java annotation:
 
 {% highlight java %}
 @IsTag
@@ -15,10 +15,10 @@ public @interface CoffeeFeature {}
 {% endhighlight java %}
 
 Two thinks are important:
-1. The annotation must itself be annotated with the `@IsTag` annotation to mark it as a JGiven tag.
-2. The annotation must have retention policy `RUNTIME`.
+1. The annotation itself must be annotated with the `@IsTag` annotation to mark it as a JGiven tag.
+2. The annotation must have retention policy `RUNTIME` so that JGiven can recognize it at runtime.
 
-To now tag a scenario with this tag, you just annotate the corresponding test method:
+To tag a scenario with the new tag, you just annotate the corresponding test method:
 
 {% highlight java %}
 import com.tngtech.jgiven.annotation.IsTag;
@@ -45,7 +45,7 @@ public @interface CoffeeFeature {}
 {% endhighlight java %}
 
 ### Overriding the Name
-It is possible to override the name of a tag by using the `type` attribute of the `IsTag` annotation. This allows you to have a different name for the tag than the actual type of the annotation. For example, to have a tag `Feature: Coffee` you can define the `CoffeeFeature` annotation as follows:
+It is possible to override the name of a tag by using the `type` attribute of the `IsTag` annotation. This allows you to have a different name for the tag than the actual type of the annotation. For example, if you want to have a tag `Feature: Coffee` you can define the `CoffeeFeature` annotation as follows:
 
 {% highlight java %}
 @IsTag( type = "Feature: Coffee" )
@@ -81,6 +81,8 @@ If you want that the type is prepended to the value in the report you can set th
 Note that this feature works in combination with the `type` attribute.
 
 Annotations with the same type but different values are grouped in the report. E.g. multiple `@Story` tags with different values will be grouped under `Story`.
+
+Note that you currently can *not* have different descriptions for different values.
 
 #### Array Values
 The value of a tag annotation can also be an array:
