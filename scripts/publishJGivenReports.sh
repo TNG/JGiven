@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-gradle clean build
+./gradlew clean build
 git checkout gh-pages
 git pull --rebase
 git rm -r jgiven-report/*
