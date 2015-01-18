@@ -121,7 +121,7 @@ public class IssueDescriptionGenerator implements TagDescriptionGenerator {
 }
 {% endhighlight java %}
 
-The new `IssueDescriptionGenerator` must now be configured for the `@Issue` annotation using the `descriptionGenerator` attribute of `@IsTag`:
+The new `IssueDescriptionGenerator` must now be configured for the `@Issue` annotation using the [`descriptionGenerator`]({{baseurl}}/javadoc/com/tngtech/jgiven/annotation/IsTag.html#descriptionGenerator%28%29) attribute of `@IsTag`:
 
 {% highlight java %}
 @IsTag( descriptionGenerator = IssueDescriptionGenerator.class )
