@@ -115,7 +115,7 @@ public class IssueDescriptionGenerator implements TagDescriptionGenerator {
     public String generateDescription( TagConfiguration tagConfiguration,
             Annotation annotation, Object value ) {
         return String.format(
-           "Scenarios of <a href='https://github.com/TNG/JGiven/issues/%s'>Issue %s</a>",
+           "<a href='https://github.com/TNG/JGiven/issues/%s'>Issue %s</a>",
             value, value );
     }
 }
