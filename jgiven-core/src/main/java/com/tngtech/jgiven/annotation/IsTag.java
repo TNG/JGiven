@@ -56,6 +56,21 @@ public @interface IsTag {
     String description() default "";
 
     /**
+     * An optional description generator that is used to dynamically generate
+     * the description depending on the concrete value of an annotation.
+     * <p>
+     * The class that implements {@link TagDescriptionGenerator} interface must
+     * be a public non-abstract class that is not a non-static inner class and must have a public default constructor.
+     * </p>
+     * <p>
+     * If this attribute is set, the {@link #description()} attribute is ignored.
+     * </p>
+     * 
+     * @since v0.6.3
+     */
+    Class<? extends TagDescriptionGenerator> descriptionGenerator() default DefaultTagDescriptionGenerator.class;
+
+    /**
      * An optional type description that overrides the default which is the name of the annotation.
      */
     String type() default "";

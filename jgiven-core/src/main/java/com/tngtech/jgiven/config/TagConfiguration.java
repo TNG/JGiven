@@ -1,14 +1,22 @@
 package com.tngtech.jgiven.config;
 
+import com.tngtech.jgiven.annotation.DefaultTagDescriptionGenerator;
 import com.tngtech.jgiven.annotation.IsTag;
+import com.tngtech.jgiven.annotation.TagDescriptionGenerator;
 
+/**
+ * Represents the configuration of a tag.
+ * 
+ * @see com.tngtech.jgiven.annotation.IsTag for a documentation of the different values.
+ */
 public class TagConfiguration {
-    boolean ignoreValue;
-    boolean explodeArray = true;
-    boolean prependType = false;
-    String defaultValue = "";
-    String description = "";
-    String type = "";
+    private boolean ignoreValue;
+    private boolean explodeArray = true;
+    private boolean prependType;
+    private String defaultValue = "";
+    private String description = "";
+    private Class<? extends TagDescriptionGenerator> descriptionGenerator = DefaultTagDescriptionGenerator.class;
+    private String type = "";
 
     public static class Builder {
         final TagConfiguration configuration;
@@ -37,6 +45,11 @@ public class TagConfiguration {
             return this;
         }
 
+        public Builder descriptionGenerator( Class<? extends TagDescriptionGenerator> descriptionGenerator ) {
+            configuration.descriptionGenerator = descriptionGenerator;
+            return this;
+        }
+
         public Builder type( String s ) {
             configuration.type = s;
             return this;
@@ -48,26 +61,58 @@ public class TagConfiguration {
         }
     }
 
+    /**
+     * {@link com.tngtech.jgiven.annotation.IsTag#value()}
+     * @see com.tngtech.jgiven.annotation.IsTag
+     */
     public String getDefaultValue() {
         return defaultValue;
     }
 
+    /**
+     * {@link com.tngtech.jgiven.annotation.IsTag#description()}
+     * @see com.tngtech.jgiven.annotation.IsTag
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * {@link com.tngtech.jgiven.annotation.IsTag#descriptionGenerator()}
+     * @see com.tngtech.jgiven.annotation.IsTag
+     */
+    public Class<? extends TagDescriptionGenerator> getDescriptionGenerator() {
+        return descriptionGenerator;
+    }
+
+    /**
+     * {@link com.tngtech.jgiven.annotation.IsTag#type()}
+     * @see com.tngtech.jgiven.annotation.IsTag
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * {@link com.tngtech.jgiven.annotation.IsTag#explodeArray()}
+     * @see com.tngtech.jgiven.annotation.IsTag
+     */
     public boolean isExplodeArray() {
         return explodeArray;
     }
 
+    /**
+     * {@link com.tngtech.jgiven.annotation.IsTag#ignoreValue()}
+     * @see com.tngtech.jgiven.annotation.IsTag
+     */
     public boolean isIgnoreValue() {
         return ignoreValue;
     }
 
+    /**
+     * {@link com.tngtech.jgiven.annotation.IsTag#prependType()}
+     * @see com.tngtech.jgiven.annotation.IsTag
+     */
     public boolean isPrependType() {
         return prependType;
     }
@@ -80,6 +125,7 @@ public class TagConfiguration {
         result.ignoreValue = isTag.ignoreValue();
         result.prependType = isTag.prependType();
         result.type = isTag.type();
+        result.descriptionGenerator = isTag.descriptionGenerator();
         return result;
     }
 }

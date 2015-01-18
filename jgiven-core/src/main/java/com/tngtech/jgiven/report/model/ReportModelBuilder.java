@@ -19,6 +19,7 @@ import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
 import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.config.TagConfiguration;
+import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
 import com.tngtech.jgiven.format.TableFormatter;
@@ -331,32 +332,27 @@ public class ReportModelBuilder implements ScenarioListener {
             tag.setPrependType( true );
         }
 
-        if( tagConfig.getDescription() != null ) {
-            tag.setDescription( tagConfig.getDescription() );
-        }
-
+        Object value = tagConfig.getDefaultValue();
         if( !Strings.isNullOrEmpty( tagConfig.getDefaultValue() ) ) {
             tag.setValue( tagConfig.getDefaultValue() );
         }
 
         if( tagConfig.isIgnoreValue() ) {
+            tag.setDescription( getDescriptionFromGenerator( tagConfig, annotation, value ) );
             return Arrays.asList( tag );
         }
 
         try {
             Method method = annotationType.getMethod( "value" );
-            Object value = method.invoke( annotation );
+            value = method.invoke( annotation );
             if( value != null ) {
                 if( value.getClass().isArray() ) {
-                    Object[] array = (Object[]) value;
-                    List<String> values = Lists.newArrayList();
-                    for( Object v : array ) {
-                        values.add( String.valueOf( v ) );
-                    }
+                    Object[] objectArray = (Object[]) value;
                     if( tagConfig.isExplodeArray() ) {
-                        return getExplodedTags( tag, values );
+                        return getExplodedTags( tag, objectArray, annotation, tagConfig );
                     }
-                    tag.setValue( values );
+                    tag.setValue( toStringList( objectArray ) );
+
                 } else {
                     tag.setValue( String.valueOf( value ) );
                 }
@@ -367,15 +363,35 @@ public class ReportModelBuilder implements ScenarioListener {
             log.error( "Error while getting 'value' method of annotation " + annotation, e );
         }
 
+        tag.setDescription( getDescriptionFromGenerator( tagConfig, annotation, value ) );
         return Arrays.asList( tag );
     }
 
-    private static List<Tag> getExplodedTags( Tag originalTag, List<String> values ) {
+    private List<String> toStringList( Object[] value ) {
+        Object[] array = value;
+        List<String> values = Lists.newArrayList();
+        for( Object v : array ) {
+            values.add( String.valueOf( v ) );
+        }
+        return values;
+    }
+
+    private String getDescriptionFromGenerator( TagConfiguration tagConfiguration, Annotation annotation, Object value ) {
+        try {
+            return tagConfiguration.getDescriptionGenerator().newInstance().generateDescription( tagConfiguration, annotation, value );
+        } catch( Exception e ) {
+            throw new JGivenWrongUsageException( "Error while trying to generate the description for annotation " + annotation
+                    + " using DescriptionGenerator class " + tagConfiguration.getDescriptionGenerator() + ": " + e.getMessage(), e );
+        }
+    }
+
+    private List<Tag> getExplodedTags( Tag originalTag, Object[] values, Annotation annotation, TagConfiguration tagConfig ) {
         List<Tag> result = Lists.newArrayList();
-        for( String singleValue : values ) {
-            Tag newTag = new Tag( originalTag.getName(), singleValue );
+        for( Object singleValue : values ) {
+            Tag newTag = new Tag( originalTag.getName(), String.valueOf( singleValue ) );
             newTag.setDescription( originalTag.getDescription() );
             newTag.setPrependType( originalTag.isPrependType() );
+            newTag.setDescription( getDescriptionFromGenerator( tagConfig, annotation, singleValue ) );
             result.add( newTag );
         }
         return result;

@@ -2,14 +2,15 @@ package com.tngtech.jgiven;
 
 import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
 import com.tngtech.jgiven.tags.Issue;
+import com.tngtech.jgiven.tags.IssueDescriptionGenerator;
 
 public class JGivenTestConfiguration extends AbstractJGivenConfiguraton {
 
     @Override
     public void configure() {
-        configureTag( Issue.class )
-            .prependType( true )
-            .description( "Issue numbers correspond to Issues in GitHub" );
+        configureTag(Issue.class)
+            .prependType(true)
+            .descriptionGenerator(IssueDescriptionGenerator.class);
     }
 
 }
