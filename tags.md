@@ -44,6 +44,7 @@ Tags can have descriptions. These descriptions appear in the report on the corre
 public @interface CoffeeFeature {}
 {% endhighlight java %}
 
+
 ### Overriding the Name
 It is possible to override the name of a tag by using the `type` attribute of the `IsTag` annotation. This allows you to have a different name for the tag than the actual type of the annotation. For example, if you want to have a tag `Feature: Coffee` you can define the `CoffeeFeature` annotation as follows:
 
@@ -82,8 +83,6 @@ Note that this feature works in combination with the `type` attribute.
 
 Annotations with the same type but different values are grouped in the report. E.g. multiple `@Story` tags with different values will be grouped under `Story`.
 
-Note that you currently can *not* have different descriptions for different values.
-
 #### Array Values
 The value of a tag annotation can also be an array:
 
@@ -104,6 +103,31 @@ public void scenarios_can_have_tags() {
 {% endhighlight java %}
 
 For each value, one tag will be generated, e.g. `ACME-123` and `ACME-456`. If you do not want that behavior you can set the `explodeArray` attribute of `@IsTag` to `false`, in that case only one tag will be generated and the values will comma-separated, e.g. `ACME-123,ACME-456`.
+
+#### Value Dependent Description
+When the description of a tag depends on its value you cannot simply set the description on the `@IsTag` annotation, because it will be the same for all values.
+
+Let's assume you have an `@Issue` tag and want to have a link to the corresponding GitHub issue in the description. To do so you can provide your own [`TagDescriptionGenerator`]({{baseurl}}/javadoc/com/tngtech/jgiven/annotation/TagDescriptionGenerator.html) implementation that generates a description of a tag depending on its actual value:
+
+{% highlight java %}
+public class IssueDescriptionGenerator implements TagDescriptionGenerator {
+    @Override
+    public String generateDescription( TagConfiguration tagConfiguration, Annotation annotation, Object value ) {
+        return String.format( "Scenarios of <a href='https://github.com/TNG/JGiven/issues/%s'>Issue %s</a>", value, value );
+    }
+}
+{% endhighlight java %}
+
+The new `IssueDescriptionGenerator` must now be configured for the `@Issue` annotation using the `descriptionGenerator` attribute of `@IsTag`:
+
+{% highlight java %}
+@IsTag( descriptionGenerator = IssueDescriptionGenerator.class )
+@Retention( RetentionPolicy.RUNTIME )
+public @interface Issue {
+    String[] value();
+}
+{% endhighlight java %}
+
 
 ### Overriding the Value
 If you want to group several annotations with different types under a common name. You can combine the `type` attribute with the `value` attribute as follows:
