@@ -26,6 +26,16 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenRep
     @ProvidedScenarioState
     protected File customCssFile;
 
+    public SELF a_report_model_as_JSON_file() throws IOException {
+        a_report_model();
+        return the_report_exist_as_JSON_file();
+    }
+
+    public SELF $_report_models_as_JSON_files( int n ) throws IOException {
+        $_report_models( n );
+        return the_report_exist_as_JSON_file();
+    }
+
     public SELF the_report_exist_as_JSON_file() throws IOException {
         return the_reports_exist_as_JSON_files();
     }

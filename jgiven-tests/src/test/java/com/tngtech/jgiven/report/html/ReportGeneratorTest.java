@@ -15,29 +15,27 @@ public class ReportGeneratorTest extends JGivenScenarioTest<GivenJsonReports<?>,
     @Test
     @FeatureHtmlReport
     public void the_report_generator_can_generate_HTML_files() throws Exception {
-        given().a_report_model()
-                .and().the_reports_exist_as_JSON_files();
+        given().a_report_model_as_JSON_file();
 
         given().a_custom_CSS_file();
 
-        when().the_report_generator_is_executed_with_format(ReportGenerator.Format.HTML);
+        when().the_report_generator_is_executed_with_format( ReportGenerator.Format.HTML );
 
         then().an_index_file_exists()
-                .and().the_custom_CSS_file_is_copied_to_the_target_directory()
-                .and().an_HTML_file_exists_for_each_test_class();
+            .and().the_custom_CSS_file_is_copied_to_the_target_directory()
+            .and().an_HTML_file_exists_for_each_test_class();
     }
 
     @Test
     @FeatureTextReport
     public void the_report_generator_can_generate_text_files() throws Exception {
-        ThenPlainTextReportGenerator<?> thenPlainText = addStage(ThenPlainTextReportGenerator.class);
+        ThenPlainTextReportGenerator<?> thenPlainText = addStage( ThenPlainTextReportGenerator.class );
 
-        given().a_report_model()
-                .and().the_reports_exist_as_JSON_files();
+        given().a_report_model_as_JSON_file();
 
-        when().the_report_generator_is_executed_with_format(ReportGenerator.Format.TEXT);
+        when().the_report_generator_is_executed_with_format( ReportGenerator.Format.TEXT );
 
         thenPlainText.then()
-                .a_text_file_exists_for_each_test_class();
+            .a_text_file_exists_for_each_test_class();
     }
 }

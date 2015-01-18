@@ -11,6 +11,7 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.report.ReportGenerator.Format;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
 import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 
@@ -35,6 +36,10 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
         targetReportDir = temporaryFolderRule.newFolder( "targetReportDir" );
     }
 
+    public void the_asciidoc_reporter_is_executed() throws IOException {
+        new AsciiDocReportGenerator().generate( jsonReportDirectory, targetReportDir );
+    }
+
     public void the_static_HTML_reporter_is_executed() throws IOException {
         new StaticHtmlReportGenerator().generate( targetReportDir, jsonReportDirectory );
     }
@@ -42,8 +47,8 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     private void createReportGenerator() {
         htmlReportGenerator = new ReportGenerator();
         htmlReportGenerator.setCustomCssFile( customCssFile );
-        htmlReportGenerator.setSourceDirectory(jsonReportDirectory);
-        htmlReportGenerator.setTargetDirectory(targetReportDir);
+        htmlReportGenerator.setSourceDirectory( jsonReportDirectory );
+        htmlReportGenerator.setTargetDirectory( targetReportDir );
     }
 
     public void the_report_generator_is_executed() throws Exception {
@@ -52,7 +57,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     }
 
     public SELF the_plain_text_reporter_is_executed() {
-        new PlainTextReportGenerator().generate(jsonReportDirectory, targetReportDir);
+        new PlainTextReportGenerator().generate( jsonReportDirectory, targetReportDir );
         return self();
     }
 
