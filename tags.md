@@ -112,8 +112,11 @@ Let's assume you have an `@Issue` tag and want to have a link to the correspondi
 {% highlight java %}
 public class IssueDescriptionGenerator implements TagDescriptionGenerator {
     @Override
-    public String generateDescription( TagConfiguration tagConfiguration, Annotation annotation, Object value ) {
-        return String.format( "Scenarios of <a href='https://github.com/TNG/JGiven/issues/%s'>Issue %s</a>", value, value );
+    public String generateDescription( TagConfiguration tagConfiguration,
+            Annotation annotation, Object value ) {
+        return String.format(
+           "Scenarios of <a href='https://github.com/TNG/JGiven/issues/%s'>Issue %s</a>",
+            value, value );
     }
 }
 {% endhighlight java %}
