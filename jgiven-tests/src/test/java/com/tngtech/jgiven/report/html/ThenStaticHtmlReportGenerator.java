@@ -3,10 +3,12 @@ package com.tngtech.jgiven.report.html;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.report.ThenReportGenerator;
 import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
 
 public class ThenStaticHtmlReportGenerator<SELF extends ThenStaticHtmlReportGenerator<?>> extends ThenReportGenerator<SELF> {
 
@@ -28,4 +30,11 @@ public class ThenStaticHtmlReportGenerator<SELF extends ThenStaticHtmlReportGene
         assertThat( new File( targetReportDir, customCssFile.getName() ) ).exists();
         return self();
     }
+
+    public SELF file_$_contains_scenario_$( String fileName, int scenarioNr ) throws IOException {
+        final ScenarioModel scenarioModel = reportModels.get( 0 ).getScenarios().get( 0 );
+        final String regex = "<div class='scenario-footer'>.*" + scenarioModel.getClassName() + "</a></div>";
+        return file_$_contains( fileName, regex );
+    }
+
 }

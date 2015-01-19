@@ -44,7 +44,7 @@ subprojects {
 
     ext {
         junitDataproviderVersion = '1.9.3'
-        junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.9' // set default junit version if not set via command line
+        junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.12' // set default junit version if not set via command line
         junitParamsVersion = '1.0.3'
         testngVersion = '6.8.7'
         assertjVersion = '1.7.0'
@@ -228,7 +228,7 @@ subprojects {
                     }
                     whenConfigured { pom ->
                         pom.dependencies.find{ dep -> dep.groupId == 'junit' && dep.artifactId == 'junit' }.with {
-                            version = '[4.9,4.11]'
+                            version = '[4.9,4.12]'
                             scope = 'provided'
                         }
                         pom.dependencies.removeAll(pom.dependencies.findAll{ dep -> dep.scope in [ 'test' ] })

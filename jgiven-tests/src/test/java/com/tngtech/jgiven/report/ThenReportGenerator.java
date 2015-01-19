@@ -14,7 +14,6 @@ import com.google.common.io.Files;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.report.model.ScenarioModel;
 
 public class ThenReportGenerator<SELF extends ThenReportGenerator<?>> extends Stage<SELF> {
 
@@ -27,12 +26,6 @@ public class ThenReportGenerator<SELF extends ThenReportGenerator<?>> extends St
     public SELF a_file_with_name_$_exists( String name ) {
         assertThat( new File( targetReportDir, name ) ).exists();
         return self();
-    }
-
-    public SELF file_$_contains_scenario_$( String fileName, int scenarioNr ) throws IOException {
-        final ScenarioModel scenarioModel = reportModels.get( 0 ).getScenarios().get( 0 );
-        final String regex = "<div class='scenario-footer'>.*" + scenarioModel.getClassName() + "</a></div>";
-        return file_$_contains( fileName, regex );
     }
 
     public SELF file_$_contains( String fileName, final String regex ) throws IOException {

@@ -8,7 +8,7 @@ import com.tngtech.jgiven.config.TagConfiguration;
  * A default implementation of {@link com.tngtech.jgiven.annotation.TagDescriptionGenerator}.
  * It just calls {@code tagConfiguration.getDescription()}.
  *
- * @since v0.6.3
+ * @since 0.6.3
  */
 public class DefaultTagDescriptionGenerator implements TagDescriptionGenerator {
     @Override

@@ -6,6 +6,7 @@ script:
   - "gradle test -DjunitVersion=4.9"
   - "gradle test -DjunitVersion=4.10"
   - "gradle test -DjunitVersion=4.11"
+  - "gradle test -DjunitVersion=4.12"
 jdk:
   - oraclejdk8
   - oraclejdk7

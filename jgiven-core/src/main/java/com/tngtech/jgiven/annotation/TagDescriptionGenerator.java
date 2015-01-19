@@ -12,7 +12,7 @@ import com.tngtech.jgiven.config.TagConfiguration;
  *     and must have a public default constructor.
  * </p>
  * 
- * @since v0.6.3
+ * @since 0.6.3
  */
 public interface TagDescriptionGenerator {
 

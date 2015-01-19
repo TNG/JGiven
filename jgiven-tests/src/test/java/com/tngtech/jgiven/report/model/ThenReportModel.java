@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 
 public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF> {
@@ -52,6 +53,16 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
 
     public void the_description_of_the_report_model_is( String description ) {
         assertThat( reportModel.getDescription() ).isEqualTo( description );
+    }
+
+    @ExtendedDescription( "With version 4.12 JUnit changed its behavior regarding test classes where all tests are @Ignored. " +
+            "Instead of executing class-level test rules, no rules are executed at all. " +
+            "In that case no report model will be generated at all by JGiven. " +
+            "For earlier JUnit versions JGiven will generate empty report models" )
+    public SELF the_report_model_is_either_null_or_empty() {
+        assertThat( reportModel == null || reportModel.getScenarios().isEmpty() )
+            .as( "Report model is either null or empty" ).isTrue();
+        return self();
     }
 
     public SELF the_report_model_contains_$_scenarios( int nScenarios ) {

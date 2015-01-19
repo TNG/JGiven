@@ -54,6 +54,13 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
         return self();
     }
 
+    public SELF has_a_valid_class_name_if_it_is_not_null() {
+        if( reportModel != null ) {
+            the_report_model_has_a_valid_class_name();
+        }
+        return self();
+    }
+
     public SELF the_report_model_has_a_valid_class_name() {
         assertThat( reportModel.getClassName() ).isEqualTo( testScenario.testClass.getName() );
         return self();
