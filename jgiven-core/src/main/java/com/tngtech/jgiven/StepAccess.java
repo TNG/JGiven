@@ -1,0 +1,35 @@
+package com.tngtech.jgiven;
+
+
+import com.tngtech.jgiven.attachment.Attachment;
+
+/**
+ * This interface can be injected into a stage by using the {@link com.tngtech.jgiven.annotation.ExpectedScenarioState}
+ * annotation. It provides programmatic access to the current executed step.
+ */
+public interface StepAccess {
+
+    /**
+     * Adds an attachment to the current step
+     * 
+     * @param attachment an attachment to add
+     */
+    void addAttachment( Attachment attachment );
+
+    /**
+     * Set the description of the current step
+     * 
+     * @param description the description to set
+     * @see com.tngtech.jgiven.annotation.Description                   
+     */
+    void setDescription( String description );
+
+    /**
+     * Set the extended description of the current step
+     * 
+     * @param extendedDescription the extended description
+     * @see com.tngtech.jgiven.annotation.ExtendedDescription                           
+     */
+    void setExtendedDescription( String extendedDescription );
+
+}

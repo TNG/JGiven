@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.tngtech.jgiven.attachment.Attachment;
 
 public class StepModel {
     /**
@@ -33,6 +34,11 @@ public class StepModel {
      * Can be {@code null}
      */
     private String extendedDescription;
+
+    /**
+     * An optional attachment of the step
+     */
+    private AttachmentModel attachment;
 
     public StepModel() {}
 
@@ -104,5 +110,15 @@ public class StepModel {
 
     public Word getLastWord() {
         return words.get( words.size() - 1 );
+    }
+
+    public void setAttachment( Attachment attachment ) {
+        this.attachment = new AttachmentModel();
+        this.attachment.setValue( attachment.asString() );
+        this.attachment.setMimeType( attachment.getMimeType() );
+    }
+
+    public AttachmentModel getAttachment() {
+        return attachment;
     }
 }
