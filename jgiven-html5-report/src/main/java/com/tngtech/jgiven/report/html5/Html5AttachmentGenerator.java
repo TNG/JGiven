@@ -41,19 +41,19 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
 
         String mimeType = attachment.getMimeType();
         MediaType mediaType = MediaType.parse( mimeType );
-        File targetfile = null;
+        File targetFile = null;
         if( mediaType.is( MediaType.ANY_TEXT_TYPE ) ) {
-            targetfile = writeTextFile( attachment );
+            targetFile = writeTextFile( attachment );
         } else if( mediaType.is( MediaType.ANY_IMAGE_TYPE ) ) {
-            targetfile = writeImageFile( attachment, mediaType );
+            targetFile = writeImageFile( attachment, mediaType );
         }
 
-        if( targetfile != null ) {
-            attachment.setValue( ATTACHMENT_DIRNAME + "/" + targetfile.getName() );
+        if( targetFile != null ) {
+            attachment.setValue( ATTACHMENT_DIRNAME + "/" + targetFile.getName() );
         } else {
             attachment.setValue( null );
         }
-        log.info( "Attachment written to " + targetfile );
+        log.info( "Attachment written to " + targetFile );
     }
 
     private File writeImageFile( AttachmentModel attachment, MediaType mediaType ) {
