@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html><head>
   <meta charset='utf-8'>
-  <title>Issue</title>
+  <title>Feature</title>
   <link href='style.css' rel='stylesheet'>
 </head>
 <body>
@@ -73,34 +73,36 @@
 <div id='header-title'>
 <i id='show-menu-icon' class='icon-menu collapsed' onclick='showToc()'></i>
 <div class='packagename'></div>
-<h2>Issue</h2>
+<h2>Feature</h2>
 </div> <!-- #header-title -->
-<div class='description'>Scenarios of <a href='https://github.com/TNG/JGiven/issues/29'>Issue #29</a></div>
+<div class='description'>In order to get additional information about a step, like screenshots, for example<br>As a JGiven user,<br>I want that steps can have attachments</div>
 </div>
 <div id='content'>
 <input class='search-input' id='content-search-input' size='30' placeholder='enter regexp to search in scenarios' onkeydown='contentSearchChanged(event)'></input>
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML report generates one file for all failed scenarios")'><i class='icon-ok'></i><span> The static HTML report generates one file for all failed scenarios</span> <span class='duration'>(12.45 ms)</span></h3>
-<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-Static_HTML_Report.html'>Static HTML Report</a></div><div class='tag tag-Issue'><a href='Issue-_29.html'>Issue-#29</a></div></div>
-<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest:the static HTML report generates one file for all failed scenarios'>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html5.Html5GeneratorTest:attachments appear in the HTML5 report")'><i class='icon-ok'></i><span> Attachments appear in the HTML5 report</span> <span class='duration'>(1.08 s)</span></h3>
+<div class='tag-line'><div class='tag tag-Feature'><a href='Feature-HTML5_Report.html'>HTML5 Report</a></div><div class='tag tag-Feature'><a href='Feature-Attachments.html'>Attachments</a></div></div>
+<div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html5.Html5GeneratorTest:attachments appear in the HTML5 report'>
 <div class='scenario-content'>
 <div class='case passedCase'>
 <ul class='steps'>
 <li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report has</span> <span class='argument'>1</span> <span class='word'>scenarios</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>case</span> <span class='argument'>1</span> <span class='word'>of scenario</span> <span class='argument'>1</span> <span class='word'>has failed</span> <span class='duration'>(0.01 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(1.83 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the static HTML reporter is executed</span> <span class='duration'>(6.29 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>a file with name</span> <span class='argument'>failed.html</span> <span class='word'>exists</span> <span class='duration'>(1.16 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>step</span> <span class='argument'>1</span> <span class='word'>of scenario</span> <span class='argument'>1</span> <span class='word'>has a text attachment with content</span> <span class='argument multiline'>Some Example Attachment<br />with some example content</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(2.27 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the HTML5 report has been generated</span> <span class='duration'>(23.86 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the page of scenario</span> <span class='argument'>1</span> <span class='word'>is opened</span> <span class='duration'>(0.16 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>scenario</span> <span class='argument'>1</span> <span class='word'>is expanded</span> <span class='duration'>(34.40 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>an attachment icon exists</span> <span class='duration'>(0.14 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the content of the referenced attachment is</span> <span class='argument multiline'>Some Example Attachment<br />with some example content</span> <span class='duration'>(28.90 ms)</span></li>
 </ul>
 </div><!-- case -->
 </div> <!-- scenario-content -->
-<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html'>com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest</a></div>
+<div class='scenario-footer'><a href='com.tngtech.jgiven.report.html5.Html5GeneratorTest.html'>com.tngtech.jgiven.report.html5.Html5GeneratorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>1 scenarios, 1 cases, 6 steps, 0 failed cases  <span class='duration'>(12.45 ms)</span></div>
+<div class='statistics'>1 scenarios, 1 cases, 8 steps, 0 failed cases  <span class='duration'>(1.08 s)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
