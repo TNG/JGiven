@@ -4,6 +4,8 @@ import static com.tngtech.jgiven.attachment.MediaType.Type.*;
 
 /**
  * Represents a <a href="http://www.iana.org/assignments/media-types/media-types.xhtml">Media Type</a>.
+
+ * @since 0.7.0
  */
 public class MediaType {
 

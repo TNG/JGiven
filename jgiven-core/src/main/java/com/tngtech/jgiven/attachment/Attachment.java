@@ -17,6 +17,7 @@ import com.tngtech.jgiven.impl.util.ResourceUtil;
  * In addition, attachments must have a media type so that reporters know
  * how to present an attachment.
  * 
+ * @since 0.7.0
  */
 public class Attachment {
 
@@ -29,9 +30,14 @@ public class Attachment {
     /**
      * The content of the attachment.
      * In case the media type is binary, this is a Base64 encoded string
+     * Is never {@code null}
      */
     private final String content;
 
+    /**
+     * The media type of the attachment
+     * Is never {@code null}
+     */
     private final MediaType mediaType;
 
     /**

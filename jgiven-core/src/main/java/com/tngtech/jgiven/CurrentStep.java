@@ -5,6 +5,8 @@ import com.tngtech.jgiven.attachment.Attachment;
 /**
  * This interface can be injected into a stage by using the {@link com.tngtech.jgiven.annotation.ScenarioState}
  * annotation. It provides programmatic access to the current executed step.
+
+ * @since 0.7.0
  */
 public interface CurrentStep {
 
