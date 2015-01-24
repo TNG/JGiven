@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.junit;
 
-import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.NAME;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
@@ -10,14 +10,7 @@ import org.junit.runner.RunWith;
 
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.AfterScenario;
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.BeforeScenario;
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.annotation.JGivenConfiguration;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
-import com.tngtech.jgiven.annotation.ScenarioRule;
-import com.tngtech.jgiven.annotation.ScenarioState;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
 import com.tngtech.jgiven.junit.tags.ConfiguredTag;
 import com.tngtech.jgiven.junit.test.BeforeAfterTestStage;
@@ -229,4 +222,52 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         assertThat( description ).isEqualTo( "@Description annotations are evaluated" );
     }
 
+    static class SomeStageProvidingAString {
+        @ProvidedScenarioState
+        String someString = "test";
+
+        public void something() {}
+    }
+
+    static class SomeStageWithAHiddenMethod {
+        @ExpectedScenarioState
+        String someString;
+
+        @Hidden
+        public void someHiddenStep() {
+            assertThat( someString ).isNotNull();
+        }
+    }
+
+    @Test
+    public void hidden_steps_see_injected_values() {
+        SomeStageProvidingAString stage1 = addStage( SomeStageProvidingAString.class );
+        SomeStageWithAHiddenMethod stage2 = addStage( SomeStageWithAHiddenMethod.class );
+
+        stage1.something();
+        stage2.someHiddenStep();
+
+    }
+
+    static class SomeStageWithABeforeMethod {
+        @ExpectedScenarioState
+        String someString;
+
+        @BeforeStage
+        public void someHiddenStep() {
+            assertThat( someString ).isNotNull();
+        }
+
+        public void something() {}
+    }
+
+    @Test
+    public void before_stage_methods_see_injected_values() {
+        SomeStageProvidingAString stage1 = addStage( SomeStageProvidingAString.class );
+        SomeStageWithABeforeMethod stage2 = addStage( SomeStageWithABeforeMethod.class );
+
+        stage1.something();
+        stage2.something();
+
+    }
 }

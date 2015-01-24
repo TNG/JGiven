@@ -115,12 +115,15 @@ public class ScenarioExecutor {
             if( paramMethod.isAnnotationPresent( AfterStage.class )
                     || paramMethod.isAnnotationPresent( BeforeStage.class )
                     || paramMethod.isAnnotationPresent( BeforeScenario.class )
-                    || paramMethod.isAnnotationPresent( AfterScenario.class )
-                    || paramMethod.isAnnotationPresent( Hidden.class ) ) {
+                    || paramMethod.isAnnotationPresent( AfterScenario.class ) ) {
                 return;
             }
 
             update( stageInstance );
+
+            if( paramMethod.isAnnotationPresent( Hidden.class ) ) {
+                return;
+            }
 
             if( paramMethod.isAnnotationPresent( IntroWord.class ) ) {
                 listener.introWordAdded( paramMethod.getName() );
