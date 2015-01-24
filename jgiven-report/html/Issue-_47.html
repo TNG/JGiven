@@ -12,7 +12,7 @@
 <input class='search-input' id='toc-search-input' placeholder='enter regexp to search in toc' onkeydown='searchChanged(event)'></input>
 <h3><a href='index.html'>Summary</a></h3>
 <ul>
-<li><a href='all.html'>All Scenarios <span class='badge count'>50</span></a>
+<li><a href='all.html'>All Scenarios <span class='badge count'>52</span></a>
 </ul>
 <h3>Test Classes</h3>
 <ul>
@@ -22,7 +22,8 @@
 <li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.junit.de")'>de</h4><ul class='collapsed' id='com.tngtech.jgiven.junit.de'>
 <li><a href='com.tngtech.jgiven.junit.de.DeSzenarioTest.html' >DeSzenarioTest</a></li></ul></li><li><a href='com.tngtech.jgiven.junit.JUnitExecutorTest.html' >JUnitExecutorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report")'>report</h4><ul class='collapsed' id='com.tngtech.jgiven.report'>
 <li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.analysis")'>analysis</h4><ul class='collapsed' id='com.tngtech.jgiven.report.analysis'>
-<li><a href='com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest.html' >ArgumentAnalyzerTest</a></li><li><a href='com.tngtech.jgiven.report.analysis.DifferenceAnalyzerTest.html' >DifferenceAnalyzerTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.html")'>html</h4><ul class='collapsed' id='com.tngtech.jgiven.report.html'>
+<li><a href='com.tngtech.jgiven.report.analysis.ArgumentAnalyzerTest.html' >ArgumentAnalyzerTest</a></li><li><a href='com.tngtech.jgiven.report.analysis.DifferenceAnalyzerTest.html' >DifferenceAnalyzerTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.asciireport")'>asciireport</h4><ul class='collapsed' id='com.tngtech.jgiven.report.asciireport'>
+<li><a href='com.tngtech.jgiven.report.asciireport.AsciiDocReportGeneratorTest.html' >AsciiDocReportGeneratorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.html")'>html</h4><ul class='collapsed' id='com.tngtech.jgiven.report.html'>
 <li><a href='com.tngtech.jgiven.report.html.ReportGeneratorTest.html' >ReportGeneratorTest</a></li><li><a href='com.tngtech.jgiven.report.html.ReportModelHtmlWriterScenarioTest.html' >ReportModelHtmlWriterScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.html.StaticHtmlReportGeneratorTest.html' >StaticHtmlReportGeneratorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.html5")'>html5</h4><ul class='collapsed' id='com.tngtech.jgiven.report.html5'>
 <li><a href='com.tngtech.jgiven.report.html5.Html5GeneratorTest.html' >Html5GeneratorTest</a></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.report.text")'>text</h4><ul class='collapsed' id='com.tngtech.jgiven.report.text'>
 <li><a href='com.tngtech.jgiven.report.text.PlainTextGeneratorScenarioTest.html' >PlainTextGeneratorScenarioTest</a></li><li><a href='com.tngtech.jgiven.report.text.PlainTextScenarioWriterTest.html' >PlainTextScenarioWriterTest</a></li></ul></li></ul></li><li><h4 class='packagename' onclick='toggle("com.tngtech.jgiven.testframework")'>testframework</h4><ul class='collapsed' id='com.tngtech.jgiven.testframework'>
@@ -32,6 +33,8 @@
 <li>
 <h4 onclick='toggle("tagFeature")'>Feature</h4>
 <ul id='tagFeature' class='collapsed'>
+<li><a href='Feature-AsciiDoc_Report.html'>AsciiDoc Report</a>
+<li><a href='Feature-Attachments.html'>Attachments</a>
 <li><a href='Feature-Case_Diffs.html'>Case Diffs</a>
 <li><a href='Feature-Data_Tables.html'>Data Tables</a>
 <li><a href='Feature-Derived_Parameters.html'>Derived Parameters</a>
@@ -79,39 +82,39 @@
 <i class='icon-plus-squared-alt' id='expand-all-icon' title='Expand All' onclick='expandAllClicked()'></i>
 <i class='icon-minus-squared-alt' id='collapse-all-icon' title='Collapse All' onclick='collapseAllClicked()'></i>
 <div class='scenario'>
-<h3 onclick='toggle("com.tngtech.jgiven.report.html5.Html5GeneratorTest:clicking on tag labels opens the tag page")'><i class='icon-ok'></i><span> Clicking on tag labels opens the tag page</span><span class='badge count'>2</span> <span class='duration'>(987.35 ms)</span></h3>
+<h3 onclick='toggle("com.tngtech.jgiven.report.html5.Html5GeneratorTest:clicking on tag labels opens the tag page")'><i class='icon-ok'></i><span> Clicking on tag labels opens the tag page</span><span class='badge count'>2</span> <span class='duration'>(2.13 s)</span></h3>
 <div class='tag-line'><div class='tag tag-Feature'><a href='Feature-HTML5_Report.html'>HTML5 Report</a></div><div class='tag tag-Issue'><a href='Issue-_47.html'>Issue-#47</a></div></div>
 <div class='scenario-body collapsed' id='com.tngtech.jgiven.report.html5.Html5GeneratorTest:clicking on tag labels opens the tag page'>
 <div class='scenario-content'>
 <ul class='steps'>
-<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.02 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>scenario</span> <span class='argument'>1</span> <span class='word'>has tag</span> <span class='argument'>testtag</span> <span class='word'>with value</span> <span class='argument'>#42</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>Given</span> <span class='word'>a report model</span> <span class='duration'>(0.01 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>scenario</span> <span class='argument'>1</span> <span class='word'>has tag</span> <span class='argument'>testtag</span> <span class='word'>with value</span> <span class='argument'>#42</span> <span class='duration'>(0.01 ms)</span></li>
 <li><span class='introWord'>And</span> <span class='word'>the tag has prependType set to</span> <span class='caseArgument'>&lt;prependType&gt;</span> <span class='duration'>(0.02 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(2.97 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the HTML5 report has been generated</span> <span class='duration'>(29.52 ms)</span></li>
-<li><span class='introWord'>When</span> <span class='word'>the All Scenarios page is opened</span> <span class='duration'>(0.18 ms)</span></li>
-<li><span class='introWord'>And</span> <span class='word'>the tag with name</span> <span class='caseArgument'>&lt;tagName&gt;</span> <span class='word'>is clicked</span> <span class='duration'>(54.57 ms)</span></li>
-<li><span class='introWord'>Then</span> <span class='word'>the page title is</span> <span class='caseArgument'>&lt;tagName&gt;</span> <span class='duration'>(27.59 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the report exist as JSON file</span> <span class='duration'>(1.72 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the HTML5 report has been generated</span> <span class='duration'>(22.71 ms)</span></li>
+<li><span class='introWord'>When</span> <span class='word'>the All Scenarios page is opened</span> <span class='duration'>(0.02 ms)</span></li>
+<li><span class='introWord'>And</span> <span class='word'>the tag with name</span> <span class='caseArgument'>&lt;tagName&gt;</span> <span class='word'>is clicked</span> <span class='duration'>(40.93 ms)</span></li>
+<li><span class='introWord'>Then</span> <span class='word'>the page title is</span> <span class='caseArgument'>&lt;tagName&gt;</span> <span class='duration'>(96.09 ms)</span></li>
 </ul>
 <h4>Cases:</h4>
 <table class='data-table'>
 <tr>
 <th>#</th><th>prependType</th><th>tagName</th><th>Status</th></tr>
 <tr>
-<td>1</td><td>true</td><td>testtag-#42</td><td><i class='icon-ok'></i> <span class='duration'>(500.70 ms)</span></td></tr>
+<td>1</td><td>true</td><td>testtag-#42</td><td><i class='icon-ok'></i> <span class='duration'>(1.07 s)</span></td></tr>
 <tr>
-<td>2</td><td>false</td><td>#42</td><td><i class='icon-ok'></i> <span class='duration'>(486.65 ms)</span></td></tr>
+<td>2</td><td>false</td><td>#42</td><td><i class='icon-ok'></i> <span class='duration'>(1.06 s)</span></td></tr>
 </table>
 </div> <!-- scenario-content -->
 <div class='scenario-footer'><a href='com.tngtech.jgiven.report.html5.Html5GeneratorTest.html'>com.tngtech.jgiven.report.html5.Html5GeneratorTest</a></div>
 </div> <!-- scenario-body --> 
 </div>
-<div class='statistics'>1 scenarios, 2 cases, 16 steps, 0 failed cases  <span class='duration'>(987.35 ms)</span></div>
+<div class='statistics'>1 scenarios, 2 cases, 16 steps, 0 failed cases  <span class='duration'>(2.13 s)</span></div>
 </div> <!-- testcase-content -->
 </div> <!-- testcase -->
 </div> <!-- col-container -->
 <div id='page-footer'></div>
 </div> <!-- page -->
-<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Jan 18, 2015 1:03:52 PM</div>
+<div id='footer'>Generated by <a href='http://jgiven.org'>JGiven</a> ${project.version}-${buildNumber} - on Jan 24, 2015 7:10:32 PM</div>
 <script src='report.js'></script>
 </body></html>
