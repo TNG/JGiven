@@ -258,6 +258,14 @@
                                 </span>
                                 <span ng-repeat-end></span>
                               </span>
+                              <span  ng-if="step.attachment">
+                                <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
+                                      class="{{ step.attachment.title ? 'has-tip' : '' }}"
+                                      tooltip-html-unsafe="{{ step.attachment.title }}"
+                                      tooltip-popup-delay="250">
+                                  <a target="_blank" href="data/{{ step.attachment.value }}"><i class="fa fa-paperclip"></i></a>
+                                </span>
+                              </span>
                               <span ng-if="scenario.executionStatus !== 'SUCCESS'">
                                 <i ng-if="step.status === 'PASSED'" class="small-check fa fa-check-square"></i>
                                 <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-times"></i>
