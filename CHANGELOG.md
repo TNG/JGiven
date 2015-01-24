@@ -1,3 +1,14 @@
+# v0.7.0 (not released yet)
+
+## New Features
+
+* Support for attachments on steps (Pull Request #56)
+* Descriptions for tags can be dynamically created (Issue #55)
+
+## Fixed Issues
+
+* Methods annotated with `@Hidden` see now injected values from the previous stage if they are the first method called on a stage
+
 # v0.6.2
 ## New Features
 
