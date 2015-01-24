@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -36,8 +35,6 @@ public class ThenHtml5Report<SELF extends ThenHtml5Report<?>> extends Html5Repor
 
     public SELF the_content_of_the_referenced_attachment_is( String content ) throws IOException, URISyntaxException {
         String href = findAttachmentIcon().get( 0 ).findElement( By.xpath( ".." ) ).getAttribute( "href" );
-        System.out.println( "==========" + href );
-        System.out.println( Arrays.toString( targetReportDir.listFiles() ) );
         String foundContent = Files.readFile( new File( new URL( href ).toURI() ) ).trim();
         assertThat( content ).isEqualTo( foundContent );
         return self();
