@@ -32,6 +32,7 @@ public class Html5ReportGenerator implements ReportModelFileHandler, FileGenerat
     @Override
     public void handleReportModel( ReportModel model, File file ) {
         model.calculateExecutionStatus();
+        new Html5AttachmentGenerator().generateAttachments( targetDirectory, model );
 
         createWriter();
 

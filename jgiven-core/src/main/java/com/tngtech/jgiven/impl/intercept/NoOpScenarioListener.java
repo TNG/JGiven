@@ -3,6 +3,7 @@ package com.tngtech.jgiven.impl.intercept;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.report.model.NamedArgument;
 
 public class NoOpScenarioListener implements ScenarioListener {
@@ -30,4 +31,10 @@ public class NoOpScenarioListener implements ScenarioListener {
 
     @Override
     public void scenarioFinished() {}
+
+    @Override
+    public void attachmentAdded( Attachment attachment ) {}
+
+    @Override
+    public void extendedDescriptionUpdated( String extendedDescription ) {}
 }

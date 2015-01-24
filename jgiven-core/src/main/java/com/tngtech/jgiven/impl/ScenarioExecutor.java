@@ -1,8 +1,10 @@
 package com.tngtech.jgiven.impl;
 
-import static com.google.common.collect.Lists.*;
-import static com.tngtech.jgiven.impl.ScenarioExecutor.State.*;
-import static com.tngtech.jgiven.impl.util.ReflectionUtil.*;
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.reverse;
+import static com.tngtech.jgiven.impl.ScenarioExecutor.State.FINISHED;
+import static com.tngtech.jgiven.impl.ScenarioExecutor.State.STARTED;
+import static com.tngtech.jgiven.impl.util.ReflectionUtil.hasAtLeastOneAnnotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -18,25 +20,16 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tngtech.jgiven.annotation.AfterScenario;
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.BeforeScenario;
-import com.tngtech.jgiven.annotation.BeforeStage;
-import com.tngtech.jgiven.annotation.Hidden;
-import com.tngtech.jgiven.annotation.IntroWord;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
-import com.tngtech.jgiven.annotation.ScenarioRule;
-import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.CurrentStep;
+import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.exception.FailIfPassedException;
 import com.tngtech.jgiven.exception.JGivenUserException;
 import com.tngtech.jgiven.impl.inject.ValueInjector;
-import com.tngtech.jgiven.impl.intercept.InvocationMode;
-import com.tngtech.jgiven.impl.intercept.NoOpScenarioListener;
-import com.tngtech.jgiven.impl.intercept.ScenarioListener;
-import com.tngtech.jgiven.impl.intercept.StepMethodHandler;
-import com.tngtech.jgiven.impl.intercept.StepMethodInterceptor;
+import com.tngtech.jgiven.impl.intercept.*;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
-import com.tngtech.jgiven.impl.util.ReflectionUtil.*;
+import com.tngtech.jgiven.impl.util.ReflectionUtil.FieldAction;
+import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
 import com.tngtech.jgiven.integration.CanWire;
 import com.tngtech.jgiven.report.model.NamedArgument;
@@ -85,6 +78,7 @@ public class ScenarioExecutor {
 
     public ScenarioExecutor() {
         injector.injectValueByType( ScenarioExecutor.class, this );
+        injector.injectValueByType( CurrentStep.class, new StepAccessImpl() );
     }
 
     static class StageState {
@@ -94,6 +88,19 @@ public class ScenarioExecutor {
 
         StageState( Object instance ) {
             this.instance = instance;
+        }
+    }
+
+    class StepAccessImpl implements CurrentStep {
+
+        @Override
+        public void addAttachment( Attachment attachment ) {
+            listener.attachmentAdded( attachment );
+        }
+
+        @Override
+        public void setExtendedDescription( String extendedDescription ) {
+            listener.extendedDescriptionUpdated( extendedDescription );
         }
     }
 

@@ -15,6 +15,7 @@ import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
 import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.config.DefaultConfiguration;
@@ -37,6 +38,7 @@ public class ReportModelBuilder implements ScenarioListener {
 
     private ScenarioModel currentScenarioModel;
     private ScenarioCaseModel currentScenarioCase;
+    private StepModel currentStep;
     private ReportModel reportModel;
 
     private Word introWord;
@@ -113,6 +115,7 @@ public class ReportModelBuilder implements ScenarioListener {
         }
 
         stepModel.setStatus( mode.toStepStatus() );
+        currentStep = stepModel;
         writeStep( stepModel );
     }
 
@@ -403,6 +406,16 @@ public class ReportModelBuilder implements ScenarioListener {
         long durationInNanos = System.nanoTime() - scenarioStartedNanos;
         currentScenarioCase.setDurationInNanos( durationInNanos );
         currentScenarioModel.addDurationInNanos( durationInNanos );
+    }
+
+    @Override
+    public void attachmentAdded( Attachment attachment ) {
+        currentStep.setAttachment( attachment );
+    }
+
+    @Override
+    public void extendedDescriptionUpdated( String extendedDescription ) {
+        currentStep.setExtendedDescription( extendedDescription );
     }
 
     public void setTestClass( Class<?> testClass ) {

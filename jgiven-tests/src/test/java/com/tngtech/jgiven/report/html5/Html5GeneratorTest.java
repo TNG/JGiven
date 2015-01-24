@@ -10,6 +10,7 @@ import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.report.WhenReportGenerator;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.report.model.StepStatus;
+import com.tngtech.jgiven.tags.FeatureAttachments;
 import com.tngtech.jgiven.tags.FeatureHtml5Report;
 import com.tngtech.jgiven.tags.Issue;
 
@@ -66,5 +67,24 @@ public class Html5GeneratorTest extends JGivenScenarioTest<GivenJsonReports<?>, 
             .and().the_tag_with_name_$_is_clicked( tagName );
 
         then().the_page_title_is( tagName );
+    }
+
+    @Test
+    @FeatureAttachments
+    public void attachments_appear_in_the_HTML5_report() throws Exception {
+        String content = "Some Example Attachment\nwith some example content";
+        given().a_report_model()
+            .and().step_$_of_scenario_$_has_a_text_attachment_with_content( 1, 1, content )
+            .and().the_report_exist_as_JSON_file();
+
+        whenReport
+            .and().the_HTML5_report_has_been_generated();
+
+        when().the_page_of_scenario_$_is_opened( 1 )
+            .and().scenario_$_is_expanded( 1 );
+
+        then().an_attachment_icon_exists()
+            .and().the_content_of_the_referenced_attachment_is( content );
+
     }
 }
