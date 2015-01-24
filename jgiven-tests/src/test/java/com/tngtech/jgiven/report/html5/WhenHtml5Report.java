@@ -5,25 +5,32 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
-import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterScenario;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.BeforeScenario;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.impl.util.WordUtil;
+import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
 
-public class WhenHtml5Report<SELF extends WhenHtml5Report<?>> extends Stage<SELF> {
+public class WhenHtml5Report<SELF extends WhenHtml5Report<?>> extends Html5ReportStage<SELF> {
 
-    @ProvidedScenarioState
-    protected WebDriver webDriver = new PhantomJSDriver();
-
-    @ProvidedScenarioState
-    protected File targetReportDir;
+    @ExpectedScenarioState
+    protected List<ReportModel> reportModels;
 
     public SELF the_index_page_is_opened() throws MalformedURLException {
         url_$_is_opened( "" );
         return self();
+    }
+
+    @BeforeScenario
+    protected void setupWebDriver() {
+        webDriver = new PhantomJSDriver();
+        webDriver.manage().window().setSize( new Dimension( 1280, 768 ) );
     }
 
     @AfterScenario
@@ -54,5 +61,32 @@ public class WhenHtml5Report<SELF extends WhenHtml5Report<?>> extends Stage<SELF
             }
         }
         return self();
+    }
+
+    public SELF scenario_$_is_expanded( int scenarioNr ) {
+        ScenarioModel scenarioModel = getScenarioModel( scenarioNr );
+        webDriver.findElement( By.xpath( "//h4[contains(text(),'" +
+                WordUtil.capitalize( scenarioModel.getDescription() ) + "')]" ) )
+            .click();
+        return self();
+    }
+
+    private ScenarioModel getScenarioModel( int scenarioNr ) {
+        return reportModels.get( 0 ).getScenarios().get( scenarioNr - 1 );
+    }
+
+    public SELF the_page_of_scenario_$_is_opened( int scenarioNr ) throws MalformedURLException {
+
+        ScenarioModel scenarioModel = getScenarioModel( scenarioNr );
+        url_$_is_opened( "#/scenario/"
+                + scenarioModel.getClassName()
+                + "/" + scenarioModel.getTestMethodName() );
+        return self();
+    }
+
+    @AfterStage
+    public void takeScreenshotAfterStage() {
+        takeScreenshot();
+
     }
 }

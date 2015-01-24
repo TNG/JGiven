@@ -413,6 +413,11 @@ public class ReportModelBuilder implements ScenarioListener {
         currentStep.setAttachment( attachment );
     }
 
+    @Override
+    public void extendedDescriptionUpdated( String extendedDescription ) {
+        currentStep.setExtendedDescription( extendedDescription );
+    }
+
     public void setTestClass( Class<?> testClass ) {
         setClassName( testClass.getName() );
         if( testClass.isAnnotationPresent( Description.class ) ) {

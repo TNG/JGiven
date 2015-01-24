@@ -34,4 +34,7 @@ public class NoOpScenarioListener implements ScenarioListener {
 
     @Override
     public void attachmentAdded( Attachment attachment ) {}
+
+    @Override
+    public void extendedDescriptionUpdated( String extendedDescription ) {}
 }

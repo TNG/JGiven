@@ -39,7 +39,7 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
             return;
         }
 
-        String mimeType = attachment.getMimeType();
+        String mimeType = attachment.getMediaType();
         MediaType mediaType = MediaType.parse( mimeType );
         File targetFile = null;
         if( mediaType.is( MediaType.ANY_TEXT_TYPE ) ) {

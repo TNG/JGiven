@@ -11,6 +11,8 @@ import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.attachment.Attachment;
+import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
@@ -207,8 +209,8 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     public SELF case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( int ncase, String name, String arg, String argName ) {
         getCase( ncase )
             .addStep(
-                    new StepModel(name,
-                            Arrays.asList(Word.introWord("when"), new Word(name), Word.argWord(argName, arg, (String) null))));
+                new StepModel( name,
+                    Arrays.asList( Word.introWord( "when" ), new Word( name ), Word.argWord( argName, arg, (String) null ) ) ) );
         return self();
     }
 
@@ -237,6 +239,12 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF header_type_set_to( Table.HeaderType headerType ) {
         latestWord.getArgumentInfo().getDataTable().setHeaderType( headerType );
+        return self();
+    }
+
+    public SELF step_$_of_scenario_$_has_an_attachment_with_content( int stepNr, int scenarioNr, String content ) {
+        StepModel step = reportModel.getScenarios().get( scenarioNr - 1 ).getScenarioCases().get( 0 ).getStep( stepNr - 1 );
+        step.setAttachment( Attachment.fromText( content, MediaType.PLAIN_TEXT ) );
         return self();
     }
 }

@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tngtech.jgiven.StepAccess;
+import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.exception.FailIfPassedException;
@@ -78,7 +78,7 @@ public class ScenarioExecutor {
 
     public ScenarioExecutor() {
         injector.injectValueByType( ScenarioExecutor.class, this );
-        injector.injectValueByType( StepAccess.class, new StepAccessImpl() );
+        injector.injectValueByType( CurrentStep.class, new StepAccessImpl() );
     }
 
     static class StageState {
@@ -91,7 +91,7 @@ public class ScenarioExecutor {
         }
     }
 
-    class StepAccessImpl implements StepAccess {
+    class StepAccessImpl implements CurrentStep {
 
         @Override
         public void addAttachment( Attachment attachment ) {
@@ -99,13 +99,8 @@ public class ScenarioExecutor {
         }
 
         @Override
-        public void setDescription( String description ) {
-            // listener.setDescription(description);
-        }
-
-        @Override
         public void setExtendedDescription( String extendedDescription ) {
-            // listener.setExtendedDescription(extendedDescription);
+            listener.extendedDescriptionUpdated( extendedDescription );
         }
     }
 
