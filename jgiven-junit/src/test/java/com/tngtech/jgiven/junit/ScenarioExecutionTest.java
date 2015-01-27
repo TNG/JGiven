@@ -9,13 +9,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.attachment.Attachment;
+import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
 import com.tngtech.jgiven.junit.tags.ConfiguredTag;
 import com.tngtech.jgiven.junit.test.BeforeAfterTestStage;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
+import com.tngtech.jgiven.report.model.AttachmentModel;
 import com.tngtech.jgiven.report.model.Tag;
 
 @RunWith( DataProviderRunner.class )
@@ -269,5 +273,42 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         stage1.something();
         stage2.something();
 
+    }
+
+    static class AttachmentStepClass {
+        @ScenarioState
+        CurrentStep currentStep;
+
+        public void add_attachment() {
+            currentStep.addAttachment( Attachment.fromText( "FOOBAR", MediaType.PLAIN_TEXT ) );
+        }
+
+        public void set_description() {
+            currentStep.setExtendedDescription( "An extended description" );
+        }
+    }
+
+    @Test
+    public void attachments_can_be_added_to_steps() {
+        AttachmentStepClass steps = addStage( AttachmentStepClass.class );
+
+        steps.add_attachment();
+
+        AttachmentModel attachment = getScenario().getModel().getFirstStepModelOfLastScenario().getAttachment();
+
+        assertThat( attachment ).isNotNull();
+        assertThat( attachment.getValue() ).isEqualTo( "FOOBAR" );
+        assertThat( attachment.getMediaType() ).isEqualTo( MediaType.PLAIN_TEXT.asString() );
+    }
+
+    @Test
+    public void extended_descriptions_can_be_set_using_the_current_step() {
+        AttachmentStepClass steps = addStage( AttachmentStepClass.class );
+
+        steps.set_description();
+
+        String description = getScenario().getModel().getFirstStepModelOfLastScenario().getExtendedDescription();
+
+        assertThat( description ).isEqualTo( "An extended description" );
     }
 }
