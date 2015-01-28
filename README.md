@@ -7,7 +7,7 @@
 
 ## What is JGiven?
 
-JGiven is a *developer friendly* and *pragmatic* BDD tool for Java. Developers write scenarios in plain Java using a fluent, domain-specific API, JGiven generates reports that are readable by domain experts.
+JGiven is a *developer-friendly* and *pragmatic* BDD tool for Java. Developers write scenarios in plain Java using a fluent, domain-specific API, JGiven generates reports that are readable by domain experts.
 
 ## Why another BDD tool?
 
