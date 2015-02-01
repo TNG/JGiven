@@ -3,6 +3,7 @@ package com.tngtech.jgiven.report.json;
 import java.io.File;
 
 import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ReportModelFile;
 
 /**
  * Handles a single ReportModel that has been read from a single JSON file.
@@ -10,6 +11,6 @@ import com.tngtech.jgiven.report.model.ReportModel;
  */
 public interface ReportModelFileHandler {
 
-    void handleReportModel( ReportModel model, File file );
+    void handleReportModel( ReportModelFile modelFile );
 
 }

@@ -6,4 +6,5 @@ dependencies {
     compile group: 'com.thoughtworks.paranamer', name: 'paranamer', version: paranamerVersion
     compile group: 'cglib', name: 'cglib-nodep', version: cglibVersion
     compile group: 'org.fusesource.jansi', name: 'jansi', version: jansiVersion
+    compile 'com.ibm.icu:icu4j:54.1.1'
 }

@@ -1,29 +1,25 @@
 package com.tngtech.jgiven.report.html;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
-import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator.ModelFile;
+import com.tngtech.jgiven.report.model.ReportModelFile;
 
 public class PackageTocBuilder {
 
-    private final List<ModelFile> sortedModels;
+    private final List<ReportModelFile> sortedModels;
     private final Map<String, PackageToc> tocs = Maps.newLinkedHashMap();
 
-    public PackageTocBuilder( List<ModelFile> models ) {
+    public PackageTocBuilder( List<ReportModelFile> models ) {
         this.sortedModels = models;
     }
 
     static class PackageToc {
         String name;
         List<PackageToc> packages = Lists.newArrayList();
-        List<ModelFile> files = Lists.newArrayList();
+        List<ReportModelFile> files = Lists.newArrayList();
 
         public String getParentName() {
             int lastIndexOf = name.lastIndexOf( '.' );
@@ -42,9 +38,9 @@ public class PackageTocBuilder {
         }
 
         void sortFiles() {
-            Comparator<ModelFile> comparator = new Comparator<ModelFile>() {
+            Comparator<ReportModelFile> comparator = new Comparator<ReportModelFile>() {
                 @Override
-                public int compare( ModelFile o1, ModelFile o2 ) {
+                public int compare( ReportModelFile o1, ReportModelFile o2 ) {
                     return o1.model.getClassName().compareTo( o2.model.getClassName() );
                 }
             };
@@ -99,7 +95,7 @@ public class PackageTocBuilder {
     }
 
     private void calculatePackageTocs() {
-        for( ModelFile file : sortedModels ) {
+        for( ReportModelFile file : sortedModels ) {
             String packageName = file.model.getPackageName();
             PackageToc packageToc = getOrCreate( packageName );
             packageToc.files.add( file );

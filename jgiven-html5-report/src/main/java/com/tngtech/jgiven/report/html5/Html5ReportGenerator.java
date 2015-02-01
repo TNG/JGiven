@@ -10,29 +10,51 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
-import com.tngtech.jgiven.report.impl.FileGenerator;
-import com.tngtech.jgiven.report.json.JsonModelTraverser;
-import com.tngtech.jgiven.report.json.ReportModelFileHandler;
+import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ReportModelFile;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 
-public class Html5ReportGenerator implements ReportModelFileHandler, FileGenerator {
+public class Html5ReportGenerator extends AbstractReportGenerator {
     private static final Logger log = LoggerFactory.getLogger( Html5ReportGenerator.class );
     private static final int MAX_BATCH_SIZE = 100;
 
     private PrintStream writer;
-    private File targetDirectory;
     private MetaData metaData = new MetaData();
     private int caseCountOfCurrentBatch;
+    private File dataDirectory;
 
     @Override
+    public void generate() {
+        log.info( "Generating HTML5 report to {}...", targetDirectory );
+        this.dataDirectory = new File( targetDirectory, "data" );
+        if( !this.dataDirectory.exists() && !this.dataDirectory.mkdirs() ) {
+            log.error( "Could not create target directory " + this.dataDirectory );
+            return;
+        }
+        try {
+            unzipApp( targetDirectory );
+            createDataFiles();
+            generateMetaData( targetDirectory );
+        } catch( IOException e ) {
+            throw Throwables.propagate( e );
+        }
+    }
+
+    private void createDataFiles() {
+        for( ReportModelFile file : completeReportModel.getAllReportModels() ) {
+            handleReportModel( file.model, file.file );
+        }
+        closeWriter();
+    }
+
     public void handleReportModel( ReportModel model, File file ) {
-        model.calculateExecutionStatus();
-        new Html5AttachmentGenerator().generateAttachments( targetDirectory, model );
+        new Html5AttachmentGenerator().generateAttachments( dataDirectory, model );
 
         createWriter();
 
@@ -69,7 +91,7 @@ public class Html5ReportGenerator implements ReportModelFileHandler, FileGenerat
         if( this.writer == null ) {
             String fileName = "data" + metaData.data.size() + ".js";
             metaData.data.add( fileName );
-            File targetFile = new File( targetDirectory, fileName );
+            File targetFile = new File( dataDirectory, fileName );
             log.debug( "Generating " + targetFile + "..." );
             caseCountOfCurrentBatch = 0;
 
@@ -80,18 +102,6 @@ public class Html5ReportGenerator implements ReportModelFileHandler, FileGenerat
                 throw new RuntimeException( "Could not open file " + targetFile + " for writing", e );
             }
         }
-    }
-
-    public void generate( File toDir, File sourceDir ) throws IOException {
-        log.info( "Generating HTML5 report to {}...", toDir );
-        this.targetDirectory = new File( toDir, "data" );
-        if( !this.targetDirectory.exists() && !this.targetDirectory.mkdirs() ) {
-            log.error( "Could not create target directory " + this.targetDirectory );
-            return;
-        }
-        unzipApp( toDir );
-        generateAllScenarios( toDir, sourceDir );
-        generateMetaData( toDir );
     }
 
     static class MetaData {
@@ -107,12 +117,6 @@ public class Html5ReportGenerator implements ReportModelFileHandler, FileGenerat
 
         Files.write( content, metaDataFile, Charsets.UTF_8 );
 
-    }
-
-    private void generateAllScenarios( File toDir, File sourceDir ) throws IOException {
-        new JsonModelTraverser().traverseModels( sourceDir, this );
-
-        closeWriter();
     }
 
     private void unzipApp( File toDir ) throws IOException {

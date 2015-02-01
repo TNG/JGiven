@@ -2,8 +2,8 @@
 
 ## New Features
 
-* Support for attachments on steps (Pull Request #56)
-* Descriptions for tags can be dynamically created (Issue #55)
+* Support for attachments on steps (Pull Request [#56](https://github.com/TNG/JGiven/pull/56))
+* Descriptions for tags can be dynamically created (Issue [#55](https://github.com/TNG/JGiven/issues/55))
 
 ## Fixed Issues
 

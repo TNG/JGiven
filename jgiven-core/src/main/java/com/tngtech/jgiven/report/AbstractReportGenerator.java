@@ -2,21 +2,22 @@ package com.tngtech.jgiven.report;
 
 import java.io.File;
 
-import com.tngtech.jgiven.report.json.JsonModelTraverser;
-import com.tngtech.jgiven.report.json.ReportModelFileHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public abstract class AbstractReportGenerator implements ReportModelFileHandler {
+import com.tngtech.jgiven.report.model.CompleteReportModel;
 
-    /**
-     * The directory where the resulting report should be stored in.
-     */
+public abstract class AbstractReportGenerator {
+    private static final Logger log = LoggerFactory.getLogger( AbstractReportGenerator.class );
+
+    protected CompleteReportModel completeReportModel;
     protected File targetDirectory;
 
-    public void generate( File sourceDir, File targetDirectory ) {
+    public void generate( CompleteReportModel completeReportModel, File targetDirectory ) {
+        this.completeReportModel = completeReportModel;
         this.targetDirectory = targetDirectory;
-        new JsonModelTraverser().traverseModels( sourceDir, this );
-        generationFinished( targetDirectory );
+        generate();
     }
 
-    public abstract void generationFinished( File targetDirectory );
+    public abstract void generate();
 }

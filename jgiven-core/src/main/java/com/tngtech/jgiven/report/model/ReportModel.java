@@ -121,9 +121,4 @@ public class ReportModel {
         return result;
     }
 
-    public void calculateExecutionStatus() {
-        for( ScenarioModel m : scenarios ) {
-            m.getExecutionStatus();
-        }
-    }
 }

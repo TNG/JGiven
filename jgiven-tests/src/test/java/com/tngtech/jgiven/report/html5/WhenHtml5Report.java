@@ -5,13 +5,9 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
-import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.ReportModel;
@@ -25,17 +21,6 @@ public class WhenHtml5Report<SELF extends WhenHtml5Report<?>> extends Html5Repor
     public SELF the_index_page_is_opened() throws MalformedURLException {
         url_$_is_opened( "" );
         return self();
-    }
-
-    @BeforeScenario
-    protected void setupWebDriver() {
-        webDriver = new PhantomJSDriver();
-        webDriver.manage().window().setSize( new Dimension( 1280, 768 ) );
-    }
-
-    @AfterScenario
-    protected void closeWebDriver() {
-        webDriver.close();
     }
 
     public SELF the_All_Scenarios_page_is_opened() throws MalformedURLException {

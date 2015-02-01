@@ -89,4 +89,13 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         String string = PlainTextReporter.toString( getScenario().getModel() );
         assertThat( string ).contains( "a step with a 'test' parameter" );
     }
+
+    @Test
+    public void formatter_are_applied_to_arguments() throws UnsupportedEncodingException {
+        getScenario().startScenario( "test" );
+        GivenTestStep stage = getScenario().addStage( GivenTestStep.class );
+        stage.a_step_with_a_boolean_$_parameter( true );
+        String string = PlainTextReporter.toString( getScenario().getModel() );
+        assertThat( string ).contains( "a step with a boolean 'yes' parameter" );
+    }
 }

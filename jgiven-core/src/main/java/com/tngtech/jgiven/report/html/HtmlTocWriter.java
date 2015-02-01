@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
@@ -15,22 +14,17 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.Ordering;
 import com.tngtech.jgiven.report.html.PackageTocBuilder.PackageToc;
-import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator.ModelFile;
-import com.tngtech.jgiven.report.model.ReportStatistics;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.*;
 
 public class HtmlTocWriter {
     protected PrintWriter writer;
-    private final Map<Tag, List<ScenarioModel>> tagMap;
+    private final CompleteReportModel reportModel;
     private final PackageToc packageToc;
     private final ImmutableListMultimap<String, Tag> groupedTags;
-    private final ReportStatistics totalStatistics;
 
-    public HtmlTocWriter( Map<Tag, List<ScenarioModel>> tagMap, PackageToc packageToc, ReportStatistics totalStatistics ) {
-        this.tagMap = tagMap;
+    public HtmlTocWriter( CompleteReportModel reportModel, PackageToc packageToc ) {
+        this.reportModel = reportModel;
         this.packageToc = packageToc;
-        this.totalStatistics = totalStatistics;
         groupedTags = getGroupedTags();
     }
 
@@ -51,6 +45,7 @@ public class HtmlTocWriter {
     private void writeSummary() {
         writer.println( "<h3><a href='index.html'>Summary</a></h3>" );
         writer.println( "<ul>" );
+        ReportStatistics totalStatistics = reportModel.getTotalStatistics();
         writeLink( totalStatistics.numScenarios, "all.html", "All Scenarios" );
         writeLink( totalStatistics.numPendingScenarios, "pending.html", "Pending Scenarios" );
         writeLink( totalStatistics.numFailedScenarios, "failed.html", "Failed Scenarios" );
@@ -101,20 +96,20 @@ public class HtmlTocWriter {
         }
     }
 
-    private void printClassLinks( List<ModelFile> files ) {
-        for( ModelFile modelFile : files ) {
+    private void printClassLinks( List<ReportModelFile> files ) {
+        for( ReportModelFile modelFile : files ) {
             writeClassLink( modelFile );
         }
     }
 
-    private void writeClassLink( ModelFile model ) {
+    private void writeClassLink( ReportModelFile model ) {
         writer.print( format( "<li><a href='%s' >%s</a></li>",
             model.file.getName(),
             model.model.getSimpleClassName() ) );
     }
 
     private void writeTagLinks() {
-        if( tagMap.isEmpty() ) {
+        if( groupedTags.isEmpty() ) {
             return;
         }
 
@@ -129,7 +124,7 @@ public class HtmlTocWriter {
 
             List<Tag> sortedTags = Ordering.usingToString().sortedCopy( groupedTags.get( key ) );
             for( Tag tag : sortedTags ) {
-                writeTagLink( tag, tagMap.get( tag ) );
+                writeTagLink( tag, reportModel.getScenariosByTag( tag ) );
             }
             writer.println( "</ul>" );
         }
@@ -137,7 +132,7 @@ public class HtmlTocWriter {
     }
 
     private ImmutableListMultimap<String, Tag> getGroupedTags() {
-        ImmutableListMultimap<String, Tag> multiMap = Multimaps.index( tagMap.keySet(), new Function<Tag, String>() {
+        ImmutableListMultimap<String, Tag> multiMap = Multimaps.index( reportModel.getAllTags(), new Function<Tag, String>() {
             @Override
             public String apply( Tag input ) {
                 return input.getName();
@@ -147,7 +142,7 @@ public class HtmlTocWriter {
     }
 
     public List<Tag> getSortedTags() {
-        List<Tag> sortedTags = Lists.newArrayList( tagMap.keySet() );
+        List<Tag> sortedTags = Lists.newArrayList( reportModel.getAllTags() );
         Collections.sort( sortedTags, new Comparator<Tag>() {
             @Override
             public int compare( Tag o1, Tag o2 ) {

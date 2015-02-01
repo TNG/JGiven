@@ -15,8 +15,11 @@ public class Word {
      * Whether this word is an introduction word.
      * <p>
      * Typical English introduction words are given, when, then, and, but
+     * <p>
+     * Is {@code null} if false to avoid unneeded entries in the JSON model
+     * </p>
      */
-    private boolean isIntroWord;
+    private Boolean isIntroWord;
 
     /**
      * Is set when this word is an argument, is <code>null</code> otherwise.
@@ -26,8 +29,11 @@ public class Word {
     /**
      * Whether this word does not appear in all cases of the scenario.
      * This is can be used to highlight this word in the report.
+     * <p>
+     * Is {@code null} if false to avoid unneeded entries in the JSON model
+     * </p>
      */
-    private boolean isDifferent;
+    private Boolean isDifferent;
 
     public Word() {}
 
@@ -115,19 +121,19 @@ public class Word {
     }
 
     public boolean isIntroWord() {
-        return isIntroWord;
+        return isIntroWord != null;
     }
 
     public void setIntroWord( boolean isIntroWord ) {
-        this.isIntroWord = isIntroWord;
+        this.isIntroWord = isIntroWord ? true : null;
     }
 
     public void setIsDifferent( boolean b ) {
-        this.isDifferent = b;
+        this.isDifferent = b ? true : null;
     }
 
     public boolean isDifferent() {
-        return isDifferent;
+        return isDifferent != null;
     }
 
     public boolean isDataTable() {

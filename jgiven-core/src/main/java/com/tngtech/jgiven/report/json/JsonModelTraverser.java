@@ -19,7 +19,7 @@ public class JsonModelTraverser {
         for( ReportModelFile f : Files.fileTreeTraverser().breadthFirstTraversal( sourceDirectory )
             .filter( FilePredicates.endsWith( ".json" ) )
             .transform( new ReportModelFileReader() ) ) {
-            handler.handleReportModel( f.model, f.file );
+            handler.handleReportModel( f );
         }
     }
 }

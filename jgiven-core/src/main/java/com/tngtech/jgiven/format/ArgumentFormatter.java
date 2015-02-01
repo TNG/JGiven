@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.format;
 
 /**
- * Interface for defining customer argument formatters.
+ * Interface for defining customer argument formatter.
  *
  * @param <T> the type of the object to format
  */

@@ -13,6 +13,8 @@ import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.report.ReportGenerator.Format;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
 import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator;
+import com.tngtech.jgiven.report.json.ReportModelReader;
+import com.tngtech.jgiven.report.model.CompleteReportModel;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 
 public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends Stage<SELF> {
@@ -37,11 +39,15 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     }
 
     public void the_asciidoc_reporter_is_executed() throws IOException {
-        new AsciiDocReportGenerator().generate( jsonReportDirectory, targetReportDir );
+        new AsciiDocReportGenerator().generate( getCompleteReportModel(), targetReportDir );
+    }
+
+    private CompleteReportModel getCompleteReportModel() {
+        return new ReportModelReader().readDirectory( jsonReportDirectory );
     }
 
     public void the_static_HTML_reporter_is_executed() throws IOException {
-        new StaticHtmlReportGenerator().generate( targetReportDir, jsonReportDirectory );
+        new StaticHtmlReportGenerator().generate( getCompleteReportModel(), targetReportDir );
     }
 
     private void createReportGenerator() {
@@ -57,7 +63,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     }
 
     public SELF the_plain_text_reporter_is_executed() {
-        new PlainTextReportGenerator().generate( jsonReportDirectory, targetReportDir );
+        new PlainTextReportGenerator().generate( getCompleteReportModel(), targetReportDir );
         return self();
     }
 

@@ -1,20 +1,10 @@
 package com.tngtech.jgiven.report.model;
 
-import java.util.List;
-
 public class StatisticsCalculator {
 
     public ReportStatistics getStatistics( ReportModel model ) {
         ReportStatistics result = new ReportStatistics();
         model.accept( new StatisticsVisitor( result ) );
-        return result;
-    }
-
-    public ReportStatistics getStatistics( List<ScenarioModel> models ) {
-        ReportStatistics result = new ReportStatistics();
-        for( ScenarioModel model : models ) {
-            model.accept( new StatisticsVisitor( result ) );
-        }
         return result;
     }
 
@@ -53,7 +43,7 @@ public class StatisticsCalculator {
         }
 
         @Override
-        public void visit( StepModel stepModel) {
+        public void visit( StepModel stepModel ) {
             statistics.numSteps++;
         }
 

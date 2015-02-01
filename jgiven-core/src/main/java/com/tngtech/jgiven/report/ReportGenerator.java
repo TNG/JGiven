@@ -13,7 +13,8 @@ import com.tngtech.jgiven.exception.JGivenInstallationException;
 import com.tngtech.jgiven.exception.JGivenInternalDefectException;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
 import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator;
-import com.tngtech.jgiven.report.impl.FileGenerator;
+import com.tngtech.jgiven.report.json.ReportModelReader;
+import com.tngtech.jgiven.report.model.CompleteReportModel;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 
 public class ReportGenerator {
@@ -93,20 +94,22 @@ public class ReportGenerator {
             return;
         }
 
+        CompleteReportModel reportModel = new ReportModelReader().readDirectory( getSourceDirectory() );
+
         if( format == HTML ) {
-            generateStaticHtmlReport();
+            generateStaticHtmlReport( reportModel );
         } else if( format == HTML5 ) {
-            generateHtml5Report();
+            generateHtml5Report( reportModel );
         } else if( format == TEXT ) {
-            new PlainTextReportGenerator().generate( getSourceDirectory(), getTargetDirectory() );
+            new PlainTextReportGenerator().generate( reportModel, getTargetDirectory() );
         } else if( format == ASCIIDOC ) {
-            new AsciiDocReportGenerator().generate( getSourceDirectory(), getTargetDirectory() );
+            new AsciiDocReportGenerator().generate( reportModel, getTargetDirectory() );
         }
 
     }
 
-    private void generateStaticHtmlReport() throws IOException {
-        new StaticHtmlReportGenerator().generate( getTargetDirectory(), getSourceDirectory() );
+    private void generateStaticHtmlReport( CompleteReportModel reportModel ) throws IOException {
+        new StaticHtmlReportGenerator().generate( reportModel, getTargetDirectory() );
         if( getCustomCssFile() != null ) {
             if( !getCustomCssFile().canRead() ) {
                 log.info( "Cannot read customCssFile " + getCustomCssFile() + " skipping" );
@@ -116,11 +119,11 @@ public class ReportGenerator {
         }
     }
 
-    private void generateHtml5Report() throws IOException {
-        FileGenerator fileGenerator;
+    private void generateHtml5Report( CompleteReportModel reportModel ) throws IOException {
+        AbstractReportGenerator reportGenerator;
         try {
             Class<?> aClass = this.getClass().getClassLoader().loadClass( "com.tngtech.jgiven.report.html5.Html5ReportGenerator" );
-            fileGenerator = (FileGenerator) aClass.newInstance();
+            reportGenerator = (AbstractReportGenerator) aClass.newInstance();
         } catch( ClassNotFoundException e ) {
             throw new JGivenInstallationException( "The JGiven HTML5 Report Generator seems not to be on the classpath.\n" +
                     "Ensure that you have a dependency to jgiven-html5-report." );
@@ -128,7 +131,7 @@ public class ReportGenerator {
             throw new JGivenInternalDefectException( "The HTML5 Report Generator could not be instantiated.", e );
         }
 
-        fileGenerator.generate( getTargetDirectory(), getSourceDirectory() );
+        reportGenerator.generate( reportModel, getTargetDirectory() );
     }
 
     private static void printUsageAndExit() {

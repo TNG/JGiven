@@ -1,11 +1,17 @@
 package com.tngtech.jgiven.report.html5;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.JGivenScenarioTest;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.report.WhenReportGenerator;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
@@ -20,6 +26,20 @@ public class Html5GeneratorTest extends JGivenScenarioTest<GivenJsonReports<?>, 
 
     @ScenarioStage
     private WhenReportGenerator<?> whenReport;
+
+    @ProvidedScenarioState
+    static WebDriver webDriver;
+
+    @BeforeClass
+    public static void setupWebDriver() {
+        webDriver = new PhantomJSDriver();
+        webDriver.manage().window().setSize( new Dimension( 1280, 768 ) );
+    }
+
+    @AfterClass
+    public static void closeWebDriver() {
+        webDriver.close();
+    }
 
     @Test
     public void the_welcome_page_of_the_HTML5_report_can_be_opened() throws Exception {

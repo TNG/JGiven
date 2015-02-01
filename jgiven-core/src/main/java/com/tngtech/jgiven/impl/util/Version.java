@@ -37,8 +37,8 @@ public class Version {
     }
 
     private static Version fromProperties( Properties properties ) {
-        String versionString = properties.getProperty( "jgiven.version", "Unkown Version" );
-        String commitHash = properties.getProperty( "jgiven.buildNumber", "Unkown Build Number" );
+        String versionString = properties.getProperty( "jgiven.version", "Unknown Version" );
+        String commitHash = properties.getProperty( "jgiven.buildNumber", "Unknown Build Number" );
 
         return new Version( versionString, commitHash );
     }

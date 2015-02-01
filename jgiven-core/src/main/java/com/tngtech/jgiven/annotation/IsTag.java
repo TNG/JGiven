@@ -66,7 +66,7 @@ public @interface IsTag {
      * If this attribute is set, the {@link #description()} attribute is ignored.
      * </p>
      * 
-     * @since 0.6.3
+     * @since 0.7.0
      */
     Class<? extends TagDescriptionGenerator> descriptionGenerator() default DefaultTagDescriptionGenerator.class;
 

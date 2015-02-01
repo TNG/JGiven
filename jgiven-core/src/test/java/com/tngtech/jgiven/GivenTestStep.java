@@ -1,8 +1,10 @@
 package com.tngtech.jgiven;
 
 import com.tngtech.jgiven.annotation.Description;
+import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.format.BooleanFormatter;
 
 public class GivenTestStep extends Stage<GivenTestStep> {
 
@@ -46,6 +48,10 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     }
 
     public GivenTestStep a_step_with_a_$_parameter( String param ) {
+        return self();
+    }
+
+    public GivenTestStep a_step_with_a_boolean_$_parameter( @Format( value = BooleanFormatter.class, args = { "yes", "no" } ) boolean b ) {
         return self();
     }
 }
