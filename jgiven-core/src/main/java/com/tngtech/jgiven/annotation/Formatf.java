@@ -1,10 +1,8 @@
 package com.tngtech.jgiven.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
+
+import com.tngtech.jgiven.format.PrintfAnnotationFormatter;
 
 /**
  * A special format annotation that uses the formatting
@@ -13,8 +11,13 @@ import java.lang.annotation.Target;
  * Note that this uses the default locale returned from Locale.getDefault()
  */
 @Documented
+@AnnotationFormat( value = PrintfAnnotationFormatter.class )
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.PARAMETER )
 public @interface Formatf {
+
+    /**
+     * The format string to be used to format the argument.
+     */
     String value() default "%s";
 }

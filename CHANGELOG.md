@@ -4,9 +4,13 @@
 
 * Support for attachments on steps (Pull Request [#56](https://github.com/TNG/JGiven/pull/56))
 * Descriptions for tags can be dynamically created (Issue [#55](https://github.com/TNG/JGiven/issues/55))
+* Custom annotations can now be used to format arguments when they are annotated with the `@Format` annotation
+* Introduced a new `@Quoted` annotation to surround arguments with double quotes (" ") in reports
+
+## Changed Behavior
+* String arguments are no longer put into single quotes (' ') when printed to the console
 
 ## Fixed Issues
-
 * Methods annotated with `@Hidden` see now injected values from the previous stage if they are the first method called on a stage
 
 # v0.6.2

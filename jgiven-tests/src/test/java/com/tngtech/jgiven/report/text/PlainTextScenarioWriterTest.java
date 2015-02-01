@@ -2,7 +2,6 @@ package com.tngtech.jgiven.report.text;
 
 import java.io.UnsupportedEncodingException;
 
-import com.tngtech.jgiven.annotation.Table;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -10,6 +9,7 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.JGivenScenarioTest;
+import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.report.model.GivenReportModel;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.tags.FeatureDataTables;
@@ -53,7 +53,7 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
         when().the_plain_text_report_is_generated();
         then().the_report_contains_text( "Case 1:" )
             .and().the_report_contains_text( "Case 2:" )
-            .and().the_report_contains_text( "When some step 'someArg'" );
+            .and().the_report_contains_text( "When some step someArg" );
 
     }
 
@@ -73,7 +73,7 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
 
         when().the_plain_text_report_is_generated();
 
-        then().the_report_contains_text( "some step 'someArg'" )
+        then().the_report_contains_text( "some step someArg" )
             .and().the_report_contains_text( "some arg step <param1>" );
     }
 
@@ -105,26 +105,27 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
     }
 
     @Test
-    @Issue("#52")
+    @Issue( "#52" )
     @FeatureDataTables
     @DataProvider( {
-            "VERTICAL, false",
-            "HORIZONTAL, true",
-            "NONE, false",
-            "BOTH, true"
-    })
-    public void table_annotations_at_parameters_lead_to_data_tables_in_the_report(Table.HeaderType headerType, boolean hasHeaderLine) throws UnsupportedEncodingException {
+        "VERTICAL, false",
+        "HORIZONTAL, true",
+        "NONE, false",
+        "BOTH, true"
+    } )
+    public void table_annotations_at_parameters_lead_to_data_tables_in_the_report( Table.HeaderType headerType, boolean hasHeaderLine )
+            throws UnsupportedEncodingException {
         given().a_report_model_with_one_scenario()
-                .and().step_$_of_case_$_has_a_table_argument_with_value(1, 1, new String[][]{
-                {"foo", "bar"},
-                {"1", "a"},
-                {"2", "b"}})
-                .with().header_type_set_to(headerType);
+            .and().step_$_of_case_$_has_a_table_argument_with_value( 1, 1, new String[][] {
+                { "foo", "bar" },
+                { "1", "a" },
+                { "2", "b" } } )
+            .with().header_type_set_to( headerType );
         when().the_plain_text_report_is_generated();
-        then().the_report_contains_text("\n" +
+        then().the_report_contains_text( "\n" +
                 "     | foo | bar |\n" +
-                (hasHeaderLine ? "     +-----+-----+\n" : "") +
+                ( hasHeaderLine ? "     +-----+-----+\n" : "" ) +
                 "     |   1 | a   |\n" +
-                "     |   2 | b   |\n");
+                "     |   2 | b   |\n" );
     }
 }

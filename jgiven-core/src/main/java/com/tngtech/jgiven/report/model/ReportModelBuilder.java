@@ -2,10 +2,7 @@ package com.tngtech.jgiven.report.model;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +11,7 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
@@ -22,7 +20,6 @@ import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.config.TagConfiguration;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.DefaultFormatter;
-import com.tngtech.jgiven.format.PrintfFormatter;
 import com.tngtech.jgiven.format.TableFormatter;
 import com.tngtech.jgiven.impl.intercept.InvocationMode;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
@@ -157,17 +154,34 @@ public class ReportModelBuilder implements ScenarioListener {
 
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     private Formatting<?> getFormatting( Annotation[] annotations ) {
+        return getFormatting( annotations, Sets.<Class<?>>newHashSet(), null );
+    }
+
+    /**
+     * Recursively searches for formatting annotations.
+     * @param visitedTypes used to prevent an endless loop
+     */
+    private Formatting<?> getFormatting( Annotation[] annotations, Set<Class<?>> visitedTypes, Annotation originalAnnotation ) {
         for( Annotation annotation : annotations ) {
             try {
                 if( annotation instanceof Format ) {
                     Format arg = (Format) annotation;
                     return new Formatting( arg.value().newInstance(), arg.args() );
-                } else if( annotation instanceof Formatf ) {
-                    Formatf arg = (Formatf) annotation;
-                    return new Formatting( new PrintfFormatter(), arg.value() );
                 } else if( annotation instanceof Table ) {
                     Table tableAnnotation = (Table) annotation;
                     return new Formatting( new TableFormatter( tableAnnotation ) );
+                } else if( annotation instanceof AnnotationFormat ) {
+                    AnnotationFormat arg = (AnnotationFormat) annotation;
+                    return new Formatting( new StepFormatter.AnnotationBasedFormatter( arg.value().newInstance(), originalAnnotation ) );
+                } else {
+                    Class<? extends Annotation> annotationType = annotation.annotationType();
+                    if( !visitedTypes.contains( annotationType ) ) {
+                        visitedTypes.add( annotationType );
+                        Formatting<?> formatting = getFormatting( annotationType.getAnnotations(), visitedTypes, annotation );
+                        if( formatting != null ) {
+                            return formatting;
+                        }
+                    }
                 }
             } catch( Exception e ) {
                 throw Throwables.propagate( e );

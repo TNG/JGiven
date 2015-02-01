@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.report.model;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +14,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
+import com.tngtech.jgiven.format.AnnotationArgumentFormatter;
 import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.TableFormatter;
@@ -34,6 +36,22 @@ public class StepFormatter {
 
         public String format( T o ) {
             return formatter.format( o, args );
+        }
+    }
+
+    public static class AnnotationBasedFormatter implements ArgumentFormatter {
+
+        private final AnnotationArgumentFormatter formatter;
+        private final Annotation annotation;
+
+        public AnnotationBasedFormatter( AnnotationArgumentFormatter formatter, Annotation annotation ) {
+            this.formatter = formatter;
+            this.annotation = annotation;
+        }
+
+        @Override
+        public String format( Object argumentToFormat, String... formatterArguments ) {
+            return formatter.format( argumentToFormat, annotation );
         }
     }
 
@@ -76,9 +94,9 @@ public class StepFormatter {
             if( formattedValue == null
                     && formatters.get( i ) != null
                     && ( formatters.get( i ).formatter instanceof TableFormatter ) ) {
-                Table tableAnnotation = ((TableFormatter)formatters.get( i ).formatter).tableAnnotation;
+                Table tableAnnotation = ( (TableFormatter) formatters.get( i ).formatter ).tableAnnotation;
                 formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ),
-                        toTableValue( value, tableAnnotation ) ) );
+                    toTableValue( value, tableAnnotation ) ) );
             } else {
                 formattedWords.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ), formattedValue ) );
             }
@@ -86,12 +104,12 @@ public class StepFormatter {
         return formattedWords;
     }
 
-    public static DataTable toTableValue(Object tableValue, Table tableAnnotation) {
+    public static DataTable toTableValue( Object tableValue, Table tableAnnotation ) {
         List<List<String>> result = Lists.newArrayList();
 
         Iterable<?> rows = toIterable( tableValue );
-        if (rows == null) {
-            rows = ImmutableList.of(tableValue);
+        if( rows == null ) {
+            rows = ImmutableList.of( tableValue );
         }
 
         boolean first = true;
@@ -112,16 +130,16 @@ public class StepFormatter {
             first = false;
         }
 
-        result = tableAnnotation.transpose() ? transpose(result) : result;
-        return new DataTable(tableAnnotation.header(), result);
+        result = tableAnnotation.transpose() ? transpose( result ) : result;
+        return new DataTable( tableAnnotation.header(), result );
     }
 
-    private static DataTable pojosToTableValue(Object tableValue, Table tableAnnotation) {
+    private static DataTable pojosToTableValue( Object tableValue, Table tableAnnotation ) {
         List<List<String>> list = Lists.newArrayList();
 
         Iterable<?> objects = toIterable( tableValue );
-        if (objects == null) {
-            objects = ImmutableList.of(tableValue);
+        if( objects == null ) {
+            objects = ImmutableList.of( tableValue );
         }
         Object first = objects.iterator().next();
         List<Field> fields = ReflectionUtil.getAllNonStaticFields( first.getClass() );
@@ -131,20 +149,20 @@ public class StepFormatter {
             list.add( toStringList( ReflectionUtil.getAllFieldValues( o, fields, "" ) ) );
         }
 
-        list = tableAnnotation.transpose() || tableAnnotation.header().isVertical() ? transpose(list) : list;
-        return new DataTable(tableAnnotation.header(), list);
+        list = tableAnnotation.transpose() || tableAnnotation.header().isVertical() ? transpose( list ) : list;
+        return new DataTable( tableAnnotation.header(), list );
     }
 
-    static List<List<String>> transpose(List<List<String>> list) {
+    static List<List<String>> transpose( List<List<String>> list ) {
         List<List<String>> transposed = Lists.newArrayList();
 
-        for (int rowIdx = 0; rowIdx < list.size(); rowIdx++) {
-            List<String> row = list.get(rowIdx);
-            for (int colIdx = 0; colIdx < row.size(); colIdx++ ) {
-                if (rowIdx == 0) {
-                    transposed.add(Lists.<String>newArrayList());
+        for( int rowIdx = 0; rowIdx < list.size(); rowIdx++ ) {
+            List<String> row = list.get( rowIdx );
+            for( int colIdx = 0; colIdx < row.size(); colIdx++ ) {
+                if( rowIdx == 0 ) {
+                    transposed.add( Lists.<String>newArrayList() );
                 }
-                transposed.get(colIdx).add(row.get(colIdx));
+                transposed.get( colIdx ).add( row.get( colIdx ) );
             }
         }
 
