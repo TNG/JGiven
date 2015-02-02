@@ -12,7 +12,7 @@
 
 ## Fixed Issues
 * Methods annotated with `@Hidden` see now injected values from the previous stage if they are the first method called on a stage
-* Fixes issue with IntelliJ JUnit runner that stays yellow when executing JGiven tests (Issue [#57](https://github.com/TNG/JGiven/issues/57))
+* Fixes issue with IntelliJ JUnit runner that stays yellow when executing JGiven tests (Issue [#58](https://github.com/TNG/JGiven/issues/58))
 
 # v0.6.2
 ## New Features
