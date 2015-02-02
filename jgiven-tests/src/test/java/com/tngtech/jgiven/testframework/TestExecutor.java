@@ -1,5 +1,8 @@
 package com.tngtech.jgiven.testframework;
 
+import com.tngtech.jgiven.junit.JUnitExecutor;
+import com.tngtech.jgiven.testng.TestNgExecutor;
+
 public abstract class TestExecutor {
 
     public static TestExecutor getExecutor( TestFramework framework ) {

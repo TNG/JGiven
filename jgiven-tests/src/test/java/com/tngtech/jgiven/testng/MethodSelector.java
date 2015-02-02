@@ -6,8 +6,6 @@ import org.testng.IMethodSelector;
 import org.testng.IMethodSelectorContext;
 import org.testng.ITestNGMethod;
 
-import com.tngtech.jgiven.testframework.TestNgExecutor;
-
 @SuppressWarnings( "serial" )
 public class MethodSelector implements IMethodSelector {
     @Override

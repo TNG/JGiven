@@ -1,5 +1,6 @@
-package com.tngtech.jgiven.testframework;
+package com.tngtech.jgiven.testng;
 
+import com.tngtech.jgiven.testframework.TestExecutionResult;
 import org.testng.ITestResult;
 
 public class TestNgExecutionResult extends TestExecutionResult {

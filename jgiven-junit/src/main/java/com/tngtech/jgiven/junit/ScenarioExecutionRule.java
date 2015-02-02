@@ -37,12 +37,24 @@ public class ScenarioExecutionRule implements MethodRule {
 
     private final Object testInstance;
     private final ScenarioBase scenario;
-    private final ScenarioReportRule reportRule;
 
+    /**
+     * @deprecated use {@link #ScenarioExecutionRule(Object, com.tngtech.jgiven.impl.ScenarioBase)} instead
+     */
+    @Deprecated
     public ScenarioExecutionRule( ScenarioReportRule reportRule, Object testInstance, ScenarioBase scenario ) {
+        this( testInstance, scenario );
+    }
+
+    /**
+     * 
+     * @param testInstance the instance of the test class
+     * @param scenario the scenario
+     * @since 0.7.0                
+     */
+    public ScenarioExecutionRule( Object testInstance, ScenarioBase scenario ) {
         this.testInstance = testInstance;
         this.scenario = scenario;
-        this.reportRule = reportRule;
     }
 
     @Override
@@ -84,7 +96,7 @@ public class ScenarioExecutionRule implements MethodRule {
     }
 
     protected void starting( Statement base, FrameworkMethod testMethod, Object target ) {
-        scenario.setModel( reportRule.getTestCaseModel() );
+        scenario.setModel( ScenarioModelHolder.getInstance().getReportModel( testInstance.getClass() ) );
         scenario.getExecutor().injectSteps( testInstance );
 
         Class<?> testClass = target.getClass();

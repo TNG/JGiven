@@ -4,7 +4,7 @@ import com.tngtech.jgiven.report.model.ReportModel;
 
 public abstract class TestExecutionResult {
 
-    ReportModel reportModel;
+    public ReportModel reportModel;
 
     public abstract int getFailureCount();
 

@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.testframework;
+package com.tngtech.jgiven.junit;
 
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
@@ -6,8 +6,9 @@ import org.junit.runner.Request;
 import org.junit.runner.notification.RunListener;
 
 import com.tngtech.jgiven.impl.Config;
-import com.tngtech.jgiven.junit.ScenarioTest;
 import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.testframework.TestExecutionResult;
+import com.tngtech.jgiven.testframework.TestExecutor;
 
 public class JUnitExecutor extends TestExecutor {
 
@@ -54,13 +55,16 @@ public class JUnitExecutor extends TestExecutor {
 
         @Override
         public void testIgnored( Description description ) throws Exception {
-            reportModel = ScenarioTest.writerRule.getTestCaseModel();
+            getReportModel( description );
         }
 
         @Override
         public void testFinished( Description description ) throws Exception {
-            reportModel = ScenarioTest.writerRule.getTestCaseModel();
+            getReportModel( description );
         }
 
+        private void getReportModel( Description description ) {
+            reportModel = ScenarioModelHolder.getInstance().getReportModel( description.getTestClass() );
+        }
     }
 }

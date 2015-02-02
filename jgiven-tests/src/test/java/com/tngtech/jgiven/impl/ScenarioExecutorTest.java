@@ -12,6 +12,7 @@ import com.tngtech.jgiven.JGivenTestConfiguration;
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.impl.ScenarioExecutorTest.TestSteps;
+import com.tngtech.jgiven.junit.ScenarioModelHolder;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.tags.FeatureStepParameters;
@@ -35,7 +36,8 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
         }
 
         public void the_method_does_not_appear_in_the_report() {
-            StepModel stepModel = ScenarioExecutorTest.writerRule.getTestCaseModel().getFirstStepModelOfLastScenario();
+            StepModel stepModel = ScenarioModelHolder.getInstance().getReportModel( ScenarioExecutorTest.class )
+                .getFirstStepModelOfLastScenario();
             assertThat( stepModel.words.get( 1 ).getValue() )
                 .isNotEqualTo( "buildString" )
                 .isEqualTo( "some stage with method called during construction" );

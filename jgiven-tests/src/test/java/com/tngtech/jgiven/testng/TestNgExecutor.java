@@ -1,5 +1,7 @@
-package com.tngtech.jgiven.testframework;
+package com.tngtech.jgiven.testng;
 
+import com.tngtech.jgiven.testframework.TestExecutionResult;
+import com.tngtech.jgiven.testframework.TestExecutor;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
@@ -8,7 +10,6 @@ import org.testng.TestNG;
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.testng.MethodSelector;
 
 public class TestNgExecutor extends TestExecutor {
 

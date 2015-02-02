@@ -16,7 +16,7 @@ public class ThenTestStep extends Stage<ThenTestStep> {
         return self();
     }
 
-    public ThenTestStep something_has_happend() {
+    public ThenTestStep something_has_happen() {
         return self();
     }
 

@@ -77,4 +77,7 @@ public class PlainTextReporter extends PlainTextWriter {
         }
     }
 
+    public void flush() {
+        writer.flush();
+    }
 }

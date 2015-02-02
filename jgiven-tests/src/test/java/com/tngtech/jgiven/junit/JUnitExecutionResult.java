@@ -1,5 +1,6 @@
-package com.tngtech.jgiven.testframework;
+package com.tngtech.jgiven.junit;
 
+import com.tngtech.jgiven.testframework.TestExecutionResult;
 import org.junit.runner.Result;
 
 public class JUnitExecutionResult extends TestExecutionResult {

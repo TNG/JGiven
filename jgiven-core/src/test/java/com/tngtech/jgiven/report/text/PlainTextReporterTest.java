@@ -61,7 +61,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
 
         when().something_happens();
 
-        then().something_has_happend()
+        then().something_has_happen()
             .but().something_else_not();
 
         String string = PlainTextReporter.toString( getScenario().getModel() );
@@ -72,7 +72,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
                     + "   Given something\n"
                     + "     And something else\n"
                     + "    When something happens\n"
-                    + "    Then something has happend\n"
+                    + "    Then something has happen\n"
                     + "     But something else not"
             );
     }
