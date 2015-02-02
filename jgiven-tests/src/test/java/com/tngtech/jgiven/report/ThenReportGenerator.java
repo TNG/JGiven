@@ -6,10 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.regex.Pattern;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
@@ -28,17 +26,17 @@ public class ThenReportGenerator<SELF extends ThenReportGenerator<?>> extends St
         return self();
     }
 
-    public SELF file_$_contains( String fileName, final String regex ) throws IOException {
-        ImmutableList<String> content = Files.asCharSource( new File( targetReportDir, fileName ), Charset.forName( "utf8" ) ).readLines();
+    public SELF file_$_contains_pattern( String fileName, final String regexp ) throws IOException {
+        String content = Files.asCharSource( new File( targetReportDir, fileName ), Charset.forName( "utf8" ) ).read();
+        Pattern pattern = Pattern.compile( ".*" + regexp + ".*", Pattern.MULTILINE | Pattern.DOTALL );
 
-        boolean match = FluentIterable.from( content ).anyMatch( new Predicate<String>() {
-            @Override
-            public boolean apply( String input ) {
-                return input.matches( regex );
-            }
-        } );
+        assertThat( pattern.matcher( regexp ).matches() ).as( "file " + fileName + " does not contain " + regexp ).isTrue();
+        return self();
+    }
 
-        assertThat( match ).as( "file " + fileName + " does not contain " + regex ).isTrue();
+    public SELF file_$_contains( String fileName, final String string ) throws IOException {
+        String content = Files.asCharSource( new File( targetReportDir, fileName ), Charset.forName( "utf8" ) ).read();
+        assertThat( content ).as( "file " + fileName + " does not contain " + string ).contains( string );
         return self();
     }
 }

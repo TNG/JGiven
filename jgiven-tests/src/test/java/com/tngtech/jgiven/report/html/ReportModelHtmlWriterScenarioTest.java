@@ -1,5 +1,9 @@
 package com.tngtech.jgiven.report.html;
 
+import static java.util.Arrays.asList;
+
+import java.io.IOException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -9,11 +13,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.JGivenScenarioTest;
 import com.tngtech.jgiven.report.model.GivenReportModel;
 import com.tngtech.jgiven.report.model.StepStatus;
-import com.tngtech.jgiven.tags.FeatureDataTables;
-import com.tngtech.jgiven.tags.FeatureDerivedParameters;
-import com.tngtech.jgiven.tags.FeatureDuration;
-import com.tngtech.jgiven.tags.FeatureHtmlReport;
-import com.tngtech.jgiven.tags.Issue;
+import com.tngtech.jgiven.tags.*;
 
 @FeatureHtmlReport
 @RunWith( DataProviderRunner.class )
@@ -177,4 +177,19 @@ public class ReportModelHtmlWriterScenarioTest extends JGivenScenarioTest<GivenR
         then().the_HTML_report_contains_text( "<span class='duration'>(123.46 ms)</span>" );
     }
 
+    @Test
+    @FeatureTableStepArguments
+    public void the_static_HTML_report_generator_handles_data_table_arguments() throws IOException {
+        given().a_report_model()
+            .and().a_step_has_a_data_table_with_following_values(asList(
+                asList("header1", "header2"),
+                asList("value1", "value2"),
+                asList("value3", "value4")));
+        when().the_HTML_report_is_generated();
+        then().the_HTML_report_contains_pattern( "<table class='data-table'>.*\n" +
+                "<tr>.*<th>.*header1.*</th>.*<th>.*header2.*</th>.*</tr>.*\n" +
+                "<tr>.*<td>.*value1.*</td>.*<td>.*value2.*</td>.*</tr>.*\n" +
+                "<tr>.*<td>.*value3.*</td>.*<td>.*value4.*</td>.*</tr>.*\n" +
+                "</table>" );
+    }
 }

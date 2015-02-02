@@ -33,7 +33,7 @@ public class Config {
                 log.info( JGIVEN_REPORT_DIR + " not set, but detected surefire plugin, generating reports to " + reportDirName );
             } else {
                 reportDirName = "jgiven-reports";
-                log.info( JGIVEN_REPORT_DIR + " not set, using default value jgiven-reports" );
+                log.debug( JGIVEN_REPORT_DIR + " not set, using default value jgiven-reports" );
             }
         }
 
@@ -43,7 +43,7 @@ public class Config {
             return Optional.absent();
         }
 
-        log.info( "Using folder " + reportDirName + " to store JGiven reports" );
+        log.debug( "Using folder " + reportDirName + " to store JGiven reports" );
 
         return Optional.of( reportDir );
     }

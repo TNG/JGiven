@@ -225,7 +225,13 @@ public class StepFormatter {
 
         Object value = arguments.get( index ).value;
         String defaultFormattedValue = toDefaultStringFormat( value );
-        String formattedValue = formatUsingFormatterOrNull( formatters.get( index ), value );
+
+        Formatting<?> formatter = formatters.get( index );
+        if( formatter.formatter instanceof TableFormatter ) {
+            throw new JGivenWrongUsageException(
+                "Parameters annotated with @Table must be the last ones. They cannot be used for $ substitution" );
+        }
+        String formattedValue = formatUsingFormatterOrNull( formatter, value );
         String argumentName = arguments.get( index ).name;
 
         if( defaultFormattedValue != null && !defaultFormattedValue.isEmpty() ) {

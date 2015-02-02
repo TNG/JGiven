@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.report.text;
 
+import static java.util.Arrays.asList;
+
 import java.io.UnsupportedEncodingException;
 
 import org.junit.Test;
@@ -116,10 +118,10 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
     public void table_annotations_at_parameters_lead_to_data_tables_in_the_report( Table.HeaderType headerType, boolean hasHeaderLine )
             throws UnsupportedEncodingException {
         given().a_report_model_with_one_scenario()
-            .and().step_$_of_case_$_has_a_table_argument_with_value( 1, 1, new String[][] {
-                { "foo", "bar" },
-                { "1", "a" },
-                { "2", "b" } } )
+            .and().a_step_has_a_data_table_with_following_values( asList(
+                asList( "foo", "bar" ),
+                asList( "1", "a" ),
+                asList( "2", "b" ) ) )
             .with().header_type_set_to( headerType );
         when().the_plain_text_report_is_generated();
         then().the_report_contains_text( "\n" +

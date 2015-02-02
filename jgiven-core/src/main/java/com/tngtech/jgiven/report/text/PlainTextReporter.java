@@ -49,17 +49,6 @@ public class PlainTextReporter extends PlainTextWriter {
         return this;
     }
 
-    /**
-     * Closes the underlying PrintWriter
-     */
-    public void close() {
-        writer.close();
-    }
-
-    public void write( ScenarioModel scenarioModel ) {
-        scenarioModel.accept( this );
-    }
-
     @Override
     public void visit( ReportModel multiScenarioModel ) {
         writer.println();

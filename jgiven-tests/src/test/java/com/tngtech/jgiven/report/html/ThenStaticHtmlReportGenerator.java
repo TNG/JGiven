@@ -33,8 +33,8 @@ public class ThenStaticHtmlReportGenerator<SELF extends ThenStaticHtmlReportGene
 
     public SELF file_$_contains_scenario_$( String fileName, int scenarioNr ) throws IOException {
         final ScenarioModel scenarioModel = reportModels.get( 0 ).getScenarios().get( 0 );
-        final String regex = "<div class='scenario-footer'>.*" + scenarioModel.getClassName() + "</a></div>";
-        return file_$_contains( fileName, regex );
+        final String regex = ".*<div class='scenario-footer'>.*" + scenarioModel.getClassName() + "</a></div>.*";
+        return file_$_contains_pattern(fileName, regex);
     }
 
 }

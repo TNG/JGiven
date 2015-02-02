@@ -5,7 +5,6 @@ import static java.util.Arrays.asList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.beust.jcommander.internal.Lists;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
@@ -174,25 +173,6 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
-    public SELF step_$_of_case_$_has_a_table_argument_with_value( int stepNr, int caseNr, @Table String[][] dataTable ) {
-        latestWord = Word.argWord( "dataTable", "foo", toDataTable( dataTable ) );
-        getCase( caseNr ).getStep( stepNr - 1 ).addWords( latestWord );
-        return self();
-    }
-
-    private DataTable toDataTable( String[][] dataTable ) {
-        List<List<String>> listOfList = Lists.newArrayList();
-
-        for( int i = 0; i < dataTable.length; i++ ) {
-            listOfList.add( Lists.<String>newArrayList() );
-            for( int j = 0; j < dataTable[i].length; j++ ) {
-                listOfList.get( i ).add( dataTable[i][j] );
-            }
-        }
-
-        return new DataTable( Table.HeaderType.HORIZONTAL, listOfList );
-    }
-
     public SELF step_$_has_status( int stepNr, StepStatus status ) {
         return step_$_of_case_$_has_status( stepNr, 1, status );
     }
@@ -243,8 +223,24 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF step_$_of_scenario_$_has_an_attachment_with_content( int stepNr, int scenarioNr, String content ) {
-        StepModel step = reportModel.getScenarios().get( scenarioNr - 1 ).getScenarioCases().get( 0 ).getStep( stepNr - 1 );
+        StepModel step = getStep( stepNr, scenarioNr );
         step.setAttachment( Attachment.fromText( content, MediaType.PLAIN_TEXT ) );
+        return self();
+    }
+
+    private StepModel getStep( int stepNr, int scenarioNr ) {
+        return reportModel.getScenarios().get( scenarioNr - 1 ).getScenarioCases().get( 0 ).getStep( stepNr - 1 );
+    }
+
+    public SELF a_step_has_a_data_table_with_following_values(@Table List<List<String>> dataTable) {
+        return step_$_of_scenario_$_has_a_data_table_as_parameter( dataTable );
+    }
+
+    public SELF step_$_of_scenario_$_has_a_data_table_as_parameter( @Table List<List<String>> dataTable ) {
+        StepModel step = getStep( 1, 1 );
+        Word word = Word.argWord( "a", "b", new DataTable( Table.HeaderType.HORIZONTAL, dataTable ) );
+        step.addWords( word );
+        latestWord = word;
         return self();
     }
 }
