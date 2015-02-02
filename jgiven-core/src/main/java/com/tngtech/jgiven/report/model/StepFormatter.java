@@ -227,7 +227,7 @@ public class StepFormatter {
         String defaultFormattedValue = toDefaultStringFormat( value );
 
         Formatting<?> formatter = formatters.get( index );
-        if( formatter.formatter instanceof TableFormatter ) {
+        if( formatter != null && formatter.formatter instanceof TableFormatter ) {
             throw new JGivenWrongUsageException(
                 "Parameters annotated with @Table must be the last ones. They cannot be used for $ substitution" );
         }
