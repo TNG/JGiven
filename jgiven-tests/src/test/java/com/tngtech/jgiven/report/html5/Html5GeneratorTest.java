@@ -100,8 +100,7 @@ public class Html5GeneratorTest extends JGivenScenarioTest<GivenJsonReports<?>, 
         whenReport
             .and().the_HTML5_report_has_been_generated();
 
-        when().the_page_of_scenario_$_is_opened( 1 )
-            .and().scenario_$_is_expanded( 1 );
+        when().the_page_of_scenario_$_is_opened( 1 );
 
         then().an_attachment_icon_exists()
             .and().the_content_of_the_referenced_attachment_is( content );
