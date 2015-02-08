@@ -4,14 +4,17 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.AnnotationArgumentFormatter;
@@ -117,7 +120,7 @@ public class StepFormatter {
         for( Object row : rows ) {
             if( first ) {
                 if( toIterable( row ) == null ) {
-                    return pojosToTableValue( tableValue, tableAnnotation );
+                    return pojosToTableValue( rows, tableAnnotation );
                 }
             }
             List<String> values = toStringList( row );
@@ -134,15 +137,11 @@ public class StepFormatter {
         return new DataTable( tableAnnotation.header(), result );
     }
 
-    private static DataTable pojosToTableValue( Object tableValue, Table tableAnnotation ) {
+    static DataTable pojosToTableValue( Iterable<?> objects, final Table tableAnnotation ) {
         List<List<String>> list = Lists.newArrayList();
 
-        Iterable<?> objects = toIterable( tableValue );
-        if( objects == null ) {
-            objects = ImmutableList.of( tableValue );
-        }
         Object first = objects.iterator().next();
-        List<Field> fields = ReflectionUtil.getAllNonStaticFields( first.getClass() );
+        Iterable<Field> fields = getFields( tableAnnotation, first );
         list.add( getFieldNames( fields ) );
 
         for( Object o : objects ) {
@@ -151,6 +150,27 @@ public class StepFormatter {
 
         list = tableAnnotation.transpose() || tableAnnotation.header().isVertical() ? transpose( list ) : list;
         return new DataTable( tableAnnotation.header(), list );
+    }
+
+    private static Iterable<Field> getFields( Table tableAnnotation, Object first ) {
+        final Set<String> includeFields = Sets.newHashSet( tableAnnotation.includeFields() );
+        final Set<String> excludeFields = Sets.newHashSet( tableAnnotation.excludeFields() );
+        return FluentIterable.from( ReflectionUtil.getAllNonStaticFields( first.getClass() ) )
+            .filter( new Predicate<Field>() {
+                @Override
+                public boolean apply( Field input ) {
+                    String name = input.getName();
+                    if( !includeFields.isEmpty() ) {
+                        return includeFields.contains( name );
+                    }
+
+                    if( excludeFields.contains( name ) ) {
+                        return false;
+                    }
+
+                    return true;
+                }
+            } );
     }
 
     static List<List<String>> transpose( List<List<String>> list ) {
@@ -169,7 +189,7 @@ public class StepFormatter {
         return transposed;
     }
 
-    private static List<String> getFieldNames( List<Field> fields ) {
+    private static List<String> getFieldNames( Iterable<Field> fields ) {
         return FluentIterable.from( ReflectionUtil.getAllFieldNames( fields ) )
             .transform( new Function<String, String>() {
                 @Override

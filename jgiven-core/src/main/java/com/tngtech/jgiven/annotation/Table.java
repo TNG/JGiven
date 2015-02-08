@@ -1,8 +1,8 @@
 package com.tngtech.jgiven.annotation;
 
-import java.lang.annotation.*;
-
 import static com.tngtech.jgiven.annotation.Table.HeaderType.HORIZONTAL;
+
+import java.lang.annotation.*;
 
 /**
  * Marks the parameter of a step method as a data table.
@@ -158,23 +158,24 @@ public @interface Table {
 
     /**
      * Specifies which fields should be excluded in the report.
-     * Makes only sense when supplying a list of POJOs.
      * <p>
-     * <b>This feature is not implemented yet!</b>
-     * </p>
+     * If {@link #includeFields()} is set, then this attribute has no effect    
+     * 
+     * <p>
+     * Makes only sense when supplying a list of POJOs or a single POJO.
      */
     String[] excludeFields() default {};
 
     /**
      * Specifies which fields should be included in the report.
-     * Makes only sense when supplying a list of POJOs.
+     * 
+     * All fields not in this list will be excluded.
      * <p>
-     * <b>This feature is not implemented yet!</b>
-     * </p>
+     * Makes only sense when supplying a list of POJOs or a single POJO.
      */
     String[] includeFields() default {};
 
-    enum HeaderType {
+    public enum HeaderType {
         /**
          * The table has no header
          */

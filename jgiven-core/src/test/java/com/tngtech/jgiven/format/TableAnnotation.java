@@ -1,8 +1,8 @@
 package com.tngtech.jgiven.format;
 
-import com.tngtech.jgiven.annotation.Table;
-
 import java.lang.annotation.Annotation;
+
+import com.tngtech.jgiven.annotation.Table;
 
 public class TableAnnotation implements Table {
 

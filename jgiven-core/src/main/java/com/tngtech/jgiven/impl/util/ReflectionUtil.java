@@ -214,12 +214,12 @@ public class ReflectionUtil {
         return result;
     }
 
-    public static List<Object> getAllFieldValues( Object target, List<Field> fields, String errorDescription ) {
-        return FluentIterable.from( fields ).transform(
-            getFieldValueFunction( target, errorDescription ) ).toList();
+    public static List<Object> getAllFieldValues( Object target, Iterable<Field> fields, String errorDescription ) {
+        return Lists.newArrayList( FluentIterable.from( fields ).transform(
+            getFieldValueFunction( target, errorDescription ) ) );
     }
 
-    public static List<String> getAllFieldNames( List<Field> fields ) {
+    public static List<String> getAllFieldNames( Iterable<Field> fields ) {
         return FluentIterable.from( fields ).transform( new Function<Field, String>() {
             @Override
             public String apply( Field input ) {
