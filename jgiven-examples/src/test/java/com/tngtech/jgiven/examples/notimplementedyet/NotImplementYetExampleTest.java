@@ -15,9 +15,17 @@ public class NotImplementYetExampleTest extends SimpleScenarioTest<NotImplementY
     @Test
     @FeatureNotImplementedYet
     @NotImplementedYet
-    public void a_tests_that_are_not_implemented_yet_can_be_annotated_with_the_NotImplementedYet_annotation() {
+    public void scenarios_that_are_not_implemented_yet_can_be_annotated_with_the_NotImplementedYet_annotation() {
         given().some_state();
         when().some_action();
+        then().some_result();
+    }
+
+    @Test
+    @FeatureNotImplementedYet
+    public void single_steps_can_be_annotated_with_NotImplementedYet() {
+        given().some_state();
+        when().some_not_implemented_yet_action();
         then().some_result();
     }
 
@@ -35,5 +43,9 @@ public class NotImplementYetExampleTest extends SimpleScenarioTest<NotImplementY
             return this;
         }
 
+        @NotImplementedYet
+        public TestSteps some_not_implemented_yet_action() {
+            return this;
+        }
     }
 }

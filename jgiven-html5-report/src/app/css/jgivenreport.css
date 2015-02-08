@@ -194,8 +194,8 @@ table.steps tr.steps:hover {
     color: red;
 }
 
-.SKIPPED {
-    color: #aaa;
+.SKIPPED, .NOT_IMPLEMENTED_YET {
+    color: #aaa !important;
 }
 
 .PASSED {
