@@ -1,4 +1,4 @@
-# v0.7.0 (not released yet)
+# v0.7.0
 
 ## New Features
 
