@@ -107,6 +107,25 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
     }
 
     @Test
+    @FeatureDataTables
+    public void data_tables_are_generated_for_empty_strings() throws UnsupportedEncodingException {
+        given()
+            .a_report_model_with_one_scenario()
+            .and().the_scenario_has_$_default_cases( 2 )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "some arg step", "non empty string", "arg" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "some arg step", "", "arg" );
+
+        when().the_plain_text_report_is_generated();
+
+        then().the_report_contains_text( "<arg>" )
+            .and().the_report_contains_text( "\n" +
+                    "    | # | arg              | Status  |\n" +
+                    "    +---+------------------+---------+\n" +
+                    "    | 1 | non empty string | Success |\n" +
+                    "    | 2 |                  | Success |\n" );
+    }
+
+    @Test
     @Issue( "#52" )
     @FeatureDataTables
     @DataProvider( {

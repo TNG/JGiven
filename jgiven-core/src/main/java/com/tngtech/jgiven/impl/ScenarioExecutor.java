@@ -4,7 +4,6 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.reverse;
 import static com.tngtech.jgiven.impl.ScenarioExecutor.State.FINISHED;
 import static com.tngtech.jgiven.impl.ScenarioExecutor.State.STARTED;
-import static com.tngtech.jgiven.impl.util.ReflectionUtil.hasAtLeastOneAnnotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -27,8 +26,8 @@ import com.tngtech.jgiven.exception.FailIfPassedException;
 import com.tngtech.jgiven.exception.JGivenUserException;
 import com.tngtech.jgiven.impl.inject.ValueInjector;
 import com.tngtech.jgiven.impl.intercept.*;
+import com.tngtech.jgiven.impl.util.FieldCache;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
-import com.tngtech.jgiven.impl.util.ReflectionUtil.FieldAction;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
 import com.tngtech.jgiven.impl.util.ScenarioUtil;
 import com.tngtech.jgiven.integration.CanWire;
@@ -176,14 +175,15 @@ public class ScenarioExecutor {
 
     @SuppressWarnings( "unchecked" )
     private void gatherRules( Object stage ) {
-        ReflectionUtil.forEachField( stage, stage.getClass(), hasAtLeastOneAnnotation( ScenarioRule.class ), new FieldAction() {
-            @Override
-            public void act( Object object, Field field ) throws Exception {
-                log.debug( "Found rule in field: " + field );
-                field.setAccessible( true );
-                scenarioRules.add( field.get( object ) );
+        for( Field field : FieldCache.get( stage.getClass() ).getFieldsWithAnnotation( ScenarioRule.class ) ) {
+            log.debug( "Found rule in field {} ", field );
+            try {
+                scenarioRules.add( field.get( stage ) );
+            } catch( IllegalAccessException e ) {
+                throw new RuntimeException( "Error while reading field " + field, e );
             }
-        } );
+        }
+
     }
 
     private <T> T update( T t ) throws Throwable {
@@ -385,14 +385,10 @@ public class ScenarioExecutor {
 
     @SuppressWarnings( "unchecked" )
     public void injectSteps( Object stage ) {
-        ReflectionUtil.forEachField( stage, stage.getClass(),
-            ReflectionUtil.hasAtLeastOneAnnotation( ScenarioStage.class ), new FieldAction() {
-                @Override
-                public void act( Object object, Field field ) throws Exception {
-                    Object steps = addStage( field.getType() );
-                    ReflectionUtil.setField( field, object, steps, ", annotated with @ScenarioStage" );
-                }
-            } );
+        for( Field field : FieldCache.get( stage.getClass() ).getFieldsWithAnnotation( ScenarioStage.class ) ) {
+            Object steps = addStage( field.getType() );
+            ReflectionUtil.setField( field, stage, steps, ", annotated with @ScenarioStage" );
+        }
     }
 
     public boolean hasFailed() {

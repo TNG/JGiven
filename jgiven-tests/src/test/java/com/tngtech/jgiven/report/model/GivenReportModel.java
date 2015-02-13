@@ -6,10 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.ExtendedDescription;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
@@ -186,7 +183,8 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( ncase, name, arg, "argName" );
     }
 
-    public SELF case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( int ncase, String name, String arg, String argName ) {
+    public SELF case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( int ncase, @Quoted String name, @Quoted String arg,
+            @Quoted String argName ) {
         getCase( ncase )
             .addStep(
                 new StepModel( name,
@@ -194,7 +192,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
-    public SELF the_first_scenario_has_tag( String name ) {
+    public SELF the_first_scenario_has_tag( @Quoted String name ) {
         return scenario_$_has_tag_$_with_value_$( 1, name, null );
     }
 
@@ -232,7 +230,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return reportModel.getScenarios().get( scenarioNr - 1 ).getScenarioCases().get( 0 ).getStep( stepNr - 1 );
     }
 
-    public SELF a_step_has_a_data_table_with_following_values(@Table List<List<String>> dataTable) {
+    public SELF a_step_has_a_data_table_with_following_values( @Table List<List<String>> dataTable ) {
         return step_$_of_scenario_$_has_a_data_table_as_parameter( dataTable );
     }
 

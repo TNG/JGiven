@@ -2,7 +2,9 @@ package com.tngtech.jgiven.impl.inject;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,8 +15,7 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState.Resolution;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
-import com.tngtech.jgiven.impl.util.ReflectionUtil;
-import com.tngtech.jgiven.impl.util.ReflectionUtil.FieldAction;
+import com.tngtech.jgiven.impl.util.FieldCache;
 
 /**
  * Used by Scenario to inject and read values from objects.
@@ -25,67 +26,75 @@ public class ValueInjector {
     private final ValueInjectorState state = new ValueInjectorState();
 
     /**
+     * Caches all classes that have been already validated for ambiguous resolution.
+     * This avoids duplicate validations of the same class.
+     */
+    private static final ConcurrentHashMap<Class<?>, Boolean> validatedClasses = new ConcurrentHashMap<Class<?>, Boolean>();
+
+    /**
      * @throws AmbiguousResolutionException when multiple fields with the same resolution exist in the given object
      */
     @SuppressWarnings( "unchecked" )
     public void validateFields( Object object ) {
-        final Map<Object, Field> resolvedFields = Maps.newHashMap();
+        if( validatedClasses.get( object.getClass() ) == Boolean.TRUE ) {
+            return;
+        }
 
-        ReflectionUtil.forEachField( object, object.getClass(),
-            ReflectionUtil.hasAtLeastOneAnnotation( ScenarioState.class, ProvidedScenarioState.class, ExpectedScenarioState.class ),
-            new FieldAction() {
-                @Override
-                public void act( Object object, Field field ) throws Exception {
-                    field.setAccessible( true );
-                    Resolution resolution = getResolution( field );
-                    Object key = null;
-                    if( resolution == Resolution.NAME ) {
-                        key = field.getName();
-                    } else {
-                        key = field.getType();
-                    }
-                    if( resolvedFields.containsKey( key ) ) {
-                        Field existingField = resolvedFields.get( key );
-                        throw new AmbiguousResolutionException( "Ambiguous fields with same " + resolution + " detected. Field 1: " +
-                                existingField + ", field 2: " + field );
-                    }
-                    resolvedFields.put( key, field );
-                }
-            } );
+        Map<Object, Field> resolvedFields = Maps.newHashMap();
+
+        for( Field field : getScenarioFields( object ) ) {
+            field.setAccessible( true );
+            Resolution resolution = getResolution( field );
+            Object key = null;
+            if( resolution == Resolution.NAME ) {
+                key = field.getName();
+            } else {
+                key = field.getType();
+            }
+            if( resolvedFields.containsKey( key ) ) {
+                Field existingField = resolvedFields.get( key );
+                throw new AmbiguousResolutionException( "Ambiguous fields with same " + resolution + " detected. Field 1: " +
+                        existingField + ", field 2: " + field );
+            }
+            resolvedFields.put( key, field );
+        }
+
+        validatedClasses.put( object.getClass(), Boolean.TRUE );
+    }
+
+    private List<Field> getScenarioFields( Object object ) {
+        return FieldCache.get( object.getClass() ).getFieldsWithAnnotation( ScenarioState.class, ProvidedScenarioState.class,
+            ExpectedScenarioState.class );
     }
 
     @SuppressWarnings( "unchecked" )
     public void readValues( Object object ) {
         validateFields( object );
-        ReflectionUtil.forEachField( object, object.getClass(),
-            ReflectionUtil.hasAtLeastOneAnnotation( ScenarioState.class, ExpectedScenarioState.class, ProvidedScenarioState.class ),
-            new FieldAction() {
-                @Override
-                public void act( Object object, Field field ) throws Exception {
-                    field.setAccessible( true );
-                    Object value = field.get( object );
-                    updateValue( field, value );
-                    log.debug( "Reading value " + value + " from field " + field );
-                }
-            } );
+        for( Field field : getScenarioFields( object ) ) {
+            try {
+                Object value = field.get( object );
+                updateValue( field, value );
+                log.debug( "Reading value {} from field {}", value, field );
+            } catch( IllegalAccessException e ) {
+                throw new RuntimeException( "Error while reading field " + field, e );
+            }
+        }
     }
 
     @SuppressWarnings( "unchecked" )
     public void updateValues( Object object ) {
         validateFields( object );
-        ReflectionUtil.forEachField( object, object.getClass(),
-            ReflectionUtil.hasAtLeastOneAnnotation( ScenarioState.class, ExpectedScenarioState.class, ProvidedScenarioState.class ),
-            new FieldAction() {
-                @Override
-                public void act( Object object, Field field ) throws Exception {
-                    field.setAccessible( true );
-                    Object value = getValue( field );
-                    if( value != null ) {
-                        field.set( object, value );
-                        log.debug( "Setting field " + field + " to value " + value );
-                    }
+        for( Field field : getScenarioFields( object ) ) {
+            try {
+                Object value = getValue( field );
+                if( value != null ) {
+                    field.set( object, value );
+                    log.debug( "Setting field {} to value {}", field, value );
                 }
-            } );
+            } catch( IllegalAccessException e ) {
+                throw new RuntimeException( "Error while update field " + field, e );
+            }
+        }
     }
 
     public <T> void injectValueByType( Class<T> clazz, T value ) {
