@@ -158,7 +158,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       }));
       $scope.currentPage = {
           scenarios: scenarios,
-          title: methodName,
+          title: scenarios[0].description.capitalize(),
           subtitle: className,
           breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName]),
           statistics: $scope.gatherStatistics( scenarios )
@@ -422,11 +422,18 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   }
 
   function sortByDescription( scenarios ) {
-      return _.forEach(_.sortBy(scenarios, function(x) {
+      var scenarios = _.forEach(_.sortBy(scenarios, function(x) {
           return x.description.toLowerCase();
       }), function(x) {
           x.expanded = false;
       });
+
+      // directly expand a scenario if it is the only one
+      if (scenarios.length === 1) {
+          scenarios[0].expanded = true;
+      }
+
+      return scenarios;
   }
 
   function getClassNames() {
