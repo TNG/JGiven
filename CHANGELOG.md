@@ -1,3 +1,9 @@
+# v0.7.1
+
+## New Features
+
+* Support to convert Cucumber reports into JGiven reports
+
 # v0.7.0
 
 ## New Features
