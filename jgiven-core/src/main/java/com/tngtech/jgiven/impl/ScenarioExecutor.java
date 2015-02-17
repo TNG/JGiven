@@ -107,7 +107,8 @@ public class ScenarioExecutor {
         @Override
         public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode )
                 throws Throwable {
-            if( paramMethod.isSynthetic() ) {
+
+            if( paramMethod.isSynthetic() && !paramMethod.isBridge() ) {
                 return;
             }
 

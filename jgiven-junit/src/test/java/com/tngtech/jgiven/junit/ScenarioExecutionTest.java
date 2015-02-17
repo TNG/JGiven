@@ -311,4 +311,21 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
         assertThat( description ).isEqualTo( "An extended description" );
     }
+
+    static abstract class AbstractStage {
+        public abstract void abstract_step();
+    }
+
+    static class ConcreteStage extends AbstractStage {
+        @Override
+        public void abstract_step() {}
+    }
+
+    @Test
+    public void abstract_steps_should_appear_in_the_report_model() throws Throwable {
+        ConcreteStage stage = addStage( ConcreteStage.class );
+        stage.abstract_step();
+
+    }
+
 }

@@ -2,17 +2,19 @@ package com.tngtech.jgiven.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.lang.reflect.Method;
+import java.util.List;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.BeforeStage;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.google.common.collect.Lists;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
+import com.tngtech.jgiven.impl.intercept.InvocationMode;
+import com.tngtech.jgiven.impl.intercept.NoOpScenarioListener;
+import com.tngtech.jgiven.report.model.NamedArgument;
 
 public class ScenarioExecutorTest {
     @Rule
