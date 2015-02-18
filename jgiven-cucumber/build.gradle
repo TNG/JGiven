@@ -1,0 +1,33 @@
+
+description = "Module for converting Cucumber reports into JGiven reports "
+
+dependencies {
+    compile project(':jgiven-core')
+    compile(group: 'junit', name: 'junit', version: junitVersion)
+    testCompile project(':jgiven-junit')
+    testCompile group: 'info.cukes', name: 'cucumber-junit', version: '1.2.0'
+    testCompile 'info.cukes:cucumber-java:1.2.0'
+}
+
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testRuntime
+    }
+}
+
+task cucumber() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "cucumber.api.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['-f', 'pretty', '--glue', 'com.tngtech.jgiven.cucumber', 'src/test/resources']
+        }
+    }
+}
+
+// the cucumber scenarios are failing on purpose
+test.ignoreFailures = true
+
+

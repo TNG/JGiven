@@ -98,4 +98,5 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
         return self();
     }
 
+
 }

@@ -5,6 +5,7 @@ dependencies {
     compile project(':jgiven-junit')
     compile project(':jgiven-testng')
     compile project(':jgiven-html5-report')
+    compile project(':jgiven-cucumber')
     compile group: 'junit', name: 'junit', version: junitVersion
     compile group: 'org.testng', name: 'testng', version: testngVersion
 
