@@ -222,7 +222,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         stage.abstract_step();
         getScenario().finished();
         StepModel step = getScenario().getModel().getFirstStepModelOfLastScenario();
-        assertThat( step.words.get( 1 ).getFormattedValue() ).isEqualTo( "abstract_step" );
+        assertThat( step.words.get( 0 ).getFormattedValue() ).isEqualTo( "abstract step" );
 
     }
 
