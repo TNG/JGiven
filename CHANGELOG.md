@@ -1,3 +1,9 @@
+# v0.7.1
+
+## New Features
+
+* Introduce `columnTitles` attribute for the `@Table` annotation [#64](https://github.com/TNG/JGiven/pull/64) 
+
 # v0.7.0
 
 ## New Features
