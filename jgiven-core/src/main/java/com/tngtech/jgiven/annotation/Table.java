@@ -10,7 +10,9 @@ import java.lang.annotation.*;
  * <p>
  * Only parameters that implement {@link java.lang.Iterable} or arrays can be treated as data tables.
  * The elements can either be again {@link java.lang.Iterable} instances the data for each row
- * of the table. Note, that in that case the first element is taken as the header of the table.
+ * of the table.
+ * <p>
+ * Note, that in that case the first list is taken as the header of the table if the {@link Table#columnTitles()} are not set.
  * <p>
  * Elements can also be plain POJOs, in which case the field names become the headers and field values the data.
  * <p>
@@ -50,6 +52,7 @@ import java.lang.annotation.*;
  *
  * }</pre>
  *
+ * @since 0.6.1
  */
 @Documented
 @Retention( RetentionPolicy.RUNTIME )
@@ -174,6 +177,39 @@ public @interface Table {
      * Makes only sense when supplying a list of POJOs or a single POJO.
      */
     String[] includeFields() default {};
+
+    /**
+     * Explicitly specifies column titles of table header.
+     * <p>
+     * The first row of the data is <b>not</b> taken as the header row if this attribute is set.
+     * <p>
+     * When a list of POJOs is given as parameter then this overrides the default behavior of taking
+     * 
+     * <h2>Example</h2>
+     * Given the following table argument:
+     * <pre>
+     * {@code new Object[][] {
+     *     { "a1", "a2", "a3" },
+     *     { "b1", "b2", "b3" },
+     *     { "c1", "c2", "c3" }}
+     * }
+     * </pre>
+     * Then the {@link #columnTitles()} attribute is set as follows:
+     * <pre>
+     * columnTitles = { "t1", "t2", "t3" }    
+     * </pre>
+     * Then the resulting table will look as follows
+     * <pre>
+     *     | t1 | t2 | t3 |
+     *     +----+----+----+
+     *     | a1 | a2 | a3 |
+     *     | b1 | b2 | b3 |
+     *     | c1 | c2 | c3 |
+     * </pre>
+     * 
+     * @since 0.7.1
+     */
+    String[] columnTitles() default {};
 
     public enum HeaderType {
         /**

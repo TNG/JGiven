@@ -133,6 +133,10 @@ public class StepFormatter {
             first = false;
         }
 
+        if( tableAnnotation.columnTitles().length > 0 ) {
+            result.add( 0, Arrays.asList( tableAnnotation.columnTitles() ) );
+        }
+
         result = tableAnnotation.transpose() ? transpose( result ) : result;
         return new DataTable( tableAnnotation.header(), result );
     }
@@ -142,7 +146,12 @@ public class StepFormatter {
 
         Object first = objects.iterator().next();
         Iterable<Field> fields = getFields( tableAnnotation, first );
-        list.add( getFieldNames( fields ) );
+
+        if( tableAnnotation.columnTitles().length > 0 ) {
+            list.add( Arrays.asList( tableAnnotation.columnTitles() ) );
+        } else {
+            list.add( getFieldNames( fields ) );
+        }
 
         for( Object o : objects ) {
             list.add( toStringList( ReflectionUtil.getAllFieldValues( o, fields, "" ) ) );

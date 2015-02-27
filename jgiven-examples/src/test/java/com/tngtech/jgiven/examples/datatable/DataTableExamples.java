@@ -20,6 +20,11 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
             return self();
         }
 
+        public DataTableStage a_list_of_lists_is_used_as_parameter_with_column_titles(
+                @Table( columnTitles = { "Name", "Email" } ) List<List<String>> table ) {
+            return self();
+        }
+
         public DataTableStage a_list_of_POJOs_is_used_as_parameters(
                 @Table TestCustomer... testCustomer ) {
             return self();
@@ -53,6 +58,15 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
         given().a_list_of_lists_is_used_as_parameter(
             asList(
                 asList( "Name", "Email" ),
+                asList( "John Doe", "john@doe.com" ),
+                asList( "Jane Roe", "jane@row.com" ) )
+            );
+    }
+
+    @Test
+    public void a_list_of_list_can_be_used_as_table_parameter_and_column_titles_can_be_set() {
+        given().a_list_of_lists_is_used_as_parameter_with_column_titles(
+            asList(
                 asList( "John Doe", "john@doe.com" ),
                 asList( "Jane Roe", "jane@row.com" ) )
             );

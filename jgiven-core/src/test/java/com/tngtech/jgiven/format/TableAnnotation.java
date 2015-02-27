@@ -10,6 +10,7 @@ public class TableAnnotation implements Table {
     boolean transpose = false;
     String[] excludeFields = {};
     String[] includeFields = {};
+    String[] columnTitles = {};
 
     @Override
     public HeaderType header() {
@@ -29,6 +30,11 @@ public class TableAnnotation implements Table {
     @Override
     public String[] includeFields() {
         return includeFields;
+    }
+
+    @Override
+    public String[] columnTitles() {
+        return columnTitles;
     }
 
     @Override
