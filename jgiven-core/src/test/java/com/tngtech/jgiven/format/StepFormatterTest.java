@@ -146,7 +146,7 @@ public class StepFormatterTest {
         tableAnnotation = new TableAnnotation();
         tableAnnotation.includeFields = new String[] { "fieldA" };
         assertThat( StepFormatter.toTableValue( new AnotherPojo(), tableAnnotation ).getData() )
-            .containsExactly(Arrays.asList("fieldA"), Arrays.asList("test"));
+            .containsExactly( Arrays.asList( "fieldA" ), Arrays.asList( "test" ) );
 
         // single POJO transposed
         tableAnnotation = new TableAnnotation();
@@ -159,6 +159,12 @@ public class StepFormatterTest {
         tableAnnotation.header = Table.HeaderType.VERTICAL;
         assertThat( StepFormatter.toTableValue( new TestPojo(), tableAnnotation ).getData() )
             .containsExactly( Arrays.asList( "x", "5" ), Arrays.asList( "y", "6" ) );
+
+        // single POJO columnTitles set
+        tableAnnotation = new TableAnnotation();
+        tableAnnotation.columnTitles = new String[] { "t1", "t2" };
+        assertThat( StepFormatter.toTableValue( new TestPojo(), tableAnnotation ).getData() )
+            .containsExactly( Arrays.asList( "t1", "t2" ), Arrays.asList( "5", "6" ) );
 
         // string array
         assertThat( StepFormatter.toTableValue( new String[][] { { "1" } }, new TableAnnotation() ).getData() )
@@ -186,5 +192,24 @@ public class StepFormatterTest {
                 Lists.newArrayList( "1", "2" ),
                 Lists.newArrayList( "3", "4" ) )
             );
+
+        tableAnnotation = new TableAnnotation();
+        tableAnnotation.columnTitles = new String[] { "t1", "t2" };
+        assertThat( StepFormatter.toTableValue( new Object[][] { { 1, 2 }, { 3, 4 } }, tableAnnotation ).getData() )
+            .isEqualTo( Lists.newArrayList(
+                Lists.newArrayList( "t1", "t2" ),
+                Lists.newArrayList( "1", "2" ),
+                Lists.newArrayList( "3", "4" ) )
+            );
+
+        tableAnnotation = new TableAnnotation();
+        tableAnnotation.columnTitles = new String[] { "t1", "t2" };
+        tableAnnotation.transpose = true;
+        assertThat( StepFormatter.toTableValue( new Object[][] { { 1, 2 }, { 3, 4 } }, tableAnnotation ).getData() )
+            .isEqualTo( Lists.newArrayList(
+                Lists.newArrayList( "t1", "1", "3" ),
+                Lists.newArrayList( "t2", "2", "4" ) )
+            );
+
     }
 }
