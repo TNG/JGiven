@@ -37,10 +37,10 @@ public void a_pancake_can_be_fried_out_of_an_egg_milk_and_flour() {
         and().some_milk().
         and().the_ingredient( "flour" );
 
-    when().the_cook_mangles_everthing_to_a_dough().
+    when().the_cook_mangles_everything_to_a_dough().
         and().the_cook_fries_the_dough_in_a_pan();
 
-    then().the_resulting_meal_is_a_pan_cake();
+    then().the_resulting_meal_is_a_pancake();
 }
 ```
 
@@ -56,7 +56,7 @@ Scenario: a pancake can be fried out of an egg milk and flour
     And the ingredient flour
    When the cook mangles everything to a dough
     And the cook fries the dough in a pan
-   Then the resulting meal is a pan cake
+   Then the resulting meal is a pancake
 ```
 In addition, you can generate a [HTML Report](http://jgiven.org/jgiven-report/html5/).
 
