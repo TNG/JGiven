@@ -1,5 +1,8 @@
 package com.tngtech.jgiven.base;
 
+import com.tngtech.jgiven.StepFunction;
+import com.tngtech.jgiven.annotation.Hidden;
+
 /**
  * Useful base class for step definitions as it provides a {@link #self()} method
  * to create fluent interfaces.
@@ -20,4 +23,22 @@ public class StageBase<SELF extends StageBase<?>> {
         return (SELF) this;
     }
 
+    /**
+     * A step method for creating ad-hoc steps using lambdas.
+     *
+     * <h2>Example Usage</h2>
+     * <pre>
+     *     given().$( "Two negative arguments", stage -> {
+     *        stage.given().argument( -5 )
+     *             .and().argument( -6 );
+     *     });
+     * </pre>
+     *
+     * @param description the description of the step
+     * @param function the implementation of the step in form of a function where the parameter is the stage the step is executed in
+     */
+    public SELF $( String description, @Hidden StepFunction<SELF> function ) throws Exception {
+        function.apply( self() );
+        return self();
+    }
 }

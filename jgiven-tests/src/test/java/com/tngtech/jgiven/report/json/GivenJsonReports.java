@@ -52,7 +52,8 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenRep
         return self();
     }
 
-    public void a_custom_CSS_file() throws IOException {
+    public SELF a_custom_CSS_file() throws IOException {
         customCssFile = temporaryFolderRule.newFile( "custom.css" );
+        return self();
     }
 }
