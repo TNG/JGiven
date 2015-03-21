@@ -34,7 +34,7 @@ public class GivenSomeStage<SELF extends GivenSomeStage<?>> extends Stage<SELF> 
    }
 }
 
-public class WhenSomeAction<SELF extends GivenSomeAction<?>> extends Stage<SELF> {
+public class WhenSomeAction<SELF extends WhenSomeAction<?>> extends Stage<SELF> {
    public SELF some_action() {
       return self();
    }
