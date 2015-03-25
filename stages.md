@@ -124,7 +124,7 @@ public class MyShinyJGivenTest extends
 
    @Test
    public void something_should_happen() {
-      GivenAdditionalState<?> additionalState = addStage(GivenAdditionalState<?>);
+      GivenAdditionalState<?> additionalState = addStage(GivenAdditionalState.class);
 
       given().some_state();
 
