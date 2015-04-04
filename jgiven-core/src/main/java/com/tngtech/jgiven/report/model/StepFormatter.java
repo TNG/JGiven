@@ -71,7 +71,9 @@ public class StepFormatter {
         List<String> words = Splitter.on( ' ' ).splitToList( stepDescription );
         for( int i = 0; i < words.size(); i++ ) {
             String word = words.get( i );
-            if( word.startsWith( "$" ) ) {
+            if( word.equals( "$$" ) ) { // $$ escapes a single $
+                formattedWords.add( new Word( "$" ) );
+            } else if( word.startsWith( "$" ) ) {
                 int argEnd = findArgumentEnd( i, words );
                 formatArgument( formattedWords, argCount, word );
                 if( argEnd != -1 ) {

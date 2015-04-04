@@ -87,6 +87,12 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public void addStepMethod( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
+        StepModel stepModel = createStepModel( paramMethod, arguments, mode );
+        currentStep = stepModel;
+        writeStep( stepModel );
+    }
+
+    StepModel createStepModel( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
         StepModel stepModel = new StepModel();
 
         Description description = paramMethod.getAnnotation( Description.class );
@@ -112,8 +118,7 @@ public class ReportModelBuilder implements ScenarioListener {
         }
 
         stepModel.setStatus( mode.toStepStatus() );
-        currentStep = stepModel;
-        writeStep( stepModel );
+        return stepModel;
     }
 
     private List<NamedArgument> filterHiddenArguments( List<NamedArgument> arguments, Annotation[][] parameterAnnotations ) {

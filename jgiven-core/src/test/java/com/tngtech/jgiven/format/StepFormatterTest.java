@@ -61,6 +61,7 @@ public class StepFormatterTest {
             { "$or should not$", asList( false ), new NotFormatter(), "", "not" },
             { "$or not$", asList( false ), new NotFormatter(), "", "not" },
             { "$", asList( true ), null, "", "true" },
+            { "$$ foo", asList( true ), null, "", "\\$ foo true" },
             { "$", asList( 5d ), new PrintfFormatter(), "%.2f", "5[.,]00" },
         };
     }
