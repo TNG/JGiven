@@ -132,4 +132,4 @@ public class MyStage {
 {% endhighlight %}
 
 
-Back: [Stages and Stage Injection]({{site.baseurl}}/docs/stages/) - Next: [Parameters]({{site.baseurl}}/docs/parameters/)
+Back: [Stages and Stage Injection]({{site.baseurl}}/docs/stages/) - Next: [Parameterized Steps]({{site.baseurl}}/docs/parameterizedsteps/)
