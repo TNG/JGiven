@@ -1,14 +1,14 @@
 ---
 layout: page
-title: Parameters
-permalink: /docs/parameters/
+title: Parameterized Steps
+permalink: /docs/parameterizedsteps/
 ---
 
 Step methods can have parameters. Parameters are formatted in reports by using the `String.valueOf` method, applied to the arguments. The formatted arguments are added to the end of the step description.
 
 {% highlight java %}
 given().the_ingredient( "flour" ); // Given the ingredient flour
-given().multiple_arguments( 5, 6 ); // Given mutliple arguments 5 6
+given().multiple_arguments( 5, 6 ); // Given multiple arguments 5 6
 {% endhighlight %}
 
 ## Parameters within a sentence
@@ -129,37 +129,4 @@ Given the prices of the coffees are
 
 For additional options, see the [JavaDoc documentation of the `@Table` annotation]({{site.baseurl}}/javadoc/com/tngtech/jgiven/annotation/Table.html)
 
-## Parameterized Scenarios
-
-JGiven supports several different ways to parameterize a JUnit test:
-
-1. JUnit's built-in Parametrized Runner
-1. [JUnit-Dataprovider](https://github.com/TNG/junit-dataprovider)
-1. [JUnitParms](https://code.google.com/p/junitparams/)
-
-### JUnit-Dataprovider Runner
-
-[JUnit-Dataprovider](https://github.com/TNG/junit-dataprovider) provides a JUnit test runner that enables the execution of paramterized test methods.
-It is similar to the way parameterized tests work in [TestNG](http://testng.org).
-
-#### Example
-
-{% highlight java %}
-@Test
-@DataProvider( {
-    "1, 1",
-    "0, 2",
-    "1, 2",
-} )
-public void coffee_is_not_served( int coffees, int dollars) {
-    given().there_are_$_coffees_left_in_the_machine( coffees ).
-        and().the_coffee_costs_$_dollar( 2 );
-
-    when().I_deposit_$_dollar( dollars ).
-        and().I_press_the_coffee_button();
-
-    then().I_should_not_be_served_a_coffee();
-}
-{% endhighlight %}
-
-Back: [Life-Cycle Methods]({{site.baseurl}}/docs/lifecycle/) - Next: [Tags]({{site.baseurl}}/docs/tags/)
+Back: [Life-Cycle Methods]({{site.baseurl}}/docs/lifecycle/) - Next: [Parameterized Scenarios]({{site.baseurl}}/docs/parameterizedscenarios/)
