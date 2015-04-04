@@ -106,7 +106,7 @@ public class StepFormatterTest {
 
     static class AnotherPojo {
         String fieldA = "test";
-        String fieldB;
+        String fieldB = "testB";
     }
 
     @Test
@@ -133,12 +133,20 @@ public class StepFormatterTest {
         assertThat( StepFormatter.toTableValue( new TestPojo(), new TableAnnotation() ).getData() )
             .containsExactly( Arrays.asList( "x", "y" ), Arrays.asList( "5", "6" ) );
 
+        // single POJO without null values
+        TableAnnotation tableAnnotation = new TableAnnotation();
+        tableAnnotation.includeNullColumns = true;
+        assertThat( StepFormatter.toTableValue( new AnotherPojo(), tableAnnotation ).getData() )
+            .containsExactly( Arrays.asList( "fieldA", "fieldB" ), Arrays.asList( "test", "testB" ) );
+
         // single POJO with null values
-        assertThat( StepFormatter.toTableValue( new AnotherPojo(), new TableAnnotation() ).getData() )
-            .containsExactly( Arrays.asList( "fieldA", "fieldB" ), Arrays.asList( "test", "null" ) );
+        AnotherPojo withNull = new AnotherPojo();
+        withNull.fieldB = null;
+        assertThat( StepFormatter.toTableValue( withNull, new TableAnnotation() ).getData() )
+            .containsExactly( Arrays.asList( "fieldA" ), Arrays.asList( "test" ) );
 
         // single POJO with exclusion filter
-        TableAnnotation tableAnnotation = new TableAnnotation();
+        tableAnnotation = new TableAnnotation();
         tableAnnotation.excludeFields = new String[] { "fieldB" };
         assertThat( StepFormatter.toTableValue( new AnotherPojo(), tableAnnotation ).getData() )
             .containsExactly( Arrays.asList( "fieldA" ), Arrays.asList( "test" ) );

@@ -8,6 +8,7 @@ public class TableAnnotation implements Table {
 
     HeaderType header = HeaderType.HORIZONTAL;
     boolean transpose = false;
+    boolean includeNullColumns = false;
     String[] excludeFields = {};
     String[] includeFields = {};
     String[] columnTitles = {};
@@ -35,6 +36,11 @@ public class TableAnnotation implements Table {
     @Override
     public String[] columnTitles() {
         return columnTitles;
+    }
+
+    @Override
+    public boolean includeNullColumns() {
+        return includeNullColumns;
     }
 
     @Override

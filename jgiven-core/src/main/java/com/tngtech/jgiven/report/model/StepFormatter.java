@@ -155,12 +155,37 @@ public class StepFormatter {
             list.add( getFieldNames( fields ) );
         }
 
+        boolean[] nonNullColumns = new boolean[list.get( 0 ).size()];
         for( Object o : objects ) {
-            list.add( toStringList( ReflectionUtil.getAllFieldValues( o, fields, "" ) ) );
+            List<Object> allFieldValues = ReflectionUtil.getAllFieldValues( o, fields, "" );
+            for( int i = 0; i < allFieldValues.size(); i++ ) {
+                if( allFieldValues.get( i ) != null ) {
+                    nonNullColumns[i] = true;
+                }
+            }
+            list.add( toStringList( allFieldValues ) );
+        }
+
+        if( !tableAnnotation.includeNullColumns() ) {
+            list = removeNullColumns( list, nonNullColumns );
         }
 
         list = tableAnnotation.transpose() || tableAnnotation.header().isVertical() ? transpose( list ) : list;
         return new DataTable( tableAnnotation.header(), list );
+    }
+
+    private static List<List<String>> removeNullColumns( List<List<String>> list, boolean[] nonNullColumns ) {
+        List<List<String>> newList = Lists.newArrayListWithCapacity( list.size() );
+        for( List<String> row : list ) {
+            List<String> newRow = Lists.newArrayList();
+            newList.add( newRow );
+            for( int i = 0; i < nonNullColumns.length; i++ ) {
+                if( nonNullColumns[i] ) {
+                    newRow.add( row.get( i ) );
+                }
+            }
+        }
+        return newList;
     }
 
     private static Iterable<Field> getFields( Table tableAnnotation, Object first ) {

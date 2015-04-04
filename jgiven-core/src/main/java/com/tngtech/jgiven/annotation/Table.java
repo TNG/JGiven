@@ -183,7 +183,8 @@ public @interface Table {
      * <p>
      * The first row of the data is <b>not</b> taken as the header row if this attribute is set.
      * <p>
-     * When a list of POJOs is given as parameter then this overrides the default behavior of taking
+     * When a list of POJOs is given as parameter then this overrides the default behavior of taking the field names
+     * as table headers.
      * 
      * <h2>Example</h2>
      * Given the following table argument:
@@ -210,6 +211,12 @@ public @interface Table {
      * @since 0.7.1
      */
     String[] columnTitles() default {};
+
+    /**
+     * Whether or not columns with only {@code null} values are shown or not.
+     * Default is to not show them.
+     */
+    boolean includeNullColumns() default false;
 
     public enum HeaderType {
         /**
