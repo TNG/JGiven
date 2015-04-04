@@ -6,6 +6,10 @@ permalink: /docs/parameterizedscenarios/
 
 JGiven scenarios can be parameterized. This is very useful for writing data-driven scenarios, where the scenarios itself are the same, but are executed with different example values.
 
+Parameterization of Scenarios works with TestNG and JUnit, we only show it for JUnit. For TestNG it works analogous.
+
+## JUnit
+
 JGiven supports several different ways to parameterize a JUnit test:
 
 1. JUnit's built-in Parametrized Runner
