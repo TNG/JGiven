@@ -2,7 +2,8 @@
 
 ## New Features
 
-* Introduce `columnTitles` attribute for the `@Table` annotation [#64](https://github.com/TNG/JGiven/pull/64) 
+* Introduce `columnTitles` attribute for the `@Table` annotation [#64](https://github.com/TNG/JGiven/pull/64)
+* Allow the escaping of $ in step description [#19](https://github.com/TNG/JGiven/pull/19)
 
 # v0.7.0
 
