@@ -18,8 +18,7 @@ JGiven supports several different ways to parameterize a JUnit test:
 
 ### JUnit-Dataprovider Runner
 
-[JUnit-Dataprovider](https://github.com/TNG/junit-dataprovider) provides a JUnit test runner that enables the execution of paramterized test methods.
-It is similar to the way parameterized tests work in [TestNG](http://testng.org).
+[JUnit-Dataprovider](https://github.com/TNG/junit-dataprovider) provides a JUnit test runner that enables the execution of paramterized test methods. It is similar to the way parameterized tests work in [TestNG](http://testng.org).
 
 #### Example
 
