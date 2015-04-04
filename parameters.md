@@ -8,7 +8,7 @@ Step methods can have parameters. Parameters are formatted in reports by using t
 
 {% highlight java %}
 given().the_ingredient( "flour" ); // Given the ingredient flour
-given().multiple_arguments(5, 6); // Given mutliple arguments 5 6
+given().multiple_arguments( 5, 6 ); // Given mutliple arguments 5 6
 {% endhighlight %}
 
 ## Parameters within a sentence
