@@ -11,7 +11,8 @@ permalink: /docs/
 * [Report Generation]({{site.baseurl}}/docs/reportgeneration/)
 * [Stages and State Injection]({{site.baseurl}}/docs/stages/)
 * [Life-Cycle Methods]({{site.baseurl}}/docs/lifecycle/)
-* [Parameters]({{site.baseurl}}/docs/parameters/)
+* [Parameterized Steps]({{site.baseurl}}/docs/parameterizedsteps/)
+* [Parameterized Scenarios]({{site.baseurl}}/docs/parameterizedscenarios/)
 * [Tags]({{site.baseurl}}/docs/tags/)
 * Attachments (tbd)
 
