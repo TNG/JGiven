@@ -86,7 +86,7 @@ Then this will result in the report as:
 Then the message "Hello World" is printed to the console
 ```
 
-#### `@AnnotationFormat`
+#### The `@AnnotationFormat` annotation
 
 Another pre-defined annotation is the `@Formatf` annotation which uses the `@AnnotationFormat` annotation to specify the formatter. Formatters of this kind implement the `AnnotationArgumentFormatter` interface. This allows for very flexible formatters that can take the concrete arguments of the annotation into account.
 
