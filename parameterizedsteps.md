@@ -66,6 +66,28 @@ public @interface Quoted {}
 
 As you can see, the annotation itself is annotated with the `@Format` annotation as described above, which will be applied to all parameters that are annotated with `@Quoted`.
 
+#### Example
+
+For example, given the following step method:
+
+{% highlight java %}
+public SELF the_message_$_is_printed_to_the_console( @Quoted message ) { ... }
+{% endhighlight %}
+
+When invoked as
+
+{% highlight java %}
+then().the_message_$_is_printed_to_the_console( "Hello World" );
+{% endhighlight %}
+
+Then this will result in the report as:
+
+```
+Then the message "Hello World" is printed to the console
+```
+
+#### `@AnnotationFormat`
+
 Another pre-defined annotation is the `@Formatf` annotation which uses the `@AnnotationFormat` annotation to specify the formatter. Formatters of this kind implement the `AnnotationArgumentFormatter` interface. This allows for very flexible formatters that can take the concrete arguments of the annotation into account.
 
 {% highlight java %}
