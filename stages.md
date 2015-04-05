@@ -6,22 +6,6 @@ permalink: /docs/stages/
 
 A JGiven scenario consists of multiple stages. Typically there is a stage for each phase of a scenario: a given stage, a when stage and a then stage, however, it is also possible to just use one stage or use arbitrary many stages. A stage is implemented by a stage class that contains methods representing the steps that can be used in the scenario. The big advantage of this modular concept is that stages can be easily reused by different scenarios.
 
-## Fluent Interface Pattern
-
-Stage classes are POJOs that follow the fluent-interface pattern. This means that all methods return the this-reference. In order to work together with inheritance, a stage class should have a type parameter SELF that extends the stage class itself. JGiven also provides the helper class Stage that provides a `self()` method to return the SELF type parameter. This is best understood by an example:
-
-{% highlight java %}
-public class GivenIngredients<SELF extends GivenIngredients<?>> extends Stage<SELF> {
-   List<String> ingredients = new ArrayList<String>();
-
-   public SELF an_egg() {
-      ingredients.add("Egg");
-      return self();
-   }
-   ...
-}
-{% endhighlight %}
-
 ## State Injection
 
 Stages share state by using injection. This works by annotating the fields with a special annotation `@ScenarioState`. The values of these fields are shared between all stages that have the same field.
@@ -136,5 +120,64 @@ public class MyShinyJGivenTest extends
    }
 }
 {% endhighlight java %}
+
+## Subclassing of Stages
+
+In practice, it often makes sense to have a hierarchy of stage classes. Your top stage class can implement common steps that you require very often, while subclasses implement more specialized steps.
+
+One problem with subclassing stage classes is to keep the fluent interface intact. Let's have an example:
+
+{% highlight java %}
+public class GivenCommonSteps extend Stage<GivenCommonSteps> {
+    public GivenCommonSteps my_common_step() {
+        return this;
+    }
+}
+{% endhighlight %}
+
+Now assume that we create a subclass of `GivenCommonSteps`:
+
+{% highlight java %}
+public class GivenSpecialSteps extends GivenCommonSteps {
+    public GivenSpecialSteps my_special_step() {
+        return this;
+    }
+}
+{% endhighlight %}
+
+If you now want to use the `GivenSpecialSteps` stage, you will get problems when you want to chain multiple step methods:
+
+{% highlight java %}
+@Test
+public void subclassing_of_stages_should_work() {
+    given().my_common_step()
+      .and().my_special_step();
+}
+{% endhighlight %}
+
+This code will not compile, because `my_common_step()` returns `GivenCommonSteps` and not `GivenSpecialSteps`.
+
+Luckily this problem can be fixed with generic types. First you have to change the `GivenCommonSteps` class as follows:
+
+{% highlight java %}
+public class GivenCommonSteps<SELF extends GivenCommonSteps<SELF>> extend Stage<SELF> {
+    public SELF my_common_step() {
+        return self();
+    }
+}
+{% endhighlight %}
+That is, you give `GivenCommonSteps` a type parameter `SELF` that can be specialized by subclasses. This type is also used as return type for `my_common_step()`. Instead of returning `this` you return `self()`, which is implemented in the `Stage` class.
+
+Now your subclass must be change as well:
+
+{% highlight java %}
+public class GivenSpecialSteps<SELF extends GivenSpecialSteps<SELF>>
+        extends GivenCommonSteps<SELF> {
+    public SELF my_special_step() {
+        return self();
+    }
+}
+{% endhighlight %}
+
 
 Back: [Report Generation]({{site.baseurl}}/docs/reportgeneration/) - Next: [Life-Cycle Methods]({{site.baseurl}}/docs/lifecycle/)
