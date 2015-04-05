@@ -5,7 +5,7 @@ title: JGiven
 
 ## Behavior-Driven Development in Plain Java
 
-JGiven is a developer-centric Behavior-Driven Development (BDD) tool for Java.
+JGiven is a developer-friendly and pragmatic BDD tool for Java. Developers write scenarios in plain Java using a fluent, domain-specific API, JGiven generates reports that are readable by domain experts.
 
 ### Key facts
 
