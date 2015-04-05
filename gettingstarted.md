@@ -14,7 +14,7 @@ First of all you create a JUnit test class that inherits from `com.tngtech.jgive
 import com.tngtech.jgiven.junit.ScenarioTest;
 
 public class MyShinyJGivenTest extends
-   ScenarioTest<GivenSomeState<?>, WhenSomeAction<?>, ThenSomeOutcome<?>> {
+   ScenarioTest<GivenSomeState, WhenSomeAction, ThenSomeOutcome> {
 
 }
 {% endhighlight %}
@@ -28,26 +28,26 @@ To make your class compile, create the following three classes:
 {% highlight java %}
 import com.tngtech.jgiven.Stage;
 
-public class GivenSomeStage<SELF extends GivenSomeStage<?>> extends Stage<SELF> {
-   public SELF some_state() {
+public class GivenSomeStage extends Stage<GivenSomeStage> {
+   public GivenSomeStage some_state() {
       return self();
    }
 }
 
-public class WhenSomeAction<SELF extends WhenSomeAction<?>> extends Stage<SELF> {
-   public SELF some_action() {
+public class WhenSomeAction extends Stage<WhenSomeAction> {
+   public WhenSomeAction some_action() {
       return self();
    }
 }
 
-public class ThenSomeOutcome<SELF extends ThenSomeOutcome<?>> extends Stage<SELF> {
-   public SELF some_outcome() {
+public class ThenSomeOutcome extends Stage<ThenSomeOutcome> {
+   public ThenSomeOutcome some_outcome() {
       return self();
    }
 }
 {% endhighlight %}
 
-JGiven does not require to inherit from the `Stage` class, however, the `Stage` class already provides some useful methods like `and()` and `self()`. Also note that the `SELF` type parameter is not required, however, it is very useful if you plan to subclass stages.
+JGiven does not require to inherit from the `Stage` class, however, the `Stage` class already provides some useful methods like `and()` and `self()`.
 
 ## Write your first scenario
 
@@ -58,7 +58,7 @@ import org.junit.Test;
 import com.tngtech.jgiven.junit.ScenarioTest;
 
 public class MyShinyJGivenTest extends
-   ScenarioTest<GivenSomeState<?>, WhenSomeAction<?>, ThenSomeOutcome<?>> {
+   ScenarioTest<GivenSomeState, WhenSomeAction, ThenSomeOutcome> {
 
    @Test
    public void something_should_happen() {
