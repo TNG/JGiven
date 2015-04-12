@@ -29,7 +29,7 @@ public interface ReportModelHandler {
 
     /**
      * Is invoked when a scenario has multiple cases, but no data table.
-     * <p/>
+     * <p>
      * Plain Text Example:
      * <pre>
      *   Case 1: param1 = arg1, param2 = arg2

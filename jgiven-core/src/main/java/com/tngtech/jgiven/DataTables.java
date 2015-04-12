@@ -11,7 +11,7 @@ public class DataTables {
 
     /**
      * Creates a table, i.e. a list of lists, with {@code numberOfColumns} columns from the given {@code data} including the header.
-     * <p/>
+     * <p>
      * Example:
      * <pre>{@code
      *     table(2,

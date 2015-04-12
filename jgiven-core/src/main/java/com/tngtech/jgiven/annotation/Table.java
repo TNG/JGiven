@@ -105,7 +105,6 @@ public @interface Table {
      *     | b1 | b2 | b3 |
      *     | c1 | c2 | c3 |
      * </pre>
-     * </p>
      *
      * <h2>Effect on POJO lists</h2>
      * When the data is given by a list of POJOs then setting the header type to {@code VERTICAL} will also
@@ -116,7 +115,7 @@ public @interface Table {
      *         new CoffeeWithPrice("Espresso", 2.0),
      *         new CoffeeWithPrice("Cappuccino", 2.5)}
      * }</pre>
-     * When setting the header type to {@code VERTICAL}</br>
+     * When setting the header type to {@code VERTICAL}<br>
      * Then the report will present the following table
      * <pre>{@code
      *     | name         | Espresso | Cappuccino |

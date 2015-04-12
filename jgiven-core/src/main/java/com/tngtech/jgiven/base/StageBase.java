@@ -27,12 +27,12 @@ public class StageBase<SELF extends StageBase<?>> {
      * A step method for creating ad-hoc steps using lambdas.
      *
      * <h2>Example Usage</h2>
-     * <pre>
+     * <pre>{@code 
      *     given().$( "Two negative arguments", stage -> {
      *        stage.given().argument( -5 )
      *             .and().argument( -6 );
      *     });
-     * </pre>
+     * }</pre>
      *
      * @param description the description of the step
      * @param function the implementation of the step in form of a function where the parameter is the stage the step is executed in
