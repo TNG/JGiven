@@ -3,7 +3,9 @@
 ## New Features
 
 * Introduce `columnTitles` attribute for the `@Table` annotation [#64](https://github.com/TNG/JGiven/pull/64)
-* Allow the escaping of $ in step description [#19](https://github.com/TNG/JGiven/pull/19)
+* Ignore `null` values of POJOs by default when using the `@Table` annotation. This behavior can be overridden with the `includeNullColumns` attribute.
+* Allow $ to be escaped in step descriptions when using the `@Description` tag [#19](https://github.com/TNG/JGiven/pull/19)
+* Speed-up the overall performance of JGiven by caching reflection-based look-ups
 
 # v0.7.0
 
