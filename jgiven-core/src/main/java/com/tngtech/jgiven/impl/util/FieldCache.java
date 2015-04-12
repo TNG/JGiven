@@ -9,7 +9,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 /**
- * Cache to avoid multiple expensive reflection-based lookups
+ * Cache to avoid multiple expensive reflection-based look-ups
+ * @since 0.7.1
  */
 public class FieldCache {
 

@@ -36,6 +36,7 @@ public class StageBase<SELF extends StageBase<?>> {
      *
      * @param description the description of the step
      * @param function the implementation of the step in form of a function where the parameter is the stage the step is executed in
+     * @since 0.7.1
      */
     public SELF $( String description, @Hidden StepFunction<SELF> function ) throws Exception {
         function.apply( self() );

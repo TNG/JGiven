@@ -5,6 +5,7 @@ package com.tngtech.jgiven;
  *
  * @see Stage#$(String, StepFunction)
  * @param <STAGE> the stage in which this step is executed
+ * @since 0.7.1            
  */
 public interface StepFunction<STAGE> {
 

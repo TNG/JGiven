@@ -215,6 +215,8 @@ public @interface Table {
     /**
      * Whether or not columns with only {@code null} values are shown or not.
      * Default is to not show them.
+     * 
+     * @since 0.7.1
      */
     boolean includeNullColumns() default false;
 
