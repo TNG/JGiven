@@ -134,8 +134,8 @@ subprojects {
 
     task jgivenReport(type: JavaExec) {
         main = 'com.tngtech.jgiven.report.ReportGenerator'
-        args '--dir=build/reports/jgiven/json',
-             '--todir=build/reports/jgiven/html',
+        args '--sourceDir=build/reports/jgiven/json',
+             '--targetDir=build/reports/jgiven/html',
              '--format=html',
              '--customcss=build/resources/test/jgiven/custom.css'
 
@@ -144,8 +144,8 @@ subprojects {
 
     task jgivenHtml5Report(type: JavaExec) {
         main = 'com.tngtech.jgiven.report.ReportGenerator'
-        args '--dir=build/reports/jgiven/json',
-             '--todir=build/reports/jgiven/html5',
+        args '--sourceDir=build/reports/jgiven/json',
+             '--targetDir=build/reports/jgiven/html5',
              '--format=html5',
              '--customcss=build/resources/test/jgiven/custom.css'
 
