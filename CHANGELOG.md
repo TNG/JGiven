@@ -1,3 +1,6 @@
+# v0.7.2
+* Added `cssClass` to `@IsTag` to customize tags in HTML reports
+
 # v0.7.1
 
 ## New Features
