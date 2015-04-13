@@ -22,7 +22,7 @@ task wrapper(type: Wrapper) {
 
 allprojects  {
     group = 'com.tngtech.jgiven'
-    version = '0.7.1'
+    version = '0.7.2-SNAPSHOT'
     apply plugin: 'jacoco'
     repositories {
         mavenCentral()
