@@ -79,4 +79,28 @@ public @interface IsTag {
      * Whether the type should be prepended to the tag if the tag has a value.
      */
     boolean prependType() default false;
+
+    /**
+     * Sets a CSS class that should be used in HTML reports for this tag.
+     * <p>
+     * The default css class is 'tag-<name>' where type is the name of the tag    
+     * <p>
+     * Non-HTML reports ignore this attribute
+     * 
+     * @since 0.7.2
+     */
+    String cssClass() default "";
+
+    /**
+     * A color that should be used in reports for this tag.
+     * <p>
+     * It depends on the type of the report whether this value is interpreted.
+     * <p>
+     * Example values are 'red', '#ff0000', 'rgba(100,0,0,0.5)'
+     * <p>
+     * For advanced styling options use the {@link #cssClass()} attribute instead.  
+     * 
+     * @since 0.7.2
+     */
+    String color() default "";
 }

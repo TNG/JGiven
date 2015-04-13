@@ -354,6 +354,14 @@ public class ReportModelBuilder implements ScenarioListener {
             tag.setPrependType( true );
         }
 
+        if( !Strings.isNullOrEmpty( tagConfig.getCssClass() ) ) {
+            tag.setCssClass( tagConfig.getCssClass() );
+        }
+
+        if( !Strings.isNullOrEmpty( tagConfig.getColor() ) ) {
+            tag.setColor( tagConfig.getColor() );
+        }
+
         Object value = tagConfig.getDefaultValue();
         if( !Strings.isNullOrEmpty( tagConfig.getDefaultValue() ) ) {
             tag.setValue( tagConfig.getDefaultValue() );
@@ -414,6 +422,8 @@ public class ReportModelBuilder implements ScenarioListener {
             newTag.setDescription( originalTag.getDescription() );
             newTag.setPrependType( originalTag.isPrependType() );
             newTag.setDescription( getDescriptionFromGenerator( tagConfig, annotation, singleValue ) );
+            newTag.setColor( originalTag.getColor() );
+            newTag.setCssClass( originalTag.getCssClass() );
             result.add( newTag );
         }
         return result;
