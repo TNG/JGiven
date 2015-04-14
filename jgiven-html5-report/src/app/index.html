@@ -307,8 +307,8 @@
                   </div>
                 </div>
                 <div class="small-12 large-4 xlarge-6 column tag-column">
-                  <span  ng-repeat="tag in scenario.tags" class="tag">
-                    <a href="#tag/{{tag.name + '/' + tag.value | encodeUri}}" ><span class="radius label">{{tagToString(tag)}}</span></a>
+                  <span  ng-repeat="tag in scenario.tags" >
+                    <a href="#tag/{{tag.name + '/' + tag.value | encodeUri}}" ><span class="radius label tag {{getCssClassOfTag(tag)}}" style='{{getStyleOfTag(tag)}}'>{{tagToString(tag)}}</span></a>
                   </span>
                 </div>
               </div>

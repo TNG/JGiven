@@ -83,7 +83,7 @@ public @interface IsTag {
     /**
      * Sets a CSS class that should be used in HTML reports for this tag.
      * <p>
-     * The default css class is 'tag-<name>' where type is the name of the tag    
+     * The default CSS class is {@code 'tag-<name>'} where {@code <name>} is the type of the tag
      * <p>
      * Non-HTML reports ignore this attribute
      * 
@@ -94,10 +94,12 @@ public @interface IsTag {
     /**
      * A color that should be used in reports for this tag.
      * <p>
-     * It depends on the type of the report whether this value is interpreted.
+     * It depends on the type of the report whether and how this value is interpreted.
+     * HTML reports take this value as the background color for the tag.
      * <p>
-     * Example values are 'red', '#ff0000', 'rgba(100,0,0,0.5)'
+     * Example values for the HTML report are 'red', '#ff0000', 'rgba(100,0,0,0.5)'
      * <p>
+     * This attribute is for simple use cases.
      * For advanced styling options use the {@link #cssClass()} attribute instead.  
      * 
      * @since 0.7.2

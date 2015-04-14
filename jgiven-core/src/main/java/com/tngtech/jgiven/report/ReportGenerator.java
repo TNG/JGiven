@@ -110,11 +110,15 @@ public class ReportGenerator {
 
     private void generateStaticHtmlReport( CompleteReportModel reportModel ) throws IOException {
         new StaticHtmlReportGenerator().generate( reportModel, getTargetDirectory() );
+        copyCustomCssFile( getTargetDirectory() );
+    }
+
+    private void copyCustomCssFile( File targetDirectory ) throws IOException {
         if( getCustomCssFile() != null ) {
             if( !getCustomCssFile().canRead() ) {
                 log.info( "Cannot read customCssFile " + getCustomCssFile() + " skipping" );
             } else {
-                Files.copy( getCustomCssFile(), new File( getTargetDirectory(), "custom.css" ) );
+                Files.copy( getCustomCssFile(), new File( targetDirectory, "custom.css" ) );
             }
         }
     }
@@ -132,6 +136,7 @@ public class ReportGenerator {
         }
 
         reportGenerator.generate( reportModel, getTargetDirectory() );
+        copyCustomCssFile( new File( getTargetDirectory(), "css" ) );
     }
 
     private static void printUsageAndExit() {
