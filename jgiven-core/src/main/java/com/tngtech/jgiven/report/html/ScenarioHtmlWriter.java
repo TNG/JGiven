@@ -81,8 +81,13 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
     }
 
     public static String tagToHtml( Tag tag ) {
-        return format( "<div class='tag tag-%s'><a href='%s'>%s</a></div>",
-            tag.getName(), HtmlTocWriter.tagToFilename( tag ), tag.toString() );
+        return format( "<div class='tag %s'%s><a href='%s'>%s</a></div>",
+            tag.getCssClassOrDefault(), getColorAttribute( tag ), HtmlTocWriter.tagToFilename( tag ), tag.toString() );
+    }
+
+    private static String getColorAttribute( Tag tag ) {
+        return tag.getColor() == null ? ""
+                : " style='background-color: " + tag.getColor() + "'";
     }
 
     @Override
@@ -119,7 +124,7 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
         if( scenarioModel.getScenarioCases().size() > 1 ) {
             writer.print( format( "<h4 onclick='toggle(\"%s\")'>", getCaseId() ) );
             writeStatusIcon( scenarioCase.success );
-            writer.print( format( " Case %d: ", scenarioCase.getCaseNr()) );
+            writer.print( format( " Case %d: ", scenarioCase.getCaseNr() ) );
 
             for( int i = 0; i < scenarioCase.getExplicitArguments().size(); i++ ) {
                 if( scenarioModel.getExplicitParameters().size() > i ) {

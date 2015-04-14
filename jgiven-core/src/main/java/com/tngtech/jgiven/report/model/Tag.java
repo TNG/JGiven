@@ -11,6 +11,9 @@ import com.google.common.collect.Lists;
  * A tag represents a Java annotation of a scenario-test.
  */
 public class Tag {
+    /**
+     * The name/type of this tag
+     */
     private final String name;
 
     /**
@@ -26,8 +29,20 @@ public class Tag {
 
     /**
      * Whether the type should be prepended in the report.
+     * <p>
+     * Is either {@code true} or {@code null}    
      */
-    private boolean prependType;
+    private Boolean prependType;
+
+    /**
+     * An optional color that is used in reports 
+     */
+    private String color;
+
+    /**
+     * An optional cssClass used in HTML reports
+     */
+    private String cssClass;
 
     public Tag( String name ) {
         this.name = name;
@@ -43,7 +58,7 @@ public class Tag {
     }
 
     public boolean isPrependType() {
-        return prependType;
+        return prependType == null ? false : true;
     }
 
     public String getDescription() {
@@ -52,6 +67,26 @@ public class Tag {
 
     public void setDescription( String description ) {
         this.description = description;
+    }
+
+    public void setColor( String color ) {
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setCssClass( String cssClass ) {
+        this.cssClass = cssClass;
+    }
+
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    public String getCssClassOrDefault() {
+        return cssClass == null ? "tag-" + getName() : cssClass;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -74,7 +109,7 @@ public class Tag {
     }
 
     public Tag setPrependType( boolean prependType ) {
-        this.prependType = prependType;
+        this.prependType = prependType ? true : null;
         return this;
     }
 
@@ -82,7 +117,7 @@ public class Tag {
     public String toString() {
         if( value != null ) {
             String valueString = getValueString();
-            if( prependType ) {
+            if( isPrependType() ) {
                 return getName() + "-" + valueString;
             }
             return valueString;
@@ -118,4 +153,20 @@ public class Tag {
                 && Objects.equal( value, other.value );
     }
 
+    /**
+     * Returns a string representation where all non-alphanumeric characters are replaced with an underline (_).
+     * In addition, the result is cut-off at a length of 255 characters.
+     * 
+     * @return a string representation without special characters
+     */
+    public String toEscapedString() {
+        List<String> parts = Lists.newArrayList( getName() );
+        parts.addAll( getValues() );
+        String escapedString = escape( Joiner.on( '-' ).join( parts ) );
+        return escapedString.substring( 0, Math.min( escapedString.length(), 255 ) );
+    }
+
+    static String escape( String string ) {
+        return string.replaceAll( "[^\\p{Alnum}-]", "_" );
+    }
 }

@@ -15,6 +15,8 @@ public class TagConfiguration {
     private boolean prependType;
     private String defaultValue = "";
     private String description = "";
+    private String color = "";
+    private String cssClass = "";
     private Class<? extends TagDescriptionGenerator> descriptionGenerator = DefaultTagDescriptionGenerator.class;
     private String type = "";
 
@@ -59,6 +61,17 @@ public class TagConfiguration {
             configuration.prependType = b;
             return this;
         }
+
+        public Builder cssClass( String cssClass ) {
+            configuration.cssClass = cssClass;
+            return this;
+        }
+
+        public Builder color( String color ) {
+            configuration.color = color;
+            return this;
+        }
+
     }
 
     /**
@@ -117,6 +130,22 @@ public class TagConfiguration {
         return prependType;
     }
 
+    /**
+     * {@link com.tngtech.jgiven.annotation.IsTag#color()} 
+     * @see com.tngtech.jgiven.annotation.IsTag
+     */
+    public String getColor() {
+        return color;
+    }
+
+    /**
+     * {@link com.tngtech.jgiven.annotation.IsTag#cssClass()} 
+     * @see com.tngtech.jgiven.annotation.IsTag
+     */
+    public String getCssClass() {
+        return cssClass;
+    }
+
     public static TagConfiguration fromIsTag( IsTag isTag ) {
         TagConfiguration result = new TagConfiguration();
         result.defaultValue = isTag.value();
@@ -126,6 +155,8 @@ public class TagConfiguration {
         result.prependType = isTag.prependType();
         result.type = isTag.type();
         result.descriptionGenerator = isTag.descriptionGenerator();
+        result.cssClass = isTag.cssClass();
+        result.color = isTag.color();
         return result;
     }
 }

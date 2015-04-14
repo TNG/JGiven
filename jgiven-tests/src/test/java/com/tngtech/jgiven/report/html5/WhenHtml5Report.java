@@ -37,11 +37,11 @@ public class WhenHtml5Report<SELF extends WhenHtml5Report<?>> extends Html5Repor
     }
 
     public SELF the_tag_with_name_$_is_clicked( String tagName ) {
-        List<WebElement> tags = webDriver.findElements( By.className( "tag" ) );
-        for( WebElement element : tags ) {
-            WebElement a = element.findElement( By.linkText( tagName ) );
-            if( a != null ) {
-                a.click();
+        List<WebElement> links = webDriver.findElements( By.linkText( tagName ) );
+        for( WebElement link : links ) {
+            WebElement tag = link.findElement( By.className( "tag" ) );
+            if( tag != null ) {
+                link.click();
                 break;
             }
         }

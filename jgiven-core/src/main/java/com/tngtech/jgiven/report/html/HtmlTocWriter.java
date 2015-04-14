@@ -8,7 +8,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.google.common.base.Function;
-import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
@@ -159,14 +158,7 @@ public class HtmlTocWriter {
     }
 
     static String tagToFilename( Tag tag ) {
-        List<String> fileNameParts = Lists.newArrayList( tag.getName() );
-        fileNameParts.addAll( tag.getValues() );
-        String fileName = escape( Joiner.on( '-' ).join( fileNameParts ) );
-        return fileName.substring( 0, Math.min( fileName.length(), 255 ) ) + ".html";
-    }
-
-    static String escape( String string ) {
-        return string.replaceAll( "[^\\p{Alnum}-]", "_" );
+        return tag.toEscapedString() + ".html";
     }
 
 }
