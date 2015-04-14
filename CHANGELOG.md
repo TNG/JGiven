@@ -1,5 +1,12 @@
 # v0.7.2
-* Added `cssClass` to `@IsTag` to customize tags in HTML reports
+
+## New Features
+
+* Added `cssClass` and `color` attributes to `@IsTag` to customize tags in HTML reports [#69](https://github.com/TNG/JGiven/pull/69)
+
+## Fixed Issues
+
+* Custom CSS files are now copied to the target folder when generating HTML5 reports [#70](https://github.com/TNG/JGiven/issues/70)
 
 # v0.7.1
 
