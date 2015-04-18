@@ -1,0 +1,64 @@
+[
+  {
+    "id": "cucumber-jgiven-integration",
+    "description": "",
+    "name": "Cucumber JGiven integration",
+    "keyword": "Feature",
+    "line": 1,
+    "elements": [
+      {
+        "id": "cucumber-jgiven-integration;just-a-failing-scenario",
+        "tags": [
+          {
+            "name": "@TestTag",
+            "line": 3
+          }
+        ],
+        "description": "",
+        "name": "Just a failing scenario",
+        "keyword": "Scenario",
+        "line": 4,
+        "steps": [
+          {
+            "result": {
+              "duration": 214200629,
+              "status": "passed"
+            },
+              "name": "some step",
+            "keyword": "Given ",
+            "line": 5,
+            "match": {
+              "location": "BasicStepdefs.some_step()"
+            }
+          },
+          {
+            "result": {
+              "duration": 545491,
+              "status": "failed",
+              "error_message": "java.lang.RuntimeException: production failed here\n\tat com.tngtech.jgiven.cucumber.BasicStepdefs.I_run_a_failing_step(BasicStepdefs.java:14)\n\tat ✽.When I run a failing step(com/tngtech/jgiven/cucumber/someexample.feature:6)\n"
+            },
+            "name": "I run a failing step",
+            "keyword": "When ",
+            "line": 6,
+            "match": {
+              "location": "BasicStepdefs.I_run_a_failing_step()"
+            }
+          },
+          {
+            "result": {
+              "status": "skipped"
+            },
+            "name": "an exception will be thrown",
+            "keyword": "Then ",
+            "line": 7,
+            "match": {
+              "location": "BasicStepdefs.an_exception_will_be_thrown()"
+            }
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "uri": "com/tngtech/jgiven/cucumber/someexample.feature"
+  }
+]

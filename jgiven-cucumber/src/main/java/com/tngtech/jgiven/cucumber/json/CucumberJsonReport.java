@@ -6,13 +6,14 @@ import java.io.IOException;
 import java.util.List;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 
 public class CucumberJsonReport {
-    public List<CucumberFeature> features;
+    public List<CucumberFeature> features = Lists.newArrayList();
 
     public static CucumberJsonReport fromFile( File cucumberJsonReportFile ) throws IOException {
         BufferedReader bufferedReader = Files.asCharSource( cucumberJsonReportFile, Charsets.UTF_8 ).openBufferedStream();

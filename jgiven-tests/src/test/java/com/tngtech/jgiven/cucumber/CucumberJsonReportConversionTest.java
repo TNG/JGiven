@@ -19,8 +19,10 @@ public class CucumberJsonReportConversionTest extends
 
     @Test
     @FeatureCucumberReportConversion
-    public void test() throws IOException {
+    public void Cucumber_reports_can_be_converted_to_JGiven_reports() throws IOException {
         given().a_Cucumber_report();
+        when().it_is_converted_to_a_JGiven_report();
+        then().the_JGiven_report_matches_the_Cucumber_report();
     }
 
 }

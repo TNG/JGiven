@@ -22,10 +22,25 @@ task cucumber() {
         javaexec {
             main = "cucumber.api.cli.Main"
             classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            args = ['-f', 'pretty', '--glue', 'com.tngtech.jgiven.cucumber', 'src/test/resources']
+            args = ['-p', 'json', '--glue', 'com.tngtech.jgiven.cucumber', 'src/test/resources']
         }
     }
 }
+
+task convertToJGiven() {
+    dependsOn cucumber
+    doLast {
+        javaexec {
+            main = 'com.tngtech.jgiven.cucumber.CucumberToJGivenConverter'
+            classpath = configurations.compile + sourceSets.main.output
+            args = ['--targetDir', 'build/reports/jgiven/json', 'build/cucumber-report.json']
+        }
+    }
+}
+
+cucumber.finalizedBy( convertToJGiven );
+convertToJGiven.finalizedBy( jgivenHtml5Report );
+
 
 // the cucumber scenarios are failing on purpose
 test.ignoreFailures = true

@@ -66,7 +66,7 @@ public class ReportGenerator {
             } else if( arg.startsWith( "--todir=" ) || arg.startsWith( "--targetDir=" ) ) {
                 generator.setTargetDirectory( new File( arg.split( "=" )[1] ) );
                 if( arg.startsWith( "--todir=" ) ) {
-                    System.err.println( "DEPRECATION WARNING: --todir is deprecated, please use--targetDir instead" );
+                    System.err.println( "DEPRECATION WARNING: --todir is deprecated, please use --targetDir instead" );
                 }
             } else if( arg.startsWith( "--customcss=" ) ) {
                 generator.setCustomCssFile( new File( arg.split( "=" )[1] ) );
