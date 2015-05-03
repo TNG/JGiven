@@ -76,7 +76,7 @@ public class CucumberToJGivenConverter {
         log.info( "Converting " + options.cucumberJsonFile + " into folder " + options.targetDirectory );
 
         for( ReportModel reportModel : convert( options.cucumberJsonFile ) ) {
-            File file = new File( options.targetDirectory, reportModel.getClassName() + ".json" );
+            File file = new File( options.targetDirectory, escape( reportModel.getClassName() ) + ".json" );
             PrintWriter printWriter = PrintWriterUtil.getPrintWriter( file );
 
             try {
@@ -85,6 +85,10 @@ public class CucumberToJGivenConverter {
                 ResourceUtil.close( printWriter );
             }
         }
+    }
+
+    private String escape( String name ) {
+        return name.replaceAll( "[^a-zA-Z0-9_-]", "_" );
     }
 
     public List<ReportModel> convert( File cucumberJsonReportFile ) throws IOException {
@@ -119,9 +123,28 @@ public class CucumberToJGivenConverter {
 
         scenarioModel.setDescription( cucumberScenario.description );
         scenarioModel.setTags( convertTags( cucumberScenario.tags ) );
-        scenarioModel.addCase( convertToCase( cucumberScenario ) );
+
+        addCases( scenarioModel, cucumberScenario );
 
         return scenarioModel;
+    }
+
+    private void addCases( ScenarioModel scenarioModel, CucumberScenario cucumberScenario ) {
+
+        if( cucumberScenario.examples != null ) {
+            addCasesByExamples( scenarioModel, cucumberScenario );
+        } else {
+            scenarioModel.addCase( convertToCase( cucumberScenario ) );
+        }
+
+    }
+
+    private void addCasesByExamples( ScenarioModel scenarioModel, CucumberScenario cucumberScenario ) {
+        for( int i = 1; i < cucumberScenario.examples.size(); i++ ) {
+            ScenarioCaseModel caseModel = convertToCase( cucumberScenario );
+            scenarioModel.addCase( caseModel );
+        }
+
     }
 
     private ScenarioCaseModel convertToCase( CucumberScenario cucumberScenario ) {
@@ -149,8 +172,18 @@ public class CucumberToJGivenConverter {
 
         stepModel.addWords( Word.introWord( step.keyword.trim() ) );
         stepModel.addWords( new Word( step.name ) );
-        stepModel.setDurationInNanos( step.result.duration );
-        stepModel.setStatus( convertStatus( step.result.status ) );
+
+        if( step.doc_string != null ) {
+            stepModel.addWords( new Word( step.doc_string.value ) );
+        }
+
+        if( step.result != null ) {
+            stepModel.setDurationInNanos( step.result.duration );
+            stepModel.setStatus( convertStatus( step.result.status ) );
+        } else {
+            // result can be null when the scenario has examples
+            stepModel.setStatus( StepStatus.PASSED );
+        }
 
         return stepModel;
     }

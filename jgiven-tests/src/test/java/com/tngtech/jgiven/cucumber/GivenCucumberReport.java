@@ -40,7 +40,9 @@ public class GivenCucumberReport extends Stage<GivenCucumberReport> {
     public GivenCucumberReport a_Cucumber_report_as_JSON_file() throws IOException {
         File root = getRootDir();
 
-        cucumberJsonReportFile = new File( root, "src/test/resources/com/tngtech/jgiven/cucumber/cucumber-report.json" );
+//        cucumberJsonReportFile = new File( root, "src/test/resources/com/tngtech/jgiven/cucumber/cucumber-report.json" );
+        cucumberJsonReportFile = new File( root, "src/test/resources/complete-cucumber-report.json" );
+
         currentStep.addAttachment(
             Attachment.fromTextFile( cucumberJsonReportFile, MediaType.PLAIN_TEXT, Charsets.UTF_8 )
                 .withTitle( "The JSON file" ) );
@@ -50,8 +52,8 @@ public class GivenCucumberReport extends Stage<GivenCucumberReport> {
     private File getRootDir() {
         // depending on where the test is execute the root folder might be different
         File root = new File( "." );
-        if( new File( root, "jgiven-tests" ).exists() ) {
-            root = new File( "jgiven-tests" );
+        if( new File( root, "jgiven-cucumber" ).exists() ) {
+            root = new File( "jgiven-cucumber" );
         }
         return root;
     }

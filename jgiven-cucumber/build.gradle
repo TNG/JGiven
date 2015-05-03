@@ -38,8 +38,22 @@ task convertToJGiven() {
     }
 }
 
+task convertCompleteCucumberReportToJGiven() {
+    dependsOn compileTestJava
+    doLast {
+        javaexec {
+            main = 'com.tngtech.jgiven.cucumber.CucumberToJGivenConverter'
+            classpath = configurations.compile + sourceSets.main.output
+            args = ['--targetDir', 'build/reports/jgiven/json', 'src/test/resources/complete-cucumber-report.json']
+        }
+    }
+}
+
+
+
 cucumber.finalizedBy( convertToJGiven );
 convertToJGiven.finalizedBy( jgivenHtml5Report );
+convertCompleteCucumberReportToJGiven.finalizedBy( jgivenHtml5Report );
 
 
 // the cucumber scenarios are failing on purpose

@@ -26,6 +26,10 @@ public class WhenCucumberToJGivenConverter extends Stage<WhenCucumberToJGivenCon
         return self();
     }
 
+    public WhenCucumberToJGivenConverter the_file_is_parsed() throws IOException {
+        return the_file_can_be_parsed();
+    }
+
     public WhenCucumberToJGivenConverter it_is_converted_to_a_JGiven_report() {
         reportModels = new CucumberToJGivenConverter().convert( cucumberReport );
         return self();
