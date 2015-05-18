@@ -22,6 +22,7 @@ h5 {
     font-size: 1.1rem;
     margin-top: 0.5rem;
     margin-bottom: 0;
+    margin-left: 0.5rem;
 }
 
 .header-fixed {
@@ -79,6 +80,18 @@ ul.tags {
     display: none;
 }
 
+.scenario-expand-icon, .case-expand-icon {
+    color: gray;
+}
+
+.scenario-expand-icon {
+    width: 0.8rem;
+}
+
+.case-expand-icon {
+    width: 1rem;
+}
+
 .scenario:hover .scenario-link-icon {
     display: inline;
     position: absolute;
@@ -90,7 +103,7 @@ ul.tags {
 .steps {
     list-style-type: none;
     padding-top: 0.5rem;
-    margin-left: 0.5rem;
+    margin-left: 1.3rem;
 }
 
 .has-tip {
