@@ -27,6 +27,14 @@
     page-break-after: auto;
 }
 
+.scenario-expand-icon, .case-expand-icon {
+    display: none !important;
+}
+
+.steps, h5 {
+    margin-left: 0;
+}
+
 a {
     text-decoration: none !important;
 }
