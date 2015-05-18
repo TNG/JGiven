@@ -455,7 +455,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   function getTags() {
       var res = {};
       var key;
-      var scenarioList;
       var tagEntry;
       _.forEach(jgivenReport.scenarios, function(testCase) {
           _.forEach(testCase.scenarios, function(scenario) {
@@ -499,6 +498,23 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       }
 
       return res;
+  };
+
+  $scope.getCssClassOfTag = function getCssClassOfTag( tag ) {
+     if (tag.cssClass) {
+        return tag.cssClass;
+     }
+     return 'tag-' + tag.name;
+  };
+
+  /**
+   * Returns the content of style attribute for the given tag
+   */
+  $scope.getStyleOfTag = function getStyleOfTag( tag ) {
+    if (tag.color) {
+      return 'background-color: '+tag.color;
+    }
+    return '';
   };
 
   $scope.isHeaderCell = function( rowIndex, columnIndex, headerType ) {
