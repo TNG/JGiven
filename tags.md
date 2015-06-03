@@ -143,4 +143,4 @@ public @interface FeatureTags { }
 The tag will appear as `Tag` in the report and all annotations with type `Feature` will be grouped together.
 
 
-Back: [Parameterized Scenarios]({{site.baseurl}}/docs/parameterizedscenarios/)
+Back: [Parameterized Scenarios]({{site.baseurl}}/docs/parameterizedscenarios/) - Next: [Attachments]({{site.baseurl}}/docs/attachments/)
