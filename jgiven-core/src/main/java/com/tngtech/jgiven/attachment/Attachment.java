@@ -12,7 +12,7 @@ import com.tngtech.jgiven.impl.util.ResourceUtil;
 
 /**
  * Represents an attachment of a step. 
- * Attachments must be representable as a String so that it can be stored as JSON. 
+ * Attachments must be representable as a String so that it can be stored as JSON.
  * For binary attachments this means that they have to be encoded with Base64.
  * In addition, attachments must have a media type so that reporters know
  * how to present an attachment.
@@ -149,7 +149,9 @@ public class Attachment {
      * Creates a non-binary attachment from the given file.
      * @throws IOException if an I/O error occurs
      * @throws java.lang.IllegalArgumentException if mediaType is binary
+     * @deprecated use fromTextFile without charSet with a mediaType that has a specified charSet 
      */
+    @Deprecated
     public static Attachment fromTextFile( File file, MediaType mediaType, Charset charSet ) throws IOException {
         return fromText( Files.toString( file, charSet ), mediaType );
     }
@@ -157,10 +159,30 @@ public class Attachment {
     /**
      * Creates a non-binary attachment from the given file.
      * @throws IOException if an I/O error occurs
-     * @throws java.lang.IllegalArgumentException if mediaType is binary
+     * @throws java.lang.IllegalArgumentException if mediaType is either binary or has no specified charset
      */
+    public static Attachment fromTextFile( File file, MediaType mediaType ) throws IOException {
+        return fromText( Files.toString( file, mediaType.getCharset() ), mediaType );
+    }
+
+    /**
+     * Creates a non-binary attachment from the given file.
+     * @throws IOException if an I/O error occurs
+     * @throws java.lang.IllegalArgumentException if mediaType is binary
+     * @deprecated use fromTextInputStream without charSet with a mediaType that has a specified charSet 
+     */
+    @Deprecated
     public static Attachment fromTextInputStream( InputStream inputStream, MediaType mediaType, Charset charset ) throws IOException {
         return fromText( CharStreams.toString( new InputStreamReader( inputStream, charset ) ), mediaType );
+    }
+
+    /**
+     * Creates a non-binary attachment from the given file.
+     * @throws IOException if an I/O error occurs
+     * @throws java.lang.IllegalArgumentException if mediaType is either binary or has no specified charset
+     */
+    public static Attachment fromTextInputStream( InputStream inputStream, MediaType mediaType ) throws IOException {
+        return fromText( CharStreams.toString( new InputStreamReader( inputStream, mediaType.getCharset() ) ), mediaType );
     }
 
     /**
@@ -172,6 +194,33 @@ public class Attachment {
             throw new IllegalArgumentException( "MediaType must not be binary" );
         }
         return new Attachment( content, mediaType );
+    }
+
+    /**
+     * Creates a text attachment with the given content with media type text/plain.
+     * 
+     * @param content the content of the attachment
+     */
+    public static Attachment plainText( String content ) {
+        return fromText( content, MediaType.PLAIN_TEXT_UTF_8 );
+    }
+
+    /**
+     * Creates a text attachment with the given content with media type text/xml.
+     *
+     * @param content the content of the attachment
+     */
+    public static Attachment xml( String content ) {
+        return fromText( content, MediaType.XML_UTF_8 );
+    }
+
+    /**
+     * Creates a text attachment with the given content with media type application/json.
+     *
+     * @param content the content of the attachment
+     */
+    public static Attachment json( String content ) {
+        return fromText( content, MediaType.JSON_UTF_8 );
     }
 
     /**
