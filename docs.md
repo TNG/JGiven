@@ -14,7 +14,7 @@ permalink: /docs/
 * [Parameterized Steps]({{site.baseurl}}/docs/parameterizedsteps/)
 * [Parameterized Scenarios]({{site.baseurl}}/docs/parameterizedscenarios/)
 * [Tags]({{site.baseurl}}/docs/tags/)
-* Attachments (tbd)
+* [Attachments]({{site.baseurl}}/docs/attachments/)
 
 ## API Documentation
 
