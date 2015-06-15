@@ -245,6 +245,11 @@ table.steps tr.steps:hover {
     font-shadow: 1px 1px 1px gray;
 }
 
+.attachment-index {
+    vertical-align: top;
+    font-size: 0.5rem;
+}
+
 .toggle {
     cursor: pointer;
 }
