@@ -259,12 +259,15 @@
                                 </span>
                                 <span ng-repeat-end></span>
                               </span>
-                              <span  ng-if="step.attachment">
-                                <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
-                                      class="{{ step.attachment.title ? 'has-tip' : '' }}"
-                                      tooltip-html-unsafe="{{ step.attachment.title }}"
-                                      tooltip-popup-delay="250">
-                                  <a target="_blank" href="data/{{ step.attachment.value }}"><i class="fa fa-paperclip"></i></a>
+                              <span ng-repeat="scenarioCase in scenario.scenarioCases" ng-init="step = scenarioCase.steps[$parent.$index]">
+                                <span ng-if="step.attachment">
+                                  <span ng-if="scenario.scenarioCases.length > 1">#{{ scenarioCase.caseNr }}:</span>
+                                  <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
+                                        class="{{ step.attachment.title ? 'has-tip' : '' }}"
+                                        tooltip-html-unsafe="{{ step.attachment.title }}"
+                                        tooltip-popup-delay="250">
+                                    <a target="_blank" href="data/{{ step.attachment.value }}"><i class="fa fa-paperclip"></i></a>
+                                  </span>
                                 </span>
                               </span>
                               <span ng-if="scenario.executionStatus !== 'SUCCESS'">
