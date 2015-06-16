@@ -1,3 +1,7 @@
+# v0.7.3
+
+* Fixed an issue in the HTML5 report which shows only attachments of the first case when having a parameterized scenario with multiple cases [#77](https://github.com/TNG/JGiven/issues/77)
+
 # v0.7.2
 
 ## New Features
