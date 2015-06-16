@@ -78,6 +78,31 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
     }
 
     @Test
+    public void missing_intro_words_are_filled_with_spaces() throws UnsupportedEncodingException {
+        getScenario().startScenario( "test" );
+
+        given().something()
+            .something_else();
+
+        when().something_happens();
+
+        then().something_has_happen()
+            .something_else_not();
+
+        String string = PlainTextReporter.toString( getScenario().getModel() );
+        assertThat( string )
+            .contains( ""
+                    + " Scenario: Test\n"
+                    + "\n"
+                    + "   Given something\n"
+                    + "         something else\n"
+                    + "    When something happens\n"
+                    + "    Then something has happen\n"
+                    + "         something else not"
+            );
+    }
+
+    @Test
     public void parameters_are_correctly_replaced_if_there_is_an_intro_word() throws UnsupportedEncodingException {
         getScenario().startScenario( "test" );
         GivenTestStep stage = getScenario().addStage( GivenTestStep.class );

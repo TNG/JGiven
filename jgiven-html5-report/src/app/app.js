@@ -528,6 +528,18 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     return false;
   };
 
+  /**
+   * Returns all but the intro words of the given array of words.
+   * It is assumed that only the first word can be an intro word
+   * @param words the array of all non-intro words of a step
+   */
+  $scope.getNonIntroWords = function getNonIntroWords( words ) {
+    if (words[0].isIntroWord) {
+       return words.slice(1);
+    }
+    return words;
+  };
+
   $scope.init();
 
 });

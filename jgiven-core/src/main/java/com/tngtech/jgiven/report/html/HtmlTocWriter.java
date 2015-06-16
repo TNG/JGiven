@@ -12,6 +12,7 @@ import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimaps;
 import com.google.common.collect.Ordering;
+import com.google.common.io.Files;
 import com.tngtech.jgiven.report.html.PackageTocBuilder.PackageToc;
 import com.tngtech.jgiven.report.model.*;
 
@@ -103,7 +104,7 @@ public class HtmlTocWriter {
 
     private void writeClassLink( ReportModelFile model ) {
         writer.print( format( "<li><a href='%s' >%s</a></li>",
-            model.file.getName(),
+            Files.getNameWithoutExtension( model.file.getName() ) + ".html",
             model.model.getSimpleClassName() ) );
     }
 

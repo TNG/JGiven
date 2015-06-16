@@ -1,5 +1,34 @@
 # v0.7.3
 
+## Changed Behavior
+
+### Intro words are not necessary anymore [#74](https://github.com/TNG/JGiven/issues/74)
+
+The following example is now a valid JGiven scenario, i.e. intro words are not required anymore:
+
+```
+given().frozen_strawberries()
+   .a_banana()
+   .milk();
+when().mixing_everything_in_a_mixer();
+then().you_get_a_delicious_smoothie();
+```
+
+The report will then look as follows:
+
+```
+ Given frozen_strawberries
+       a banana
+       milk
+  When mixing everything in a mixer
+  Then you get a delicious smoothie
+```
+
+In previous versions of JGiven you would have to add an `and()` before `a_banana()` and `milk()`
+
+
+## Fixed Issues
+
 * Fixed an issue in the HTML5 report which shows only attachments of the first case when having a parameterized scenario with multiple cases [#77](https://github.com/TNG/JGiven/issues/77)
 
 # v0.7.2

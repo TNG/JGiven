@@ -70,7 +70,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     }
 
     static class MaxFillWordLengthGetter extends ReportModelVisitor {
-        private int maxLength;
+        private int maxLength = 1;
 
         public int getLength( ScenarioCaseModel scenarioCase ) {
             scenarioCase.accept( this );
@@ -93,11 +93,13 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     public void visit( StepModel stepModel ) {
         String intro = "";
         List<Word> words = stepModel.words;
+        int introWord = 0;
         if( words.get( 0 ).isIntroWord() ) {
             intro = withColor( Color.BLUE, Attribute.INTENSITY_BOLD,
                 INDENT + String.format( "%" + maxFillWordLength + "s ", WordUtil.capitalize( words.get( 0 ).getValue() ) ) );
+            introWord = 1;
         } else {
-            intro = INDENT + words.get( 0 ).getValue() + " ";
+            intro = INDENT + String.format( "%" + maxFillWordLength + "s ", " " );
         }
 
         int restSize = words.size();
@@ -110,7 +112,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
             }
 
         }
-        String rest = joinWords( words.subList( 1, restSize ) );
+        String rest = joinWords( words.subList( introWord, restSize ) );
 
         if( stepModel.isNotImplementedYet() ) {
             rest = withColor( Color.BLACK, true, Attribute.INTENSITY_FAINT, rest + " (not implemented yet)" );

@@ -236,13 +236,13 @@
                         <table class="steps">
                           <tr class="steps" ng-repeat="step in case.steps">
 
-                            <td class="steps intro-word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}">{{step.words[0].value.capitalize()}}</td>
+                            <td class="steps intro-word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}">{{step.words[0].isIntroWord ? step.words[0].value.capitalize() : ''}}</td>
                             <td class="steps">
                               <span aria-haspopup="{{ step.extendedDescription ? 'true' : 'false'"
                                     class="{{ step.extendedDescription ? 'has-tip' : '' }}"
                                     tooltip-html-unsafe="{{ step.extendedDescription }}"
                                     tooltip-popup-delay="250">
-                                <span class="word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{word.isDifferent ? 'diff' : ''}}" ng-repeat-start="word in step.words.slice(1)">
+                                <span class="word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{word.isDifferent ? 'diff' : ''}}" ng-repeat-start="word in getNonIntroWords(step.words)">
                                   <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
                                     <strong>&lt;{{word.argumentInfo.parameterName}}&gt;</strong>
                                   </span>

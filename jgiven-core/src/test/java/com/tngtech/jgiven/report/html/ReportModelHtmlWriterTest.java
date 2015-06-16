@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.html;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,8 +42,8 @@ public class ReportModelHtmlWriterTest extends ScenarioTestBase<GivenTestStep, W
             ".*"
                     + "<h3.*>.*Values can be multiplied.*</h3>.*"
                     + "<li><span class='introWord'>Given</span> <span class='argument'>" + a + "</span>.*and.*" + b + ".*</li>.*"
-                    + "<li><span class='introWord'>When</span> <span class='word'>both values are multiplied with each other.*</li>.*"
-                    + "<li><span class='introWord'>Then</span> <span class='word'>the result is.*<span class='argument'>" + expectedResult
+                    + "<li><span class='introWord'>When</span> <span class='word'> both values are multiplied with each other.*</li>.*"
+                    + "<li><span class='introWord'>Then</span> <span class='word'> the result is.*<span class='argument'>" + expectedResult
                     + "</span>.*</li>.*"
                     + ".*" );
     }

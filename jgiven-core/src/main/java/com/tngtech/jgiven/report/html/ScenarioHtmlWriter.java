@@ -170,15 +170,19 @@ public class ScenarioHtmlWriter extends ReportModelVisitor {
             } else {
                 String text = HtmlEscapers.htmlEscaper().escape( word.getValue() );
                 String diffClass = diffClass( word );
+                if( firstWord && !word.isIntroWord() ) {
+                    writer.print( "<span class='introWord'></span>" );
+                }
+
                 if( firstWord && word.isIntroWord() ) {
                     writer.print( format( "<span class='introWord'>%s</span>", WordUtil.capitalize( text ) ) );
                 } else if( word.isArg() ) {
                     printArg( word );
                 } else {
                     if( word.isDifferent() ) {
-                        writer.print( format( "<span class='word %s'>%s</span>", diffClass, text ) );
+                        writer.print( format( "<span class='word %s'> %s</span>", diffClass, text ) );
                     } else {
-                        writer.print( "<span class='word'>" + text + "</span>" );
+                        writer.print( "<span class='word'> " + text + "</span>" );
                     }
                 }
             }

@@ -142,4 +142,16 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
         when().I_press_the_coffee_button();
         then().I_should_be_served_a_coffee();
     }
+
+    @Test
+    public void intro_words_are_not_required() {
+        given().a_coffee_machine()
+            .the_coffee_costs_$_dollar( 5 )
+            .there_are_$_coffees_left_in_the_machine( 3 );
+
+        when().I_press_the_coffee_button();
+
+        then().an_error_should_be_shown()
+            .no_coffee_should_be_served();
+    }
 }
