@@ -185,11 +185,6 @@
                 <h2 class="subtitle">{{currentPage.subtitle}}</h2>
                 <h2 id="page-title">{{currentPage.title}}</h2>
                 <h3 class="description" ng-bind-html="currentPage.description"></h3>
-
-                <div ng-if="currentPage.statistics && currentPage.statistics.count > 0" class="page-statistics">{{currentPage.statistics.count}} scenario{{currentPage.statistics.count != 1 ? 's' :''}},
-                  of which {{currentPage.statistics.success}} {{currentPage.statistics.success === 1 ? 'was' : 'were'}} successful, {{currentPage.statistics.failed}} failed,
-                  and {{currentPage.statistics.pending}} {{currentPage.statistics.pending === 1 ? 'is' : 'are'}} pending. Total time: {{nanosToSeconds(currentPage.statistics.totalNanos)}}s
-                </div>
               </div>
 
               <!-- CHART -->
@@ -210,9 +205,63 @@
 
             <h4 ng-hide="!currentPage.loading">Loading <i class="fa fa-circle-o-notch fa-spin"></i></h4>
 
+            <!-- SCENARIO BUTTON BAR -->
+
+            <div class="scenario-list-button-bar row" ng-if="currentPage.scenarios">
+              <div class="small-6 columns no-pad-left" ng-if="currentPage.statistics && currentPage.statistics.count > 0">
+                <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}}">
+                  <i class="fa fa-check-square {{currentPage.statistics.failed + currentPage.statistics.pending === 0 ? 'check' : 'gray'}}" ></i> {{currentPage.statistics.success}} Successful</span>,
+                <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}}"><i class="fa fa-exclamation-circle" ></i> {{currentPage.statistics.failed}} Failed</span>,
+                <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}}"><i class="fa fa-ban" ></i> {{currentPage.statistics.pending}} Pending</span>,
+                {{currentPage.statistics.count}} Total ({{nanosToSeconds(currentPage.statistics.totalNanos)}}s)
+              </div>
+              <div class="small-6 columns" ng-if="currentPage.scenarios.length > 0">
+                <ul class="button-group radius right">
+                  <li><a class="button dropdown small secondary" dropdown-toggle="#group-drop-down">Group By</a>
+                  <ul id="group-drop-down" class="f-dropdown">
+                    <li ng-repeat="groupOption in currentPage.options.groupOptions">
+                      <a ng-click="groupOptionSelected(groupOption)"><i class="fa fa-check {{groupOption.selected ? 'selected' : ''}}"></i> {{groupOption.name}}</a>
+                    </li>
+                  </ul>
+                  </li>
+                  <li><a class="button dropdown small secondary" dropdown-toggle="#sort-drop-down">Sort By</a>
+                  <ul id="sort-drop-down" class="f-dropdown">
+                    <li ng-repeat="sortOption in currentPage.options.sortOptions">
+                      <a ng-click="sortOptionSelected(sortOption)"><i class="fa fa-check {{sortOption.selected ? 'selected' : ''}}"></i> {{sortOption.name}}</a>
+                    </li>
+                  </ul>
+                  </li>
+                  <li><a class="button dropdown small secondary" dropdown-toggle="#filter-drop-down">Filter By</a>
+                  <ul id="filter-drop-down" class="f-dropdown tiny left">
+                    <li ng-repeat="filterOption in currentPage.options.filterOptions track by $index">
+                      <a ng-click="filterOptionSelected(filterOption)"><i class="fa fa-check {{filterOption.selected ? 'selected' : ''}}"></i> {{filterOption.name}}</a>
+                    </li>
+                  </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+
+            <!-- SCENARIO GROUP -->
+
+            <div ng-if="currentPage.groupedScenarios.length > 0">
+
+              <div ng-repeat="scenarioGroup in currentPage.groupedScenarios">
+
+            <div class="row" ng-if="scenarioGroup.name !== 'all' ">
+              <div class="small-12 column no-pad-left">
+                <h3 class="scenario-group-header toggle"  ng-click="scenarioGroup.expanded= !scenarioGroup.expanded">
+                  {{scenarioGroup.name}}
+                  <span class="secondary radius label group-count">{{scenarioGroup.values.length}}</span>
+                </h3>
+              </div>
+            </div>
+
+
             <!-- SCENARIO LIST -->
 
-            <div class="scenario {{$last ? 'last' : ''}}" ng-repeat="scenario in currentPage.scenarios">
+            <div class="scenario {{$last ? 'last' : ''}}" ng-repeat="scenario in scenarioGroup.values" ng-if="scenarioGroup.expanded">
 
               <div class="row">
                 <div class="small-12 large-8 xlarge-6 column">
@@ -273,7 +322,7 @@
                               </span>
                               <span ng-if="scenario.executionStatus !== 'SUCCESS'">
                                 <i ng-if="step.status === 'PASSED'" class="small-check fa fa-check-square"></i>
-                                <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-times"></i>
+                                <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-exclamation-circle"></i>
                                 <i ng-if="step.status === 'SKIPPED'" class="skipped fa fa-ban"></i>
                                 <i ng-if="step.status === 'NOT_IMPLEMENTED_YET'" title="Not implemented yet" class="skipped fa fa-ban"></i>
                               </span>
@@ -318,6 +367,10 @@
                 </div>
               </div>
             </div>
+
+              </div>
+            </div> <!-- grouped scenarios -->
+
             <div class="footer-bottom" ng-if="!currentPage.embed">
               <div class="small-12 columns">
                 Generated by <a href="http://jgiven.org">JGiven</a> @version@ on {{jgivenReport.metaData.created}}

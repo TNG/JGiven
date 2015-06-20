@@ -76,6 +76,82 @@ ul.tags {
     text-shadow: 2px 2px 3px #aaa;
 }
 
+.scenario-list-button-bar .button {
+    background-color: white;
+    padding: 0.5rem;
+    position: relative;
+}
+
+.scenario-list-button-bar li {
+    position: relative;
+
+}
+
+
+/**
+ * Ugly workaround to fix an issue with foundation where
+ * the drop-down menu is positioned outside of window
+ * --->
+ */
+.scenario-list-button-bar .f-dropdown:before {
+    right: 15px;
+    left: initial;
+}
+
+.scenario-list-button-bar .f-dropdown:after {
+    right: 14px;
+    left: initial;
+}
+
+.scenario-list-button-bar .f-dropdown {
+    position: absolute;
+    left: -100px !important;
+    width: 500px;
+}
+/**
+ * <--- Ugly workaround end
+ */
+
+
+.scenario-group-header {
+    margin-bottom: 10px;
+    margin-top: 20px;
+    background-color: rgb(229, 229, 229);
+    padding: 0.4rem;
+    padding-left: 1rem;
+    border-radius: 5px;
+}
+
+.scenario-group-header h3 {
+    font-size: 1.2rem;
+}
+
+.scenario-list-button-bar .fa {
+    /* color: gray; */
+}
+
+.scenario-list-button-bar .red {
+    color: red;
+}
+
+.scenario-list-button-bar .gray {
+    color: gray;
+}
+
+.scenario-list-button-bar .bold {
+    color: black;
+    font-weight: bold;
+}
+
+.scenario-list-button-bar .fa.fa-check {
+    color: white;
+    margin-right: 0.5rem;
+}
+
+.scenario-list-button-bar .fa.selected {
+    color: black;
+}
+
 .scenario-link-icon {
     display: none;
 }
@@ -112,6 +188,15 @@ ul.tags {
 
 .case-count, .nav-count {
     vertical-align: text-bottom;
+}
+
+.group-count.label.secondary {
+    vertical-align: text-top;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0.5rem;
+    font-size: 80%;
+    background-color: lightgray;
 }
 
 .nav-count {
@@ -433,6 +518,15 @@ li.subheading > ul {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
+
+.no-pad-right {
+    padding-right: 0;
+}
+
+.no-pad-left {
+    padding-left: 0;
+}
+
 
 @media only screen and (max-width: 64em) {
     .scenario-container {
