@@ -66,7 +66,10 @@ public class Html5GeneratorTest extends JGivenScenarioTest<GivenJsonReports<?>, 
 
         when().the_index_page_is_opened();
 
-        then().the_page_statistics_line_contains_text( "3 scenarios, of which 2 were successful, 1 failed, and 0 are pending" );
+        then().the_page_statistics_line_contains_text( "3 Total" )
+            .and().the_page_statistics_line_contains_text( "2 Successful" )
+            .and().the_page_statistics_line_contains_text( "1 Failed" )
+            .and().the_page_statistics_line_contains_text( "0 Pending" );
     }
 
     @Test

@@ -208,7 +208,7 @@
             <!-- SCENARIO BUTTON BAR -->
 
             <div class="scenario-list-button-bar row" ng-if="currentPage.scenarios">
-              <div class="small-6 columns no-pad-left" ng-if="currentPage.statistics && currentPage.statistics.count > 0">
+              <div id="statistics" class="small-6 columns no-pad-left" ng-if="currentPage.statistics && currentPage.statistics.count > 0">
                 <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}}">
                   <i class="fa fa-check-square {{currentPage.statistics.failed + currentPage.statistics.pending === 0 ? 'check' : 'gray'}}" ></i> {{currentPage.statistics.success}} Successful</span>,
                 <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}}"><i class="fa fa-exclamation-circle" ></i> {{currentPage.statistics.failed}} Failed</span>,
@@ -266,7 +266,9 @@
               <div class="row">
                 <div class="small-12 large-8 xlarge-6 column">
                   <a href="#scenario/{{scenario.className}}/{{scenario.testMethodName}}"><i class="fa fa-link scenario-link-icon" title="Direct link to this scenario"></i></a>
-                  <h4 class="toggle" ng-click="toggleScenario(scenario)"><i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i> {{scenario.description.capitalize()}}
+                  <h4 class="toggle" ng-click="toggleScenario(scenario)">
+                    <i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i>
+                    {{scenario.description.capitalize()}}
                     <span ng-if="scenario.scenarioCases.length > 1" class="secondary radius label case-count">{{scenario.scenarioCases.length}}</span>
                     <i ng-if="scenario.executionStatus === 'SUCCESS'" class="check fa fa-check-square"></i>
                     <span ng-if="scenario.executionStatus === 'FAILED'" class="failed label radius alert">FAILED</span>

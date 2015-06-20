@@ -20,7 +20,7 @@ public class ThenHtml5Report<SELF extends ThenHtml5Report<?>> extends Html5Repor
     }
 
     public SELF the_page_statistics_line_contains_text( String text ) throws IOException {
-        assertThat( webDriver.findElement( By.className( "page-statistics" ) ).getText() ).contains( text );
+        assertThat( webDriver.findElement( By.id( "statistics" ) ).getText() ).contains( text );
         return self();
     }
 
