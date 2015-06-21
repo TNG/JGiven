@@ -134,7 +134,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           subtitle: className.packageName,
           title: className.className,
           breadcrumbs: className.packageName.split("."),
-          statistics: $scope.gatherStatistics( scenarios ),
           options: getDefaultOptions( scenarios )
       };
       $scope.applyOptions();
@@ -150,7 +149,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           subtitle: tag.value && !tag.prependType ? tag.name : undefined,
           description: tag.description,
           breadcrumbs: ['TAGS',tag.name,tag.value],
-          statistics: $scope.gatherStatistics( scenarios ),
           options: getDefaultOptions(scenarios)
       };
       $scope.applyOptions();
@@ -165,7 +163,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           title: scenarios[0].description.capitalize(),
           subtitle: className,
           breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName]),
-          statistics: $scope.gatherStatistics( scenarios ),
           options: getDefaultOptions(scenarios)
       };
       $scope.applyOptions();
@@ -182,7 +179,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $timeout(function() {
           $scope.currentPage.scenarios = sortByDescription(getAllScenarios());
           $scope.currentPage.loading = false;
-          $scope.currentPage.statistics = $scope.gatherStatistics( $scope.currentPage.scenarios );
           $scope.currentPage.options = getDefaultOptions($scope.currentPage.scenarios);
           $scope.applyOptions();
       }, 0);
@@ -196,14 +192,18 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           title: "Pending Scenarios",
           description: description,
           breadcrumbs: ['PENDING SCENARIOS'],
-          statistics: $scope.gatherStatistics( pendingScenarios ),
           options: getDefaultOptions(pendingScenarios)
       };
       $scope.applyOptions();
   };
 
   $scope.applyOptions = function applyOptions() {
-      applyOptionsToPage( $scope.currentPage );
+    var page = $scope.currentPage;
+    var filteredSorted = getSelectedSortOption( page ).apply(
+      _.filter( page.scenarios, getFilterFunction( page )) );
+    page.groupedScenarios = getSelectedGroupOption( page ).apply( filteredSorted );
+    page.statistics = $scope.gatherStatistics( filteredSorted );
+    page.filtered = page.scenarios.length - filteredSorted.length;
   }
 
   $scope.showFailedScenarios = function() {
@@ -214,7 +214,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           title: "Failed Scenarios",
           description: description,
           breadcrumbs: ['FAILED SCENARIOS'],
-          statistics: $scope.gatherStatistics( failedScenarios ),
           options: getDefaultOptions(failedScenarios)
       };
       $scope.applyOptions();
@@ -258,7 +257,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $timeout( function() {
           $scope.currentPage.scenarios = $scope.findScenarios(searchString);
           $scope.currentPage.loading = false;
-          $scope.currentPage.statistics = $scope.gatherStatistics($scope.currentPage.scenarios);
           $scope.currentPage.options = getDefaultOptions( $scope.currentPage.scenarios );
           $scope.applyOptions();
       },1);
@@ -345,18 +343,18 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   $scope.sortOptionSelected = function sortOptionSelected( sortOption ) {
       deselectAll( $scope.currentPage.options.sortOptions );
       sortOption.selected = true;
-      applyOptionsToPage( $scope.currentPage );
+      $scope.applyOptions();
   };
 
   $scope.groupOptionSelected = function groupOptionSelected( groupOption ) {
       deselectAll( $scope.currentPage.options.groupOptions );
       groupOption.selected = true;
-      applyOptionsToPage( $scope.currentPage );
+      $scope.applyOptions();
   };
 
   $scope.filterOptionSelected = function filterOptionSelected( filterOption ) {
     filterOption.selected = !filterOption.selected;
-    applyOptionsToPage( $scope.currentPage );
+    $scope.applyOptions();
   };
 
   function ownProperties( obj ) {
@@ -369,23 +367,28 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     return result;
   }
 
-  function applyOptionsToPage( page ) {
-     var filteredSorted = getSelectedSortOption( page ).apply(
-       _.filter( page.scenarios, getFilterFunction( page )) );
-     page.groupedScenarios = getSelectedGroupOption( page ).apply( filteredSorted );
+  function getFilterFunction( page ) {
+
+    var anyStatusMatches = anyOptionMatches(getSelectedOptions(page.options.statusOptions));
+    var anyTagMatches = anyOptionMatches(getSelectedOptions(page.options.tagOptions));
+    var anyClassMatches = anyOptionMatches(getSelectedOptions(page.options.classOptions));
+
+    return function( scenario ) {
+      return anyStatusMatches( scenario ) && anyTagMatches( scenario ) && anyClassMatches( scenario );
+    }
   }
 
-  function getFilterFunction( page ) {
-     var selectedFilters = getSelectedOptions( page.options.filterOptions );
-
+  function anyOptionMatches( filterOptions ) {
      // by default nothing is filtered
-     if (selectedFilters.length === 0) {
-        return function() { return true; };
+     if (filterOptions.length === 0) {
+       return function () {
+         return true;
+       };
      }
 
      return function( scenario ) {
-        for (var i = 0; i < selectedFilters.length; i++) {
-           if (selectedFilters[i].apply( scenario )) {
+        for (var i = 0; i < filterOptions.length; i++) {
+           if (filterOptions[i].apply( scenario )) {
              return true;
            }
         }
@@ -569,12 +572,14 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     return {
       sortOptions: getDefaultSortOptions(),
       groupOptions: getDefaultGroupOptions(),
-      filterOptions: getDefaultFilterOptions( scenarios )
+      statusOptions: getDefaultStatusOptions( ),
+      tagOptions: getDefaultTagOptions( scenarios ),
+      classOptions: getDefaultClassOptions( scenarios ),
     }
   }
 
-  function getDefaultFilterOptions( scenarios ) {
-    var standardOptions = [
+  function getDefaultStatusOptions( ) {
+    return [
       {
         selected: false,
         name: 'Successful',
@@ -598,12 +603,11 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
         }
       },
     ];
-
-    return standardOptions.concat( getTagFilterOptions( scenarios ));
   }
 
-  function getTagFilterOptions( scenarios ) {
-    var uniqueSortedTags = getUniqueSortedTags( scenarios), result = new Array();
+  function getDefaultTagOptions( scenarios ) {
+    var uniqueSortedTags = getUniqueSortedTags( scenarios)
+      , result = new Array();
     _.forEach( uniqueSortedTags, function( tagName ) {
       result.push( {
          selected: false,
@@ -621,8 +625,31 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     return result;
   }
 
+  function getDefaultClassOptions( scenarios ) {
+    var uniqueSortedClassNames = getUniqueSortedClassNames( scenarios)
+      , result = new Array();
+    _.forEach( uniqueSortedClassNames, function( className ) {
+      result.push( {
+        selected: false,
+        name: className,
+        apply: function( scenario ) {
+          return scenario.className === className;
+        }
+      })
+    });
+    return result;
+  }
+
+  function getUniqueSortedClassNames( scenarios ) {
+    var allClasses = {};
+    _.forEach( scenarios, function( scenario ) {
+       allClasses[ scenario.className ] = true;
+    });
+    return ownProperties(allClasses).sort();
+  }
+
   function getUniqueSortedTags( scenarios ) {
-     var allTags = {}, result;
+     var allTags = {};
      _.forEach( scenarios, function( scenario ) {
        _.forEach( scenario.tags, function( tag ) {
           allTags[ tagToString( tag )] = true;

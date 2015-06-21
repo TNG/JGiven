@@ -109,9 +109,9 @@ ul.tags {
     min-width: 150px;
 }
 
-#filter-drop-down {
-    left: -200px !important;
-    min-width: 300px;
+#tag-drop-down, #class-drop-down {
+    left: -400px !important;
+    min-width: 500px;
 }
 
 /**

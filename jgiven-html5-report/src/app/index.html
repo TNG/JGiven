@@ -208,13 +208,20 @@
             <!-- SCENARIO BUTTON BAR -->
 
             <div class="scenario-list-button-bar row" ng-if="currentPage.scenarios">
-              <div id="statistics" class="small-6 columns no-pad-left" ng-if="currentPage.statistics && currentPage.statistics.count > 0">
+
+              <!-- STATISTICS -->
+
+              <div id="statistics" class="small-6 columns no-pad-left" ng-if="currentPage.statistics">
                 <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}}">
-                  <i class="fa fa-check-square {{currentPage.statistics.failed + currentPage.statistics.pending === 0 ? 'check' : 'gray'}}" ></i> {{currentPage.statistics.success}} Successful</span>,
+                  <i class="fa fa-check-square {{currentPage.statistics.failed + currentPage.statistics.pending === 0 && currentPage.statistics.success > 0 ? 'check' : 'gray'}}" ></i> {{currentPage.statistics.success}} Successful</span>,
                 <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}}"><i class="fa fa-exclamation-circle" ></i> {{currentPage.statistics.failed}} Failed</span>,
                 <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}}"><i class="fa fa-ban" ></i> {{currentPage.statistics.pending}} Pending</span>,
-                {{currentPage.statistics.count}} Total ({{nanosToSeconds(currentPage.statistics.totalNanos)}}s)
+                <span class="{{currentPage.statistics.count === 0 ? 'gray' : ''}}">{{currentPage.statistics.count}} Total ({{nanosToSeconds(currentPage.statistics.totalNanos)}}s)</span>
+                <span ng-if="currentPage.filtered > 0">({{ currentPage.filtered }} Filtered)</span>
               </div>
+
+              <!-- DROP DOWNS -->
+
               <div class="small-6 columns" ng-if="currentPage.scenarios.length > 0">
                 <ul class="button-group radius right">
                   <li><a class="button dropdown small secondary" dropdown-toggle="#group-drop-down">Group By</a>
@@ -231,12 +238,26 @@
                     </li>
                   </ul>
                   </li>
-                  <li><a class="button dropdown small secondary" dropdown-toggle="#filter-drop-down">Filter By</a>
-                  <ul id="filter-drop-down" class="f-dropdown tiny left">
-                    <li ng-repeat="filterOption in currentPage.options.filterOptions track by $index">
-                      <a ng-click="filterOptionSelected(filterOption)"><i class="fa fa-check {{filterOption.selected ? 'selected' : ''}}"></i> {{filterOption.name}}</a>
-                    </li>
-                  </ul>
+                  <li><a class="button dropdown small secondary" dropdown-toggle="#status-drop-down">Status</a>
+                    <ul id="status-drop-down" class="f-dropdown tiny left">
+                      <li ng-repeat="option in currentPage.options.statusOptions">
+                        <a ng-click="filterOptionSelected(option)"><i class="fa fa-check {{option.selected ? 'selected' : ''}}"></i> {{option.name}}</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a class="button dropdown small secondary" dropdown-toggle="#tag-drop-down">Tags</a>
+                    <ul id="tag-drop-down" class="f-dropdown tiny left">
+                      <li ng-repeat="option in currentPage.options.tagOptions track by $index">
+                        <a ng-click="filterOptionSelected(option)"><i class="fa fa-check {{option.selected ? 'selected' : ''}}"></i> {{option.name}}</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a class="button dropdown small secondary" dropdown-toggle="#class-drop-down">Classes</a>
+                    <ul id="class-drop-down" class="f-dropdown tiny left">
+                      <li ng-repeat="option in currentPage.options.classOptions track by $index">
+                        <a ng-click="filterOptionSelected(option)"><i class="fa fa-check {{option.selected ? 'selected' : ''}}"></i> {{option.name}}</a>
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </div>
