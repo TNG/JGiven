@@ -109,7 +109,12 @@ ul.tags {
     min-width: 150px;
 }
 
-#tag-drop-down, #class-drop-down {
+#tag-drop-down {
+    left: -200px !important;
+    min-width: 300px;
+}
+
+#class-drop-down {
     left: -400px !important;
     min-width: 500px;
 }
