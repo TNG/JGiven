@@ -1,0 +1,41 @@
+.tag, .passed {
+   -webkit-print-color-adjust:exact;
+}
+
+#header {
+  background-color: white;
+  -webkit-print-color-adjust:exact;
+}
+
+h2, .packagename, #header .description {
+  color: black;
+}
+
+
+#leftpane,
+.search-input,
+.extended-description-content,
+.show-extended-description,
+#show-menu-icon {
+  display: none;
+}
+
+#header .description {
+  background: none;
+}
+
+.scenario h3 {
+  font-size: 12pt;
+}
+
+ul.steps {
+  font-size: 10pt;
+}
+
+.scenario-footer a {
+  font-size: 8pt;
+}
+
+.collapsed {
+  display: block;
+}
