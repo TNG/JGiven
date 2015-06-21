@@ -1,0 +1,582 @@
+body {
+    height: 100%;
+}
+
+h2.subtitle {
+    font-size: 1.1rem;
+    color: #6f6f6f;
+}
+
+h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: #4f4f4f;
+}
+
+h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+}
+
+h5 {
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    margin-left: 0.5rem;
+}
+
+.header-fixed {
+    position: fixed;
+    z-index: 1000;
+    top:0;
+    left:0;
+    right:0;
+}
+
+
+ul.tags {
+    list-style: none;
+}
+
+.title {
+    position: relative;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1rem !important;
+}
+
+.title-column {
+    padding: 0;
+}
+
+.page-icon-bar {
+    position: absolute;
+    top: 0;
+    right: 1rem;
+}
+
+.expand-icon, .collapse-icon, .print-icon, .remove-bookmark-icon, .add-bookmark-icon {
+    color: #6f6f6f;
+}
+
+.expand-icon:hover, .collapse-icon:hover, .print-icon:hover,
+    .scenario:hover .scenario-link-icon:hover,
+    .remove-bookmark-icon:hover, .add-bookmark-icon:hover {
+    color: #008cba;
+}
+
+.remove-bookmark-icon {
+    float: right;
+    color: #aaa;
+}
+
+.bookmarked {
+    color: darkred;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-shadow: 2px 2px 3px #aaa;
+}
+
+.scenario-list-button-bar .button {
+    background-color: white;
+    padding: 0.5rem;
+    position: relative;
+}
+
+.scenario-list-button-bar li {
+    position: relative;
+
+}
+
+
+/**
+ * Ugly workaround to fix an issue with foundation where
+ * the drop-down menu is positioned outside of window
+ * --->
+ */
+.scenario-list-button-bar .f-dropdown:before {
+    right: 15px;
+    left: initial;
+}
+
+.scenario-list-button-bar .f-dropdown:after {
+    right: 14px;
+    left: initial;
+}
+
+.scenario-list-button-bar .f-dropdown {
+    position: absolute;
+    left: -50px !important;
+    min-width: 150px;
+}
+
+#tag-drop-down {
+    left: -200px !important;
+    min-width: 300px;
+}
+
+#class-drop-down {
+    left: -400px !important;
+    min-width: 500px;
+}
+
+/**
+ * <--- Ugly workaround end
+ */
+
+
+.scenario-group-header {
+    margin-bottom: 10px;
+    margin-top: 20px;
+    background-color: rgb(229, 229, 229);
+    padding: 0.4rem;
+    padding-left: 1rem;
+    border-radius: 5px;
+}
+
+.scenario-group-header h3 {
+    font-size: 1.2rem;
+}
+
+.scenario-list-button-bar .fa {
+    /* color: gray; */
+}
+
+.scenario-list-button-bar .red {
+    color: red;
+}
+
+.scenario-list-button-bar .gray {
+    color: gray;
+}
+
+.scenario-list-button-bar .bold {
+    color: black;
+    font-weight: bold;
+}
+
+.scenario-list-button-bar .fa.fa-check {
+    color: white;
+    margin-right: 0.5rem;
+}
+
+.scenario-list-button-bar .fa.selected {
+    color: black;
+}
+
+.scenario-column {
+    position: relative;
+}
+
+.scenario-link-icon {
+    display: none;
+}
+
+.scenario-expand-icon, .case-expand-icon {
+    color: gray;
+}
+
+.scenario-expand-icon {
+    position: absolute;
+    left: 1rem;
+    top: 0.4rem;
+}
+
+.scenario-title {
+    margin-left: 1rem;
+}
+
+.case-expand-icon {
+    width: 1rem;
+}
+
+.scenario:hover .scenario-link-icon {
+    display: inline;
+    position: absolute;
+    top: 0.5rem;
+    left: -0.5rem;
+    color: gray;
+}
+
+.steps {
+    list-style-type: none;
+    padding-top: 0.5rem;
+    margin-left: 1.3rem;
+}
+
+.has-tip {
+    font-weight: normal !important;
+}
+
+.case-count, .nav-count {
+    vertical-align: text-bottom;
+}
+
+.group-count.label.secondary {
+    vertical-align: text-top;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0.5rem;
+    font-size: 80%;
+    background-color: lightgray;
+}
+
+.nav-count {
+    float: right;
+}
+
+table.steps {
+    border: none;
+    border-spacing: 0;
+    padding:0;
+    margin:0;
+    margin-bottom: 0.5rem;
+}
+
+td.steps {
+    padding: 0.2rem;
+    vertical-align: top;
+    font-size: 1rem;
+}
+
+td.steps.intro-word {
+    text-align: right;
+    vertical-align: top;
+    font-size: 1rem;
+}
+
+table.steps tr.steps {
+    background-color: white;
+}
+
+table.steps tr.steps:hover {
+    background-color: #eee;
+}
+
+.table-value {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header-cell {
+    font-weight: 700;
+}
+
+.multiline {
+    font-family: monospace;
+    border: 1px solid lightgray;
+    background-color: white;
+    display: table;
+    white-space: pre;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.diff {
+    font-weight: bold;
+}
+
+.class-name {
+    text-align: right;
+    color: #6f6f6f;
+    font-size: 0.8rem;
+}
+
+.check {
+    color: green;
+    font-size: 1rem !important;
+    padding-left: 0.2rem;
+}
+
+.small-check {
+    color: green;
+    font-size: 0.7rem !important;
+}
+
+.duration {
+    font-size: 0.666rem;
+    color: #666;
+}
+
+.failed {
+    color: red;
+    vertical-align: middle;
+    font-size: 0.5rem !important;
+    margin-bottom: 0.2rem;
+}
+
+.failed-icon {
+    color: red;
+    font-size: 0.9rem !important;
+}
+
+.FAILED {
+    color: red;
+}
+
+.SKIPPED, .NOT_IMPLEMENTED_YET {
+    color: #aaa !important;
+}
+
+.PASSED {
+}
+
+.pending {
+    vertical-align: middle;
+    margin-bottom: 0.2rem;
+}
+
+.skipped {
+    color: #aaa;
+    font-size: 0.7rem !important;
+}
+
+.collapsed {
+    display: none;
+}
+
+.word {
+    color: #333;
+}
+
+.word.FAILED {
+    color: red;
+}
+
+.word.SKIPPED {
+    color: gray !important;
+}
+
+.argument {
+    color: black;
+    font-shadow: 1px 1px 1px gray;
+}
+
+.attachment-index {
+    vertical-align: top;
+    font-size: 0.5rem;
+}
+
+.toggle {
+    cursor: pointer;
+}
+
+input.search {
+    position: relative;
+    border-radius: 5rem;
+
+    padding-left: 2rem;
+
+    /* needed for FF */
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#nav-search {
+    height: 1.7rem;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1.5rem;
+    top: 0.8rem;
+    color: #333;
+}
+
+.content {
+    position: relative;
+    background: white;
+    padding-bottom: 5rem;
+    max-width:100%;
+    min-height: 100%;
+    height: 100%;
+}
+
+.scenario {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0rem;
+    padding-top: 0.5rem;
+    margin-left: -0.975rem;
+}
+
+.scenario.last {
+    border-bottom: none;
+}
+
+.scenario-content {
+    background-color: white;
+}
+
+.scenario-container {
+    position: relative;
+    padding-top: 1rem;
+    padding-left: 3rem;
+    margin-left: 25rem;
+    margin-top: 76px;
+    margin-right: 15px;
+    padding-bottom: 50px; /* space for footer */
+    background-color: white;
+    border-left: 1px solid #ddd;
+    min-height: 100%;
+}
+
+.scenario-container.embed {
+    margin-left: 0;
+    margin-top: 0;
+    border-left: none;
+}
+
+body, .footer-bottom {
+    background: none repeat scroll 0 0 white;
+}
+
+.sidebar {
+    background: none repeat scroll 0 0 #fafafa;
+    padding: 0px;
+    position: fixed;
+    top: 76px;
+    bottom: 0;
+    overflow: auto;
+    width: 25rem;
+}
+
+.side-nav li a:not(.button){
+    padding: 0.5rem 1.8rem;
+}
+
+.side-nav li li a:not(.button){
+    padding: 0.1rem 1.9rem;
+}
+
+.side-nav li li li a:not(.button){
+    padding: 0.1rem 3.3rem;
+}
+
+.side-nav, .side-nav ul {
+    line-height: 1.2;
+}
+
+.side-nav ul {
+    list-style: none;
+    margin-left: 0;
+}
+
+li.heading {
+    margin-top: 0.5rem;
+}
+
+li.subheading {
+    margin-top: 0.2rem;
+}
+
+
+li.heading ul {
+    text-transform: none;
+}
+
+li.subheading {
+    color: #008cba;
+    font-weight: bold;
+}
+
+li.subheading > ul {
+    padding-top: 0.5rem;
+    padding-left: 0rem;
+    margin-left: 0;
+}
+
+.footer-bottom {
+    position: absolute;
+    padding: 40px 0 2px;
+    color: #555;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    font-size: 0.8rem;
+    text-align: right;
+}
+
+.footer-bottom a {
+    color: #005C7B;
+}
+
+#loading-modal {
+    position: fixed;
+    top: 76px;
+    bottom: 0;
+    left: 0;
+    right:0;
+    background-color: rgba(255,255,255,0.8);
+    z-index: 2000;
+}
+
+#loading-modal > h1 {
+    position: absolute;
+    left: 40%;
+    top: 40%;
+    color: gray;
+}
+
+.off-canvas-wrap, .inner-wrap {
+    min-height: 100%;
+    height: 100%;
+}
+
+.off-canvas-wrap {
+   overflow: auto;
+}
+
+.page-statistics {
+    color: gray;
+}
+
+.statistics-chart-column {
+    text-align: right;
+}
+
+.statistics-chart {
+    width: 15em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.no-pad-right {
+    padding-right: 0;
+}
+
+.no-pad-left {
+    padding-left: 0;
+}
+
+
+@media only screen and (max-width: 64em) {
+    .scenario-container {
+        margin-left: 0;
+        padding-left: 2rem;
+        border-left: none;
+        margin-top: 0;
+    }
+
+    .sidebar, .header-fixed, .page-icon-bar, .scenario-link-icon {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 64.063em) {
+    .tab-bar {
+        display:none;
+    }
+}
+
+@media only screen and (min-width: 64.063em) and (max-width: 90em) {
+    .scenario-container {  margin-left: 15rem;  }
+    .sidebar { width: 15rem; }
+}
+
+@media only screen and (min-width: 90.063em) and (max-width: 120em) {
+    .scenario-container {  margin-left: 21rem;  }
+    .sidebar { width: 21rem; }
+}
+
+/* avoid showing angularjs expressions on page loading */
+[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
