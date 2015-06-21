@@ -105,9 +105,15 @@ ul.tags {
 
 .scenario-list-button-bar .f-dropdown {
     position: absolute;
-    left: -100px !important;
-    width: 500px;
+    left: -50px !important;
+    min-width: 150px;
 }
+
+#filter-drop-down {
+    left: -200px !important;
+    min-width: 300px;
+}
+
 /**
  * <--- Ugly workaround end
  */
@@ -152,6 +158,10 @@ ul.tags {
     color: black;
 }
 
+.scenario-column {
+    position: relative;
+}
+
 .scenario-link-icon {
     display: none;
 }
@@ -161,7 +171,13 @@ ul.tags {
 }
 
 .scenario-expand-icon {
-    width: 0.8rem;
+    position: absolute;
+    left: 1rem;
+    top: 0.4rem;
+}
+
+.scenario-title {
+    margin-left: 1rem;
 }
 
 .case-expand-icon {

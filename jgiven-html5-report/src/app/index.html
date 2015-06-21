@@ -264,9 +264,9 @@
             <div class="scenario {{$last ? 'last' : ''}}" ng-repeat="scenario in scenarioGroup.values" ng-if="scenarioGroup.expanded">
 
               <div class="row">
-                <div class="small-12 large-8 xlarge-6 column">
+                <div class="small-12 large-8 xlarge-6 column scenario-column">
                   <a href="#scenario/{{scenario.className}}/{{scenario.testMethodName}}"><i class="fa fa-link scenario-link-icon" title="Direct link to this scenario"></i></a>
-                  <h4 class="toggle" ng-click="toggleScenario(scenario)">
+                  <h4 class="toggle scenario-title" ng-click="toggleScenario(scenario)">
                     <i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i>
                     {{scenario.description.capitalize()}}
                     <span ng-if="scenario.scenarioCases.length > 1" class="secondary radius label case-count">{{scenario.scenarioCases.length}}</span>
