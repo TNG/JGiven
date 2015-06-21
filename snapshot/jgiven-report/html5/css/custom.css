@@ -1,0 +1,9 @@
+.tag-Issue {
+  background-color: lightblue;
+  border-color: blue;
+}
+
+.tag-Feature {
+  background-color: darkorange;
+  border-color: rgb(177, 97, 0);
+}
