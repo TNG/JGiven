@@ -217,7 +217,8 @@ ul.tags {
     margin-bottom: 0;
     margin-left: 0.5rem;
     font-size: 80%;
-    background-color: lightgray;
+    background-color: rgb(151, 151, 151);
+    color: white;
 }
 
 .nav-count {
