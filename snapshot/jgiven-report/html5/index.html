@@ -190,7 +190,7 @@
               <!-- CHART -->
 
               <div class="small-12 large-4 column statistics-chart-column clearfix" ng-if="!currentPage.embed">
-                <div ng-if="currentPage.statistics.chartData" class="statistics-chart right" ng-controller="SummaryCtrl" >
+                <div class="statistics-chart right" ng-controller="SummaryCtrl" >
                   <canvas class="chart chart-doughnut" data="currentPage.statistics.chartData" labels="labels" colours="colours" options="options"></canvas>
                 </div>
               </div>
