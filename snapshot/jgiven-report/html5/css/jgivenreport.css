@@ -178,11 +178,11 @@ ul.tags {
 .scenario-expand-icon {
     position: absolute;
     left: 1rem;
-    top: 0.4rem;
+    top: 0.5rem;
 }
 
 .scenario-title {
-    margin-left: 1rem;
+    margin-left: 1.1rem;
 }
 
 .case-expand-icon {
@@ -217,7 +217,8 @@ ul.tags {
     margin-bottom: 0;
     margin-left: 0.5rem;
     font-size: 80%;
-    background-color: lightgray;
+    background-color: rgb(151, 151, 151);
+    color: white;
 }
 
 .nav-count {
