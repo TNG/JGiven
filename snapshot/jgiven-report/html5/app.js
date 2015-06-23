@@ -199,7 +199,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.applyOptions = function applyOptions() {
     var page = $scope.currentPage;
-    var filteredSorted = getSelectedSortOption( page ).apply(
+    var selectedSortOption = getSelectedSortOption(page);
+    var filteredSorted = selectedSortOption.apply(
       _.filter( page.scenarios, getFilterFunction( page )) );
     page.groupedScenarios = getSelectedGroupOption( page ).apply( filteredSorted );
     page.statistics = $scope.gatherStatistics( filteredSorted );
@@ -569,12 +570,14 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   }
 
   function getDefaultOptions( scenarios ) {
+    var uniqueSortedTags = getUniqueSortedTags( scenarios);
+
     return {
-      sortOptions: getDefaultSortOptions(),
+      sortOptions: getDefaultSortOptions( uniqueSortedTags ),
       groupOptions: getDefaultGroupOptions(),
       statusOptions: getDefaultStatusOptions( ),
-      tagOptions: getDefaultTagOptions( scenarios ),
-      classOptions: getDefaultClassOptions( scenarios ),
+      tagOptions: getDefaultTagOptions( uniqueSortedTags ),
+      classOptions: getDefaultClassOptions( scenarios )
     }
   }
 
@@ -605,10 +608,10 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     ];
   }
 
-  function getDefaultTagOptions( scenarios ) {
-    var uniqueSortedTags = getUniqueSortedTags( scenarios)
-      , result = new Array();
-    _.forEach( uniqueSortedTags, function( tagName ) {
+  function getDefaultTagOptions( uniqueSortedTags ) {
+    var result = new Array();
+    _.forEach( uniqueSortedTags, function( tag ) {
+      var tagName = tagToString(tag);
       result.push( {
          selected: false,
          name: tagName,
@@ -652,10 +655,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
      var allTags = {};
      _.forEach( scenarios, function( scenario ) {
        _.forEach( scenario.tags, function( tag ) {
-          allTags[ tagToString( tag )] = true;
+          allTags[ tagToString( tag )] = tag;
        });
      });
-     return ownProperties(allTags).sort();
+     return _.map( ownProperties(allTags).sort(), function( tagName ) {
+       return allTags[ tagName ];
+     });
   }
 
   function getDefaultGroupOptions() {
@@ -728,8 +733,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     }
   }
 
-  function getDefaultSortOptions() {
-      return [
+  function getDefaultSortOptions( uniqueSortedTags ) {
+      var result= [
         {
           selected: true,
           name: 'A-Z',
@@ -781,6 +786,37 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
         },
 
       ];
+
+      return result.concat( getTagSortOptions( uniqueSortedTags ))
+  }
+
+  function getTagSortOptions( uniqueSortedTags ) {
+    var result = new Array();
+
+    var tagTypes = groupTagsByType( uniqueSortedTags );
+
+    _.forEach( tagTypes, function( tagType ) {
+      if (tagType.tags.length > 1) {
+         result.push( {
+           selected: false,
+           name: tagType.type,
+           apply: function( scenarios ) {
+             return _.sortBy( scenarios, function( scenario ) {
+                var x = getTagOfType( scenario.tags, tagType.type )[0];
+                return x ? x.value : undefined;
+             });
+           }
+         } );
+      }
+    });
+
+    return result;
+  }
+
+  function getTagOfType( tags, type ) {
+    return _.filter( tags, function( tag ) {
+        return tag.name === type;
+    });
   }
 
   function toArrayOfGroups( obj ) {
