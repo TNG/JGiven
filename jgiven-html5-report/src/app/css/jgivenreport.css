@@ -38,6 +38,10 @@ ul.tags {
     list-style: none;
 }
 
+.tag.hidden {
+    display: none;
+}
+
 .title {
     position: relative;
     border-bottom: 1px solid #ddd;
