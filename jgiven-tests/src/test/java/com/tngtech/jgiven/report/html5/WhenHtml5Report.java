@@ -37,14 +37,9 @@ public class WhenHtml5Report<SELF extends WhenHtml5Report<?>> extends Html5Repor
     }
 
     public SELF the_tag_with_name_$_is_clicked( String tagName ) {
-        List<WebElement> links = webDriver.findElements( By.linkText( tagName ) );
-        for( WebElement link : links ) {
-            WebElement tag = link.findElement( By.className( "tag" ) );
-            if( tag != null ) {
-                link.click();
-                break;
-            }
-        }
+        List<WebElement> links = webDriver.findElements(
+            By.xpath( String.format( "//a/span[contains(@class,'tag') and contains(text(), '%s')]/..", tagName ) ) );
+        links.get( 0 ).click();
         return self();
     }
 

@@ -1,4 +1,4 @@
-# v0.7.3
+# v0.8.0
 
 ## Changed Behavior
 

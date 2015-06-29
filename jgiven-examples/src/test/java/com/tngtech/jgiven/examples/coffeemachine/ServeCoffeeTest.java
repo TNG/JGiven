@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.annotation.Description;
+import com.tngtech.jgiven.examples.annotation.Order;
 import com.tngtech.jgiven.examples.coffeemachine.steps.GivenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.ThenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.WhenCoffee;
@@ -24,6 +25,7 @@ import com.tngtech.jgiven.tags.Issue;
 public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenCoffee> {
 
     @Test
+    @Order( "1" )
     public void an_empty_coffee_machine_cannot_serve_any_coffee() throws Exception {
 
         given().an_empty_coffee_machine();
@@ -36,6 +38,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     }
 
     @Test
+    @Order( "2" )
     public void no_coffee_left_error_is_shown_when_there_is_no_coffee_left() {
         given().an_empty_coffee_machine();
         when().I_insert_$_one_euro_coins( 5 )
@@ -44,6 +47,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     }
 
     @Test
+    @Order( "3" )
     public void not_enough_money_message_is_shown_when_insufficient_money_was_given() throws Exception {
 
         given().a_coffee_machine()
