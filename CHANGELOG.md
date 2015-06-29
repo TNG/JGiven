@@ -1,4 +1,4 @@
-# v0.8.0
+# v0.7.3
 
 ## Changed Behavior
 
@@ -25,6 +25,10 @@ The report will then look as follows:
 ```
 
 In previous versions of JGiven you would have to add an `and()` before `a_banana()` and `milk()`
+
+## New Features
+
+* The HTML5 report now supports grouping, sorting, and filtering of result lists [PR #81](https://github.com/TNG/JGiven/pull/81)
 
 
 ## Fixed Issues
