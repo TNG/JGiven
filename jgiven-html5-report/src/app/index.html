@@ -158,7 +158,7 @@
                      <span class="label secondary round nav-count">{{bookmarks.length}}</span>
                      </a>
                      <ul ng-if="bookmarks.expanded" >
-                       <li ng-repeat="bookmark in bookmarks"><a href="#{{bookmark.url | encodeUri}}">
+                       <li ng-repeat="bookmark in bookmarks"><a href="{{bookmark.url}}">
                          {{bookmark.name}}
                          <i ng-click="removeBookmark($index)" title="Delete Bookmark" class="fa fa-times remove-bookmark-icon toggle"></i>
                        </a></li>

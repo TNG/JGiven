@@ -12,7 +12,7 @@ jgivenReportApp.filter('encodeUri', function ($window) {
     return $window.encodeURIComponent;
 });
 
-jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location, localStorageService) {
+jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location, $window, localStorageService) {
   $scope.scenarios = [];
   $scope.classNameScenarioMap = {};
   $scope.classNames;
@@ -51,35 +51,51 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   }
 
   $scope.$on('$locationChangeSuccess', function(event) {
+      if ($scope.updatingLocation) {
+          $scope.updatingLocation = false;
+          return;
+      }
+      var search = $location.search();
+      var selectedOptions = getOptionsFromSearch( search );
       var part = $location.path().split('/');
       console.log("Location change: " +part);
       if (part[1] === '') {
           $scope.showSummaryPage();
       } else if (part[1] === 'tag') {
-         $scope.updateCurrentPageToTag( $scope.tagScenarioMap[ getTagKey({
-             name: part[2],
-             value: part[3]
-         })].tag);
+         var tag = $scope.tagScenarioMap[ getTagKey({
+           name: part[2],
+           value: part[3]
+         })].tag;
+         $scope.updateCurrentPageToTag( tag, selectedOptions );
       } else if (part[1] === 'class') {
-          $scope.updateCurrentPageToClassName(part[2]);
+          $scope.updateCurrentPageToClassName(part[2], selectedOptions);
       } else if (part[1] === 'scenario') {
-          $scope.showScenario(part[2],part[3]);
+          $scope.showScenario(part[2],part[3], selectedOptions);
       } else if (part[1] === 'all') {
-          $scope.showAllScenarios();
+          $scope.showAllScenarios( selectedOptions);
       } else if (part[1] === 'failed') {
-          $scope.showFailedScenarios();
+          $scope.showFailedScenarios( selectedOptions);
       } else if (part[1] === 'pending') {
-          $scope.showPendingScenarios();
+          $scope.showPendingScenarios( selectedOptions);
       } else if (part[1] === 'search') {
-          $scope.search(part[2]);
+          $scope.search(part[2], selectedOptions);
       }
 
-      var search = $location.search();
 
       $scope.currentPage.embed = search.embed;
       $scope.currentPage.print = search.print;
 
   });
+
+  function getOptionsFromSearch( search ) {
+    var result = {};
+    result.sort = search.sort;
+    result.group = search.group;
+    result.tags = search.tags ? search.tags.split(";") : [];
+    result.classes = search.classes ? search.classes.split(";") : [];
+    result.status = search.status ? search.status.split(";") : [];
+    return result;
+  }
 
   $scope.toggleBookmark = function () {
     if ($scope.isBookmarked()) {
@@ -92,7 +108,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
       $scope.bookmarks.push({
         name: name,
-        url: $location.path()
+        url: $window.location.hash,
+        search: $window.location.search
       });
     }
   };
@@ -122,11 +139,11 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       return $location.path();
   }
 
-  $scope.updateCurrentPageToClassName = function(className) {
-      $scope.updateCurrentPageToTestCase( $scope.classNameScenarioMap[className] );
+  $scope.updateCurrentPageToClassName = function(className, options) {
+      $scope.updateCurrentPageToTestCase( $scope.classNameScenarioMap[className], options );
   }
 
-  $scope.updateCurrentPageToTestCase = function (testCase) {
+  $scope.updateCurrentPageToTestCase = function (testCase, options) {
       var className = splitClassName(testCase.className);
       var scenarios = sortByDescription(testCase.scenarios);
       $scope.currentPage = {
@@ -134,12 +151,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           subtitle: className.packageName,
           title: className.className,
           breadcrumbs: className.packageName.split("."),
-          options: getDefaultOptions( scenarios )
+          options: getOptions( scenarios, options )
       };
       $scope.applyOptions();
   };
 
-  $scope.updateCurrentPageToTag = function(tag) {
+  $scope.updateCurrentPageToTag = function(tag, options) {
       var key = getTagKey(tag);
       var scenarios = sortByDescription( $scope.tagScenarioMap[key].scenarios );
       console.log("Update current page to tag "+key);
@@ -149,12 +166,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           subtitle: tag.value && !tag.prependType ? tag.name : undefined,
           description: tag.description,
           breadcrumbs: ['TAGS',tag.name,tag.value],
-          options: getDefaultOptions(scenarios)
+          options: getOptions(scenarios, options)
       };
       $scope.applyOptions();
   };
 
-  $scope.showScenario = function( className, methodName ) {
+  $scope.showScenario = function( className, methodName, options ) {
       var scenarios = sortByDescription(_.filter($scope.classNameScenarioMap[className].scenarios, function(x) {
           return x.testMethodName === methodName;
       }));
@@ -163,12 +180,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           title: scenarios[0].description.capitalize(),
           subtitle: className,
           breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName]),
-          options: getDefaultOptions(scenarios)
+          options: getOptions(scenarios, options)
       };
       $scope.applyOptions();
   }
 
-  $scope.showAllScenarios = function() {
+  $scope.showAllScenarios = function( options ) {
       $scope.currentPage = {
           scenarios: [],
           title: 'All Scenarios',
@@ -179,12 +196,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $timeout(function() {
           $scope.currentPage.scenarios = sortByDescription(getAllScenarios());
           $scope.currentPage.loading = false;
-          $scope.currentPage.options = getDefaultOptions($scope.currentPage.scenarios);
+          $scope.currentPage.options = getOptions($scope.currentPage.scenarios, options);
           $scope.applyOptions();
       }, 0);
   };
 
-  $scope.showPendingScenarios = function() {
+  $scope.showPendingScenarios = function( options ) {
       var pendingScenarios = getPendingScenarios();
       var description = getDescription( pendingScenarios.length, "pending");
       $scope.currentPage = {
@@ -192,7 +209,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           title: "Pending Scenarios",
           description: description,
           breadcrumbs: ['PENDING SCENARIOS'],
-          options: getDefaultOptions(pendingScenarios)
+          options: getOptions(pendingScenarios, options)
       };
       $scope.applyOptions();
   };
@@ -205,6 +222,27 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     page.groupedScenarios = getSelectedGroupOption( page ).apply( filteredSorted );
     page.statistics = $scope.gatherStatistics( filteredSorted );
     page.filtered = page.scenarios.length - filteredSorted.length;
+    $scope.updateLocationSearchOptions();
+  }
+
+  $scope.updateLocationSearchOptions = function updateLocationSearchOptions() {
+     $scope.updatingLocation = true;
+     var selectedSortOption = getSelectedSortOption( $scope.currentPage );
+     $location.search('sort', selectedSortOption.default ? null : selectedSortOption.id);
+
+     var selectedGroupOption = getSelectedGroupOption($scope.currentPage);
+     $location.search('group', selectedGroupOption.default ? null : selectedGroupOption.id);
+
+     var selectedTags = getSelectedOptions( $scope.currentPage.options.tagOptions );
+     $location.search('tags', selectedTags.length  > 0 ? _.map(selectedTags, 'name').join(";") : null);
+
+     var selectedStatus = getSelectedOptions( $scope.currentPage.options.statusOptions );
+     $location.search('status', selectedStatus.length  > 0 ? _.map(selectedStatus, 'id').join(";") : null);
+
+     var selectedClasses = getSelectedOptions( $scope.currentPage.options.classOptions );
+     $location.search('classes', selectedClasses.length  > 0 ? _.map(selectedClasses, 'name').join(";") : null);
+
+     $scope.updatingLocation = false;
   }
 
   $scope.showFailedScenarios = function() {
@@ -320,11 +358,11 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.printCurrentPage = function printCurrentPage() {
-      $location.search("print=true");
+      $location.search("print",true);
       $timeout(function() {
           window.print();
           $timeout(function() {
-              $location.search("");
+              $location.search("print", null);
           }, 0)
       },0);
   };
@@ -569,6 +607,48 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       return _.sortBy(_.values(res), getTagKey);
   }
 
+  function getOptions( scenarios, optionSelection ) {
+     var result = getDefaultOptions( scenarios );
+
+     if (optionSelection.sort) {
+        deselectAll( result.sortOptions );
+        selectOption( 'id', optionSelection.sort, result.sortOptions );
+     }
+
+     if (optionSelection.group) {
+        deselectAll( result.groupOptions );
+        selectOption( 'id', optionSelection.group, result.groupOptions );
+     }
+
+     if (optionSelection.tags) {
+        deselectAll( result.tagOptions );
+        _.forEach( optionSelection.tags, function( tagName ) {
+           selectOption( 'name', tagName, result.tagOptions );
+        });
+     }
+
+     if (optionSelection.status) {
+        deselectAll( result.statusOptions );
+        _.forEach( optionSelection.status, function( status ) {
+          selectOption( 'id', status, result.statusOptions );
+        });
+     }
+
+     if (optionSelection.classes) {
+        deselectAll( result.classOptions );
+        _.forEach( optionSelection.classes, function( className ) {
+          selectOption( 'name', className, result.classOptions );
+        });
+     }
+     return result;
+  }
+
+  function selectOption( property, value, options ) {
+    _.filter( options, function( option ) {
+       return option[property] === value;
+    })[0].selected = true;
+  }
+
   function getDefaultOptions( scenarios ) {
     var uniqueSortedTags = getUniqueSortedTags( scenarios);
 
@@ -586,6 +666,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       {
         selected: false,
         name: 'Successful',
+        id: 'success',
         apply: function( scenario ) {
           return scenario.executionStatus === 'SUCCESS';
         }
@@ -593,6 +674,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       {
         selected: false,
         name: 'Failed',
+        id: 'fail',
         apply: function( scenario ) {
           return scenario.executionStatus === 'FAILED';
         }
@@ -600,6 +682,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       {
         selected: false,
         name: 'Pending',
+        id: 'pending',
         apply: function( scenario ) {
           return scenario.executionStatus !== 'SUCCESS' &&
             scenario.executionStatus !== 'FAILED';
@@ -667,6 +750,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     return [
       {
         selected: true,
+        default: true,
+        id: 'none',
         name: 'None',
         apply: function( scenarios ) {
           var result = toArrayOfGroups({
@@ -678,6 +763,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       },
       {
         selected: false,
+        id: 'class',
         name: 'Class',
         apply: function( scenarios ) {
           return toArrayOfGroups(_.groupBy( scenarios, 'className' ));
@@ -685,6 +771,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       },
       {
         selected: false,
+        id: 'status',
         name: 'Status',
         apply: function( scenarios ) {
           return toArrayOfGroups(_.groupBy( scenarios, function( scenario ) {
@@ -694,6 +781,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       },
       {
         selected: false,
+        id: 'tag',
         name: 'Tag',
         apply: function( scenarios ) {
           return toArrayOfGroups( groupByTag( scenarios ));
@@ -737,6 +825,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       var result= [
         {
           selected: true,
+          default: true,
+          id: 'name-asc',
           name: 'A-Z',
           apply: function( scenarios ) {
              return _.sortBy(scenarios, function(x) {
@@ -746,6 +836,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
         },
         {
           selected: false,
+          id: 'name-desc',
           name: 'Z-A',
           apply: function( scenarios ) {
             return _.chain( scenarios ).sortBy( function(x) {
@@ -755,6 +846,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
         },
         {
           selected: false,
+          id: 'status-asc',
           name: 'Failed',
           apply: function( scenarios ) {
             return _.chain( scenarios).sortBy( 'executionStatus' )
@@ -763,6 +855,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
         },
         {
           selected: false,
+          id: 'status-desc',
           name: 'Successful',
           apply: function( scenarios ) {
             return _.chain( scenarios).sortBy( 'executionStatus' )
@@ -771,6 +864,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
         },
         {
           selected: false,
+          id: 'duration-asc',
           name: 'Fastest',
           apply: function( scenarios ) {
             return _.sortBy(scenarios, 'durationInNanos');
@@ -778,6 +872,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
         },
         {
           selected: false,
+          id: 'duration-desc',
           name: 'Slowest',
           apply: function( scenarios ) {
             return _.chain( scenarios).sortBy( 'durationInNanos' )
