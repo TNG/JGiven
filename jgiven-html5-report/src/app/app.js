@@ -359,13 +359,19 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.printCurrentPage = function printCurrentPage() {
       $location.search("print",true);
-      $timeout(function() {
-          window.print();
-          $timeout(function() {
-              $location.search("print", null);
-          }, 0)
-      },0);
+      $timeout(printPage,0);
   };
+
+  function printPage() {
+    if ($scope.currentPage.loading) {
+      $timeout(printPage, 0);
+    } else {
+      window.print();
+      $timeout(function() {
+        $location.search("print", null);
+      },0);
+    }
+  }
 
   $scope.expandAll = function expandAll() {
       _.forEach($scope.currentPage.scenarios, function(x) {

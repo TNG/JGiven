@@ -282,7 +282,7 @@
 
             <!-- SCENARIO LIST -->
 
-            <div class="scenario {{$last ? 'last' : ''}}" ng-repeat="scenario in scenarioGroup.values" ng-if="scenarioGroup.expanded">
+            <div class="scenario {{$last ? 'last' : ''}}" ng-repeat="scenario in scenarioGroup.values" ng-if="scenarioGroup.expanded || currentPage.print || currentPage.embed">
 
               <div class="row">
                 <div class="small-12 large-8 xlarge-6 column scenario-column">
