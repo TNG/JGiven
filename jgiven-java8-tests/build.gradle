@@ -1,0 +1,11 @@
+
+dependencies {
+    compile project(':jgiven-core')
+    compile project(':jgiven-junit')
+    compile project(':jgiven-html5-report')
+    compile(group: 'junit', name: 'junit', version: junitVersion)
+}
+
+sourceCompatibility = targetCompatibility = 1.8
+
+test.finalizedBy(jgivenReport)

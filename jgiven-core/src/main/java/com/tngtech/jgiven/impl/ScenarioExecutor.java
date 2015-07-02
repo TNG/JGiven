@@ -29,7 +29,7 @@ import com.tngtech.jgiven.impl.intercept.*;
 import com.tngtech.jgiven.impl.util.FieldCache;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
-import com.tngtech.jgiven.impl.util.ScenarioUtil;
+import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.integration.CanWire;
 import com.tngtech.jgiven.report.model.NamedArgument;
 
@@ -128,7 +128,7 @@ public class ScenarioExecutor {
             if( paramMethod.isAnnotationPresent( IntroWord.class ) ) {
                 listener.introWordAdded( paramMethod.getName() );
             } else {
-                List<NamedArgument> namedArguments = ScenarioUtil.mapArgumentsWithParameterNames( paramMethod, Arrays.asList( arguments ) );
+                List<NamedArgument> namedArguments = ParameterNameUtil.mapArgumentsWithParameterNames(paramMethod, Arrays.asList(arguments));
                 listener.stepMethodInvoked( paramMethod, namedArguments, mode );
             }
         }

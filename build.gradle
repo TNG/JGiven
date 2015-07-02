@@ -17,7 +17,7 @@ apply plugin: 'com.github.kt3k.coveralls'
 description = 'JGiven - BDD in plain Java'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.2'
+    gradleVersion = '2.4'
 }
 
 allprojects  {
@@ -67,6 +67,12 @@ subprojects {
         testCompile group: 'junit', name: 'junit', version: junitVersion
         testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
         testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
+    }
+
+    tasks.withType(JavaCompile) {
+        if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+            options.compilerArgs << "-parameters"
+        }
     }
 
     tasks.withType(Jar) {

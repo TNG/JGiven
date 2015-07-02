@@ -8,3 +8,6 @@ include ':jgiven-spring'
 include ':jgiven-tests'
 include ':jgiven-html5-report'
 include ':jgiven-examples'
+if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+    include ':jgiven-java8-tests'
+}

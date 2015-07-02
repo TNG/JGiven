@@ -25,7 +25,7 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Primitives;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
-import com.tngtech.jgiven.impl.util.ScenarioUtil;
+import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;
 
@@ -129,7 +129,7 @@ public class ScenarioExecutionRule implements MethodRule {
             arguments = getArgumentsFrom( constructor, target );
         }
 
-        return ScenarioUtil.mapArgumentsWithParameterNames( constructorOrMethod, arguments );
+        return ParameterNameUtil.mapArgumentsWithParameterNames(constructorOrMethod, arguments);
     }
 
     private static List<Object> getArgumentsFrom( Object object, String fieldName ) {

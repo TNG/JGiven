@@ -12,7 +12,7 @@ import org.testng.ITestResult;
 import com.google.common.base.Throwables;
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.ScenarioBase;
-import com.tngtech.jgiven.impl.util.ScenarioUtil;
+import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModel;
@@ -80,7 +80,7 @@ public class ScenarioTestListener implements ITestListener {
     }
 
     private List<NamedArgument> getArgumentsFrom( Method method, ITestResult paramITestResult ) {
-        return ScenarioUtil.mapArgumentsWithParameterNames( method, asList( paramITestResult.getParameters() ) );
+        return ParameterNameUtil.mapArgumentsWithParameterNames(method, asList(paramITestResult.getParameters()));
     }
 
 }

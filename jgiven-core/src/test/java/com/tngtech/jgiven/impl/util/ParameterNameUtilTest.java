@@ -18,7 +18,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.report.model.NamedArgument;
 
 @RunWith( DataProviderRunner.class )
-public class ScenarioUtilTest {
+public class ParameterNameUtilTest {
 
     @DataProvider
     @SuppressWarnings( { "unchecked", "boxing" } )
@@ -37,7 +37,7 @@ public class ScenarioUtilTest {
     public void testMapArgumentsWithParameterNamesOf( AccessibleObject contructorOrMethod, List<Object> arguments,
             List<NamedArgument> expected ) {
         // When:
-        List<NamedArgument> result = ScenarioUtil.mapArgumentsWithParameterNames( contructorOrMethod, arguments );
+        List<NamedArgument> result = ParameterNameUtil.mapArgumentsWithParameterNames(contructorOrMethod, arguments);
 
         // Then:
         assertThat( result ).containsExactly( expected.toArray( new NamedArgument[0] ) );
@@ -50,11 +50,11 @@ public class ScenarioUtilTest {
     }
 
     private static Method methodWithNoArgs() throws Exception {
-        return ScenarioUtilTest.class.getDeclaredMethod( "methodWithNoArgs" );
+        return ParameterNameUtilTest.class.getDeclaredMethod( "methodWithNoArgs" );
     }
 
     private static Method methodWithThreeArgs() throws Exception {
-        return ScenarioUtilTest.class.getDeclaredMethod( "methodWithThreeArgs", String.class, int.class, Boolean.class );
+        return ParameterNameUtilTest.class.getDeclaredMethod( "methodWithThreeArgs", String.class, int.class, Boolean.class );
     }
 
     private static Constructor<Clazz> constructorWithThreeArgs() throws Exception {
