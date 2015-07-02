@@ -1,5 +1,11 @@
 # v0.7.3
 
+## Fixed Issues
+
+* Fixed severe issue with Java 8 that prevented the usage of lambda expressions inside Stage classes [#85](https://github.com/TNG/JGiven/issues/85)
+  Note that due to this fix you have to compile your test classes with the `-parameters` flag of javac if you are using Java 8.
+* Fixed an issue in the HTML5 report which shows only attachments of the first case when having a parameterized scenario with multiple cases [#77](https://github.com/TNG/JGiven/issues/77)
+
 ## Changed Behavior
 
 ### Intro words are not necessary anymore [#74](https://github.com/TNG/JGiven/issues/74)
@@ -30,10 +36,6 @@ In previous versions of JGiven you would have to add an `and()` before `a_banana
 
 * The HTML5 report now supports grouping, sorting, and filtering of result lists [PR #81](https://github.com/TNG/JGiven/pull/81)
 
-
-## Fixed Issues
-
-* Fixed an issue in the HTML5 report which shows only attachments of the first case when having a parameterized scenario with multiple cases [#77](https://github.com/TNG/JGiven/issues/77)
 
 # v0.7.2
 
