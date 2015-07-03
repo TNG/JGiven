@@ -1,15 +1,15 @@
 language: java
 before_install:
   - npm install -g bower
-install: "gradle classes"
+install: "./gradlew classes"
 script:
-  - "gradle test -DjunitVersion=4.9"
-  - "gradle test -DjunitVersion=4.10"
-  - "gradle test -DjunitVersion=4.11"
-  - "gradle test -DjunitVersion=4.12"
+  - "./gradlew test -DjunitVersion=4.9"
+  - "./gradlew test -DjunitVersion=4.10"
+  - "./gradlew test -DjunitVersion=4.11"
+  - "./gradlew test -DjunitVersion=4.12"
 jdk:
   - oraclejdk8
   - oraclejdk7
   - openjdk6
 after_success:
-  - gradle overallJacocoReport coveralls
+  - "./gradlew overallJacocoReport coveralls"
