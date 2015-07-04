@@ -242,7 +242,6 @@ subprojects {
                             scope = 'provided'
                         }
                         pom.dependencies.removeAll(pom.dependencies.findAll{ dep -> dep.scope in [ 'test' ] })
-                        pom.packaging = project.path == ':jgiven-maven-plugin' ? 'maven-plugin' : 'jar'
                     }
                 }
             }
