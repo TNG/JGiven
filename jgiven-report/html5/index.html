@@ -158,7 +158,7 @@
                      <span class="label secondary round nav-count">{{bookmarks.length}}</span>
                      </a>
                      <ul ng-if="bookmarks.expanded" >
-                       <li ng-repeat="bookmark in bookmarks"><a href="#{{bookmark.url | encodeUri}}">
+                       <li ng-repeat="bookmark in bookmarks"><a href="{{bookmark.url}}">
                          {{bookmark.name}}
                          <i ng-click="removeBookmark($index)" title="Delete Bookmark" class="fa fa-times remove-bookmark-icon toggle"></i>
                        </a></li>
@@ -185,17 +185,12 @@
                 <h2 class="subtitle">{{currentPage.subtitle}}</h2>
                 <h2 id="page-title">{{currentPage.title}}</h2>
                 <h3 class="description" ng-bind-html="currentPage.description"></h3>
-
-                <div ng-if="currentPage.statistics && currentPage.statistics.count > 0" class="page-statistics">{{currentPage.statistics.count}} scenario{{currentPage.statistics.count != 1 ? 's' :''}},
-                  of which {{currentPage.statistics.success}} {{currentPage.statistics.success === 1 ? 'was' : 'were'}} successful, {{currentPage.statistics.failed}} failed,
-                  and {{currentPage.statistics.pending}} {{currentPage.statistics.pending === 1 ? 'is' : 'are'}} pending. Total time: {{nanosToSeconds(currentPage.statistics.totalNanos)}}s
-                </div>
               </div>
 
               <!-- CHART -->
 
               <div class="small-12 large-4 column statistics-chart-column clearfix" ng-if="!currentPage.embed">
-                <div ng-if="currentPage.statistics.chartData" class="statistics-chart right" ng-controller="SummaryCtrl" >
+                <div class="statistics-chart right" ng-controller="SummaryCtrl" >
                   <canvas class="chart chart-doughnut" data="currentPage.statistics.chartData" labels="labels" colours="colours" options="options"></canvas>
                 </div>
               </div>
@@ -210,14 +205,91 @@
 
             <h4 ng-hide="!currentPage.loading">Loading <i class="fa fa-circle-o-notch fa-spin"></i></h4>
 
+            <!-- SCENARIO BUTTON BAR -->
+
+            <div class="scenario-list-button-bar row" ng-if="currentPage.scenarios">
+
+              <!-- STATISTICS -->
+
+              <div id="statistics" class="small-6 columns no-pad-left" ng-if="currentPage.statistics">
+                <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}}">
+                  <i class="fa fa-check-square {{currentPage.statistics.failed + currentPage.statistics.pending === 0 && currentPage.statistics.success > 0 ? 'check' : 'gray'}}" ></i> {{currentPage.statistics.success}} Successful</span>,
+                <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}}"><i class="fa fa-exclamation-circle" ></i> {{currentPage.statistics.failed}} Failed</span>,
+                <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}}"><i class="fa fa-ban" ></i> {{currentPage.statistics.pending}} Pending</span>,
+                <span class="{{currentPage.statistics.count === 0 ? 'gray' : ''}}">{{currentPage.statistics.count}} Total ({{nanosToSeconds(currentPage.statistics.totalNanos)}}s)</span>
+                <span ng-if="currentPage.filtered > 0">({{ currentPage.filtered }} Filtered)</span>
+              </div>
+
+              <!-- DROP DOWNS -->
+
+              <div class="small-6 columns" ng-if="currentPage.scenarios.length > 0">
+                <ul class="button-group radius right">
+                  <li><a class="button dropdown small secondary" dropdown-toggle="#group-drop-down">Group By</a>
+                  <ul id="group-drop-down" class="f-dropdown">
+                    <li ng-repeat="groupOption in currentPage.options.groupOptions">
+                      <a ng-click="groupOptionSelected(groupOption)"><i class="fa fa-check {{groupOption.selected ? 'selected' : ''}}"></i> {{groupOption.name}}</a>
+                    </li>
+                  </ul>
+                  </li>
+                  <li><a class="button dropdown small secondary" dropdown-toggle="#sort-drop-down">Sort By</a>
+                  <ul id="sort-drop-down" class="f-dropdown">
+                    <li ng-repeat="sortOption in currentPage.options.sortOptions">
+                      <a ng-click="sortOptionSelected(sortOption)"><i class="fa fa-check {{sortOption.selected ? 'selected' : ''}}"></i> {{sortOption.name}}</a>
+                    </li>
+                  </ul>
+                  </li>
+                  <li><a class="button dropdown small secondary" dropdown-toggle="#status-drop-down">Status</a>
+                    <ul id="status-drop-down" class="f-dropdown tiny left">
+                      <li ng-repeat="option in currentPage.options.statusOptions">
+                        <a ng-click="filterOptionSelected(option)"><i class="fa fa-check {{option.selected ? 'selected' : ''}}"></i> {{option.name}}</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a class="button dropdown small secondary" dropdown-toggle="#tag-drop-down">Tags</a>
+                    <ul id="tag-drop-down" class="f-dropdown tiny left">
+                      <li ng-repeat="option in currentPage.options.tagOptions track by $index">
+                        <a ng-click="filterOptionSelected(option)"><i class="fa fa-check {{option.selected ? 'selected' : ''}}"></i> {{option.name}}</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li><a class="button dropdown small secondary" dropdown-toggle="#class-drop-down">Classes</a>
+                    <ul id="class-drop-down" class="f-dropdown tiny left">
+                      <li ng-repeat="option in currentPage.options.classOptions track by $index">
+                        <a ng-click="filterOptionSelected(option)"><i class="fa fa-check {{option.selected ? 'selected' : ''}}"></i> {{option.name}}</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+
+            <!-- SCENARIO GROUP -->
+
+            <div ng-if="currentPage.groupedScenarios.length > 0">
+
+              <div ng-repeat="scenarioGroup in currentPage.groupedScenarios">
+
+            <div class="row" ng-if="scenarioGroup.name !== 'all' ">
+              <div class="small-12 column no-pad-left">
+                <h3 class="scenario-group-header toggle"  ng-click="scenarioGroup.expanded= !scenarioGroup.expanded">
+                  {{scenarioGroup.name}}
+                  <span class="secondary radius label group-count">{{scenarioGroup.values.length}}</span>
+                </h3>
+              </div>
+            </div>
+
+
             <!-- SCENARIO LIST -->
 
-            <div class="scenario {{$last ? 'last' : ''}}" ng-repeat="scenario in currentPage.scenarios">
+            <div class="scenario {{$last ? 'last' : ''}}" ng-repeat="scenario in scenarioGroup.values" ng-if="scenarioGroup.expanded || currentPage.print || currentPage.embed">
 
               <div class="row">
-                <div class="small-12 large-8 xlarge-6 column">
+                <div class="small-12 large-8 xlarge-6 column scenario-column">
                   <a href="#scenario/{{scenario.className}}/{{scenario.testMethodName}}"><i class="fa fa-link scenario-link-icon" title="Direct link to this scenario"></i></a>
-                  <h4 class="toggle" ng-click="toggleScenario(scenario)"><i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i> {{scenario.description.capitalize()}}
+                  <h4 class="toggle scenario-title" ng-click="toggleScenario(scenario)">
+                    <i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i>
+                    {{scenario.description.capitalize()}}
                     <span ng-if="scenario.scenarioCases.length > 1" class="secondary radius label case-count">{{scenario.scenarioCases.length}}</span>
                     <i ng-if="scenario.executionStatus === 'SUCCESS'" class="check fa fa-check-square"></i>
                     <span ng-if="scenario.executionStatus === 'FAILED'" class="failed label radius alert">FAILED</span>
@@ -236,13 +308,13 @@
                         <table class="steps">
                           <tr class="steps" ng-repeat="step in case.steps">
 
-                            <td class="steps intro-word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}">{{step.words[0].value.capitalize()}}</td>
+                            <td class="steps intro-word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}">{{step.words[0].isIntroWord ? step.words[0].value.capitalize() : ''}}</td>
                             <td class="steps">
                               <span aria-haspopup="{{ step.extendedDescription ? 'true' : 'false'"
                                     class="{{ step.extendedDescription ? 'has-tip' : '' }}"
                                     tooltip-html-unsafe="{{ step.extendedDescription }}"
                                     tooltip-popup-delay="250">
-                                <span class="word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{word.isDifferent ? 'diff' : ''}}" ng-repeat-start="word in step.words.slice(1)">
+                                <span class="word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{word.isDifferent ? 'diff' : ''}}" ng-repeat-start="word in getNonIntroWords(step.words)">
                                   <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
                                     <strong>&lt;{{word.argumentInfo.parameterName}}&gt;</strong>
                                   </span>
@@ -259,17 +331,21 @@
                                 </span>
                                 <span ng-repeat-end></span>
                               </span>
-                              <span  ng-if="step.attachment">
-                                <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
-                                      class="{{ step.attachment.title ? 'has-tip' : '' }}"
-                                      tooltip-html-unsafe="{{ step.attachment.title }}"
-                                      tooltip-popup-delay="250">
-                                  <a target="_blank" href="data/{{ step.attachment.value }}"><i class="fa fa-paperclip"></i></a>
+                              <span ng-repeat="scenarioCase in scenario.scenarioCases" ng-init="step = scenarioCase.steps[$parent.$index]">
+                                <span ng-if="step.attachment">
+                                  <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
+                                        class="{{ step.attachment.title ? 'has-tip' : '' }}"
+                                        tooltip-html-unsafe="{{ step.attachment.title }}"
+                                        tooltip-popup-delay="250">
+                                    <a target="_blank" href="data/{{ step.attachment.value }}">
+                                      <i class="fa fa-paperclip"><span class="attachment-index" ng-if="scenario.scenarioCases.length > 1">{{ scenarioCase.caseNr }}</span></i>
+                                    </a>
+                                  </span>
                                 </span>
                               </span>
                               <span ng-if="scenario.executionStatus !== 'SUCCESS'">
                                 <i ng-if="step.status === 'PASSED'" class="small-check fa fa-check-square"></i>
-                                <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-times"></i>
+                                <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-exclamation-circle"></i>
                                 <i ng-if="step.status === 'SKIPPED'" class="skipped fa fa-ban"></i>
                                 <i ng-if="step.status === 'NOT_IMPLEMENTED_YET'" title="Not implemented yet" class="skipped fa fa-ban"></i>
                               </span>
@@ -309,14 +385,18 @@
                 </div>
                 <div class="small-12 large-4 xlarge-6 column tag-column">
                   <span  ng-repeat="tag in scenario.tags" >
-                    <a href="#tag/{{tag.name + '/' + tag.value | encodeUri}}" ><span class="radius label tag {{getCssClassOfTag(tag)}}" style='{{getStyleOfTag(tag)}}'>{{tagToString(tag)}}</span></a>
+                    <a href="#tag/{{tag.name + '/' + tag.value | encodeUri}}" ><span class="{{getCssClassOfTag(tag)}} radius label tag" style='{{getStyleOfTag(tag)}}'>{{tagToString(tag)}}</span></a>
                   </span>
                 </div>
               </div>
             </div>
+
+              </div>
+            </div> <!-- grouped scenarios -->
+
             <div class="footer-bottom" ng-if="!currentPage.embed">
               <div class="small-12 columns">
-                Generated by <a href="http://jgiven.org">JGiven</a> 0.7.3-SNAPSHOT on {{jgivenReport.metaData.created}}
+                Generated by <a href="http://jgiven.org">JGiven</a> 0.7.3 on {{jgivenReport.metaData.created}}
               </div>
             </div>
           </div>
