@@ -19,3 +19,9 @@ permalink: /docs/
 ## API Documentation
 
 * [JavaDoc]({{site.baseurl}}/javadoc/)
+
+## Additional Information
+
+### Conference Talks
+
+* [Behavior-Driven Development in Plain Java](http://www.techcast.com/events/bigtechday8/maffei-1345/), by Jan Schäfer at TNG Big TechDay 8, June 2015
