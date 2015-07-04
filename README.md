@@ -62,7 +62,8 @@ In addition, you can generate a [HTML Report](http://jgiven.org/jgiven-report/ht
 
 ## Getting Started
 
-Start by reading the [documentation](http://jgiven.org/docs/) section on JGiven's website.
+1. Start by reading the [documentation](http://jgiven.org/docs/) section on JGiven's website.
+2. See the [talk](http://www.techcast.com/events/bigtechday8/maffei-1345/) on JGiven held on the TNG Big TechDay
 
 ## License
 
