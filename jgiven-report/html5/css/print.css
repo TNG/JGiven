@@ -21,6 +21,20 @@
     border-left: none;
 }
 
+h3.scenario-group-header {
+    font-size: 1.4rem;
+    padding-left: 0;
+}
+
+.group-count {
+    display: none;
+}
+
+
+.scenario-title {
+    margin-left: 0rem;
+}
+
 .scenario {
     margin-top: 2rem;
     page-break-inside: avoid;
@@ -28,6 +42,10 @@
 }
 
 .scenario-expand-icon, .case-expand-icon {
+    display: none !important;
+}
+
+.scenario-list-button-bar {
     display: none !important;
 }
 
