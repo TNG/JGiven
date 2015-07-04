@@ -2,7 +2,7 @@
 
 ## Fixed Issues
 
-* Fixed severe issue with Java 8 that prevented the usage of lambda expressions inside Stage classes [#85](https://github.com/TNG/JGiven/issues/85)
+* Fixed major issue with Java 8 that prevented the usage of lambda expressions inside Stage classes [#85](https://github.com/TNG/JGiven/issues/85)
   Note that due to this fix you have to compile your test classes with the `-parameters` flag of javac if you are using Java 8.
 * Fixed an issue in the HTML5 report which shows only attachments of the first case when having a parameterized scenario with multiple cases [#77](https://github.com/TNG/JGiven/issues/77)
 
