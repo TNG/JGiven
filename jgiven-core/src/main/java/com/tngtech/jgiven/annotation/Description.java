@@ -1,34 +1,19 @@
 package com.tngtech.jgiven.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
- * This annotation can be used to define an alternate
- * description for a step method or test method.
- * This description is then used in the generated report
+ * This annotation can be used to give a test class a description.
+ * 
+ * <h2>Deprecated usage</h2>
+ * The {@code @Description} annotation can also be used to 
+ * change the representation of a step method or test method.
+ * This value is then used in the generated report
  * instead of using the method name.
- * <p>
- * Note that the '$' character keeps its special meaning and will be
- * replaced with step arguments
- *
- * <pre>
- * {@literal @}Description("some (complicated) step")
- * public SELF some_complicated_step() {
- *    ...
- * }
- * </pre>
- *
- * <pre>
- * {@literal @}Description("Some 'special' scenario description")
- * {@literal @}Test
- * public void some_special_scenario_description() {
- *    ...
- * }
- * </pre>
+ * Note that this usage of this annotation is deprecated and you should use
+ * the {@link com.tngtech.jgiven.annotation.As} annotation instead.
+ * 
+ * @see com.tngtech.jgiven.annotation.As
  */
 @Retention( RetentionPolicy.RUNTIME )
 @Target( { ElementType.METHOD, ElementType.TYPE } )
@@ -36,7 +21,7 @@ import java.lang.annotation.Target;
 public @interface Description {
 
     /**
-     * The description of the step.
+     * The description of the test class.
      */
     String value();
 

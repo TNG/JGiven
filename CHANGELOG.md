@@ -1,3 +1,13 @@
+# v0.7.4
+
+## Fixed Issues
+
+* Fixed an issue that the `@Description` annotation was not regarded for methods with the `@IntroWord` [#87](https://github.com/TNG/JGiven/issues/87)
+
+## New Annotation
+
+* Introduced the `@As` annotation that replaces the `@Description` annotation when used on step methods and test methods. The `@Description` annotation should only be used for descriptions of test classes.
+
 # v0.7.3
 
 ## Fixed Issues

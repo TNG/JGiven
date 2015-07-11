@@ -95,12 +95,7 @@ public class ReportModelBuilder implements ScenarioListener {
     StepModel createStepModel( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
         StepModel stepModel = new StepModel();
 
-        Description description = paramMethod.getAnnotation( Description.class );
-        if( description != null ) {
-            stepModel.name = description.value();
-        } else {
-            stepModel.name = nameWithoutUnderlines( paramMethod );
-        }
+        stepModel.name = getDescription( paramMethod );
 
         ExtendedDescription extendedDescriptionAnnotation = paramMethod.getAnnotation( ExtendedDescription.class );
         if( extendedDescriptionAnnotation != null ) {
@@ -121,6 +116,23 @@ public class ReportModelBuilder implements ScenarioListener {
         return stepModel;
     }
 
+    private String getDescription( Method paramMethod ) {
+        if( paramMethod.isAnnotationPresent( Hidden.class ) ) {
+            return "";
+        }
+
+        Description description = paramMethod.getAnnotation( Description.class );
+        if( description != null ) {
+            return description.value();
+        }
+        As as = paramMethod.getAnnotation( As.class );
+        if( as != null ) {
+            return as.value();
+        }
+
+        return nameWithoutUnderlines( paramMethod );
+    }
+
     private List<NamedArgument> filterHiddenArguments( List<NamedArgument> arguments, Annotation[][] parameterAnnotations ) {
         List<NamedArgument> result = Lists.newArrayList();
         for( int i = 0; i < parameterAnnotations.length; i++ ) {
@@ -132,10 +144,10 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     @Override
-    public void introWordAdded( String fillWord ) {
+    public void introWordAdded( String value ) {
         introWord = new Word();
         introWord.setIntroWord( true );
-        introWord.setValue( fillWord );
+        introWord.setValue( value );
     }
 
     private List<Formatting<?>> getFormatters( Annotation[][] parameterAnnotations ) {
@@ -207,8 +219,12 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     @Override
-    public void stepMethodInvoked( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
-        addStepMethod( paramMethod, arguments, mode );
+    public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode ) {
+        if( method.isAnnotationPresent( IntroWord.class ) ) {
+            introWordAdded( getDescription( method ) );
+        } else {
+            addStepMethod( method, arguments, mode );
+        }
     }
 
     public void setMethodName( String methodName ) {
@@ -308,6 +324,8 @@ public class ReportModelBuilder implements ScenarioListener {
 
         if( method.isAnnotationPresent( Description.class ) ) {
             scenarioDescription = method.getAnnotation( Description.class ).value();
+        } else if( method.isAnnotationPresent( As.class ) ) {
+            scenarioDescription = method.getAnnotation( As.class ).value();
         }
 
         scenarioStarted( scenarioDescription );

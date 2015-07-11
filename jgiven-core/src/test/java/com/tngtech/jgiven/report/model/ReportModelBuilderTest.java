@@ -193,6 +193,15 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
     }
 
     @Test
+    public void the_Description_annotation_on_intro_words_is_evaluated() throws Throwable {
+        getScenario().startScenario( "Scenario with an @As annotaiton" );
+        given().an_intro_word_with_an_as_annotation().something();
+        getScenario().finished();
+        StepModel step = getScenario().getModel().getFirstStepModelOfLastScenario();
+        assertThat( step.words.get( 0 ).getValue() ).isEqualTo( "another description" );
+    }
+
+    @Test
     public void printf_annotation_uses_the_PrintfFormatter() throws Throwable {
         getScenario().startScenario( "printf_annotation_uses_the_PrintfFormatter" );
         given().a_step_with_a_printf_annotation_$( 5.2 );

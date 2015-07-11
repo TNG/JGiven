@@ -16,7 +16,7 @@ public interface ScenarioListener {
 
     void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode );
 
-    void introWordAdded( String word );
+    void introWordAdded( String introWord );
 
     void stepMethodFailed( Throwable t );
 

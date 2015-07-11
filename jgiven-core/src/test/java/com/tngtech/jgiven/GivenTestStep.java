@@ -1,9 +1,6 @@
 package com.tngtech.jgiven;
 
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.annotation.Format;
-import com.tngtech.jgiven.annotation.Formatf;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.format.BooleanFormatter;
 
 public class GivenTestStep extends Stage<GivenTestStep> {
@@ -38,7 +35,7 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
-    @Description( "a step with a (special) description" )
+    @As( "a step with a (special) description" )
     public GivenTestStep a_step_with_a_description() {
         return self();
     }
@@ -52,6 +49,12 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     }
 
     public GivenTestStep a_step_with_a_boolean_$_parameter( @Format( value = BooleanFormatter.class, args = { "yes", "no" } ) boolean b ) {
+        return self();
+    }
+
+    @As( "another description" )
+    @IntroWord
+    public GivenTestStep an_intro_word_with_an_as_annotation() {
         return self();
     }
 }
