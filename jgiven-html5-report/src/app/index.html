@@ -48,7 +48,7 @@
 
           <nav class="breadcrumbs">
             <a ng-hide="currentPage.breadcrumbs" href="#" class="current">/</a>
-            <a ng-cloak ng-repeat="b in currentPage.breadcrumbs" href="#" class="{{$last ? 'current' : 'unavailable'}}">{{b}}</a>
+            <a ng-cloak ng-repeat="b in currentPage.breadcrumbs track by $index" href="#" class="{{$last ? 'current' : 'unavailable'}}">{{b}}</a>
           </nav>
 
         </div>
@@ -325,7 +325,7 @@
                                   <table class="table-value" ng-if="word.argumentInfo.dataTable">
                                     <tr ng-repeat="row in word.argumentInfo.dataTable.data">
                                       <td class="{{ isHeaderCell($parent.$index, $index, word.argumentInfo.dataTable.headerType) ? 'header-cell' : '' }}"
-                                          ng-repeat="value in row">{{ value }}</td>
+                                          ng-repeat="value in row track by $index">{{ value }}</td>
                                     </tr>
                                   </table>
                                 </span>
@@ -363,7 +363,7 @@
                             <table>
                               <tr>
                                 <th>#</th>
-                                <th ng-repeat="param in scenario.derivedParameters">{{param}}</th>
+                                <th ng-repeat="param in scenario.derivedParameters track by $index">{{param}}</th>
                                 <th>Status</th>
                               </tr>
                               <tr ng-repeat="case in scenario.scenarioCases">
