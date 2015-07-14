@@ -3,6 +3,11 @@
 ## Fixed Issues
 
 * HTML5 Report: tables with duplicate entries cannot be used as step parameters [#89](https://github.com/TNG/JGiven/issues/89)
+* Fixed an issue that the `@Description` annotation was not regarded for methods with the `@IntroWord` [#87](https://github.com/TNG/JGiven/issues/87)
+
+## New Annotation
+
+* Introduced the `@As` annotation that replaces the `@Description` annotation when used on step methods and test methods. The `@Description` annotation should only be used for descriptions of test classes.
 
 # v0.7.3
 
@@ -91,16 +96,6 @@ In previous versions of JGiven you would have to add an `and()` before `a_banana
   * A list or array of POJOs. In this case each POJO represents a single row and the fields of the POJOs are taken as columns
 
 #### Example
-
-##### POJO
-```
-class CoffeeWithPrice {
-    String name;
-    double price_in_EUR;
-    CoffeeWithPrice(String name, double priceInEur) {
-        this.name = name;
-        this.price_in_EUR = priceInEur;
-    }
 
 ##### POJO
 ```
@@ -270,6 +265,16 @@ To help the reader, the differences are now highlighted in the HTML report.
 * Elapsed time in HTML report should be shown in a convenient unit [#24](https://github.com/TNG/JGiven/issues/24)
 * Test against different JUnit versions [#22](https://github.com/TNG/JGiven/issues/22)
 
+## Fixed Bugs
+
+* JGiven creates null.json files for test classes where all tests are ignored [#25](https://github.com/TNG/JGiven/issues/25)
+* Printed reports should not have collapsed scenarios [#23](https://github.com/TNG/JGiven/issues/23)
+
+## Backwards incompatible changes
+
+### JSON Model
+
+* The JSON model has been changed to support [#15](https://github.com/TNG/JGiven/issues/15).
   This means that JSON models generated with v0.4.0 will not work with the report generator of v0.5.0.
   This is in general no problem, because new JSON files are generated each time you execute your tests.
 
