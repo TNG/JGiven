@@ -14,6 +14,16 @@
     <script src="js/modernizr.js"></script>
   </head>
   <body ng-controller="JGivenReportCtrl as appCtrl">
+    <script type="text/ng-template"  id="package_tree.html">
+      <a class="toggle" ng-click="package.expanded = !package.expanded">
+      {{package.name}}</a>
+      <ul ng-if="package.expanded">
+        <li ng-repeat="clazz in package.classes"><a href="#class/{{clazz.packageName + '.' + clazz.className}}">
+          {{clazz.className}}
+        </a></li>
+        <li ng-repeat="package in package.packages" ng-include="'package_tree.html'"></li>
+      </ul>
+    </script>
 
     <div class="off-canvas-wrap" data-offcanvas>
 
@@ -144,9 +154,7 @@
                    <li class="heading" >
                      <a class="toggle" ng-click="classNames.expanded = !classNames.expanded">Classes</a>
                      <ul ng-if="classNames.expanded" >
-                       <li ng-repeat="className in classNames"><a href="#class/{{className.packageName + '.' + className.className}}">
-                      {{className.className}}
-                      </a></li>
+                       <li ng-repeat="package in rootPackage.packages" ng-include="'package_tree.html'"></li>
                      </ul>
                    </li>
 

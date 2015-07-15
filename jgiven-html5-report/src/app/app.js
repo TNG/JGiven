@@ -15,7 +15,7 @@ jgivenReportApp.filter('encodeUri', function ($window) {
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location, $window, localStorageService) {
   $scope.scenarios = [];
   $scope.classNameScenarioMap = {};
-  $scope.classNames;
+  $scope.rootPackage = { packages: [] };
   $scope.tagScenarioMap = {}; // lazy calculated by getTags()
   $scope.allTags;
   $scope.tags;
@@ -25,7 +25,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   $scope.bookmarks = [];
 
   $scope.init = function() {
-      $scope.classNames = getClassNames();
+      $scope.rootPackage = getRootPackage();
       $scope.allTags = groupTagsByType(getTags());
       $scope.tags = $scope.allTags;
 
@@ -341,22 +341,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       } ));
   }
 
-  $scope.updateNav = function() {
-      $scope.classNames = _.filter(getClassNames(), function(x) {
-          if ($scope.nav.search) {
-              return x.className.match( new RegExp($scope.nav.search, "i"));
-          }
-          return true;
-      });
-
-      $scope.tags = _.filter($scope.allTags, function(x) {
-          if ($scope.nav.search) {
-              return (x.name + '-' + x.value).match( new RegExp($scope.nav.search, "i") );
-          }
-          return true;
-      });
-  };
-
   $scope.printCurrentPage = function printCurrentPage() {
       $location.search("print",true);
       $timeout(printPage,0);
@@ -572,16 +556,44 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       return scenarios;
   }
 
-  function getClassNames() {
-      var res = new Array();
+  function getRootPackage() {
       var allScenarios = jgivenReport.scenarios;
+      var packageMap = {}; // maps full qualified package name to package object
+      var rootPackage = getPackage("");
+      var classObj;
+
       for (var i = 0; i < allScenarios.length; i++ ) {
-          var className = splitClassName( allScenarios[i].className );
-          className.index = i;
-          res.push(className);
+          classObj = splitClassName( allScenarios[i].className );
+          classObj.index = i;
           $scope.classNameScenarioMap[allScenarios[i].className] = allScenarios[i];
+
+          getPackage( classObj.packageName).classes.push(classObj);
+
       }
-      return _.sortBy( res, function(x) { return x.className; });
+      return rootPackage;
+
+      function getPackage( packageName ) {
+          var parentPackage, index, simpleName;
+          var packageObj = packageMap[ packageName ];
+          if (packageObj === undefined) {
+             index = packageName.lastIndexOf('.');
+             simpleName = packageName.substr(index + 1);
+
+             packageObj = {
+                qualifiedName: packageName,
+                name: simpleName,
+                classes: [],
+                packages: []
+             }
+             packageMap[ packageName ] = packageObj;
+
+             if (simpleName !== "") {
+               parentPackage = getPackage(packageName.substring(0, index));
+               parentPackage.packages.push(packageObj);
+             }
+          }
+          return packageObj;
+      }
   }
 
   function getTagKey(tag) {
