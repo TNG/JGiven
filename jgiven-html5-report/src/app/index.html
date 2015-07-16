@@ -14,16 +14,28 @@
     <script src="js/modernizr.js"></script>
   </head>
   <body ng-controller="JGivenReportCtrl as appCtrl">
+
+
+    <!-- Package Tree Template -->
+
     <script type="text/ng-template"  id="package_tree.html">
-      <a class="toggle" ng-click="package.expanded = !package.expanded">
-      {{package.name}}</a>
+      <div class="package-node" >
+        <a ng-click="togglePackage(package)" >
+          <i class="fa fa-caret-right toggle {{package.expanded ? 'fa-rotate-90' : ''}}"></i>
+          &nbsp;{{package.name}}
+        </a>
+        <a href="#package/{{package.qualifiedName}}" class="show-package-link">
+          <i class="fa fa-chevron-circle-right open-package-icon"></i>
+        </a>
+      </div>
       <ul ng-if="package.expanded">
         <li ng-repeat="clazz in package.classes"><a href="#class/{{clazz.packageName + '.' + clazz.className}}">
-          {{clazz.className}}
+          &nbsp;{{clazz.className}}
         </a></li>
         <li ng-repeat="package in package.packages" ng-include="'package_tree.html'"></li>
       </ul>
     </script>
+
 
     <div class="off-canvas-wrap" data-offcanvas>
 

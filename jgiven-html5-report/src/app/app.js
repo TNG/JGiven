@@ -16,6 +16,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   $scope.scenarios = [];
   $scope.classNameScenarioMap = {};
   $scope.rootPackage = { packages: [] };
+  $scope.packageMap = {};
   $scope.tagScenarioMap = {}; // lazy calculated by getTags()
   $scope.allTags;
   $scope.tags;
@@ -69,6 +70,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
          $scope.updateCurrentPageToTag( tag, selectedOptions );
       } else if (part[1] === 'class') {
           $scope.updateCurrentPageToClassName(part[2], selectedOptions);
+      } else if (part[1] === 'package') {
+          $scope.updateCurrentPageToPackage( part[2], selectedOptions);
       } else if (part[1] === 'scenario') {
           $scope.showScenario(part[2],part[3], selectedOptions);
       } else if (part[1] === 'all') {
@@ -135,12 +138,50 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     return -1;
   }
 
+  $scope.togglePackage = function togglePackage( packageObj ) {
+    packageObj.expanded = !packageObj.expanded
+
+    // recursively open all packages that only have a single subpackage
+    if (packageObj.classes.length === 0 && packageObj.packages.length === 1) {
+       togglePackage( packageObj.packages[0]);
+    }
+  }
+
   $scope.currentPath = function() {
       return $location.path();
   }
 
   $scope.updateCurrentPageToClassName = function(className, options) {
       $scope.updateCurrentPageToTestCase( $scope.classNameScenarioMap[className], options );
+  }
+
+  $scope.updateCurrentPageToPackage = function(packageName, options) {
+      $scope.currentPage = {
+        scenarios: [],
+        subtitle: "Package",
+        title: packageName,
+        breadcrumbs: packageName.split("."),
+        loading: true
+      };
+      $timeout(function() {
+        var packageObj = $scope.packageMap[ packageName ];
+        var scenarios = [];
+        collectScenariosFromPackage( packageObj, scenarios );
+        $scope.currentPage.scenarios = scenarios;
+        $scope.currentPage.loading = false;
+        $scope.currentPage.options = getOptions($scope.currentPage.scenarios, options);
+        $scope.applyOptions();
+      }, 0);
+  }
+
+  function collectScenariosFromPackage( packageObj, scenarios ) {
+      _.forEach( packageObj.classes, function( clazz ) {
+        scenarios.pushArray( $scope.classNameScenarioMap[clazz.packageName + "." + clazz.className].scenarios );
+      });
+
+      _.forEach( packageObj.packages, function ( subpackage ) {
+         collectScenariosFromPackage( subpackage, scenarios );
+      });
   }
 
   $scope.updateCurrentPageToTestCase = function (testCase, options) {
@@ -570,6 +611,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           getPackage( classObj.packageName).classes.push(classObj);
 
       }
+      $scope.packageMap = packageMap;
+
       return rootPackage;
 
       function getPackage( packageName ) {
@@ -1039,8 +1082,11 @@ jgivenReportApp.controller('SummaryCtrl', function ($scope) {
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
-}
+};
 
+Array.prototype.pushArray = function(arr) {
+  this.push.apply(this, arr);
+};
 
 function splitClassName( fullQualifiedClassName ) {
     var index = fullQualifiedClassName.lastIndexOf('.');

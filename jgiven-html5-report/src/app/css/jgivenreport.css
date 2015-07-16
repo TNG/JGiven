@@ -34,10 +34,6 @@ h5 {
 }
 
 
-ul.tags {
-    list-style: none;
-}
-
 .tag.hidden {
     display: none;
 }
@@ -445,17 +441,20 @@ body, .footer-bottom {
     width: 25rem;
 }
 
+ul.tags {
+    list-style: none;
+    margin-left: 0.8rem;
+}
+
 .side-nav li a:not(.button){
     padding: 0.5rem 1.8rem;
 }
 
 .side-nav li li a:not(.button){
-    padding: 0.1rem 1.9rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
 }
 
-.side-nav li li li a:not(.button){
-    padding: 0.1rem 3.3rem;
-}
 
 .side-nav, .side-nav ul {
     line-height: 1.2;
@@ -464,6 +463,11 @@ body, .footer-bottom {
 .side-nav ul {
     list-style: none;
     margin-left: 0;
+}
+
+.side-nav ul ul {
+    margin-left: 0.8rem;
+    margin-top: 0.3rem;
 }
 
 li.heading {
@@ -487,7 +491,41 @@ li.subheading {
 li.subheading > ul {
     padding-top: 0.5rem;
     padding-left: 0rem;
-    margin-left: 0;
+    margin-left: 1.3rem;
+    margin-top: 0;
+}
+
+.open-package-icon {
+    color: #eee;
+}
+
+div.package-node {
+    position: relative;
+}
+
+div.package-node:hover .open-package-icon {
+    color: inherit;
+}
+
+div.package-node:hover {
+    background-color: #eee;
+}
+
+
+a.show-package-link {
+    display: inline !important;
+    position: absolute;
+    right: 0.8rem;
+    top: 0;
+    padding: 0 !important;
+}
+
+div.package-node:hover a {
+    background: none !important;
+}
+
+a.show-package-link:hover {
+    background: none !important;
 }
 
 .footer-bottom {
