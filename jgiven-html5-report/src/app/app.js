@@ -286,7 +286,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
      $scope.updatingLocation = false;
   }
 
-  $scope.showFailedScenarios = function() {
+  $scope.showFailedScenarios = function( options ) {
       var failedScenarios = getFailedScenarios();
       var description = getDescription( failedScenarios.length, "failed");
       $scope.currentPage = {
@@ -294,7 +294,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           title: "Failed Scenarios",
           description: description,
           breadcrumbs: ['FAILED SCENARIOS'],
-          options: getDefaultOptions(failedScenarios)
+          options: getOptions(failedScenarios, options)
       };
       $scope.applyOptions();
   };
