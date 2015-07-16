@@ -9,6 +9,12 @@
 
 * Introduced the `@As` annotation that replaces the `@Description` annotation when used on step methods and test methods. The `@Description` annotation should only be used for descriptions of test classes.
 
+## New Features
+
+### HTML5 Report
+
+* Classes are shown now in hierarchical navigation tree and scenarios can be listed by package [#91](https://github.com/TNG/JGiven/pull/91)
+
 # v0.7.3
 
 ## Fixed Issues

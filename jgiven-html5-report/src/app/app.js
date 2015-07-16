@@ -15,7 +15,8 @@ jgivenReportApp.filter('encodeUri', function ($window) {
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location, $window, localStorageService) {
   $scope.scenarios = [];
   $scope.classNameScenarioMap = {};
-  $scope.classNames;
+  $scope.rootPackage = { packages: [] };
+  $scope.packageMap = {};
   $scope.tagScenarioMap = {}; // lazy calculated by getTags()
   $scope.allTags;
   $scope.tags;
@@ -25,7 +26,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   $scope.bookmarks = [];
 
   $scope.init = function() {
-      $scope.classNames = getClassNames();
+      $scope.rootPackage = getRootPackage();
       $scope.allTags = groupTagsByType(getTags());
       $scope.tags = $scope.allTags;
 
@@ -69,6 +70,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
          $scope.updateCurrentPageToTag( tag, selectedOptions );
       } else if (part[1] === 'class') {
           $scope.updateCurrentPageToClassName(part[2], selectedOptions);
+      } else if (part[1] === 'package') {
+          $scope.updateCurrentPageToPackage( part[2], selectedOptions);
       } else if (part[1] === 'scenario') {
           $scope.showScenario(part[2],part[3], selectedOptions);
       } else if (part[1] === 'all') {
@@ -135,12 +138,50 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     return -1;
   }
 
+  $scope.togglePackage = function togglePackage( packageObj ) {
+    packageObj.expanded = !packageObj.expanded
+
+    // recursively open all packages that only have a single subpackage
+    if (packageObj.classes.length === 0 && packageObj.packages.length === 1) {
+       togglePackage( packageObj.packages[0]);
+    }
+  }
+
   $scope.currentPath = function() {
       return $location.path();
   }
 
   $scope.updateCurrentPageToClassName = function(className, options) {
       $scope.updateCurrentPageToTestCase( $scope.classNameScenarioMap[className], options );
+  }
+
+  $scope.updateCurrentPageToPackage = function(packageName, options) {
+      $scope.currentPage = {
+        scenarios: [],
+        subtitle: "Package",
+        title: packageName,
+        breadcrumbs: packageName.split("."),
+        loading: true
+      };
+      $timeout(function() {
+        var packageObj = $scope.packageMap[ packageName ];
+        var scenarios = [];
+        collectScenariosFromPackage( packageObj, scenarios );
+        $scope.currentPage.scenarios = scenarios;
+        $scope.currentPage.loading = false;
+        $scope.currentPage.options = getOptions($scope.currentPage.scenarios, options);
+        $scope.applyOptions();
+      }, 0);
+  }
+
+  function collectScenariosFromPackage( packageObj, scenarios ) {
+      _.forEach( packageObj.classes, function( clazz ) {
+        scenarios.pushArray( $scope.classNameScenarioMap[clazz.packageName + "." + clazz.className].scenarios );
+      });
+
+      _.forEach( packageObj.packages, function ( subpackage ) {
+         collectScenariosFromPackage( subpackage, scenarios );
+      });
   }
 
   $scope.updateCurrentPageToTestCase = function (testCase, options) {
@@ -340,22 +381,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
           return scenarioMatchesAll(x, regexps);
       } ));
   }
-
-  $scope.updateNav = function() {
-      $scope.classNames = _.filter(getClassNames(), function(x) {
-          if ($scope.nav.search) {
-              return x.className.match( new RegExp($scope.nav.search, "i"));
-          }
-          return true;
-      });
-
-      $scope.tags = _.filter($scope.allTags, function(x) {
-          if ($scope.nav.search) {
-              return (x.name + '-' + x.value).match( new RegExp($scope.nav.search, "i") );
-          }
-          return true;
-      });
-  };
 
   $scope.printCurrentPage = function printCurrentPage() {
       $location.search("print",true);
@@ -572,16 +597,46 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       return scenarios;
   }
 
-  function getClassNames() {
-      var res = new Array();
+  function getRootPackage() {
       var allScenarios = jgivenReport.scenarios;
+      var packageMap = {}; // maps full qualified package name to package object
+      var rootPackage = getPackage("");
+      var classObj;
+
       for (var i = 0; i < allScenarios.length; i++ ) {
-          var className = splitClassName( allScenarios[i].className );
-          className.index = i;
-          res.push(className);
+          classObj = splitClassName( allScenarios[i].className );
+          classObj.index = i;
           $scope.classNameScenarioMap[allScenarios[i].className] = allScenarios[i];
+
+          getPackage( classObj.packageName).classes.push(classObj);
+
       }
-      return _.sortBy( res, function(x) { return x.className; });
+      $scope.packageMap = packageMap;
+
+      return rootPackage;
+
+      function getPackage( packageName ) {
+          var parentPackage, index, simpleName;
+          var packageObj = packageMap[ packageName ];
+          if (packageObj === undefined) {
+             index = packageName.lastIndexOf('.');
+             simpleName = packageName.substr(index + 1);
+
+             packageObj = {
+                qualifiedName: packageName,
+                name: simpleName,
+                classes: [],
+                packages: []
+             }
+             packageMap[ packageName ] = packageObj;
+
+             if (simpleName !== "") {
+               parentPackage = getPackage(packageName.substring(0, index));
+               parentPackage.packages.push(packageObj);
+             }
+          }
+          return packageObj;
+      }
   }
 
   function getTagKey(tag) {
@@ -1027,8 +1082,11 @@ jgivenReportApp.controller('SummaryCtrl', function ($scope) {
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
-}
+};
 
+Array.prototype.pushArray = function(arr) {
+  this.push.apply(this, arr);
+};
 
 function splitClassName( fullQualifiedClassName ) {
     var index = fullQualifiedClassName.lastIndexOf('.');
