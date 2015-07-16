@@ -515,7 +515,7 @@ div.package-node:hover {
 a.show-package-link {
     display: inline !important;
     position: absolute;
-    right: 0.8rem;
+    right: 1.8rem;
     top: 0;
     padding: 0 !important;
 }
