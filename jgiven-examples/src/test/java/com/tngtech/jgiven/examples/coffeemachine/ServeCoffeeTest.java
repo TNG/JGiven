@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.examples.annotation.Order;
+import com.tngtech.jgiven.examples.tags.Order;
 import com.tngtech.jgiven.examples.coffeemachine.steps.GivenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.ThenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.WhenCoffee;

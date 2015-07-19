@@ -42,7 +42,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
         new AsciiDocReportGenerator().generate( getCompleteReportModel(), targetReportDir );
     }
 
-    private CompleteReportModel getCompleteReportModel() {
+    protected CompleteReportModel getCompleteReportModel() {
         return new ReportModelReader().readDirectory( jsonReportDirectory );
     }
 

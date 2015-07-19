@@ -12,7 +12,11 @@ public class ScenarioModel {
     private String className;
     private String testMethodName;
     private String description;
-    private Set<Tag> tags = Sets.newLinkedHashSet();
+
+    /**
+     * A list of tag ids 
+     */
+    private Set<String> tagIds = Sets.newLinkedHashSet();
     private boolean notImplementedYet;
     private List<String> explicitParameters = Lists.newArrayList();
     private List<String> derivedParameters = Lists.newArrayList();
@@ -30,7 +34,7 @@ public class ScenarioModel {
     }
 
     public void addCase( ScenarioCaseModel scenarioCase ) {
-        scenarioCase.setCaseNr(scenarioCases.size() + 1);
+        scenarioCase.setCaseNr( scenarioCases.size() + 1 );
         scenarioCases.add( scenarioCase );
     }
 
@@ -48,11 +52,13 @@ public class ScenarioModel {
     }
 
     public void addTag( Tag tag ) {
-        tags.add( tag );
+        tagIds.add(tag.toIdString());
     }
 
     public void addTags( List<Tag> tags ) {
-        this.tags.addAll( tags );
+        for( Tag tag : tags ) {
+            addTag( tag );
+        }
     }
 
     public void addParameterNames( String... params ) {
@@ -72,8 +78,8 @@ public class ScenarioModel {
         return scenarioCases;
     }
 
-    public List<Tag> getTags() {
-        return Lists.newArrayList( tags );
+    public List<String> getTagIds() {
+        return Lists.newArrayList(tagIds);
     }
 
     public boolean isCasesAsTable() {
@@ -132,8 +138,8 @@ public class ScenarioModel {
         this.description = description;
     }
 
-    public void setTags( Set<Tag> tags ) {
-        this.tags = tags;
+    public void setTagIds(Set<String> tagIds) {
+        this.tagIds = tagIds;
     }
 
     public boolean isNotImplementedYet() {

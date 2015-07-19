@@ -12,7 +12,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.reporters.Files;
 
-public class ThenHtml5Report<SELF extends ThenHtml5Report<?>> extends Html5ReportStage<SELF> {
+public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SELF> {
 
     public SELF the_page_title_is( String pageTitle ) {
         assertThat( webDriver.findElement( By.id( "page-title" ) ).getText() ).isEqualTo( pageTitle );

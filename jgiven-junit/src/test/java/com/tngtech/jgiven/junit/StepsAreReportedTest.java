@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.junit;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,11 +17,7 @@ import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.junit.StepsAreReportedTest.TestSteps;
-import com.tngtech.jgiven.report.model.ExecutionStatus;
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.StepModel;
-import com.tngtech.jgiven.report.model.Word;
+import com.tngtech.jgiven.report.model.*;
 
 @RunWith( DataProviderRunner.class )
 public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
@@ -34,19 +30,19 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         getScenario().finished();
         ScenarioModel model = getScenario().getModel().getLastScenarioModel();
 
-        assertThat(model.getClassName()).isEqualTo( StepsAreReportedTest.class.getName() );
-        assertThat(model.getTestMethodName()).isEqualTo( "given_steps_are_reported" );
-        assertThat(model.getDescription()).isEqualTo( "given steps are reported" );
+        assertThat( model.getClassName() ).isEqualTo( StepsAreReportedTest.class.getName() );
+        assertThat( model.getTestMethodName() ).isEqualTo( "given_steps_are_reported" );
+        assertThat( model.getDescription() ).isEqualTo( "given steps are reported" );
         assertThat( model.getExplicitParameters() ).isEmpty();
-        assertThat(model.getTags()).isEmpty();
+        assertThat( model.getTagIds() ).isEmpty();
         assertThat( model.getScenarioCases() ).hasSize( 1 );
 
         ScenarioCaseModel scenarioCase = model.getCase( 0 );
         assertThat( scenarioCase.getExplicitArguments() ).isEmpty();
-        assertThat(scenarioCase.getCaseNr()).isEqualTo( 1 );
-        assertThat(scenarioCase.getSteps()).hasSize( 1 );
+        assertThat( scenarioCase.getCaseNr() ).isEqualTo( 1 );
+        assertThat( scenarioCase.getSteps() ).hasSize( 1 );
 
-        StepModel step = scenarioCase.getSteps().get(0);
+        StepModel step = scenarioCase.getSteps().get( 0 );
         assertThat( step.name ).isEqualTo( "some test step" );
         assertThat( step.words ).isEqualTo( Arrays.asList( Word.introWord( "Given" ), new Word( "some test step" ) ) );
         assertThat( step.isNotImplementedYet() ).isFalse();
@@ -60,7 +56,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         getScenario().finished();
 
         ScenarioModel model = getScenario().getModel().getLastScenarioModel();
-        StepModel stepModel = model.getCase(0).getSteps().get(0);
+        StepModel stepModel = model.getCase( 0 ).getSteps().get( 0 );
         assertThat( stepModel.isNotImplementedYet() ).isTrue();
         assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.NONE_IMPLEMENTED );
     }
@@ -88,11 +84,17 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         given().some_test_step();
         getScenario().finished();
 
-        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
-        assertThat(model.getTags()).hasSize( 1 );
+        ReportModel reportModel = getScenario().getModel();
+        ScenarioModel model = reportModel.getLastScenarioModel();
+        assertThat( model.getTagIds() ).hasSize( 1 );
 
-        assertThat( model.getTags().get( 0 ).getName() ).isEqualTo( "TestTag" );
-        assertThat( model.getTags().get( 0 ).getValues() ).containsExactly( "foo", "bar", "baz" );
+        String tagId = model.getTagIds().get( 0 );
+        assertThat( tagId ).isEqualTo( "TestTag-foo, bar, baz" );
+
+        Tag tag = reportModel.getTagWithId( tagId );
+        assertThat( tag ).isNotNull();
+        assertThat( tag.getName() ).isEqualTo( "TestTag" );
+        assertThat( tag.getValues() ).containsExactly( "foo", "bar", "baz" );
     }
 
     @DataProvider
@@ -107,11 +109,16 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         given().some_test_step();
         getScenario().finished();
 
+        ReportModel reportModel = getScenario().getModel();
         ScenarioModel model = getScenario().getModel().getLastScenarioModel();
-        assertThat(model.getTags()).hasSize( 1 );
+        assertThat( model.getTagIds() ).hasSize( 1 );
 
-        assertThat( model.getTags().get( 0 ).getName() ).isEqualTo( "TestTag" );
-        assertThat( model.getTags().get( 0 ).getValues() ).containsExactly( "foo", "bar", "baz" );
+        String tagId = model.getTagIds().get( 0 );
+
+        Tag tag = reportModel.getTagWithId( tagId );
+        assertThat( tag ).isNotNull();
+        assertThat( tag.getName() ).isEqualTo( "TestTag" );
+        assertThat( tag.getValues() ).containsExactly( "foo", "bar", "baz" );
     }
 
     @Test

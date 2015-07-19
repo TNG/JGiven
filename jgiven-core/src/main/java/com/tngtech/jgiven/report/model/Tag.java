@@ -12,9 +12,14 @@ import com.google.common.collect.Lists;
  */
 public class Tag {
     /**
-     * The name/type of this tag
+     * The type of the annotation of the tag
      */
-    private final String name;
+    private final String type;
+
+    /**
+     * An optional name of the tag. If not set, the type is the name
+     */
+    private String name;
 
     /**
      * An optional value
@@ -44,16 +49,31 @@ public class Tag {
      */
     private String cssClass;
 
-    public Tag( String name ) {
-        this.name = name;
+    /**
+     * An optional (maybe null) list of tags that this tag is tagged with.
+     * The tags are normalized as follows: <name>[-value].
+     */
+    private List<String> tags;
+
+    public Tag( String type ) {
+        this.type = type;
     }
 
-    public Tag( String name, Object value ) {
-        this.name = name;
+    public Tag( String type, Object value ) {
+        this( type );
         this.value = value;
     }
 
+    public Tag( String type, String name, Object value ) {
+        this( type, value );
+        this.name = name;
+    }
+
     public String getName() {
+        if( name == null ) {
+            return type;
+        }
+
         return name;
     }
 
@@ -132,9 +152,16 @@ public class Tag {
         return Joiner.on( ", " ).join( getValues() );
     }
 
+    public String toIdString() {
+        if( value != null ) {
+            return type + "-" + getValueString();
+        }
+        return type;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hashCode( getName(), value );
+        return Objects.hashCode( getType(), getName(), value );
     }
 
     @Override
@@ -149,7 +176,8 @@ public class Tag {
             return false;
         }
         Tag other = (Tag) obj;
-        return Objects.equal( getName(), other.getName() )
+        return Objects.equal( getType(), other.getType() )
+                && Objects.equal( getName(), other.getName() )
                 && Objects.equal( value, other.value );
     }
 
@@ -169,4 +197,36 @@ public class Tag {
     static String escape( String string ) {
         return string.replaceAll( "[^\\p{Alnum}-]", "_" );
     }
+
+    public void setName( String name ) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public List<String> getTags() {
+        if( tags == null ) {
+            return Collections.emptyList();
+        }
+        return tags;
+    }
+
+    public void setTags( List<String> tags ) {
+        if( tags != null && !tags.isEmpty() ) {
+            this.tags = tags;
+        }
+    }
+
+    public Tag copy() {
+        Tag tag = new Tag( type, name, value );
+        tag.cssClass = this.cssClass;
+        tag.color = this.color;
+        tag.description = this.description;
+        tag.prependType = this.prependType;
+        tag.tags = this.tags;
+        return tag;
+    }
+
 }

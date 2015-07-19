@@ -11,6 +11,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.JGivenScenarioTest;
+import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.report.WhenReportGenerator;
@@ -21,8 +22,9 @@ import com.tngtech.jgiven.tags.FeatureHtml5Report;
 import com.tngtech.jgiven.tags.Issue;
 
 @FeatureHtml5Report
+@Description( "Tests against the generated HTML5 App using WebDriver" )
 @RunWith( DataProviderRunner.class )
-public class Html5GeneratorTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHtml5Report<?>, ThenHtml5Report<?>> {
+public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHtml5App<?>, ThenHtml5App<?>> {
 
     @ScenarioStage
     private WhenReportGenerator<?> whenReport;

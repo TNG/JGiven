@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.examples.annotation;
+package com.tngtech.jgiven.examples.tags;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

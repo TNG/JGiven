@@ -28,11 +28,10 @@ h5 {
 .header-fixed {
     position: fixed;
     z-index: 1000;
-    top:0;
-    left:0;
-    right:0;
+    top: 0;
+    left: 0;
+    right: 0;
 }
-
 
 .tag.hidden {
     display: none;
@@ -59,8 +58,8 @@ h5 {
 }
 
 .expand-icon:hover, .collapse-icon:hover, .print-icon:hover,
-    .scenario:hover .scenario-link-icon:hover,
-    .remove-bookmark-icon:hover, .add-bookmark-icon:hover {
+.scenario:hover .scenario-link-icon:hover,
+.remove-bookmark-icon:hover, .add-bookmark-icon:hover {
     color: #008cba;
 }
 
@@ -86,7 +85,6 @@ h5 {
     position: relative;
 
 }
-
 
 /**
  * Ugly workaround to fix an issue with foundation where
@@ -122,7 +120,6 @@ h5 {
 /**
  * <--- Ugly workaround end
  */
-
 
 .scenario-group-header {
     margin-bottom: 10px;
@@ -228,8 +225,8 @@ h5 {
 table.steps {
     border: none;
     border-spacing: 0;
-    padding:0;
-    margin:0;
+    padding: 0;
+    margin: 0;
     margin-bottom: 0.5rem;
 }
 
@@ -387,7 +384,7 @@ input.search {
     position: relative;
     background: white;
     padding-bottom: 5rem;
-    max-width:100%;
+    max-width: 100%;
     min-height: 100%;
     height: 100%;
 }
@@ -446,15 +443,14 @@ ul.tags {
     margin-left: 0.8rem;
 }
 
-.side-nav li a:not(.button){
+.side-nav li a:not(.button) {
     padding: 0.5rem 1.8rem;
 }
 
-.side-nav li li a:not(.button){
+.side-nav li li a:not(.button) {
     padding-top: 0.1rem;
     padding-bottom: 0.1rem;
 }
-
 
 .side-nav, .side-nav ul {
     line-height: 1.2;
@@ -478,7 +474,6 @@ li.subheading {
     margin-top: 0.2rem;
 }
 
-
 li.heading ul {
     text-transform: none;
 }
@@ -495,24 +490,31 @@ li.subheading > ul {
     margin-top: 0;
 }
 
-.open-package-icon {
+/**
+ * Navigation trees
+ */
+
+i.transparent {
+    color: transparent;
+}
+
+.open-tree-node-icon {
     color: #eee;
 }
 
-div.package-node {
+div.tree-node {
     position: relative;
 }
 
-div.package-node:hover .open-package-icon {
-    color: inherit;
-}
-
-div.package-node:hover {
+div.tree-node:hover {
     background-color: #eee;
 }
 
+div.tree-node:hover .open-tree-node-icon {
+    color: inherit;
+}
 
-a.show-package-link {
+a.show-tree-node-link {
     display: inline !important;
     position: absolute;
     right: 1.8rem;
@@ -520,11 +522,11 @@ a.show-package-link {
     padding: 0 !important;
 }
 
-div.package-node:hover a {
+div.tree-node:hover a {
     background: none !important;
 }
 
-a.show-package-link:hover {
+a.show-tree-link:hover {
     background: none !important;
 }
 
@@ -548,8 +550,8 @@ a.show-package-link:hover {
     top: 76px;
     bottom: 0;
     left: 0;
-    right:0;
-    background-color: rgba(255,255,255,0.8);
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.8);
     z-index: 2000;
 }
 
@@ -566,7 +568,7 @@ a.show-package-link:hover {
 }
 
 .off-canvas-wrap {
-   overflow: auto;
+    overflow: auto;
 }
 
 .page-statistics {
@@ -591,7 +593,6 @@ a.show-package-link:hover {
     padding-left: 0;
 }
 
-
 @media only screen and (max-width: 64em) {
     .scenario-container {
         margin-left: 0;
@@ -607,19 +608,31 @@ a.show-package-link:hover {
 
 @media only screen and (min-width: 64.063em) {
     .tab-bar {
-        display:none;
+        display: none;
     }
 }
 
 @media only screen and (min-width: 64.063em) and (max-width: 90em) {
-    .scenario-container {  margin-left: 15rem;  }
-    .sidebar { width: 15rem; }
+    .scenario-container {
+        margin-left: 15rem;
+    }
+
+    .sidebar {
+        width: 15rem;
+    }
 }
 
 @media only screen and (min-width: 90.063em) and (max-width: 120em) {
-    .scenario-container {  margin-left: 21rem;  }
-    .sidebar { width: 21rem; }
+    .scenario-container {
+        margin-left: 21rem;
+    }
+
+    .sidebar {
+        width: 21rem;
+    }
 }
 
 /* avoid showing angularjs expressions on page loading */
-[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important
+}

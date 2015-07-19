@@ -5,9 +5,8 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.tngtech.jgiven.annotation.IsTag;
 
-@FeatureReport
-@IsTag( type = "Feature", value = "Plain Text Report", description = "Plain text reports can be generated" )
+@IsTag( type = "Feature", value = "Report" )
 @Retention( RetentionPolicy.RUNTIME )
-public @interface FeatureTextReport {
+public @interface FeatureReport {
 
 }

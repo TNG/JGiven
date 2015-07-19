@@ -2,12 +2,7 @@ package com.tngtech.jgiven.report.html;
 
 import static java.lang.String.format;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -19,16 +14,13 @@ import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.impl.util.Version;
-import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.report.model.ReportModelVisitor;
-import com.tngtech.jgiven.report.model.ReportStatistics;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.StatisticsCalculator;
+import com.tngtech.jgiven.report.model.*;
 
 public class ReportModelHtmlWriter extends ReportModelVisitor {
     protected final PrintWriter writer;
     protected final HtmlWriterUtils utils;
     private ReportStatistics statistics;
+    private ReportModel reportModel;
 
     public ReportModelHtmlWriter( PrintWriter writer ) {
         this.writer = writer;
@@ -61,7 +53,7 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
     }
 
     public void write( ScenarioModel model ) {
-        writeHtmlHeader(model.getClassName());
+        writeHtmlHeader( model.getClassName() );
         model.accept( this );
         writeHtmlFooter();
     }
@@ -142,6 +134,7 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
 
     @Override
     public void visit( ReportModel reportModel ) {
+        this.reportModel = reportModel;
         writer.println( "<div id='rightpane'>" );
         writeHeader( reportModel );
         writer.println( "<div id='content'>" );
@@ -191,9 +184,9 @@ public class ReportModelHtmlWriter extends ReportModelVisitor {
     public void visit( ScenarioModel scenarioModel ) {
         ScenarioHtmlWriter scenarioHtmlWriter;
         if( scenarioModel.isCasesAsTable() ) {
-            scenarioHtmlWriter = new DataTableScenarioHtmlWriter( writer );
+            scenarioHtmlWriter = new DataTableScenarioHtmlWriter( writer, reportModel );
         } else {
-            scenarioHtmlWriter = new MultiCaseScenarioHtmlWriter( writer );
+            scenarioHtmlWriter = new MultiCaseScenarioHtmlWriter( writer, reportModel );
         }
         scenarioModel.accept( scenarioHtmlWriter );
     }

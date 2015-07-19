@@ -255,7 +255,7 @@ public class ReportModelBuilder implements ScenarioListener {
         return paramMethod.getName().replace( '_', ' ' );
     }
 
-    public ReportModel getScenarioCollectionModel() {
+    public ReportModel getReportModel() {
         return reportModel;
     }
 
@@ -340,9 +340,11 @@ public class ReportModelBuilder implements ScenarioListener {
         }
     }
 
-    private void addTags( Annotation[] annotations ) {
+    public void addTags( Annotation... annotations ) {
         for( Annotation annotation : annotations ) {
-            this.currentScenarioModel.addTags( toTags( annotation ) );
+            List<Tag> tags = toTags( annotation );
+            this.reportModel.addTags( tags );
+            this.currentScenarioModel.addTags( tags );
         }
     }
 
@@ -351,7 +353,7 @@ public class ReportModelBuilder implements ScenarioListener {
         IsTag isTag = annotationType.getAnnotation( IsTag.class );
         TagConfiguration tagConfig;
         if( isTag != null ) {
-            tagConfig = TagConfiguration.fromIsTag( isTag );
+            tagConfig = fromIsTag( isTag, annotation );
         } else {
             tagConfig = configuration.getTagConfiguration( annotationType );
         }
@@ -360,13 +362,11 @@ public class ReportModelBuilder implements ScenarioListener {
             return Collections.emptyList();
         }
 
-        String type = annotationType.getSimpleName();
+        Tag tag = new Tag( tagConfig.getAnnotationType() );
 
-        if( !Strings.isNullOrEmpty( tagConfig.getType() ) ) {
-            type = tagConfig.getType();
+        if( !Strings.isNullOrEmpty( tagConfig.getName() ) ) {
+            tag.setName( tagConfig.getName() );
         }
-
-        Tag tag = new Tag( type );
 
         if( tagConfig.isPrependType() ) {
             tag.setPrependType( true );
@@ -390,6 +390,8 @@ public class ReportModelBuilder implements ScenarioListener {
             return Arrays.asList( tag );
         }
 
+        tag.setTags( tagConfig.getTags() );
+
         try {
             Method method = annotationType.getMethod( "value" );
             value = method.invoke( annotation );
@@ -397,7 +399,8 @@ public class ReportModelBuilder implements ScenarioListener {
                 if( value.getClass().isArray() ) {
                     Object[] objectArray = (Object[]) value;
                     if( tagConfig.isExplodeArray() ) {
-                        return getExplodedTags( tag, objectArray, annotation, tagConfig );
+                        List<Tag> explodedTags = getExplodedTags( tag, objectArray, annotation, tagConfig );
+                        return explodedTags;
                     }
                     tag.setValue( toStringList( objectArray ) );
 
@@ -413,6 +416,50 @@ public class ReportModelBuilder implements ScenarioListener {
 
         tag.setDescription( getDescriptionFromGenerator( tagConfig, annotation, value ) );
         return Arrays.asList( tag );
+    }
+
+    public TagConfiguration fromIsTag( IsTag isTag, Annotation annotation ) {
+
+        String name = Strings.isNullOrEmpty( isTag.name() ) ? isTag.type() : isTag.name();
+
+        return TagConfiguration.builder( annotation.annotationType() )
+            .defaultValue( isTag.value() )
+            .description( isTag.description() )
+            .explodeArray( isTag.explodeArray() )
+            .ignoreValue( isTag.ignoreValue() )
+            .prependType( isTag.prependType() )
+            .name( name )
+            .descriptionGenerator( isTag.descriptionGenerator() )
+            .cssClass( isTag.cssClass() )
+            .color( isTag.color() )
+            .tags( getTagNames( isTag, annotation ) )
+            .build();
+
+    }
+
+    private List<String> getTagNames( IsTag isTag, Annotation annotation ) {
+        List<Tag> tags = getTags( isTag, annotation );
+        reportModel.addTags( tags );
+        List<String> tagNames = Lists.newArrayList();
+        for( Tag tag : tags ) {
+            tagNames.add( tag.toIdString() );
+        }
+        return tagNames;
+    }
+
+    private List<Tag> getTags( IsTag isTag, Annotation annotation ) {
+        List<Tag> allTags = Lists.newArrayList();
+
+        for( Annotation a : annotation.annotationType().getAnnotations() ) {
+            if( a.annotationType().isAnnotationPresent( IsTag.class ) ) {
+                List<Tag> tags = toTags( a );
+                for( Tag tag : tags ) {
+                    allTags.add( tag );
+                }
+            }
+        }
+
+        return allTags;
     }
 
     private List<String> toStringList( Object[] value ) {
@@ -436,12 +483,8 @@ public class ReportModelBuilder implements ScenarioListener {
     private List<Tag> getExplodedTags( Tag originalTag, Object[] values, Annotation annotation, TagConfiguration tagConfig ) {
         List<Tag> result = Lists.newArrayList();
         for( Object singleValue : values ) {
-            Tag newTag = new Tag( originalTag.getName(), String.valueOf( singleValue ) );
-            newTag.setDescription( originalTag.getDescription() );
-            newTag.setPrependType( originalTag.isPrependType() );
-            newTag.setDescription( getDescriptionFromGenerator( tagConfig, annotation, singleValue ) );
-            newTag.setColor( originalTag.getColor() );
-            newTag.setCssClass( originalTag.getCssClass() );
+            Tag newTag = originalTag.copy();
+            newTag.setValue( String.valueOf( singleValue ) );
             result.add( newTag );
         }
         return result;

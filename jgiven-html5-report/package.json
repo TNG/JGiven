@@ -1,6 +1,6 @@
 {
   "name": "jgiven-html5-report",
-  "version": "0.6.0",
+  "version": "0.7.4",
   "description": "An HTML5 report for JGiven",
   "main": "src/app/app.js",
   "devDependencies": {

@@ -12,7 +12,7 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
 
-public class Html5ReportStage<SELF extends Html5ReportStage<?>> extends Stage<SELF> {
+public class Html5AppStage<SELF extends Html5AppStage<?>> extends Stage<SELF> {
     @ExpectedScenarioState
     protected CurrentStep currentStep;
 

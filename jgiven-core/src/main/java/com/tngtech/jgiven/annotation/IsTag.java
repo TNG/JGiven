@@ -71,9 +71,20 @@ public @interface IsTag {
     Class<? extends TagDescriptionGenerator> descriptionGenerator() default DefaultTagDescriptionGenerator.class;
 
     /**
-     * An optional type description that overrides the default which is the name of the annotation.
+     * @deprecated use {@link #name()} instead
      */
+    @Deprecated
     String type() default "";
+
+    /**
+     * An optional name that overrides the default which is the name of the annotation.
+     * <p>
+     * It is possible that multiple annotations have the same type name. However, in this case every 
+     * annotation must have a specified value that must be unique. 
+     * </p>
+     * @since 0.7.4
+     */
+    String name() default "";
 
     /**
      * Whether the type should be prepended to the tag if the tag has a value.

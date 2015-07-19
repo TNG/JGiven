@@ -46,9 +46,9 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
     }
 
     public void the_report_model_contains_a_tag_named( String tagName ) {
-        List<Tag> tags = reportModel.getLastScenarioModel().getTags();
+        List<String> tags = reportModel.getLastScenarioModel().getTagIds();
         assertThat( tags ).isNotEmpty();
-        assertThat( tags ).extracting( "name" ).contains( tagName );
+        assertThat( tags ).contains( tagName + "-testValue" );
     }
 
     public void the_description_of_the_report_model_is( String description ) {

@@ -20,7 +20,6 @@ import com.tngtech.jgiven.junit.test.BeforeAfterTestStage;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
 import com.tngtech.jgiven.report.model.AttachmentModel;
-import com.tngtech.jgiven.report.model.Tag;
 
 @RunWith( DataProviderRunner.class )
 @JGivenConfiguration( TestConfiguration.class )
@@ -210,11 +209,11 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     public void configured_tags_are_reported() throws Throwable {
         given().something();
         getScenario().finished();
-        List<Tag> tags = getScenario().getModel().getLastScenarioModel().getTags();
-        assertThat( tags ).isNotEmpty();
-        Tag tag = tags.get( 0 );
-        assertThat( tag ).isNotNull();
-        assertThat( tag.getName() ).isEqualTo( "ConfiguredTag" );
+        List<String> tagIds = getScenario().getModel().getLastScenarioModel().getTagIds();
+        assertThat( tagIds ).isNotEmpty();
+        String tagId = tagIds.get( 0 );
+        assertThat( tagId ).isNotNull();
+        assertThat( tagId ).isEqualTo( "ConfiguredTag-Test" );
     }
 
     @Test

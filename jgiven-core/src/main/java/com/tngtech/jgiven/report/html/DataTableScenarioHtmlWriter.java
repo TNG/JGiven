@@ -2,15 +2,12 @@ package com.tngtech.jgiven.report.html;
 
 import java.io.PrintWriter;
 
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.StepModel;
-import com.tngtech.jgiven.report.model.Word;
+import com.tngtech.jgiven.report.model.*;
 
 public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
 
-    public DataTableScenarioHtmlWriter( PrintWriter writer ) {
-        super( writer );
+    public DataTableScenarioHtmlWriter( PrintWriter writer, ReportModel reportModel ) {
+        super( writer, reportModel );
     }
 
     @Override
@@ -74,7 +71,7 @@ public class DataTableScenarioHtmlWriter extends ScenarioHtmlWriter {
     }
 
     @Override
-    String formatValue(Word value) {
+    String formatValue( Word value ) {
         String paramName = findParameterName( value );
         return "&lt;" + paramName + "&gt;";
     }
