@@ -65,7 +65,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
             .but().something_else_not();
 
         String string = PlainTextReporter.toString( getScenario().getModel() );
-        assertThat( string )
+        assertThat( string.replaceAll(System.getProperty("line.separator"), "\n") )
             .contains( ""
                     + " Scenario: Test\n"
                     + "\n"
@@ -90,7 +90,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
             .something_else_not();
 
         String string = PlainTextReporter.toString( getScenario().getModel() );
-        assertThat( string )
+        assertThat( string.replaceAll(System.getProperty("line.separator"), "\n") )
             .contains( ""
                     + " Scenario: Test\n"
                     + "\n"

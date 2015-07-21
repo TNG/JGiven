@@ -70,6 +70,8 @@ subprojects {
     }
 
     tasks.withType(JavaCompile) {
+        // needed for DeSzenarioTest.java as it has Umlauts in the code
+        options.encoding = 'UTF-8'
         if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
             options.compilerArgs << "-parameters"
         }
