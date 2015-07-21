@@ -14,7 +14,7 @@ public class ThenPlainTextOutput extends Stage<ThenPlainTextOutput> {
     String plainTextOutput;
 
     public ThenPlainTextOutput the_report_contains_text( String line ) {
-        Assertions.assertThat( plainTextOutput ).contains( line );
+        Assertions.assertThat( plainTextOutput.replace( System.getProperty("line.separator"), "\n" ) ).contains(line);
         return this;
     }
 
