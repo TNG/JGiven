@@ -47,10 +47,10 @@ public class ScenarioExecutionRule implements MethodRule {
     }
 
     /**
-     * 
+     *
      * @param testInstance the instance of the test class
      * @param scenario the scenario
-     * @since 0.7.0                
+     * @since 0.7.0
      */
     public ScenarioExecutionRule( Object testInstance, ScenarioBase scenario ) {
         this.testInstance = testInstance;
@@ -103,7 +103,7 @@ public class ScenarioExecutionRule implements MethodRule {
         ReportModelBuilder modelBuilder = scenario.getModelBuilder();
         modelBuilder.setTestClass( testClass );
 
-        scenario.getExecutor().startScenario( testMethod.getMethod(), getNamedArguments( base, testMethod, target ) );
+        scenario.startScenario( testMethod.getMethod(), getNamedArguments( base, testMethod, target ) );
 
         // inject state from the test itself
         scenario.getExecutor().readScenarioState( testInstance );

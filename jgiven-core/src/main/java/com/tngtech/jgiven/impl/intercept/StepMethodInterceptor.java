@@ -1,6 +1,8 @@
 package com.tngtech.jgiven.impl.intercept;
 
-import static com.tngtech.jgiven.impl.intercept.InvocationMode.*;
+import static com.tngtech.jgiven.impl.intercept.InvocationMode.NORMAL;
+import static com.tngtech.jgiven.impl.intercept.InvocationMode.NOT_IMPLEMENTED_YET;
+import static com.tngtech.jgiven.impl.intercept.InvocationMode.SKIPPED;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -10,14 +12,38 @@ import org.slf4j.LoggerFactory;
 
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
-
-public class StepMethodInterceptor implements MethodInterceptor {
+public class StepMethodInterceptor  {
     private static final Logger log = LoggerFactory.getLogger( StepMethodInterceptor.class );
 
-    private final StepMethodHandler scenarioMethodHandler;
-    private final AtomicInteger stackDepth;
+    private StepMethodHandler scenarioMethodHandler;
+
+    public StepMethodHandler getScenarioMethodHandler() {
+        return scenarioMethodHandler;
+    }
+
+
+    public AtomicInteger getStackDepth() {
+        return stackDepth;
+    }
+
+
+    public void setScenarioMethodHandler(StepMethodHandler scenarioMethodHandler) {
+        this.scenarioMethodHandler = scenarioMethodHandler;
+    }
+
+
+    public void setStackDepth(AtomicInteger stackDepth) {
+        this.stackDepth = stackDepth;
+    }
+
+    private AtomicInteger stackDepth;
+
+    /**
+     * abstraction to continue intercepted method
+     */
+    public interface Invoker {
+        Object proceed() throws Throwable;
+    };
 
     /**
      * Whether the method handler is called when a step method is invoked
@@ -34,8 +60,9 @@ public class StepMethodInterceptor implements MethodInterceptor {
         this.stackDepth = stackDepth;
     }
 
-    @Override
-    public Object intercept( Object receiver, Method method, Object[] parameters, MethodProxy methodProxy ) throws Throwable {
+
+    public final Object doIntercept(final Object receiver, Method method,
+            final Object[] parameters, Invoker invoker) throws Throwable {
         long started = System.nanoTime();
         InvocationMode mode = getInvocationMode( receiver, method );
 
@@ -50,9 +77,9 @@ public class StepMethodInterceptor implements MethodInterceptor {
 
         try {
             stackDepth.incrementAndGet();
-            return methodProxy.invokeSuper( receiver, parameters );
-        } catch( Exception t ) {
-            return handleThrowable( receiver, method, t, System.nanoTime() - started );
+            return invoker.proceed();
+        } catch (Exception e) {
+            return handleThrowable( receiver, method, e, System.nanoTime() - started );
         } catch( AssertionError e ) {
             return handleThrowable( receiver, method, e, System.nanoTime() - started );
         } finally {
@@ -63,7 +90,7 @@ public class StepMethodInterceptor implements MethodInterceptor {
         }
     }
 
-    private Object handleThrowable( Object receiver, Method method, Throwable t, long durationInNanos ) throws Throwable {
+    protected Object handleThrowable( Object receiver, Method method, Throwable t, long durationInNanos ) throws Throwable {
         if( methodHandlingEnabled ) {
             scenarioMethodHandler.handleThrowable( t );
             return returnReceiverOrNull( receiver, method );
@@ -71,7 +98,7 @@ public class StepMethodInterceptor implements MethodInterceptor {
         throw t;
     }
 
-    private Object returnReceiverOrNull( Object receiver, Method method ) {
+    protected Object returnReceiverOrNull( Object receiver, Method method ) {
         // we assume here that the implementation follows the fluent interface
         // convention and returns the receiver object. If not, we fall back to null
         // and hope for the best.
@@ -88,7 +115,7 @@ public class StepMethodInterceptor implements MethodInterceptor {
         return receiver;
     }
 
-    private InvocationMode getInvocationMode( Object receiver, Method method ) {
+    protected InvocationMode getInvocationMode( Object receiver, Method method ) {
         if( method.getDeclaringClass() == Object.class ) {
             return NORMAL;
         }
