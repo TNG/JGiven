@@ -11,14 +11,14 @@ import org.springframework.beans.BeansException;
  *
  * <p>
  * Sample configuration:<br>
- * <code>
- *   {@literal @}Bean<br>
- *   public JGivenStageAutoProxyCreator jGivenStageAutoProxyCreator() {<br>
- *   &nbsp;&nbsp;&nbsp;&nbsp;return new JGivenStageAutoProxyCreator();<br>
- *   }<br>
+ * <pre>
+ *   {@literal @}Bean
+ *   public JGivenStageAutoProxyCreator jGivenStageAutoProxyCreator() {
+ *       return new JGivenStageAutoProxyCreator();
+ *   }
  *
- * </code>
- * @since 0.7.4
+ * </pre>
+ * @since 0.8.0
  */
 public class JGivenStageAutoProxyCreator extends AbstractAutoProxyCreator {
 

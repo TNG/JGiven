@@ -16,7 +16,7 @@ import com.tngtech.jgiven.junit.ScenarioReportRule;
  * @param <WHEN>
  * @param <THEN>
  *
- * @since 0.7.4
+ * @since 0.8.0
  */
 public class SpringScenarioTest<GIVEN, WHEN, THEN> extends
         ScenarioTestBase<GIVEN, WHEN, THEN> implements BeanFactoryAware {

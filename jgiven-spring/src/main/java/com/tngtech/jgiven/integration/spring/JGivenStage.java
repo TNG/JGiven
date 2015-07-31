@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 /**
  * Annotation that marks a bean as JGiven Stage.
  *
- * @since 0.7.4
+ * @since 0.8.0
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)

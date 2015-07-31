@@ -155,7 +155,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
             return (T) stages.get( stepsClass ).instance;
         }
 
-        T result = createJGivenEnhancedStepsClass( stepsClass );
+        T result = createStageClass( stepsClass );
 
         stages.put( stepsClass, new StageState( result ) );
         gatherRules( result );
@@ -165,7 +165,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
 
     @SuppressWarnings( "unchecked" )
     @Override
-    public <T> T createJGivenEnhancedStepsClass( Class<T> stepsClass ) {
+    public <T> T createStageClass( Class<T> stepsClass ) {
         Enhancer e = new Enhancer();
         e.setSuperclass( stepsClass );
         e.setCallback( methodInterceptor );

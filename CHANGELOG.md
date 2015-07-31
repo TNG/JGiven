@@ -1,3 +1,10 @@
+# v0.8.0
+
+## Enhanced spring support
+
+* when used together with the spring framework JGiven can use a specialized executor so that JGiven stages can be managed via spring
+* Introduced `@JGivenStage` to ease writing spring beans that act as JGiven stage
+
 # v0.7.4
 
 ## Fixed Issues

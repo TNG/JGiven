@@ -3,6 +3,7 @@ package com.tngtech.jgiven.impl;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.integration.CanWire;
 import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModel;
@@ -93,9 +94,7 @@ public class ScenarioBase {
     }
 
     protected void assertNotInitialized() {
-        if (initialized) {
-            throw new IllegalStateException("Scenario is already initialized.");
-        }
+        AssertionUtil.assertTrue(!initialized, "Scenario is already initialized");
     }
 
 }

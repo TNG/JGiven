@@ -16,15 +16,17 @@ import com.tngtech.jgiven.impl.StandaloneScenarioExecutor;
  * Main class of JGiven for executing scenarios with spring support.
  * See below on how to configure this bean.
  * <p>
- * Sample Configuration:<br>
- *	{@literal @}Bean<br>
- *	{@literal @}Scope("prototype")<br>
- *	public SpringScenarioExecutor springScenarioExecutor() {<br>
- *	&nbsp;&nbsp;&nbsp;&nbsp;return new SpringScenarioExecutor();<br>
- *	}<br>
+ * Sample Configuration:
+ * <pre>
+ *	{@literal @}Bean
+ *	{@literal @}Scope("prototype")
+ *	public SpringScenarioExecutor springScenarioExecutor() {
+ *	    return new SpringScenarioExecutor();
+ *	}
+ * </pre>
  * <p>
  * <strong>The SpringScenarioExecutor is stateful, and thus should use "prototype" scope</strong>
- * @since 0.7.4
+ * @since 0.8.0
  */
 public class SpringScenarioExecutor extends StandaloneScenarioExecutor implements ScenarioExecutor {
 
@@ -34,7 +36,7 @@ public class SpringScenarioExecutor extends StandaloneScenarioExecutor implement
     private ApplicationContext applicationContext;
 
     @Override
-    public <T> T createJGivenEnhancedStepsClass( Class<T> stepsClass ) {
+    public <T> T createStageClass( Class<T> stepsClass ) {
         try {
             T bean = applicationContext.getBean(stepsClass);
             Advised advised = (Advised)bean;
@@ -49,10 +51,10 @@ public class SpringScenarioExecutor extends StandaloneScenarioExecutor implement
             }
             return bean;
         } catch (NoSuchBeanDefinitionException nbe) {
-            return super.createJGivenEnhancedStepsClass(stepsClass);
+            return super.createStageClass(stepsClass);
         } catch (ClassCastException cce) {
             log.error("class " + ClassUtils.getShortName(stepsClass) + " is not advised with SpringStepMethodInterceptor. Falling back to cglib based proxy, strange things may happen.");
-            return super.createJGivenEnhancedStepsClass(stepsClass);
+            return super.createStageClass(stepsClass);
         }
     }
 

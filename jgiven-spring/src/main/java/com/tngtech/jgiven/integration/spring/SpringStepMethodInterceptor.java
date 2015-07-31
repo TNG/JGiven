@@ -12,16 +12,17 @@ import com.tngtech.jgiven.impl.intercept.StepMethodInterceptor;
  * See below on how to configure this bean.
  *
  * <p>
- * Sample Configuration:<br>
- *	{@literal @}Bean<br>
- *	{@literal @}Scope("prototype")<br>
- *  public SpringStepMethodInterceptor springStepMethodInterceptor() {<br>
- *	&nbsp;&nbsp;&nbsp;&nbsp;return new SpringStepMethodInterceptor();<br>
- *	}<br>
- * </code>
+ * Sample Configuration:
+ * <pre>
+ * {@literal @}Bean
+ * {@literal @}Scope("prototype")
+ * public SpringStepMethodInterceptor springStepMethodInterceptor() {
+ *     return new SpringStepMethodInterceptor();
+ * }
+ * </pre>
  * <p>
  * <strong>The StepMethodInterceptor is stateful, and thus should use "prototype" scope</strong>
- * @since 0.7.4
+ * @since 0.8.0
  */
 public class SpringStepMethodInterceptor extends StepMethodInterceptor implements MethodInterceptor {
 

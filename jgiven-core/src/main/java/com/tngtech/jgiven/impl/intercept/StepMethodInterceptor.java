@@ -17,33 +17,7 @@ public class StepMethodInterceptor  {
 
     private StepMethodHandler scenarioMethodHandler;
 
-    public StepMethodHandler getScenarioMethodHandler() {
-        return scenarioMethodHandler;
-    }
-
-
-    public AtomicInteger getStackDepth() {
-        return stackDepth;
-    }
-
-
-    public void setScenarioMethodHandler(StepMethodHandler scenarioMethodHandler) {
-        this.scenarioMethodHandler = scenarioMethodHandler;
-    }
-
-
-    public void setStackDepth(AtomicInteger stackDepth) {
-        this.stackDepth = stackDepth;
-    }
-
     private AtomicInteger stackDepth;
-
-    /**
-     * abstraction to continue intercepted method
-     */
-    public interface Invoker {
-        Object proceed() throws Throwable;
-    };
 
     /**
      * Whether the method handler is called when a step method is invoked
@@ -54,6 +28,13 @@ public class StepMethodInterceptor  {
      * Whether step methods are actually executed or just skipped
      */
     private boolean methodExecutionEnabled = true;
+
+    /**
+     * abstraction to continue intercepted method
+     */
+    public interface Invoker {
+        Object proceed() throws Throwable;
+    };
 
     public StepMethodInterceptor( StepMethodHandler scenarioMethodHandler, AtomicInteger stackDepth ) {
         this.scenarioMethodHandler = scenarioMethodHandler;
@@ -146,5 +127,25 @@ public class StepMethodInterceptor  {
         this.methodExecutionEnabled = b;
         return previousMethodExecution;
     }
+
+    public StepMethodHandler getScenarioMethodHandler() {
+        return scenarioMethodHandler;
+    }
+
+
+    public AtomicInteger getStackDepth() {
+        return stackDepth;
+    }
+
+
+    public void setScenarioMethodHandler(StepMethodHandler scenarioMethodHandler) {
+        this.scenarioMethodHandler = scenarioMethodHandler;
+    }
+
+
+    public void setStackDepth(AtomicInteger stackDepth) {
+        this.stackDepth = stackDepth;
+    }
+
 
 }

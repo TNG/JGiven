@@ -17,7 +17,7 @@ public interface ScenarioExecutor {
 
     <T> T addStage(Class<T> stepsClass);
 
-    <T> T createJGivenEnhancedStepsClass(Class<T> stepsClass);
+    <T> T createStageClass(Class<T> stepsClass);
 
     void addIntroWord(String word);
 
