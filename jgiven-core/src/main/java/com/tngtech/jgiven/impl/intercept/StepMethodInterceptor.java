@@ -1,8 +1,6 @@
 package com.tngtech.jgiven.impl.intercept;
 
-import static com.tngtech.jgiven.impl.intercept.InvocationMode.NORMAL;
-import static com.tngtech.jgiven.impl.intercept.InvocationMode.NOT_IMPLEMENTED_YET;
-import static com.tngtech.jgiven.impl.intercept.InvocationMode.SKIPPED;
+import static com.tngtech.jgiven.impl.intercept.InvocationMode.*;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -11,8 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.tngtech.jgiven.annotation.NotImplementedYet;
+import com.tngtech.jgiven.annotation.Pending;
 
-public class StepMethodInterceptor  {
+public class StepMethodInterceptor {
     private static final Logger log = LoggerFactory.getLogger( StepMethodInterceptor.class );
 
     private StepMethodHandler scenarioMethodHandler;
@@ -41,9 +40,8 @@ public class StepMethodInterceptor  {
         this.stackDepth = stackDepth;
     }
 
-
-    public final Object doIntercept(final Object receiver, Method method,
-            final Object[] parameters, Invoker invoker) throws Throwable {
+    public final Object doIntercept( final Object receiver, Method method,
+            final Object[] parameters, Invoker invoker ) throws Throwable {
         long started = System.nanoTime();
         InvocationMode mode = getInvocationMode( receiver, method );
 
@@ -52,14 +50,14 @@ public class StepMethodInterceptor  {
             scenarioMethodHandler.handleMethod( receiver, method, parameters, mode );
         }
 
-        if( mode == SKIPPED || mode == NOT_IMPLEMENTED_YET ) {
+        if( mode == SKIPPED || mode == PENDING) {
             return returnReceiverOrNull( receiver, method );
         }
 
         try {
             stackDepth.incrementAndGet();
             return invoker.proceed();
-        } catch (Exception e) {
+        } catch( Exception e ) {
             return handleThrowable( receiver, method, e, System.nanoTime() - started );
         } catch( AssertionError e ) {
             return handleThrowable( receiver, method, e, System.nanoTime() - started );
@@ -107,8 +105,10 @@ public class StepMethodInterceptor  {
         }
 
         if( method.isAnnotationPresent( NotImplementedYet.class )
-                || receiver.getClass().isAnnotationPresent( NotImplementedYet.class ) ) {
-            return NOT_IMPLEMENTED_YET;
+                || receiver.getClass().isAnnotationPresent( NotImplementedYet.class )
+                || method.isAnnotationPresent( Pending.class )
+                || receiver.getClass().isAnnotationPresent( Pending.class ) ) {
+            return PENDING;
         }
 
         return NORMAL;
@@ -132,20 +132,16 @@ public class StepMethodInterceptor  {
         return scenarioMethodHandler;
     }
 
-
     public AtomicInteger getStackDepth() {
         return stackDepth;
     }
 
-
-    public void setScenarioMethodHandler(StepMethodHandler scenarioMethodHandler) {
+    public void setScenarioMethodHandler( StepMethodHandler scenarioMethodHandler ) {
         this.scenarioMethodHandler = scenarioMethodHandler;
     }
 
-
-    public void setStackDepth(AtomicInteger stackDepth) {
+    public void setStackDepth( AtomicInteger stackDepth ) {
         this.stackDepth = stackDepth;
     }
-
 
 }

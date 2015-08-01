@@ -1,8 +1,8 @@
 package com.tngtech.jgiven.report.model;
 
 public enum ExecutionStatus {
-    NONE_IMPLEMENTED,
+    SCENARIO_PENDING,
     SUCCESS,
     FAILED,
-    PARTIALLY_IMPLEMENTED;
+    SOME_STEPS_PENDING;
 }

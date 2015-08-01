@@ -57,7 +57,7 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         assertThat( case0.getExplicitArguments() ).isEmpty();
         assertThat( case0.getSteps() ).hasSize( 3 );
         assertThat( case0.getSteps() ).extracting( "failed" ).isEqualTo( asList( false, false, false ) );
-        assertThat( case0.getSteps() ).extracting( "notImplementedYet" ).isEqualTo( asList( false, false, false ) );
+        assertThat( case0.getSteps() ).extracting( "pending" ).isEqualTo( asList( false, false, false ) );
         assertThat( case0.getSteps() ).extracting( "skipped" ).isEqualTo( asList( false, false, false ) );
 
         StepModel step0 = case0.getSteps().get( 0 );

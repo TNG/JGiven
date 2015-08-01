@@ -2,14 +2,14 @@ package com.tngtech.jgiven.report.model;
 
 final class ExecutionStatusCalculator extends ReportModelVisitor {
     private int failedCount;
-    private int notImplementedCount;
+    private int pendingCount;
     private int totalCount;
     private ExecutionStatus status;
 
     @Override
     public void visit( ScenarioModel scenarioModel ) {
-        if(scenarioModel.isNotImplementedYet()) {
-            status = ExecutionStatus.NONE_IMPLEMENTED;
+        if(scenarioModel.isPending()) {
+            status = ExecutionStatus.SCENARIO_PENDING;
         }
     }
 
@@ -24,8 +24,8 @@ final class ExecutionStatusCalculator extends ReportModelVisitor {
     public void visit( StepModel stepModel ) {
         if( stepModel.isFailed() ) {
             failedCount++;
-        } else if( stepModel.isNotImplementedYet() ) {
-            notImplementedCount++;
+        } else if( stepModel.isPending() ) {
+            pendingCount++;
         }
         totalCount++;
     }
@@ -39,11 +39,11 @@ final class ExecutionStatusCalculator extends ReportModelVisitor {
             return ExecutionStatus.FAILED;
         }
 
-        if( notImplementedCount > 0 ) {
-            if( notImplementedCount < totalCount ) {
-                return ExecutionStatus.PARTIALLY_IMPLEMENTED;
+        if( pendingCount > 0 ) {
+            if( pendingCount < totalCount ) {
+                return ExecutionStatus.SOME_STEPS_PENDING;
             }
-            return ExecutionStatus.NONE_IMPLEMENTED;
+            return ExecutionStatus.SCENARIO_PENDING;
         }
 
         return ExecutionStatus.SUCCESS;

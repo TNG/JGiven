@@ -330,8 +330,8 @@ public class ReportModelBuilder implements ScenarioListener {
 
         scenarioStarted( scenarioDescription );
 
-        if( method.isAnnotationPresent( NotImplementedYet.class ) ) {
-            currentScenarioModel.setNotImplementedYet( true );
+        if( method.isAnnotationPresent( NotImplementedYet.class ) || method.isAnnotationPresent( Pending.class ) ) {
+            currentScenarioModel.setPending(true);
         }
 
         if( currentScenarioCase.getCaseNr() == 1 ) {

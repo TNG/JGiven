@@ -311,7 +311,7 @@ table.steps tr.steps:hover {
     color: red;
 }
 
-.SKIPPED, .NOT_IMPLEMENTED_YET {
+.SKIPPED, .PENDING {
     color: #aaa !important;
 }
 

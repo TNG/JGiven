@@ -107,7 +107,7 @@ public class ReportModel {
     }
 
     public List<ScenarioModel> getPendingScenarios() {
-        return getScenariosWithStatus(ExecutionStatus.NONE_IMPLEMENTED, ExecutionStatus.PARTIALLY_IMPLEMENTED);
+        return getScenariosWithStatus(ExecutionStatus.SCENARIO_PENDING, ExecutionStatus.SOME_STEPS_PENDING);
     }
 
     public List<ScenarioModel> getScenariosWithStatus(ExecutionStatus first, ExecutionStatus... rest) {

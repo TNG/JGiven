@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 /**
  * Marks methods of step definitions as not implemented yet.
  * Such steps will not be executed, but will appear in
- * the report as not implemented yet.
+ * the report as pending.
  * <p>
  * This is useful if one already wants to define the scenario without
  * already implementing all steps, for example, to verify that
@@ -29,12 +29,13 @@ import java.lang.annotation.Target;
  *
  * <h2>Example</h2>
  * <pre>
- * {@literal @}NotImplementedYet
+ * {@literal @}Pending
  * public void my_cool_new_feature() {
  *
  * }
  * </pre>
  *
+ * @since 0.8.0
  */
 @Documented
 @Inherited
@@ -48,7 +49,7 @@ public @interface Pending {
     String value() default "";
 
     /**
-     * Instead of only reporting not implemented yet steps,
+     * Instead of only reporting pending steps,
      * the steps are actually executed.
      * This is useful to see whether some steps fail, for example.
      * Failing steps, however, have no influence on the overall test result.

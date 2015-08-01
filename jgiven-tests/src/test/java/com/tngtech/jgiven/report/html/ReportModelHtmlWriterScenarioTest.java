@@ -25,8 +25,8 @@ public class ReportModelHtmlWriterScenarioTest extends JGivenScenarioTest<GivenR
             { StepStatus.PASSED, "something happens.*</li>" },
             { StepStatus.FAILED, "something happens</span> <span class='badge failed'>failed</span>.*</li>" },
             { StepStatus.SKIPPED, "something happens</span> <span class='badge skipped'>skipped</span>.*</li>" },
-            { StepStatus.NOT_IMPLEMENTED_YET,
-                "something happens</span> <span class='badge notImplementedYet'>not implemented yet</span>.*</li>" },
+            { StepStatus.PENDING,
+                "something happens</span> <span class='badge pending'>pending</span>.*</li>" },
         };
     }
 
@@ -181,10 +181,10 @@ public class ReportModelHtmlWriterScenarioTest extends JGivenScenarioTest<GivenR
     @FeatureTableStepArguments
     public void the_static_HTML_report_generator_handles_data_table_arguments() throws IOException {
         given().a_report_model()
-            .and().a_step_has_a_data_table_with_following_values(asList(
-                asList("header1", "header2"),
-                asList("value1", "value2"),
-                asList("value3", "value4")));
+            .and().a_step_has_a_data_table_with_following_values( asList(
+                asList( "header1", "header2" ),
+                asList( "value1", "value2" ),
+                asList( "value3", "value4" ) ) );
         when().the_HTML_report_is_generated();
         then().the_HTML_report_contains_pattern( "<table class='data-table'>.*\n" +
                 "<tr>.*<th>.*header1.*</th>.*<th>.*header2.*</th>.*</tr>.*\n" +

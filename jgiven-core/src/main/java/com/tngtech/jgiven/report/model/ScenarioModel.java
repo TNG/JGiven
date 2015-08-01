@@ -17,7 +17,7 @@ public class ScenarioModel {
      * A list of tag ids 
      */
     private Set<String> tagIds = Sets.newLinkedHashSet();
-    private boolean notImplementedYet;
+    private boolean pending;
     private List<String> explicitParameters = Lists.newArrayList();
     private List<String> derivedParameters = Lists.newArrayList();
     private boolean casesAsTable;
@@ -142,12 +142,12 @@ public class ScenarioModel {
         this.tagIds = tagIds;
     }
 
-    public boolean isNotImplementedYet() {
-        return notImplementedYet;
+    public boolean isPending() {
+        return pending;
     }
 
-    public void setNotImplementedYet( boolean notImplementedYet ) {
-        this.notImplementedYet = notImplementedYet;
+    public void setPending(boolean pending) {
+        this.pending = pending;
     }
 
 }

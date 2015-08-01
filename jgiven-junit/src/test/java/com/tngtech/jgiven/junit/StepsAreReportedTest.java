@@ -16,6 +16,7 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
+import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.junit.StepsAreReportedTest.TestSteps;
 import com.tngtech.jgiven.report.model.*;
 
@@ -45,7 +46,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         StepModel step = scenarioCase.getSteps().get( 0 );
         assertThat( step.name ).isEqualTo( "some test step" );
         assertThat( step.words ).isEqualTo( Arrays.asList( Word.introWord( "Given" ), new Word( "some test step" ) ) );
-        assertThat( step.isNotImplementedYet() ).isFalse();
+        assertThat( step.isPending() ).isFalse();
 
     }
 
@@ -57,8 +58,8 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         ScenarioModel model = getScenario().getModel().getLastScenarioModel();
         StepModel stepModel = model.getCase( 0 ).getSteps().get( 0 );
-        assertThat( stepModel.isNotImplementedYet() ).isTrue();
-        assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.NONE_IMPLEMENTED );
+        assertThat( stepModel.isPending() ).isTrue();
+        assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SCENARIO_PENDING );
     }
 
     @Test
@@ -69,7 +70,30 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         getScenario().finished();
 
         ScenarioModel model = getScenario().getModel().getLastScenarioModel();
-        assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.PARTIALLY_IMPLEMENTED );
+        assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SOME_STEPS_PENDING );
+    }
+
+    @Test
+    public void steps_annotated_with_Pending_are_recognized() throws Throwable {
+        given().some_pending_step();
+
+        getScenario().finished();
+
+        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        StepModel stepModel = model.getCase( 0 ).getSteps().get( 0 );
+        assertThat( stepModel.isPending() ).isTrue();
+        assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SCENARIO_PENDING );
+    }
+
+    @Test
+    public void if_some_steps_are_pending_then_scenario_status_is_partially() throws Throwable {
+        given().some_test_step();
+        given().some_pending_step();
+
+        getScenario().finished();
+
+        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SOME_STEPS_PENDING );
     }
 
     @Retention( RetentionPolicy.RUNTIME )
@@ -148,6 +172,11 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         @NotImplementedYet
         public void some_not_implemented_step() {
+
+        }
+
+        @Pending
+        public void some_pending_step() {
 
         }
 

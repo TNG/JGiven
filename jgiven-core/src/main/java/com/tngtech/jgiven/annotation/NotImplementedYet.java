@@ -35,7 +35,9 @@ import java.lang.annotation.Target;
  * }
  * </pre>
  *
+ * @deprecated use {@link Pending} instead
  */
+@Deprecated
 @Documented
 @Inherited
 @Retention( RUNTIME )

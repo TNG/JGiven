@@ -6,7 +6,7 @@ public enum InvocationMode {
     NORMAL,
     FAILED,
     SKIPPED,
-    NOT_IMPLEMENTED_YET;
+    PENDING;
 
     public StepStatus toStepStatus() {
         switch( this ) {
@@ -14,8 +14,8 @@ public enum InvocationMode {
                 return StepStatus.PASSED;
             case FAILED:
                 return StepStatus.FAILED;
-            case NOT_IMPLEMENTED_YET:
-                return StepStatus.NOT_IMPLEMENTED_YET;
+            case PENDING:
+                return StepStatus.PENDING;
             case SKIPPED:
                 return StepStatus.SKIPPED;
             default:
