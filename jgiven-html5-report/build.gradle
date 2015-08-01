@@ -13,6 +13,13 @@ task bowerUpdate(type: Exec) {
     outputs.dir bowerComponentsDir
 }
 
+task npmTest(type: Exec) {
+    executable = 'npm'
+    args = ['test']
+}
+
+test.finalizedBy(npmTest)
+
 task copyFontFiles(type: Copy) {
     from bowerComponentsDir + 'fontawesome/fonts'
     into appDir + 'fonts'
