@@ -2,6 +2,10 @@
  * Utility functions
  */
 
+function undefinedOrEmpty(array) {
+  return !array || array.length === 0;
+}
+
 function getTagName(tag) {
   return tag.name ? tag.name : tag.type;
 }

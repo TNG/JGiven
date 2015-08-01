@@ -71,32 +71,33 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
    * navigation and returns the list of root nodes
    */
   function getRootTags() {
-    var rootTags;
-
     _.forEach(_.values(tagScenarioMap), function (tagEntry) {
       var tagNode = getTagNode(tagEntry);
-      var name = getTagName(tagEntry.tag);
-      var nameNode = tagNameMap[name];
-      if (!nameNode) {
-        nameNode = createNameNode(name);
-        tagNameMap[name] = nameNode;
+      var name = tagEntry.tag.name;
+      if (name) {
+        var nameNode = tagNameMap[name];
+        if (!nameNode) {
+          nameNode = createNameNode(name);
+          tagNameMap[name] = nameNode;
+        }
+        nameNode.addTagNode(tagNode);
       }
-      nameNode.addTagNode(tagNode);
     });
 
-    rootTags = _.filter(_.values(tagNameMap), function (tagNode) {
-      return tagNode.subTags().length > 1;
+    var nameNodesWithMultipleEntries = _.filter(_.values(tagNameMap), function (nameNode) {
+      return nameNode.subTags().length > 1;
     });
 
-    rootTags = rootTags.concat(_.map(_.filter(_.values(tagNameMap), function (tagNode) {
-      return tagNode.subTags().length === 1
-        && (!tagNode.subTags()[0].tag().tags
-        || tagNode.subTags()[0].tag().tags.length === 0);
-    }), function (tagNode) {
-      return tagNode.subTags()[0];
-    }));
+    var nodesWithoutParents = _.filter(_.values(tagNodeMap), function (tagNode) {
+      return undefinedOrEmpty(tagNode.tag().tags);
+    });
 
-    return rootTags;
+
+    return _.sortBy(nameNodesWithMultipleEntries.concat(nodesWithoutParents),
+      function (tagNode) {
+        return tagNode.nodeName();
+      });
+
 
     function getTagNode(tagEntry) {
       var tag = tagEntry.tag;
@@ -139,6 +140,10 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
       return node;
     }
 
+    /**
+     * A name node is a pseudo tag node that
+     * has as sub nodes all tags with the same name
+     */
     function createNameNode(name) {
       var node = createNode(name);
 
