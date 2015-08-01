@@ -67,4 +67,4 @@ currentStep.addAttachment( Attachment.fromBase64( base64, MediaType.PNG )
 
 For a full example, see the [Html5ReportStage](https://github.com/TNG/JGiven/blob/master/jgiven-tests/src/test/java/com/tngtech/jgiven/report/html5/Html5ReportStage.java) class that is used by the JGiven tests.
 
-Back: [Tags]({{site.baseurl}}/docs/tags/)
+Back: [Tags]({{site.baseurl}}/docs/tags/) - Next: [Spring]({{site.baseurl}}/docs/spring/)
