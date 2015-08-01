@@ -38,7 +38,7 @@ public class ReportModelHtmlWriterTest extends ScenarioTestBase<GivenTestStep, W
         getScenario().finished();
         ReportModel model = getScenario().getModel();
         String string = ReportModelHtmlWriter.toString( model.getLastScenarioModel() );
-        assertThat( string.replace( '\n', ' ' ) ).matches(
+        assertThat( string.replace( System.getProperty("line.separator"), " ") ).matches(
             ".*"
                     + "<h3.*>.*Values can be multiplied.*</h3>.*"
                     + "<li><span class='introWord'>Given</span> <span class='argument'>" + a + "</span>.*and.*" + b + ".*</li>.*"

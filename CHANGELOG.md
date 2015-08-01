@@ -1,4 +1,16 @@
-# v0.7.4
+# v0.8.0
+
+## New Features
+
+### Enhanced Spring Support [#94](https://github.com/TNG/JGiven/pull/94)
+
+* The Spring support has been greatly improved. JGiven Stages can now be directly managed by the Spring framework, resulting in a much better Spring integration.
+** Note that the usage of Spring is optional and is provided by the `jgiven-spring` module.
+* Introduced `@JGivenStage` to ease writing spring beans that act as JGiven stage
+
+### HTML5 Report
+
+* Classes are shown now in hierarchical navigation tree and scenarios can be listed by package [#91](https://github.com/TNG/JGiven/pull/91)
 
 ## Fixed Issues
 
@@ -8,12 +20,6 @@
 ## New Annotation
 
 * Introduced the `@As` annotation that replaces the `@Description` annotation when used on step methods and test methods. The `@Description` annotation should only be used for descriptions of test classes.
-
-## New Features
-
-### HTML5 Report
-
-* Classes are shown now in hierarchical navigation tree and scenarios can be listed by package [#91](https://github.com/TNG/JGiven/pull/91)
 
 # v0.7.3
 
