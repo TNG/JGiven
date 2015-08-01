@@ -16,6 +16,11 @@
 
 * Classes are shown now in hierarchical navigation tree and scenarios can be listed by package [#91](https://github.com/TNG/JGiven/pull/91)
 
+## Removed Features
+
+### Removed the old static HTML report generator
+* As the HTML5 report supports all the features of the static HTML report, the static HTML report has been completely removed to avoid duplicate efforts when implementing new features.
+
 ## Fixed Issues
 
 * HTML5 Report: tables with duplicate entries cannot be used as step parameters [#89](https://github.com/TNG/JGiven/issues/89)
