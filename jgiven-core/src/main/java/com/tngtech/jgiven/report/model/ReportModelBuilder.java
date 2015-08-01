@@ -485,6 +485,7 @@ public class ReportModelBuilder implements ScenarioListener {
         for( Object singleValue : values ) {
             Tag newTag = originalTag.copy();
             newTag.setValue( String.valueOf( singleValue ) );
+            newTag.setDescription( getDescriptionFromGenerator( tagConfig, annotation, singleValue ) );
             result.add( newTag );
         }
         return result;
