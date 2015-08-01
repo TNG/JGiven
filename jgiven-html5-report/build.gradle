@@ -13,7 +13,12 @@ task bowerUpdate(type: Exec) {
     outputs.dir bowerComponentsDir
 }
 
-task npmTest(type: Exec) {
+task npmInstall(type: Exec) {
+    executable = 'npm'
+    args = ['install']
+}
+
+task npmTest(type: Exec, dependsOn: npmInstall) {
     executable = 'npm'
     args = ['test']
 }
