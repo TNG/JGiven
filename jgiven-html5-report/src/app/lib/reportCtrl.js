@@ -147,7 +147,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.updateCurrentPageToClassName = function (className, options) {
-    $scope.updateCurrentPageToTestCase($scope.classNameScenarioMap[className], options);
+    $scope.updateCurrentPageToTestCase(classService.getTestCaseByClassName(className), options);
   };
 
   $scope.updateCurrentPageToPackage = function (packageName, options) {
@@ -209,7 +209,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.showScenario = function (className, methodName, options) {
-    var scenarios = sortByDescription(_.filter($scope.classNameScenarioMap[className].scenarios, function (x) {
+    var scenarios = sortByDescription(_.filter(classService.getTestCaseByClassName(className).scenarios, function (x) {
       return x.testMethodName === methodName;
     }));
     $scope.currentPage = {
@@ -466,8 +466,14 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.getUrlFromTagId = function getUrlFromTagId(tagId) {
     var tag = $scope.getTagByTagId(tagId);
-    return '#tag/' + getTagName(tag) + '/' + $window.encodeURIComponent(tag.value);
+    return $scope.getUrlFromTag(tag);
   };
+
+  $scope.getUrlFromTag = function getUrlFromTag(tag) {
+    return '#tag/' + getTagName(tag) +
+      (tag.value ? '/' + $window.encodeURIComponent(tag.value) : '');
+
+  }
 
   $scope.getTagByTagId = function (tagId) {
     return tagService.getTagByTagId(tagId);

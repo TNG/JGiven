@@ -6,10 +6,10 @@ jgivenReportApp.factory('dataService', [function () {
   'use strict';
 
   var tagFile = jgivenReport.tagFile;
-  var scenarios = jgivenReport.scenarios;
+  var testCases = jgivenReport.scenarios;
 
   function getAllScenarios() {
-    return _.flatten(_.map(scenarios, function (x) {
+    return _.flatten(_.map(testCases, function (x) {
       return x.scenarios;
     }), true);
   }
@@ -30,26 +30,14 @@ jgivenReportApp.factory('dataService', [function () {
     });
   }
 
-  function getTagByTagId(tagId) {
-    var tagInstance = tagFile.tags[tagId];
-    var tagType = tagFile.tagTypeMap[tagInstance.tagType];
-    var tag = Object.create(tagType);
-    tag.value = tagInstance.value;
-    return tag;
-  }
-
   return {
 
     getTagFile: function () {
       return tagFile;
     },
 
-    getScenarios: function () {
-      return scenarios;
-    },
-
-    getTestClasses: function () {
-      return scenarios;
+    getTestCases: function () {
+      return testCases;
     },
 
     getAllScenarios: getAllScenarios,

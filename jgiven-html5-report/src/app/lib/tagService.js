@@ -8,7 +8,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
   /**
    * Maps tag IDs to tags and their scenarios
    */
-  var tagScenarioMap = getTagScenarioMap(dataService.getScenarios());
+  var tagScenarioMap = getTagScenarioMap(dataService.getTestCases());
 
   /**
    * Maps tag keys to tag nodes
@@ -123,7 +123,8 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
       var node = createNode(tagToString(tag));
 
       node.url = function () {
-        return '#tag/' + window.encodeURIComponent(getTagName(tag)) + '/' + window.encodeURIComponent(tag.value);
+        return '#tag/' + window.encodeURIComponent(getTagName(tag)) +
+          (tag.value ? '/' + window.encodeURIComponent(tag.value) : '');
       };
 
       node.scenarios = function () {
@@ -199,16 +200,20 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
     return tagScenarioMap[getTagKey(tag)].scenarios;
   }
 
-  function getTagByTagId(tagId) {
-    return dataService.getTagByTagId(tagId);
-  }
-
   function getTagByKey(tagKey) {
     return tagScenarioMap[tagKey].tag;
   }
 
   function getTagNameNode(name) {
     return tagNameMap[name];
+  }
+
+  function getTagByTagId(tagId) {
+    var tagInstance = dataService.getTagFile().tags[tagId];
+    var tagType = dataService.getTagFile().tagTypeMap[tagInstance.tagType];
+    var tag = Object.create(tagType);
+    tag.value = tagInstance.value;
+    return tag;
   }
 
   return {

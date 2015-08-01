@@ -133,7 +133,7 @@
             <li class="back"><a href="#{{currentPath()}}">Back</a></li>
             <li><label>Test</label></li>
             <li ng-repeat="tag in tagType.tags">
-              <a href="#tag{{'/' + tagType.type + '/' }}{{tag.value | encodeUri}}">{{tag.prependType ?
+              <a href="{{getUrlFromTag(tag)}}">{{tag.prependType ?
                 tag.name + '-' : ''}}{{tag.value}}</a>
             </li>
           </ul>

@@ -5,30 +5,38 @@
 jgivenReportApp.factory('classService', ['dataService', function (dataService) {
   'use strict';
 
+  /**
+   * Maps full qualified class names to lists of scenarios
+   */
   var classNameScenarioMap = getClassNameScenarioMap();
+
+  /**
+   * Maps full qualified package names to package node objects
+   */
   var packageNodeMap = {};
+
   var rootPackage = getRootPackage();
 
 
   function getClassNameScenarioMap() {
     var classNameScenarioMap = {};
-    var testClasses = dataService.getTestClasses();
+    var testCases = dataService.getTestCases();
 
-    _.forEach(testClasses, function (testClass) {
-      classNameScenarioMap[testClass.className] = testClass;
+    _.forEach(testCases, function (testCase) {
+      classNameScenarioMap[testCase.className] = testCase;
     });
     return classNameScenarioMap;
   }
 
-  function getTestClasses() {
-    return dataService.getTestClasses();
+  function getTestCases() {
+    return dataService.getTestCases();
   }
 
   /**
    * Builds up the navigation tree for classes
    */
   function getRootPackage() {
-    var allClasses = getTestClasses();
+    var allClasses = getTestCases();
     var rootPackage = getPackageNode("");
 
     _.forEach(allClasses, function (testClass) {
@@ -130,9 +138,13 @@ jgivenReportApp.factory('classService', ['dataService', function (dataService) {
     });
   }
 
+  function getTestCaseByClassName(className) {
+    return classNameScenarioMap[className];
+  }
 
   return {
-    getTestClasses: getTestClasses,
+    getTestCases: getTestCases,
+    getTestCaseByClassName: getTestCaseByClassName,
     getScenariosOfPackage: getScenariosOfPackage,
     getRootPackage: function () {
       return rootPackage;
