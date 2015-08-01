@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import com.tngtech.jgiven.annotation.IsTag;
 
 @Feature
-@IsTag( value = "Core Features" )
+@IsTag( name = "Core Features" )
 @Retention( RetentionPolicy.RUNTIME )
 public @interface FeatureCore {
 

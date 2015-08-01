@@ -43,7 +43,6 @@ jgivenReportApp.factory('dataService', [function () {
     getAllScenarios: getAllScenarios,
     getPendingScenarios: getPendingScenarios,
     getFailedScenarios: getFailedScenarios,
-    getTagByTagId: getTagByTagId
 
   };
 }]);

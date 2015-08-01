@@ -2,13 +2,17 @@
 
 ## New Features
 
+### Hierarchical Tags
+
+* Tags can now have parent tags by tagging a tag annotation. This allows you to define tag hierarchies.
+
 ### Enhanced Spring Support [#94](https://github.com/TNG/JGiven/pull/94)
 
 * The Spring support has been greatly improved. JGiven Stages can now be directly managed by the Spring framework, resulting in a much better Spring integration.
 ** Note that the usage of Spring is optional and is provided by the `jgiven-spring` module.
 * Introduced `@JGivenStage` to ease writing spring beans that act as JGiven stage
 
-### HTML5 Report
+### Hierarchical Package Structure in the HTML5 Report
 
 * Classes are shown now in hierarchical navigation tree and scenarios can be listed by package [#91](https://github.com/TNG/JGiven/pull/91)
 
@@ -17,7 +21,7 @@
 * HTML5 Report: tables with duplicate entries cannot be used as step parameters [#89](https://github.com/TNG/JGiven/issues/89)
 * Fixed an issue that the `@Description` annotation was not regarded for methods with the `@IntroWord` [#87](https://github.com/TNG/JGiven/issues/87)
 
-## New Annotation
+## New Annotations
 
 * Introduced the `@As` annotation that replaces the `@Description` annotation when used on step methods and test methods. The `@Description` annotation should only be used for descriptions of test classes.
 

@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import com.tngtech.jgiven.annotation.IsTag;
 
 @FeatureReport
-@IsTag( value = "HTML5 Report",
+@IsTag( name = "HTML5 Report",
     description = "In order to have an interactive JGiven report for non-developers<br>"
             + "As a developer,<br>"
             + "I want that JGiven generates HTML5 reports" )

@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import com.tngtech.jgiven.annotation.IsTag;
 
 @FeatureReport
-@IsTag( value = "AsciiDoc Report",
+@IsTag( name = "AsciiDoc Report",
     description = "In order to easily combine hand-written documentation with JGiven scenarios<br>"
             + "As a developer,<br>"
             + "I want that JGiven generates AsciiDoc reports" )

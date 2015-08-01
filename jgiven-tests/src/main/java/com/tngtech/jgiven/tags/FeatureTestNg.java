@@ -5,9 +5,9 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.tngtech.jgiven.annotation.IsTag;
 
-@Feature
-@IsTag( value = "TestNG",
-    description = "tests can be be executed with TestNG" )
+@FeatureTestFramework
+@IsTag( name = "TestNG",
+    description = "Tests can be be executed with TestNG" )
 @Retention( RetentionPolicy.RUNTIME )
 public @interface FeatureTestNg {
 

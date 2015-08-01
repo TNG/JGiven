@@ -11,7 +11,7 @@ function getTagName(tag) {
 }
 
 function getTagKey(tag) {
-  return getTagName(tag) + '-' + tag.value;
+  return getTagName(tag) + (tag.value ? '-' + tag.value : '');
 }
 
 function tagToString(tag) {

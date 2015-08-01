@@ -5,10 +5,10 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.tngtech.jgiven.annotation.IsTag;
 
-@FeatureTestFramework
-@IsTag( name = "JUnit",
-    description = "Tests can be be executed with JUnit" )
+@Feature
+@IsTag( name = "Supported Test Frameworks",
+    description = "JGiven can be used together with JUnit and TestNG" )
 @Retention( RetentionPolicy.RUNTIME )
-public @interface FeatureJUnit {
+public @interface FeatureTestFramework {
 
 }

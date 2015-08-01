@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import com.tngtech.jgiven.annotation.IsTag;
 
 @FeatureCore
-@IsTag( value = "German Scenarios", description = "Scenarios can be written in German" )
+@IsTag( name = "German Scenarios", description = "Scenarios can be written in German" )
 @Retention( RetentionPolicy.RUNTIME )
 public @interface FeatureGerman {
 

@@ -73,23 +73,27 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
   function getRootTags() {
     _.forEach(_.values(tagScenarioMap), function (tagEntry) {
       var tagNode = getTagNode(tagEntry);
-      var name = tagEntry.tag.name;
-      if (name) {
-        var nameNode = tagNameMap[name];
-        if (!nameNode) {
-          nameNode = createNameNode(name);
-          tagNameMap[name] = nameNode;
-        }
-        nameNode.addTagNode(tagNode);
+      var name = getTagName(tagEntry.tag);
+      var nameNode = tagNameMap[name];
+      if (!nameNode) {
+        nameNode = createNameNode(name);
+        tagNameMap[name] = nameNode;
       }
+      nameNode.addTagNode(tagNode);
     });
 
     var nameNodesWithMultipleEntries = _.filter(_.values(tagNameMap), function (nameNode) {
       return nameNode.subTags().length > 1;
     });
 
+    _.forEach(nameNodesWithMultipleEntries, function (nameNode) {
+      _.forEach(nameNode.subTags(), function (subTag) {
+        subTag.nameNode = nameNode;
+      });
+    });
+
     var nodesWithoutParents = _.filter(_.values(tagNodeMap), function (tagNode) {
-      return undefinedOrEmpty(tagNode.tag().tags);
+      return undefinedOrEmpty(tagNode.tag().tags) && !tagNode.nameNode;
     });
 
 
@@ -133,7 +137,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
       };
 
       node.tag = function () {
-        return tag;
+        return tag
       };
 
 
