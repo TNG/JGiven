@@ -8,9 +8,10 @@ public class JGivenTestConfiguration extends AbstractJGivenConfiguraton {
 
     @Override
     public void configure() {
-        configureTag(Issue.class)
-            .prependType(true)
-            .descriptionGenerator(IssueDescriptionGenerator.class);
+        configureTag( Issue.class )
+            .prependType( true )
+            .color( "orange" )
+            .descriptionGenerator( IssueDescriptionGenerator.class );
     }
 
 }

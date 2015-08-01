@@ -28,7 +28,6 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
    * that are tagged with that tag
    */
   function getTagScenarioMap(scenarios) {
-    var tagEntry;
     var tagScenarioMap = {};
     _.forEach(scenarios, function (testCase) {
       _.forEach(testCase.scenarios, function (scenario) {
@@ -43,7 +42,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
           function addEntry(tagId) {
             var tag = getTagByTagId(tagId);
             var tagKey = getTagKey(tag);
-            tagEntry = tagScenarioMap[tagKey];
+            var tagEntry = tagScenarioMap[tagKey];
             if (!tagEntry) {
               tagEntry = {
                 tag: tag,
@@ -51,7 +50,10 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
               };
               tagScenarioMap[tagKey] = tagEntry;
             }
-            tagEntry.scenarios.push(scenario);
+
+            if (tagEntry.scenarios.indexOf(scenario) == -1) {
+              tagEntry.scenarios.push(scenario);
+            }
 
             _.forEach(tagEntry.tag.tags, function (tagId) {
               addEntry(tagId);
@@ -210,7 +212,8 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
   }
 
   function getTagByKey(tagKey) {
-    return tagScenarioMap[tagKey].tag;
+    var tagEntry = tagScenarioMap[tagKey];
+    return tagEntry && tagEntry.tag;
   }
 
   function getTagNameNode(name) {
