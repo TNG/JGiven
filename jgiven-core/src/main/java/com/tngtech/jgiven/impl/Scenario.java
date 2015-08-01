@@ -10,21 +10,23 @@ package com.tngtech.jgiven.impl;
  */
 public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
 
-    private final GIVEN givenStage;
-    private final WHEN whenStage;
-    private final THEN thenStage;
+    private GIVEN givenStage;
+    private WHEN whenStage;
+    private THEN thenStage;
+    private final Class<GIVEN> givenClass;
+    private final Class<WHEN> whenClass;
+    private final Class<THEN> thenClass;
 
-    @SuppressWarnings( "unchecked" )
-    private Scenario( Class<?> stageClass ) {
-        givenStage = (GIVEN) executor.addStage( stageClass );
-        whenStage = (WHEN) givenStage;
-        thenStage = (THEN) givenStage;
+    private Scenario( Class<GIVEN> stageClass ) {
+        this.givenClass = stageClass;
+        this.whenClass = null;
+        this.thenClass = null;
     }
 
     public Scenario( Class<GIVEN> givenClass, Class<WHEN> whenClass, Class<THEN> thenClass ) {
-        givenStage = executor.addStage( givenClass );
-        whenStage = executor.addStage( whenClass );
-        thenStage = executor.addStage( thenClass );
+        this.givenClass = givenClass;
+        this.whenClass = whenClass;
+        this.thenClass = thenClass;
     }
 
     public GIVEN getGivenStage() {
@@ -82,6 +84,21 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
         super.startScenario( description );
         return this;
 
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void initialize() {
+        super.initialize();
+        if (whenClass == null) {
+            givenStage = (GIVEN) executor.addStage( givenClass );
+            whenStage = (WHEN) givenStage;
+            thenStage = (THEN) givenStage;
+        } else {
+            givenStage = executor.addStage( givenClass );
+            whenStage = executor.addStage( whenClass );
+            thenStage = executor.addStage( thenClass );
+        }
     }
 
     /**

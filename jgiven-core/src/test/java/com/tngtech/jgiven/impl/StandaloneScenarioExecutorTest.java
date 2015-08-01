@@ -2,27 +2,25 @@ package com.tngtech.jgiven.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.google.common.collect.Lists;
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.NotImplementedYet;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
-import com.tngtech.jgiven.impl.intercept.InvocationMode;
-import com.tngtech.jgiven.impl.intercept.NoOpScenarioListener;
-import com.tngtech.jgiven.report.model.NamedArgument;
 
-public class ScenarioExecutorTest {
+public class StandaloneScenarioExecutorTest {
     @Rule
     public final ExpectedException expectedExceptionRule = ExpectedException.none();
 
     @Test
     public void methods_annotated_with_BeforeStage_are_executed_before_the_first_step_is_executed() {
-        ScenarioExecutor executor = new ScenarioExecutor();
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
         BeforeStageStep steps = executor.addStage( BeforeStageStep.class );
         executor.startScenario( "Test" );
         steps.before_stage_was_executed();
@@ -30,7 +28,7 @@ public class ScenarioExecutorTest {
 
     @Test
     public void methods_annotated_with_AfterStage_are_executed_before_the_first_step_of_the_next_stage_is_executed() {
-        ScenarioExecutor executor = new ScenarioExecutor();
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
         AfterStageStep steps = executor.addStage( AfterStageStep.class );
         NextSteps nextSteps = executor.addStage( NextSteps.class );
         executor.startScenario( "Test" );
@@ -40,7 +38,7 @@ public class ScenarioExecutorTest {
 
     @Test
     public void methods_annotated_with_NotImplementedYet_are_not_really_executed() {
-        ScenarioExecutor executor = new ScenarioExecutor();
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
         NotImplementedYetTestStep steps = executor.addStage( NotImplementedYetTestStep.class );
         executor.startScenario( "Test" );
         steps.something_not_implemented_yet();
@@ -49,7 +47,7 @@ public class ScenarioExecutorTest {
 
     @Test
     public void methods_annotated_with_NotImplemented_must_follow_fluent_interface_convention_or_return_null() {
-        ScenarioExecutor executor = new ScenarioExecutor();
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
         NotImplementedYetTestStep steps = executor.addStage( NotImplementedYetTestStep.class );
         executor.startScenario( "Test" );
         assertThat( steps.something_not_implemented_yet_with_wrong_signature() ).isNull();
@@ -57,7 +55,7 @@ public class ScenarioExecutorTest {
 
     @Test
     public void stepclasses_annotated_with_NotImplementedYet_are_not_really_executed() {
-        ScenarioExecutor executor = new ScenarioExecutor();
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
         NotImplementedYetTestStepClass steps = executor.addStage( NotImplementedYetTestStepClass.class );
         executor.startScenario( "Test" );
         steps.something_not_implemented_yet();
@@ -66,7 +64,7 @@ public class ScenarioExecutorTest {
 
     @Test
     public void steps_are_injected() {
-        ScenarioExecutor executor = new ScenarioExecutor();
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
         TestClass testClass = new TestClass();
         executor.injectSteps( testClass );
 
@@ -76,7 +74,7 @@ public class ScenarioExecutorTest {
 
     @Test
     public void recursive_steps_are_injected_correctly() {
-        ScenarioExecutor executor = new ScenarioExecutor();
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
         RecursiveTestClass testClass = new RecursiveTestClass();
 
         executor.injectSteps( testClass );
@@ -91,7 +89,7 @@ public class ScenarioExecutorTest {
         expectedExceptionRule.expectMessage( "Could not execute method 'setup' of class 'BeforeStageWithParameters'" );
         expectedExceptionRule.expectMessage( ", because it requires parameters" );
 
-        ScenarioExecutor executor = new ScenarioExecutor();
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
         BeforeStageWithParameters stage = executor.addStage( BeforeStageWithParameters.class );
         executor.startScenario( "Test" );
         stage.something();

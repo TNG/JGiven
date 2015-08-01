@@ -7,7 +7,6 @@ dependencies {
        This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
        Please review and delete this closure when resolved. */
     }
-
-    testCompile project(':jgiven-junit')
+    compile project(':jgiven-junit')
     testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
 }

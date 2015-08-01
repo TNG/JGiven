@@ -41,7 +41,7 @@ public class ScenarioTestListener implements ITestListener {
         scenario.setModel( scenarioCollectionModel );
 
         Method method = paramITestResult.getMethod().getConstructorOrMethod().getMethod();
-        scenario.getExecutor().startScenario( method, getArgumentsFrom( method, paramITestResult ) );
+        scenario.startScenario( method, getArgumentsFrom( method, paramITestResult ) );
     }
 
     @Override
