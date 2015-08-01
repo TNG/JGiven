@@ -5,7 +5,8 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.tngtech.jgiven.annotation.IsTag;
 
-@IsTag( type = "Feature", value = "Duration", description = "The duration of steps, cases, and scenarios is measured and reported" )
+@FeatureCore
+@IsTag( value = "Duration", description = "The duration of steps, cases, and scenarios is measured and reported" )
 @Retention( RetentionPolicy.RUNTIME )
 public @interface FeatureDuration {
 

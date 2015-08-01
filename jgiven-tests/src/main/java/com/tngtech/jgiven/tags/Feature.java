@@ -5,10 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.tngtech.jgiven.annotation.IsTag;
 
-@IsTag( type = "Feature", value = "Case Diffs",
-    description = "In order to get a better overview over structurally different cases of a scenario<br>"
-            + "As a human,<br>"
-            + "I want the differences highlighted in the generated report" )
+@IsTag
 @Retention( RetentionPolicy.RUNTIME )
 public @interface Feature {
 
