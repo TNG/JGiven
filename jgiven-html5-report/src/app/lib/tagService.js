@@ -20,6 +20,10 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
    */
   var tagNameMap = {};
 
+  /**
+   * An array of root tags
+   */
+  var rootTags;
 
   /**
    * Goes through all scenarios to find all tags.
@@ -68,11 +72,18 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
     return tagScenarioMap;
   }
 
+  function getRootTags() {
+    if (!rootTags) {
+      rootTags = calculateRootTags();
+    }
+    return rootTags;
+  }
+
   /**
    * Builds up a hierarchy of tag nodes that is shown in the
    * navigation and returns the list of root nodes
    */
-  function getRootTags() {
+  function calculateRootTags() {
     _.forEach(_.values(tagScenarioMap), function (tagEntry) {
       var tagNode = getTagNode(tagEntry);
       var name = getTagName(tagEntry.tag);

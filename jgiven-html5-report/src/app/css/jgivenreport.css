@@ -373,11 +373,36 @@ input.search {
     height: 1.7rem;
 }
 
+.tab-bar-search-section {
+    width: 10rem;
+}
+
+#nav-search-mobile {
+    height: 1.7rem;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    width: 14rem;
+}
+
 .search-icon {
     position: absolute;
     left: 1.5rem;
     top: 0.8rem;
     color: #333;
+}
+
+.tab-bar-search-section .search-icon {
+    left: 0rem;
+}
+
+ul.off-canvas-list li label a {
+    border-bottom: none;
+    color: inherit;
+    display: inherit;
+    padding: inherit;
+    transition: none;
+    padding: 0;
 }
 
 .content {
