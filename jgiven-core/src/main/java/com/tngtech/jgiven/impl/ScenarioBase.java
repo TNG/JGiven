@@ -33,7 +33,7 @@ public class ScenarioBase {
     }
 
     public ReportModel getModel() {
-        return modelBuilder.getScenarioCollectionModel();
+        return modelBuilder.getReportModel();
     }
 
     public <T> T addStage( Class<T> stepsClass ) {

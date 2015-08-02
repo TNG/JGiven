@@ -19,16 +19,19 @@ public class CompleteReportModel {
     protected final List<ScenarioModel> failedScenarios = Lists.newArrayList();
     protected final List<ScenarioModel> pendingScenarios = Lists.newArrayList();
     protected final List<ScenarioModel> allScenarios = Lists.newArrayList();
+    protected final Map<String, Tag> tagIdMap = Maps.newLinkedHashMap();
 
     public void addModelFile( ReportModelFile modelFile ) {
         ReportModel model = modelFile.model;
 
         for( ScenarioModel scenario : model.getScenarios() ) {
-            for( Tag tag : scenario.getTags() ) {
+            for( String tagId : scenario.getTagIds() ) {
+                Tag tag = model.getTagWithId( tagId );
                 addToMap( tag, scenario );
             }
         }
 
+        tagIdMap.putAll( model.getTagMap() );
         ReportStatistics statistics = new StatisticsCalculator().getStatistics( model );
 
         statisticsMap.put( modelFile, statistics );
@@ -81,5 +84,9 @@ public class CompleteReportModel {
 
     public List<ReportModelFile> getAllReportModels() {
         return models;
+    }
+
+    public Map<String, Tag> getTagIdMap() {
+        return tagIdMap;
     }
 }

@@ -5,7 +5,8 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.tngtech.jgiven.annotation.IsTag;
 
-@IsTag( type = "Feature", value = "Step Parameters", description = "Steps can have parameters" )
+@FeatureCore
+@IsTag( name = "Step Parameters", description = "Steps can have parameters" )
 @Retention( RetentionPolicy.RUNTIME )
 public @interface FeatureStepParameters {
 

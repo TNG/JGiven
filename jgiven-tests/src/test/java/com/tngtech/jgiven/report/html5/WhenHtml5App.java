@@ -13,7 +13,7 @@ import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 
-public class WhenHtml5Report<SELF extends WhenHtml5Report<?>> extends Html5ReportStage<SELF> {
+public class WhenHtml5App<SELF extends WhenHtml5App<?>> extends Html5AppStage<SELF> {
 
     @ExpectedScenarioState
     protected List<ReportModel> reportModels;

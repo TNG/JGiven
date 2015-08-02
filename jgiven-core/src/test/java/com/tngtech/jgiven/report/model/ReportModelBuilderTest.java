@@ -25,6 +25,8 @@ import com.tngtech.jgiven.base.ScenarioTestBase;
 @RunWith( DataProviderRunner.class )
 public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {
 
+    private ReportModelBuilder reportModelBuilder;
+
     @DataProvider
     public static Object[][] testData() {
         return new Object[][] {
@@ -106,6 +108,44 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         assertThat( tags ).hasSize( 1 );
         assertThat( tags.get( 0 ).getName() ).isEqualTo( "AnnotationWithSingleValue" );
         assertThat( tags.get( 0 ).getValues() ).containsExactly( "testvalue" );
+    }
+
+    @IsTag( name = "AnotherName" )
+    @Retention( RetentionPolicy.RUNTIME )
+    @interface AnnotationWithName {}
+
+    @AnnotationWithName( )
+    static class AnnotationWithNameTestClass {}
+
+    @Test
+    public void testAnnotationWithName() throws Exception {
+        ReportModelBuilder modelBuilder = new ReportModelBuilder();
+        List<Tag> tags = modelBuilder.toTags( AnnotationWithNameTestClass.class.getAnnotations()[0] );
+        assertThat( tags ).hasSize( 1 );
+        Tag tag = tags.get( 0 );
+        assertThat( tag.getName() ).isEqualTo( "AnotherName" );
+        assertThat( tag.getValues() ).isEmpty();
+        assertThat( tag.toIdString() ).isEqualTo( "AnnotationWithName" );
+    }
+
+    @IsTag( ignoreValue = true )
+    @Retention( RetentionPolicy.RUNTIME )
+    @interface AnnotationWithIgnoredValue {
+        String value();
+    }
+
+    @AnnotationWithIgnoredValue( "testvalue" )
+    static class AnnotationWithIgnoredValueTestClass {}
+
+    @Test
+    public void testAnnotationWithIgnoredValueParsing() throws Exception {
+        ReportModelBuilder modelBuilder = new ReportModelBuilder();
+        List<Tag> tags = modelBuilder.toTags( AnnotationWithIgnoredValueTestClass.class.getAnnotations()[0] );
+        assertThat( tags ).hasSize( 1 );
+        Tag tag = tags.get( 0 );
+        assertThat( tag.getName() ).isEqualTo( "AnnotationWithIgnoredValue" );
+        assertThat( tag.getValues() ).isEmpty();
+        assertThat( tag.toIdString() ).isEqualTo( "AnnotationWithIgnoredValue" );
     }
 
     @IsTag
@@ -233,4 +273,33 @@ public class ReportModelBuilderTest extends ScenarioTestBase<GivenTestStep, When
         StepModel step = getScenario().getModel().getFirstStepModelOfLastScenario();
         assertThat( step.words.get( 0 ).getFormattedValue() ).isEqualTo( "abstract step" );
     }
+
+    @IsTag
+    @Retention( RetentionPolicy.RUNTIME )
+    @interface ParentTag {}
+
+    @IsTag
+    @Retention( RetentionPolicy.RUNTIME )
+    @interface ParentTagWithValue {
+        String value();
+    }
+
+    @ParentTagWithValue( "SomeValue" )
+    @ParentTag
+    @IsTag
+    @Retention( RetentionPolicy.RUNTIME )
+    @interface TagWithParentTags {}
+
+    @TagWithParentTags
+    static class AnnotationWithParentTag {}
+
+    @Test
+    public void testAnnotationWithParentTag() throws Exception {
+        reportModelBuilder = new ReportModelBuilder();
+        List<Tag> tags = reportModelBuilder.toTags( AnnotationWithParentTag.class.getAnnotations()[0] );
+        assertThat( tags ).hasSize( 1 );
+        assertThat( tags.get( 0 ).getTags() ).containsAll( Arrays.asList(
+            "ParentTag", "ParentTagWithValue-SomeValue" ) );
+    }
+
 }

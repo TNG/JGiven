@@ -5,7 +5,8 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.tngtech.jgiven.annotation.IsTag;
 
-@IsTag( type = "Feature", value = "Data Tables",
+@FeatureCore
+@IsTag( name = "Data Tables",
     description = "In order to get a better overview over the different cases of a scenario<br>"
             + "As a human,<br>"
             + "I want to have different cases represented as a data table" )

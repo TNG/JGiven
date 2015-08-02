@@ -9,7 +9,7 @@ public abstract class AbstractJGivenConfiguraton {
     private final Map<Class<? extends Annotation>, TagConfiguration> tagConfigurations = Maps.newHashMap();
 
     public final TagConfiguration.Builder configureTag( Class<? extends Annotation> tagAnnotation ) {
-        TagConfiguration configuration = new TagConfiguration();
+        TagConfiguration configuration = new TagConfiguration( tagAnnotation );
         tagConfigurations.put( tagAnnotation, configuration );
         return new TagConfiguration.Builder( configuration );
     }

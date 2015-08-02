@@ -1,7 +1,10 @@
 package com.tngtech.jgiven.config;
 
+import java.lang.annotation.Annotation;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.DefaultTagDescriptionGenerator;
-import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.TagDescriptionGenerator;
 
 /**
@@ -10,6 +13,7 @@ import com.tngtech.jgiven.annotation.TagDescriptionGenerator;
  * @see com.tngtech.jgiven.annotation.IsTag for a documentation of the different values.
  */
 public class TagConfiguration {
+    private final String annotationType;
     private boolean ignoreValue;
     private boolean explodeArray = true;
     private boolean prependType;
@@ -18,7 +22,16 @@ public class TagConfiguration {
     private String color = "";
     private String cssClass = "";
     private Class<? extends TagDescriptionGenerator> descriptionGenerator = DefaultTagDescriptionGenerator.class;
-    private String type = "";
+    private String name = "";
+    private List<String> tags = Lists.newArrayList();
+
+    public TagConfiguration( Class<? extends Annotation> tagAnnotation ) {
+        this.annotationType = tagAnnotation.getSimpleName();
+    }
+
+    public static Builder builder( Class<? extends Annotation> tagAnnotation ) {
+        return new Builder( new TagConfiguration( tagAnnotation ) );
+    }
 
     public static class Builder {
         final TagConfiguration configuration;
@@ -52,8 +65,17 @@ public class TagConfiguration {
             return this;
         }
 
+        /**
+         * @deprecated use {@link #name(String)} instead
+         */
+        @Deprecated
         public Builder type( String s ) {
-            configuration.type = s;
+            configuration.name = s;
+            return this;
+        }
+
+        public Builder name( String s ) {
+            configuration.name = s;
             return this;
         }
 
@@ -70,6 +92,15 @@ public class TagConfiguration {
         public Builder color( String color ) {
             configuration.color = color;
             return this;
+        }
+
+        public Builder tags( List<String> tags ) {
+            configuration.tags = tags;
+            return this;
+        }
+
+        public TagConfiguration build() {
+            return configuration;
         }
 
     }
@@ -100,10 +131,20 @@ public class TagConfiguration {
 
     /**
      * {@link com.tngtech.jgiven.annotation.IsTag#type()}
+     * @deprecated use {@link #getName()} instead
      * @see com.tngtech.jgiven.annotation.IsTag
      */
+    @Deprecated
     public String getType() {
-        return type;
+        return name;
+    }
+
+    /**
+     * {@link com.tngtech.jgiven.annotation.IsTag#name()}
+     * @see com.tngtech.jgiven.annotation.IsTag
+     */
+    public String getName() {
+        return name;
     }
 
     /**
@@ -146,17 +187,12 @@ public class TagConfiguration {
         return cssClass;
     }
 
-    public static TagConfiguration fromIsTag( IsTag isTag ) {
-        TagConfiguration result = new TagConfiguration();
-        result.defaultValue = isTag.value();
-        result.description = isTag.description();
-        result.explodeArray = isTag.explodeArray();
-        result.ignoreValue = isTag.ignoreValue();
-        result.prependType = isTag.prependType();
-        result.type = isTag.type();
-        result.descriptionGenerator = isTag.descriptionGenerator();
-        result.cssClass = isTag.cssClass();
-        result.color = isTag.color();
-        return result;
+    public List<String> getTags() {
+        return tags;
     }
+
+    public String getAnnotationType() {
+        return annotationType;
+    }
+
 }

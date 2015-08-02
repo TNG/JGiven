@@ -69,11 +69,12 @@ public class StaticHtmlReportGenerator extends AbstractReportGenerator {
 
     }
 
-    private void writeScenarios( HtmlTocWriter tocWriter, List<ScenarioModel> failedScenarios, String name, String fileName ) {
-        ReportModel completeReportModel = new ReportModel();
-        completeReportModel.setScenarios( failedScenarios );
-        completeReportModel.setClassName( name );
-        ReportModelHtmlWriter.writeModelToFile( completeReportModel, tocWriter, new File( targetDirectory, fileName ) );
+    private void writeScenarios( HtmlTocWriter tocWriter, List<ScenarioModel> scenarios, String name, String fileName ) {
+        ReportModel reportModel = new ReportModel();
+        reportModel.setScenarios( scenarios );
+        reportModel.setClassName( name );
+        reportModel.setTagMap( this.completeReportModel.getTagIdMap() );
+        ReportModelHtmlWriter.writeModelToFile( reportModel, tocWriter, new File( targetDirectory, fileName ) );
     }
 
     private void writeTagFiles( HtmlTocWriter tocWriter ) {
@@ -84,20 +85,21 @@ public class StaticHtmlReportGenerator extends AbstractReportGenerator {
 
     private void writeTagFile( Tag tag, List<ScenarioModel> value, HtmlTocWriter tocWriter ) {
         try {
-            ReportModel completeReportModel = new ReportModel();
-            completeReportModel.setClassName( tag.getName() );
+            ReportModel reportModel = new ReportModel();
+            reportModel.setClassName( tag.getName() );
             if( tag.getValues().isEmpty() ) {
-                completeReportModel.setClassName( completeReportModel.getClassName() + "." + tag.getValueString() );
+                reportModel.setClassName( reportModel.getClassName() + "." + tag.getValueString() );
             }
-            completeReportModel.setScenarios( value );
-            completeReportModel.setDescription( tag.getDescription() );
+            reportModel.setScenarios( value );
+            reportModel.setDescription( tag.getDescription() );
+            reportModel.setTagMap( completeReportModel.getTagIdMap() );
 
             String fileName = HtmlTocWriter.tagToFilename( tag );
             File targetFile = new File( targetDirectory, fileName );
-            ReportModelHtmlWriter.writeToFile( targetFile, completeReportModel, tocWriter );
+            ReportModelHtmlWriter.writeToFile( targetFile, reportModel, tocWriter );
 
         } catch( Exception e ) {
-            log.error( "Error while trying to write HTML file for tag " + tag.getName() );
+            log.error( "Error while trying to write HTML file for tag " + tag.getName(), e );
         }
     }
 

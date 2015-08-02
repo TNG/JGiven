@@ -40,7 +40,8 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
         try {
             unzipApp( targetDirectory );
             createDataFiles();
-            generateMetaData( targetDirectory );
+            generateMetaData();
+            generateTagFile();
         } catch( IOException e ) {
             throw Throwables.propagate( e );
         }
@@ -59,6 +60,9 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
         createWriter();
 
         caseCountOfCurrentBatch += getCaseCount( model );
+
+        // do not serialize tags as they are serialized separately
+        model.setTagMap( null );
 
         new Gson().toJson( model, writer );
         writer.append( "," );
@@ -109,17 +113,28 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
         List<String> data = Lists.newArrayList();
     }
 
-    private void generateMetaData( File toDir ) throws IOException {
-        File metaDataFile = new File( toDir, "metaData.js" );
+    private void generateMetaData() throws IOException {
+        File metaDataFile = new File( dataDirectory, "metaData.js" );
         log.debug( "Generating " + metaDataFile + "..." );
 
         String content = "jgivenReport.setMetaData(" + new Gson().toJson( metaData ) + " );";
 
         Files.write( content, metaDataFile, Charsets.UTF_8 );
+    }
+
+    private void generateTagFile() throws IOException {
+        File tagFile = new File( dataDirectory, "tags.js" );
+        log.debug( "Generating " + tagFile + "..." );
+
+        TagFile tagFileContent = new TagFile();
+        tagFileContent.fill( completeReportModel.getTagIdMap() );
+        String content = "jgivenReport.setTags(" + new Gson().toJson( tagFileContent ) + " );";
+
+        Files.write( content, tagFile, Charsets.UTF_8 );
 
     }
 
-    private void unzipApp( File toDir ) throws IOException {
+    protected void unzipApp( File toDir ) throws IOException {
         String appZipPath = "/" + Html5ReportGenerator.class.getPackage().getName().replace( '.', '/' ) + "/app.zip";
 
         log.debug( "Unzipping {}...", appZipPath );
