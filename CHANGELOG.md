@@ -4,7 +4,18 @@
 
 ### Hierarchical Tags
 
-* Tags can now have parent tags by tagging a tag annotation. This allows you to define tag hierarchies.
+Tags can now have parent tags by tagging a tag annotation. This allows you to define tag hierarchies.
+
+#### Example
+
+The following example tags the `FeatureHtml5Report` annotation with the `FeatureReport` annotation:
+
+```
+@FeatureReport
+@IsTag( name = "HTML5 Report" )
+@Retention( RetentionPolicy.RUNTIME )
+public @interface FeatureHtml5Report { }
+```
 
 ### Enhanced Spring Support [#94](https://github.com/TNG/JGiven/pull/94)
 

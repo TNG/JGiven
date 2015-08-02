@@ -29,11 +29,11 @@
     </a>
   </div>
   <ul ng-if="node.expanded">
-    <li ng-repeat="leaf in node.leafs()"><a href="{{leaf.url()}}">
+    <li ng-repeat="leaf in node.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
       <i class="fa fa-caret-right transparent"></i>
       &nbsp;{{leaf.nodeName()}}
     </a></li>
-    <li ng-repeat="node in node.childNodes()" ng-include="'tree_template.html'"></li>
+    <li ng-repeat="node in node.childNodes() | orderBy : orderNodes" ng-include="'tree_template.html'"></li>
   </ul>
   <div ng-if="!node.hasChildren()">
     <a href="{{node.url()}}">
@@ -42,23 +42,20 @@
     </a>
   </div>
 
-  <!--
-        <li class="subheading" ng-repeat="tagType in tags">
-          <a ng-if="tagType.tags.length > 1" ng-click="tagType.expanded = !tagType.expanded">
-            <i class="fa fa-caret-right toggle {{tagType.expanded ? 'fa-rotate-90' : ''}}"></i>
-            &nbsp;{{tagType.type}}
-          </a>
-          <ul ng-if="tagType.tags.length > 1 && tagType.expanded" class="tags">
-            <li ng-repeat="tag in tagType.tags">
-              <a href="#tag{{'/' + tagType.type + '/'}}{{tag.value | encodeUri}}">{{tag.prependType ? tag.name + '-' : ''}}{{tag.value}}</a>
-            </li>
-          </ul>
-          <a ng-if="tagType.tags.length === 1"
-             href="#tag{{'/' + tagType.type }}{{tagType.tags[0].value ? '/' + tagType.tags[0].value : '' | encodeUri}}">
-            <i class="fa fa-caret-right" style="visibility: hidden"></i>
-            &nbsp;{{tagType.tags[0].name}}<span ng-if="tagType.tags[0].value">-{{tagType.tags[0].value}}</span></a>
-        </li>
-  -->
+</script>
+
+<script type="text/ng-template" id="tree_mobile_template.html">
+  <a href="">{{node.nodeName()}}</a>
+  <ul class="left-submenu">
+    <li class="back off-canvas-back"><a href="#">Back</a></li>
+    <li class="off-canvas-close off-canvas-label"><a href="{{node.url()}}">{{node.nodeName()}}</a></li>
+    <li class="off-canvas-close" ng-repeat="leaf in node.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
+      {{leaf.nodeName()}}
+    </a></li>
+    <li class="has-submenu" ng-repeat="node in node.childNodes() | orderBy : orderNodes"
+        ng-include="'tree_mobile_template.html'"></li>
+  </ul>
+
 </script>
 
 
@@ -110,44 +107,39 @@
         <a class="left-off-canvas-toggle menu-icon" href="#{{currentPath()}}"><span></span></a>
       </section>
 
-      <div class="right tab-bar-section">
+      <section class="middle tab-bar-section">
         <h1 class="title">JGiven Report</h1>
-      </div>
+      </section>
     </nav>
-
 
     <!-- MOBILE NAVIGATION BAR -->
 
     <aside class="left-off-canvas-menu">
-      <ul class="off-canvas-list">
+      <ul class="off-canvas-list off-canvas-list-fixed" ng-controller="JGivenNavigationCtrl as navigationCtrl">
 
-        <li><label>Summary</label></li>
-        <li><a href="#all">All Scenarios</a></li>
-        <li><a href="#failed">Failed Scenarios</a></li>
-        <li><a href="#pending">Pending Scenarios</a></li>
-
-        <li><label>Tags</label></li>
-        <li ng-repeat="tagType in tags" class="{{tagType.tags.length > 1 ? 'has-submenu' : ''}}">
-          <a ng-if="tagType.tags.length > 1" href="#{{currentPath()}}">{{tagType.type}}</a>
-          <ul ng-if="tagType.tags.length > 1" class="left-submenu">
-            <li class="back"><a href="#{{currentPath()}}">Back</a></li>
-            <li><label>Test</label></li>
-            <li ng-repeat="tag in tagType.tags">
-              <a href="{{getUrlFromTag(tag)}}">{{tag.prependType ?
-                tag.name + '-' : ''}}{{tag.value}}</a>
-            </li>
-          </ul>
-          <a ng-if="tagType.tags.length === 1" href="#tag{{'/' + tagType.type}}">
-            {{tagType.tags[0].name}}<span
-              ng-if="tagType.tags[0].value">-{{tagType.tags[0].value}}</span></a>
+        <li class="off-canvas-close-on-submit">
+          <form ng-submit="searchSubmit()">
+            <input id="nav-search-mobile" class="search" type="text" placeholder="search in scenarios"
+                   ng-model="nav.search">
+            <i class="fa fa-search search-icon"></i>
+            </input>
+          </form>
         </li>
 
+        <li><label>Summary</label></li>
+        <li class="off-canvas-close"><a href="#all">All Scenarios</a></li>
+        <li class="off-canvas-close"><a href="#failed">Failed Scenarios</a></li>
+        <li class="off-canvas-close"><a href="#pending">Pending Scenarios</a></li>
+
+        <li><label>Tags</label></li>
+        <li class="has-submenu" ng-repeat="node in rootTags" ng-include="'tree_mobile_template.html'">
+
         <li><label>Classes</label></li>
-        <li ng-repeat="className in classNames"><a
-            href="#class/{{className.packageName + '.' + className.className}}">
-          {{className.className}}</a></li>
+        <li class="has-submenu" ng-repeat="node in rootPackage.childNodes()"
+            ng-include="'tree_mobile_template.html'"></li>
       </ul>
     </aside>
+
 
     <div class="row content">
 
@@ -234,7 +226,8 @@
 
           <!-- CHART -->
 
-          <div class="small-12 large-4 column statistics-chart-column clearfix" ng-if="!currentPage.embed">
+          <div class="small-12 large-4 column statistics-chart-column clearfix show-for-large-up"
+               ng-if="!currentPage.embed">
             <div class="statistics-chart right" ng-controller="ChartCtrl">
               <canvas class="chart chart-doughnut" data="currentPage.statistics.chartData" labels="labels"
                       colours="colours" options="options"></canvas>
@@ -261,7 +254,7 @@
 
           <!-- STATISTICS -->
 
-          <div id="statistics" class="small-6 columns no-pad-left" ng-if="currentPage.statistics">
+          <div id="statistics" class="small-12 large-6 columns no-pad-left" ng-if="currentPage.statistics">
                 <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}}">
                   <i class="fa fa-check-square {{currentPage.statistics.failed + currentPage.statistics.pending === 0 && currentPage.statistics.success > 0 ? 'check' : 'gray'}}"></i> {{currentPage.statistics.success}} Successful</span>,
                         <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}}"><i
@@ -273,7 +266,7 @@
 
           <!-- DROP DOWNS -->
 
-          <div class="small-6 columns" ng-if="currentPage.scenarios.length > 0">
+          <div class="small-12 large-6 columns" ng-if="currentPage.scenarios.length > 0">
             <ul class="button-group radius right">
               <li><a class="button dropdown small secondary" dropdown-toggle="#group-drop-down">Group
                 By</a>
@@ -524,6 +517,7 @@
 <script src="js/lodash.min.js"></script>
 <script src="lib/util.js"></script>
 <script src="lib/app.js"></script>
+<script src="lib/offCanvasDirective.js"></script>
 <script src="lib/dataService.js"></script>
 <script src="lib/classService.js"></script>
 <script src="lib/tagService.js"></script>
