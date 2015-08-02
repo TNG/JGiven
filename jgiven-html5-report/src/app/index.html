@@ -29,11 +29,11 @@
     </a>
   </div>
   <ul ng-if="node.expanded">
-    <li ng-repeat="leaf in node.leafs()"><a href="{{leaf.url()}}">
+    <li ng-repeat="leaf in node.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
       <i class="fa fa-caret-right transparent"></i>
       &nbsp;{{leaf.nodeName()}}
     </a></li>
-    <li ng-repeat="node in node.childNodes()" ng-include="'tree_template.html'"></li>
+    <li ng-repeat="node in node.childNodes() | orderBy : orderNodes" ng-include="'tree_template.html'"></li>
   </ul>
   <div ng-if="!node.hasChildren()">
     <a href="{{node.url()}}">
@@ -49,10 +49,11 @@
   <ul class="left-submenu">
     <li class="back off-canvas-back"><a href="#">Back</a></li>
     <li class="off-canvas-close off-canvas-label"><a href="{{node.url()}}">{{node.nodeName()}}</a></li>
-    <li class="off-canvas-close" ng-repeat="leaf in node.leafs()"><a href="{{leaf.url()}}">
+    <li class="off-canvas-close" ng-repeat="leaf in node.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
       {{leaf.nodeName()}}
     </a></li>
-    <li class="has-submenu" ng-repeat="node in node.childNodes()" ng-include="'tree_mobile_template.html'"></li>
+    <li class="has-submenu" ng-repeat="node in node.childNodes() | orderBy : orderNodes"
+        ng-include="'tree_mobile_template.html'"></li>
   </ul>
 
 </script>
