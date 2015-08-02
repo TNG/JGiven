@@ -120,11 +120,18 @@ describe("TagService", function () {
     expect(rootTagNames).toEqual(['categoryA', 'categoryB', 'feature', 'issue', 'someA']);
   });
 
-  it("getTagByKey", function () {
+  it("return tags with descriptions", function () {
     var issueTag = tagService.getTagByKey('issue-1');
     expect(issueTag).toBeDefined();
     expect(issueTag.type).toBe('issue');
     expect(issueTag.description).toEqual('issue description');
+  });
+
+  it("returns scenarios with correct tags", function () {
+    var scenarios = tagService.getScenariosByTag(tagService.getTagByKey('issue-1'));
+    expect(scenarios.length).toEqual(1);
+    expect(scenarios[0].tags.length).toEqual(testCases[0].scenarios[0].tagIds.length);
+    expect(_.map(scenarios[0].tags, getTagKey)).toEqual(['issue-1', 'issue-2', 'categoryB', 'feature-A', 'feature-B', 'something-someA']);
   });
 
 });

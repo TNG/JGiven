@@ -16,5 +16,8 @@ jgivenReportApp.controller('JGivenNavigationCtrl', function ($scope, classServic
    */
   $scope.rootPackage = classService.getRootPackage();
 
+  $scope.orderNodes = function (node) {
+    return node.nodeName();
+  };
 
 });

@@ -373,11 +373,43 @@ input.search {
     height: 1.7rem;
 }
 
+.tab-bar-search-section {
+    width: 10rem;
+}
+
+#nav-search-mobile {
+    height: 1.7rem;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    width: 14rem;
+}
+
 .search-icon {
     position: absolute;
     left: 1.5rem;
     top: 0.8rem;
     color: #333;
+}
+
+.tab-bar-search-section .search-icon {
+    left: 0rem;
+}
+
+ul.off-canvas-list li.off-canvas-label > a {
+    background: #444;
+    border-bottom: none;
+    border-top: 1px solid #5e5e5e;
+    color: #999999;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 0.3rem 0.9375rem;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+ul.off-canvas-list li.off-canvas-label > a:hover {
+    background: #222;
 }
 
 .content {

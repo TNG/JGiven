@@ -2,6 +2,16 @@
  * Utility functions
  */
 
+
+String.prototype.capitalize = function () {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+Array.prototype.pushArray = function (arr) {
+  this.push.apply(this, arr);
+};
+
+
 function undefinedOrEmpty(array) {
   return !array || array.length === 0;
 }

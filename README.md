@@ -86,10 +86,23 @@ The following software is required for building and running the tests:
 
 ## Contributing
 
+Contributions are very welcome. There are different ways you can contribute:
+
+1. Improve the documentation
+    * The JGiven documentation lives in the [gh-pages](https://github.com/TNG/JGiven/tree/gh-pages) branch.
+1. Fix/implement known issues
+    * Issues with the label [help wanted](https://github.com/TNG/JGiven/labels/help%20wanted) would be the ideal candidate for that.
+1. Come up with new ideas for improving JGiven
+    * If you have an idea how JGiven can be improved, just open a new issue and describe your idea.
+1. Report bugs
+    * If you find a bug in JGiven, please open a new issue.
+
+If you want to contribute code or documentation please follow the following workflow:
+
 1. Fork the project
-2. Create a new feature branch with your contribution
+2. Create a new feature branch with your contribution (not needed for documentation improvements)
 3. Implement your great new feature or bug fix
-4. Issue a pull request
+4. Create a pull request
 
 ### Code Format
 

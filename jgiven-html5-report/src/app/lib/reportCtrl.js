@@ -63,11 +63,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     if (part[1] === '') {
       $scope.showSummaryPage();
     } else if (part[1] === 'tag') {
-      if (part[3]) {
-        var tag = tagService.getTagByKey(getTagKey({
-          name: part[2],
-          value: part[3]
-        }));
+      var tag = tagService.getTagByKey(getTagKey({
+        name: part[2],
+        value: part[3]
+      }));
+
+      if (tag) {
         $scope.updateCurrentPageToTag(tag, selectedOptions);
       } else {
         var tagNameNode = tagService.getTagNameNode(part[2]);
@@ -413,7 +414,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   function getFilterFunction(page) {
 
     var anyStatusMatches = anyOptionMatches(getSelectedOptions(page.options.statusOptions));
-    var anyTagMatches = anyOptionMatches(getSelectedOptions(page.options.tagOptions));
+    var anyTagMatches = allOptionMatches(getSelectedOptions(page.options.tagOptions));
     var anyClassMatches = anyOptionMatches(getSelectedOptions(page.options.classOptions));
 
     return function (scenario) {
@@ -436,6 +437,24 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
         }
       }
       return false;
+    }
+  }
+
+  function allOptionMatches(filterOptions) {
+    // by default nothing is filtered
+    if (filterOptions.length === 0) {
+      return function () {
+        return true;
+      };
+    }
+
+    return function (scenario) {
+      for (var i = 0; i < filterOptions.length; i++) {
+        if (!filterOptions[i].apply(scenario)) {
+          return false;
+        }
+      }
+      return true;
     }
   }
 
@@ -499,7 +518,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.isHeaderCell = function (rowIndex, columnIndex, headerType) {
-    console.log(headerType);
     if (rowIndex === 0 && (headerType === 'HORIZONTAL' || headerType === 'BOTH')) {
       return true;
     }
@@ -521,4 +539,5 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.init();
 
-});
+})
+;
