@@ -28,7 +28,7 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
             { StepStatus.PASSED, "something happens" },
             { StepStatus.FAILED, "something happens (failed)" },
             { StepStatus.SKIPPED, "something happens (skipped)" },
-            { StepStatus.NOT_IMPLEMENTED_YET, "something happens (not implemented yet)" },
+            { StepStatus.PENDING, "something happens (pending)" },
         };
     }
 

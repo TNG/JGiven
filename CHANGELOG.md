@@ -35,6 +35,14 @@ public @interface FeatureHtml5Report { }
 ## New Annotations
 
 * Introduced the `@As` annotation that replaces the `@Description` annotation when used on step methods and test methods. The `@Description` annotation should only be used for descriptions of test classes.
+* Added `@Pending` annotation to replace the `@NotImplementedYet` annotation.
+
+## Backwards incompatible JSON Model Changes
+
+* The field `notImplementedYet` of the `ScenarioModel` was renamed to `pending`
+* The `StepStatus` `NOT_IMPLEMENTED_YET` was renamed to `PENDING`.
+
+Note: in general, backwards incompatible model changes should be no problem, as long as you use the same version for all JGiven modules (core, html5-report, maven-plugin).
 
 # v0.7.3
 

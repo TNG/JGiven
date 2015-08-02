@@ -6,12 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.BeforeStage;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
 
 public class StandaloneScenarioExecutorTest {
@@ -59,6 +54,32 @@ public class StandaloneScenarioExecutorTest {
         NotImplementedYetTestStepClass steps = executor.addStage( NotImplementedYetTestStepClass.class );
         executor.startScenario( "Test" );
         steps.something_not_implemented_yet();
+        assertThat( true ).as( "No exception was thrown" ).isTrue();
+    }
+
+    @Test
+    public void methods_annotated_with_Pending_are_not_really_executed() {
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        PendingTestStep steps = executor.addStage( PendingTestStep.class );
+        executor.startScenario( "Test" );
+        steps.something_pending();
+        assertThat( true ).as( "No exception was thrown" ).isTrue();
+    }
+
+    @Test
+    public void methods_annotated_with_Pending_must_follow_fluent_interface_convention_or_return_null() {
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        PendingTestStep steps = executor.addStage( PendingTestStep.class );
+        executor.startScenario( "Test" );
+        assertThat( steps.something_pending_with_wrong_signature() ).isNull();
+    }
+
+    @Test
+    public void stepclasses_annotated_with_Pending_are_not_really_executed() {
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        PendingTestStepClass steps = executor.addStage( PendingTestStepClass.class );
+        executor.startScenario( "Test" );
+        steps.something_pending();
         assertThat( true ).as( "No exception was thrown" ).isTrue();
     }
 
@@ -157,6 +178,25 @@ public class StandaloneScenarioExecutorTest {
 
         public void after_stage_was_executed() {
             assertThat( afterStageExecuted ).isTrue();
+        }
+    }
+
+    static class PendingTestStep {
+        @Pending
+        public PendingTestStep something_pending() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Pending
+        public String something_pending_with_wrong_signature() {
+            return "something";
+        }
+    }
+
+    @Pending
+    static class PendingTestStepClass {
+        public PendingTestStepClass something_pending() {
+            throw new UnsupportedOperationException();
         }
     }
 

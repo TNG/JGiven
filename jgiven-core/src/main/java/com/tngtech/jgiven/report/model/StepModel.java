@@ -60,8 +60,8 @@ public class StepModel {
         return this;
     }
 
-    public boolean isNotImplementedYet() {
-        return getStatus() == StepStatus.NOT_IMPLEMENTED_YET;
+    public boolean isPending() {
+        return getStatus() == StepStatus.PENDING;
     }
 
     public boolean isFailed() {

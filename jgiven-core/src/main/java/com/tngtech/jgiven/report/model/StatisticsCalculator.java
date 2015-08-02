@@ -27,7 +27,7 @@ public class StatisticsCalculator {
             ExecutionStatus executionStatus = scenarioModel.getExecutionStatus();
             if( executionStatus == ExecutionStatus.FAILED ) {
                 statistics.numFailedScenarios += 1;
-            } else if( executionStatus == ExecutionStatus.NONE_IMPLEMENTED || executionStatus == ExecutionStatus.PARTIALLY_IMPLEMENTED ) {
+            } else if( executionStatus == ExecutionStatus.SCENARIO_PENDING || executionStatus == ExecutionStatus.SOME_STEPS_PENDING) {
                 statistics.numPendingScenarios += 1;
             } else {
                 statistics.numSuccessfulScenarios += 1;

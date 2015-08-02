@@ -41,7 +41,7 @@ public @interface IsTag {
      * Whether values should be ignored.
      * If true only a single tag is created for the annotation and the value does not appear in the report.
      * This is useful if the value is used as an internal comment
-     * @see NotImplementedYet
+     * @see Pending
      */
     boolean ignoreValue() default false;
 

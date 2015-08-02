@@ -10,7 +10,7 @@ import org.junit.runners.Parameterized.Parameters;
 import com.tngtech.jgiven.GivenScenarioTest;
 import com.tngtech.jgiven.JGivenScenarioTest;
 import com.tngtech.jgiven.tags.FeatureJUnit;
-import com.tngtech.jgiven.tags.FeatureNotImplementedYet;
+import com.tngtech.jgiven.tags.FeaturePending;
 import com.tngtech.jgiven.tags.FeatureTags;
 import com.tngtech.jgiven.tags.FeatureTestNg;
 import com.tngtech.jgiven.tags.Issue;
@@ -35,7 +35,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
     }
 
     @Test
-    @FeatureNotImplementedYet
+    @FeaturePending
     public void failing_tests_annotated_with_NotImplementedYet_are_ignored() {
         given().a_failing_test()
             .and().the_test_is_annotated_with_NotImplementedYet();
@@ -44,7 +44,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
     }
 
     @Test
-    @FeatureNotImplementedYet
+    @FeaturePending
     public void passing_tests_annotated_with_NotImplementedYet_are_ignored() {
         given().a_passing_test()
             .and().the_test_is_annotated_with_NotImplementedYet();
@@ -54,7 +54,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
 
     @Test
     @Issue( "#4" )
-    @FeatureNotImplementedYet
+    @FeaturePending
     public void passing_tests_annotated_with_NotImplementedYet_with_failIfPassed_set_to_true_fail() {
         given().a_passing_test()
             .and().the_test_is_annotated_with_NotImplementedYet()
@@ -65,7 +65,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
 
     @Test
     @Issue( "#4" )
-    @FeatureNotImplementedYet
+    @FeaturePending
     public void failing_tests_annotated_with_NotImplementedYet_with_failIfPassed_set_to_true_are_ignored() {
         given().a_failing_test()
             .and().the_test_is_annotated_with_NotImplementedYet()
@@ -75,7 +75,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
     }
 
     @Test
-    @FeatureNotImplementedYet
+    @FeaturePending
     public void failing_tests_annotated_with_NotImplementedYet_with_executeSteps_set_to_true_are_ignored() {
         given().a_failing_test()
             .and().the_test_is_annotated_with_NotImplementedYet()
