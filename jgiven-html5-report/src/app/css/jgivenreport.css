@@ -396,13 +396,20 @@ input.search {
     left: 0rem;
 }
 
-ul.off-canvas-list li label a {
+ul.off-canvas-list li.off-canvas-label > a {
+    background: #444;
     border-bottom: none;
-    color: inherit;
-    display: inherit;
-    padding: inherit;
-    transition: none;
-    padding: 0;
+    border-top: 1px solid #5e5e5e;
+    color: #999999;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 0.3rem 0.9375rem;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+ul.off-canvas-list li.off-canvas-label > a:hover {
+    background: #222;
 }
 
 .content {
