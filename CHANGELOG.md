@@ -2,7 +2,7 @@
 
 ## New Features
 
-### Hierarchical Tags
+### Hierarchical Tags [#99](https://github.com/TNG/JGiven/pull/99)
 
 Tags can now have parent tags by tagging a tag annotation. This allows you to define tag hierarchies.
 
@@ -29,7 +29,7 @@ public @interface FeatureHtml5Report { }
 
 ## Removed Features
 
-### Removed the old static HTML report generator
+### Removed the old static HTML report generator [#101](https://github.com/TNG/JGiven/pull/101)
 * As the HTML5 report supports all the features of the static HTML report, the static HTML report has been completely removed to avoid duplicate efforts when implementing new features.
 
 ## Fixed Issues
@@ -40,7 +40,7 @@ public @interface FeatureHtml5Report { }
 ## New Annotations
 
 * Introduced the `@As` annotation that replaces the `@Description` annotation when used on step methods and test methods. The `@Description` annotation should only be used for descriptions of test classes.
-* Added `@Pending` annotation to replace the `@NotImplementedYet` annotation.
+* Added `@Pending` annotation to replace the `@NotImplementedYet` annotation. [#100](https://github.com/TNG/JGiven/pull/100)
 
 ## Backwards incompatible JSON Model Changes
 
