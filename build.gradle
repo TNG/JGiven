@@ -144,16 +144,6 @@ subprojects {
         ignoreFailures = true
     }
 
-    task jgivenReport(type: JavaExec) {
-        main = 'com.tngtech.jgiven.report.ReportGenerator'
-        args '--sourceDir=build/reports/jgiven/json',
-             '--targetDir=build/reports/jgiven/html',
-             '--format=html',
-             '--customcss=build/resources/test/jgiven/custom.css'
-
-        classpath = configurations.testCompile
-    }
-
     task jgivenHtml5Report(type: JavaExec) {
         main = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',

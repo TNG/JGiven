@@ -8,4 +8,4 @@ dependencies {
     testCompile group: 'pl.pragmatists', name: 'JUnitParams', version: junitParamsVersion
 }
 
-test.finalizedBy(jgivenReport)
+test.finalizedBy(jgivenHtml5Report)
