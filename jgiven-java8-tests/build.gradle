@@ -8,4 +8,4 @@ dependencies {
 
 sourceCompatibility = targetCompatibility = 1.8
 
-test.finalizedBy(jgivenReport)
+test.finalizedBy(jgivenHtml5Report)

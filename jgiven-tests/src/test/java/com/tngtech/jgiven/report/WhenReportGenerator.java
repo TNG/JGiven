@@ -12,7 +12,6 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.report.ReportGenerator.Format;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
-import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator;
 import com.tngtech.jgiven.report.json.ReportModelReader;
 import com.tngtech.jgiven.report.model.CompleteReportModel;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
@@ -44,10 +43,6 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
 
     protected CompleteReportModel getCompleteReportModel() {
         return new ReportModelReader().readDirectory( jsonReportDirectory );
-    }
-
-    public void the_static_HTML_reporter_is_executed() throws IOException {
-        new StaticHtmlReportGenerator().generate( getCompleteReportModel(), targetReportDir );
     }
 
     private void createReportGenerator() {

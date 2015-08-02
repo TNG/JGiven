@@ -12,7 +12,6 @@ import com.google.common.io.Files;
 import com.tngtech.jgiven.exception.JGivenInstallationException;
 import com.tngtech.jgiven.exception.JGivenInternalDefectException;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
-import com.tngtech.jgiven.report.html.StaticHtmlReportGenerator;
 import com.tngtech.jgiven.report.json.ReportModelReader;
 import com.tngtech.jgiven.report.model.CompleteReportModel;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
@@ -96,9 +95,7 @@ public class ReportGenerator {
 
         CompleteReportModel reportModel = new ReportModelReader().readDirectory( getSourceDirectory() );
 
-        if( format == HTML ) {
-            generateStaticHtmlReport( reportModel );
-        } else if( format == HTML5 ) {
+        if( format == HTML5 || format == HTML ) {
             generateHtml5Report( reportModel );
         } else if( format == TEXT ) {
             new PlainTextReportGenerator().generate( reportModel, getTargetDirectory() );
@@ -106,11 +103,6 @@ public class ReportGenerator {
             new AsciiDocReportGenerator().generate( reportModel, getTargetDirectory() );
         }
 
-    }
-
-    private void generateStaticHtmlReport( CompleteReportModel reportModel ) throws IOException {
-        new StaticHtmlReportGenerator().generate( reportModel, getTargetDirectory() );
-        copyCustomCssFile( getTargetDirectory() );
     }
 
     private void copyCustomCssFile( File targetDirectory ) throws IOException {
@@ -141,7 +133,7 @@ public class ReportGenerator {
 
     private static void printUsageAndExit() {
         System.err.println( "Options: [--format=<format>] [--sourceDir=<dir>] [--targetDir=<dir>] [--customcss=<cssfile>]" ); // NOSONAR
-        System.err.println( "  <format> = html, html5, or text, default is html" );
+        System.err.println( "  <format> = html or text, default is html" );
         System.exit( 1 );
     }
 
