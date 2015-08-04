@@ -11,6 +11,46 @@ Array.prototype.pushArray = function (arr) {
   this.push.apply(this, arr);
 };
 
+var ONE_HOUR_IN_MS = 3600000;
+var ONE_MINUTE_IN_MS = 60000;
+var ONE_SECOND_IN_MS = 1000;
+
+function nanosToReadableUnit(nanos) {
+  var msNum = nanos / 1000000;
+
+  if (msNum < ONE_SECOND_IN_MS) {
+    return Math.floor(msNum) + "ms";
+  }
+
+  if (msNum < ONE_MINUTE_IN_MS) {
+    return parseFloat(msNum / 1000).toFixed(3) + "s";
+  }
+
+  var hours = Math.floor(msNum / ONE_HOUR_IN_MS);
+  var mins = Math.floor((msNum - (hours * ONE_HOUR_IN_MS)) / ONE_MINUTE_IN_MS);
+  var secs = Math.floor((msNum - (hours * ONE_HOUR_IN_MS + mins * ONE_MINUTE_IN_MS)) / ONE_SECOND_IN_MS);
+  var ms = Math.floor(ms);
+
+  var time = secs;
+  var unit = "min";
+
+  if (mins > 0) {
+    if (secs < 10) {
+      secs = "0" + secs;
+    }
+    time = mins + ":" + secs;
+  }
+
+  if (hours > 0) {
+    if (mins < 10) {
+      mins = "0" + mins;
+    }
+    time = hours + ":" + mins;
+    unit = "h";
+  }
+  return time + unit;
+}
+
 
 function undefinedOrEmpty(array) {
   return !array || array.length === 0;

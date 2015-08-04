@@ -260,7 +260,7 @@
                         <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}}"><i
                             class="fa fa-exclamation-circle"></i> {{currentPage.statistics.failed}} Failed</span>,
             <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}}"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
-            <span class="{{currentPage.statistics.count === 0 ? 'gray' : ''}}">{{currentPage.statistics.count}} Total ({{nanosToSeconds(currentPage.statistics.totalNanos)}}s)</span>
+            <span class="{{currentPage.statistics.count === 0 ? 'gray' : ''}}">{{currentPage.statistics.count}} Total ({{nanosToReadableUnit(currentPage.statistics.totalNanos)}})</span>
             <span ng-if="currentPage.filtered > 0">({{ currentPage.filtered }} Filtered)</span>
           </div>
 
@@ -360,7 +360,7 @@
                     <span
                         ng-if="scenario.executionStatus === 'NONE_IMPLEMENTED' || scenario.executionStatus === 'PARTIALLY_IMPLEMENTED'"
                         class="pending label radius secondary">PENDING</span>
-                    <span class="duration"> ({{ nanosToSeconds(scenario.durationInNanos) }}s)</span>
+                    <span class="duration"> ({{ nanosToReadableUnit(scenario.durationInNanos) }})</span>
                   </h4>
 
                   <div ng-if="scenario.expanded || currentPage.print || currentPage.embed"
@@ -434,7 +434,7 @@
                                    class="skipped fa fa-ban"></i>
                               </span>
                               <span ng-if="step.durationInNanos > 10000000"
-                                    class="duration"> ({{ nanosToSeconds(step.durationInNanos) }}s)</span>
+                                    class="duration"> ({{ nanosToReadableUnit(step.durationInNanos) }})</span>
                             </td>
                           </tr>
                         </table>

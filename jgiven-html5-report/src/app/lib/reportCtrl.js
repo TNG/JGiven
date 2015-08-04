@@ -470,11 +470,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     return _.filter(options, 'selected');
   }
 
-
-  $scope.nanosToSeconds = function (nanos) {
-    var secs = nanos / 1000000000;
-    return parseFloat(secs).toFixed(3);
-  };
+  $scope.nanosToReadableUnit = nanosToReadableUnit;
 
   $scope.tagIdToString = function tagIdToString(tagId) {
     var tag = tagService.getTagByTagId(tagId);
