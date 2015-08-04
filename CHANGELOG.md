@@ -23,9 +23,10 @@ public @interface FeatureHtml5Report { }
 ** Note that the usage of Spring is optional and is provided by the `jgiven-spring` module.
 * Introduced `@JGivenStage` to ease writing spring beans that act as JGiven stage
 
-### Hierarchical Package Structure in the HTML5 Report
+### New features in the HTML5 Report
 
 * Classes are shown now in hierarchical navigation tree and scenarios can be listed by package [#91](https://github.com/TNG/JGiven/pull/91)
+* Durations are now shown appropriate units instead of only showing them in seconds [#92](https://github.com/TNG/JGiven/pull/92)
 
 ## Removed Features
 
