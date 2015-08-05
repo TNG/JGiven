@@ -22,6 +22,7 @@ public @interface FeatureHtml5Report { }
 * The Spring support has been greatly improved. JGiven Stages can now be directly managed by the Spring framework, resulting in a much better Spring integration.
 ** Note that the usage of Spring is optional and is provided by the `jgiven-spring` module.
 * Introduced `@JGivenStage` to ease writing spring beans that act as JGiven stage
+* Thanks to [TripleNail](https://github.com/TripleNail) for providing this enhancement!
 
 ### New features in the HTML5 Report
 
