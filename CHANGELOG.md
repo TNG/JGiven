@@ -26,7 +26,8 @@ public @interface FeatureHtml5Report { }
 ### New features in the HTML5 Report
 
 * Classes are shown now in hierarchical navigation tree and scenarios can be listed by package [#91](https://github.com/TNG/JGiven/pull/91)
-* Durations are now shown appropriate units instead of only showing them in seconds [#92](https://github.com/TNG/JGiven/pull/92)
+* Durations are now shown appropriate units instead of only showing them in seconds [#92](https://github.com/TNG/JGiven/issues/92)
+* The navigation bar can now be hidden and resized [#96](https://github.com/TNG/JGiven/issues/96)
 
 ## Removed Features
 
