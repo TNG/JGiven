@@ -151,10 +151,17 @@
 
       <div ng-controller="JGivenNavigationCtrl as navigationCtrl" class="" style="padding-left:0px;"
            ng-if="!currentPage.embed">
-        <div class="hide-for-small">
-          <div class="sidebar">
+        <div class="hide-for-small" ng-if="navHidden">
+          <i class="fa fa-angle-double-right nav-show-icon" ng-click="showNav()"></i>
+        </div>
+
+        <div class="hide-for-small" ng-show="!navHidden">
+          <div id="sidebar">
             <nav>
-              <ul ng-cloak class="side-nav">
+              <i class="fa fa-angle-double-left nav-hide-icon" ng-click="hideNav()"></i>
+              <i id="nav-move-icon" class="fa fa-bars fa-rotate-90" ng-mousedown="startResizeNav($event)"></i>
+
+              <ul ng-cloak class=" side-nav">
                 <li class="heading">
                   <a ng-click="summaryExpanded = !summaryExpanded">Summary</a>
                   <ul ng-if="summaryExpanded">
@@ -210,7 +217,7 @@
 
       <!-- RIGHT SCENARIO PAGE -->
 
-      <div ng-cloak class="scenario-container {{currentPage.embed ? 'embed' : ''}}">
+      <div ng-cloak id="scenario-container" class="{{currentPage.embed ? 'embed' : ''}}">
 
 
         <!-- PAGE TITLE -->
