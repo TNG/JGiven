@@ -28,14 +28,13 @@ h5 {
 .header-fixed {
     position: fixed;
     z-index: 1000;
-    top:0;
-    left:0;
-    right:0;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
-
-ul.tags {
-    list-style: none;
+.tag.hidden {
+    display: none;
 }
 
 .title {
@@ -59,8 +58,8 @@ ul.tags {
 }
 
 .expand-icon:hover, .collapse-icon:hover, .print-icon:hover,
-    .scenario:hover .scenario-link-icon:hover,
-    .remove-bookmark-icon:hover, .add-bookmark-icon:hover {
+.scenario:hover .scenario-link-icon:hover,
+.remove-bookmark-icon:hover, .add-bookmark-icon:hover {
     color: #008cba;
 }
 
@@ -86,7 +85,6 @@ ul.tags {
     position: relative;
 
 }
-
 
 /**
  * Ugly workaround to fix an issue with foundation where
@@ -122,7 +120,6 @@ ul.tags {
 /**
  * <--- Ugly workaround end
  */
-
 
 .scenario-group-header {
     margin-bottom: 10px;
@@ -228,8 +225,8 @@ ul.tags {
 table.steps {
     border: none;
     border-spacing: 0;
-    padding:0;
-    margin:0;
+    padding: 0;
+    margin: 0;
     margin-bottom: 0.5rem;
 }
 
@@ -314,7 +311,7 @@ table.steps tr.steps:hover {
     color: red;
 }
 
-.SKIPPED, .NOT_IMPLEMENTED_YET {
+.SKIPPED, .PENDING {
     color: #aaa !important;
 }
 
@@ -372,8 +369,59 @@ input.search {
     padding-bottom: 0;
 }
 
+.nav-hide-icon, .nav-show-icon {
+    position: absolute;
+    color: #aaa;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.nav-hide-icon {
+    right: 0;
+    top: 0;
+}
+
+.nav-hide-icon:hover {
+    color: black;
+    background: #eee;
+}
+
+.nav-show-icon:hover {
+    color: #333;
+    background: #efefef;
+}
+
+.nav-show-icon {
+    color: #ccc;
+    left: 0.1rem;
+    top: 75px;
+    z-index: 3;
+}
+
+#nav-move-icon {
+    position: absolute;
+    color: #e0e0e0;
+    padding: 5px;
+    right: 1px;
+    top: 400px;
+    z-index: 3;
+    cursor: col-resize;
+}
+
 #nav-search {
     height: 1.7rem;
+}
+
+.tab-bar-search-section {
+    width: 10rem;
+}
+
+#nav-search-mobile {
+    height: 1.7rem;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    width: 14rem;
 }
 
 .search-icon {
@@ -383,11 +431,31 @@ input.search {
     color: #333;
 }
 
+.tab-bar-search-section .search-icon {
+    left: 0rem;
+}
+
+ul.off-canvas-list li.off-canvas-label > a {
+    background: #444;
+    border-bottom: none;
+    border-top: 1px solid #5e5e5e;
+    color: #999999;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 0.3rem 0.9375rem;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+ul.off-canvas-list li.off-canvas-label > a:hover {
+    background: #222;
+}
+
 .content {
     position: relative;
     background: white;
     padding-bottom: 5rem;
-    max-width:100%;
+    max-width: 100%;
     min-height: 100%;
     height: 100%;
 }
@@ -408,7 +476,7 @@ input.search {
     background-color: white;
 }
 
-.scenario-container {
+#scenario-container {
     position: relative;
     padding-top: 1rem;
     padding-left: 3rem;
@@ -421,7 +489,7 @@ input.search {
     min-height: 100%;
 }
 
-.scenario-container.embed {
+#scenario-container.embed {
     margin-left: 0;
     margin-top: 0;
     border-left: none;
@@ -431,7 +499,7 @@ body, .footer-bottom {
     background: none repeat scroll 0 0 white;
 }
 
-.sidebar {
+#sidebar {
     background: none repeat scroll 0 0 #fafafa;
     padding: 0px;
     position: fixed;
@@ -441,16 +509,18 @@ body, .footer-bottom {
     width: 25rem;
 }
 
-.side-nav li a:not(.button){
+ul.tags {
+    list-style: none;
+    margin-left: 0.8rem;
+}
+
+.side-nav li a:not(.button) {
     padding: 0.5rem 1.8rem;
 }
 
-.side-nav li li a:not(.button){
-    padding: 0.1rem 1.9rem;
-}
-
-.side-nav li li li a:not(.button){
-    padding: 0.1rem 3.3rem;
+.side-nav li li a:not(.button) {
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
 }
 
 .side-nav, .side-nav ul {
@@ -462,6 +532,11 @@ body, .footer-bottom {
     margin-left: 0;
 }
 
+.side-nav ul ul {
+    margin-left: 0.8rem;
+    margin-top: 0.3rem;
+}
+
 li.heading {
     margin-top: 0.5rem;
 }
@@ -469,7 +544,6 @@ li.heading {
 li.subheading {
     margin-top: 0.2rem;
 }
-
 
 li.heading ul {
     text-transform: none;
@@ -483,7 +557,48 @@ li.subheading {
 li.subheading > ul {
     padding-top: 0.5rem;
     padding-left: 0rem;
-    margin-left: 0;
+    margin-left: 1.3rem;
+    margin-top: 0;
+}
+
+/**
+ * Navigation trees
+ */
+
+i.transparent {
+    color: transparent;
+}
+
+.open-tree-node-icon {
+    color: #eee;
+}
+
+div.tree-node {
+    position: relative;
+}
+
+div.tree-node:hover {
+    background-color: #eee;
+}
+
+div.tree-node:hover .open-tree-node-icon {
+    color: inherit;
+}
+
+a.show-tree-node-link {
+    display: inline !important;
+    position: absolute;
+    right: 1.8rem;
+    top: 0;
+    padding: 0 !important;
+}
+
+div.tree-node:hover a {
+    background: none !important;
+}
+
+a.show-tree-link:hover {
+    background: none !important;
 }
 
 .footer-bottom {
@@ -506,8 +621,8 @@ li.subheading > ul {
     top: 76px;
     bottom: 0;
     left: 0;
-    right:0;
-    background-color: rgba(255,255,255,0.8);
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.8);
     z-index: 2000;
 }
 
@@ -524,7 +639,7 @@ li.subheading > ul {
 }
 
 .off-canvas-wrap {
-   overflow: auto;
+    overflow: auto;
 }
 
 .page-statistics {
@@ -549,35 +664,46 @@ li.subheading > ul {
     padding-left: 0;
 }
 
-
 @media only screen and (max-width: 64em) {
-    .scenario-container {
-        margin-left: 0;
+    #scenario-container {
+        margin-left: 0 !important;
         padding-left: 2rem;
         border-left: none;
         margin-top: 0;
     }
 
-    .sidebar, .header-fixed, .page-icon-bar, .scenario-link-icon {
+    #sidebar, .header-fixed, .page-icon-bar, .scenario-link-icon {
         display: none;
     }
 }
 
 @media only screen and (min-width: 64.063em) {
     .tab-bar {
-        display:none;
+        display: none;
     }
 }
 
 @media only screen and (min-width: 64.063em) and (max-width: 90em) {
-    .scenario-container {  margin-left: 15rem;  }
-    .sidebar { width: 15rem; }
+    #scenario-container {
+        margin-left: 15rem;
+    }
+
+    #sidebar {
+        width: 15rem;
+    }
 }
 
 @media only screen and (min-width: 90.063em) and (max-width: 120em) {
-    .scenario-container {  margin-left: 21rem;  }
-    .sidebar { width: 21rem; }
+    #scenario-container {
+        margin-left: 21rem;
+    }
+
+    #sidebar {
+        width: 21rem;
+    }
 }
 
 /* avoid showing angularjs expressions on page loading */
-[ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important
+}
