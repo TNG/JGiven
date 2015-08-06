@@ -20,14 +20,15 @@ public class CommonReportHelper {
             return;
         }
 
-        if( model.getScenarios().isEmpty() ) {
+        if( model == null || model.getScenarios().isEmpty() ) {
             return;
         }
 
         new CaseArgumentAnalyser().analyze( model );
 
         if( Config.config().textReport() ) {
-            new PlainTextReporter().write( model ).flush();;
+            new PlainTextReporter().write( model ).flush();
+            ;
         }
 
         Optional<File> optionalReportDir = Config.config().getReportDir();
