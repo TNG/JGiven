@@ -6,16 +6,17 @@ import com.tngtech.jgiven.format.BooleanFormatter;
 public class GivenTestStep extends Stage<GivenTestStep> {
 
     @ProvidedScenarioState
-    int someIntValue;
-
-    @ProvidedScenarioState
     int value1;
 
     @ProvidedScenarioState
     int value2;
 
     public void some_integer_value( int someIntValue ) {
-        this.someIntValue = someIntValue;
+        this.value1 = someIntValue;
+    }
+
+    public void another_integer_value( int anotherValue ) {
+        this.value2 = anotherValue;
     }
 
     public void $d_and_$d( int value1, int value2 ) {

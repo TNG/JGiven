@@ -3,7 +3,7 @@ package com.tngtech.jgiven;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
+import com.tngtech.jgiven.annotation.Pending;
 
 public class ThenTestStep extends Stage<ThenTestStep> {
     @ExpectedScenarioState
@@ -20,7 +20,7 @@ public class ThenTestStep extends Stage<ThenTestStep> {
         return self();
     }
 
-    @NotImplementedYet
+    @Pending
     public ThenTestStep something_else_not() {
         return self();
     }

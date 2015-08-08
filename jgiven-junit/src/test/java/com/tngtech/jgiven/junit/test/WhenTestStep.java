@@ -1,15 +1,12 @@
 package com.tngtech.jgiven.junit.test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 
 public class WhenTestStep extends Stage<WhenTestStep> {
-    @ExpectedScenarioState
-    int someIntValue;
-
     @ExpectedScenarioState
     int value1;
 
@@ -24,7 +21,7 @@ public class WhenTestStep extends Stage<WhenTestStep> {
     }
 
     public void multiply_with_two() {
-        intResult = someIntValue * 2;
+        intResult = value1 * 2;
     }
 
     public void something() {}

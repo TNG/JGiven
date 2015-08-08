@@ -27,9 +27,9 @@ public class ScenarioBase {
     public ScenarioBase() {
     }
 
-    public void setModel( ReportModel scenarioCollectionModel ) {
+    public void setModel( ReportModel reportModel ) {
         assertNotInitialized();
-        modelBuilder.setReportModel( scenarioCollectionModel );
+        modelBuilder.setReportModel( reportModel );
     }
 
     public ReportModel getModel() {

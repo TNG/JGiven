@@ -24,8 +24,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Primitives;
 import com.tngtech.jgiven.impl.ScenarioBase;
-import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ParameterNameUtil;
+import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModelBuilder;
 
@@ -35,11 +35,10 @@ public class ScenarioExecutionRule implements MethodRule {
 
     private static final Logger log = LoggerFactory.getLogger( ScenarioExecutionRule.class );
 
-    private final Object testInstance;
-    private final ScenarioBase scenario;
+    protected final ScenarioBase scenario;
 
     /**
-     * @deprecated use {@link #ScenarioExecutionRule(Object, com.tngtech.jgiven.impl.ScenarioBase)} instead
+     * @deprecated use {@link #ScenarioExecutionRule(com.tngtech.jgiven.impl.ScenarioBase)}
      */
     @Deprecated
     public ScenarioExecutionRule( ScenarioReportRule reportRule, Object testInstance, ScenarioBase scenario ) {
@@ -51,9 +50,17 @@ public class ScenarioExecutionRule implements MethodRule {
      * @param testInstance the instance of the test class
      * @param scenario the scenario
      * @since 0.7.0
+     * @deprecated use {@link #ScenarioExecutionRule(com.tngtech.jgiven.impl.ScenarioBase)}
      */
+    @Deprecated
     public ScenarioExecutionRule( Object testInstance, ScenarioBase scenario ) {
-        this.testInstance = testInstance;
+        this.scenario = scenario;
+    }
+
+    /**
+     * @since 0.8.1
+     */
+    public ScenarioExecutionRule( ScenarioBase scenario ) {
         this.scenario = scenario;
     }
 
@@ -96,8 +103,8 @@ public class ScenarioExecutionRule implements MethodRule {
     }
 
     protected void starting( Statement base, FrameworkMethod testMethod, Object target ) {
-        scenario.setModel( ScenarioModelHolder.getInstance().getReportModel( testInstance.getClass() ) );
-        scenario.getExecutor().injectSteps( testInstance );
+        scenario.setModel( ScenarioModelHolder.getInstance().getReportModel( target.getClass() ) );
+        scenario.getExecutor().injectSteps( target );
 
         Class<?> testClass = target.getClass();
         ReportModelBuilder modelBuilder = scenario.getModelBuilder();
@@ -106,7 +113,7 @@ public class ScenarioExecutionRule implements MethodRule {
         scenario.startScenario( testMethod.getMethod(), getNamedArguments( base, testMethod, target ) );
 
         // inject state from the test itself
-        scenario.getExecutor().readScenarioState( testInstance );
+        scenario.getExecutor().readScenarioState( target );
     }
 
     @VisibleForTesting
@@ -129,7 +136,7 @@ public class ScenarioExecutionRule implements MethodRule {
             arguments = getArgumentsFrom( constructor, target );
         }
 
-        return ParameterNameUtil.mapArgumentsWithParameterNames(constructorOrMethod, arguments);
+        return ParameterNameUtil.mapArgumentsWithParameterNames( constructorOrMethod, arguments );
     }
 
     private static List<Object> getArgumentsFrom( Object object, String fieldName ) {

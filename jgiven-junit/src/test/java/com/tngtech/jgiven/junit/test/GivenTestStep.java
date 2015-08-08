@@ -7,16 +7,13 @@ import com.tngtech.jgiven.annotation.Table;
 public class GivenTestStep extends Stage<GivenTestStep> {
 
     @ProvidedScenarioState
-    int someIntValue;
-
-    @ProvidedScenarioState
     int value1;
 
     @ProvidedScenarioState
     int value2;
 
     public GivenTestStep some_integer_value( int someIntValue ) {
-        this.someIntValue = someIntValue;
+        this.value1 = someIntValue;
         return self();
     }
 
@@ -30,6 +27,7 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     }
 
     public GivenTestStep another_integer_value( int secondArg ) {
+        value2 = secondArg;
         return self();
     }
 
