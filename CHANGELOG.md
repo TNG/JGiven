@@ -29,6 +29,8 @@ public @interface FeatureHtml5Report { }
 * Classes are shown now in hierarchical navigation tree and scenarios can be listed by package [#91](https://github.com/TNG/JGiven/pull/91)
 * Durations are now shown appropriate units instead of only showing them in seconds [#92](https://github.com/TNG/JGiven/issues/92)
 * The navigation bar can now be hidden and resized [#96](https://github.com/TNG/JGiven/issues/96)
+* Failed scenarios are now colored in red, pending scenarios are greyed out
+* In the Summary section, the number of scenarios for each status are shown
 
 ### New `style` attribute for the `@IsTag` annotation
 
