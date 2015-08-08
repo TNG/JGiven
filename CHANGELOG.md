@@ -36,6 +36,9 @@ public @interface FeatureHtml5Report { }
 
 * The new `style` attribute allows you to define arbitrary inline styles for tags that will be applied to the tag in the HTML5 report
 
+### JUnit: New `StandaloneScenarioRule`
+* With this rule it is now easier to use JGiven without inheriting from `ScenarioTest`. Just put this rule as a `@Rule` and the `ScenarioReportRule` as a `@ClassRule` into your test class and you can use JGiven by injecting stages with `@ScenarioStage`.
+
 ## Removed Features
 
 ### Removed the old static HTML report generator [#101](https://github.com/TNG/JGiven/pull/101)
@@ -46,6 +49,9 @@ public @interface FeatureHtml5Report { }
 * HTML5 Report: tables with duplicate entries cannot be used as step parameters [#89](https://github.com/TNG/JGiven/issues/89)
 * HTML5 Report: fixed navigation and added searching in the mobile version
 * Fixed an issue that the `@Description` annotation was not regarded for methods with the `@IntroWord` [#87](https://github.com/TNG/JGiven/issues/87)
+* TestNG: fixed missing support for injection of stages into the test class using the `@ScenarioStage` annotation
+* TestNG: fixed missing support for `@ScenarioState` annotation in test classes
+* Removed unneeded ICU dependency
 
 ## New Annotations
 
