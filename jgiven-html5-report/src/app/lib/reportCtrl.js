@@ -25,7 +25,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   $scope.nav = {};
   $scope.bookmarks = [];
 
-  $scope.totalStatistics;
+  $scope.totalStatistics = undefined;
 
   $scope.init = function () {
 
@@ -328,7 +328,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     $location.path("search/" + $scope.nav.search);
   };
 
-  $scope.search = function search(searchString) {
+  $scope.search = function search(searchString, options) {
     console.log("Searching for " + searchString);
 
     $scope.currentPage = {
@@ -342,7 +342,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     $timeout(function () {
       $scope.currentPage.scenarios = searchService.findScenarios(searchString);
       $scope.currentPage.loading = false;
-      $scope.currentPage.options = optionService.getDefaultOptions($scope.currentPage.scenarios);
+      $scope.currentPage.options = optionService.getOptions($scope.currentPage.scenarios, options);
       $scope.applyOptions();
     }, 1);
   };
