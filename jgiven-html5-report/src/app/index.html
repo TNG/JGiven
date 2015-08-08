@@ -159,7 +159,9 @@
           <div id="sidebar">
             <nav>
               <i class="fa fa-angle-double-left nav-hide-icon" ng-click="hideNav()"></i>
-              <i id="nav-move-icon" class="fa fa-bars fa-rotate-90" ng-mousedown="startResizeNav($event)"></i>
+
+              <div id="nav-move-icon-container"><i id="nav-move-icon" class="fa fa-bars fa-rotate-90"
+                                                   ng-mousedown="startResizeNav($event)"></i></div>
 
               <ul ng-cloak class=" side-nav">
                 <li class="heading">

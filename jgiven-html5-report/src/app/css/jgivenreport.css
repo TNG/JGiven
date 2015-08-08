@@ -411,13 +411,17 @@ input.search {
     z-index: 3;
 }
 
-#nav-move-icon {
+#nav-move-icon-container {
     position: absolute;
-    color: #e0e0e0;
     padding: 5px;
-    right: 1px;
+    right: 15px;
     top: 400px;
     z-index: 3;
+}
+
+#nav-move-icon {
+    position: fixed;
+    color: #e0e0e0;
     cursor: col-resize;
 }
 
