@@ -21,6 +21,7 @@ public class TagConfiguration {
     private String description = "";
     private String color = "";
     private String cssClass = "";
+    private String style = "";
     private Class<? extends TagDescriptionGenerator> descriptionGenerator = DefaultTagDescriptionGenerator.class;
     private String name = "";
     private List<String> tags = Lists.newArrayList();
@@ -94,6 +95,11 @@ public class TagConfiguration {
             return this;
         }
 
+        public Builder style( String style ) {
+            configuration.style = style;
+            return this;
+        }
+
         public Builder tags( List<String> tags ) {
             configuration.tags = tags;
             return this;
@@ -106,33 +112,29 @@ public class TagConfiguration {
     }
 
     /**
-     * {@link com.tngtech.jgiven.annotation.IsTag#value()}
-     * @see com.tngtech.jgiven.annotation.IsTag
+     * @see com.tngtech.jgiven.annotation.IsTag#value
      */
     public String getDefaultValue() {
         return defaultValue;
     }
 
     /**
-     * {@link com.tngtech.jgiven.annotation.IsTag#description()}
-     * @see com.tngtech.jgiven.annotation.IsTag
+     * @see com.tngtech.jgiven.annotation.IsTag#description
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * {@link com.tngtech.jgiven.annotation.IsTag#descriptionGenerator()}
-     * @see com.tngtech.jgiven.annotation.IsTag
+     * @see com.tngtech.jgiven.annotation.IsTag#descriptionGenerator
      */
     public Class<? extends TagDescriptionGenerator> getDescriptionGenerator() {
         return descriptionGenerator;
     }
 
     /**
-     * {@link com.tngtech.jgiven.annotation.IsTag#type()}
      * @deprecated use {@link #getName()} instead
-     * @see com.tngtech.jgiven.annotation.IsTag
+     * @see com.tngtech.jgiven.annotation.IsTag#type
      */
     @Deprecated
     public String getType() {
@@ -140,48 +142,49 @@ public class TagConfiguration {
     }
 
     /**
-     * {@link com.tngtech.jgiven.annotation.IsTag#name()}
-     * @see com.tngtech.jgiven.annotation.IsTag
+     * @see com.tngtech.jgiven.annotation.IsTag#name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * {@link com.tngtech.jgiven.annotation.IsTag#explodeArray()}
-     * @see com.tngtech.jgiven.annotation.IsTag
+     * @see com.tngtech.jgiven.annotation.IsTag#explodeArray
      */
     public boolean isExplodeArray() {
         return explodeArray;
     }
 
     /**
-     * {@link com.tngtech.jgiven.annotation.IsTag#ignoreValue()}
-     * @see com.tngtech.jgiven.annotation.IsTag
+     * @see com.tngtech.jgiven.annotation.IsTag#ignoreValue
      */
     public boolean isIgnoreValue() {
         return ignoreValue;
     }
 
     /**
-     * {@link com.tngtech.jgiven.annotation.IsTag#prependType()}
-     * @see com.tngtech.jgiven.annotation.IsTag
+     * @see com.tngtech.jgiven.annotation.IsTag#prependType
      */
     public boolean isPrependType() {
         return prependType;
     }
 
     /**
-     * {@link com.tngtech.jgiven.annotation.IsTag#color()} 
-     * @see com.tngtech.jgiven.annotation.IsTag
+     * @see com.tngtech.jgiven.annotation.IsTag#color
      */
     public String getColor() {
         return color;
     }
 
     /**
-     * {@link com.tngtech.jgiven.annotation.IsTag#cssClass()} 
-     * @see com.tngtech.jgiven.annotation.IsTag
+     * @see com.tngtech.jgiven.annotation.IsTag#style
+     */
+    public String getStyle() {
+        return style;
+    }
+
+    /**
+     * @see com.tngtech.jgiven.annotation.IsTag#cssClass
      */
     public String getCssClass() {
         return cssClass;

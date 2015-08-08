@@ -5,9 +5,15 @@ include ':jgiven-maven-plugin'
 include ':jgiven-junit'
 include ':jgiven-testng'
 include ':jgiven-spring'
-include ':jgiven-tests'
 include ':jgiven-html5-report'
-include ':jgiven-examples'
-if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+
+// At least Java 7 is required for the tests as Selenium requires it
+// Still the other projects should be built and tested with Java 6
+if (JavaVersion.current().isJava7Compatible()) {
+    include ':jgiven-tests'
+    include ':jgiven-examples'
+}
+
+if (JavaVersion.current().isJava8Compatible()) {
     include ':jgiven-java8-tests'
 }

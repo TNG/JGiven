@@ -182,6 +182,14 @@ h5 {
     margin-left: 1.1rem;
 }
 
+.scenario-title.failed {
+    color: red;
+}
+
+.scenario-title.pending {
+    color: gray;
+}
+
 .case-expand-icon {
     width: 1rem;
 }
@@ -204,7 +212,7 @@ h5 {
     font-weight: normal !important;
 }
 
-.case-count, .nav-count {
+.case-count {
     vertical-align: text-bottom;
 }
 
@@ -219,7 +227,13 @@ h5 {
 }
 
 .nav-count {
+    margin-top: -2px;
     float: right;
+}
+
+.nav-count.failed {
+    background-color: red;
+    color: white;
 }
 
 table.steps {
@@ -295,10 +309,9 @@ table.steps tr.steps:hover {
     color: #666;
 }
 
-.failed {
-    color: red;
+.label.failed {
+    color: white;
     vertical-align: middle;
-    font-size: 0.5rem !important;
     margin-bottom: 0.2rem;
 }
 
@@ -318,7 +331,7 @@ table.steps tr.steps:hover {
 .PASSED {
 }
 
-.pending {
+.label.pending {
     vertical-align: middle;
     margin-bottom: 0.2rem;
 }

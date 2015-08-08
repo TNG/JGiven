@@ -79,7 +79,8 @@ After you have cloned the Git repository execute the following command to build 
 
 The following software is required for building and running the tests:
 
-* JDK 1.6 (`JAVA_HOME` and `PATH` should be set accordingly)
+* JDK 1.7 (`JAVA_HOME` and `PATH` should be set accordingly)
+    - Note that JGiven is built and compatible with Java 1.6, however, because of some test libraries, Java 1.7 is required for executing the tests in the `jgiven-tests` project
 * Gradle (is automatically downloaded by the `gradlew` script)
 * Bower (required for the HTML5 report generator, can be installed with `sudo npm install -g bower`)
 * PhantomJS (required for the Selenium tests of the HTML5 report, can be installed under Ubuntu with `sudo apt-get install phantomjs`)

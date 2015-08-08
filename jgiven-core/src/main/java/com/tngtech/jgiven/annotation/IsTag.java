@@ -92,11 +92,13 @@ public @interface IsTag {
     boolean prependType() default false;
 
     /**
-     * Sets a CSS class that should be used in HTML reports for this tag.
+     * Sets a CSS class that should be used in the HTML report for this tag.
      * <p>
      * The default CSS class is {@code 'tag-<name>'} where {@code <name>} is the type of the tag
+     * </p>
      * <p>
      * Non-HTML reports ignore this attribute
+     * </p>
      * 
      * @since 0.7.2
      */
@@ -106,14 +108,33 @@ public @interface IsTag {
      * A color that should be used in reports for this tag.
      * <p>
      * It depends on the type of the report whether and how this value is interpreted.
-     * HTML reports take this value as the background color for the tag.
+     * HTML reports take this value as the <b>background color</b> for the tag.
+     * </p>
      * <p>
      * Example values for the HTML report are 'red', '#ff0000', 'rgba(100,0,0,0.5)'
+     * </p>
      * <p>
      * This attribute is for simple use cases.
-     * For advanced styling options use the {@link #cssClass()} attribute instead.  
+     * For advanced styling options use the {@link #cssClass()} or {@link #style()} attributes instead.
+     * </p>
      * 
      * @since 0.7.2
      */
     String color() default "";
+
+    /**
+     * Defines an inline style that is used in the HTML report for this tag.
+     * <p>
+     * This is an alternative to the {@link #cssClass()} attribute.
+     * </p>
+     * For example, to given the tag a white color and a red background-color you could write:
+     * <code>style = "background-color: red; color: white;"</code>
+     * <p>
+     * Non-HTML reports ignore this attribute
+     * </p>
+     * 
+     * @since 0.8.0
+     */
+    String style() default "";
+
 }

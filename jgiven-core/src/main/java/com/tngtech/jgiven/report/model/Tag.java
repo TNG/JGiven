@@ -45,9 +45,16 @@ public class Tag {
     private String color;
 
     /**
-     * An optional cssClass used in HTML reports
+     * An optional cssClass used in the HTML report.
+     * Can be {@code null}.
      */
     private String cssClass;
+
+    /**
+     * An optional style used in the HTML report. 
+     * Can be {@code null}.
+     */
+    private String style;
 
     /**
      * An optional (maybe null) list of tags that this tag is tagged with.
@@ -107,6 +114,14 @@ public class Tag {
 
     public String getCssClassOrDefault() {
         return cssClass == null ? "tag-" + getName() : cssClass;
+    }
+
+    public void setStyle( String style ) {
+        this.style = style;
+    }
+
+    public String getStyle() {
+        return style;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -223,6 +238,7 @@ public class Tag {
         Tag tag = new Tag( type, name, value );
         tag.cssClass = this.cssClass;
         tag.color = this.color;
+        tag.style = this.style;
         tag.description = this.description;
         tag.prependType = this.prependType;
         tag.tags = this.tags;

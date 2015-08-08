@@ -42,6 +42,11 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         return self();
     }
 
+    public SELF the_tag_has_style( String style ) {
+        givenReportModel.the_tag_has_style( style );
+        return self();
+    }
+
     public SELF scenario_$_has_tag_$_with_value_$( int i, String name, String value ) {
         givenReportModel.scenario_$_has_tag_$_with_value_$( i, name, value );
         return self();
@@ -71,4 +76,5 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         givenReportModel.step_$_of_scenario_$_has_an_attachment_with_content( stepNr, scenarioNr, content );
         return self();
     }
+
 }

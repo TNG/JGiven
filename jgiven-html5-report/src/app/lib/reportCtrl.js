@@ -25,6 +25,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   $scope.nav = {};
   $scope.bookmarks = [];
 
+  $scope.totalStatistics;
+
   $scope.init = function () {
 
     $scope.bookmarks = localStorageService.get('bookmarks') || [];
@@ -37,7 +39,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   var getAllScenarios = dataService.getAllScenarios;
 
-
   $scope.showSummaryPage = function () {
     var scenarios = getAllScenarios();
 
@@ -46,7 +47,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       breadcrumbs: [''],
       scenarios: [],
       groupedScenarios: [],
-      statistics: $scope.gatherStatistics(scenarios),
+      statistics: $scope.getTotalStatistics(),
       summary: true
     };
   };
@@ -95,6 +96,13 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     $scope.currentPage.print = search.print;
 
   });
+
+  $scope.getTotalStatistics = function () {
+    if (!$scope.totalStatistics) {
+      $scope.totalStatistics = $scope.gatherStatistics(getAllScenarios());
+    }
+    return $scope.totalStatistics;
+  }
 
   $scope.toggleBookmark = function () {
     if ($scope.isBookmarked()) {
@@ -507,10 +515,25 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
    */
   $scope.getStyleOfTag = function getStyleOfTag(tagId) {
     var tag = tagService.getTagByTagId(tagId);
-    if (tag.color) {
-      return 'background-color: ' + tag.color;
+    var style = "";
+    if (tag.style) {
+      style = tag.style;
     }
-    return '';
+    if (tag.color) {
+      style += ' background-color: ' + tag.color;
+    }
+    return style;
+  };
+
+  $scope.getScenarioTitleStatusClass = function (scenario) {
+    switch (scenario.executionStatus) {
+      case 'SUCCESS':
+        return '';
+      case 'FAILED':
+        return 'failed';
+      default:
+        return 'pending';
+    }
   };
 
   $scope.isHeaderCell = function (rowIndex, columnIndex, headerType) {

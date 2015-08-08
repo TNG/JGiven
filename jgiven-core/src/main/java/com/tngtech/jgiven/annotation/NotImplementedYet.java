@@ -42,7 +42,6 @@ import java.lang.annotation.Target;
 @Inherited
 @Retention( RUNTIME )
 @Target( { METHOD, TYPE } )
-@IsTag( ignoreValue = true, description = "Not implemented Scenarios" )
 public @interface NotImplementedYet {
     /**
      * Optional description to describe when the implementation will be done.

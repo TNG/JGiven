@@ -331,7 +331,7 @@ public class ReportModelBuilder implements ScenarioListener {
         scenarioStarted( scenarioDescription );
 
         if( method.isAnnotationPresent( NotImplementedYet.class ) || method.isAnnotationPresent( Pending.class ) ) {
-            currentScenarioModel.setPending(true);
+            currentScenarioModel.setPending( true );
         }
 
         if( currentScenarioCase.getCaseNr() == 1 ) {
@@ -378,6 +378,10 @@ public class ReportModelBuilder implements ScenarioListener {
 
         if( !Strings.isNullOrEmpty( tagConfig.getColor() ) ) {
             tag.setColor( tagConfig.getColor() );
+        }
+
+        if( !Strings.isNullOrEmpty( tagConfig.getStyle() ) ) {
+            tag.setStyle( tagConfig.getStyle() );
         }
 
         Object value = tagConfig.getDefaultValue();
@@ -432,6 +436,7 @@ public class ReportModelBuilder implements ScenarioListener {
             .descriptionGenerator( isTag.descriptionGenerator() )
             .cssClass( isTag.cssClass() )
             .color( isTag.color() )
+            .style( isTag.style() )
             .tags( getTagNames( isTag, annotation ) )
             .build();
 

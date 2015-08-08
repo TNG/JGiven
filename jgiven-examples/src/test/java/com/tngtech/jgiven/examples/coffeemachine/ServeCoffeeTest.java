@@ -6,10 +6,11 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.examples.tags.Order;
 import com.tngtech.jgiven.examples.coffeemachine.steps.GivenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.ThenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.WhenCoffee;
+import com.tngtech.jgiven.examples.tags.Order;
+import com.tngtech.jgiven.examples.tags.TagsWithCustomStyle;
 import com.tngtech.jgiven.junit.ScenarioTest;
 import com.tngtech.jgiven.tags.FeatureCaseDiffs;
 import com.tngtech.jgiven.tags.FeatureDataTables;
@@ -99,6 +100,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
 
     }
 
+    @TagsWithCustomStyle
     @Test
     @DataProvider( {
         "true, 1, 1, false",
@@ -144,7 +146,8 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
         given().a_coffee_machine()
             .and().there_are_no_more_coffees_left();
         when().I_press_the_coffee_button();
-        then().I_should_be_served_a_coffee();
+        then().I_should_be_served_a_coffee()
+            .and().steps_following_a_failed_step_should_be_skipped();
     }
 
     @Test

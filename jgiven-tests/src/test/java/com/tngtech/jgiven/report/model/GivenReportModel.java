@@ -207,6 +207,11 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         latestTag.setPrependType( prependType );
     }
 
+    public SELF the_tag_has_style( String style ) {
+        latestTag.setStyle( style );
+        return self();
+    }
+
     @AfterStage
     public void analyzeReport() {
         if( analyze ) {

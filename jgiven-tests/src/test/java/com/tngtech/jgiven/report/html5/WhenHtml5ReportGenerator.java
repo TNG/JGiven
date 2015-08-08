@@ -17,7 +17,7 @@ public class WhenHtml5ReportGenerator<SELF extends WhenHtml5ReportGenerator<SELF
                     super.unzipApp( toDir );
                 } catch( Exception e ) {
                     // unzipping does not work when testing within the IDE
-                    FileUtils.copyDirectory( new File( "jgiven-html5-report/src/app" ), toDir );
+                    FileUtils.copyDirectory( new File( "jgiven-html5-report/build/app" ), toDir );
                 }
             }
         };

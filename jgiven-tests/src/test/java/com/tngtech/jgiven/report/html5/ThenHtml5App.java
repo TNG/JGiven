@@ -14,6 +14,8 @@ import org.testng.reporters.Files;
 
 public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SELF> {
 
+    private WebElement foundTag;
+
     public SELF the_page_title_is( String pageTitle ) {
         assertThat( webDriver.findElement( By.id( "page-title" ) ).getText() ).isEqualTo( pageTitle );
         return self();
@@ -37,6 +39,18 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
         String href = findAttachmentIcon().get( 0 ).findElement( By.xpath( ".." ) ).getAttribute( "href" );
         String foundContent = Files.readFile( new File( new URL( href ).toURI() ) ).trim();
         assertThat( content ).isEqualTo( foundContent );
+        return self();
+    }
+
+    public SELF the_page_contains_tag( String tagName ) {
+        foundTag = findTagWithName( tagName );
+        assertThat( foundTag ).isNotNull();
+        return self();
+    }
+
+    public SELF the_tag_has_style( String style ) {
+        WebElement span = foundTag.findElement( By.xpath( "span" ) );
+        assertThat( span.getAttribute( "style" ) ).contains( style );
         return self();
     }
 }

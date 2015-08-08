@@ -165,9 +165,14 @@
                 <li class="heading">
                   <a ng-click="summaryExpanded = !summaryExpanded">Summary</a>
                   <ul ng-if="summaryExpanded">
-                    <li><a href="#all">All Scenarios</a></li>
-                    <li><a href="#failed">Failed Scenarios</a></li>
-                    <li><a href="#pending">Pending Scenarios</a></li>
+                    <li><a href="#all">All Scenarios<span
+                        class="label secondary round nav-count">{{getTotalStatistics().count}}</span></a></li>
+                    <li><a href="#failed">Failed Scenarios<span
+                        class="label secondary round nav-count {{getTotalStatistics().failed > 0 ? 'failed' : ''}}">{{getTotalStatistics().failed}}</span></a>
+                    </li>
+                    <li><a href="#pending">Pending Scenarios<span
+                        class="label secondary round nav-count ">{{getTotalStatistics().pending}}</span></a>
+                    </li>
                   </ul>
                 </li>
 
@@ -355,7 +360,11 @@
                   <a href="#scenario/{{scenario.className}}/{{scenario.testMethodName}}"><i
                       class="fa fa-link scenario-link-icon"
                       title="Direct link to this scenario"></i></a>
-                  <h4 class="toggle scenario-title" ng-click="toggleScenario(scenario)">
+
+                  <!-- Scenario Title -->
+
+                  <h4 class="toggle scenario-title {{getScenarioTitleStatusClass(scenario)}}"
+                      ng-click="toggleScenario(scenario)">
                     <i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i>
                     {{scenario.description.capitalize()}}
                     <span ng-if="scenario.scenarioCases.length > 1"
@@ -363,12 +372,16 @@
                     <i ng-if="scenario.executionStatus === 'SUCCESS'"
                        class="check fa fa-check-square"></i>
                     <span ng-if="scenario.executionStatus === 'FAILED'"
-                          class="failed label radius alert">FAILED</span>
+                          class="failed label radius alert"><i class="fa fa-exclamation-circle"></i> FAILED</span>
                     <span
-                        ng-if="scenario.executionStatus === 'NONE_IMPLEMENTED' || scenario.executionStatus === 'PARTIALLY_IMPLEMENTED'"
-                        class="pending label radius secondary">PENDING</span>
+                        ng-if="scenario.executionStatus === 'SCENARIO_PENDING' || scenario.executionStatus === 'SOME_STEPS_PENDING'"
+                        class="pending label radius secondary"><i class="fa fa-ban"></i> PENDING</span>
+
                     <span class="duration"> ({{ nanosToReadableUnit(scenario.durationInNanos) }})</span>
                   </h4>
+
+
+                  <!-- Scenario Content -->
 
                   <div ng-if="scenario.expanded || currentPage.print || currentPage.embed"
                        id="scenario-{{$index}}" class="scenario-content">
@@ -485,12 +498,17 @@
                     </div>
                   </div>
                 </div>
+
+
+                <!-- TAGS -->
+
                 <div class="small-12 large-4 xlarge-6 column tag-column">
                   <span ng-repeat="tagId in scenario.tagIds">
                     <a href="{{getUrlFromTagId(tagId)}}"><span class="{{getCssClassOfTag(tagId)}} radius label tag"
                                                                style='{{getStyleOfTag(tagId)}}'>{{tagIdToString(tagId)}}</span></a>
                   </span>
                 </div>
+
               </div>
             </div>
 

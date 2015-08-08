@@ -5,7 +5,6 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
@@ -37,9 +36,7 @@ public class WhenHtml5App<SELF extends WhenHtml5App<?>> extends Html5AppStage<SE
     }
 
     public SELF the_tag_with_name_$_is_clicked( String tagName ) {
-        List<WebElement> links = webDriver.findElements(
-            By.xpath( String.format( "//a/span[contains(@class,'tag') and contains(text(), '%s')]/..", tagName ) ) );
-        links.get( 0 ).click();
+        findTagWithName( tagName ).click();
         return self();
     }
 

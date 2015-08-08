@@ -14,12 +14,9 @@ import com.tngtech.jgiven.JGivenScenarioTest;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
-import com.tngtech.jgiven.report.WhenReportGenerator;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.report.model.StepStatus;
-import com.tngtech.jgiven.tags.FeatureAttachments;
-import com.tngtech.jgiven.tags.FeatureHtml5Report;
-import com.tngtech.jgiven.tags.Issue;
+import com.tngtech.jgiven.tags.*;
 
 @FeatureHtml5Report
 @Description( "Tests against the generated HTML5 App using WebDriver" )
@@ -27,7 +24,7 @@ import com.tngtech.jgiven.tags.Issue;
 public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHtml5App<?>, ThenHtml5App<?>> {
 
     @ScenarioStage
-    private WhenReportGenerator<?> whenReport;
+    private WhenHtml5ReportGenerator<?> whenReport;
 
     @ProvidedScenarioState
     static WebDriver webDriver;
@@ -49,7 +46,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
             .and().the_report_exist_as_JSON_file();
 
         whenReport
-            .and().the_HTML5_report_has_been_generated();
+            .and().the_HTML5_Report_Generator_is_executed();
 
         when().the_index_page_is_opened();
 
@@ -64,7 +61,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
             .and().the_report_exist_as_JSON_file();
 
         whenReport
-            .and().the_HTML5_report_has_been_generated();
+            .and().the_HTML5_Report_Generator_is_executed();
 
         when().the_index_page_is_opened();
 
@@ -75,6 +72,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
     }
 
     @Test
+    @FeatureTags
     @Issue( "#47" )
     @DataProvider( {
         "true,  testtag-#42",
@@ -86,12 +84,30 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
             .and().the_report_exist_as_JSON_file();
 
         whenReport
-            .and().the_HTML5_report_has_been_generated();
+            .and().the_HTML5_Report_Generator_is_executed();
 
         when().the_All_Scenarios_page_is_opened()
             .and().the_tag_with_name_$_is_clicked( tagName );
 
         then().the_page_title_is( tagName );
+    }
+
+    @Test
+    @FeatureTagsWithCustomStyle
+    public void tags_with_custom_styles_are_shown_correctly() throws Exception {
+        String style = "background-color: black;";
+        given().a_report_model()
+            .and().the_first_scenario_has_tag( "TagWithCustomStyle" )
+            .and().the_tag_has_style( style )
+            .and().the_report_exist_as_JSON_file();
+
+        whenReport
+            .and().the_HTML5_Report_Generator_is_executed();
+
+        when().the_All_Scenarios_page_is_opened();
+
+        then().the_page_contains_tag( "TagWithCustomStyle" )
+            .and().the_tag_has_style( style );
     }
 
     @Test
@@ -103,7 +119,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
             .and().the_report_exist_as_JSON_file();
 
         whenReport
-            .and().the_HTML5_report_has_been_generated();
+            .and().the_HTML5_Report_Generator_is_executed();
 
         when().the_page_of_scenario_$_is_opened( 1 );
 

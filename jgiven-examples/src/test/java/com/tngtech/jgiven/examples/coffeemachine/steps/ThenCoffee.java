@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.examples.coffeemachine.CoffeeMachine;
 import com.tngtech.jgiven.format.BooleanFormatter;
@@ -60,5 +61,10 @@ public class ThenCoffee extends Stage<ThenCoffee> {
     public ThenCoffee no_error_is_shown() {
         assertThat( coffeeMachine.message ).isNull();
         return self();
+    }
+
+    @ExtendedDescription( "This step is still visible in the report, but was actually not executed. It is marked as skipped in the report." )
+    public void steps_following_a_failed_step_should_be_skipped() {
+        // just here for the report
     }
 }
