@@ -30,6 +30,10 @@ public @interface FeatureHtml5Report { }
 * Durations are now shown appropriate units instead of only showing them in seconds [#92](https://github.com/TNG/JGiven/issues/92)
 * The navigation bar can now be hidden and resized [#96](https://github.com/TNG/JGiven/issues/96)
 
+### New `style` attribute for the `@IsTag` annotation
+
+* The new `style` attribute allows you to define arbitrary inline styles for tags that will be applied to the tag in the HTML5 report
+
 ## Removed Features
 
 ### Removed the old static HTML report generator [#101](https://github.com/TNG/JGiven/pull/101)
