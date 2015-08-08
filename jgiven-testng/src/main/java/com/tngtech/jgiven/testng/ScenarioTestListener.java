@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.testng;
 
-import static java.util.Arrays.*;
+import static java.util.Arrays.asList;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -39,9 +39,13 @@ public class ScenarioTestListener implements ITestListener {
             scenario = new ScenarioBase();
         }
         scenario.setModel( scenarioCollectionModel );
+        scenario.getExecutor().injectSteps( instance );
 
         Method method = paramITestResult.getMethod().getConstructorOrMethod().getMethod();
         scenario.startScenario( method, getArgumentsFrom( method, paramITestResult ) );
+
+        // inject state from the test itself
+        scenario.getExecutor().readScenarioState( instance );
     }
 
     @Override
@@ -80,7 +84,7 @@ public class ScenarioTestListener implements ITestListener {
     }
 
     private List<NamedArgument> getArgumentsFrom( Method method, ITestResult paramITestResult ) {
-        return ParameterNameUtil.mapArgumentsWithParameterNames(method, asList(paramITestResult.getParameters()));
+        return ParameterNameUtil.mapArgumentsWithParameterNames( method, asList( paramITestResult.getParameters() ) );
     }
 
 }
