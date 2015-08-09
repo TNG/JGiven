@@ -44,7 +44,7 @@ jgivenReportApp.controller('JGivenNavigationCtrl', function ($scope, $document, 
   };
 
   function adaptResizeHandle() {
-    $('#nav-move-icon').css("top", ($(window).height() - parseInt($('#sidebar').css("top"))) / 2);
+    $('#nav-move-icon-container').css("top", ($(window).height() - parseInt($('#sidebar').css("top"))) / 2);
   }
 
   function resizeNav(event) {
