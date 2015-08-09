@@ -49,18 +49,19 @@ task copyCssFiles(type: Copy) {
 
 task copyJsFiles(type: Copy) {
     from bowerComponentsDir
-    include '**/lodash.min.js'
+    include 'lodash/**/lodash.min.js'
     include '**/modernizr.js'
     include '**/placeholder.js'
     include '**/fastclick.js'
-    include '**/jquery.min.js'
+    include 'jquery/**/jquery.min.js'
     include '**/Chart.min.js'
     include '**/foundation.min.js'
-    include '**/angular.min.js'
+    include 'angular/**/angular.min.js'
     include '**/angular-sanitize.min.js'
     include '**/angular-chart.js'
     include '**/angular-local-storage.js'
     include '**/mm-foundation-tpls.min.js'
+    include '**/ng-infinite-scroll.js'
     into appDir + 'js'
     includeEmptyDirs = false
     eachFile { details ->

@@ -143,6 +143,8 @@
 
     <div class="row content">
 
+      <div infinite-scroll="extendListLimit()" infinite-scroll-distance="1" infinite-scroll-parent="true"></div>
+
       <div id="loading-modal" ng-hide="currentPage"><h1>Loading <i class="fa fa-circle-o-notch fa-spin"></i></h1>
       </div>
 
@@ -354,7 +356,8 @@
 
             <!-- SCENARIO LIST -->
 
-            <div class="scenario {{$last ? 'last' : ''}}" ng-repeat="scenario in scenarioGroup.values track by $index"
+            <div class="scenario {{$last ? 'last' : ''}}"
+                 ng-repeat="scenario in scenarioGroup.values| limitTo:limit"
                  ng-if="scenarioGroup.expanded || currentPage.print || currentPage.embed">
 
               <div class="row">
@@ -509,7 +512,7 @@
                   </div>
                 </div>
 
-                
+
                 <!-- TAGS -->
 
                 <div class="small-12 large-4 xlarge-6 column tag-column">
@@ -556,6 +559,7 @@
 <script src="js/angular-chart.js"></script>
 <script src="js/angular-local-storage.js"></script>
 <script src="js/lodash.min.js"></script>
+<script src="js/ng-infinite-scroll.js"></script>
 <script src="lib/util.js"></script>
 <script src="lib/app.js"></script>
 <script src="lib/offCanvasDirective.js"></script>

@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Sat Aug 01 2015 13:13:27 GMT+0200 (CEST)
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -25,6 +25,7 @@ module.exports = function(config) {
       'build/bower_components/**/angular-chart.js',
       'build/bower_components/**/angular-local-storage.js',
       'build/bower_components/**/lodash.js',
+      'build/bower_components/**/ng-infinite-scroll.js',
       'src/app/**/*.js',
       'src/test/app/**/*.js'
     ],
@@ -32,13 +33,13 @@ module.exports = function(config) {
 
     // list of files to exclude
     exclude: [
+      'build/bower_components/ngInfiniteScroll/test/**'
     ],
 
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-    },
+    preprocessors: {},
 
 
     // test results reporter to use

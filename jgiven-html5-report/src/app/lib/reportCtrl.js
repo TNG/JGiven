@@ -5,6 +5,8 @@
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location, $window, localStorageService,
                                                          dataService, tagService, classService, searchService, optionService) {
 
+  var INITIAL_LIMIT = 20;
+
   /**
    * The current list of shown scenarios
    */
@@ -13,6 +15,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   $scope.currentPage = {};
   $scope.nav = {};
   $scope.bookmarks = [];
+
+  $scope.limit = INITIAL_LIMIT;
 
   $scope.totalStatistics = undefined;
 
@@ -46,6 +50,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $scope.updatingLocation = false;
       return;
     }
+    $scope.limit = INITIAL_LIMIT;
     var search = $location.search();
     var selectedOptions = optionService.getOptionsFromSearch(search);
     var part = $location.path().split('/');
@@ -86,12 +91,16 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   });
 
+  $scope.extendListLimit = function () {
+    $scope.limit += 20;
+  };
+
   $scope.getTotalStatistics = function () {
     if (!$scope.totalStatistics) {
       $scope.totalStatistics = $scope.gatherStatistics(getAllScenarios());
     }
     return $scope.totalStatistics;
-  }
+  };
 
   $scope.toggleBookmark = function () {
     if ($scope.isBookmarked()) {

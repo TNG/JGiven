@@ -22,6 +22,7 @@
     "tests"
   ],
   "dependencies": {
+    "jquery": "2.1.4",
     "angular": "1.4.1",
     "angular-sanitize": "1.4.1",
     "angular-foundation": "0.6.0",
@@ -30,6 +31,7 @@
     "foundation": "5.5.2",
     "angular-chart.js": "0.7.2",
     "angular-local-storage": "0.1.5",
-    "angular-mocks": "1.4.1"
+    "angular-mocks": "1.4.1",
+    "ngInfiniteScroll": "1.2.1"
   }
 }
