@@ -46,8 +46,9 @@ public @interface FeatureHtml5Report { }
 
 ## Fixed Issues
 
-* HTML5 Report: tables with duplicate entries cannot be used as step parameters [#89](https://github.com/TNG/JGiven/issues/89)
+* HTML5 Report: fixed issue with duplicate entries in tables when used as step parameters [#89](https://github.com/TNG/JGiven/issues/89)
 * HTML5 Report: fixed navigation and added searching in the mobile version
+* HTML5 Report: fixed slow scrolling in case of large lists of scenarios
 * Fixed an issue that the `@Description` annotation was not regarded for methods with the `@IntroWord` [#87](https://github.com/TNG/JGiven/issues/87)
 * TestNG: fixed missing support for injection of stages into the test class using the `@ScenarioStage` annotation
 * TestNG: fixed missing support for `@ScenarioState` annotation in test classes
