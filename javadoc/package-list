@@ -10,7 +10,6 @@ com.tngtech.jgiven.lang.de
 com.tngtech.jgiven.report
 com.tngtech.jgiven.report.analysis
 com.tngtech.jgiven.report.asciidoc
-com.tngtech.jgiven.report.html
 com.tngtech.jgiven.report.json
 com.tngtech.jgiven.report.model
 com.tngtech.jgiven.report.text
