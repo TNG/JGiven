@@ -8,10 +8,10 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
   function groupTagsByType(tagList) {
     var types = {};
     _.forEach(tagList, function (x) {
-      var list = types[x.name];
+      var list = types[getTagName(x)];
       if (!list) {
         list = [];
-        types[x.name] = list;
+        types[getTagName(x)] = list;
       }
       list.push(x);
     });

@@ -5,27 +5,20 @@
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location, $window, localStorageService,
                                                          dataService, tagService, classService, searchService, optionService) {
 
+  var INITIAL_LIMIT = 20;
+
   /**
    * The current list of shown scenarios
    */
   $scope.scenarios = [];
 
-  /**
-   * Maps full qualified class names to lists of scenarios
-   */
-  $scope.classNameScenarioMap = {};
-
-  /**
-   * Maps full qualified package names to package node objects
-   */
-  $scope.packageNodeMap = {};
-
   $scope.currentPage = {};
-  $scope.jgivenReport = jgivenReport;
   $scope.nav = {};
   $scope.bookmarks = [];
 
-  $scope.totalStatistics;
+  $scope.limit = INITIAL_LIMIT;
+
+  $scope.totalStatistics = undefined;
 
   $scope.init = function () {
 
@@ -57,6 +50,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $scope.updatingLocation = false;
       return;
     }
+    $scope.limit = INITIAL_LIMIT;
     var search = $location.search();
     var selectedOptions = optionService.getOptionsFromSearch(search);
     var part = $location.path().split('/');
@@ -97,12 +91,16 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   });
 
+  $scope.extendListLimit = function () {
+    $scope.limit += 20;
+  };
+
   $scope.getTotalStatistics = function () {
     if (!$scope.totalStatistics) {
       $scope.totalStatistics = $scope.gatherStatistics(getAllScenarios());
     }
     return $scope.totalStatistics;
-  }
+  };
 
   $scope.toggleBookmark = function () {
     if ($scope.isBookmarked()) {
@@ -328,7 +326,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     $location.path("search/" + $scope.nav.search);
   };
 
-  $scope.search = function search(searchString) {
+  $scope.search = function search(searchString, options) {
     console.log("Searching for " + searchString);
 
     $scope.currentPage = {
@@ -342,7 +340,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     $timeout(function () {
       $scope.currentPage.scenarios = searchService.findScenarios(searchString);
       $scope.currentPage.loading = false;
-      $scope.currentPage.options = optionService.getDefaultOptions($scope.currentPage.scenarios);
+      $scope.currentPage.options = optionService.getOptions($scope.currentPage.scenarios, options);
       $scope.applyOptions();
     }, 1);
   };
