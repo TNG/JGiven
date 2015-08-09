@@ -20,12 +20,21 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.4'
 }
 
-allprojects  {
+allprojects {
     group = 'com.tngtech.jgiven'
     version = '0.8.1-SNAPSHOT'
     apply plugin: 'jacoco'
     repositories {
         mavenCentral()
+    }
+}
+
+
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
     }
 }
 
@@ -44,7 +53,8 @@ subprojects {
 
     ext {
         junitDataproviderVersion = '1.9.3'
-        junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.12' // set default junit version if not set via command line
+        junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.12'
+        // set default junit version if not set via command line
         junitParamsVersion = '1.0.3'
         testngVersion = '6.8.7'
         assertjVersion = '1.7.0'
@@ -80,16 +90,16 @@ subprojects {
     tasks.withType(Jar) {
         def now = new Date()
         manifest = project.manifest().attributes(
-            'Built-By': "Gradle ${gradle.gradleVersion}",
-            'Build-Date': now.format('yyyy-MM-dd HH:mm:ss.S'), // TODO destroys incremental build feature, but maybe date without time is ok as well?
-            'Copyright': "2013-" + now.format('yyyy') + " TNG Technology Consulting GmbH",
-            'Implementation-Title': project.name,
-            'Implementation-Version': project.version,
-            'Implementation-Vendor': 'TNG Technology Consulting GmbH',
-            'License': 'Apache License v2.0, January 2004',
-            'Specification-Title': project.name,
-            'Specification-Version': project.version,
-            'Specification-Vendor': 'TNG Technology Consulting GmbH',
+                'Built-By': "Gradle ${gradle.gradleVersion}",
+                'Build-Date': now.format('yyyy-MM-dd HH:mm:ss.S'), // TODO destroys incremental build feature, but maybe date without time is ok as well?
+                'Copyright': "2013-" + now.format('yyyy') + " TNG Technology Consulting GmbH",
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor': 'TNG Technology Consulting GmbH',
+                'License': 'Apache License v2.0, January 2004',
+                'Specification-Title': project.name,
+                'Specification-Version': project.version,
+                'Specification-Vendor': 'TNG Technology Consulting GmbH',
         )
     }
 
@@ -132,11 +142,11 @@ subprojects {
         testLogging {
             showStandardStreams = true
         }
-   }
+    }
 
-   javadoc {
+    javadoc {
         exclude '**/impl/**'
-   }
+    }
 
     checkstyle {
         configFile = file("${rootProject.projectDir}/develop/checkstyle-rules.xml")
@@ -147,9 +157,9 @@ subprojects {
     task jgivenHtml5Report(type: JavaExec) {
         main = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',
-             '--targetDir=build/reports/jgiven/html5',
-             '--format=html5',
-             '--customcss=build/resources/test/jgiven/custom.css'
+                '--targetDir=build/reports/jgiven/html5',
+                '--format=html5',
+                '--customcss=build/resources/test/jgiven/custom.css'
 
         classpath = configurations.testCompile
     }
@@ -157,14 +167,14 @@ subprojects {
     task jgivenAsciiDocReport(type: JavaExec) {
         main = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',
-             '--targetDir=build/reports/jgiven/asciidoc',
-             '--format=asciidoc'
+                '--targetDir=build/reports/jgiven/asciidoc',
+                '--format=asciidoc'
 
         classpath = configurations.testCompile
     }
 
-    asciidoctor.sourceDir= new File('build/reports/jgiven/asciidoc')
-    asciidoctor.outputDir= new File('build/reports/jgiven/htmladoc')
+    asciidoctor.sourceDir = new File('build/reports/jgiven/asciidoc')
+    asciidoctor.outputDir = new File('build/reports/jgiven/htmladoc')
     asciidoctor.attributes toc: ''
 
     task copyAsciiDoc(type: Copy, dependsOn: jgivenAsciiDocReport) {
@@ -229,11 +239,11 @@ subprojects {
                         }
                     }
                     whenConfigured { pom ->
-                        pom.dependencies.find{ dep -> dep.groupId == 'junit' && dep.artifactId == 'junit' }.with {
+                        pom.dependencies.find { dep -> dep.groupId == 'junit' && dep.artifactId == 'junit' }.with {
                             version = '[4.9,4.12]'
                             scope = 'provided'
                         }
-                        pom.dependencies.removeAll(pom.dependencies.findAll{ dep -> dep.scope in [ 'test' ] })
+                        pom.dependencies.removeAll(pom.dependencies.findAll { dep -> dep.scope in ['test'] })
                     }
                 }
             }
