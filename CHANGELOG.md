@@ -1,3 +1,7 @@
+# v0.8.1
+
+* nothing yet
+
 # v0.8.0
 
 ## New Features
@@ -20,14 +24,14 @@ public @interface FeatureHtml5Report { }
 ### Enhanced Spring Support [#94](https://github.com/TNG/JGiven/pull/94)
 
 * The Spring support has been greatly improved. JGiven Stages can now be directly managed by the Spring framework, resulting in a much better Spring integration.
-** Note that the usage of Spring is optional and is provided by the `jgiven-spring` module.
+    * Note that the usage of Spring is optional and is provided by the `jgiven-spring` module.
 * Introduced `@JGivenStage` to ease writing spring beans that act as JGiven stage
 * Thanks to [TripleNail](https://github.com/TripleNail) for providing this enhancement!
 
 ### New features in the HTML5 Report
 
 * Classes are shown now in hierarchical navigation tree and scenarios can be listed by package [#91](https://github.com/TNG/JGiven/pull/91)
-* Durations are now shown appropriate units instead of only showing them in seconds [#92](https://github.com/TNG/JGiven/issues/92)
+* Durations are now shown in appropriate units instead of only showing them in seconds [#92](https://github.com/TNG/JGiven/issues/92)
 * The navigation bar can now be hidden and resized [#96](https://github.com/TNG/JGiven/issues/96)
 * Failed scenarios are now colored in red, pending scenarios are greyed out
 * In the Summary section, the number of scenarios for each status are shown
