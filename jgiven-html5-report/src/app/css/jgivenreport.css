@@ -164,10 +164,6 @@ h5 {
     position: relative;
 }
 
-.scenario-link-icon {
-    display: none;
-}
-
 .scenario-expand-icon, .case-expand-icon {
     color: gray;
 }
@@ -194,12 +190,11 @@ h5 {
     width: 1rem;
 }
 
-.scenario:hover .scenario-link-icon {
+.scenario-link-icon {
     display: inline;
-    position: absolute;
-    top: 0.5rem;
-    left: -0.5rem;
-    color: gray;
+    float: right;
+    margin-top: 0.5rem;
+    color: lightgray;
 }
 
 .steps {

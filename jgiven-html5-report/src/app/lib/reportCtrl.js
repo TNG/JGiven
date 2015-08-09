@@ -10,18 +10,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
    */
   $scope.scenarios = [];
 
-  /**
-   * Maps full qualified class names to lists of scenarios
-   */
-  $scope.classNameScenarioMap = {};
-
-  /**
-   * Maps full qualified package names to package node objects
-   */
-  $scope.packageNodeMap = {};
-
   $scope.currentPage = {};
-  $scope.jgivenReport = jgivenReport;
   $scope.nav = {};
   $scope.bookmarks = [];
 
