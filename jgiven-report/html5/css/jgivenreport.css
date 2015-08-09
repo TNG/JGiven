@@ -164,10 +164,6 @@ h5 {
     position: relative;
 }
 
-.scenario-link-icon {
-    display: none;
-}
-
 .scenario-expand-icon, .case-expand-icon {
     color: gray;
 }
@@ -194,12 +190,11 @@ h5 {
     width: 1rem;
 }
 
-.scenario:hover .scenario-link-icon {
+.scenario-link-icon {
     display: inline;
-    position: absolute;
-    top: 0.5rem;
-    left: -0.5rem;
-    color: gray;
+    float: right;
+    margin-top: 0.5rem;
+    color: lightgray;
 }
 
 .steps {
@@ -411,13 +406,17 @@ input.search {
     z-index: 3;
 }
 
-#nav-move-icon {
+#nav-move-icon-container {
     position: absolute;
-    color: #e0e0e0;
     padding: 5px;
-    right: 1px;
+    right: 15px;
     top: 400px;
     z-index: 3;
+}
+
+#nav-move-icon {
+    position: fixed;
+    color: #e0e0e0;
     cursor: col-resize;
 }
 
