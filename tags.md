@@ -46,10 +46,10 @@ public @interface CoffeeFeature {}
 
 
 ### Overriding the Name
-It is possible to override the name of a tag by using the `type` attribute of the `IsTag` annotation. This allows you to have a different name for the tag than the actual type of the annotation. For example, if you want to have a tag `Feature: Coffee` you can define the `CoffeeFeature` annotation as follows:
+It is possible to override the name of a tag by using the `name` attribute of the `IsTag` annotation. This allows you to have a different name for the tag than the actual type of the annotation. For example, if you want to have a tag `Feature: Coffee` you can define the `CoffeeFeature` annotation as follows:
 
 {% highlight java %}
-@IsTag( type = "Feature: Coffee" )
+@IsTag( name = "Feature: Coffee" )
 @Retention( RetentionPolicy.RUNTIME )
 public @interface CoffeeFeature { }
 {% endhighlight java %}
@@ -142,5 +142,14 @@ public @interface FeatureTags { }
 
 The tag will appear as `Tag` in the report and all annotations with type `Feature` will be grouped together.
 
+### Hierarchical Tags
+If your number of tags grow you typically want to organize your tags somehow. This is easily possible in JGiven by forming tag hierarchies. A tag hierarchy is defined by just annotating a tag annotation with other tags. Each of these tags will then become a parent tag in the hierarchy. For example, if you want to organize your features into 'Core Features' and 'Secondary Features' you can do so by first defining two tags `@CoreFeature` and `@SecondaryFeature` for each of these categories as you would define a normal JGiven tag. If you now want to define a feature tag as a Core Feature you just annotated that tag accordingly:
+
+{% highlight java %}
+@CoreFeature
+@IsTag
+@Retention( RetentionPolicy.RUNTIME )
+public @interface OneOfMyCoolCoreFeatures {}
+{% endhighlight java %}
 
 Back: [Parameterized Scenarios]({{site.baseurl}}/docs/parameterizedscenarios/) - Next: [Attachments]({{site.baseurl}}/docs/attachments/)
