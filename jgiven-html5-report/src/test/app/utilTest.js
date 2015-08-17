@@ -31,4 +31,12 @@ describe("Util", function () {
 
   });
 
+  describe("splitClassName", function() {
+      it("works for classes without packages", function() {
+          var t = splitClassName("test");
+          expect(t.className).toEqual("test");
+          expect(t.packageName).toEqual("");
+      });
+  });
+
 });
