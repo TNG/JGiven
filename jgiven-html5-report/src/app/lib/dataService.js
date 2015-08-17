@@ -40,6 +40,10 @@ jgivenReportApp.factory('dataService', [function () {
       return testCases;
     },
 
+    getMetaData: function() {
+      return jgivenReport.metaData;
+    },
+
     getAllScenarios: getAllScenarios,
     getPendingScenarios: getPendingScenarios,
     getFailedScenarios: getFailedScenarios,
