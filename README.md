@@ -65,6 +65,9 @@ In addition, you can generate a [HTML Report](http://jgiven.org/jgiven-report/ht
 1. Start by reading the [documentation](http://jgiven.org/docs/) section on JGiven's website.
 2. See the [talk](http://www.techcast.com/events/bigtechday8/maffei-1345/) on JGiven held on the TNG Big TechDay
 
+## Java 8 Note
+If you are using Java 8, you should compile your test code with the -parameters option of the javac compiler. Otherwise JGiven cannot obtain the parameter names of step methods and will generate generic names of the form argX instead.
+
 ## License
 
 JGiven is published under the Apache License 2.0, see
