@@ -236,6 +236,9 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
     var tagType = dataService.getTagFile().tagTypeMap[tagInstance.tagType];
     var tag = Object.create(tagType);
     tag.value = tagInstance.value;
+    if (tagInstance.description) {
+    	tag.description = tagInstance.description;
+    }
     return tag;
   }
 
