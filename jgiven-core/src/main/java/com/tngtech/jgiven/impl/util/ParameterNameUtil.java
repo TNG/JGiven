@@ -3,7 +3,6 @@ package com.tngtech.jgiven.impl.util;
 import static java.lang.String.format;
 
 import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -22,23 +21,8 @@ public class ParameterNameUtil {
 
     private static final Paranamer PARANAMER = new BytecodeReadingParanamer();
 
-    private static final Method GET_PARAMETERS_METHOD = getParametersMethod();
-    private static Method getNameMethod;
-
-    private static Method getParametersMethod() {
-        try {
-            /**
-             * This method only exist since Java 8, thus we have to use reflection to use it, 
-             * to stay compatible with Java 6
-             */
-            return Method.class.getMethod( "getParameters" );
-        } catch( NoSuchMethodException e ) {
-            return null;
-        }
-    }
-
-    /** 
-     * @throws NullPointerException iif {@code constructorOrMethod} is {@code null} 
+    /**
+     * @throws NullPointerException iif {@code constructorOrMethod} is {@code null}
      */
     public static List<NamedArgument> mapArgumentsWithParameterNames( AccessibleObject constructorOrMethod, List<Object> arguments ) {
         Preconditions.checkNotNull( constructorOrMethod, "constructorOrMethod must not be null." );
@@ -48,7 +32,7 @@ public class ParameterNameUtil {
             return Collections.emptyList();
         }
 
-        List<String> names = getParameterNames( constructorOrMethod );
+        List<String> names = getParameterNamesUsingParanamer( constructorOrMethod );
 
         List<NamedArgument> result = Lists.newArrayList();
         if( names.size() == arguments.size() ) {
@@ -63,36 +47,6 @@ public class ParameterNameUtil {
             }
         }
         return result;
-    }
-
-    private static List<String> getParameterNames( AccessibleObject constructorOrMethod ) {
-        if( GET_PARAMETERS_METHOD != null ) {
-            return getParameterNamesUsingJava8( constructorOrMethod );
-        } else {
-            return getParameterNamesUsingParanamer( constructorOrMethod );
-        }
-    }
-
-    private static List<String> getParameterNamesUsingJava8( AccessibleObject constructorOrMethod ) {
-        try {
-            Object[] parameters = (Object[]) GET_PARAMETERS_METHOD.invoke( constructorOrMethod );
-            List<String> parameterNames = Lists.newArrayList();
-            for( Object parameter : parameters ) {
-                String name = (String) getNameMethod( parameter.getClass() ).invoke( parameter );
-                parameterNames.add( name );
-            }
-            return parameterNames;
-        } catch( Exception e ) {
-            log.warn( format( "Could not call method getParameters on '%s'", constructorOrMethod ), e );
-            return Collections.emptyList();
-        }
-    }
-
-    private static Method getNameMethod( Class<?> aClass ) throws NoSuchMethodException {
-        if( getNameMethod == null ) {
-            getNameMethod = aClass.getMethod( "getName" );
-        }
-        return getNameMethod;
     }
 
     private static List<String> getParameterNamesUsingParanamer( AccessibleObject constructorOrMethod ) {
