@@ -108,6 +108,37 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
 
     @Test
     @FeatureDataTables
+    @Issue( "#104" )
+    public void parameters_with_equal_values_but_different_formatting_result_in_different_placeholders()
+            throws UnsupportedEncodingException {
+        given()
+            .a_report_model_with_one_scenario()
+            .and().the_scenario_has_$_cases( 2 )
+            .and().parameters( "aParam", "anotherParam" )
+            .given().case_$_has_arguments( 1, "false", "false" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "some arg step", "false", "anArg" )
+            .with().formatted_value( "off" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "another arg step", "false", "anotherArg" )
+            .with().formatted_value( "is not" )
+            .given().case_$_has_arguments( 2, "true", "true" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "some arg step", "true", "anArg" )
+            .with().formatted_value( "on" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "another arg step", "true", "anotherArg" )
+            .with().formatted_value( "is" );
+
+        when().the_plain_text_report_is_generated();
+
+        then().the_report_contains_text( "<anArg>" )
+            .and().the_report_contains_text( "<anotherArg>" )
+            .and().the_report_contains_text( "\n" +
+                    "    | # | anArg | anotherArg | Status  |\n" +
+                    "    +---+-------+------------+---------+\n" +
+                    "    | 1 | off   | is not     | Success |\n" +
+                    "    | 2 | on    | is         | Success |\n" );
+    }
+
+    @Test
+    @FeatureDataTables
     public void data_tables_are_generated_for_empty_strings() throws UnsupportedEncodingException {
         given()
             .a_report_model_with_one_scenario()

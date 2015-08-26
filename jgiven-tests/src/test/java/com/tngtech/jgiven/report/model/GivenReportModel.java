@@ -6,7 +6,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.Quoted;
+import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
@@ -19,6 +23,8 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     private boolean analyze = true;
     private Tag latestTag;
     private Word latestWord;
+
+    private Word lastArgWord;
 
     @ExtendedDescription( "A report model where the analysers have not been executed on" )
     public SELF an_unanalyzed_report_model_with_one_scenario() {
@@ -185,10 +191,16 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( int ncase, @Quoted String name, @Quoted String arg,
             @Quoted String argName ) {
+        lastArgWord = Word.argWord( argName, arg, arg );
         getCase( ncase )
             .addStep(
                 new StepModel( name,
-                    Arrays.asList( Word.introWord( "when" ), new Word( name ), Word.argWord( argName, arg, (String) null ) ) ) );
+                    Arrays.asList( Word.introWord( "when" ), new Word( name ), lastArgWord ) ) );
+        return self();
+    }
+
+    public SELF formatted_value( @Quoted String formattedValue ) {
+        lastArgWord.getArgumentInfo().setFormattedValue( formattedValue );
         return self();
     }
 

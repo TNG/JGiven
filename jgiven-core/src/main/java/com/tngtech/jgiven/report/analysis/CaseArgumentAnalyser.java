@@ -53,7 +53,8 @@ public class CaseArgumentAnalyser {
             }
 
         } catch( IndexOutOfBoundsException e ) {
-            log.info( "Scenario model " + scenarioModel.getClassName() + "." + scenarioModel.getTestMethodName() + " has no homogene cases."
+            log.info( "Scenario model " + scenarioModel.getClassName() + "." + scenarioModel.getTestMethodName()
+                    + " has no homogene cases."
                     + " Cannot analyse argument cases" );
             scenarioModel.setCasesAsTable( false );
         }
@@ -89,11 +90,9 @@ public class CaseArgumentAnalyser {
     }
 
     private static final class CaseArguments {
-        final ScenarioCaseModel caseModel;
         final List<ArgumentHolder> arguments;
 
-        private CaseArguments( ScenarioCaseModel model, List<ArgumentHolder> arguments ) {
-            this.caseModel = model;
+        private CaseArguments( List<ArgumentHolder> arguments ) {
             this.arguments = arguments;
         }
 
@@ -149,13 +148,6 @@ public class CaseArgumentAnalyser {
                 replacement.match = match;
                 replacement.replacementName = match.parameter;
 
-                if( usedParameters.containsKey( match.parameter ) ) {
-                    ParameterReplacement usedReplacement = usedParameters.get( match.parameter );
-                    if( match.formattedValueMatches && !usedReplacement.match.formattedValueMatches ) {
-                        usedReplacement.updateToStepParameterName( usedNames );
-                    }
-                }
-
                 usedNames.add( replacement.replacementName );
                 usedParameters.put( match.parameter, replacement );
 
@@ -192,8 +184,6 @@ public class CaseArgumentAnalyser {
             for( String key : Lists.newArrayList( result.keySet() ) ) {
                 if( !map.containsKey( key ) ) {
                     result.remove( key );
-                } else {
-                    result.get( key ).formattedValueMatches &= map.get( key ).formattedValueMatches;
                 }
             }
         }
@@ -230,7 +220,6 @@ public class CaseArgumentAnalyser {
     static class ParameterMatch {
         String parameter;
         int index;
-        boolean formattedValueMatches;
     }
 
     static class ArgumentHolder {
@@ -258,13 +247,13 @@ public class CaseArgumentAnalyser {
         public void visit( ScenarioCaseModel scenarioCase ) {
             currentCase = scenarioCase;
             argumentsOfCurrentCase = Lists.newArrayList();
-            argumentMatrix.add( new CaseArguments( currentCase, argumentsOfCurrentCase ) );
+            argumentMatrix.add( new CaseArguments( argumentsOfCurrentCase ) );
             allWordsOfCurrentCase = Lists.newArrayList();
             allWords.add( allWordsOfCurrentCase );
         }
 
         @Override
-        public void visit( StepModel stepModel) {
+        public void visit( StepModel stepModel ) {
             for( Word word : stepModel.words ) {
                 if( word.isArg() ) {
                     ArgumentHolder holder = new ArgumentHolder();
@@ -285,8 +274,9 @@ public class CaseArgumentAnalyser {
                         ParameterMatch match = new ParameterMatch();
                         match.index = i;
                         match.parameter = scenarioModel.getExplicitParameters().get( i );
-                        match.formattedValueMatches = Objects.equal( word.getFormattedValue(), argumentValue );
-                        matchingParameters.add( match );
+                        if( Objects.equal( word.getFormattedValue(), argumentValue ) ) {
+                            matchingParameters.add( match );
+                        }
                     }
                 }
             }
