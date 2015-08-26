@@ -3,6 +3,7 @@
 ## Fixed Issues
 
 * Fixed an issue where different formatted parameters having the same value in all cases were collapsed to a single parameter [#104](https://github.com/TNG/JGiven/issues/104)
+* Fixed issue introduced with v0.8.0 that tag descriptions that differ depending on a tag value are not correctly reported
 
 # v0.8.0
 
