@@ -3,7 +3,12 @@ package com.tngtech.jgiven.impl.util;
 import static java.lang.String.format;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.List;
 
@@ -249,7 +254,7 @@ public class ReflectionUtil {
             object.setAccessible( true );
         } catch( SecurityException e ) {
             log.debug( "Caught exception: ", e );
-            log.warn( "Could not make %s accessible, trying to access it nevertheless and hoping for the best.",
+            log.warn( "Could not make {} accessible, trying to access it nevertheless and hoping for the best.",
                 toReadableString( object ), errorDescription );
         }
     }

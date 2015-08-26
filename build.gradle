@@ -60,7 +60,7 @@ subprojects {
         assertjVersion = '1.7.0'
         slf4jVersion = '1.7.7'
         cglibVersion = '2.2.2'
-        paranamerVersion = '2.7'
+        paranamerVersion = '2.8'
         jansiVersion = '1.11'
         gsonVersion = '2.3'
         guavaVersion = '18.0'

@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import com.tngtech.jgiven.report.model.StepModel;
 
-public class Java8Test extends SimpleScenarioTest<LambdaSteps> {
+public class Java8Test extends SimpleScenarioTest<LambdaSteps<?>> {
 
     @Test
     public void lambda_steps_work() {
