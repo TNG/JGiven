@@ -20,6 +20,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.totalStatistics = undefined;
 
+  $scope.metaData = dataService.getMetaData();
+
   $scope.init = function () {
 
     $scope.bookmarks = localStorageService.get('bookmarks') || [];
