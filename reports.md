@@ -25,34 +25,20 @@ jgiven.report.enabled=false
 
 Note that in order to generate HTML reports, JSON reports are required.
 
-## HTML Reports
-To generate HTML reports you have to run the JGiven report generator.
-The reporter is part of the jgiven-core module and can be executed on the command line as follows
-(assuming that the jgiven-core JAR and all required dependencies are on the Java CLASSPATH)
+## HTML Report
+To generate an HTML report you have to run the JGiven report generator with the `html` format option.
+The reporter is part of the jgiven-core module. For the HTML output you also need the `jgiven-html5-report` dependency. The report generator can be executed on the command line as follows
+(assuming that the jgiven-core and the jgiven-html5-report JAR and all required dependencies are on the Java CLASSPATH)
 
 {% highlight java %}
 java com.tngtech.jgiven.report.ReportGenerator \
   --format=html \
-  [--dir=<jsonreports>] \
-  [--todir=<targetDir>] \
+  [--sourceDir=<jsonreports>] \
+  [--targetDir=<targetDir>] \
 {% endhighlight %}
 
-To see how the generated report looks like have a look at the
-[HTML report of JGiven itself]({{ site.baseurl }}/jgiven-report/html)
-
-### HTML 5 Report
-There is an alternative HTML report based on modern CSS and Javascript frameworks which is provided by the `jgiven-html5-report` dependency.
-If that dependency is on the classpath you can generate the HTML5 report by setting the `--format` parameter to `html5`:
-
-{% highlight java %}
-java com.tngtech.jgiven.report.ReportGenerator \
-  --format=html5 \
-  [--dir=<jsonreports>] \
-  [--todir=<targetDir>] \
-{% endhighlight %}
-
-To see how the HTML5 report in action you can have a look at the
-[HTML5 report of JGiven itself]({{ site.baseurl }}/jgiven-report/html5)
+To see the HTML report in action you can have a look at the
+[HTML report of JGiven itself]({{ site.baseurl }}/jgiven-report/html5)
 
 
 ### Maven
@@ -88,16 +74,13 @@ $ mvn verify
 
 HTML reports are then generated into the `target/jgiven-reports/html` directory.
 
-#### HTML5 Report
-If you want to get the modern HTML5 report you have to set the `format` configuration value to `html5` instead of `html`
-
 ### Gradle
 Currently no Gradle plugin exists for JGiven (feel free to contribute one!). However, you can use the `JavaExec` task instead:
 {% highlight groovy %}
 task jgivenReport(type: JavaExec, dependsOn: 'test') {
     main = 'com.tngtech.jgiven.report.ReportGenerator'
-    args '--todir=target/jgiven-reports/html',
-         '--format=html' // or --format=html5 for the HTML5 report
+    args '--targetDir=target/jgiven-reports/html',
+         '--format=html'
     classpath = configurations.testCompile
 }
 {% endhighlight %}
