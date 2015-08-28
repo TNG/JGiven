@@ -8,7 +8,12 @@ import static org.junit.Assume.assumeTrue;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
 
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.MethodRule;
@@ -27,7 +32,7 @@ import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.report.model.NamedArgument;
-import com.tngtech.jgiven.report.model.ReportModelBuilder;
+import com.tngtech.jgiven.report.model.ReportModel;
 
 public class ScenarioExecutionRule implements MethodRule {
     private static final String DATAPROVIDER_FRAMEWORK_METHOD = "com.tngtech.java.junit.dataprovider.DataProviderFrameworkMethod";
@@ -87,7 +92,7 @@ public class ScenarioExecutionRule implements MethodRule {
         scenario.finished();
 
         // ignore test when scenario is not implemented
-        assumeTrue( EnumSet.of( SUCCESS, FAILED ).contains( scenario.getModel().getLastScenarioModel().getExecutionStatus() ) );
+        assumeTrue( EnumSet.of( SUCCESS, FAILED ).contains( scenario.getScenarioModel().getExecutionStatus() ) );
     }
 
     protected void failed( Throwable e ) throws Throwable {
@@ -103,12 +108,9 @@ public class ScenarioExecutionRule implements MethodRule {
     }
 
     protected void starting( Statement base, FrameworkMethod testMethod, Object target ) {
-        scenario.setModel( ScenarioModelHolder.getInstance().getReportModel( target.getClass() ) );
+        ReportModel reportModel = ScenarioModelHolder.getInstance().getReportModel( target.getClass() );
+        scenario.setModel( reportModel );
         scenario.getExecutor().injectSteps( target );
-
-        Class<?> testClass = target.getClass();
-        ReportModelBuilder modelBuilder = scenario.getModelBuilder();
-        modelBuilder.setTestClass( testClass );
 
         scenario.startScenario( testMethod.getMethod(), getNamedArguments( base, testMethod, target ) );
 

@@ -14,7 +14,7 @@ public class Java8Test extends SimpleScenarioTest<LambdaSteps<?>> {
 
         given().some_lambda_step( 5, 4 );
 
-        StepModel step = getScenario().getModel().getFirstStepModelOfLastScenario();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
         assertThat( step.getWord( 2 ).getArgumentInfo().getArgumentName() ).isEqualTo( "a" );
         assertThat( step.getWord( 3 ).getArgumentInfo().getArgumentName() ).isEqualTo( "b" );
 

@@ -10,6 +10,6 @@ public class ScenarioTest<GIVEN, WHEN, THEN> extends ScenarioTestBase<GIVEN, WHE
     public static final ScenarioReportRule writerRule = new ScenarioReportRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( this, getScenario() );
+    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( getScenario() );
 
 }

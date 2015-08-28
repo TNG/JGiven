@@ -11,7 +11,18 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.AfterScenario;
+import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.BeforeScenario;
+import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.Description;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.Hidden;
+import com.tngtech.jgiven.annotation.JGivenConfiguration;
+import com.tngtech.jgiven.annotation.NotImplementedYet;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioRule;
+import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
@@ -209,7 +220,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     public void configured_tags_are_reported() throws Throwable {
         given().something();
         getScenario().finished();
-        List<String> tagIds = getScenario().getModel().getLastScenarioModel().getTagIds();
+        List<String> tagIds = getScenario().getScenarioModel().getTagIds();
         assertThat( tagIds ).isNotEmpty();
         String tagId = tagIds.get( 0 );
         assertThat( tagId ).isNotNull();
@@ -221,7 +232,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     public void description_annotations_are_evaluated() throws Throwable {
         given().something();
         getScenario().finished();
-        String description = getScenario().getModel().getLastScenarioModel().getDescription();
+        String description = getScenario().getScenarioModel().getDescription();
         assertThat( description ).isEqualTo( "@Description annotations are evaluated" );
     }
 
@@ -293,7 +304,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
         steps.add_attachment();
 
-        AttachmentModel attachment = getScenario().getModel().getFirstStepModelOfLastScenario().getAttachment();
+        AttachmentModel attachment = getScenario().getScenarioCaseModel().getFirstStep().getAttachment();
 
         assertThat( attachment ).isNotNull();
         assertThat( attachment.getValue() ).isEqualTo( "FOOBAR" );
@@ -306,7 +317,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
         steps.set_description();
 
-        String description = getScenario().getModel().getFirstStepModelOfLastScenario().getExtendedDescription();
+        String description = getScenario().getScenarioCaseModel().getFirstStep().getExtendedDescription();
 
         assertThat( description ).isEqualTo( "An extended description" );
     }

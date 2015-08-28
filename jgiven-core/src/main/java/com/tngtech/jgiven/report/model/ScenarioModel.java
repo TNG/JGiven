@@ -14,7 +14,7 @@ public class ScenarioModel {
     private String description;
 
     /**
-     * A list of tag ids 
+     * A list of tag ids
      */
     private Set<String> tagIds = Sets.newLinkedHashSet();
     private boolean pending;
@@ -33,7 +33,7 @@ public class ScenarioModel {
         visitor.visitEnd( this );
     }
 
-    public void addCase( ScenarioCaseModel scenarioCase ) {
+    public synchronized void addCase( ScenarioCaseModel scenarioCase ) {
         scenarioCase.setCaseNr( scenarioCases.size() + 1 );
         scenarioCases.add( scenarioCase );
     }
@@ -51,8 +51,8 @@ public class ScenarioModel {
         return scenarioCases.get( i );
     }
 
-    public void addTag( Tag tag ) {
-        tagIds.add(tag.toIdString());
+    public synchronized void addTag( Tag tag ) {
+        tagIds.add( tag.toIdString() );
     }
 
     public void addTags( List<Tag> tags ) {
@@ -61,11 +61,11 @@ public class ScenarioModel {
         }
     }
 
-    public void addParameterNames( String... params ) {
+    public synchronized void addParameterNames( String... params ) {
         explicitParameters.addAll( Arrays.asList( params ) );
     }
 
-    public void setExplicitParameters( List<String> params ) {
+    public synchronized void setExplicitParameters( List<String> params ) {
         explicitParameters.clear();
         explicitParameters.addAll( params );
     }
@@ -79,7 +79,7 @@ public class ScenarioModel {
     }
 
     public List<String> getTagIds() {
-        return Lists.newArrayList(tagIds);
+        return Lists.newArrayList( tagIds );
     }
 
     public boolean isCasesAsTable() {
@@ -138,7 +138,7 @@ public class ScenarioModel {
         this.description = description;
     }
 
-    public void setTagIds(Set<String> tagIds) {
+    public void setTagIds( Set<String> tagIds ) {
         this.tagIds = tagIds;
     }
 
@@ -146,7 +146,7 @@ public class ScenarioModel {
         return pending;
     }
 
-    public void setPending(boolean pending) {
+    public void setPending( boolean pending ) {
         this.pending = pending;
     }
 

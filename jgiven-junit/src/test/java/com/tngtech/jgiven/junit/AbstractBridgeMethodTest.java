@@ -13,7 +13,7 @@ public abstract class AbstractBridgeMethodTest<T extends AbstractBridgeMethodTes
     public void bridge_methods_are_correctly_handled() {
         given().method_that_is_overidden_with_different_return_type();
 
-        assertThat( getScenario().getModel().getLastScenarioModel().getCase( 0 ).getSteps() ).isNotEmpty();
+        assertThat( getScenario().getScenarioCaseModel().getSteps() ).isNotEmpty();
     }
 
     static class BridgeMethodTestStage {

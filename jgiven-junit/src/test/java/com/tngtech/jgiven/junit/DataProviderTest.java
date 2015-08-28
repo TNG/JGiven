@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.junit;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
@@ -36,8 +36,8 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
         when().multiply_with_two();
         then().the_value_is_$not$_greater_than_zero( booleanArg );
 
-        ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
-        List<String> arguments = scenarioModel.getCase( caseNr ).getExplicitArguments();
+        ScenarioCaseModel scenarioModel = getScenario().getScenarioCaseModel();
+        List<String> arguments = scenarioModel.getExplicitArguments();
         assertThat( arguments ).containsExactly( "" + intArg, "" + booleanArg, "" + caseNr );
     }
 
@@ -59,7 +59,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
         when().multiply_with_two();
 
-        ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
+        ScenarioModel scenarioModel = getScenario().getScenarioModel();
         if( scenarioModel.getScenarioCases().size() == 3 ) {
             CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
             analyser.analyze( scenarioModel );
@@ -84,7 +84,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
         when().multiply_with_two();
 
-        ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
+        ScenarioModel scenarioModel = getScenario().getScenarioModel();
         if( scenarioModel.getScenarioCases().size() == 3 ) {
             CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
             analyser.analyze( scenarioModel );

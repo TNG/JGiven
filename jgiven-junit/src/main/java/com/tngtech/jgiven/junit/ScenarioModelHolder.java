@@ -22,7 +22,7 @@ public class ScenarioModelHolder {
     /**
      * Returns the {@link com.tngtech.jgiven.report.model.ReportModel} for the given test class.
      * If there is no report model yet, creates a new one.
-     * 
+     *
      * @param testClass the test class to get the report model for
      * @return the report model for the given test class
      */
@@ -32,7 +32,8 @@ public class ScenarioModelHolder {
 
             if( reportModel == null ) {
                 reportModel = new ReportModel();
-                reportModel.setClassName( testClass.getName() );
+                reportModel.setTestClass( testClass );
+
                 reportModels.put( testClass, reportModel );
             }
 

@@ -22,7 +22,7 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
         when().mixed();
         then().you_get_sugar_milk();
 
-        ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
+        ScenarioModel scenarioModel = getScenario().getScenarioModel();
         assertThat(scenarioModel.getDescription()).isEqualTo( "Milk and Sugar are mixed to Sugar Milk" );
         assertThat(scenarioModel.getTestMethodName()).isEqualTo( "Milk_and_Sugar_are_mixed_to_Sugar_Milk" );
         assertThat(scenarioModel.getClassName()).isEqualTo( getClass().getName() );

@@ -7,7 +7,9 @@ import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.integration.CanWire;
 import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.report.model.ReportModelBuilder;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.ScenarioModelBuilder;
 
 /**
  * Base class for a Scenario.
@@ -21,15 +23,22 @@ import com.tngtech.jgiven.report.model.ReportModelBuilder;
  */
 public class ScenarioBase {
     protected ScenarioExecutor executor = new StandaloneScenarioExecutor();
-    protected final ReportModelBuilder modelBuilder = new ReportModelBuilder();
+    protected final ScenarioModelBuilder modelBuilder = new ScenarioModelBuilder();
     private boolean initialized = false;
 
-    public ScenarioBase() {
-    }
+    public ScenarioBase() {}
 
     public void setModel( ReportModel reportModel ) {
         assertNotInitialized();
         modelBuilder.setReportModel( reportModel );
+    }
+
+    public ScenarioModel getScenarioModel() {
+        return modelBuilder.getScenarioModel();
+    }
+
+    public ScenarioCaseModel getScenarioCaseModel() {
+        return modelBuilder.getScenarioCaseModel();
     }
 
     public ReportModel getModel() {
@@ -53,7 +62,7 @@ public class ScenarioBase {
         return executor;
     }
 
-    public void setExecutor(ScenarioExecutor executor) {
+    public void setExecutor( ScenarioExecutor executor ) {
         assertNotInitialized();
         this.executor = executor;
     }
@@ -62,13 +71,9 @@ public class ScenarioBase {
         executor.wireSteps( canWire );
     }
 
-    public ReportModelBuilder getModelBuilder() {
-        return modelBuilder;
-    }
-
-    public ScenarioBase startScenario(Method method, List<NamedArgument> arguments) {
+    public ScenarioBase startScenario( Method method, List<NamedArgument> arguments ) {
         performInitialization();
-        executor.startScenario(method, arguments);
+        executor.startScenario( method, arguments );
         return this;
     }
 
@@ -79,10 +84,10 @@ public class ScenarioBase {
     }
 
     private void performInitialization() {
-        if (modelBuilder == null) {
-            throw new IllegalStateException("modelBuilder must be set before Scenario can be initalized.");
+        if( modelBuilder == null ) {
+            throw new IllegalStateException( "modelBuilder must be set before Scenario can be initalized." );
         }
-        if (!initialized) {
+        if( !initialized ) {
             executor.setListener( modelBuilder );
             initialize();
             initialized = true;
@@ -94,7 +99,7 @@ public class ScenarioBase {
     }
 
     protected void assertNotInitialized() {
-        AssertionUtil.assertTrue(!initialized, "Scenario is already initialized");
+        AssertionUtil.assertTrue( !initialized, "Scenario is already initialized" );
     }
 
 }
