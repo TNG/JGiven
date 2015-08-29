@@ -16,22 +16,24 @@ import com.tngtech.jgiven.testng.TestNgTest.TestSteps;
 public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
 
     @Test
-    public void Milk_and_Sugar_are_mixed_to_Sugar_Milk() {
+    public void Milk_and_Sugar_are_mixed_to_Sugar_Milk() throws Throwable {
         given().milk()
             .and().sugar();
         when().mixed();
         then().you_get_sugar_milk();
 
+        getScenario().finished();
+
         ScenarioModel scenarioModel = getScenario().getScenarioModel();
-        assertThat(scenarioModel.getDescription()).isEqualTo( "Milk and Sugar are mixed to Sugar Milk" );
-        assertThat(scenarioModel.getTestMethodName()).isEqualTo( "Milk_and_Sugar_are_mixed_to_Sugar_Milk" );
-        assertThat(scenarioModel.getClassName()).isEqualTo( getClass().getName() );
+        assertThat( scenarioModel.getDescription() ).isEqualTo( "Milk and Sugar are mixed to Sugar Milk" );
+        assertThat( scenarioModel.getTestMethodName() ).isEqualTo( "Milk_and_Sugar_are_mixed_to_Sugar_Milk" );
+        assertThat( scenarioModel.getClassName() ).isEqualTo( getClass().getName() );
         assertThat( scenarioModel.getExplicitParameters() ).isEmpty();
         assertThat( scenarioModel.getScenarioCases() ).hasSize( 1 );
 
         ScenarioCaseModel scenarioCaseModel = scenarioModel.getCase( 0 );
         assertThat( scenarioCaseModel.getExplicitArguments() ).isEmpty();
-        assertThat(scenarioCaseModel.getCaseNr()).isEqualTo( 1 );
+        assertThat( scenarioCaseModel.getCaseNr() ).isEqualTo( 1 );
         assertThat( scenarioCaseModel.errorMessage ).isNull();
         assertThat( scenarioCaseModel.success ).isTrue();
 
@@ -111,7 +113,6 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
 
         public void mixed_with( String something ) {}
 
-        public void something() {
-        }
+        public void something() {}
     }
 }
