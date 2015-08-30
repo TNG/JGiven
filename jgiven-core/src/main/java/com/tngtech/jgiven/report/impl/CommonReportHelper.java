@@ -28,7 +28,6 @@ public class CommonReportHelper {
 
         if( Config.config().textReport() ) {
             new PlainTextReporter().write( model ).flush();
-            ;
         }
 
         Optional<File> optionalReportDir = Config.config().getReportDir();

@@ -163,7 +163,10 @@ public class ReportModel {
         }
     }
 
-    public void setTestClass( Class<?> testClass ) {
+    public synchronized void setTestClass( Class<?> testClass ) {
+        AssertionUtil.assertTrue( className == null || testClass.getName().equals( className ),
+            "Test class of the same report model was set to different values. 1st value: " + className +
+                    ", 2nd value: " + testClass.getName() );
         setClassName( testClass.getName() );
         if( testClass.isAnnotationPresent( Description.class ) ) {
             setDescription( testClass.getAnnotation( Description.class ).value() );

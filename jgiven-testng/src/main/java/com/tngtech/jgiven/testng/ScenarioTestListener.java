@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.testng.ITestContext;
 import org.testng.ITestListener;
@@ -15,6 +17,7 @@ import org.testng.ITestResult;
 import com.google.common.base.Throwables;
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.ScenarioBase;
+import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.NamedArgument;
@@ -24,15 +27,14 @@ import com.tngtech.jgiven.report.model.ReportModel;
  * TestNG Test listener to enable JGiven for a test class
  */
 public class ScenarioTestListener implements ITestListener {
-    private volatile ReportModel reportModel;
 
-    private final Map<ITestResult, ScenarioBase> scenarioMap = Collections.synchronizedMap(
-        new IdentityHashMap<ITestResult, ScenarioBase>() );
+    private volatile ConcurrentMap<String, ReportModel> reportModels;
+
+    private volatile Map<ITestResult, ScenarioBase> scenarioMap;
 
     @Override
     public void onTestStart( ITestResult paramITestResult ) {
         Object instance = paramITestResult.getInstance();
-        reportModel.setTestClass( instance.getClass() );
 
         ScenarioBase scenario;
 
@@ -45,6 +47,7 @@ public class ScenarioTestListener implements ITestListener {
 
         scenarioMap.put( paramITestResult, scenario );
 
+        ReportModel reportModel = getReportModel( instance.getClass() );
         scenario.setModel( reportModel );
         scenario.getExecutor().injectSteps( instance );
 
@@ -53,6 +56,20 @@ public class ScenarioTestListener implements ITestListener {
 
         // inject state from the test itself
         scenario.getExecutor().readScenarioState( instance );
+    }
+
+    private ReportModel getReportModel( Class<?> clazz ) {
+        ReportModel model = reportModels.get( clazz.getName() );
+        if( model == null ) {
+            model = new ReportModel();
+            model.setClassName( clazz.getName() );
+            ReportModel previousModel = reportModels.putIfAbsent( clazz.getName(), model );
+            if( previousModel != null ) {
+                model = previousModel;
+            }
+        }
+        AssertionUtil.assertNotNull( model, "Report model is null" );
+        return model;
     }
 
     @Override
@@ -86,12 +103,15 @@ public class ScenarioTestListener implements ITestListener {
 
     @Override
     public void onStart( ITestContext paramITestContext ) {
-        reportModel = new ReportModel();
+        reportModels = new ConcurrentHashMap<String, ReportModel>();
+        scenarioMap = Collections.synchronizedMap( new IdentityHashMap<ITestResult, ScenarioBase>() );
     }
 
     @Override
     public void onFinish( ITestContext paramITestContext ) {
-        new CommonReportHelper().finishReport( reportModel );
+        for( ReportModel reportModel : reportModels.values() ) {
+            new CommonReportHelper().finishReport( reportModel );
+        }
     }
 
     private List<NamedArgument> getArgumentsFrom( Method method, ITestResult paramITestResult ) {
