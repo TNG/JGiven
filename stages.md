@@ -6,6 +6,77 @@ permalink: /docs/stages/
 
 A JGiven scenario consists of multiple stages. Typically there is a stage for each phase of a scenario: a given stage, a when stage and a then stage, however, it is also possible to just use one stage or use arbitrary many stages. A stage is implemented by a stage class that contains methods representing the steps that can be used in the scenario. The big advantage of this modular concept is that stages can be easily reused by different scenarios.
 
+## Step Methods
+
+A stage class contains multiple _step methods_ that can be called in a scenario and that will appear in the report. Every *non-private*, *non-static* method of a stage class can be used as a step method. There are no further requirements. In particular, no annotations are needed. Step methods should return the `this` reference so that chaining of calls is possible. In addition, a step method should be written in `snake_case` so that JGiven knows the correct casing of each word of the step.
+
+The following code shows a valid step method of the `WhenCook` stage:
+{% highlight java %}
+public WhenCook the_cook_mangles_everthing_to_a_dough() {
+    return this;
+}
+{% endhighlight %}
+
+JGiven removes the underlines so the step will appear as `the cook mangles everything to a dough` in the report.
+
+### Overriding the Default Reporting
+Sometimes it is necessary to override the default way of the step reporting. For example, if you want to use special characters that are not allowed in Java methods names, such as `(`, `+`, or `%`. You can then use the [`@As`]({{site.baseurl}}/javadoc/com/tngtech/jgiven/annotation/As.html) annotation to specify what JGiven should put into the report.
+
+For example, if you define the following step method:
+{% highlight java %}
+@As("10% are added")
+public WhenCalculator ten_percent_are_added() {
+    return this;
+}
+{% endhighlight %}
+The step will appear as `10% are added` in the report.
+
+### Completely Hide Steps
+Steps can be completely hidden from the report by using the [`@Hidden`]({{site.baseurl}}/javadoc/com/tngtech/jgiven/annotation/Hidden.html) annotation. This is sometimes useful if you need a technical method call within a scenario, which should not appear in the report.
+
+For example:
+{% highlight java %}
+@Hidden
+public void prepareRocketSimulator() {
+    rocketSimulator = createRocketSimulator();
+}
+{% endhighlight %}
+
+Note that it is useful to write hidden methods in `CamelCase` to make it immediately visible in the scenario that these methods will not appear in the report.
+
+### Extended Descriptions
+Steps can get an extended description with the [`@ExtendedDescription`]({{site.baseurl}}/javadoc/com/tngtech/jgiven/annotation/ExtendedDescription.html) annotation. You can use this to give additional information about the step to the reader of the report. In the HTML report this information is shown in a tooltip.
+
+Example:
+{% highlight java %}
+@ExtendedDescription("Actually uses a rocket simulator")
+public WhenRocketLauncher launch_rocket() {
+    rocketSimulator.launchRocket();
+    return this;
+}
+{% endhighlight %}
+
+### Intro Words
+If the predefined introductionary words in the [`Stage`]({{site.baseurl}}/javadoc/com/tngtech/jgiven/Stage.html) class are not enough for you and you want to define additional ones you can use the [`@IntroWord`]({{site.baseurl}}/javadoc/com/tngtech/jgiven/annotation/IntroWord.html) annotation on a step method.
+
+Example:
+{% highlight java %}
+@IntroWord
+public SELF however() {
+   return self();
+}
+{% endhighlight %}
+
+Note that you can combine `@IntroWord` with the `@As` annotation. To define a `,` as an introductionary word, for example, you can define:
+
+{% highlight java %}
+@IntroWord
+@As(",")
+public SELF comma() {
+   return self();
+}
+{% endhighlight %}
+
 ## State Injection
 
 Stages share state by using injection. This works by annotating the fields with a special annotation `@ScenarioState`. The values of these fields are shared between all stages that have the same field.
@@ -32,10 +103,10 @@ public class WhenCook<SELF extends WhenCook<?>> extends Stage<SELF> {
    String meal;
    ...
 
-   public WhenCook the_cook_mangles_everthing_to_a_dough() {
+   public SELF the_cook_mangles_everthing_to_a_dough() {
        meal = cook.makeADough( ingredients );
+       return self();
    }
-
 }
 {% endhighlight %}
 
