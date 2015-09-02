@@ -59,6 +59,6 @@ Besides the plain text report, a HTML reports can be generated. Currently two di
 The source code of the corresponding JGiven tests are in the [jgiven-tests](https://github.com/TNG/JGiven/tree/master/jgiven-tests) module of the JGiven project.
 
 
-### Talk of Jan Schäfer on JGiven at BigTechDay 8
+### Talk on JGiven at BigTechday 8
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/gh_yjb3x8Yc" frameborder="0" allowfullscreen></iframe>
