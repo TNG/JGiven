@@ -2,7 +2,10 @@ package com.tngtech.jgiven.report.model;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,7 @@ import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
  */
 public class ReportModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ReportModelBuilder.class );
+    private static final Formatting<?> DEFAULT_FORMATTING = new Formatting<Object>( new DefaultFormatter<Object>() );
 
     private ScenarioModel currentScenarioModel;
     private ScenarioCaseModel currentScenarioCase;
@@ -176,6 +180,7 @@ public class ReportModelBuilder implements ScenarioListener {
 
     /**
      * Recursively searches for formatting annotations.
+     *
      * @param visitedTypes used to prevent an endless loop
      */
     private Formatting<?> getFormatting( Annotation[] annotations, Set<Class<?>> visitedTypes, Annotation originalAnnotation ) {
@@ -288,7 +293,9 @@ public class ReportModelBuilder implements ScenarioListener {
 
         // must come at last
         setMethodName( method.getName() );
-        setArguments( toStringList( getValues( namedArguments ) ) );
+
+        List<Formatting<?>> formatters = getFormatters( method.getParameterAnnotations() );
+        setArguments( toStringList( formatters, getValues( namedArguments ) ) );
     }
 
     private List<Object> getValues( List<NamedArgument> namedArguments ) {
@@ -311,12 +318,20 @@ public class ReportModelBuilder implements ScenarioListener {
         configuration = ConfigurationUtil.getConfiguration( testClass );
     }
 
-    private List<String> toStringList( Collection<?> arguments ) {
+    private List<String> toStringList( List<Formatting<?>> formatters, List<?> arguments ) {
         List<String> result = Lists.newArrayList();
-        for( Object o : arguments ) {
-            result.add( new DefaultFormatter<Object>().format( o ) );
+        for( int i = 0; i < arguments.size(); i++ ) {
+            Formatting<?> formatting = DEFAULT_FORMATTING;
+            if( i < formatters.size() && formatters.get( i ) != null ) {
+                formatting = formatters.get( i );
+            }
+            result.add( formatUsingFormatterOrDefault( formatting, arguments.get( i ) ) );
         }
         return result;
+    }
+
+    private <T> String formatUsingFormatterOrDefault( Formatting<T> formatting, Object o ) {
+        return formatting.format( (T) o );
     }
 
     private void readAnnotations( Method method ) {
