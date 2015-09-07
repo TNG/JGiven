@@ -1,16 +1,18 @@
 package com.tngtech.jgiven;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.report.model.ReportModel;
 
 public class ScenarioRuleTest extends ScenarioTestBase<BeforeAfterTestStage<?>, WhenTestStep, BeforeAfterTestStage<?>> {
 
     @Test
     public void testBeforeAndAfterIsCalled() throws Throwable {
+        getScenario().setModel( new ReportModel() );
         getScenario().startScenario( "Some Scenario" );
         BeforeAfterTestStage<?> steps = given().something();
         TestRule rule = steps.rule;

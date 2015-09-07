@@ -107,4 +107,8 @@ public class ScenarioCaseModel {
     public void setSteps( List<StepModel> steps ) {
         this.steps = steps;
     }
+
+    public StepModel getFirstStep() {
+        return steps.get( 0 );
+    }
 }

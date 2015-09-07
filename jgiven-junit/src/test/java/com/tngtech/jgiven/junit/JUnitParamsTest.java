@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
-import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 
 @RunWith( JUnitParamsRunner.class )
 public class JUnitParamsTest extends ScenarioTest<GivenTestStep, WhenTestStep, ThenTestStep> {
@@ -25,8 +25,8 @@ public class JUnitParamsTest extends ScenarioTest<GivenTestStep, WhenTestStep, T
         when().multiply_with_two();
         then().the_value_is_$not$_greater_than_zero( booleanArg );
 
-        ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
-        List<String> arguments = scenarioModel.getCase( caseNr ).getExplicitArguments();
+        ScenarioCaseModel scenarioModel = getScenario().getScenarioCaseModel();
+        List<String> arguments = scenarioModel.getExplicitArguments();
         // Currently not working:
         // assertThat( arguments ).containsExactly( "" + intArg, "" + booleanArg, "" + caseNr );
     }

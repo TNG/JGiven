@@ -30,31 +30,21 @@ import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
-/**
- * Builds up the report model while the scenario is executed.
- */
-public class ReportModelBuilder implements ScenarioListener {
-    private static final Logger log = LoggerFactory.getLogger( ReportModelBuilder.class );
+public class ScenarioModelBuilder implements ScenarioListener {
+    private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
     private static final Formatting<?> DEFAULT_FORMATTING = new Formatting<Object>( new DefaultFormatter<Object>() );
 
-    private ScenarioModel currentScenarioModel;
-    private ScenarioCaseModel currentScenarioCase;
+    private ScenarioModel scenarioModel;
+    private ScenarioCaseModel scenarioCaseModel;
     private StepModel currentStep;
-    private ReportModel reportModel;
 
     private Word introWord;
 
-    private AbstractJGivenConfiguraton configuration = new DefaultConfiguration();
-
     private long scenarioStartedNanos;
 
-    public ReportModelBuilder() {
-        this( new ReportModel() );
-    }
+    private AbstractJGivenConfiguraton configuration = new DefaultConfiguration();
 
-    public ReportModelBuilder( ReportModel scenarioCollectionModel ) {
-        setReportModel( scenarioCollectionModel );
-    }
+    private ReportModel reportModel;
 
     public void setReportModel( ReportModel reportModel ) {
         this.reportModel = reportModel;
@@ -71,18 +61,11 @@ public class ReportModelBuilder implements ScenarioListener {
             readableDescription = camelCaseToReadableText( description );
         }
 
-        currentScenarioCase = new ScenarioCaseModel();
+        scenarioCaseModel = new ScenarioCaseModel();
 
-        currentScenarioModel = reportModel.findScenarioModel( readableDescription ).orNull();
-
-        if( currentScenarioModel == null ) {
-            currentScenarioModel = new ScenarioModel();
-            currentScenarioModel.setClassName( reportModel.getClassName() );
-            reportModel.getScenarios().add( currentScenarioModel );
-        }
-
-        currentScenarioModel.addCase( currentScenarioCase );
-        currentScenarioModel.setDescription( readableDescription );
+        scenarioModel = new ScenarioModel();
+        scenarioModel.addCase( scenarioCaseModel );
+        scenarioModel.setDescription( readableDescription );
     }
 
     private String camelCaseToReadableText( String camelCase ) {
@@ -118,23 +101,6 @@ public class ReportModelBuilder implements ScenarioListener {
 
         stepModel.setStatus( mode.toStepStatus() );
         return stepModel;
-    }
-
-    private String getDescription( Method paramMethod ) {
-        if( paramMethod.isAnnotationPresent( Hidden.class ) ) {
-            return "";
-        }
-
-        Description description = paramMethod.getAnnotation( Description.class );
-        if( description != null ) {
-            return description.value();
-        }
-        As as = paramMethod.getAnnotation( As.class );
-        if( as != null ) {
-            return as.value();
-        }
-
-        return nameWithoutUnderlines( paramMethod );
     }
 
     private List<NamedArgument> filterHiddenArguments( List<NamedArgument> arguments, Annotation[][] parameterAnnotations ) {
@@ -217,10 +183,10 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     private ScenarioCaseModel getCurrentScenarioCase() {
-        if( currentScenarioCase == null ) {
+        if( scenarioCaseModel == null ) {
             scenarioStarted( "A Scenario" );
         }
-        return currentScenarioCase;
+        return scenarioCaseModel;
     }
 
     @Override
@@ -233,49 +199,58 @@ public class ReportModelBuilder implements ScenarioListener {
     }
 
     public void setMethodName( String methodName ) {
-        currentScenarioModel.setTestMethodName( methodName );
+        scenarioModel.setTestMethodName( methodName );
     }
 
     public void setArguments( List<String> arguments ) {
-        currentScenarioCase.setExplicitArguments( arguments );
+        scenarioCaseModel.setExplicitArguments( arguments );
     }
 
     public void setParameterNames( List<String> parameterNames ) {
-        currentScenarioModel.setExplicitParameters( parameterNames );
+        scenarioModel.setExplicitParameters( parameterNames );
     }
 
-    public void setClassName( String name ) {
-        reportModel.setClassName( name );
+    private String getDescription( Method paramMethod ) {
+        if( paramMethod.isAnnotationPresent( Hidden.class ) ) {
+            return "";
+        }
+
+        Description description = paramMethod.getAnnotation( Description.class );
+        if( description != null ) {
+            return description.value();
+        }
+        As as = paramMethod.getAnnotation( As.class );
+        if( as != null ) {
+            return as.value();
+        }
+
+        return nameWithoutUnderlines( paramMethod );
     }
 
     public void setSuccess( boolean success ) {
-        currentScenarioCase.success = success;
+        scenarioCaseModel.success = success;
     }
 
     public void setErrorMessage( String message ) {
-        currentScenarioCase.errorMessage = message;
+        scenarioCaseModel.errorMessage = message;
     }
 
     private static String nameWithoutUnderlines( Method paramMethod ) {
         return paramMethod.getName().replace( '_', ' ' );
     }
 
-    public ReportModel getReportModel() {
-        return reportModel;
-    }
-
     @Override
     public void stepMethodFailed( Throwable t ) {
-        if( !currentScenarioCase.getSteps().isEmpty() ) {
-            currentScenarioCase.getStep( currentScenarioCase.getSteps().size() - 1 )
+        if( !scenarioCaseModel.getSteps().isEmpty() ) {
+            scenarioCaseModel.getStep( scenarioCaseModel.getSteps().size() - 1 )
                 .setStatus( StepStatus.FAILED );
         }
     }
 
     @Override
     public void stepMethodFinished( long durationInNanos ) {
-        if( !currentScenarioCase.getSteps().isEmpty() ) {
-            currentScenarioCase.getSteps().get( currentScenarioCase.getSteps().size() - 1 ).setDurationInNanos( durationInNanos );
+        if( !scenarioCaseModel.getSteps().isEmpty() ) {
+            scenarioCaseModel.getSteps().get( scenarioCaseModel.getSteps().size() - 1 ).setDurationInNanos( durationInNanos );
         }
     }
 
@@ -346,10 +321,10 @@ public class ReportModelBuilder implements ScenarioListener {
         scenarioStarted( scenarioDescription );
 
         if( method.isAnnotationPresent( NotImplementedYet.class ) || method.isAnnotationPresent( Pending.class ) ) {
-            currentScenarioModel.setPending( true );
+            scenarioModel.setPending( true );
         }
 
-        if( currentScenarioCase.getCaseNr() == 1 ) {
+        if( scenarioCaseModel.getCaseNr() == 1 ) {
             addTags( method.getDeclaringClass().getAnnotations() );
             addTags( method.getAnnotations() );
         }
@@ -359,7 +334,7 @@ public class ReportModelBuilder implements ScenarioListener {
         for( Annotation annotation : annotations ) {
             List<Tag> tags = toTags( annotation );
             this.reportModel.addTags( tags );
-            this.currentScenarioModel.addTags( tags );
+            this.scenarioModel.addTags( tags );
         }
     }
 
@@ -515,8 +490,9 @@ public class ReportModelBuilder implements ScenarioListener {
     public void scenarioFinished() {
         AssertionUtil.assertTrue( scenarioStartedNanos > 0, "Scenario has no start time" );
         long durationInNanos = System.nanoTime() - scenarioStartedNanos;
-        currentScenarioCase.setDurationInNanos( durationInNanos );
-        currentScenarioModel.addDurationInNanos( durationInNanos );
+        scenarioCaseModel.setDurationInNanos( durationInNanos );
+        scenarioModel.addDurationInNanos( durationInNanos );
+        reportModel.addScenarioModelOrMergeWithExistingOne( scenarioModel );
     }
 
     @Override
@@ -529,11 +505,16 @@ public class ReportModelBuilder implements ScenarioListener {
         currentStep.setExtendedDescription( extendedDescription );
     }
 
-    public void setTestClass( Class<?> testClass ) {
-        setClassName( testClass.getName() );
-        if( testClass.isAnnotationPresent( Description.class ) ) {
-            reportModel.setDescription( testClass.getAnnotation( Description.class ).value() );
-        }
+    public ReportModel getReportModel() {
+        return reportModel;
+    }
+
+    public ScenarioModel getScenarioModel() {
+        return scenarioModel;
+    }
+
+    public ScenarioCaseModel getScenarioCaseModel() {
+        return scenarioCaseModel;
     }
 
 }

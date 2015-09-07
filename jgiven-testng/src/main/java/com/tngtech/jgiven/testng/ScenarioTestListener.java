@@ -3,7 +3,12 @@ package com.tngtech.jgiven.testng;
 import static java.util.Arrays.asList;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.testng.ITestContext;
 import org.testng.ITestListener;
@@ -12,25 +17,26 @@ import org.testng.ITestResult;
 import com.google.common.base.Throwables;
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.ScenarioBase;
+import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.report.model.ReportModelBuilder;
 
 /**
  * TestNG Test listener to enable JGiven for a test class
  */
 public class ScenarioTestListener implements ITestListener {
-    private ReportModel scenarioCollectionModel;
 
-    private ScenarioBase scenario;
+    private volatile ConcurrentMap<String, ReportModel> reportModels;
+
+    private volatile Map<ITestResult, ScenarioBase> scenarioMap;
 
     @Override
     public void onTestStart( ITestResult paramITestResult ) {
         Object instance = paramITestResult.getInstance();
-        ReportModelBuilder builder = new ReportModelBuilder( scenarioCollectionModel );
-        builder.setTestClass( instance.getClass() );
+
+        ScenarioBase scenario;
 
         if( instance instanceof ScenarioTestBase<?, ?, ?> ) {
             ScenarioTestBase<?, ?, ?> testInstance = (ScenarioTestBase<?, ?, ?>) instance;
@@ -38,7 +44,11 @@ public class ScenarioTestListener implements ITestListener {
         } else {
             scenario = new ScenarioBase();
         }
-        scenario.setModel( scenarioCollectionModel );
+
+        scenarioMap.put( paramITestResult, scenario );
+
+        ReportModel reportModel = getReportModel( instance.getClass() );
+        scenario.setModel( reportModel );
         scenario.getExecutor().injectSteps( instance );
 
         Method method = paramITestResult.getMethod().getConstructorOrMethod().getMethod();
@@ -48,22 +58,40 @@ public class ScenarioTestListener implements ITestListener {
         scenario.getExecutor().readScenarioState( instance );
     }
 
+    private ReportModel getReportModel( Class<?> clazz ) {
+        ReportModel model = reportModels.get( clazz.getName() );
+        if( model == null ) {
+            model = new ReportModel();
+            model.setTestClass( clazz );
+            ReportModel previousModel = reportModels.putIfAbsent( clazz.getName(), model );
+            if( previousModel != null ) {
+                model = previousModel;
+            }
+        }
+        AssertionUtil.assertNotNull( model, "Report model is null" );
+        return model;
+    }
+
     @Override
     public void onTestSuccess( ITestResult paramITestResult ) {
-        testFinished();
+        testFinished( paramITestResult );
     }
 
     @Override
     public void onTestFailure( ITestResult paramITestResult ) {
-        scenario.getExecutor().failed( paramITestResult.getThrowable() );
-        testFinished();
+        ScenarioBase scenario = scenarioMap.get( paramITestResult );
+        if( scenario != null ) {
+            scenario.getExecutor().failed( paramITestResult.getThrowable() );
+            testFinished( paramITestResult );
+        }
     }
 
     @Override
     public void onTestSkipped( ITestResult paramITestResult ) {}
 
-    private void testFinished() {
+    private void testFinished( ITestResult paramITestResult ) {
         try {
+            ScenarioBase scenario = scenarioMap.get( paramITestResult );
             scenario.finished();
         } catch( Throwable throwable ) {
             throw Throwables.propagate( throwable );
@@ -75,12 +103,15 @@ public class ScenarioTestListener implements ITestListener {
 
     @Override
     public void onStart( ITestContext paramITestContext ) {
-        scenarioCollectionModel = new ReportModel();
+        reportModels = new ConcurrentHashMap<String, ReportModel>();
+        scenarioMap = Collections.synchronizedMap( new IdentityHashMap<ITestResult, ScenarioBase>() );
     }
 
     @Override
     public void onFinish( ITestContext paramITestContext ) {
-        new CommonReportHelper().finishReport( scenarioCollectionModel );
+        for( ReportModel reportModel : reportModels.values() ) {
+            new CommonReportHelper().finishReport( reportModel );
+        }
     }
 
     private List<NamedArgument> getArgumentsFrom( Method method, ITestResult paramITestResult ) {

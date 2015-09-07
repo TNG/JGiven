@@ -24,7 +24,7 @@ public class DataTableTest extends ScenarioTest<GivenTestStep, WhenTestStep, The
 
         getScenario().finished();
 
-        Word lastWord = getScenario().getModel().getFirstStepModelOfLastScenario().getLastWord();
+        Word lastWord = getScenario().getScenarioCaseModel().getFirstStep().getLastWord();
         List<List<String>> tableValue = lastWord.getArgumentInfo().getDataTable().getData();
         assertThat( tableValue ).isNotNull();
         assertThat( tableValue.get( 0 ) ).containsExactly( "name", "price in EUR" );

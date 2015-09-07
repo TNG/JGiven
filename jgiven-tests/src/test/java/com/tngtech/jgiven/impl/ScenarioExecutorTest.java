@@ -9,11 +9,12 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.JGivenTestConfiguration;
+import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.impl.ScenarioExecutorTest.TestSteps;
-import com.tngtech.jgiven.junit.ScenarioModelHolder;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.tags.FeatureStepParameters;
 import com.tngtech.jgiven.tags.Issue;
@@ -25,7 +26,7 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
     @Test
     public void methods_called_during_stage_construction_are_ignored_in_the_report() {
         given().some_stage_with_method_called_during_construction();
-        then().the_method_does_not_appear_in_the_report();
+        then().the_method_does_not_appear_in_the_report( getScenario().getScenarioCaseModel() );
     }
 
     public static class TestSteps {
@@ -35,9 +36,8 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
             return "testString";
         }
 
-        public void the_method_does_not_appear_in_the_report() {
-            StepModel stepModel = ScenarioModelHolder.getInstance().getReportModel( ScenarioExecutorTest.class )
-                .getFirstStepModelOfLastScenario();
+        public void the_method_does_not_appear_in_the_report( @Hidden ScenarioCaseModel scenarioCaseModel ) {
+            StepModel stepModel = scenarioCaseModel.getFirstStep();
             assertThat( stepModel.words.get( 1 ).getValue() )
                 .isNotEqualTo( "buildString" )
                 .isEqualTo( "some stage with method called during construction" );

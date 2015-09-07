@@ -29,7 +29,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         given().some_test_step();
 
         getScenario().finished();
-        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        ScenarioModel model = getScenario().getScenarioModel();
 
         assertThat( model.getClassName() ).isEqualTo( StepsAreReportedTest.class.getName() );
         assertThat( model.getTestMethodName() ).isEqualTo( "given_steps_are_reported" );
@@ -56,7 +56,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         getScenario().finished();
 
-        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        ScenarioModel model = getScenario().getScenarioModel();
         StepModel stepModel = model.getCase( 0 ).getSteps().get( 0 );
         assertThat( stepModel.isPending() ).isTrue();
         assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SCENARIO_PENDING );
@@ -69,7 +69,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         getScenario().finished();
 
-        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        ScenarioModel model = getScenario().getScenarioModel();
         assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SOME_STEPS_PENDING );
     }
 
@@ -79,7 +79,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         getScenario().finished();
 
-        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        ScenarioModel model = getScenario().getScenarioModel();
         StepModel stepModel = model.getCase( 0 ).getSteps().get( 0 );
         assertThat( stepModel.isPending() ).isTrue();
         assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SCENARIO_PENDING );
@@ -92,7 +92,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         getScenario().finished();
 
-        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        ScenarioModel model = getScenario().getScenarioModel();
         assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SOME_STEPS_PENDING );
     }
 
@@ -134,7 +134,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         getScenario().finished();
 
         ReportModel reportModel = getScenario().getModel();
-        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        ScenarioModel model = getScenario().getScenarioModel();
         assertThat( model.getTagIds() ).hasSize( 1 );
 
         String tagId = model.getTagIds().get( 0 );
@@ -151,7 +151,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         getScenario().finished();
 
-        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        ScenarioModel model = getScenario().getScenarioModel();
         assertThat( model.getCase( 0 ).getSteps() ).isEmpty();
     }
 
@@ -161,7 +161,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         getScenario().finished();
 
-        ScenarioModel model = getScenario().getModel().getLastScenarioModel();
+        ScenarioModel model = getScenario().getScenarioModel();
         assertThat( model.getCase( 0 ).getStep( 0 ).getWords() ).hasSize( 2 );
     }
 

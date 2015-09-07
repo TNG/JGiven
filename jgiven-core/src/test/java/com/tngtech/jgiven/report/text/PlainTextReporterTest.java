@@ -45,7 +45,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         when().both_values_are_multiplied_with_each_other();
         then().the_result_is( expectedResult );
 
-        String string = PlainTextReporter.toString( getScenario().getModel() );
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string )
             .contains( "Given " + a + " and " + b )
             .contains( "When both values are multiplied with each other" )
@@ -64,8 +64,8 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         then().something_has_happen()
             .but().something_else_not();
 
-        String string = PlainTextReporter.toString( getScenario().getModel() );
-        assertThat( string.replaceAll(System.getProperty("line.separator"), "\n") )
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
             .contains( ""
                     + " Scenario: Test\n"
                     + "\n"
@@ -89,8 +89,8 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         then().something_has_happen()
             .something_else_not();
 
-        String string = PlainTextReporter.toString( getScenario().getModel() );
-        assertThat( string.replaceAll(System.getProperty("line.separator"), "\n") )
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
             .contains( ""
                     + " Scenario: Test\n"
                     + "\n"
@@ -107,7 +107,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         getScenario().startScenario( "test" );
         GivenTestStep stage = getScenario().addStage( GivenTestStep.class );
         stage.given().a_step_with_a_$_parameter( "test" );
-        String string = PlainTextReporter.toString( getScenario().getModel() );
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string ).contains( "Given a step with a test parameter" );
     }
 
@@ -116,7 +116,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         getScenario().startScenario( "test" );
         GivenTestStep stage = getScenario().addStage( GivenTestStep.class );
         stage.a_step_with_a_$_parameter( "test" );
-        String string = PlainTextReporter.toString( getScenario().getModel() );
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string ).contains( "a step with a test parameter" );
     }
 
@@ -125,7 +125,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         getScenario().startScenario( "test" );
         GivenTestStep stage = getScenario().addStage( GivenTestStep.class );
         stage.a_step_with_a_boolean_$_parameter( true );
-        String string = PlainTextReporter.toString( getScenario().getModel() );
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string ).contains( "a step with a boolean yes parameter" );
     }
 
@@ -146,7 +146,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         FormattedSteps stage = getScenario().addStage( FormattedSteps.class );
 
         stage.yesno_$_formatted( true );
-        String string = PlainTextReporter.toString( getScenario().getModel() );
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string ).contains( "yesno yes formatted" );
     }
 
@@ -156,7 +156,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         FormattedSteps stage = getScenario().addStage( FormattedSteps.class );
 
         stage.quoted_$_test( "foo" );
-        String string = PlainTextReporter.toString( getScenario().getModel() );
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string ).contains( "quoted \"foo\" test" );
     }
 
