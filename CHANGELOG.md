@@ -9,6 +9,8 @@
 * Fixed the issue that test classes had to be compiled with the -parameters option of javac when using Java 8. This was fixed by upgrading to the newest version of the Paranamer library that now fully supports Java 8 [#106](https://github.com/TNG/JGiven/pull/106)
 * Fixed an issue where different formatted parameters having the same value in all cases were collapsed to a single parameter [#104](https://github.com/TNG/JGiven/issues/104)
 * Fixed issue introduced with v0.8.0 that tag descriptions that differ depending on a tag value are not correctly reported
+* Fixed an issue that the dataprovider with TestNG could not be used in parallel mode [#105](https://github.com/TNG/JGiven/issues/105)
+* Fixed an issue that when using TestNG only a report for one test class was generated in the report [#115]((https://github.com/TNG/JGiven/issues/115)
 
 # v0.8.0
 
