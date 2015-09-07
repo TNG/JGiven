@@ -3,7 +3,6 @@ package com.tngtech.jgiven.report.model;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -16,17 +15,7 @@ import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.tngtech.jgiven.annotation.AnnotationFormat;
-import com.tngtech.jgiven.annotation.As;
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.annotation.ExtendedDescription;
-import com.tngtech.jgiven.annotation.Format;
-import com.tngtech.jgiven.annotation.Hidden;
-import com.tngtech.jgiven.annotation.IntroWord;
-import com.tngtech.jgiven.annotation.IsTag;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
-import com.tngtech.jgiven.annotation.Pending;
-import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
 import com.tngtech.jgiven.config.ConfigurationUtil;
@@ -43,6 +32,7 @@ import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
 public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
+    private static final Formatting<?> DEFAULT_FORMATTING = new Formatting<Object>( new DefaultFormatter<Object>() );
 
     private ScenarioModel scenarioModel;
     private ScenarioCaseModel scenarioCaseModel;
@@ -156,6 +146,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     /**
      * Recursively searches for formatting annotations.
+     *
      * @param visitedTypes used to prevent an endless loop
      */
     private Formatting<?> getFormatting( Annotation[] annotations, Set<Class<?>> visitedTypes, Annotation originalAnnotation ) {
@@ -277,7 +268,9 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
         // must come at last
         setMethodName( method.getName() );
-        setArguments( toStringList( getValues( namedArguments ) ) );
+
+        List<Formatting<?>> formatters = getFormatters( method.getParameterAnnotations() );
+        setArguments( toStringList( formatters, getValues( namedArguments ) ) );
     }
 
     private List<Object> getValues( List<NamedArgument> namedArguments ) {
@@ -300,12 +293,20 @@ public class ScenarioModelBuilder implements ScenarioListener {
         configuration = ConfigurationUtil.getConfiguration( testClass );
     }
 
-    private List<String> toStringList( Collection<?> arguments ) {
+    private List<String> toStringList( List<Formatting<?>> formatters, List<?> arguments ) {
         List<String> result = Lists.newArrayList();
-        for( Object o : arguments ) {
-            result.add( new DefaultFormatter<Object>().format( o ) );
+        for( int i = 0; i < arguments.size(); i++ ) {
+            Formatting<?> formatting = DEFAULT_FORMATTING;
+            if( i < formatters.size() && formatters.get( i ) != null ) {
+                formatting = formatters.get( i );
+            }
+            result.add( formatUsingFormatterOrDefault( formatting, arguments.get( i ) ) );
         }
         return result;
+    }
+
+    private <T> String formatUsingFormatterOrDefault( Formatting<T> formatting, Object o ) {
+        return formatting.format( (T) o );
     }
 
     private void readAnnotations( Method method ) {

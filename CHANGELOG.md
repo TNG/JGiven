@@ -1,5 +1,9 @@
 # v0.8.1
 
+## New Features
+
+* Parameters of test methods can now also be formatted with formatters like step parameters. This is only relevant, however, when you have scenarios with multiple cases that do not generate a data table, but multiple cases [#114](https://github.com/TNG/JGiven/pull/114)
+
 ## Fixed Issues
 
 * Fixed the issue that test classes had to be compiled with the -parameters option of javac when using Java 8. This was fixed by upgrading to the newest version of the Paranamer library that now fully supports Java 8 [#106](https://github.com/TNG/JGiven/pull/106)

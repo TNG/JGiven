@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.jgiven.annotation.Format;
+import com.tngtech.jgiven.format.BooleanFormatter;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
@@ -92,6 +94,21 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
             assertParameter( case0, 0, scenarioModel.getExplicitParameters().get( 0 ) );
             assertParameter( case0, 1, "secondArg" );
         }
+    }
+
+    @Test
+    @DataProvider( { "true", "false" } )
+    public void parameters_of_methods_can_be_formatted( @Format( value = BooleanFormatter.class, args = { "foo", "bar" } ) boolean b )
+            throws Throwable {
+        given().some_boolean_value( b );
+        if( b ) {
+            when().something();
+        }
+
+        getScenario().finished();
+
+        List<ScenarioCaseModel> cases = getScenario().getModel().getLastScenarioModel().getScenarioCases();
+        assertThat( cases.get( cases.size() - 1 ).getExplicitArguments() ).containsExactly( b ? "foo" : "bar" );
     }
 
 }
