@@ -62,7 +62,7 @@ public class ScenarioTestListener implements ITestListener {
         ReportModel model = reportModels.get( clazz.getName() );
         if( model == null ) {
             model = new ReportModel();
-            model.setClassName( clazz.getName() );
+            model.setTestClass( clazz );
             ReportModel previousModel = reportModels.putIfAbsent( clazz.getName(), model );
             if( previousModel != null ) {
                 model = previousModel;
