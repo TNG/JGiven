@@ -116,6 +116,16 @@ public class StandaloneScenarioExecutorTest {
         stage.something();
     }
 
+    @Test
+    public void DoNotIntercept_methods_are_executed_even_if_previous_steps_fail() {
+        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        DoNotInterceptClass stage = executor.addStage( DoNotInterceptClass.class );
+        executor.startScenario( "Test" );
+        stage.a_failing_step();
+        int i = stage.returnFive();
+        assertThat( i ).isEqualTo( 5 );
+    }
+
     static class TestClass {
         @ScenarioStage
         TestStep step;
@@ -216,6 +226,17 @@ public class StandaloneScenarioExecutorTest {
     static class NotImplementedYetTestStepClass {
         public NotImplementedYetTestStepClass something_not_implemented_yet() {
             throw new UnsupportedOperationException();
+        }
+    }
+
+    static class DoNotInterceptClass {
+        public void a_failing_step() {
+            assertThat( true ).isFalse();
+        }
+
+        @DoNotIntercept
+        public int returnFive() {
+            return 5;
         }
     }
 
