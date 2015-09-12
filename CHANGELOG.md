@@ -3,6 +3,7 @@
 ## New Features
 
 * Introduced the annotation `@DoNotIntercept`, to completely circumvent the JGiven interception mechanism of step methods. [#103](https://github.com/TNG/JGiven/issues/103)
+* Introduced new feature to directly show image attachment in the HTML report. This is done by calling `showDirectly()` on the `Attachment` object. [#117](https://github.com/TNG/JGiven/issues/117)
 
 # v0.8.1
 

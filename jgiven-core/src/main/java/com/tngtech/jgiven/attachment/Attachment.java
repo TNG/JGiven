@@ -8,6 +8,7 @@ import javax.xml.bind.DatatypeConverter;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
+import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 
 /**
@@ -39,6 +40,12 @@ public class Attachment {
      * Is never {@code null}
      */
     private final MediaType mediaType;
+
+    /**
+     * Whether this attachment should be directly shown showDirectly in the scenario.
+     * Can be {@code null} to save bytes in JSON file
+     */
+    private Boolean showDirectly;
 
     /**
      * Convenience constructor, where title is set to {@code null}
@@ -105,6 +112,25 @@ public class Attachment {
      */
     public Attachment withTitle( String title ) {
         this.title = title;
+        return this;
+    }
+
+    /**
+     * Directly shows this attachment in the report.
+     * By default, the attachment is not directly shown in the scenario, 
+     * but referenced by a link.
+     * <p>
+     * Note: This currently works only for images!
+     * </p>
+     * @throws com.tngtech.jgiven.exception.JGivenWrongUsageException if the attachment is not an image
+     * @return {@code this}
+     * @since 0.8.2
+     */
+    public Attachment showDirectly() {
+        if( !this.getMediaType().isImage() ) {
+            throw new JGivenWrongUsageException( "Only images can be directly shown" );
+        }
+        this.showDirectly = true;
         return this;
     }
 
@@ -234,4 +260,12 @@ public class Attachment {
         return new Attachment( base64encodedContent, mediaType );
     }
 
+    /**
+     * Whether this attachment is shown showDirectly or not
+     * @see com.tngtech.jgiven.attachment.Attachment#showDirectly
+     * @since 0.8.2
+     */
+    public boolean getShowDirectly() {
+        return showDirectly == null ? false : showDirectly;
+    }
 }

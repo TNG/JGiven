@@ -151,6 +151,10 @@ public class MediaType {
         return binary;
     }
 
+    public boolean isImage() {
+        return type == IMAGE;
+    }
+
     /**
      * @return the charset of this media type if one is specified
      * @throws java.lang.IllegalArgumentException if no charset is specified
