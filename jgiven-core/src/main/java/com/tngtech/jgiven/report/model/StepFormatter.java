@@ -156,6 +156,56 @@ public class StepFormatter {
     }
 
     public static DataTable toTableValue( Object tableValue, Table tableAnnotation ) {
+        DataTable dataTable = toDataTable( tableValue, tableAnnotation );
+        addNumberedRows( tableAnnotation, dataTable );
+        addNumberedColumns( tableAnnotation, dataTable );
+        return dataTable;
+    }
+
+    private static void addNumberedRows( Table tableAnnotation, DataTable dataTable ) {
+        if( tableAnnotation.numberedRows() || !tableAnnotation.numberedRowsHeader().equals( "" ) ) {
+            List<String> column = Lists.newArrayListWithExpectedSize( dataTable.getRowCount() );
+
+            if( dataTable.hasHorizontalHeader() ) {
+                String header = "#";
+                if( !tableAnnotation.numberedRowsHeader().equals( "" ) ) {
+                    header = tableAnnotation.numberedRowsHeader();
+                }
+                column.add( header );
+            }
+
+            int counter = 1;
+            while( column.size() != dataTable.getRowCount() ) {
+                column.add( "" + counter );
+                counter++;
+            }
+            dataTable.addColumn( 0, column );
+        }
+    }
+
+    private static void addNumberedColumns( Table tableAnnotation, DataTable dataTable ) {
+        if( tableAnnotation.numberedColumns() || !tableAnnotation.numberedColumnsHeader().equals( "" ) ) {
+            List<String> row = Lists.newArrayListWithExpectedSize( dataTable.getColumnCount() );
+
+            if( dataTable.hasVerticalHeader() ) {
+                String header = "#";
+                if( !tableAnnotation.numberedColumnsHeader().equals( "" ) ) {
+                    header = tableAnnotation.numberedColumnsHeader();
+                }
+                row.add( header );
+            }
+
+            int counter = 1;
+            while( row.size() != dataTable.getColumnCount() ) {
+                row.add( "" + counter );
+                counter++;
+            }
+            dataTable.addRow( 0, row );
+        }
+    }
+
+    public static DataTable toDataTable( Object tableValue, Table tableAnnotation ) {
+
         List<List<String>> result = Lists.newArrayList();
 
         Iterable<?> rows = toIterable( tableValue );

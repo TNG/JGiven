@@ -219,6 +219,32 @@ public @interface Table {
      */
     boolean includeNullColumns() default false;
 
+    /**
+     * Automatically number the rows of the table
+     * Default is not to generate one
+     * 
+     * @since 0.8.2
+     */
+    boolean numberedRows() default false;
+
+    /**
+     * @since 0.8.2
+     */
+    String numberedRowsHeader() default "";
+
+    /**
+     * Automatically number the columns of a table
+     * Default is not to generate one
+
+     * @since 0.8.2
+     */
+    boolean numberedColumns() default false;
+
+    /**
+     * @since 0.8.2
+     */
+    String numberedColumnsHeader() default "";
+
     public enum HeaderType {
         /**
          * The table has no header

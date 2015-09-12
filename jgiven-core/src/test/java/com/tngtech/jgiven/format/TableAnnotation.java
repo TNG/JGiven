@@ -12,6 +12,10 @@ public class TableAnnotation implements Table {
     String[] excludeFields = {};
     String[] includeFields = {};
     String[] columnTitles = {};
+    boolean numberedRows = false;
+    boolean numberedColumns = false;
+    String numberedRowsHeader = "";
+    String numberedColumnsHeader = "";
 
     @Override
     public HeaderType header() {
@@ -41,6 +45,26 @@ public class TableAnnotation implements Table {
     @Override
     public boolean includeNullColumns() {
         return includeNullColumns;
+    }
+
+    @Override
+    public boolean numberedRows() {
+        return numberedRows;
+    }
+
+    @Override
+    public String numberedRowsHeader() {
+        return numberedRowsHeader;
+    }
+
+    @Override
+    public boolean numberedColumns() {
+        return numberedColumns;
+    }
+
+    @Override
+    public String numberedColumnsHeader() {
+        return numberedColumnsHeader;
     }
 
     @Override

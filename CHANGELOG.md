@@ -36,6 +36,12 @@ given().a_step_with_a_$placeholderVariable_with_spaces( "foobar" );
 
 * Introduced the annotation `@DoNotIntercept`, to completely circumvent the JGiven interception mechanism of step methods. [#103](https://github.com/TNG/JGiven/issues/103)
 * Introduced new feature to directly show image attachment in the HTML report. This is done by calling `showDirectly()` on the `Attachment` object. [#117](https://github.com/TNG/JGiven/issues/117)
+* Introduced the possibility to automatically number the rows or columns of a table parameter. [#116](https://github.com/TNG/JGiven/issues/116)
+* HTML Report: introduce pagination to better deal with large lists of scenarios. [#120](https://github.com/TNG/JGiven/pull/120)
+
+## Fixed Issues
+
+* HTML Report: fixed an issue that caused the scenario list to only shows the first 20 entries [#119](https://github.com/TNG/JGiven/issues/119)
 
 # v0.8.1
 
