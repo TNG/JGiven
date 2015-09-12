@@ -11,7 +11,7 @@ public class ThenTestStep extends Stage<ThenTestStep> {
     @ExpectedScenarioState
     int intResult;
 
-    public void the_value_is_$not$_greater_than_zero( @Format( NotFormatter.class ) boolean b ) {
+    public void the_value_is_$not_greater_than_zero(@Format(NotFormatter.class) boolean b) {
         assertThat( intResult > 0 ).isEqualTo( b );
     }
 

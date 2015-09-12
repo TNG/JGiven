@@ -23,7 +23,7 @@ public class JUnitParamsTest extends ScenarioTest<GivenTestStep, WhenTestStep, T
     public void JUnitParamsRunner_can_be_used( int intArg, boolean booleanArg, int caseNr ) {
         given().some_integer_value( intArg );
         when().multiply_with_two();
-        then().the_value_is_$not$_greater_than_zero( booleanArg );
+        then().the_value_is_$not_greater_than_zero(booleanArg);
 
         ScenarioCaseModel scenarioModel = getScenario().getScenarioCaseModel();
         List<String> arguments = scenarioModel.getExplicitArguments();
