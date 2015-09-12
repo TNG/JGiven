@@ -2,25 +2,38 @@
  * Main controller
  */
 
-jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $timeout, $sanitize, $location, $window, localStorageService,
+
+
+jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $document, $timeout, $sanitize, $location, $window, localStorageService,
                                                          dataService, tagService, classService, searchService, optionService) {
 
-  var INITIAL_LIMIT = 20;
+  /**
+   * The list of all scenarios theoretically visible
+   */
+  var scenarios = [];
 
   /**
-   * The current list of shown scenarios
+   * Scenarios after an options filter has been applied
    */
-  $scope.scenarios = [];
+  var filteredScenarios = [];
 
   $scope.currentPage = {};
   $scope.nav = {};
   $scope.bookmarks = [];
 
-  $scope.limit = INITIAL_LIMIT;
-
   $scope.totalStatistics = undefined;
 
   $scope.metaData = dataService.getMetaData();
+
+
+  // Pager
+
+  $scope.totalItems = 0;
+  $scope.currentPageNr = 1;
+  $scope.itemsPerPage = 0;
+
+  $scope.showOptions = true;
+
 
   $scope.init = function () {
 
@@ -35,7 +48,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   var getAllScenarios = dataService.getAllScenarios;
 
   $scope.showSummaryPage = function () {
-    var scenarios = getAllScenarios();
 
     $scope.currentPage = {
       title: "Welcome",
@@ -52,11 +64,14 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       $scope.updatingLocation = false;
       return;
     }
-    $scope.limit = INITIAL_LIMIT;
     var search = $location.search();
     var selectedOptions = optionService.getOptionsFromSearch(search);
     var part = $location.path().split('/');
     console.log("Location change: " + part);
+    $scope.currentPageNr = selectedOptions.page;
+    $scope.itemsPerPage = selectedOptions.itemsPerPage;
+    $scope.pagination = false;
+    $scope.showOptions = false;
     if (part[1] === '') {
       $scope.showSummaryPage();
     } else if (part[1] === 'tag') {
@@ -93,8 +108,9 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   });
 
-  $scope.extendListLimit = function () {
-    $scope.limit += 20;
+  $scope.setPage = function (pageNo) {
+    $scope.currentPageNr = pageNo;
+    $scope.applyOptionalPagination();
   };
 
   $scope.getTotalStatistics = function () {
@@ -168,19 +184,17 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
       loading: true
     };
     $timeout(function () {
-      var scenarios = classService.getScenariosOfPackage(packageName);
-      $scope.currentPage.scenarios = scenarios;
+      scenarios = classService.getScenariosOfPackage(packageName);
       $scope.currentPage.loading = false;
-      $scope.currentPage.options = optionService.getOptions($scope.currentPage.scenarios, options);
+      $scope.currentPage.options = optionService.getOptions(scenarios, options);
       $scope.applyOptions();
     }, 0);
   };
 
   $scope.updateCurrentPageToTestCase = function (testCase, options) {
     var className = splitClassName(testCase.className);
-    var scenarios = sortByDescription(testCase.scenarios);
+    scenarios = sortByDescription(testCase.scenarios);
     $scope.currentPage = {
-      scenarios: scenarios,
       subtitle: className.packageName,
       title: className.className,
       breadcrumbs: className.packageName.split("."),
@@ -191,10 +205,9 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
 
   $scope.updateCurrentPageToTag = function (tag, options) {
     var key = getTagKey(tag);
-    var scenarios = sortByDescription(tagService.getScenariosByTag(tag));
+    scenarios = sortByDescription(tagService.getScenariosByTag(tag));
     console.log("Update current page to tag " + key);
     $scope.currentPage = {
-      scenarios: scenarios,
       title: tag.value ? (tag.prependType ? getTagName(tag) + '-' : '') + tag.value : getTagName(tag),
       subtitle: tag.value && !tag.prependType ? getTagName(tag) : undefined,
       description: tag.description,
@@ -205,9 +218,8 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.updateCurrentPageToTagNameNode = function (tagNameNode, options) {
-    var scenarios = sortByDescription(tagNameNode.scenarios());
+    scenarios = sortByDescription(tagNameNode.scenarios());
     $scope.currentPage = {
-      scenarios: scenarios,
       title: tagNameNode.nodeName(),
       description: "",
       breadcrumbs: ['TAGS', tagNameNode.nodeName()
@@ -218,11 +230,10 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   };
 
   $scope.showScenario = function (className, methodName, options) {
-    var scenarios = sortByDescription(_.filter(classService.getTestCaseByClassName(className).scenarios, function (x) {
+    scenarios = sortByDescription(_.filter(classService.getTestCaseByClassName(className).scenarios, function (x) {
       return x.testMethodName === methodName;
     }));
     $scope.currentPage = {
-      scenarios: scenarios,
       title: scenarios[0].description.capitalize(),
       subtitle: className,
       breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName]),
@@ -240,22 +251,21 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     };
 
     $timeout(function () {
-      $scope.currentPage.scenarios = sortByDescription(getAllScenarios());
+      scenarios = sortByDescription(getAllScenarios());
       $scope.currentPage.loading = false;
-      $scope.currentPage.options = optionService.getOptions($scope.currentPage.scenarios, options);
+      $scope.currentPage.options = optionService.getOptions(scenarios, options);
       $scope.applyOptions();
     }, 0);
   };
 
   $scope.showPendingScenarios = function (options) {
-    var pendingScenarios = dataService.getPendingScenarios();
-    var description = getDescription(pendingScenarios.length, "pending");
+    scenarios = dataService.getPendingScenarios();
+    var description = getDescription(scenarios.length, "pending");
     $scope.currentPage = {
-      scenarios: pendingScenarios,
       title: "Pending Scenarios",
       description: description,
       breadcrumbs: ['PENDING SCENARIOS'],
-      options: optionService.getOptions(pendingScenarios, options)
+      options: optionService.getOptions(scenarios, options)
     };
     $scope.applyOptions();
   };
@@ -263,12 +273,40 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   $scope.applyOptions = function applyOptions () {
     var page = $scope.currentPage;
     var selectedSortOption = getSelectedSortOption(page);
-    var filteredSorted = selectedSortOption.apply(
-      _.filter(page.scenarios, getFilterFunction(page)));
-    page.groupedScenarios = getSelectedGroupOption(page).apply(filteredSorted);
-    page.statistics = $scope.gatherStatistics(filteredSorted);
-    page.filtered = page.scenarios.length - filteredSorted.length;
+
+    filteredScenarios = selectedSortOption.apply(
+      _.filter(scenarios, getFilterFunction(page)));
+
+    $scope.showOptions = scenarios.length > 1;
+
+    $scope.applyOptionalPagination();
+  };
+
+  $scope.applyOptionalPagination = function () {
+    var page = $scope.currentPage;
+    $scope.totalItems = filteredScenarios.length;
+
+    var scenariosOfCurrentPage = filteredScenarios;
+    var groupOption = getSelectedGroupOption(page);
+    if (groupOption.name === 'None' && $scope.totalItems > $scope.itemsPerPage) {
+      $scope.pagination = true;
+      scenariosOfCurrentPage = $scope.applyPagination(filteredScenarios);
+    } else {
+      $scope.pagination = false;
+    }
+
+    console.time("Applying group option");
+    page.groupedScenarios = groupOption.apply(scenariosOfCurrentPage);
+    console.timeEnd("Applying group option");
+
+    page.statistics = $scope.gatherStatistics(filteredScenarios);
+    page.filtered = scenarios.length - filteredScenarios.length;
     $scope.updateLocationSearchOptions();
+  }
+
+  $scope.applyPagination = function applyPagination (filteredScenarios) {
+    var start = ($scope.currentPageNr - 1) * $scope.itemsPerPage;
+    return filteredScenarios.slice(start, start + $scope.itemsPerPage);
   };
 
   $scope.updateLocationSearchOptions = function updateLocationSearchOptions () {
@@ -288,18 +326,21 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     var selectedClasses = getSelectedOptions($scope.currentPage.options.classOptions);
     $location.search('classes', selectedClasses.length > 0 ? _.map(selectedClasses, 'name').join(";") : null);
 
+    $location.search('page', $scope.pagination ? $scope.currentPageNr : null);
+
+    $location.search('itemsPerPage', $scope.pagination ? $scope.itemsPerPage : null);
+
     $scope.updatingLocation = false;
   };
 
   $scope.showFailedScenarios = function (options) {
-    var failedScenarios = dataService.getFailedScenarios();
-    var description = getDescription(failedScenarios.length, "failed");
+    scenarios = dataService.getFailedScenarios();
+    var description = getDescription(scenarios.length, "failed");
     $scope.currentPage = {
-      scenarios: failedScenarios,
       title: "Failed Scenarios",
       description: description,
       breadcrumbs: ['FAILED SCENARIOS'],
-      options: optionService.getOptions(failedScenarios, options)
+      options: optionService.getOptions(scenarios, options)
     };
     $scope.applyOptions();
   };
@@ -340,9 +381,9 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     };
 
     $timeout(function () {
-      $scope.currentPage.scenarios = searchService.findScenarios(searchString);
+      scenarios = searchService.findScenarios(searchString);
       $scope.currentPage.loading = false;
-      $scope.currentPage.options = optionService.getOptions($scope.currentPage.scenarios, options);
+      $scope.currentPage.options = optionService.getOptions(scenarios, options);
       $scope.applyOptions();
     }, 1);
   };
@@ -391,13 +432,13 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   }
 
   $scope.expandAll = function expandAll () {
-    _.forEach($scope.currentPage.scenarios, function (x) {
+    _.forEach(scenarios, function (x) {
       x.expanded = true;
     });
   };
 
   $scope.collapseAll = function collapseAll () {
-    _.forEach($scope.currentPage.scenarios, function (x) {
+    _.forEach(scenarios, function (x) {
       x.expanded = false;
     });
   };

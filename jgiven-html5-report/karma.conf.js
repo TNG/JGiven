@@ -25,7 +25,6 @@ module.exports = function (config) {
       'build/bower_components/**/angular-chart.js',
       'build/bower_components/**/angular-local-storage.js',
       'build/bower_components/**/lodash.js',
-      'build/bower_components/**/ng-infinite-scroll.js',
       'src/app/**/*.js',
       'src/test/app/**/*.js'
     ],
