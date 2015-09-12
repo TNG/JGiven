@@ -443,12 +443,17 @@
                                       </td>
                                     </tr>
                                   </table>
+
+                                  <div ng-if="step.attachment && step.attachment.showDirectly">
+                                    <img class="direct-image" src="data/{{ step.attachment.value }}"
+                                         alt="{{ step.attachment.title }}"/>
+                                  </div>
                                 </span>
                                 <span ng-repeat-end></span>
                               </span>
                               <span ng-repeat="scenarioCase in scenario.scenarioCases"
                                     ng-init="step = scenarioCase.steps[$parent.$index]">
-                                <span ng-if="step.attachment">
+                                <span ng-if="step.attachment && !step.attachment.showDirectly">
                                   <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
                                         class="{{ step.attachment.title ? 'has-tip' : '' }}"
                                         tooltip-html-unsafe="{{ step.attachment.title }}"

@@ -1,10 +1,6 @@
 package com.tngtech.jgiven.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Annotates elements that should be hidden in reports. 
@@ -14,6 +10,8 @@ import java.lang.annotation.Target;
  * <p>
  * You should write technical helper methods in camelCase so that the name already indicates that
  * the method does not appear in the report.
+ * 
+ * @see com.tngtech.jgiven.annotation.DoNotIntercept
  */
 @Documented
 @Retention( RetentionPolicy.RUNTIME )

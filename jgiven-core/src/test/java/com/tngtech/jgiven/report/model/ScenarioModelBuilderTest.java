@@ -19,6 +19,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.GivenTestStep;
 import com.tngtech.jgiven.ThenTestStep;
 import com.tngtech.jgiven.WhenTestStep;
+import com.tngtech.jgiven.annotation.DoNotIntercept;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.base.ScenarioTestBase;
 
@@ -258,8 +259,8 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
     }
 
     @Test
-    public void the_Description_annotation_is_evaluated() throws Throwable {
-        startScenario( "Scenario with a @Description tag" );
+    public void characters_are_not_dropped_when_using_the_As_annotation() throws Throwable {
+        startScenario( "Scenario with a @As tag" );
         given().a_step_with_a_description();
         getScenario().finished();
         StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
@@ -308,4 +309,21 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
         assertThat( step.words.get( 0 ).getFormattedValue() ).isEqualTo( "abstract step" );
     }
 
+    @Test
+    public void DoNotIntercept_method_are_not_appearin_in_the_report() throws Throwable {
+        DoNotInterceptClass stage = addStage( DoNotInterceptClass.class );
+        startScenario( "Test" );
+        stage.do_not_intercept();
+        stage.normal_step();
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.words.get( 0 ).getFormattedValue() ).isEqualTo( "normal step" );
+    }
+
+    static class DoNotInterceptClass {
+        @DoNotIntercept
+        public void do_not_intercept() {}
+
+        public void normal_step() {}
+    }
 }

@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.tngtech.jgiven.annotation.DoNotIntercept;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.Pending;
 
@@ -45,12 +46,17 @@ public class StepMethodInterceptor {
         long started = System.nanoTime();
         InvocationMode mode = getInvocationMode( receiver, method );
 
+        if( mode == DO_NOT_INTERCEPT ) {
+            return invoker.proceed();
+        }
+
         boolean handleMethod = methodHandlingEnabled && stackDepth.get() == 0 && !method.getDeclaringClass().equals( Object.class );
+
         if( handleMethod ) {
             scenarioMethodHandler.handleMethod( receiver, method, parameters, mode );
         }
 
-        if( mode == SKIPPED || mode == PENDING) {
+        if( mode == SKIPPED || mode == PENDING ) {
             return returnReceiverOrNull( receiver, method );
         }
 
@@ -95,8 +101,8 @@ public class StepMethodInterceptor {
     }
 
     protected InvocationMode getInvocationMode( Object receiver, Method method ) {
-        if( method.getDeclaringClass() == Object.class ) {
-            return NORMAL;
+        if( method.getDeclaringClass() == Object.class || method.isAnnotationPresent( DoNotIntercept.class ) ) {
+            return DO_NOT_INTERCEPT;
         }
 
         if( !methodExecutionEnabled ) {
