@@ -17,8 +17,8 @@ public class ThenCoffee extends Stage<ThenCoffee> {
     @ExpectedScenarioState
     private CoffeeMachine coffeeMachine;
 
-    public void I_$should_or_should_not$_be_served_a_coffee(
-            @Format( value = BooleanFormatter.class, args = { "should", "should not" } ) boolean shouldOrShouldNot ) {
+    public void I_$shouldOrShouldNot_be_served_a_coffee(
+        @Format(value = BooleanFormatter.class, args = {"should", "should not"}) boolean shouldOrShouldNot) {
         I_should_be_served_a_coffee( shouldOrShouldNot );
     }
 

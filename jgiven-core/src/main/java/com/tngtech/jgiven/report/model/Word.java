@@ -77,7 +77,7 @@ public class Word {
         value = name;
     }
 
-    public void append( String word ) {
+    public void append( CharSequence word ) {
         setValue( getValue() + " " + word );
     }
 

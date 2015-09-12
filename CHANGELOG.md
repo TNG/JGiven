@@ -1,8 +1,39 @@
-# v0.8.2
+# v0.9.0
+
+## Backwards incompatible changes regarding placeholder variables
+It is now not possible anymore to have spaces/underlines in placeholder variables. The rational behind this change is that the old behavior was hard to understand and did not really give much additional value.
+
+### Old Behavior
+
+The old behavior allowed placeholder variables to have spaces/underlines if the variable was terminated with another`$`. Consider the following example:
+```
+given().a_step_with_a_$placeholder_variable$_with_spaces( "foobar" );
+```
+Before v0.9.0 this resulted in the following report:
+
+```
+Given a step with a foobar with spaces
+```
+I.e. the complete string `$placeholder_variable$` was replaced. From v0.9.0 on this will not be possible anymore. In fact, the terminating `$` will be treated as a new placeholder variable.
+
+### New Behavior
+A placeholder variable must match the regular expression `\$[a-zA-Z0-9]*`. In particular, it cannot contain the `_` character. The above example, will now even throw a `JGivenWrongUsageException` because the number of arguments do not match the number of placeholders anymore.
+
+### Migration
+If you relied on the fact that placeholders can contains spaces or underlines, you have to rename your variables to camelCase. In addition, you have to remove the trailing `$`. So the above example becomes:
+
+```
+given().a_step_with_a_$placeholderVariable_with_spaces( "foobar" );
+```
+
 
 ## New Features
 
-* Introduced the annotation `@DoNotIntercept`, to completely circumvent the JGiven interception mechanism of step methods. [#103](https://github.com/TNG/JGiven/issues/103)
+* Introduced the annotation `@DoNotIntercept`, to completely circumvent the JGiven interception mechanism of step methods [#103](https://github.com/TNG/JGiven/issues/103)
+
+## Fixed Issues
+
+* Special characters like parentheses are not treated as part of a placeholder name anymore [#118](https://github.com/TNG/JGiven/issues/118)
 
 # v0.8.1
 

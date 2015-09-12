@@ -32,17 +32,23 @@ public class StepFormatterTest {
         return new Object[][] {
             { "a", asList(), "a" },
             { "a b", asList(), "a b" },
-            { "", asList( "a" ), " a" },
+            { " a ", asList(), " a " },
+            { "", asList( "a" ), "a" },
             { "foo", asList( "a" ), "foo a" },
-            { "", asList( "a", "b" ), " a b" },
+            { "", asList( "a", "b" ), "a b" },
             { "$", asList( "a" ), "a" },
+            { "$foo", asList( "a" ), "a" },
             { "foo $", asList( "a" ), "foo a" },
             { "$ foo", asList( "a" ), "a foo" },
             { "foo $ foo", asList( "a" ), "foo a foo" },
             { "$ $", asList( "a", "b" ), "a b" },
+            { "$foo bar$", asList( "a", "b" ), "a bar b" },
+            { "foo$bar$baz x", asList( "a", "b" ), "foo a b x" },
             { "$d foo", asList( 5 ), "5 foo" },
             { "$1 foo $1", asList( "a" ), "a foo a" },
             { "$2 $1", asList( "a", "b" ), "b a" },
+            { "$]", asList( "a" ), "a ]" },
+            { "foo $]", asList( "a" ), "foo a ]" },
         };
     }
 
@@ -52,14 +58,17 @@ public class StepFormatterTest {
         testFormatter( source, arguments, null, null, expectedResult );
     }
 
+    @Test( expected = JGivenWrongUsageException.class )
+    public void missing_arguments_lead_to_exception() {
+        testFormatter( "$foo bar$", asList( "a" ), null, null, "" );
+    }
+
     @DataProvider
     public static Object[][] formatterTestCases() {
         return new Object[][] {
             { "$", asList( true ), new NotFormatter(), "", "" },
             { "$", asList( false ), new NotFormatter(), "", "not" },
-            { "$not$", asList( false ), new NotFormatter(), "", "not" },
-            { "$or should not$", asList( false ), new NotFormatter(), "", "not" },
-            { "$or not$", asList( false ), new NotFormatter(), "", "not" },
+            { "$not", asList( false ), new NotFormatter(), "", "not" },
             { "$", asList( true ), null, "", "true" },
             { "$$ foo", asList( true ), null, "", "\\$ foo true" },
             { "$", asList( 5d ), new PrintfFormatter(), "%.2f", "5[.,]00" },
@@ -69,7 +78,7 @@ public class StepFormatterTest {
     @Test
     @UseDataProvider( "formatterTestCases" )
     @SuppressWarnings( { "unchecked", "rawtypes" } )
-    public void testFormatter( String source, List<Object> arguments, ArgumentFormatter<?> formatter, String formatterArg,
+    public void testFormatter( String source, List<? extends Object> arguments, ArgumentFormatter<?> formatter, String formatterArg,
             String expectedResult ) {
         List<Formatting<?>> asList = newArrayList();
         if( formatter != null ) {

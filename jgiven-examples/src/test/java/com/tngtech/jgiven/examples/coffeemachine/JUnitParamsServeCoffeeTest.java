@@ -1,8 +1,5 @@
 package com.tngtech.jgiven.examples.coffeemachine;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -10,6 +7,9 @@ import com.tngtech.jgiven.examples.coffeemachine.steps.GivenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.ThenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.WhenCoffee;
 import com.tngtech.jgiven.junit.ScenarioTest;
+
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
 /**
  * Feature: Serve coffee
@@ -39,7 +39,7 @@ public class JUnitParamsServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCo
         when().I_insert_$_one_euro_coins( dollars ).
             and().I_press_the_coffee_button();
 
-        then().I_$should_or_should_not$_be_served_a_coffee( shouldOrShouldNot );
+        then().I_$shouldOrShouldNot_be_served_a_coffee( shouldOrShouldNot );
     }
 
 }

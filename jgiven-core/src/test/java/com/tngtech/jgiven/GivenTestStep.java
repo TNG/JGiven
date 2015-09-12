@@ -41,6 +41,11 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
+    @As( "a step with a bracket after a dollar $]" )
+    public GivenTestStep a_step_with_a_bracket_after_a_dollar( int value ) {
+        return self();
+    }
+
     public GivenTestStep a_step_with_a_printf_annotation_$( @Formatf( "%.2f" ) double d ) {
         return self();
     }

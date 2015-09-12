@@ -118,7 +118,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
         when().I_insert_$_one_euro_coins( dollars ).
             and().I_press_the_coffee_button();
 
-        then().I_$should_or_should_not$_be_served_a_coffee( shouldOrShouldNot );
+        then().I_$shouldOrShouldNot_be_served_a_coffee( shouldOrShouldNot );
     }
 
     @Test

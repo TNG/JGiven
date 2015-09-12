@@ -261,10 +261,10 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
     @Test
     public void characters_are_not_dropped_when_using_the_As_annotation() throws Throwable {
         startScenario( "Scenario with a @As tag" );
-        given().a_step_with_a_description();
+        given().a_step_with_a_bracket_after_a_dollar( 42 );
         getScenario().finished();
         StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
-        assertThat( step.words.get( 1 ).getValue() ).isEqualTo( "a step with a (special) description" );
+        assertThat( step.getCompleteSentence() ).isEqualTo( "Given a step with a bracket after a dollar 42 ]" );
     }
 
     @Test
