@@ -1,3 +1,9 @@
+# v0.8.2
+
+## New Features
+
+* Introduced the annotation `@DoNotIntercept`, to completely circumvent the JGiven interception mechanism of step methods. [#103](https://github.com/TNG/JGiven/issues/103)
+
 # v0.8.1
 
 ## New Features
