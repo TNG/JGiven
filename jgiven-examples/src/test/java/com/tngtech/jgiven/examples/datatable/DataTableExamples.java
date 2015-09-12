@@ -35,12 +35,23 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
             return self();
         }
 
+        public DataTableStage a_list_of_POJOs_is_used_as_parameters_with_header_type_VERTICAL_and_numbered_columns(
+                @Table( header = VERTICAL, numberedColumns = true ) TestCustomer... testCustomer ) {
+            return self();
+        }
+
         public void some_action_happens() {
 
         }
 
         public void a_single_POJO_is_used_as_parameters(
                 @Table( header = VERTICAL ) TestCustomer testCustomer ) {}
+
+        public void a_list_of_POJOs_with_numbered_rows(
+                @Table( numberedRows = true ) TestCustomer... testCustomer ) {}
+
+        public void a_list_of_POJOs_with_numbered_rows_and_custom_header(
+                @Table( numberedRowsHeader = "Counter" ) TestCustomer... testCustomer ) {}
     }
 
     static class TestCustomer {
@@ -59,7 +70,7 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
             asList(
                 asList( "Name", "Email" ),
                 asList( "John Doe", "john@doe.com" ),
-                asList( "Jane Roe", "jane@row.com" ) )
+                asList( "Jane Roe", "jane@roe.com" ) )
             );
     }
 
@@ -68,7 +79,7 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
         given().a_list_of_lists_is_used_as_parameter_with_column_titles(
             asList(
                 asList( "John Doe", "john@doe.com" ),
-                asList( "Jane Roe", "jane@row.com" ) )
+                asList( "Jane Roe", "jane@roe.com" ) )
             );
     }
 
@@ -76,7 +87,7 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
     public void a_list_of_POJOs_can_be_represented_as_data_tables() {
         given().a_list_of_POJOs_is_used_as_parameters(
             new TestCustomer( "John Doe", "john@doe.com" ),
-            new TestCustomer( "Jane Roe", "jane@row.com" )
+            new TestCustomer( "Jane Roe", "jane@roe.com" )
             );
     }
 
@@ -84,14 +95,40 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
     public void a_list_of_POJOs_can_be_represented_as_a_data_table_with_a_vertical_header() {
         given().a_list_of_POJOs_is_used_as_parameters_with_header_type_VERTICAL(
             new TestCustomer( "John Doe", "john@doe.com" ),
-            new TestCustomer( "Jane Roe", "jane@row.com" )
+            new TestCustomer( "Jane Roe", "jane@roe.com" )
+            );
+    }
+
+    @Test
+    public void a_list_of_POJOs_can_be_represented_as_a_data_table_with_a_vertical_header_and_numbered_columns() {
+        given().a_list_of_POJOs_is_used_as_parameters_with_header_type_VERTICAL_and_numbered_columns(
+            new TestCustomer( "John Doe", "john@doe.com" ),
+            new TestCustomer( "Jane Roe", "jane@roe.com" )
             );
     }
 
     @Test
     public void a_single_POJO_can_be_represented_as_a_data_table() {
         given().a_single_POJO_is_used_as_parameters(
-            new TestCustomer( "Jane Roe", "jane@row.com" )
+            new TestCustomer( "Jane Roe", "jane@roe.com" )
+            );
+    }
+
+    @Test
+    public void parameter_tables_can_have_numbered_rows() {
+        given().a_list_of_POJOs_with_numbered_rows(
+            new TestCustomer( "John Doe", "john@doe.com" ),
+            new TestCustomer( "Jane Roe", "jane@roe.com" ),
+            new TestCustomer( "Lee Smith", "lee@smith.com" )
+            );
+    }
+
+    @Test
+    public void parameter_tables_can_have_numbered_rows_with_custom_headers() {
+        given().a_list_of_POJOs_with_numbered_rows_and_custom_header(
+            new TestCustomer( "John Doe", "john@doe.com" ),
+            new TestCustomer( "Jane Roe", "jane@roe.com" ),
+            new TestCustomer( "Lee Smith", "lee@smith.com" )
             );
     }
 }
