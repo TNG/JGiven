@@ -61,7 +61,6 @@ task copyJsFiles(type: Copy) {
     include '**/angular-chart.js'
     include '**/angular-local-storage.js'
     include '**/mm-foundation-tpls.min.js'
-    include '**/ng-infinite-scroll.js'
     into appDir + 'js'
     includeEmptyDirs = false
     eachFile { details ->
