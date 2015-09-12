@@ -6,6 +6,13 @@ public class AttachmentModel {
     private String mediaType;
     private boolean binary;
 
+    /**
+     * Shows the attachment showDirectly in the scenario
+     * Can be {@code null} to save bytes in the JSON file
+     * @since 0.8.2
+     */
+    private Boolean showDirectly;
+
     public String getValue() {
         return value;
     }
@@ -36,5 +43,9 @@ public class AttachmentModel {
 
     public boolean isBinary() {
         return binary;
+    }
+
+    public void setShowDirectly(boolean showDirectly) {
+        this.showDirectly = showDirectly ? true : null;
     }
 }

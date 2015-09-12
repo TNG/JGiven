@@ -135,8 +135,9 @@
         <li class="has-submenu" ng-repeat="node in rootTags" ng-include="'tree_mobile_template.html'">
 
         <li><label>Classes</label></li>
-        <li class="off-canvas-close" ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
-            {{leaf.nodeName()}}
+        <li class="off-canvas-close" ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a
+            href="{{leaf.url()}}">
+          {{leaf.nodeName()}}
         </a></li>
         <li class="has-submenu" ng-repeat="node in rootPackage.childNodes() | orderBy : orderNodes"
             ng-include="'tree_mobile_template.html'"></li>
@@ -200,7 +201,7 @@
                   <a class="toggle" ng-click="classNames.expanded = !classNames.expanded">Classes</a>
                   <ul ng-if="classNames.expanded">
                     <li ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
-                        {{leaf.nodeName()}}
+                      {{leaf.nodeName()}}
                     </a></li>
                     <li ng-repeat="node in rootPackage.childNodes() | orderBy : orderNodes"
                         ng-include="'tree_template.html'"></li>
@@ -437,12 +438,17 @@
                                       </td>
                                     </tr>
                                   </table>
+
+                                  <div ng-if="step.attachment && step.attachment.showDirectly">
+                                    <img class="direct-image" src="data/{{ step.attachment.value }}"
+                                         alt="{{ step.attachment.title }}"/>
+                                  </div>
                                 </span>
                                 <span ng-repeat-end></span>
                               </span>
                               <span ng-repeat="scenarioCase in scenario.scenarioCases"
                                     ng-init="step = scenarioCase.steps[$parent.$index]">
-                                <span ng-if="step.attachment">
+                                <span ng-if="step.attachment && !step.attachment.showDirectly">
                                   <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
                                         class="{{ step.attachment.title ? 'has-tip' : '' }}"
                                         tooltip-html-unsafe="{{ step.attachment.title }}"

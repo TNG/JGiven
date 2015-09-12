@@ -142,7 +142,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     return -1;
   };
 
-  $scope.toggleTreeNode = function toggleTreeNode(node) {
+  $scope.toggleTreeNode = function toggleTreeNode (node) {
     node.expanded = !node.expanded;
 
     // recursively open all packages that only have a single subpackage
@@ -260,7 +260,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     $scope.applyOptions();
   };
 
-  $scope.applyOptions = function applyOptions() {
+  $scope.applyOptions = function applyOptions () {
     var page = $scope.currentPage;
     var selectedSortOption = getSelectedSortOption(page);
     var filteredSorted = selectedSortOption.apply(
@@ -271,7 +271,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     $scope.updateLocationSearchOptions();
   };
 
-  $scope.updateLocationSearchOptions = function updateLocationSearchOptions() {
+  $scope.updateLocationSearchOptions = function updateLocationSearchOptions () {
     $scope.updatingLocation = true;
     var selectedSortOption = getSelectedSortOption($scope.currentPage);
     $location.search('sort', selectedSortOption.default ? null : selectedSortOption.id);
@@ -304,7 +304,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     $scope.applyOptions();
   };
 
-  function getDescription(count, status) {
+  function getDescription (count, status) {
     if (count === 0) {
       return "There are no " + status + " scenarios. Keep rocking!";
     } else if (count === 1) {
@@ -328,7 +328,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     $location.path("search/" + $scope.nav.search);
   };
 
-  $scope.search = function search(searchString, options) {
+  $scope.search = function search (searchString, options) {
     console.log("Searching for " + searchString);
 
     $scope.currentPage = {
@@ -347,7 +347,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     }, 1);
   };
 
-  $scope.gatherStatistics = function gatherStatistics(scenarios) {
+  $scope.gatherStatistics = function gatherStatistics (scenarios) {
     var statistics = {
       count: scenarios.length,
       failed: 0,
@@ -374,12 +374,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     return statistics;
   };
 
-  $scope.printCurrentPage = function printCurrentPage() {
+  $scope.printCurrentPage = function printCurrentPage () {
     $location.search("print", true);
     $timeout(printPage, 0);
   };
 
-  function printPage() {
+  function printPage () {
     if ($scope.currentPage.loading) {
       $timeout(printPage, 0);
     } else {
@@ -390,36 +390,36 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     }
   }
 
-  $scope.expandAll = function expandAll() {
+  $scope.expandAll = function expandAll () {
     _.forEach($scope.currentPage.scenarios, function (x) {
       x.expanded = true;
     });
   };
 
-  $scope.collapseAll = function collapseAll() {
+  $scope.collapseAll = function collapseAll () {
     _.forEach($scope.currentPage.scenarios, function (x) {
       x.expanded = false;
     });
   };
 
-  $scope.sortOptionSelected = function sortOptionSelected(sortOption) {
+  $scope.sortOptionSelected = function sortOptionSelected (sortOption) {
     deselectAll($scope.currentPage.options.sortOptions);
     sortOption.selected = true;
     $scope.applyOptions();
   };
 
-  $scope.groupOptionSelected = function groupOptionSelected(groupOption) {
+  $scope.groupOptionSelected = function groupOptionSelected (groupOption) {
     deselectAll($scope.currentPage.options.groupOptions);
     groupOption.selected = true;
     $scope.applyOptions();
   };
 
-  $scope.filterOptionSelected = function filterOptionSelected(filterOption) {
+  $scope.filterOptionSelected = function filterOptionSelected (filterOption) {
     filterOption.selected = !filterOption.selected;
     $scope.applyOptions();
   };
 
-  function getFilterFunction(page) {
+  function getFilterFunction (page) {
 
     var anyStatusMatches = anyOptionMatches(getSelectedOptions(page.options.statusOptions));
     var anyTagMatches = allOptionMatches(getSelectedOptions(page.options.tagOptions));
@@ -430,7 +430,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     }
   }
 
-  function anyOptionMatches(filterOptions) {
+  function anyOptionMatches (filterOptions) {
     // by default nothing is filtered
     if (filterOptions.length === 0) {
       return function () {
@@ -448,7 +448,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     }
   }
 
-  function allOptionMatches(filterOptions) {
+  function allOptionMatches (filterOptions) {
     // by default nothing is filtered
     if (filterOptions.length === 0) {
       return function () {
@@ -466,33 +466,33 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     }
   }
 
-  function getSelectedSortOption(page) {
+  function getSelectedSortOption (page) {
     return getSelectedOptions(page.options.sortOptions)[0];
   }
 
-  function getSelectedGroupOption(page) {
+  function getSelectedGroupOption (page) {
     return getSelectedOptions(page.options.groupOptions)[0];
   }
 
-  function getSelectedOptions(options) {
+  function getSelectedOptions (options) {
     return _.filter(options, 'selected');
   }
 
   $scope.nanosToReadableUnit = nanosToReadableUnit;
 
-  $scope.tagIdToString = function tagIdToString(tagId) {
+  $scope.tagIdToString = function tagIdToString (tagId) {
     var tag = tagService.getTagByTagId(tagId);
     return tagToString(tag);
   };
 
   $scope.tagToString = tagToString;
 
-  $scope.getUrlFromTagId = function getUrlFromTagId(tagId) {
+  $scope.getUrlFromTagId = function getUrlFromTagId (tagId) {
     var tag = $scope.getTagByTagId(tagId);
     return $scope.getUrlFromTag(tag);
   };
 
-  $scope.getUrlFromTag = function getUrlFromTag(tag) {
+  $scope.getUrlFromTag = function getUrlFromTag (tag) {
     return '#tag/' + getTagName(tag) +
       (tag.value ? '/' + $window.encodeURIComponent(tag.value) : '');
 
@@ -502,7 +502,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
     return tagService.getTagByTagId(tagId);
   };
 
-  $scope.getCssClassOfTag = function getCssClassOfTag(tagId) {
+  $scope.getCssClassOfTag = function getCssClassOfTag (tagId) {
     var tag = $scope.getTagByTagId(tagId);
     if (tag.cssClass) {
       return tag.cssClass;
@@ -513,7 +513,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
   /**
    * Returns the content of style attribute for the given tag
    */
-  $scope.getStyleOfTag = function getStyleOfTag(tagId) {
+  $scope.getStyleOfTag = function getStyleOfTag (tagId) {
     var tag = tagService.getTagByTagId(tagId);
     var style = "";
     if (tag.style) {
@@ -549,7 +549,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $ti
    * It is assumed that only the first word can be an intro word
    * @param words the array of all non-intro words of a step
    */
-  $scope.getNonIntroWords = function getNonIntroWords(words) {
+  $scope.getNonIntroWords = function getNonIntroWords (words) {
     if (words[0].isIntroWord) {
       return words.slice(1);
     }
