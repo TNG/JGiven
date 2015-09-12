@@ -26,14 +26,15 @@ If you relied on the fact that placeholders can contains spaces or underlines, y
 given().a_step_with_a_$placeholderVariable_with_spaces( "foobar" );
 ```
 
+## Fixed Issues
+
+* Special characters like parentheses are not treated as part of a placeholder name anymore [#118](https://github.com/TNG/JGiven/issues/118)
+
+# v0.8.2
 
 ## New Features
 
 * Introduced the annotation `@DoNotIntercept`, to completely circumvent the JGiven interception mechanism of step methods [#103](https://github.com/TNG/JGiven/issues/103)
-
-## Fixed Issues
-
-* Special characters like parentheses are not treated as part of a placeholder name anymore [#118](https://github.com/TNG/JGiven/issues/118)
 
 # v0.8.1
 
