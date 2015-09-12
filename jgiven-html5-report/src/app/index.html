@@ -445,7 +445,7 @@
                                   </table>
 
                                   <div ng-if="step.attachment && step.attachment.showDirectly">
-                                    <img class="direct-image" src="data/{{ step.attachment.value }}"
+                                    <img class="direct-image" ng-src="data/{{ step.attachment.value }}"
                                          alt="{{ step.attachment.title }}"/>
                                   </div>
                                 </span>
