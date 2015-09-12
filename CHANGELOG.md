@@ -7,6 +7,10 @@
 * Introduced the possibility to automatically number the rows or columns of a table parameter. [#116](https://github.com/TNG/JGiven/issues/116)
 * HTML Report: introduce pagination to better deal with large lists of scenarios. [#120](https://github.com/TNG/JGiven/pull/120)
 
+## Fixed Issues
+
+* HTML Report: fixed an issue that caused the scenario list to only shows the first 20 entries [#119](https://github.com/TNG/JGiven/issues/119)
+
 # v0.8.1
 
 ## New Features
