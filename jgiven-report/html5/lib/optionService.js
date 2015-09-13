@@ -5,7 +5,7 @@
 jgivenReportApp.factory('optionService', ['dataService', function (dataService) {
   'use strict';
 
-  function groupTagsByType(tagList) {
+  function groupTagsByType (tagList) {
     var types = {};
     _.forEach(tagList, function (x) {
       var list = types[getTagName(x)];
@@ -26,7 +26,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
   }
 
 
-  function getOptions(scenarios, optionSelection) {
+  function getOptions (scenarios, optionSelection) {
     var result = getDefaultOptions(scenarios);
 
     if (optionSelection.sort) {
@@ -62,13 +62,13 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     return result;
   }
 
-  function selectOption(property, value, options) {
+  function selectOption (property, value, options) {
     _.filter(options, function (option) {
       return option[property] === value;
     })[0].selected = true;
   }
 
-  function getDefaultOptions(scenarios) {
+  function getDefaultOptions (scenarios) {
     var uniqueSortedTags = getUniqueSortedTags(scenarios);
 
     return {
@@ -80,7 +80,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     }
   }
 
-  function getDefaultStatusOptions() {
+  function getDefaultStatusOptions () {
     return [
       {
         selected: false,
@@ -110,7 +110,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     ];
   }
 
-  function getDefaultTagOptions(uniqueSortedTags) {
+  function getDefaultTagOptions (uniqueSortedTags) {
     var result = [];
     _.forEach(uniqueSortedTags, function (tag) {
       var tagName = tagToString(tag);
@@ -130,7 +130,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     return result;
   }
 
-  function getDefaultClassOptions(scenarios) {
+  function getDefaultClassOptions (scenarios) {
     var uniqueSortedClassNames = getUniqueSortedClassNames(scenarios)
       , result = [];
     _.forEach(uniqueSortedClassNames, function (className) {
@@ -145,7 +145,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     return result;
   }
 
-  function getUniqueSortedClassNames(scenarios) {
+  function getUniqueSortedClassNames (scenarios) {
     var allClasses = {};
     _.forEach(scenarios, function (scenario) {
       allClasses[scenario.className] = true;
@@ -153,7 +153,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     return ownProperties(allClasses).sort();
   }
 
-  function getUniqueSortedTags(scenarios) {
+  function getUniqueSortedTags (scenarios) {
     var allTags = {};
     _.forEach(scenarios, function (scenario) {
       _.forEach(scenario.tags, function (tag) {
@@ -165,7 +165,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     });
   }
 
-  function getDefaultGroupOptions() {
+  function getDefaultGroupOptions () {
     return [
       {
         selected: true,
@@ -209,7 +209,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     ];
   }
 
-  function groupByTag(scenarios) {
+  function groupByTag (scenarios) {
     var result = {}, i, j, tagName;
     _.forEach(scenarios, function (scenario) {
       _.forEach(scenario.tags, function (tag) {
@@ -225,14 +225,14 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     return result;
   }
 
-  function addToArrayProperty(obj, p, value) {
+  function addToArrayProperty (obj, p, value) {
     if (!obj.hasOwnProperty(p)) {
       obj[p] = [];
     }
     obj[p].push(value);
   }
 
-  function getDefaultSortOptions(uniqueSortedTags) {
+  function getDefaultSortOptions (uniqueSortedTags) {
     var result = [
       {
         selected: true,
@@ -296,7 +296,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     return result.concat(getTagSortOptions(uniqueSortedTags))
   }
 
-  function getTagSortOptions(uniqueSortedTags) {
+  function getTagSortOptions (uniqueSortedTags) {
     var result = [];
 
     var tagTypes = groupTagsByType(uniqueSortedTags);
@@ -319,13 +319,13 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     return result;
   }
 
-  function getTagOfType(tags, type) {
+  function getTagOfType (tags, type) {
     return _.filter(tags, function (tag) {
       return getTagName(tag) === type;
     });
   }
 
-  function toArrayOfGroups(obj) {
+  function toArrayOfGroups (obj) {
     var result = [];
     _.forEach(ownProperties(obj), function (p) {
       result.push({
@@ -336,8 +336,10 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     return _.sortBy(result, 'name');
   }
 
-  function getOptionsFromSearch(search) {
+  function getOptionsFromSearch (search) {
     var result = {};
+    result.page = parseInt(search.page) || 1;
+    result.itemsPerPage = parseInt(search.itemsPerPage) || 40;
     result.sort = search.sort;
     result.group = search.group;
     result.tags = search.tags ? search.tags.split(";") : [];
