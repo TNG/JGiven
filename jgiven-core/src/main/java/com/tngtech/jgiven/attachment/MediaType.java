@@ -39,7 +39,7 @@ public class MediaType {
         /**
          * Get the type from a given string
          */
-        public Type fromString( String string ) {
+        public static Type fromString( String string ) {
             for( Type type : values() ) {
                 if( type.value.equalsIgnoreCase( string ) ) {
                     return type;
