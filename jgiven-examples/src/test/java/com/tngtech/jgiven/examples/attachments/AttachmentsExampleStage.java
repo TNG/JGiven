@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.google.common.io.BaseEncoding;
 import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
@@ -52,12 +51,16 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
         g.drawOval( 10, 10, width - 20, height - 20 );
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        ImageIO.write( image, "PNG", outputStream );
-        String base64String = BaseEncoding.base64().encode( outputStream.toByteArray() );
+        try {
+            ImageIO.write( image, "PNG", outputStream );
+            byte[] bytes = outputStream.toByteArray();
 
-        currentStep.addAttachment(
-            Attachment.fromBase64( base64String, MediaType.PNG )
-                .withTitle( "An oval drawn in Java" )
-                .showDirectly() );
+            currentStep.addAttachment(
+                Attachment.fromBinaryBytes( bytes, MediaType.PNG )
+                    .withTitle( "An oval drawn in Java" )
+                    .showDirectly() );
+        } finally {
+            outputStream.close();
+        }
     }
 }

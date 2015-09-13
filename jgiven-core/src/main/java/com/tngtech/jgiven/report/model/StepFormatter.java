@@ -20,9 +20,12 @@ import com.tngtech.jgiven.format.AnnotationArgumentFormatter;
 import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.TableFormatter;
+import com.tngtech.jgiven.impl.util.AnnotationUtil;
+import com.tngtech.jgiven.impl.util.ApiUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 
 public class StepFormatter {
+    public static final String DEFAULT_NUMBERED_HEADER = "#";
     private final String stepDescription;
     private final List<NamedArgument> arguments;
     private final List<Formatting<?>> formatters;
@@ -163,44 +166,54 @@ public class StepFormatter {
     }
 
     private static void addNumberedRows( Table tableAnnotation, DataTable dataTable ) {
-        if( tableAnnotation.numberedRows() || !tableAnnotation.numberedRowsHeader().equals( "" ) ) {
-            List<String> column = Lists.newArrayListWithExpectedSize( dataTable.getRowCount() );
+        String customHeader = tableAnnotation.numberedRowsHeader();
+        boolean hasCustomerHeader = !customHeader.equals( AnnotationUtil.ABSENT );
 
-            if( dataTable.hasHorizontalHeader() ) {
-                String header = "#";
-                if( !tableAnnotation.numberedRowsHeader().equals( "" ) ) {
-                    header = tableAnnotation.numberedRowsHeader();
-                }
-                column.add( header );
-            }
+        if( tableAnnotation.numberedRows() || hasCustomerHeader ) {
+            ApiUtil.isTrue( !hasCustomerHeader || dataTable.hasHorizontalHeader(),
+                "Using numberedRowsHeader in @Table without having a horizontal header." );
 
-            int counter = 1;
-            while( column.size() != dataTable.getRowCount() ) {
-                column.add( "" + counter );
-                counter++;
-            }
+            int rowCount = dataTable.getRowCount();
+            List<String> column = Lists.newArrayListWithExpectedSize( rowCount );
+            addHeader( customHeader, column, dataTable.hasHorizontalHeader() );
+            addNumbers( rowCount, column );
             dataTable.addColumn( 0, column );
         }
     }
 
     private static void addNumberedColumns( Table tableAnnotation, DataTable dataTable ) {
-        if( tableAnnotation.numberedColumns() || !tableAnnotation.numberedColumnsHeader().equals( "" ) ) {
-            List<String> row = Lists.newArrayListWithExpectedSize( dataTable.getColumnCount() );
+        String customHeader = tableAnnotation.numberedColumnsHeader();
+        boolean hasCustomerHeader = !customHeader.equals( AnnotationUtil.ABSENT );
 
-            if( dataTable.hasVerticalHeader() ) {
-                String header = "#";
-                if( !tableAnnotation.numberedColumnsHeader().equals( "" ) ) {
-                    header = tableAnnotation.numberedColumnsHeader();
-                }
-                row.add( header );
-            }
+        if( tableAnnotation.numberedColumns() || hasCustomerHeader ) {
+            ApiUtil.isTrue( !hasCustomerHeader || dataTable.hasVerticalHeader(),
+                "Using numberedColumnsHeader in @Table without having a vertical header." );
 
-            int counter = 1;
-            while( row.size() != dataTable.getColumnCount() ) {
-                row.add( "" + counter );
-                counter++;
-            }
+            int columnCount = dataTable.getColumnCount();
+            List<String> row = Lists.newArrayListWithExpectedSize( columnCount );
+            addHeader( customHeader, row, dataTable.hasVerticalHeader() );
+            addNumbers( columnCount, row );
             dataTable.addRow( 0, row );
+        }
+    }
+
+    private static void addHeader( String customHeader, List<String> column, boolean hasHeader ) {
+        boolean hasCustomerHeader = !customHeader.equals( AnnotationUtil.ABSENT );
+
+        if( hasHeader ) {
+            String header = DEFAULT_NUMBERED_HEADER;
+            if( hasCustomerHeader ) {
+                header = customHeader;
+            }
+            column.add( header );
+        }
+    }
+
+    private static void addNumbers( int count, List<String> column ) {
+        int counter = 1;
+        while( column.size() < count ) {
+            column.add( Integer.toString( counter ) );
+            counter++;
         }
     }
 

@@ -76,19 +76,10 @@ public class Attachment {
     }
 
     /**
-     * An optional title of the attachment.
-     * The title can be used by reporters, e.g. as a tooltip.
-     * Can be {@code null}.
-     */
-    public String title() {
-        return title;
-    }
-
-    /**
      * The content of the attachment represented as a string. 
      * Binary attachments must be encoded in Base64 format.
      */
-    public String content() {
+    public String getContent() {
         return content;
     }
 
@@ -101,7 +92,9 @@ public class Attachment {
     }
 
     /**
-     * An optional title
+     * An optional title of the attachment.
+     * The title can be used by reporters, e.g. as a tooltip.
+     * Can be {@code null}.
      */
     public String getTitle() {
         return title;

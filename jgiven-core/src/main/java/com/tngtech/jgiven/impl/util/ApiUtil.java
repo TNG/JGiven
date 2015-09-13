@@ -7,10 +7,16 @@ import com.tngtech.jgiven.exception.JGivenWrongUsageException;
  */
 public class ApiUtil {
 
-    public static <T> T notNull( T o, String message ) {
-        if( o == null ) {
-            throw new JGivenWrongUsageException( message );
+    public static <T> T notNull(T o, String message) {
+        if (o == null) {
+            throw new JGivenWrongUsageException(message);
         }
         return o;
+    }
+
+    public static void isTrue(boolean b, String message) {
+        if (!b) {
+            throw new JGivenWrongUsageException(message);
+        }
     }
 }
