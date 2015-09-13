@@ -1,8 +1,9 @@
-package com.tngtech.jgiven.format;
+package com.tngtech.jgiven.report.model;
 
 import java.lang.annotation.Annotation;
 
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.impl.util.AnnotationUtil;
 
 public class TableAnnotation implements Table {
 
@@ -14,8 +15,8 @@ public class TableAnnotation implements Table {
     String[] columnTitles = {};
     boolean numberedRows = false;
     boolean numberedColumns = false;
-    String numberedRowsHeader = "";
-    String numberedColumnsHeader = "";
+    String numberedRowsHeader = AnnotationUtil.ABSENT;
+    String numberedColumnsHeader = AnnotationUtil.ABSENT;
 
     @Override
     public HeaderType header() {

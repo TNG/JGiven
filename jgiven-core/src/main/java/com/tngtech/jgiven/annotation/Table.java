@@ -4,6 +4,8 @@ import static com.tngtech.jgiven.annotation.Table.HeaderType.HORIZONTAL;
 
 import java.lang.annotation.*;
 
+import com.tngtech.jgiven.impl.util.AnnotationUtil;
+
 /**
  * Marks the parameter of a step method as a data table.
  * Such parameters are represented as tables in the report.
@@ -221,29 +223,44 @@ public @interface Table {
 
     /**
      * Automatically number the rows of the table
-     * Default is not to generate one
+     * Default is not to generate one.
+     * <p>
+     * If the table has a horizontal header, the generated column has header '#'.
+     * To use a different header use {@link #numberedRowsHeader}.
      * 
      * @since 0.8.2
      */
     boolean numberedRows() default false;
 
     /**
+     * Like {@link #numberedRows} but specifies a different header
+     * for the generated column. This implicitly sets {@see #numberedRows} to {@code true}. 
+     * <p>
+     * Note that in case the table has no horizontal header a {@see JGivenWrongUsageException}
+     * will be thrown if this value is set.
      * @since 0.8.2
      */
-    String numberedRowsHeader() default "";
+    String numberedRowsHeader() default AnnotationUtil.ABSENT;
 
     /**
      * Automatically number the columns of a table
-     * Default is not to generate one
-
+     * Default is not to generate one.
+     * <p>
+     * If the table has a vertical header, the generated row has header '#'.
+     * To use a different header use {@link #numberedColumnsHeader}.
      * @since 0.8.2
      */
     boolean numberedColumns() default false;
 
     /**
+     * Like {@link #numberedColumns} but specifies a different header
+     * for the generated row. This implicitly sets {@see #numberedColumns} to {@code true}. 
+     * <p>
+     * Note that in case the table has no vertical header a {@see JGivenWrongUsageException}
+     * will be thrown if this value is set.
      * @since 0.8.2
      */
-    String numberedColumnsHeader() default "";
+    String numberedColumnsHeader() default AnnotationUtil.ABSENT;
 
     public enum HeaderType {
         /**
@@ -257,7 +274,7 @@ public @interface Table {
         HORIZONTAL,
 
         /**
-         * Treat the first column as a header
+         * Treat the first column as a header0
          */
         VERTICAL,
 
