@@ -135,8 +135,9 @@
         <li class="has-submenu" ng-repeat="node in rootTags" ng-include="'tree_mobile_template.html'">
 
         <li><label>Classes</label></li>
-        <li class="off-canvas-close" ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
-            {{leaf.nodeName()}}
+        <li class="off-canvas-close" ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a
+            href="{{leaf.url()}}">
+          {{leaf.nodeName()}}
         </a></li>
         <li class="has-submenu" ng-repeat="node in rootPackage.childNodes() | orderBy : orderNodes"
             ng-include="'tree_mobile_template.html'"></li>
@@ -145,8 +146,6 @@
 
 
     <div class="row content">
-
-      <div infinite-scroll="extendListLimit()" infinite-scroll-distance="1" infinite-scroll-parent="true"></div>
 
       <div id="loading-modal" ng-hide="currentPage"><h1>Loading <i class="fa fa-circle-o-notch fa-spin"></i></h1>
       </div>
@@ -200,7 +199,7 @@
                   <a class="toggle" ng-click="classNames.expanded = !classNames.expanded">Classes</a>
                   <ul ng-if="classNames.expanded">
                     <li ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
-                        {{leaf.nodeName()}}
+                      {{leaf.nodeName()}}
                     </a></li>
                     <li ng-repeat="node in rootPackage.childNodes() | orderBy : orderNodes"
                         ng-include="'tree_template.html'"></li>
@@ -272,7 +271,7 @@
 
         <!-- SCENARIO BUTTON BAR -->
 
-        <div class="scenario-list-button-bar row" ng-if="currentPage.scenarios">
+        <div class="scenario-list-button-bar row">
 
           <!-- STATISTICS -->
 
@@ -288,7 +287,7 @@
 
           <!-- DROP DOWNS -->
 
-          <div class="small-12 large-6 columns" ng-if="currentPage.scenarios.length > 0">
+          <div class="small-12 large-6 columns" ng-if="showOptions">
             <ul class="button-group radius right">
               <li><a class="button dropdown small secondary" dropdown-toggle="#group-drop-down">Group
                 By</a>
@@ -342,6 +341,13 @@
           </div>
         </div>
 
+        <div class="pagination-centered pagination-top" ng-if="pagination && !currentPage.print">
+          <pagination boundary-links="true" items-per-page="itemsPerPage" total-items="totalItems"
+                      page="currentPageNr" class="pagination-sm"
+                      on-select-page="setPage(page)" max-size="10" rotate="false"
+                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                      last-text="&raquo;"></pagination>
+        </div>
 
         <!-- SCENARIO GROUP -->
 
@@ -363,7 +369,7 @@
             <!-- SCENARIO LIST -->
 
             <div class="scenario {{$last ? 'last' : ''}}"
-                 ng-repeat="scenario in scenarioGroup.values| limitTo:limit"
+                 ng-repeat="scenario in scenarioGroup.values"
                  ng-if="scenarioGroup.expanded || currentPage.print || currentPage.embed">
 
               <div class="row">
@@ -437,12 +443,17 @@
                                       </td>
                                     </tr>
                                   </table>
+
+                                  <div ng-if="step.attachment && step.attachment.showDirectly">
+                                    <img class="direct-image" ng-src="data/{{ step.attachment.value }}"
+                                         alt="{{ step.attachment.title }}"/>
+                                  </div>
                                 </span>
                                 <span ng-repeat-end></span>
                               </span>
                               <span ng-repeat="scenarioCase in scenario.scenarioCases"
                                     ng-init="step = scenarioCase.steps[$parent.$index]">
-                                <span ng-if="step.attachment">
+                                <span ng-if="step.attachment && !step.attachment.showDirectly">
                                   <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
                                         class="{{ step.attachment.title ? 'has-tip' : '' }}"
                                         tooltip-html-unsafe="{{ step.attachment.title }}"
@@ -541,9 +552,17 @@
         </div>
         <!-- grouped scenarios -->
 
+        <div class="pagination-centered pagination-bottom" ng-if="pagination && !currentPage.print">
+          <pagination boundary-links="true" items-per-page="itemsPerPage" total-items="totalItems"
+                      page="currentPageNr" class="pagination-sm"
+                      on-select-page="setPage(page)" max-size="10" rotate="false"
+                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                      last-text="&raquo;"></pagination>
+        </div>
+
         <div class="footer-bottom" ng-if="!currentPage.embed">
           <div class="small-12 columns">
-            Generated by <a href="http://jgiven.org">JGiven</a> 0.8.1-SNAPSHOT on
+            Generated by <a href="http://jgiven.org">JGiven</a> 0.8.2 on
             {{metaData.created}}
           </div>
         </div>
@@ -565,7 +584,6 @@
 <script src="js/angular-chart.js"></script>
 <script src="js/angular-local-storage.js"></script>
 <script src="js/lodash.min.js"></script>
-<script src="js/ng-infinite-scroll.js"></script>
 <script src="lib/util.js"></script>
 <script src="lib/app.js"></script>
 <script src="lib/offCanvasDirective.js"></script>
