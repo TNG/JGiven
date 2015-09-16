@@ -7,7 +7,7 @@ jgivenReportApp.factory('dataService', [function () {
 
   var tagFile = jgivenReport.tagFile;
   var testCases = jgivenReport.scenarios;
-
+    
   function getAllScenarios() {
     return _.flatten(_.map(testCases, function (x) {
       return x.scenarios;
@@ -38,6 +38,10 @@ jgivenReportApp.factory('dataService', [function () {
 
     getTestCases: function () {
       return testCases;
+    },
+
+    getMetaData: function() {
+      return jgivenReport.metaData;
     },
 
     getAllScenarios: getAllScenarios,
