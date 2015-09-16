@@ -164,10 +164,6 @@ h5 {
     position: relative;
 }
 
-.scenario-link-icon {
-    display: none;
-}
-
 .scenario-expand-icon, .case-expand-icon {
     color: gray;
 }
@@ -178,20 +174,46 @@ h5 {
     top: 0.5rem;
 }
 
-.scenario-title {
+.pagination-top {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.pagination-bottom {
+    margin-top: 2rem;
+}
+
+.scenario-extended-description-icon {
+    color: gray;
+    border-bottom: none !important;
+}
+
+.scenario-extended-description {
+    color: gray;
+    margin-top: 0.4rem;
+}
+
+.scenario-title, .scenario-extended-description {
     margin-left: 1.1rem;
+}
+
+.scenario-title.failed {
+    color: red;
+}
+
+.scenario-title.pending {
+    color: gray;
 }
 
 .case-expand-icon {
     width: 1rem;
 }
 
-.scenario:hover .scenario-link-icon {
+.scenario-link-icon {
     display: inline;
-    position: absolute;
-    top: 0.5rem;
-    left: -0.5rem;
-    color: gray;
+    float: right;
+    margin-top: 0.5rem;
+    color: lightgray;
 }
 
 .steps {
@@ -204,7 +226,7 @@ h5 {
     font-weight: normal !important;
 }
 
-.case-count, .nav-count {
+.case-count {
     vertical-align: text-bottom;
 }
 
@@ -219,7 +241,13 @@ h5 {
 }
 
 .nav-count {
+    margin-top: -2px;
     float: right;
+}
+
+.nav-count.failed {
+    background-color: red;
+    color: white;
 }
 
 table.steps {
@@ -295,10 +323,9 @@ table.steps tr.steps:hover {
     color: #666;
 }
 
-.failed {
-    color: red;
+.label.failed {
+    color: white;
     vertical-align: middle;
-    font-size: 0.5rem !important;
     margin-bottom: 0.2rem;
 }
 
@@ -318,7 +345,7 @@ table.steps tr.steps:hover {
 .PASSED {
 }
 
-.pending {
+.label.pending {
     vertical-align: middle;
     margin-bottom: 0.2rem;
 }
@@ -352,6 +379,16 @@ table.steps tr.steps:hover {
 .attachment-index {
     vertical-align: top;
     font-size: 0.5rem;
+}
+
+.direct-image {
+    max-width: 500px;
+    max-height: 400px;
+}
+
+.direct-image:hover {
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .toggle {
@@ -398,13 +435,17 @@ input.search {
     z-index: 3;
 }
 
-#nav-move-icon {
+#nav-move-icon-container {
     position: absolute;
-    color: #e0e0e0;
     padding: 5px;
-    right: 1px;
+    right: 15px;
     top: 400px;
     z-index: 3;
+}
+
+#nav-move-icon {
+    position: fixed;
+    color: #e0e0e0;
     cursor: col-resize;
 }
 

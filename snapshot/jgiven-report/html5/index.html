@@ -135,7 +135,11 @@
         <li class="has-submenu" ng-repeat="node in rootTags" ng-include="'tree_mobile_template.html'">
 
         <li><label>Classes</label></li>
-        <li class="has-submenu" ng-repeat="node in rootPackage.childNodes()"
+        <li class="off-canvas-close" ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a
+            href="{{leaf.url()}}">
+          {{leaf.nodeName()}}
+        </a></li>
+        <li class="has-submenu" ng-repeat="node in rootPackage.childNodes() | orderBy : orderNodes"
             ng-include="'tree_mobile_template.html'"></li>
       </ul>
     </aside>
@@ -159,15 +163,22 @@
           <div id="sidebar">
             <nav>
               <i class="fa fa-angle-double-left nav-hide-icon" ng-click="hideNav()"></i>
-              <i id="nav-move-icon" class="fa fa-bars fa-rotate-90" ng-mousedown="startResizeNav($event)"></i>
+
+              <div id="nav-move-icon-container"><i id="nav-move-icon" class="fa fa-bars fa-rotate-90"
+                                                   ng-mousedown="startResizeNav($event)"></i></div>
 
               <ul ng-cloak class=" side-nav">
                 <li class="heading">
                   <a ng-click="summaryExpanded = !summaryExpanded">Summary</a>
                   <ul ng-if="summaryExpanded">
-                    <li><a href="#all">All Scenarios</a></li>
-                    <li><a href="#failed">Failed Scenarios</a></li>
-                    <li><a href="#pending">Pending Scenarios</a></li>
+                    <li><a href="#all">All Scenarios<span
+                        class="label secondary round nav-count">{{getTotalStatistics().count}}</span></a></li>
+                    <li><a href="#failed">Failed Scenarios<span
+                        class="label secondary round nav-count {{getTotalStatistics().failed > 0 ? 'failed' : ''}}">{{getTotalStatistics().failed}}</span></a>
+                    </li>
+                    <li><a href="#pending">Pending Scenarios<span
+                        class="label secondary round nav-count ">{{getTotalStatistics().pending}}</span></a>
+                    </li>
                   </ul>
                 </li>
 
@@ -187,7 +198,10 @@
                 <li class="heading">
                   <a class="toggle" ng-click="classNames.expanded = !classNames.expanded">Classes</a>
                   <ul ng-if="classNames.expanded">
-                    <li ng-repeat="node in rootPackage.childNodes()"
+                    <li ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
+                      {{leaf.nodeName()}}
+                    </a></li>
+                    <li ng-repeat="node in rootPackage.childNodes() | orderBy : orderNodes"
                         ng-include="'tree_template.html'"></li>
                   </ul>
                 </li>
@@ -257,7 +271,7 @@
 
         <!-- SCENARIO BUTTON BAR -->
 
-        <div class="scenario-list-button-bar row" ng-if="currentPage.scenarios">
+        <div class="scenario-list-button-bar row">
 
           <!-- STATISTICS -->
 
@@ -273,7 +287,7 @@
 
           <!-- DROP DOWNS -->
 
-          <div class="small-12 large-6 columns" ng-if="currentPage.scenarios.length > 0">
+          <div class="small-12 large-6 columns" ng-if="showOptions">
             <ul class="button-group radius right">
               <li><a class="button dropdown small secondary" dropdown-toggle="#group-drop-down">Group
                 By</a>
@@ -327,6 +341,13 @@
           </div>
         </div>
 
+        <div class="pagination-centered pagination-top" ng-if="pagination && !currentPage.print">
+          <pagination boundary-links="true" items-per-page="itemsPerPage" total-items="totalItems"
+                      page="currentPageNr" class="pagination-sm"
+                      on-select-page="setPage(page)" max-size="10" rotate="false"
+                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                      last-text="&raquo;"></pagination>
+        </div>
 
         <!-- SCENARIO GROUP -->
 
@@ -347,28 +368,43 @@
 
             <!-- SCENARIO LIST -->
 
-            <div class="scenario {{$last ? 'last' : ''}}" ng-repeat="scenario in scenarioGroup.values"
+            <div class="scenario {{$last ? 'last' : ''}}"
+                 ng-repeat="scenario in scenarioGroup.values"
                  ng-if="scenarioGroup.expanded || currentPage.print || currentPage.embed">
 
               <div class="row">
                 <div class="small-12 large-8 xlarge-6 column scenario-column">
-                  <a href="#scenario/{{scenario.className}}/{{scenario.testMethodName}}"><i
-                      class="fa fa-link scenario-link-icon"
-                      title="Direct link to this scenario"></i></a>
-                  <h4 class="toggle scenario-title" ng-click="toggleScenario(scenario)">
+
+
+                  <!-- Scenario Title -->
+
+                  <h4 class="toggle scenario-title {{getScenarioTitleStatusClass(scenario)}}"
+                      ng-click="toggleScenario(scenario)">
                     <i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i>
-                    {{scenario.description.capitalize()}}
+                    {{::scenario.description.capitalize()}}
                     <span ng-if="scenario.scenarioCases.length > 1"
-                          class="secondary radius label case-count">{{scenario.scenarioCases.length}}</span>
+                          class="secondary radius label case-count">{{::scenario.scenarioCases.length}}</span>
+
+                    <span aria-haspopup="{{ ::scenario.extendedDescription ? 'true' : 'false'"
+                          class="has-tip scenario-extended-description-icon"
+                          tooltip-html-unsafe="{{ ::scenario.extendedDescription }}"
+                          tooltip-popup-delay="250" ng-if="::scenario.extendedDescription">
+                        <i class="fa fa-comment-o"></i>
+                      </span>
+
                     <i ng-if="scenario.executionStatus === 'SUCCESS'"
                        class="check fa fa-check-square"></i>
                     <span ng-if="scenario.executionStatus === 'FAILED'"
-                          class="failed label radius alert">FAILED</span>
+                          class="failed label radius alert"><i class="fa fa-exclamation-circle"></i> FAILED</span>
                     <span
-                        ng-if="scenario.executionStatus === 'NONE_IMPLEMENTED' || scenario.executionStatus === 'PARTIALLY_IMPLEMENTED'"
-                        class="pending label radius secondary">PENDING</span>
-                    <span class="duration"> ({{ nanosToReadableUnit(scenario.durationInNanos) }})</span>
+                        ng-if="scenario.executionStatus === 'SCENARIO_PENDING' || scenario.executionStatus === 'SOME_STEPS_PENDING'"
+                        class="pending label radius secondary"><i class="fa fa-ban"></i> PENDING</span>
+
+                    <span class="duration"> ({{ ::nanosToReadableUnit(scenario.durationInNanos) }})</span>
                   </h4>
+
+
+                  <!-- Scenario Content -->
 
                   <div ng-if="scenario.expanded || currentPage.print || currentPage.embed"
                        id="scenario-{{$index}}" class="scenario-content">
@@ -390,38 +426,43 @@
                           <tr class="steps" ng-repeat="step in case.steps">
 
                             <td class="steps intro-word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}">
-                              {{step.words[0].isIntroWord ?
+                              {{::step.words[0].isIntroWord ?
                               step.words[0].value.capitalize() : ''}}
                             </td>
                             <td class="steps">
-                              <span aria-haspopup="{{ step.extendedDescription ? 'true' : 'false'"
-                                    class="{{ step.extendedDescription ? 'has-tip' : '' }}"
-                                    tooltip-html-unsafe="{{ step.extendedDescription }}"
+                              <span aria-haspopup="{{ ::step.extendedDescription ? 'true' : 'false'"
+                                    class="{{ ::step.extendedDescription ? 'has-tip' : '' }}"
+                                    tooltip-html-unsafe="{{ ::step.extendedDescription }}"
                                     tooltip-popup-delay="250">
                                 <span
-                                    class="word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{word.isDifferent ? 'diff' : ''}}"
+                                    class="word {{ ::scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{ ::word.isDifferent ? 'diff' : ''}}"
                                     ng-repeat-start="word in getNonIntroWords(step.words)">
                                   <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
-                                    <strong>&lt;{{word.argumentInfo.parameterName}}&gt;</strong>
+                                    <strong>&lt;{{::word.argumentInfo.parameterName}}&gt;</strong>
                                   </span>
 
                                   <span
                                       ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName) && !word.argumentInfo.dataTable"
                                       class="{{word.argumentInfo ? 'argument' : ''}} {{ word.value.indexOf('\n') > -1 ? 'multiline' : ''}}"
-                                      >{{ word.argumentInfo.formattedValue || word.value }}</span> <!-- do not change formatting here, it is important for multiline values -->
+                                      >{{ ::word.argumentInfo.formattedValue || word.value }}</span> <!-- do not change formatting here, it is important for multiline values -->
                                   <table class="table-value" ng-if="word.argumentInfo.dataTable">
                                     <tr ng-repeat="row in word.argumentInfo.dataTable.data">
                                       <td class="{{ isHeaderCell($parent.$index, $index, word.argumentInfo.dataTable.headerType) ? 'header-cell' : '' }}"
-                                          ng-repeat="value in row track by $index">{{ value }}
+                                          ng-repeat="value in row track by $index">{{ ::value }}
                                       </td>
                                     </tr>
                                   </table>
+
+                                  <div ng-if="step.attachment && step.attachment.showDirectly">
+                                    <img class="direct-image" ng-src="data/{{ step.attachment.value }}"
+                                         alt="{{ step.attachment.title }}"/>
+                                  </div>
                                 </span>
                                 <span ng-repeat-end></span>
                               </span>
                               <span ng-repeat="scenarioCase in scenario.scenarioCases"
                                     ng-init="step = scenarioCase.steps[$parent.$index]">
-                                <span ng-if="step.attachment">
+                                <span ng-if="step.attachment && !step.attachment.showDirectly">
                                   <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
                                         class="{{ step.attachment.title ? 'has-tip' : '' }}"
                                         tooltip-html-unsafe="{{ step.attachment.title }}"
@@ -441,15 +482,19 @@
                                    class="skipped fa fa-ban"></i>
                               </span>
                               <span ng-if="step.durationInNanos > 10000000"
-                                    class="duration"> ({{ nanosToReadableUnit(step.durationInNanos) }})</span>
+                                    class="duration"> ({{ ::nanosToReadableUnit(step.durationInNanos) }})</span>
                             </td>
                           </tr>
                         </table>
                         <div ng-if="!scenario.casesAsTable">
                           <div ng-if="!scenario.scenarioCases[0].success" data-alert
-                               class="alert-box alert">FAILED: {{case.errorMessage}}
+                               class="alert-box alert">FAILED: {{::case.errorMessage}}
                           </div>
                         </div>
+
+
+                        <!-- Cases Table -->
+
                         <div>
                           <div ng-if="scenario.casesAsTable">
                             <p></p>
@@ -458,21 +503,28 @@
                               <tr>
                                 <th>#</th>
                                 <th ng-repeat="param in scenario.derivedParameters track by $index">
-                                  {{param}}
+                                  {{::param}}
                                 </th>
                                 <th>Status</th>
                               </tr>
                               <tr ng-repeat="case in scenario.scenarioCases">
-                                <td>{{case.caseNr}}</td>
+                                <td>{{::case.caseNr}}</td>
                                 <td ng-repeat="arg in case.derivedArguments track by $index">
-                                  {{arg}}
+                                  {{::arg}}
                                 </td>
                                 <td ng-if="case.success"><i
-                                    class="check fa fa-check-square"/></td>
+                                    class="check fa fa-check-square"/>
+                              <span ng-if="case.durationInNanos > 10000000"
+                                    class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
+
+                                </td>
                                 <td ng-if="!case.success">
                                   <div data-alert class="alert-box alert">
-                                    {{case.errorMessage}}
+                                    {{::case.errorMessage}}
                                   </div>
+                              <span ng-if="case.durationInNanos > 10000000"
+                                    class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
+
                                 </td>
                               </tr>
                             </table>
@@ -481,15 +533,26 @@
                       </div>
                     </div>
 
-                    <div class="class-name"><a href="#class/{{scenario.className}}">{{scenario.className}}</a>
+                    <div class="class-name"><a href="#class/{{::scenario.className}}">{{scenario.className}}</a>
                     </div>
                   </div>
                 </div>
+
+
+                <!-- TAGS -->
+
                 <div class="small-12 large-4 xlarge-6 column tag-column">
                   <span ng-repeat="tagId in scenario.tagIds">
-                    <a href="{{getUrlFromTagId(tagId)}}"><span class="{{getCssClassOfTag(tagId)}} radius label tag"
-                                                               style='{{getStyleOfTag(tagId)}}'>{{tagIdToString(tagId)}}</span></a>
+                    <a href="{{getUrlFromTagId(tagId)}}"><span
+                        class="{{getCssClassOfTag(tagId)}} radius label tag"
+                        style='{{getStyleOfTag(tagId)}}'>{{tagIdToString(tagId)}}</span></a>
                   </span>
+
+                  <!-- Scenario anchor -->
+                  <a href="#scenario/{{::scenario.className}}/{{::scenario.testMethodName}}"><i
+                      class="fa fa-link scenario-link-icon"
+                      title="Direct link to this scenario"></i></a>
+
                 </div>
               </div>
             </div>
@@ -498,10 +561,18 @@
         </div>
         <!-- grouped scenarios -->
 
+        <div class="pagination-centered pagination-bottom" ng-if="pagination && !currentPage.print">
+          <pagination boundary-links="true" items-per-page="itemsPerPage" total-items="totalItems"
+                      page="currentPageNr" class="pagination-sm"
+                      on-select-page="setPage(page)" max-size="10" rotate="false"
+                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                      last-text="&raquo;"></pagination>
+        </div>
+
         <div class="footer-bottom" ng-if="!currentPage.embed">
           <div class="small-12 columns">
-            Generated by <a href="http://jgiven.org">JGiven</a> 0.8.0-SNAPSHOT on
-            {{jgivenReport.metaData.created}}
+            Generated by <a href="http://jgiven.org">JGiven</a> 0.9.0-SNAPSHOT on
+            {{metaData.created}}
           </div>
         </div>
       </div>
