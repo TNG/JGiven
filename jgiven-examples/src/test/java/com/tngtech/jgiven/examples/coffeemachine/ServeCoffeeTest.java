@@ -112,7 +112,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
 
         given().a_coffee_machine().
             and().there_are_$_coffees_left_in_the_machine( coffees ).
-            and().the_machine_is_$on_or_off$( onOrOff ).
+            and().the_machine_is_$onOrOff( onOrOff ).
             and().the_coffee_costs_$_dollar( 2 );
 
         when().I_insert_$_one_euro_coins( dollars ).
@@ -127,7 +127,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     public void turned_off_machines_should_not_serve_coffee( boolean onOrOff ) {
         given().a_coffee_machine()
             .and().there_are_$_coffees_left_in_the_machine( 2 )
-            .and().the_machine_is_$on_or_off$( onOrOff );
+            .and().the_machine_is_$onOrOff( onOrOff );
 
         when().I_insert_$_one_euro_coins( 2 ).
             and().I_press_the_coffee_button();
