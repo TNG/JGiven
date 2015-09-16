@@ -83,7 +83,7 @@ jgivenReportApp.factory('classService', ['dataService', function (dataService) {
     function createClassNode(classObj) {
       return {
         fullQualifiedName: function () {
-          return classObj.packageName + "." + classObj.className;
+          return (classObj.packageName ? classObj.packageName + "." : "") + classObj.className;
         },
 
         nodeName: function () {
