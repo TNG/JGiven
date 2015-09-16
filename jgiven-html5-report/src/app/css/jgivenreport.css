@@ -183,7 +183,17 @@ h5 {
     margin-top: 2rem;
 }
 
-.scenario-title {
+.scenario-extended-description-icon {
+    color: gray;
+    border-bottom: none !important;
+}
+
+.scenario-extended-description {
+    color: gray;
+    margin-top: 0.4rem;
+}
+
+.scenario-title, .scenario-extended-description {
     margin-left: 1.1rem;
 }
 

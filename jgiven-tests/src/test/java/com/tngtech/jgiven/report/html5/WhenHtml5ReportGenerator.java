@@ -9,7 +9,7 @@ import com.tngtech.jgiven.report.WhenReportGenerator;
 
 public class WhenHtml5ReportGenerator<SELF extends WhenHtml5ReportGenerator<SELF>> extends WhenReportGenerator<SELF> {
 
-    public SELF the_HTML5_Report_Generator_is_executed() {
+    public SELF the_HTML_Report_Generator_is_executed() {
         Html5ReportGenerator html5ReportGenerator = new Html5ReportGenerator() {
             @Override
             protected void unzipApp( File toDir ) throws IOException {

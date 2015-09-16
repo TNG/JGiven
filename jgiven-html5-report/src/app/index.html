@@ -375,6 +375,7 @@
               <div class="row">
                 <div class="small-12 large-8 xlarge-6 column scenario-column">
 
+
                   <!-- Scenario Title -->
 
                   <h4 class="toggle scenario-title {{getScenarioTitleStatusClass(scenario)}}"
@@ -383,6 +384,14 @@
                     {{::scenario.description.capitalize()}}
                     <span ng-if="scenario.scenarioCases.length > 1"
                           class="secondary radius label case-count">{{::scenario.scenarioCases.length}}</span>
+
+                    <span aria-haspopup="{{ ::scenario.extendedDescription ? 'true' : 'false'"
+                          class="has-tip scenario-extended-description-icon"
+                          tooltip-html-unsafe="{{ ::scenario.extendedDescription }}"
+                          tooltip-popup-delay="250" ng-if="::scenario.extendedDescription">
+                        <i class="fa fa-comment-o"></i>
+                      </span>
+
                     <i ng-if="scenario.executionStatus === 'SUCCESS'"
                        class="check fa fa-check-square"></i>
                     <span ng-if="scenario.executionStatus === 'FAILED'"

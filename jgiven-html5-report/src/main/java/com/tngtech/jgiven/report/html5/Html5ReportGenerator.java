@@ -31,7 +31,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
 
     @Override
     public void generate() {
-        log.info( "Generating HTML5 report to {}...", targetDirectory );
+        log.info( "Generating HTML5 report to {}", new File( targetDirectory, "index.html" ).getAbsoluteFile() );
         this.dataDirectory = new File( targetDirectory, "data" );
         if( !this.dataDirectory.exists() && !this.dataDirectory.mkdirs() ) {
             log.error( "Could not create target directory " + this.dataDirectory );

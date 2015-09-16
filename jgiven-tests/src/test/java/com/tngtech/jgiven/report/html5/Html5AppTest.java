@@ -46,7 +46,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
             .and().the_report_exist_as_JSON_file();
 
         whenReport
-            .and().the_HTML5_Report_Generator_is_executed();
+            .and().the_HTML_Report_Generator_is_executed();
 
         when().the_index_page_is_opened();
 
@@ -61,7 +61,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
             .and().the_report_exist_as_JSON_file();
 
         whenReport
-            .and().the_HTML5_Report_Generator_is_executed();
+            .and().the_HTML_Report_Generator_is_executed();
 
         when().the_index_page_is_opened();
 
@@ -84,7 +84,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
             .and().the_report_exist_as_JSON_file();
 
         whenReport
-            .and().the_HTML5_Report_Generator_is_executed();
+            .and().the_HTML_Report_Generator_is_executed();
 
         when().the_All_Scenarios_page_is_opened()
             .and().the_tag_with_name_$_is_clicked( tagName );
@@ -102,7 +102,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
             .and().the_report_exist_as_JSON_file();
 
         whenReport
-            .and().the_HTML5_Report_Generator_is_executed();
+            .and().the_HTML_Report_Generator_is_executed();
 
         when().the_All_Scenarios_page_is_opened();
 
@@ -119,7 +119,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
             .and().the_report_exist_as_JSON_file();
 
         whenReport
-            .and().the_HTML5_Report_Generator_is_executed();
+            .and().the_HTML_Report_Generator_is_executed();
 
         when().the_page_of_scenario_$_is_opened( 1 );
 

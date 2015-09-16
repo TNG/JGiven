@@ -3,7 +3,7 @@ package com.tngtech.jgiven.annotation;
 import java.lang.annotation.*;
 
 /**
- * This annotation can be used to define an extended description for a step method.
+ * This annotation can be used to define an extended description for a step method or a test method.
  * This description is added to the report.
  */
 @Retention( RetentionPolicy.RUNTIME )

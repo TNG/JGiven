@@ -320,8 +320,12 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
         scenarioStarted( scenarioDescription );
 
+        if( method.isAnnotationPresent( ExtendedDescription.class ) ) {
+            scenarioModel.setExtendedDescription( method.getAnnotation( ExtendedDescription.class ).value() );
+        }
+
         if( method.isAnnotationPresent( NotImplementedYet.class ) || method.isAnnotationPresent( Pending.class ) ) {
-            scenarioModel.setPending( true );
+            scenarioModel.setPending( );
         }
 
         if( scenarioCaseModel.getCaseNr() == 1 ) {

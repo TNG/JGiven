@@ -8,7 +8,7 @@ final class ExecutionStatusCalculator extends ReportModelVisitor {
 
     @Override
     public void visit( ScenarioModel scenarioModel ) {
-        if(scenarioModel.isPending()) {
+        if( scenarioModel.isPending() ) {
             status = ExecutionStatus.SCENARIO_PENDING;
         }
     }
