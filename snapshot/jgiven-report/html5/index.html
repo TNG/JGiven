@@ -389,7 +389,7 @@
                           class="has-tip scenario-extended-description-icon"
                           tooltip-html-unsafe="{{ ::scenario.extendedDescription }}"
                           tooltip-popup-delay="250" ng-if="::scenario.extendedDescription">
-                        <i class="fa fa-comment-o"></i>
+                        <i class="fa fa-question-circle"></i>
                       </span>
 
                     <i ng-if="scenario.executionStatus === 'SUCCESS'"
@@ -408,6 +408,10 @@
 
                   <div ng-if="scenario.expanded || currentPage.print || currentPage.embed"
                        id="scenario-{{$index}}" class="scenario-content">
+                    <h5 class="subheader scenario-extended-description" ng-if="::scenario.extendedDescription">
+                      {{::scenario.extendedDescription}}
+                    </h5>
+
                     <div
                         ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
                       <h5 class="toggle" ng-click="case.expanded = !case.expanded"
