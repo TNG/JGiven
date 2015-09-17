@@ -170,8 +170,8 @@ h5 {
 
 .scenario-expand-icon {
     position: absolute;
-    left: 1rem;
-    top: 0.5rem;
+    left: -1rem;
+    top: 0.25rem;
 }
 
 .pagination-top {
@@ -184,19 +184,26 @@ h5 {
 }
 
 .scenario-extended-description-icon {
-    color: gray;
+    color: #bbb;
     border-bottom: none !important;
+    position: relative;
+    font-size: 80%;
 }
 
-/*
 .scenario-extended-description {
-    color: gray;
-    margin-top: 0.4rem;
+    color: rgb(75, 75, 75);
+    padding: 0.5rem 0;
+    margin-top: 0.2rem;
+    font-size: 0.9rem;
+    max-width: 35rem;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 0.5rem;
+    margin-left: 1.1rem !important;
 }
-*/
 
-.scenario-title, .scenario-extended-description {
-    margin-left: 1.1rem;
+.scenario-title {
+    margin-left: 1.1rem !important;
+    position: relative;
 }
 
 .scenario-title.failed {
