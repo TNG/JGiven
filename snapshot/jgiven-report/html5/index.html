@@ -385,12 +385,9 @@
                     <span ng-if="scenario.scenarioCases.length > 1"
                           class="secondary radius label case-count">{{::scenario.scenarioCases.length}}</span>
 
-                    <span aria-haspopup="{{ ::scenario.extendedDescription ? 'true' : 'false'"
-                          class="has-tip scenario-extended-description-icon"
-                          tooltip-html-unsafe="{{ ::scenario.extendedDescription }}"
-                          tooltip-popup-delay="250" ng-if="::scenario.extendedDescription">
-                        <i class="fa fa-question-circle"></i>
-                      </span>
+                    <i class="scenario-extended-description-icon fa fa-question-circle"
+                       title="Extended description available"
+                       ng-if="scenario.extendedDescription"></i>
 
                     <i ng-if="scenario.executionStatus === 'SUCCESS'"
                        class="check fa fa-check-square"></i>
@@ -408,9 +405,11 @@
 
                   <div ng-if="scenario.expanded || currentPage.print || currentPage.embed"
                        id="scenario-{{$index}}" class="scenario-content">
-                    <h5 class="subheader scenario-extended-description" ng-if="::scenario.extendedDescription">
-                      {{::scenario.extendedDescription}}
-                    </h5>
+
+                    <div class="scenario-extended-description"
+                         ng-if="scenario.extendedDescription && !scenario.extendedDescriptionExpanded"
+                         ng-bind-html="::scenario.extendedDescription">
+                    </div>
 
                     <div
                         ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
