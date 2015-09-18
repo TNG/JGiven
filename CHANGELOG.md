@@ -26,6 +26,10 @@ If you relied on the fact that placeholders can contains spaces or underlines, y
 given().a_step_with_a_$placeholderVariable_with_spaces( "foobar" );
 ```
 
+## New Features
+
+* Scenarios can now have an extended description by annotated the test method with `@ExtendedDescription`. [#35](https://github.com/TNG/JGiven/issues/35)
+
 ## Fixed Issues
 
 * Special characters like parentheses are not treated as part of a placeholder name anymore [#118](https://github.com/TNG/JGiven/issues/118)

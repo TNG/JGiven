@@ -236,6 +236,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     $scope.currentPage = {
       title: scenarios[0].description.capitalize(),
       subtitle: className,
+      description: scenarios[0].extendedDescription,
       breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName]),
       options: optionService.getOptions(scenarios, options)
     };
