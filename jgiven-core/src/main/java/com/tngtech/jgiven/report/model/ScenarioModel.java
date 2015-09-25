@@ -36,6 +36,7 @@ public class ScenarioModel {
     public synchronized void addCase( ScenarioCaseModel scenarioCase ) {
         scenarioCase.setCaseNr( scenarioCases.size() + 1 );
         scenarioCases.add( scenarioCase );
+        executionStatus = null;
     }
 
     public ExecutionStatus getExecutionStatus() {

@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.junit.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.Table;
@@ -35,6 +37,10 @@ public class GivenTestStep extends Stage<GivenTestStep> {
 
     public void something() {
 
+    }
+
+    public void some_step_fails( boolean fail ) {
+        assertThat( fail ).isFalse();
     }
 
     public static class CoffeePrice {

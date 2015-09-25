@@ -114,4 +114,8 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
     public void a_test_class_with_a_failing_scenario_and_a_failing_after_stage() {
         testScenario = TestScenarioRepository.testClassWithAFailingScenarioAndAFailingAfterStage();
     }
+
+    public void a_test_with_two_cases_and_the_first_one_fails() {
+        testScenario = TestScenarioRepository.testWithTwoCasesAndTheFirstOneFails();
+    }
 }
