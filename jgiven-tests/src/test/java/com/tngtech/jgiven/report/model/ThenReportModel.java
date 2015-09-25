@@ -5,12 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 
 public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF> {
 
-    @ProvidedScenarioState
+    @ExpectedScenarioState
     protected ReportModel reportModel;
 
     public SELF step_$_is_reported_as_skipped( int i ) {

@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
+import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.ThenReportModel;
 import com.tngtech.jgiven.tests.TestScenarioRepository.TestScenario;
@@ -63,6 +64,11 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
 
     public SELF the_report_model_has_a_valid_class_name() {
         assertThat( reportModel.getClassName() ).isEqualTo( testScenario.testClass.getName() );
+        return self();
+    }
+
+    public SELF the_scenario_has_execution_status( ExecutionStatus status ) {
+        assertThat( reportModel.getLastScenarioModel().getExecutionStatus() ).isEqualTo( status );
         return self();
     }
 }

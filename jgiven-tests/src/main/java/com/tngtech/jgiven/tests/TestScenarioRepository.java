@@ -164,6 +164,11 @@ public class TestScenarioRepository {
             this.testMethod = testMethod;
             this.testClass = TestScenarios.class;
         }
+
+        public TestScenario( Class<?> testClass, String testMethod ) {
+            this.testClass = testClass;
+            this.testMethod = testMethod;
+        }
     }
 
     final static List<TestScenario> testScenarios = setupTestScenarios();
@@ -263,6 +268,10 @@ public class TestScenarioRepository {
 
     public static TestScenario testClassWithAFailingScenarioAndAFailingAfterStage() {
         return new TestScenario( TestWithExceptionsInAfterMethod.class );
+    }
+
+    public static TestScenario testWithTwoCasesAndTheFirstOneFails() {
+        return new TestScenario( TestWithTwoCasesAndAFailingOne.class );
     }
 
 }
