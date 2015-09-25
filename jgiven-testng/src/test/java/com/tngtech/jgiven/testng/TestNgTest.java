@@ -114,5 +114,6 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
         public void mixed_with( String something ) {}
 
         public void something() {}
+
     }
 }

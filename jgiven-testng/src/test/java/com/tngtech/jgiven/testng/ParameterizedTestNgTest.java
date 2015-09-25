@@ -71,4 +71,5 @@ public class ParameterizedTestNgTest extends ScenarioTest<TestSteps, TestSteps, 
         List<String> arguments = scenarioCase.getExplicitArguments();
         assertThat( arguments ).containsExactly( "" + milkInLiter, ingredient, "" + caseNr );
     }
+
 }
