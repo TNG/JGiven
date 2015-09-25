@@ -14,7 +14,6 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-import com.google.common.base.Throwables;
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
@@ -94,7 +93,7 @@ public class ScenarioTestListener implements ITestListener {
             ScenarioBase scenario = scenarioMap.get( paramITestResult );
             scenario.finished();
         } catch( Throwable throwable ) {
-            throw Throwables.propagate( throwable );
+            paramITestResult.setThrowable( throwable );
         }
     }
 

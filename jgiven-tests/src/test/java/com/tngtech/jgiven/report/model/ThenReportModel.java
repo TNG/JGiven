@@ -98,4 +98,13 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
         return self();
     }
 
+    public SELF the_report_model_contains_one_scenario_with_$_cases( int nCases ) {
+        assertThat( reportModel.getLastScenarioModel().getScenarioCases() ).hasSize( nCases );
+        return self();
+    }
+
+    public SELF case_$_has_status( int i, ExecutionStatus status ) {
+        assertThat( reportModel.getLastScenarioModel().getScenarioCases().get( i - 1 ).getExecutionStatus() ).isEqualTo( status );
+        return self();
+    }
 }

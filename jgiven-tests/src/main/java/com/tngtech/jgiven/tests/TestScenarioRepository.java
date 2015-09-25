@@ -274,4 +274,8 @@ public class TestScenarioRepository {
         return new TestScenario( TestWithTwoCasesAndAFailingOne.class );
     }
 
+    public static TestScenario testNgTestWithAFailingCase() {
+        return new TestScenario( FailingCasesTestNgTest.class );
+    }
+
 }

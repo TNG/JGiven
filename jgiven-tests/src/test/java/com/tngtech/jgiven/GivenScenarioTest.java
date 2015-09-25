@@ -118,4 +118,8 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
     public void a_test_with_two_cases_and_the_first_one_fails() {
         testScenario = TestScenarioRepository.testWithTwoCasesAndTheFirstOneFails();
     }
+
+    public void a_TestNG_test_with_two_cases_and_the_first_one_fails() {
+        testScenario = TestScenarioRepository.testNgTestWithAFailingCase();
+    }
 }
