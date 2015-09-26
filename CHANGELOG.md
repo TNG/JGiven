@@ -29,6 +29,7 @@ given().a_step_with_a_$placeholderVariable_with_spaces( "foobar" );
 ## New Features
 
 * Scenarios can now have an extended description by annotated the test method with `@ExtendedDescription`. [#35](https://github.com/TNG/JGiven/issues/35)
+* The stack trace of a failing scenario is now stored and shown in the HTML report [#95](https://github.com/TNG/JGiven/issues/95)
 
 ## Fixed Issues
 
