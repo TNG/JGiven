@@ -1,10 +1,11 @@
 package com.tngtech.jgiven.impl.intercept;
 
-import static com.tngtech.jgiven.impl.intercept.InvocationMode.*;
+import static com.tngtech.jgiven.report.model.InvocationMode.*;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.tngtech.jgiven.report.model.InvocationMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

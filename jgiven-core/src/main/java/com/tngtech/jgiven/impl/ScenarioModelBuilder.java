@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.report.model;
+package com.tngtech.jgiven.impl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import com.tngtech.jgiven.report.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,6 @@ import com.tngtech.jgiven.config.TagConfiguration;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.TableFormatter;
-import com.tngtech.jgiven.impl.intercept.InvocationMode;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;

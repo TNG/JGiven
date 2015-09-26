@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.impl.intercept;
+package com.tngtech.jgiven.report.model;
 
 import com.tngtech.jgiven.report.model.StepStatus;
 

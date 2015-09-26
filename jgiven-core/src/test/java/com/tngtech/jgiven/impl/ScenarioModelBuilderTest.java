@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.report.model;
+package com.tngtech.jgiven.impl;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.tngtech.jgiven.impl.ScenarioModelBuilder;
+import com.tngtech.jgiven.report.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

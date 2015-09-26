@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import com.tngtech.jgiven.attachment.Attachment;
+import com.tngtech.jgiven.report.model.InvocationMode;
 import com.tngtech.jgiven.report.model.NamedArgument;
 
 public class NoOpScenarioListener implements ScenarioListener {

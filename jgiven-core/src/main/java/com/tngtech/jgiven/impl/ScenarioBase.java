@@ -9,7 +9,6 @@ import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.ScenarioModelBuilder;
 
 /**
  * Base class for a Scenario.
