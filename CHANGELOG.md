@@ -1,3 +1,10 @@
+# v0.8.3
+
+## Fixed Issues
+
+* Fixed an issue with TestNG that when using a data provider a failing case prevented following cases from finishing [#123](https://github.com/TNG/JGiven/issues/123)
+* Fixed an issue that the status of the overall scenario could be successful although some cases of the scenario failed [#125](https://github.com/TNG/JGiven/issues/125)
+
 # v0.8.2
 
 ## New Features
