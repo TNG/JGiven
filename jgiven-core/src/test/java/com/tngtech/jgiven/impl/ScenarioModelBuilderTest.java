@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.tngtech.jgiven.impl.ScenarioModelBuilder;
-import com.tngtech.jgiven.report.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -24,6 +22,7 @@ import com.tngtech.jgiven.WhenTestStep;
 import com.tngtech.jgiven.annotation.DoNotIntercept;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.report.model.*;
 
 @RunWith( DataProviderRunner.class )
 public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {
@@ -209,7 +208,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
         assertThat( model.getDescription() ).isEqualTo( description );
 
         ScenarioCaseModel case0 = model.getCase( 0 );
-        assertThat( case0.success ).isTrue();
+        assertThat( case0.isSuccess() ).isTrue();
         assertThat( case0.getCaseNr() ).isEqualTo( 1 );
         assertThat( case0.getExplicitArguments() ).isEmpty();
         assertThat( case0.getSteps() ).hasSize( 3 );
@@ -327,5 +326,27 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
         public void do_not_intercept() {}
 
         public void normal_step() {}
+    }
+
+    @Test
+    public void error_message_is_correctly_stored() throws Throwable {
+        FailingTestStage stage = addStage( FailingTestStage.class );
+        startScenario( "Test" );
+        stage.a_failing_test();
+        try {
+            getScenario().finished();
+        } catch( Exception ignore ) {
+
+        }
+        ScenarioCaseModel scenarioCaseModel = getScenario().getScenarioCaseModel();
+        assertThat( scenarioCaseModel.getErrorMessage() ).isEqualTo( "test error" );
+        assertThat( scenarioCaseModel.getStackTrace().get( 0 ) ).matches(
+            "com.tngtech.jgiven.impl.ScenarioModelBuilderTest\\$FailingTestStage.a_failing_test\\(ScenarioModelBuilderTest.java:\\d+\\)" );
+    }
+
+    static class FailingTestStage {
+        public void a_failing_test() {
+            throw new IllegalArgumentException( "test error" );
+        }
     }
 }

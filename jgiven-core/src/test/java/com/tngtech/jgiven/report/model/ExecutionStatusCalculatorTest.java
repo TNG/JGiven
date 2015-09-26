@@ -14,7 +14,7 @@ public class ExecutionStatusCalculatorTest {
         StepModel step1 = new StepModel();
         step1.setStatus( StepStatus.FAILED );
         case1.addStep( step1 );
-        case1.success = false;
+        case1.setSuccess(false);
         model.addCase( case1 );
         model.accept( calculator );
         assertThat( calculator.executionStatus() ).isEqualTo( ExecutionStatus.FAILED );

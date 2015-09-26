@@ -20,6 +20,7 @@ public class Config {
     private static final String JGIVEN_REPORT_DIR = "jgiven.report.dir";
     private static final String JGIVEN_REPORT_TEXT = "jgiven.report.text";
     private static final String JGIVEN_REPORT_TEXT_COLOR = "jgiven.report.text.color";
+    private static final String JGIVEN_FILTER_STACK_TRACE = "jgiven.report.filterStackTrace";
 
     public static Config config() {
         return INSTANCE;
@@ -66,6 +67,10 @@ public class Config {
 
     public void setTextReport( boolean b ) {
         System.setProperty( JGIVEN_REPORT_TEXT, "" + b );
+    }
+
+    public boolean filterStackTrace() {
+        return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_FILTER_STACK_TRACE, TRUE ) );
     }
 
 }

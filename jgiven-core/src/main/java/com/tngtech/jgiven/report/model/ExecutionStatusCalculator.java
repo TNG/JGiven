@@ -15,7 +15,7 @@ final class ExecutionStatusCalculator extends ReportModelVisitor {
 
     @Override
     public void visit( ScenarioCaseModel scenarioCase ) {
-        if( !scenarioCase.success ) {
+        if( !scenarioCase.isSuccess()) {
             status = ExecutionStatus.FAILED;
         }
     }

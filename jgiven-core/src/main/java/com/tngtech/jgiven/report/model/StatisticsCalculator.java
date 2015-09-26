@@ -37,7 +37,7 @@ public class StatisticsCalculator {
         @Override
         public void visit( ScenarioCaseModel scenarioCase ) {
             statistics.numCases++;
-            if( !scenarioCase.success ) {
+            if( !scenarioCase.isSuccess()) {
                 statistics.numFailedCases++;
             }
         }

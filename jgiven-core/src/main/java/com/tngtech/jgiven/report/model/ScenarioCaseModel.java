@@ -33,13 +33,24 @@ public class ScenarioCaseModel {
      */
     private List<String> derivedArguments = Lists.newArrayList();
 
-    public boolean success = true;
-    public String errorMessage;
+    private boolean success = true;
+
+    /**
+     * An optional error message.
+     * Can be {@code null}
+     */
+    private String errorMessage;
+
+    /**
+     * An optional stack trace if an exception was thrown.
+     * Can be {@code null}
+     */
+    private List<String> stackTrace;
 
     /**
      * The total execution time of the whole case in nanoseconds.
      */
-    public long durationInNanos;
+    private long durationInNanos;
 
     public void accept( ReportModelVisitor visitor ) {
         visitor.visit( this );
@@ -110,5 +121,29 @@ public class ScenarioCaseModel {
 
     public StepModel getFirstStep() {
         return steps.get( 0 );
+    }
+
+    public List<String> getStackTrace() {
+        return stackTrace;
+    }
+
+    public void setStackTrace( List<String> stackTrace ) {
+        this.stackTrace = stackTrace;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess( boolean success ) {
+        this.success = success;
+    }
+
+    public void setErrorMessage( String errorMessage ) {
+        this.errorMessage = errorMessage;
     }
 }

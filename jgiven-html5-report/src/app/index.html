@@ -491,7 +491,13 @@
                         </table>
                         <div ng-if="!scenario.casesAsTable">
                           <div ng-if="!scenario.scenarioCases[0].success" data-alert
-                               class="alert-box alert">FAILED: {{::case.errorMessage}}
+                               class="alert-box alert">
+                            <span class="toggle" ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
+                            <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
+                              FAILED: {{::case.errorMessage}}</span>
+
+                            <pre ng-if="case.stackTrace.expanded">{{ ::case.stackTrace.join('\n') }}</pre>
+
                           </div>
                         </div>
 
@@ -523,7 +529,11 @@
                                 </td>
                                 <td ng-if="!case.success">
                                   <div data-alert class="alert-box alert">
-                                    {{::case.errorMessage}}
+                                    <span class="toggle"
+                                          ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
+                                      <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
+                                    FAILED: {{::case.errorMessage}}</span>
+                                    <pre ng-if="case.stackTrace.expanded">{{ ::case.stackTrace.join('\n') }}</pre>
                                   </div>
                               <span ng-if="case.durationInNanos > 10000000"
                                     class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>

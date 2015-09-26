@@ -35,9 +35,9 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     @Override
     public void visitEnd( ScenarioCaseModel scenarioCase ) {
-        if( !scenarioCase.success ) {
+        if( !scenarioCase.isSuccess()) {
             writer.println();
-            writer.print( "FAILED: " + scenarioCase.errorMessage );
+            writer.print( "FAILED: " + scenarioCase.getErrorMessage() );
         }
         writer.println();
     }

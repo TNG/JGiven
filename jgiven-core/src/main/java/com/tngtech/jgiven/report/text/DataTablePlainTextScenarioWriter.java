@@ -45,7 +45,7 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
         writer.println( "  Cases:\n" );
 
         DataTable dataTableModel = getDataTableModel( scenarioModel );
-        PlainTextTableWriter dataTableWriter = new PlainTextTableWriter(writer, withColor);
+        PlainTextTableWriter dataTableWriter = new PlainTextTableWriter( writer, withColor );
 
         String caseIndent = "    ";
         dataTableWriter.writeDataTable( dataTableModel, caseIndent );
@@ -68,14 +68,14 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
             row.add( getStatusText( c ) );
             result.add( row );
         }
-        return new DataTable(Table.HeaderType.HORIZONTAL, result);
+        return new DataTable( Table.HeaderType.HORIZONTAL, result );
     }
 
     private String getStatusText( ScenarioCaseModel c ) {
-        if( c.success ) {
+        if(c.isSuccess()) {
             return "Success";
         }
-        return "Failed: " + c.errorMessage;
+        return "Failed: " + c.getErrorMessage();
     }
 
 }

@@ -34,8 +34,8 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
         ScenarioCaseModel scenarioCaseModel = scenarioModel.getCase( 0 );
         assertThat( scenarioCaseModel.getExplicitArguments() ).isEmpty();
         assertThat( scenarioCaseModel.getCaseNr() ).isEqualTo( 1 );
-        assertThat( scenarioCaseModel.errorMessage ).isNull();
-        assertThat( scenarioCaseModel.success ).isTrue();
+        assertThat( scenarioCaseModel.getErrorMessage() ).isNull();
+        assertThat( scenarioCaseModel.isSuccess() ).isTrue();
 
         List<StepModel> steps = scenarioCaseModel.getSteps();
         assertThat( steps ).hasSize( 4 );

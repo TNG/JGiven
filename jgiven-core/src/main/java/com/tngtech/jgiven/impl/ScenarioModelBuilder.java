@@ -2,18 +2,15 @@ package com.tngtech.jgiven.impl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import com.tngtech.jgiven.report.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.*;
@@ -28,11 +25,18 @@ import com.tngtech.jgiven.format.TableFormatter;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
+import com.tngtech.jgiven.report.model.*;
 import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
 public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
     private static final Formatting<?> DEFAULT_FORMATTING = new Formatting<Object>( new DefaultFormatter<Object>() );
+
+    private static final Set<String> STACK_TRACE_FILTER = ImmutableSet.of(
+        "sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept", "$$EnhancerByCGLIB$$",
+        "java.lang.reflect", "net.sf.cglib.proxy", "com.sun.proxy"
+        );
+    private static final boolean FILTER_STACK_TRACE = Config.config().filterStackTrace();
 
     private ScenarioModel scenarioModel;
     private ScenarioCaseModel scenarioCaseModel;
@@ -228,11 +232,30 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     public void setSuccess( boolean success ) {
-        scenarioCaseModel.success = success;
+        scenarioCaseModel.setSuccess( success );
     }
 
-    public void setErrorMessage( String message ) {
-        scenarioCaseModel.errorMessage = message;
+    public void setException( Throwable throwable ) {
+        scenarioCaseModel.setErrorMessage( throwable.getMessage() );
+        scenarioCaseModel.setStackTrace( getStackTrace( throwable, FILTER_STACK_TRACE ) );
+    }
+
+    private List<String> getStackTrace( Throwable exception, boolean filterStackTrace ) {
+        StackTraceElement[] stackTraceElements = exception.getStackTrace();
+        ArrayList<String> stackTrace = new ArrayList<String>( stackTraceElements.length );
+
+        outer:
+        for( StackTraceElement element : stackTraceElements ) {
+            if( filterStackTrace ) {
+                for( String filter : STACK_TRACE_FILTER ) {
+                    if( element.getClassName().contains( filter ) ) {
+                        continue outer;
+                    }
+                }
+            }
+            stackTrace.add( element.toString() );
+        }
+        return stackTrace;
     }
 
     private static String nameWithoutUnderlines( Method paramMethod ) {
@@ -257,7 +280,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     @Override
     public void scenarioFailed( Throwable e ) {
         setSuccess( false );
-        setErrorMessage( e.getMessage() );
+        setException( e );
     }
 
     @Override
@@ -325,7 +348,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
 
         if( method.isAnnotationPresent( NotImplementedYet.class ) || method.isAnnotationPresent( Pending.class ) ) {
-            scenarioModel.setPending( );
+            scenarioModel.setPending();
         }
 
         if( scenarioCaseModel.getCaseNr() == 1 ) {

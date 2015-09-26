@@ -37,12 +37,12 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
     }
 
     public SELF the_case_is_marked_as_failed() {
-        assertThat( getFirstCase().success ).isFalse();
+        assertThat( getFirstCase().isSuccess() ).isFalse();
         return self();
     }
 
     public void an_error_message_is_stored_in_the_report() {
-        assertThat( getFirstCase().errorMessage ).isNotNull();
+        assertThat( getFirstCase().getErrorMessage() ).isNotNull();
     }
 
     public void the_report_model_contains_a_tag_named( String tagName ) {
