@@ -5,13 +5,13 @@ import com.tngtech.jgiven.impl.util.ReflectionUtil;
 
 public class ConfigurationUtil {
 
-    public static AbstractJGivenConfiguraton getConfiguration( Class<? extends Object> testClass ) {
+    public static AbstractJGivenConfiguration getConfiguration( Class<? extends Object> testClass ) {
         JGivenConfiguration annotation = testClass.getAnnotation( JGivenConfiguration.class );
         if( annotation == null ) {
             return new DefaultConfiguration();
         }
 
-        AbstractJGivenConfiguraton result = ReflectionUtil.newInstance( annotation.value() );
+        AbstractJGivenConfiguration result = ReflectionUtil.newInstance( annotation.value() );
         result.configure();
         return result;
     }

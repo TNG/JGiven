@@ -16,10 +16,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
-import com.tngtech.jgiven.format.AnnotationArgumentFormatter;
-import com.tngtech.jgiven.format.ArgumentFormatter;
-import com.tngtech.jgiven.format.DefaultFormatter;
-import com.tngtech.jgiven.format.TableFormatter;
+import com.tngtech.jgiven.format.*;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
 import com.tngtech.jgiven.impl.util.ApiUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
@@ -28,20 +25,48 @@ public class StepFormatter {
     public static final String DEFAULT_NUMBERED_HEADER = "#";
     private final String stepDescription;
     private final List<NamedArgument> arguments;
-    private final List<Formatting<?>> formatters;
+    private final List<Formatting<?, ?>> formatters;
 
-    public static class Formatting<T> {
-        private final ArgumentFormatter<T> formatter;
+    public abstract static class Formatting<F, T> {
+        protected final F formatter;
+
+        Formatting( F formatter ) {
+            this.formatter = formatter;
+        }
+
+        public abstract String format( T o );
+
+        F getFormatter() {
+            return formatter;
+        }
+    }
+
+    public static class TypeBasedFormatting<T> extends Formatting<Formatter<T>, T> {
+        private final Annotation[] annotations;
+
+        public TypeBasedFormatting( Formatter<T> formatter, Annotation[] annotations ) {
+            super( formatter );
+            this.annotations = annotations;
+        }
+
+        @Override
+        public String format( T o ) {
+            return formatter.format( o, annotations );
+        }
+    }
+
+    public static class ArgumentFormatting<F extends ArgumentFormatter<T>, T> extends Formatting<F, T> {
         private final String[] args;
 
-        public Formatting( ArgumentFormatter<T> formatter, String... args ) {
-            this.formatter = formatter;
+        public ArgumentFormatting( F formatter, String... args ) {
+            super( formatter );
             this.args = args;
         }
 
         public String format( T o ) {
             return formatter.format( o, args );
         }
+
     }
 
     public static class AnnotationBasedFormatter implements ArgumentFormatter {
@@ -60,7 +85,7 @@ public class StepFormatter {
         }
     }
 
-    public StepFormatter( String stepDescription, List<NamedArgument> arguments, List<Formatting<?>> formatters ) {
+    public StepFormatter( String stepDescription, List<NamedArgument> arguments, List<Formatting<?, ?>> formatters ) {
         this.stepDescription = stepDescription;
         this.arguments = arguments;
         this.formatters = formatters;
@@ -147,8 +172,8 @@ public class StepFormatter {
             String formattedValue = formatUsingFormatterOrNull( formatters.get( i ), value );
             if( formattedValue == null
                     && formatters.get( i ) != null
-                    && ( formatters.get( i ).formatter instanceof TableFormatter ) ) {
-                Table tableAnnotation = ( (TableFormatter) formatters.get( i ).formatter ).tableAnnotation;
+                    && ( formatters.get( i ).getFormatter() instanceof TableFormatter ) ) {
+                Table tableAnnotation = ( (TableFormatter) formatters.get( i ).getFormatter() ).tableAnnotation;
                 remainingArguments.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ),
                     toTableValue( value, tableAnnotation ) ) );
             } else {
@@ -385,8 +410,8 @@ public class StepFormatter {
         Object value = arguments.get( index ).value;
         String defaultFormattedValue = toDefaultStringFormat( value );
 
-        Formatting<?> formatter = formatters.get( index );
-        if( formatter != null && formatter.formatter instanceof TableFormatter ) {
+        Formatting<?, ?> formatter = formatters.get( index );
+        if( formatter != null && formatter.getFormatter() instanceof TableFormatter ) {
             throw new JGivenWrongUsageException(
                 "Parameters annotated with @Table must be the last ones. They cannot be used for $ substitution" );
         }
@@ -399,7 +424,7 @@ public class StepFormatter {
     }
 
     @SuppressWarnings( "unchecked" )
-    private <T> String formatUsingFormatterOrNull( Formatting<T> argumentFormatter, Object value ) {
+    private <T> String formatUsingFormatterOrNull( Formatting<?, T> argumentFormatter, Object value ) {
         if( argumentFormatter == null ) {
             return null;
         }

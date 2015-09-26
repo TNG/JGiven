@@ -5,11 +5,11 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
+import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 
 @Retention( RetentionPolicy.RUNTIME )
 @Inherited
 @Documented
 public @interface JGivenConfiguration {
-    Class<? extends AbstractJGivenConfiguraton> value();
+    Class<? extends AbstractJGivenConfiguration> value();
 }

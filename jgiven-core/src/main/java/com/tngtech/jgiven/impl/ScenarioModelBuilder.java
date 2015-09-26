@@ -15,12 +15,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.attachment.Attachment;
-import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
+import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.config.TagConfiguration;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
+import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.DefaultFormatter;
+import com.tngtech.jgiven.format.Formatter;
 import com.tngtech.jgiven.format.TableFormatter;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
@@ -30,12 +32,12 @@ import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
 public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
-    private static final Formatting<?> DEFAULT_FORMATTING = new Formatting<Object>( new DefaultFormatter<Object>() );
+    private static final Formatting<?, ?> DEFAULT_FORMATTING = new StepFormatter.ArgumentFormatting<ArgumentFormatter<Object>, Object>(
+            new DefaultFormatter<Object>() );
 
-    private static final Set<String> STACK_TRACE_FILTER = ImmutableSet.of(
-        "sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept", "$$EnhancerByCGLIB$$",
-        "java.lang.reflect", "net.sf.cglib.proxy", "com.sun.proxy"
-        );
+    private static final Set<String> STACK_TRACE_FILTER = ImmutableSet
+            .of( "sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept", "$$EnhancerByCGLIB$$",
+                    "java.lang.reflect", "net.sf.cglib.proxy", "com.sun.proxy" );
     private static final boolean FILTER_STACK_TRACE = Config.config().filterStackTrace();
 
     private ScenarioModel scenarioModel;
@@ -46,7 +48,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     private long scenarioStartedNanos;
 
-    private AbstractJGivenConfiguraton configuration = new DefaultConfiguration();
+    private AbstractJGivenConfiguration configuration = new DefaultConfiguration();
 
     private ReportModel reportModel;
 
@@ -95,7 +97,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
         List<NamedArgument> nonHiddenArguments = filterHiddenArguments( arguments, paramMethod.getParameterAnnotations() );
 
-        List<Formatting<?>> formatters = getFormatters( paramMethod.getParameterAnnotations() );
+        List<Formatting<?, ?>> formatters = getFormatter( paramMethod.getParameterTypes(), paramMethod.getParameterAnnotations() );
         stepModel.words = new StepFormatter( stepModel.name, nonHiddenArguments, formatters ).buildFormattedWords();
 
         if( introWord != null ) {
@@ -124,11 +126,12 @@ public class ScenarioModelBuilder implements ScenarioListener {
         introWord.setValue( value );
     }
 
-    private List<Formatting<?>> getFormatters( Annotation[][] parameterAnnotations ) {
-        List<Formatting<?>> res = Lists.newArrayList();
-        for( Annotation[] annotations : parameterAnnotations ) {
+    private List<Formatting<?, ?>> getFormatter( Class<?>[] parameterTypes, Annotation[][] parameterAnnotations ) {
+        List<Formatting<?, ?>> res = Lists.newArrayList();
+        for( int i = 0; i < parameterTypes.length; i++ ) {
+            Annotation[] annotations = parameterAnnotations[i];
             if( !isHidden( annotations ) ) {
-                res.add( getFormatting( annotations ) );
+                res.add( getFormatting( parameterTypes[i], annotations ) );
             }
         }
         return res;
@@ -144,8 +147,17 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     @SuppressWarnings( { "rawtypes", "unchecked" } )
-    private Formatting<?> getFormatting( Annotation[] annotations ) {
-        return getFormatting( annotations, Sets.<Class<?>>newHashSet(), null );
+    private <T> Formatting<?, ?> getFormatting( Class<T> parameterType, Annotation[] annotations ) {
+        Formatting<?, ?> formatting = getFormatting( annotations, Sets.<Class<?>>newHashSet(), null );
+        if( formatting == null ) {
+            Formatter<T> formatter = configuration.getFormatter( parameterType );
+            if( formatter != null ) {
+                formatting = new StepFormatter.TypeBasedFormatting<T>( formatter, annotations );
+            } else {
+                formatting = DEFAULT_FORMATTING;
+            }
+        }
+        return formatting;
     }
 
     /**
@@ -153,23 +165,24 @@ public class ScenarioModelBuilder implements ScenarioListener {
      *
      * @param visitedTypes used to prevent an endless loop
      */
-    private Formatting<?> getFormatting( Annotation[] annotations, Set<Class<?>> visitedTypes, Annotation originalAnnotation ) {
+    private Formatting<?, ?> getFormatting( Annotation[] annotations, Set<Class<?>> visitedTypes, Annotation originalAnnotation ) {
         for( Annotation annotation : annotations ) {
             try {
                 if( annotation instanceof Format ) {
                     Format arg = (Format) annotation;
-                    return new Formatting( arg.value().newInstance(), arg.args() );
+                    return new StepFormatter.ArgumentFormatting( arg.value().newInstance(), arg.args() );
                 } else if( annotation instanceof Table ) {
                     Table tableAnnotation = (Table) annotation;
-                    return new Formatting( new TableFormatter( tableAnnotation ) );
+                    return new StepFormatter.ArgumentFormatting( new TableFormatter( tableAnnotation ) );
                 } else if( annotation instanceof AnnotationFormat ) {
                     AnnotationFormat arg = (AnnotationFormat) annotation;
-                    return new Formatting( new StepFormatter.AnnotationBasedFormatter( arg.value().newInstance(), originalAnnotation ) );
+                    return new StepFormatter.ArgumentFormatting(
+                            new StepFormatter.AnnotationBasedFormatter( arg.value().newInstance(), originalAnnotation ) );
                 } else {
                     Class<? extends Annotation> annotationType = annotation.annotationType();
                     if( !visitedTypes.contains( annotationType ) ) {
                         visitedTypes.add( annotationType );
-                        Formatting<?> formatting = getFormatting( annotationType.getAnnotations(), visitedTypes, annotation );
+                        Formatting<?, ?> formatting = getFormatting( annotationType.getAnnotations(), visitedTypes, annotation );
                         if( formatting != null ) {
                             return formatting;
                         }
@@ -265,8 +278,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     @Override
     public void stepMethodFailed( Throwable t ) {
         if( !scenarioCaseModel.getSteps().isEmpty() ) {
-            scenarioCaseModel.getStep( scenarioCaseModel.getSteps().size() - 1 )
-                .setStatus( StepStatus.FAILED );
+            scenarioCaseModel.getStep( scenarioCaseModel.getSteps().size() - 1 ).setStatus( StepStatus.FAILED );
         }
     }
 
@@ -292,8 +304,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
         // must come at last
         setMethodName( method.getName() );
 
-        List<Formatting<?>> formatters = getFormatters( method.getParameterAnnotations() );
-        setArguments( toStringList( formatters, getValues( namedArguments ) ) );
+        List<Formatting<?, ?>> formatter = getFormatter( method.getParameterTypes(), method.getParameterAnnotations() );
+        setArguments( toStringList( formatter, getValues( namedArguments ) ) );
     }
 
     private List<Object> getValues( List<NamedArgument> namedArguments ) {
@@ -316,19 +328,20 @@ public class ScenarioModelBuilder implements ScenarioListener {
         configuration = ConfigurationUtil.getConfiguration( testClass );
     }
 
-    private List<String> toStringList( List<Formatting<?>> formatters, List<?> arguments ) {
+    private List<String> toStringList( List<Formatting<?, ?>> formatter, List<?> arguments ) {
         List<String> result = Lists.newArrayList();
         for( int i = 0; i < arguments.size(); i++ ) {
-            Formatting<?> formatting = DEFAULT_FORMATTING;
-            if( i < formatters.size() && formatters.get( i ) != null ) {
-                formatting = formatters.get( i );
+
+            Formatting<?, ?> formatting = DEFAULT_FORMATTING;
+            if( i < formatter.size() && formatter.get( i ) != null ) {
+                formatting = formatter.get( i );
             }
             result.add( formatUsingFormatterOrDefault( formatting, arguments.get( i ) ) );
         }
         return result;
     }
 
-    private <T> String formatUsingFormatterOrDefault( Formatting<T> formatting, Object o ) {
+    private <T> String formatUsingFormatterOrDefault( Formatting<?, T> formatting, Object o ) {
         return formatting.format( (T) o );
     }
 
@@ -443,19 +456,10 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
         String name = Strings.isNullOrEmpty( isTag.name() ) ? isTag.type() : isTag.name();
 
-        return TagConfiguration.builder( annotation.annotationType() )
-            .defaultValue( isTag.value() )
-            .description( isTag.description() )
-            .explodeArray( isTag.explodeArray() )
-            .ignoreValue( isTag.ignoreValue() )
-            .prependType( isTag.prependType() )
-            .name( name )
-            .descriptionGenerator( isTag.descriptionGenerator() )
-            .cssClass( isTag.cssClass() )
-            .color( isTag.color() )
-            .style( isTag.style() )
-            .tags( getTagNames( isTag, annotation ) )
-            .build();
+        return TagConfiguration.builder( annotation.annotationType() ).defaultValue( isTag.value() ).description( isTag.description() )
+                .explodeArray( isTag.explodeArray() ).ignoreValue( isTag.ignoreValue() ).prependType( isTag.prependType() ).name( name )
+                .descriptionGenerator( isTag.descriptionGenerator() ).cssClass( isTag.cssClass() ).color( isTag.color() )
+                .style( isTag.style() ).tags( getTagNames( isTag, annotation ) ).build();
 
     }
 
@@ -497,8 +501,9 @@ public class ScenarioModelBuilder implements ScenarioListener {
         try {
             return tagConfiguration.getDescriptionGenerator().newInstance().generateDescription( tagConfiguration, annotation, value );
         } catch( Exception e ) {
-            throw new JGivenWrongUsageException( "Error while trying to generate the description for annotation " + annotation
-                    + " using DescriptionGenerator class " + tagConfiguration.getDescriptionGenerator() + ": " + e.getMessage(), e );
+            throw new JGivenWrongUsageException(
+                    "Error while trying to generate the description for annotation " + annotation + " using DescriptionGenerator class "
+                            + tagConfiguration.getDescriptionGenerator() + ": " + e.getMessage(), e );
         }
     }
 
