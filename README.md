@@ -1,4 +1,5 @@
 <img src="http://jgiven.org/img/logo.png" height="80" alt="JGiven">
+
 [![Build Status](http://img.shields.io/travis/TNG/JGiven.svg?style=flat-square)](https://travis-ci.org/TNG/JGiven)
 [![Coverage Status](http://img.shields.io/coveralls/TNG/JGiven.svg?style=flat-square)](https://coveralls.io/r/TNG/JGiven?branch=master)
 [![Apache License 2.0](http://img.shields.io/badge/license-apache2-red.svg?style=flat-square)](http://opensource.org/licenses/Apache-2.0)
