@@ -9,7 +9,7 @@
 html, body { height: 100%; }
 
 body {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   line-height: 1.5;
   font-weight: 300;
@@ -36,6 +36,10 @@ a:visited { color: #205caa; }
 
 /* personal */
 
+h2 {
+   color: #555;
+}
+
 em {
     font-style: normal;
     font-weight: bold;
@@ -47,23 +51,27 @@ img {
   border: 5px solid white;
 }
 
+.logo {
+  border: none;
+  box-shadow: none;
+}
+
 /* Layout Styles */
 /* ----------------------------------------------------------*/
 
 /* Site header */
 
 .site-header {
-  border-top: 5px solid #333;
   border-bottom: 1px solid #e8e8e8;
   min-height: 56px;
-  background-color: white;
+  background-color: green;
 }
 
 .site-title,
 .site-title:hover,
 .site-title:visited {
   display: block;
-  color: #333;
+  color: white; /* #333; */
   font-size: 26px;
   letter-spacing: -1px;
   float: left;
@@ -81,7 +89,7 @@ img {
 
 .site-nav .page-link {
   margin-left: 20px;
-  color: #727272;
+  color: white; /*#727272;*/
   letter-spacing: -.5px;
 }
 
