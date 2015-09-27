@@ -1,7 +1,8 @@
 ---
 layout: page
-title: JGiven
 ---
+
+<img height="100px" class="logo" alt="JGiven Logo" src="img/logo.png" />
 
 ## Behavior-Driven Development in Plain Java
 
