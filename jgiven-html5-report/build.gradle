@@ -51,7 +51,7 @@ task copyJsFiles(type: Copy) {
     from bowerComponentsDir
     include 'lodash/**/lodash.min.js'
     include '**/modernizr.js'
-    include '**/placeholder.js'
+    include 'foundation/**/placeholder.js'
     include '**/fastclick.js'
     include 'jquery/**/jquery.min.js'
     include '**/Chart.min.js'
