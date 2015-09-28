@@ -36,8 +36,16 @@ a:visited { color: #205caa; }
 
 /* personal */
 
+h1 {
+  color: #444;
+}
+
 h2 {
-   color: #555;
+   color: #444;
+}
+
+h3, h4 {
+   color: #333;
 }
 
 em {
