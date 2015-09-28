@@ -53,7 +53,7 @@ em {
     font-weight: bold;
 }
 
-img {
+img, .shadow-frame {
   max-width: 750px;
   box-shadow: 5px 5px 8px gray;
   border: 5px solid white;
