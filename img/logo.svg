@@ -9,8 +9,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="744.09448819"
-   height="1052.3622047"
+   width="146.95581"
+   height="49.314671"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
@@ -40,8 +40,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="215.83929"
-     inkscape:cy="708.67284"
+     inkscape:cx="202.93309"
+     inkscape:cy="-273.26884"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -49,7 +49,11 @@
      inkscape:window-height="1025"
      inkscape:window-x="-2"
      inkscape:window-y="32"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -58,21 +62,25 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-12.9062,-21.105831)">
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#565656;fill-opacity:1;stroke:none;font-family:Sans"
        x="15.152294"
        y="62.412689"
        id="text3767"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/jan/git/github/jgiven-pages/img/logo.png"
+       inkscape:export-xdpi="299.31116"
+       inkscape:export-ydpi="299.31116"><tspan
          sodipodi:role="line"
          id="tspan3769"
          x="15.152294"
@@ -87,16 +95,11 @@
        sodipodi:cy="187.6716"
        sodipodi:rx="52.527931"
        sodipodi:ry="52.527931"
-       d="m 277.79195,187.6716 a 52.527931,52.527931 0 1 1 -105.05586,0 52.527931,52.527931 0 1 1 105.05586,0 z"
-       transform="matrix(0.18325481,0,0,0.18325481,104.5223,-3.2268963)"
-       inkscape:transform-center-y="-11.559151" />
-    <path
-       style="fill:none;stroke:#c00000;stroke-width:4.8659997;stroke-miterlimit:4;stroke-opacity:1"
+       d="m 277.79195,187.6716 c 0,29.01038 -23.51755,52.52793 -52.52793,52.52793 -29.01037,0 -52.52793,-23.51755 -52.52793,-52.52793 0,-29.01038 23.51756,-52.52793 52.52793,-52.52793 29.01038,0 52.52793,23.51755 52.52793,52.52793 z"
+       transform="matrix(0.18325481,0,0,0.18325481,106.5223,-1.2268963)"
        inkscape:transform-center-y="-11.559151"
-       d="m 364.98314,343.07646 c 0,5.31629 -4.3097,9.626 -9.62599,9.626 -5.31629,0 -9.626,-4.30971 -9.626,-9.626 0,-5.31629 4.30971,-9.62599 9.626,-9.62599 5.31629,0 9.62599,4.3097 9.62599,9.62599 z"
-       id="path2985-4"
-       inkscape:connector-curvature="0"
-       clip-path="url(#clipPath3821)"
-       transform="translate(-384.31052,-301.81011)" />
+       inkscape:export-filename="/home/jan/git/github/jgiven-pages/img/logo.png"
+       inkscape:export-xdpi="299.31116"
+       inkscape:export-ydpi="299.31116" />
   </g>
 </svg>
