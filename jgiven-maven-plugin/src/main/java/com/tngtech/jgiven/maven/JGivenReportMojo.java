@@ -37,6 +37,12 @@ public class JGivenReportMojo extends AbstractMojo {
      */
     private String format;
 
+    /**
+     * The title of the generated report.
+     * @parameter expression="JGiven Report"
+     */
+    private String title;
+
     @Override
     public void execute() throws MojoExecutionException {
         try {
@@ -50,10 +56,11 @@ public class JGivenReportMojo extends AbstractMojo {
             }
             getLog().info( "Generating HTML reports to " + outputDirectory + "..." );
             ReportGenerator generator = new ReportGenerator();
-            generator.setTargetDirectory(outputDirectory);
-            generator.setSourceDirectory(sourceDirectory);
+            generator.setTargetDirectory( outputDirectory );
+            generator.setSourceDirectory( sourceDirectory );
             generator.setFormat( ReportGenerator.Format.fromStringOrNull( format ) );
             generator.setCustomCssFile( customCssFile );
+            generator.getConfig().setTitle( title );
             generator.generate();
             getLog().info( "-------------------------------------------------------------------" );
             getLog().info( "Generated JGiven HTML reports to directory " + outputDirectory );

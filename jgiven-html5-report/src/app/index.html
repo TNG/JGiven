@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>JGiven Report</title>
+  <title>{{ ::metaData.title }}</title>
   <link rel="stylesheet" href="css/normalize.css"/>
   <link rel="stylesheet" href="css/foundation.css"/>
   <link rel="stylesheet" href="css/font-awesome.min.css"/>
@@ -71,7 +71,7 @@
       <nav class="top-bar" data-topbar role="navigation" data-options="">
         <ul class="title-area">
           <li class="name">
-            <h1><a href="#/">JGiven Report</a></h1>
+            <h1 id="title"><a href="#/">{{ ::metaData.title }}</a></h1>
           </li>
         </ul>
 

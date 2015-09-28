@@ -32,13 +32,15 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     @ProvidedScenarioState
     protected ReportGenerator htmlReportGenerator;
 
+    protected ReportGenerator.Config config = new ReportGenerator.Config();
+
     @BeforeStage
     public void setupTargetReportDir() throws IOException {
         targetReportDir = temporaryFolderRule.newFolder( "targetReportDir" );
     }
 
     public void the_asciidoc_reporter_is_executed() throws IOException {
-        new AsciiDocReportGenerator().generate( getCompleteReportModel(), targetReportDir );
+        new AsciiDocReportGenerator().generate( getCompleteReportModel(), targetReportDir, config );
     }
 
     protected CompleteReportModel getCompleteReportModel() {
@@ -58,7 +60,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     }
 
     public SELF the_plain_text_reporter_is_executed() {
-        new PlainTextReportGenerator().generate( getCompleteReportModel(), targetReportDir );
+        new PlainTextReportGenerator().generate( getCompleteReportModel(), targetReportDir, config );
         return self();
     }
 

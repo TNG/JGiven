@@ -46,6 +46,19 @@ public class ReportGenerator {
     private File targetDirectory = new File( "." );
     private File customCssFile = null;
     private Format format = HTML;
+    private Config config = new Config();
+
+    public static class Config {
+        String title = "JGiven Report";
+
+        public void setTitle( String title ) {
+            this.title = title;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+    }
 
     public static void main( String... args ) throws Exception {
         ReportGenerator generator = new ReportGenerator();
@@ -69,6 +82,8 @@ public class ReportGenerator {
                 }
             } else if( arg.startsWith( "--customcss=" ) ) {
                 generator.setCustomCssFile( new File( arg.split( "=" )[1] ) );
+            } else if( arg.startsWith( "--title=" ) ) {
+                generator.config.title = arg.split( "=" )[1];
             } else if( arg.startsWith( "--format=" ) ) {
                 String formatArg = arg.split( "=" )[1];
                 Format format = Format.fromStringOrNull( formatArg );
@@ -98,9 +113,9 @@ public class ReportGenerator {
         if( format == HTML5 || format == HTML ) {
             generateHtml5Report( reportModel );
         } else if( format == TEXT ) {
-            new PlainTextReportGenerator().generate( reportModel, getTargetDirectory() );
+            new PlainTextReportGenerator().generate( reportModel, getTargetDirectory(), config );
         } else if( format == ASCIIDOC ) {
-            new AsciiDocReportGenerator().generate( reportModel, getTargetDirectory() );
+            new AsciiDocReportGenerator().generate( reportModel, getTargetDirectory(), config );
         }
 
     }
@@ -127,12 +142,13 @@ public class ReportGenerator {
             throw new JGivenInternalDefectException( "The HTML5 Report Generator could not be instantiated.", e );
         }
 
-        reportGenerator.generate( reportModel, getTargetDirectory() );
+        reportGenerator.generate( reportModel, getTargetDirectory(), config );
         copyCustomCssFile( new File( getTargetDirectory(), "css" ) );
     }
 
     private static void printUsageAndExit() {
-        System.err.println( "Options: [--format=<format>] [--sourceDir=<dir>] [--targetDir=<dir>] [--customcss=<cssfile>]" ); // NOSONAR
+        System.err
+            .println( "Options: [--format=<format>] [--sourceDir=<dir>] [--targetDir=<dir>] [--customcss=<cssfile>] [--title=<title>]" ); // NOSONAR
         System.err.println( "  <format> = html or text, default is html" );
         System.exit( 1 );
     }
@@ -159,6 +175,14 @@ public class ReportGenerator {
 
     public void setCustomCssFile( File customCssFile ) {
         this.customCssFile = customCssFile;
+    }
+
+    public void setConfig( Config config ) {
+        this.config = config;
+    }
+
+    public Config getConfig() {
+        return this.config;
     }
 
 }

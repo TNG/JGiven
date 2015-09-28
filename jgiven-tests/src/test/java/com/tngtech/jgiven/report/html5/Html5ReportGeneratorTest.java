@@ -33,4 +33,14 @@ public class Html5ReportGeneratorTest extends
             .and().a_file_$_exists_in_folder_$( "metaData.js", "data" );
     }
 
+    @Test
+    public void the_title_of_the_HTML_report_can_be_configured() throws Exception {
+        given().a_report_model()
+            .and().the_report_exist_as_JSON_file();
+
+        when().the_HTML_Report_Generator_is_executed_with_title( "Test Title" );
+
+        then().the_metaData_file_has_title_set_to( "Test Title" );
+    }
+
 }

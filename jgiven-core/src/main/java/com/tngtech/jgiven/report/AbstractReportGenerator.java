@@ -12,10 +12,12 @@ public abstract class AbstractReportGenerator {
 
     protected CompleteReportModel completeReportModel;
     protected File targetDirectory;
+    protected ReportGenerator.Config config;
 
-    public void generate( CompleteReportModel completeReportModel, File targetDirectory ) {
+    public void generate( CompleteReportModel completeReportModel, File targetDirectory, ReportGenerator.Config config ) {
         this.completeReportModel = completeReportModel;
         this.targetDirectory = targetDirectory;
+        this.config = config;
         generate();
     }
 

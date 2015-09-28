@@ -31,14 +31,15 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
 
     @Override
     public void generate() {
-        log.info( "Generating HTML5 report to {}", new File( targetDirectory, "index.html" ).getAbsoluteFile() );
-        this.dataDirectory = new File( targetDirectory, "data" );
+        log.info( "Generating HTML5 report to {}", new File( this.targetDirectory, "index.html" ).getAbsoluteFile() );
+        this.dataDirectory = new File( this.targetDirectory, "data" );
+        this.metaData.title = config.getTitle();
         if( !this.dataDirectory.exists() && !this.dataDirectory.mkdirs() ) {
             log.error( "Could not create target directory " + this.dataDirectory );
             return;
         }
         try {
-            unzipApp( targetDirectory );
+            unzipApp( this.targetDirectory );
             createDataFiles();
             generateMetaData();
             generateTagFile();
@@ -110,6 +111,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
 
     static class MetaData {
         Date created = new Date();
+        String title = "JGiven Report";
         List<String> data = Lists.newArrayList();
     }
 

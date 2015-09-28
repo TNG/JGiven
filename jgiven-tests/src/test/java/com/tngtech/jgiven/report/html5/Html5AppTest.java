@@ -18,6 +18,7 @@ import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.tags.*;
 
+@BrowserTest
 @FeatureHtml5Report
 @Description( "Tests against the generated HTML5 App using WebDriver" )
 @RunWith( DataProviderRunner.class )
@@ -125,6 +126,19 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
 
         then().an_attachment_icon_exists()
             .and().the_content_of_the_referenced_attachment_is( content );
+    }
+
+    @Test
+    public void the_configured_title_appears_in_the_generated_HTML_report() throws Exception {
+        given().a_report_model()
+            .and().the_report_exist_as_JSON_file();
+
+        whenReport
+            .and().the_HTML_Report_Generator_is_executed_with_title( "Test Title" );
+
+        when().the_index_page_is_opened();
+
+        then().the_report_title_is( "Test Title" );
 
     }
 }

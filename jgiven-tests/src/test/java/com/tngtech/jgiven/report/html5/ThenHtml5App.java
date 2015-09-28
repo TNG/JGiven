@@ -53,4 +53,9 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
         assertThat( span.getAttribute( "style" ) ).contains( style );
         return self();
     }
+
+    public SELF the_report_title_is( String title ) {
+        assertThat( webDriver.findElement( By.id( "title" ) ).getText() ).isEqualTo( title );
+        return self();
+    }
 }

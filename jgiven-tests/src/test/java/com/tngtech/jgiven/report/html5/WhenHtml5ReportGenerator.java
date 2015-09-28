@@ -22,7 +22,12 @@ public class WhenHtml5ReportGenerator<SELF extends WhenHtml5ReportGenerator<SELF
             }
         };
 
-        html5ReportGenerator.generate( getCompleteReportModel(), targetReportDir );
+        html5ReportGenerator.generate( getCompleteReportModel(), targetReportDir, config );
         return self();
+    }
+
+    public SELF the_HTML_Report_Generator_is_executed_with_title( String title ) {
+        config.setTitle( title );
+        return the_HTML_Report_Generator_is_executed();
     }
 }
