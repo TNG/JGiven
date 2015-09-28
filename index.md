@@ -13,15 +13,6 @@ JGiven is a developer-friendly and pragmatic BDD tool for Java. Developers write
 {% assign post = site.posts[0] %}
 <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> - <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
 
-### Key facts
-
-* Scenarios are written in plain Java with a _fluent_ Java API - Neither text files, nor Groovy is needed
-* Method names are *parsed at runtime* and define the scenario text - No duplicate text in annotations is needed
-* Scenarios are executed by either *JUnit* or *TestNG* - No extra test runner is needed, thus JGiven works with all existing IDEs and build tools for Java out-of-the-box
-* Scenarios are composed of multiple, *reusable* so-called Stage classes - No more test code duplication
-* Scenarios and steps can be parameterized for writing *data-driven* tests
-* JGiven generates HTML reports that can be read and understand by domain experts and serve as a *living documentation*
-
 ### Example
 
 {% highlight java %}
@@ -38,9 +29,7 @@ public void a_pancake_can_be_fried_out_of_an_egg_milk_and_flour() {
 }
 {% endhighlight %}
 
-The above test can be executed like any JUnit test.
-During the execution, JSON files are generated that can then be used afterwards to generated test reports.
-By default, a plain text report is shown in the console, which would look as follows:
+The above test can be executed like any JUnit test. During the execution, JSON files are generated that can then be used afterwards to generated test reports. By default, a plain text report is shown in the console, which would look as follows:
 
 ```
 Scenario: a pancake can be fried out of an egg milk and flour
@@ -55,16 +44,26 @@ Scenario: a pancake can be fried out of an egg milk and flour
 
 Further examples can be found in the [jgiven-examples](https://github.com/TNG/JGiven/tree/master/jgiven-examples/src/test/java/com/tngtech/jgiven/examples) module of JGiven.
 
-
 ### HTML Report
 
 Besides the plain text report, a HTML reports can be generated. Currently two different HTML reports can be generated one consisting of static HTML pages and a modern HTML5 report. An example of such a report is the [JGiven's own report]({{site.baseurl}}/jgiven-report/html5):
 <p>
-<a href="{{site.baseurl}}/jgiven-report/html5"><img id="jgivenreport" alt="JGiven HTML5 report of JGiven" src="img/html5report.png" /></a>
+<a href="{{site.baseurl}}/jgiven-report/html5"><img id="jgivenreport" alt="JGiven HTML5 report of JGiven" width="560" src="img/html5report.png" /></a>
 </p>
 The source code of the corresponding JGiven tests are in the [jgiven-tests](https://github.com/TNG/JGiven/tree/master/jgiven-tests) module of the JGiven project.
+
+### Key facts
+
+* Scenarios are written in plain Java with a _fluent_ Java API - Neither text files, nor Groovy is needed
+* Method names are *parsed at runtime* and define the scenario text - No duplicate text in annotations is needed
+* Scenarios are executed by either *JUnit* or *TestNG* - No extra test runner is needed, thus JGiven works with all existing IDEs and build tools for Java out-of-the-box
+* Scenarios are composed of multiple, *reusable* so-called Stage classes - No more test code duplication
+* Scenarios and steps can be parameterized for writing *data-driven* tests
+* JGiven generates HTML reports that can be read and understand by domain experts and serve as a *living documentation*
 
 
 ### Talk on JGiven at BigTechday 8
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/gh_yjb3x8Yc" frameborder="0" allowfullscreen></iframe>
+Jan Schäfer gave a talk on JGiven at the BigTechday 8. It explains the rational behind JGiven and gives an introduction into the main features of JGiven.
+
+<iframe class="shadow-frame" width="560" height="315" src="https://www.youtube.com/embed/gh_yjb3x8Yc" frameborder="0" allowfullscreen></iframe>
