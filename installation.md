@@ -50,8 +50,12 @@ JGiven provides a basic static HTML report. In order to get a model HTML5-based 
 </dependency>
 ```
 
-## Java 8 Note
+## Java Compiler Note
 
-If you are using Java 8 and a JGiven version < 0.8.1, you should compile your test code with the -parameters option of the javac compiler. Otherwise JGiven cannot obtain the parameter names of step methods and will generate generic names of the form argX instead.
+Note that you should complile your test classes with all debugging informations (`javac -g`). Otherwise JGiven cannot obtain the parameter names of step methods and will generate names of the form `argX` instead.
+
+### Java 8 Note (JGiven < 0.8.1)
+
+If you are using Java 8 and a JGiven version < 0.8.1, you should compile your test code with the `-parameters` option of the `javac` compiler. Otherwise JGiven cannot obtain the parameter names of step methods and will generate generic names of the form argX instead.
 
 Next: [Getting Started]({{site.baseurl}}/docs/gettingstarted/)
