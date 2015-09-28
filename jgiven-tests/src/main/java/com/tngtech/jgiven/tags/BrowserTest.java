@@ -7,7 +7,7 @@ import com.tngtech.jgiven.annotation.IsTag;
 
 @IsTag(
     description = "Tests with this tag use a browser for testing",
-    color = "orange" )
+    color = "red" )
 @Retention( RetentionPolicy.RUNTIME )
 public @interface BrowserTest {
 
