@@ -8,6 +8,11 @@ layout: page
 
 JGiven is a developer-friendly and pragmatic BDD tool for Java. Developers write scenarios in plain Java using a fluent, domain-specific API, JGiven generates reports that are readable by domain experts.
 
+### News
+
+{% assign post = site.posts[0] %}
+<span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> - <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+
 ### Key facts
 
 * Scenarios are written in plain Java with a _fluent_ Java API - Neither text files, nor Groovy is needed
