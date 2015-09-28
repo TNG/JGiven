@@ -253,15 +253,15 @@ img {
 .post-content ul,
 .post-content ol { padding-left: 20px; }
 
+.post pre {
+  padding: 20px 20px;
+  border-left: 5px solid rgba(0, 128, 0, 0.75);
+}
+
 .post pre,
 .post code {
-  border: 1px solid #d5d5e9;
-  background-color: #eef;
-  padding: 8px 12px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  font-size: 15px;
+ font-size: 15px;
+ background-color: #eee;
 }
 
 .post code { padding: 0px 0px; }
