@@ -256,6 +256,7 @@ img, .shadow-frame {
 .post pre {
   padding: 20px 20px;
   border-left: 5px solid rgba(0, 128, 0, 0.75);
+  overflow: auto;
 }
 
 .post pre,
@@ -430,4 +431,7 @@ img, .shadow-frame {
     width: auto;
     margin: 0 0 15px; }
 
+  .post img, .post iframe {
+    max-width: 300px;
+  }
 }
