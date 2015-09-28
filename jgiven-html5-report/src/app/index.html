@@ -250,7 +250,7 @@
           <div class="small-12 large-4 column statistics-chart-column clearfix show-for-large-up"
                ng-if="!currentPage.embed">
             <div class="statistics-chart right" ng-controller="ChartCtrl">
-              <canvas class="chart chart-doughnut" data="currentPage.statistics.chartData" labels="labels"
+              <canvas class="chart chart-doughnut toggle" data="currentPage.statistics.chartData" labels="labels" click="click"
                       colours="colours" options="options"></canvas>
             </div>
           </div>
@@ -276,13 +276,13 @@
           <!-- STATISTICS -->
 
           <div id="statistics" class="small-12 large-6 columns no-pad-left" ng-if="currentPage.statistics">
-                <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}}">
+                <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}} toggle" ng-click="showSuccessful()">
                   <i class="fa fa-check-square {{currentPage.statistics.failed + currentPage.statistics.pending === 0 && currentPage.statistics.success > 0 ? 'check' : 'gray'}}"></i> {{currentPage.statistics.success}} Successful</span>,
-                        <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}}"><i
-                            class="fa fa-exclamation-circle"></i> {{currentPage.statistics.failed}} Failed</span>,
-            <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}}"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
+                        <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}} toggle" ng-click="showFailed()"><i
+                            class=" fa fa-exclamation-circle"></i> {{currentPage.statistics.failed}} Failed</span>,
+            <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}} toggle" ng-click="showPending()"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
             <span class="{{currentPage.statistics.count === 0 ? 'gray' : ''}}">{{currentPage.statistics.count}} Total ({{nanosToReadableUnit(currentPage.statistics.totalNanos)}})</span>
-            <span ng-if="currentPage.filtered > 0">({{ currentPage.filtered }} Filtered)</span>
+            <span ng-if="currentPage.filtered > 0" class="bold">({{ currentPage.filtered }} Filtered)</span>
           </div>
 
           <!-- DROP DOWNS -->

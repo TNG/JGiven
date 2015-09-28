@@ -598,7 +598,30 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     return words;
   };
 
+  $scope.showFailed = function () {
+    if ($location.path() === '/') {
+      $location.path('/failed');
+    } else {
+      $location.search('status', 'fail');
+    }
+  };
+
+  $scope.showPending = function () {
+    if ($location.path() === '/') {
+      $location.path('/pending');
+    } else {
+      $location.search('status', 'pending');
+    }
+  };
+
+  $scope.showSuccessful = function () {
+    if ($location.path() === '/') {
+      $location.path('/all');
+    }
+    $location.search('status', 'success');
+
+  };
+
   $scope.init();
 
-})
-;
+});
