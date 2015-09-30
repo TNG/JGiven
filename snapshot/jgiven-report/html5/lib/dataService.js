@@ -9,8 +9,11 @@ jgivenReportApp.factory('dataService', [function () {
   var testCases = jgivenReport.scenarios;
 
   function getAllScenarios () {
-    return _.flatten(_.map(testCases, function (x) {
-      return x.scenarios;
+    return _.flatten(_.map(testCases, function (testClass) {
+      return _.map(testClass.scenarios, function (scenario) {
+        scenario.groupName = testClass.name;
+        return scenario;
+      });
     }), true);
   }
 
