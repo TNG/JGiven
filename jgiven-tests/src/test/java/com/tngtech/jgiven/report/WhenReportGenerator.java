@@ -26,13 +26,11 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     @ExpectedScenarioState
     protected File jsonReportDirectory;
 
-    @ExpectedScenarioState
-    protected File customCssFile;
-
     @ProvidedScenarioState
     protected ReportGenerator htmlReportGenerator;
 
-    protected ReportGenerator.Config config = new ReportGenerator.Config();
+    @ExpectedScenarioState
+    protected ReportGenerator.Config config;
 
     @BeforeStage
     public void setupTargetReportDir() throws IOException {
@@ -49,7 +47,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
 
     private void createReportGenerator() {
         htmlReportGenerator = new ReportGenerator();
-        htmlReportGenerator.setCustomCssFile( customCssFile );
+        htmlReportGenerator.setConfig( config );
         htmlReportGenerator.setSourceDirectory( jsonReportDirectory );
         htmlReportGenerator.setTargetDirectory( targetReportDir );
     }

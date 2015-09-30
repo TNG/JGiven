@@ -8,7 +8,6 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.io.Files;
 import com.tngtech.jgiven.exception.JGivenInstallationException;
 import com.tngtech.jgiven.exception.JGivenInternalDefectException;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
@@ -44,12 +43,13 @@ public class ReportGenerator {
 
     private File sourceDirectory = new File( "." );
     private File targetDirectory = new File( "." );
-    private File customCssFile = null;
     private Format format = HTML;
     private Config config = new Config();
 
     public static class Config {
         String title = "JGiven Report";
+        File customCssFile;
+        File customJsFile;
 
         public void setTitle( String title ) {
             this.title = title;
@@ -57,6 +57,22 @@ public class ReportGenerator {
 
         public String getTitle() {
             return title;
+        }
+
+        public File getCustomCssFile() {
+            return customCssFile;
+        }
+
+        public void setCustomCssFile( File customCssFile ) {
+            this.customCssFile = customCssFile;
+        }
+
+        public void setCustomJsFile( File customJsFile ) {
+            this.customJsFile = customJsFile;
+        }
+
+        public File getCustomJsFile() {
+            return customJsFile;
         }
     }
 
@@ -81,7 +97,9 @@ public class ReportGenerator {
                     System.err.println( "DEPRECATION WARNING: --todir is deprecated, please use--targetDir instead" );
                 }
             } else if( arg.startsWith( "--customcss=" ) ) {
-                generator.setCustomCssFile( new File( arg.split( "=" )[1] ) );
+                generator.config.customCssFile = new File( arg.split( "=" )[1] );
+            } else if( arg.startsWith( "--customjs=" ) ) {
+                generator.config.customJsFile = new File( arg.split( "=" )[1] );
             } else if( arg.startsWith( "--title=" ) ) {
                 generator.config.title = arg.split( "=" )[1];
             } else if( arg.startsWith( "--format=" ) ) {
@@ -120,36 +138,30 @@ public class ReportGenerator {
 
     }
 
-    private void copyCustomCssFile( File targetDirectory ) throws IOException {
-        if( getCustomCssFile() != null ) {
-            if( !getCustomCssFile().canRead() ) {
-                log.info( "Cannot read customCssFile " + getCustomCssFile() + " skipping" );
-            } else {
-                Files.copy( getCustomCssFile(), new File( targetDirectory, "custom.css" ) );
-            }
-        }
-    }
-
     private void generateHtml5Report( CompleteReportModel reportModel ) throws IOException {
         AbstractReportGenerator reportGenerator;
         try {
             Class<?> aClass = this.getClass().getClassLoader().loadClass( "com.tngtech.jgiven.report.html5.Html5ReportGenerator" );
             reportGenerator = (AbstractReportGenerator) aClass.newInstance();
         } catch( ClassNotFoundException e ) {
-            throw new JGivenInstallationException( "The JGiven HTML5 Report Generator seems not to be on the classpath.\n" +
-                    "Ensure that you have a dependency to jgiven-html5-report." );
+            throw new JGivenInstallationException( "The JGiven HTML5 Report Generator seems not to be on the classpath.\n"
+                    + "Ensure that you have a dependency to jgiven-html5-report." );
         } catch( Exception e ) {
             throw new JGivenInternalDefectException( "The HTML5 Report Generator could not be instantiated.", e );
         }
 
         reportGenerator.generate( reportModel, getTargetDirectory(), config );
-        copyCustomCssFile( new File( getTargetDirectory(), "css" ) );
     }
 
     private static void printUsageAndExit() {
-        System.err
-            .println( "Options: [--format=<format>] [--sourceDir=<dir>] [--targetDir=<dir>] [--customcss=<cssfile>] [--title=<title>]" ); // NOSONAR
-        System.err.println( "  <format> = html or text, default is html" );
+        System.err.println( "Options: \n"
+                + "  --format=<format>      the format of the report. Either html or text\n"
+                + "  --sourceDir=<dir>      the source directory where the JGiven JSON files are located\n"
+                + "  --targetDir=<dir>      the directory to generate the report to\n"
+                + "  --title=<title>        the title of the report\n"
+                + "  --customcss=<cssfile>  a custom CSS file to customize the HTML report\n"
+                + "  --customjs=<jsfile>    a custom JS file to customize the HTML report\n"
+            ); // NOSONAR
         System.exit( 1 );
     }
 
@@ -170,11 +182,7 @@ public class ReportGenerator {
     }
 
     public File getCustomCssFile() {
-        return customCssFile;
-    }
-
-    public void setCustomCssFile( File customCssFile ) {
-        this.customCssFile = customCssFile;
+        return config.getCustomCssFile();
     }
 
     public void setConfig( Config config ) {

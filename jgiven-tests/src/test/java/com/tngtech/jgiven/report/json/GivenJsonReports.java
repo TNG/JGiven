@@ -6,9 +6,12 @@ import java.util.List;
 
 import org.junit.rules.TemporaryFolder;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
+import com.google.common.io.Files;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioRule;
+import com.tngtech.jgiven.report.ReportGenerator;
 import com.tngtech.jgiven.report.model.GivenReportModels;
 import com.tngtech.jgiven.report.model.ReportModel;
 
@@ -24,7 +27,7 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenRep
     protected List<File> jsonReportFiles = Lists.newArrayList();
 
     @ProvidedScenarioState
-    protected File customCssFile;
+    protected ReportGenerator.Config config = new ReportGenerator.Config();
 
     public SELF a_report_model_as_JSON_file() throws IOException {
         a_report_model();
@@ -53,7 +56,13 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenRep
     }
 
     public SELF a_custom_CSS_file() throws IOException {
-        customCssFile = temporaryFolderRule.newFile( "custom.css" );
+        config.setCustomCssFile( temporaryFolderRule.newFile( "custom.css" ) );
+        return self();
+    }
+
+    public SELF a_custom_JS_file_with_content( String content ) throws IOException {
+        config.setCustomJsFile( temporaryFolderRule.newFile( "custom.js" ) );
+        Files.append( content, config.getCustomJsFile(), Charsets.UTF_8 );
         return self();
     }
 }

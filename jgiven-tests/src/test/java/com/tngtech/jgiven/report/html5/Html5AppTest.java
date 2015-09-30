@@ -11,6 +11,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.JGivenScenarioTest;
+import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
@@ -20,6 +21,7 @@ import com.tngtech.jgiven.tags.*;
 
 @BrowserTest
 @FeatureHtml5Report
+@As( "HTML App" )
 @Description( "Tests against the generated HTML5 App using WebDriver" )
 @RunWith( DataProviderRunner.class )
 public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHtml5App<?>, ThenHtml5App<?>> {
@@ -139,6 +141,24 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
         when().the_index_page_is_opened();
 
         then().the_report_title_is( "Test Title" );
+    }
 
+    @Test
+    public void navigation_links_of_the_HTML_report_can_be_customized_using_a_custom_JS_file() throws Exception {
+        given().a_report_model()
+            .and().the_report_exist_as_JSON_file();
+        given().a_custom_JS_file_with_content(
+            "jgivenReport.addNavigationLink( { \n"
+                    + "   href: 'http://jgiven.org/docs', \n"
+                    + "   text: 'JGiven Documentation', \n"
+                    + "   target: '_blank' \n"
+                    + "});" );
+        whenReport.when().the_HTML_Report_Generator_is_executed();
+
+        when().and().the_index_page_is_opened();
+
+        then().the_navigation_menu_has_a_link_with_text( "JGIVEN DOCUMENTATION" )
+            .and().href( "http://jgiven.org/docs" )
+            .and().target( "_blank" );
     }
 }

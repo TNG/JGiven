@@ -25,7 +25,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
 
   $scope.metaData = dataService.getMetaData();
 
-
   // Pager
 
   $scope.totalItems = 0;
@@ -34,6 +33,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
 
   $scope.showOptions = true;
 
+  $scope.customNavigationLinks = dataService.getCustomNavigationLinks();
 
   $scope.init = function () {
 
@@ -194,9 +194,11 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   $scope.updateCurrentPageToTestCase = function (testCase, options) {
     var className = splitClassName(testCase.className);
     scenarios = sortByDescription(testCase.scenarios);
+
     $scope.currentPage = {
-      subtitle: className.packageName,
-      title: className.className,
+      subtitle: className.packageName + (testCase.name ? '.' + className.className : ''),
+      title: testCase.name ? testCase.name : className.className,
+      description: testCase.description,
       breadcrumbs: className.packageName.split("."),
       options: optionService.getOptions(scenarios, options)
     };

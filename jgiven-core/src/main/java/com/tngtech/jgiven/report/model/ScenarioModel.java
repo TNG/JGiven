@@ -25,54 +25,54 @@ public class ScenarioModel {
     private long durationInNanos;
     private ExecutionStatus executionStatus;
 
-    public void accept(ReportModelVisitor visitor) {
-        visitor.visit(this);
-        for (ScenarioCaseModel scenarioCase : getScenarioCases()) {
-            scenarioCase.accept(visitor);
+    public void accept( ReportModelVisitor visitor ) {
+        visitor.visit( this );
+        for( ScenarioCaseModel scenarioCase : getScenarioCases() ) {
+            scenarioCase.accept( visitor );
         }
-        visitor.visitEnd(this);
+        visitor.visitEnd( this );
     }
 
-    public synchronized void addCase(ScenarioCaseModel scenarioCase) {
-        scenarioCase.setCaseNr(scenarioCases.size() + 1);
-        scenarioCases.add(scenarioCase);
+    public synchronized void addCase( ScenarioCaseModel scenarioCase ) {
+        scenarioCase.setCaseNr( scenarioCases.size() + 1 );
+        scenarioCases.add( scenarioCase );
         executionStatus = null;
     }
 
     public ExecutionStatus getExecutionStatus() {
-        if (executionStatus == null) {
+        if( executionStatus == null ) {
             ExecutionStatusCalculator executionStatusCalculator = new ExecutionStatusCalculator();
-            this.accept(executionStatusCalculator);
+            this.accept( executionStatusCalculator );
             executionStatus = executionStatusCalculator.executionStatus();
         }
         return executionStatus;
     }
 
-    public ScenarioCaseModel getCase(int i) {
-        return scenarioCases.get(i);
+    public ScenarioCaseModel getCase( int i ) {
+        return scenarioCases.get( i );
     }
 
-    public synchronized void addTag(Tag tag) {
-        tagIds.add(tag.toIdString());
+    public synchronized void addTag( Tag tag ) {
+        tagIds.add( tag.toIdString() );
     }
 
-    public void addTags(List<Tag> tags) {
-        for (Tag tag : tags) {
-            addTag(tag);
+    public void addTags( List<Tag> tags ) {
+        for( Tag tag : tags ) {
+            addTag( tag );
         }
     }
 
-    public synchronized void addParameterNames(String... params) {
-        explicitParameters.addAll(Arrays.asList(params));
+    public synchronized void addParameterNames( String... params ) {
+        explicitParameters.addAll( Arrays.asList( params ) );
     }
 
-    public synchronized void setExplicitParameters(List<String> params) {
+    public synchronized void setExplicitParameters( List<String> params ) {
         explicitParameters.clear();
-        explicitParameters.addAll(params);
+        explicitParameters.addAll( params );
     }
 
     public List<String> getExplicitParameters() {
-        return Collections.unmodifiableList(explicitParameters);
+        return Collections.unmodifiableList( explicitParameters );
     }
 
     public List<ScenarioCaseModel> getScenarioCases() {
@@ -80,14 +80,14 @@ public class ScenarioModel {
     }
 
     public List<String> getTagIds() {
-        return Lists.newArrayList(tagIds);
+        return Lists.newArrayList( tagIds );
     }
 
     public boolean isCasesAsTable() {
         return casesAsTable;
     }
 
-    public void setCasesAsTable(boolean casesAsTable) {
+    public void setCasesAsTable( boolean casesAsTable ) {
         this.casesAsTable = casesAsTable;
     }
 
@@ -99,27 +99,27 @@ public class ScenarioModel {
         return durationInNanos;
     }
 
-    public void setDurationInNanos(long durationInNanos) {
+    public void setDurationInNanos( long durationInNanos ) {
         this.durationInNanos = durationInNanos;
     }
 
-    public void addDurationInNanos(long durationInNanosDelta) {
+    public void addDurationInNanos( long durationInNanosDelta ) {
         this.durationInNanos += durationInNanosDelta;
     }
 
-    public void addDerivedParameter(String parameterName) {
-        this.derivedParameters.add(parameterName);
+    public void addDerivedParameter( String parameterName ) {
+        this.derivedParameters.add( parameterName );
     }
 
     public List<String> getDerivedParameters() {
-        return Collections.unmodifiableList(derivedParameters);
+        return Collections.unmodifiableList( derivedParameters );
     }
 
     public String getClassName() {
         return className;
     }
 
-    public void setClassName(String className) {
+    public void setClassName( String className ) {
         this.className = className;
     }
 
@@ -127,7 +127,7 @@ public class ScenarioModel {
         return testMethodName;
     }
 
-    public void setTestMethodName(String testMethodName) {
+    public void setTestMethodName( String testMethodName ) {
         this.testMethodName = testMethodName;
     }
 
@@ -135,11 +135,11 @@ public class ScenarioModel {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription( String description ) {
         this.description = description;
     }
 
-    public void setTagIds(Set<String> tagIds) {
+    public void setTagIds( Set<String> tagIds ) {
         this.tagIds = tagIds;
     }
 
@@ -147,7 +147,7 @@ public class ScenarioModel {
         this.executionStatus = ExecutionStatus.SCENARIO_PENDING;
     }
 
-    public void setExtendedDescription(String extendedDescription) {
+    public void setExtendedDescription( String extendedDescription ) {
         this.extendedDescription = extendedDescription;
     }
 

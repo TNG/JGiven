@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.report.html5;
 
+import com.tngtech.jgiven.annotation.As;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -12,7 +13,8 @@ import com.tngtech.jgiven.tags.FeatureHtml5Report;
 import com.tngtech.jgiven.tags.FeatureTags;
 
 @FeatureHtml5Report
-@Description( "Tests against the generated HTML5 App using WebDriver" )
+@As("HTML Report Generator")
+@Description( "Test that only checks the generated files of the HTML report generator" )
 @RunWith( DataProviderRunner.class )
 public class Html5ReportGeneratorTest extends
         JGivenScenarioTest<GivenJsonReports<?>, WhenHtml5ReportGenerator<?>, ThenHtml5ReportGenerator<?>> {

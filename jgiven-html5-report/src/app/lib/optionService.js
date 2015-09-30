@@ -190,6 +190,19 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
       },
       {
         selected: false,
+        id: 'classtitle',
+        name: 'Class Title',
+        apply: function (scenarios) {
+          return toArrayOfGroups(_.groupBy(scenarios, function (scenario) {
+            if (scenario.groupName) {
+              return scenario.groupName;
+            }
+            return ' <No Title>';
+          }));
+        }
+      },
+      {
+        selected: false,
         id: 'status',
         name: 'Status',
         apply: function (scenarios) {
@@ -241,7 +254,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
         name: 'A-Z',
         apply: function (scenarios) {
           return _.sortBy(scenarios, function (x) {
-            return x.description.toLowerCase();
+            return x.groupName + ' ' + x.description.toLowerCase();
           });
         }
       },
@@ -251,7 +264,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
         name: 'Z-A',
         apply: function (scenarios) {
           return _.chain(scenarios).sortBy(function (x) {
-            return x.description.toLowerCase();
+            return x.groupName + ' ' + x.description.toLowerCase();
           }).reverse().value();
         }
       },
