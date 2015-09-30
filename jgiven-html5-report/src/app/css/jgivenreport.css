@@ -565,19 +565,32 @@ ul.tags {
     margin-left: 0.8rem;
 }
 
+ul.pagination li.current a {
+    background-color: green;
+}
+
+a, a:visited {
+    color: #5A5A5A;
+}
+
 .side-nav li a:not(.button) {
-    padding: 0.5rem 1.8rem;
     color: /*#5A5A5A*/ darkgreen;
 }
 
+.side-nav li a:not(.button) {
+    padding: 0.5rem 1.8rem;
+}
+
+a:hover,
 .side-nav li.heading a:hover,
 .side-nav li.heading li a:hover {
-    color: black;
+    color: green;
 }
 
 .side-nav li li a:not(.button) {
     padding-top: 0.1rem;
     padding-bottom: 0.1rem;
+    color: #5A5A5A;
 }
 
 .side-nav, .side-nav ul {
