@@ -122,16 +122,29 @@ h5 {
  */
 
 .scenario-group-header {
-    margin-bottom: 10px;
-    margin-top: 20px;
-    background-color: rgb(229, 229, 229);
+    position: relative;
+    margin-bottom: -20px;
+    margin-top: 30px;
+    padding-right: 10px;
+    /*    background-color: rgb(229, 229, 229);
+        border-radius: 5px;
+        */
     padding: 0.4rem;
-    padding-left: 1rem;
-    border-radius: 5px;
+    padding-left: 0rem;
+    border-top: 1px solid #aaa;
+    line-height: 0;
 }
 
-.scenario-group-header h3 {
+h3.scenario-group-header {
     font-size: 1.2rem;
+    color: #333;
+}
+
+span.scenario-group-header-name {
+    background-color: #fff;
+    padding-right: 1rem;
+    position: relative;
+    top: -18px;
 }
 
 .scenario-list-button-bar .fa {
@@ -199,6 +212,14 @@ h5 {
     margin-bottom: 0.5rem;
 }
 
+.scenario-group-name {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #333;
+    font-size: 85%;
+    margin-right: 0.5rem;
+}
+
 .scenario-title, .scenario-extended-description {
     margin-left: 1.1rem !important;
 }
@@ -237,7 +258,7 @@ h5 {
 }
 
 .group-count.label.secondary {
-    vertical-align: text-top;
+    vertical-align: baseline;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 0.5rem;
