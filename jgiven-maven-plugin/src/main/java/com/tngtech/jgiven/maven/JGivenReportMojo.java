@@ -26,13 +26,19 @@ public class JGivenReportMojo extends AbstractMojo {
     private File sourceDirectory;
 
     /**
-     * Custom CSS file
+     * Custom CSS file to customize the HTML report
      * @parameter expression="src/test/resources/jgiven/custom.css"
      */
     private File customCssFile;
 
     /**
-     * The format of the generated report. Can be one of html, html5, and text
+     * Custom JS file to customize the HTML report
+     * @parameter expression="src/test/resources/jgiven/custom.js"
+     */
+    private File customJsFile;
+
+    /**
+     * The format of the generated report. Can be html or text
      * @parameter expression="html"
      */
     private String format;
@@ -51,15 +57,19 @@ public class JGivenReportMojo extends AbstractMojo {
             }
             getLog().info( "JGiven HTML report source directory: " + sourceDirectory );
             getLog().info( "JGiven HTML report output directory: " + outputDirectory );
-            if( customCssFile != null ) {
+            if( customCssFile != null && customCssFile.exists() ) {
                 getLog().info( "JGiven HTML report custom CSS file: " + customCssFile );
+            }
+            if( customJsFile != null && customJsFile.exists() ) {
+                getLog().info( "JGiven HTML report custom JS file: " + customJsFile );
             }
             getLog().info( "Generating HTML reports to " + outputDirectory + "..." );
             ReportGenerator generator = new ReportGenerator();
             generator.setTargetDirectory( outputDirectory );
             generator.setSourceDirectory( sourceDirectory );
             generator.setFormat( ReportGenerator.Format.fromStringOrNull( format ) );
-            generator.setCustomCssFile( customCssFile );
+            generator.getConfig().setCustomCssFile( customCssFile );
+            generator.getConfig().setCustomCssFile( customJsFile );
             generator.getConfig().setTitle( title );
             generator.generate();
             getLog().info( "-------------------------------------------------------------------" );

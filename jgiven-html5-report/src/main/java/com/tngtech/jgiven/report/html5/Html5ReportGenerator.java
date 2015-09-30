@@ -43,8 +43,20 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
             createDataFiles();
             generateMetaData();
             generateTagFile();
+            copyCustomFile( config.getCustomCssFile(), new File( this.targetDirectory, "css" ), "custom.css" );
+            copyCustomFile( config.getCustomJsFile(), new File( this.targetDirectory, "js" ), "custom.js" );
         } catch( IOException e ) {
             throw Throwables.propagate( e );
+        }
+    }
+
+    private void copyCustomFile( File file, File targetDirectory, String targetName ) throws IOException {
+        if( file != null ) {
+            if( !file.canRead() ) {
+                log.info( "Cannot read " + file + ", skipping" );
+            } else {
+                Files.copy( file, new File( targetDirectory, targetName ) );
+            }
         }
     }
 

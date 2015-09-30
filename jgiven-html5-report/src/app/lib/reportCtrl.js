@@ -25,7 +25,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
 
   $scope.metaData = dataService.getMetaData();
 
-
   // Pager
 
   $scope.totalItems = 0;
@@ -34,6 +33,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
 
   $scope.showOptions = true;
 
+  $scope.customNavigationLinks = dataService.getCustomNavigationLinks();
 
   $scope.init = function () {
 

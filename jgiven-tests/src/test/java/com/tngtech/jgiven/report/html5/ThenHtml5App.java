@@ -15,6 +15,7 @@ import org.testng.reporters.Files;
 public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SELF> {
 
     private WebElement foundTag;
+    private WebElement foundLink;
 
     public SELF the_page_title_is( String pageTitle ) {
         assertThat( webDriver.findElement( By.id( "page-title" ) ).getText() ).isEqualTo( pageTitle );
@@ -56,6 +57,24 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
 
     public SELF the_report_title_is( String title ) {
         assertThat( webDriver.findElement( By.id( "title" ) ).getText() ).isEqualTo( title );
+        return self();
+    }
+
+    public SELF the_navigation_menu_has_a_link_with_text( String text ) {
+        foundLink = webDriver.findElement( By.linkText( text ) );
+        assertThat( foundLink.getText() ).isEqualTo( text );
+        return self();
+    }
+
+    public SELF href( String href ) {
+        assertThat( foundLink ).isNotNull();
+        assertThat( foundLink.getAttribute( "href" ) ).isEqualTo( href );
+        return self();
+    }
+
+    public SELF target( String target ) {
+        assertThat( foundLink ).isNotNull();
+        assertThat( foundLink.getAttribute( "target" ) ).isEqualTo( target );
         return self();
     }
 }
