@@ -155,7 +155,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
 
         when().and().the_index_page_is_opened();
 
-        then().the_navigation_menu_has_a_link_with_text( "JGiven Documentation" )
+        then().the_navigation_menu_has_a_link_with_text( "JGIVEN DOCUMENTATION" )
             .and().href( "http://jgiven.org/docs" )
             .and().target( "_blank" );
     }
