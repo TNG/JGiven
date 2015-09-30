@@ -1,9 +1,9 @@
 <!doctype html>
-<html class="no-js" lang="en" ng-app="jgivenReportApp" xmlns="http://www.w3.org/1999/html">
+<html class="no-js" lang="en" ng-app="jgivenReportApp" xmlns="http://www.w3.org/1999/html" ng-controller="JGivenReportCtrl as appCtrl">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>JGiven Report</title>
+  <title>{{ ::metaData.title }}</title>
   <link rel="stylesheet" href="css/normalize.css"/>
   <link rel="stylesheet" href="css/foundation.css"/>
   <link rel="stylesheet" href="css/font-awesome.min.css"/>
@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/custom.css"/>
   <script src="js/modernizr.js"></script>
 </head>
-<body ng-controller="JGivenReportCtrl as appCtrl">
+<body>
 
 
 <!-- General Tree Template -->
@@ -71,7 +71,7 @@
       <nav class="top-bar" data-topbar role="navigation" data-options="">
         <ul class="title-area">
           <li class="name">
-            <h1><a href="#/">JGiven Report</a></h1>
+            <h1 id="title"><a href="#/">{{ ::metaData.title }}</a></h1>
           </li>
         </ul>
 
@@ -141,6 +141,10 @@
         </a></li>
         <li class="has-submenu" ng-repeat="node in rootPackage.childNodes() | orderBy : orderNodes"
             ng-include="'tree_mobile_template.html'"></li>
+
+        <li ng-repeat="link in ::customNavigationLinks"><label>
+          <a href="{{::link.href}}" target="{{::link.target}}">{{::link.text}}</a></label>
+        </li>
       </ul>
     </aside>
 
@@ -222,6 +226,11 @@
                   </ul>
                 </li>
 
+                <!-- CUSTOM LINKS -->
+                <li ng-repeat="link in ::customNavigationLinks" class="heading">
+                  <a href="{{::link.href}}" target="{{::link.target}}">{{::link.text}}</a>
+                </li>
+
               </ul>
             </nav>
           </div>
@@ -250,7 +259,7 @@
           <div class="small-12 large-4 column statistics-chart-column clearfix show-for-large-up"
                ng-if="!currentPage.embed">
             <div class="statistics-chart right" ng-controller="ChartCtrl">
-              <canvas class="chart chart-doughnut" data="currentPage.statistics.chartData" labels="labels"
+              <canvas class="chart chart-doughnut toggle" data="currentPage.statistics.chartData" labels="labels" click="click"
                       colours="colours" options="options"></canvas>
             </div>
           </div>
@@ -276,13 +285,13 @@
           <!-- STATISTICS -->
 
           <div id="statistics" class="small-12 large-6 columns no-pad-left" ng-if="currentPage.statistics">
-                <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}}">
+                <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}} toggle" ng-click="showSuccessful()">
                   <i class="fa fa-check-square {{currentPage.statistics.failed + currentPage.statistics.pending === 0 && currentPage.statistics.success > 0 ? 'check' : 'gray'}}"></i> {{currentPage.statistics.success}} Successful</span>,
-                        <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}}"><i
-                            class="fa fa-exclamation-circle"></i> {{currentPage.statistics.failed}} Failed</span>,
-            <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}}"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
+                        <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}} toggle" ng-click="showFailed()"><i
+                            class=" fa fa-exclamation-circle"></i> {{currentPage.statistics.failed}} Failed</span>,
+            <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}} toggle" ng-click="showPending()"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
             <span class="{{currentPage.statistics.count === 0 ? 'gray' : ''}}">{{currentPage.statistics.count}} Total ({{nanosToReadableUnit(currentPage.statistics.totalNanos)}})</span>
-            <span ng-if="currentPage.filtered > 0">({{ currentPage.filtered }} Filtered)</span>
+            <span ng-if="currentPage.filtered > 0" class="bold">({{ currentPage.filtered }} Filtered)</span>
           </div>
 
           <!-- DROP DOWNS -->
@@ -491,7 +500,13 @@
                         </table>
                         <div ng-if="!scenario.casesAsTable">
                           <div ng-if="!scenario.scenarioCases[0].success" data-alert
-                               class="alert-box alert">FAILED: {{::case.errorMessage}}
+                               class="alert-box alert">
+                            <span class="toggle" ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
+                            <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
+                              FAILED: {{::case.errorMessage}}</span>
+
+                            <pre ng-if="case.stackTrace.expanded">{{ ::case.stackTrace.join('\n') }}</pre>
+
                           </div>
                         </div>
 
@@ -523,7 +538,11 @@
                                 </td>
                                 <td ng-if="!case.success">
                                   <div data-alert class="alert-box alert">
-                                    {{::case.errorMessage}}
+                                    <span class="toggle"
+                                          ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
+                                      <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
+                                    FAILED: {{::case.errorMessage}}</span>
+                                    <pre ng-if="case.stackTrace.expanded">{{ ::case.stackTrace.join('\n') }}</pre>
                                   </div>
                               <span ng-if="case.durationInNanos > 10000000"
                                     class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
@@ -607,6 +626,8 @@
 <script src="lib/chartCtrl.js"></script>
 <script src="lib/reportCtrl.js"></script>
 <script src="lib/navigationCtrl.js"></script>
+<script src="lib/api.js"></script>
+<script src="js/custom.js"></script>
 <script src="data/metaData.js"></script>
 <script src="data/tags.js"></script>
 </body>
