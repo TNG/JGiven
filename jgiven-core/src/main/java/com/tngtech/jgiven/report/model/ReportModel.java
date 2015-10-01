@@ -10,6 +10,7 @@ import com.google.common.collect.Maps;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
+import com.tngtech.jgiven.impl.util.WordUtil;
 
 public class ReportModel {
     /**
@@ -176,7 +177,14 @@ public class ReportModel {
 
         if( testClass.isAnnotationPresent( As.class ) ) {
             name = testClass.getAnnotation( As.class ).value();
+        } else {
+            name = getTestNameToReadableString( testClass );
         }
+    }
+
+    private String getTestNameToReadableString( Class<?> testClass ) {
+        String wordWithSpaces = WordUtil.splitCamelCaseToReadableText( testClass.getSimpleName() );
+        return wordWithSpaces.replaceAll( " Tests?$", "" );
     }
 
 }

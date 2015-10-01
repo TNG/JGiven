@@ -390,7 +390,7 @@
                   <h4 class="toggle scenario-title {{getScenarioTitleStatusClass(scenario)}}"
                       ng-click="toggleScenario(scenario)">
                     <i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i>
-                    <span class="scenario-group-name" ng-if="::scenario.groupName">{{::scenario.groupName}}</span>
+                    <span class="scenario-group-name" ng-if="::scenario.classTitle && scenarioGroup.name !== scenario.classTitle">{{::scenario.classTitle}}</span>
                     {{::scenario.description.capitalize()}}
                     <span ng-if="scenario.scenarioCases.length > 1"
                           class="secondary radius label case-count">{{::scenario.scenarioCases.length}}</span>
