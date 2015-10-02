@@ -194,10 +194,10 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
         name: 'Class Title',
         apply: function (scenarios) {
           return toArrayOfGroups(_.groupBy(scenarios, function (scenario) {
-            if (scenario.groupName) {
-              return scenario.groupName;
+            if (scenario.classTitle) {
+              return scenario.classTitle;
             }
-            return ' <No Title>';
+            return '<No Title>';
           }));
         }
       },
@@ -254,7 +254,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
         name: 'A-Z',
         apply: function (scenarios) {
           return _.sortBy(scenarios, function (x) {
-            return x.groupName + ' ' + x.description.toLowerCase();
+            return (x.classTitle ? x.classTitle + ' ' : 'Z') + x.description.toLowerCase();
           });
         }
       },
@@ -264,7 +264,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
         name: 'Z-A',
         apply: function (scenarios) {
           return _.chain(scenarios).sortBy(function (x) {
-            return x.groupName + ' ' + x.description.toLowerCase();
+            return (x.classTitle ? x.classTitle + ' ' : 'Z') + x.description.toLowerCase();
           }).reverse().value();
         }
       },
