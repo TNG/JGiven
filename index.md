@@ -46,7 +46,7 @@ Further examples can be found in the [jgiven-examples](https://github.com/TNG/JG
 
 ### HTML Report
 
-Besides the plain text report, a HTML reports can be generated. Currently two different HTML reports can be generated one consisting of static HTML pages and a modern HTML5 report. An example of such a report is the [JGiven's own report]({{site.baseurl}}/jgiven-report/html5):
+Besides the plain text report, an HTML report can be generated. An example of such a report is the [JGiven's own report]({{site.baseurl}}/jgiven-report/html5):
 <p>
 <a href="{{site.baseurl}}/jgiven-report/html5"><img id="jgivenreport" alt="JGiven HTML5 report of JGiven" width="560" src="img/html5report.png" /></a>
 </p>
