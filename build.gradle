@@ -190,7 +190,7 @@ subprojects {
     signing {
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
         required {
-            isReleasedVersion && gradle.taskGraph.hasTask('uploadArchives')
+            isReleaseVersion && gradle.taskGraph.hasTask('uploadArchives')
         }
         sign configurations.archives
     }
