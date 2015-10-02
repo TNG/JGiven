@@ -11,7 +11,7 @@ jgivenReportApp.factory('dataService', [function () {
   function getAllScenarios () {
     return _.flatten(_.map(testCases, function (testClass) {
       return _.map(testClass.scenarios, function (scenario) {
-        scenario.groupName = testClass.name;
+        scenario.classTitle = testClass.name;
         return scenario;
       });
     }), true);
