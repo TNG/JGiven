@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{{ ::metaData.title }}</title>
+  <title ng-bind="metaData.title">Loading...</title>
   <link rel="stylesheet" href="css/normalize.css"/>
   <link rel="stylesheet" href="css/foundation.css"/>
   <link rel="stylesheet" href="css/font-awesome.min.css"/>
@@ -71,7 +71,7 @@
       <nav class="top-bar" data-topbar role="navigation" data-options="">
         <ul class="title-area">
           <li class="name">
-            <h1 id="title"><a href="#/">{{ ::metaData.title }}</a></h1>
+            <h1 id="title"><a href="#/" ng-bind="::metaData.title">Loading...</a></h1>
           </li>
         </ul>
 
@@ -390,7 +390,8 @@
                   <h4 class="toggle scenario-title {{getScenarioTitleStatusClass(scenario)}}"
                       ng-click="toggleScenario(scenario)">
                     <i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i>
-                    <span class="scenario-group-name" ng-if="::scenario.groupName">{{::scenario.groupName}}</span>
+                    <span class="scenario-group-name"
+                          ng-if="::scenario.classTitle && scenarioGroup.name !== scenario.classTitle && scenario.classTitle !== currentPage.title">{{::scenario.classTitle}}</span>
                     {{::scenario.description.capitalize()}}
                     <span ng-if="scenario.scenarioCases.length > 1"
                           class="secondary radius label case-count">{{::scenario.scenarioCases.length}}</span>
