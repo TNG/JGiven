@@ -24,6 +24,7 @@ allprojects {
     group = 'com.tngtech.jgiven'
     version = '0.9.0-SNAPSHOT'
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+    ext.isCI = System.env.CI == "true"
     apply plugin: 'jacoco'
     repositories {
         mavenCentral()
@@ -263,6 +264,10 @@ subprojects {
                 description = project.description
             }
         }
+    }
+
+    uploadArchives.onlyIf {
+        !(isCI && isReleaseVersion)
     }
 
 }
