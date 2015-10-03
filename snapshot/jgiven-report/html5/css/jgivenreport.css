@@ -125,7 +125,7 @@ h5 {
 .scenario-group-header {
     position: relative;
     margin-bottom: -20px;
-    margin-top: 30px;
+    margin-top: 25px;
     padding-right: 10px;
     /*    background-color: rgb(229, 229, 229);
         border-radius: 5px;
@@ -137,15 +137,20 @@ h5 {
 }
 
 h3.scenario-group-header {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: #333;
 }
 
 span.scenario-group-header-name {
     background-color: #fff;
     padding-right: 1rem;
+    color: #444;
     position: relative;
     top: -18px;
+}
+
+span.scenario-group-header-name.failed {
+    color: red;
 }
 
 .scenario-list-button-bar .fa {
@@ -214,10 +219,7 @@ span.scenario-group-header-name {
 }
 
 .scenario-group-name {
-    text-transform: uppercase;
-    font-weight: bold;
-    color: #333;
-    font-size: 85%;
+    color: #555;
     margin-right: 0.5rem;
 }
 
@@ -259,13 +261,25 @@ span.scenario-group-header-name {
 }
 
 .group-count.label.secondary {
-    vertical-align: baseline;
+    vertical-align: middle;
     margin-top: 0;
-    margin-bottom: 0;
     margin-left: 0.5rem;
-    font-size: 80%;
-    background-color: rgb(151, 151, 151);
+    margin-bottom: 0.1rem;
+}
+
+.total.group-count.label.secondary {
+    background-color: #eee;
+    color: black;
+}
+
+.failed.group-count.label.secondary {
+    margin-left: 0rem;
+}
+
+.pending.group-count.label.secondary {
+    background-color: #555;
     color: white;
+    margin-left: 0rem;
 }
 
 .nav-count {
@@ -354,7 +368,7 @@ table.steps tr.steps:hover {
 .label.failed {
     color: white;
     vertical-align: middle;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.1rem;
 }
 
 .failed-icon {
@@ -375,7 +389,9 @@ table.steps tr.steps:hover {
 
 .label.pending {
     vertical-align: middle;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.1rem;
+    background-color: #555;
+    color: white;
 }
 
 .skipped {
@@ -539,6 +555,7 @@ ul.off-canvas-list li.off-canvas-label > a:hover {
 
 .scenario.last {
     border-bottom: none;
+    margin-bottom: 10px;
 }
 
 .scenario-content {
@@ -672,7 +689,7 @@ a.show-tree-link:hover {
 
 .footer-bottom {
     position: absolute;
-    padding: 40px 0 2px;
+    padding: 20px 0 2px;
     color: #555;
     bottom: 0;
     right: 0;
