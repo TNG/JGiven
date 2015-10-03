@@ -30,8 +30,8 @@ h3.scenario-group-header {
     display: none;
 }
 
-.scenario-title {
-    margin-left: 0rem;
+.scenario-title, .scenario-extended-description {
+    margin-left: 0rem !important;
 }
 
 .scenario {
@@ -40,7 +40,7 @@ h3.scenario-group-header {
     page-break-after: auto;
 }
 
-.scenario-expand-icon, .case-expand-icon, .nav-show-icon {
+.scenario-expand-icon, .case-expand-icon, .nav-show-icon, .scenario-extended-description-icon {
     display: none !important;
 }
 
