@@ -17,6 +17,11 @@ jgivenReportApp.controller('JGivenNavigationCtrl', function ($scope, $document, 
 
   $scope.navHidden = false;
 
+  $scope.summaryExpanded = true;
+  $scope.tagsExpanded = true;
+  $scope.classesExpanded = true;
+  $scope.bookarksExpanded = true;
+
   /**
    * The root package node of the hierarchical package tree
    */
@@ -43,11 +48,11 @@ jgivenReportApp.controller('JGivenNavigationCtrl', function ($scope, $document, 
     $('#sidebar').css("width", scenarioContainer.previousLeftMargin);
   };
 
-  function adaptResizeHandle() {
+  function adaptResizeHandle () {
     $('#nav-move-icon-container').css("top", ($(window).height() - parseInt($('#sidebar').css("top"))) / 2);
   }
 
-  function resizeNav(event) {
+  function resizeNav (event) {
     var widthDiff = pageXBeforeResize - event.pageX;
     var newWidth = navWidthBeforeResize - widthDiff;
     if (newWidth < 20) {
@@ -66,7 +71,7 @@ jgivenReportApp.controller('JGivenNavigationCtrl', function ($scope, $document, 
     $document.on("mouseup", finishResizeNav);
   };
 
-  function finishResizeNav() {
+  function finishResizeNav () {
     $document.unbind('mousemove', resizeNav);
     $document.unbind('mouseup', finishResizeNav);
   };
