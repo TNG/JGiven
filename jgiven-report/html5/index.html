@@ -1,9 +1,9 @@
 <!doctype html>
-<html class="no-js" lang="en" ng-app="jgivenReportApp" xmlns="http://www.w3.org/1999/html">
+<html class="no-js" lang="en" ng-app="jgivenReportApp" xmlns="http://www.w3.org/1999/html" ng-controller="JGivenReportCtrl as appCtrl">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>JGiven Report</title>
+  <title ng-bind="metaData.title">Loading...</title>
   <link rel="stylesheet" href="css/normalize.css"/>
   <link rel="stylesheet" href="css/foundation.css"/>
   <link rel="stylesheet" href="css/font-awesome.min.css"/>
@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="css/custom.css"/>
   <script src="js/modernizr.js"></script>
 </head>
-<body ng-controller="JGivenReportCtrl as appCtrl">
+<body>
 
 
 <!-- General Tree Template -->
@@ -71,7 +71,7 @@
       <nav class="top-bar" data-topbar role="navigation" data-options="">
         <ul class="title-area">
           <li class="name">
-            <h1><a href="#/">JGiven Report</a></h1>
+            <h1 id="title"><a href="#/" ng-bind="::metaData.title">Loading...</a></h1>
           </li>
         </ul>
 
@@ -141,6 +141,10 @@
         </a></li>
         <li class="has-submenu" ng-repeat="node in rootPackage.childNodes() | orderBy : orderNodes"
             ng-include="'tree_mobile_template.html'"></li>
+
+        <li ng-repeat="link in ::customNavigationLinks"><label>
+          <a href="{{::link.href}}" target="{{::link.target}}">{{::link.text}}</a></label>
+        </li>
       </ul>
     </aside>
 
@@ -172,12 +176,12 @@
                   <a ng-click="summaryExpanded = !summaryExpanded">Summary</a>
                   <ul ng-if="summaryExpanded">
                     <li><a href="#all">All Scenarios<span
-                        class="label secondary round nav-count">{{getTotalStatistics().count}}</span></a></li>
+                        class="label secondary round nav-count">{{::getTotalStatistics().count}}</span></a></li>
                     <li><a href="#failed">Failed Scenarios<span
-                        class="label secondary round nav-count {{getTotalStatistics().failed > 0 ? 'failed' : ''}}">{{getTotalStatistics().failed}}</span></a>
+                        class="label secondary round nav-count {{::getTotalStatistics().failed > 0 ? 'failed' : ''}}">{{::getTotalStatistics().failed}}</span></a>
                     </li>
                     <li><a href="#pending">Pending Scenarios<span
-                        class="label secondary round nav-count ">{{getTotalStatistics().pending}}</span></a>
+                        class="label secondary round nav-count {{::getTotalStatistics().pending > 0 ? 'pending' : ''}}">{{::getTotalStatistics().pending}}</span></a>
                     </li>
                   </ul>
                 </li>
@@ -196,8 +200,8 @@
                 <!-- CLASSES -->
 
                 <li class="heading">
-                  <a class="toggle" ng-click="classNames.expanded = !classNames.expanded">Classes</a>
-                  <ul ng-if="classNames.expanded">
+                  <a class="toggle" ng-click="classesExpanded = !classesExpanded">Classes</a>
+                  <ul ng-if="classesExpanded">
                     <li ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
                       {{leaf.nodeName()}}
                     </a></li>
@@ -220,6 +224,11 @@
                          class="fa fa-times remove-bookmark-icon toggle"></i>
                     </a></li>
                   </ul>
+                </li>
+
+                <!-- CUSTOM LINKS -->
+                <li ng-repeat="link in ::customNavigationLinks" class="heading">
+                  <a href="{{::link.href}}" target="{{::link.target}}">{{::link.text}}</a>
                 </li>
 
               </ul>
@@ -250,7 +259,7 @@
           <div class="small-12 large-4 column statistics-chart-column clearfix show-for-large-up"
                ng-if="!currentPage.embed">
             <div class="statistics-chart right" ng-controller="ChartCtrl">
-              <canvas class="chart chart-doughnut" data="currentPage.statistics.chartData" labels="labels"
+              <canvas class="chart chart-doughnut toggle" data="currentPage.statistics.chartData" labels="labels" click="click"
                       colours="colours" options="options"></canvas>
             </div>
           </div>
@@ -276,13 +285,13 @@
           <!-- STATISTICS -->
 
           <div id="statistics" class="small-12 large-6 columns no-pad-left" ng-if="currentPage.statistics">
-                <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}}">
+                <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}} toggle" ng-click="showSuccessful()">
                   <i class="fa fa-check-square {{currentPage.statistics.failed + currentPage.statistics.pending === 0 && currentPage.statistics.success > 0 ? 'check' : 'gray'}}"></i> {{currentPage.statistics.success}} Successful</span>,
-                        <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}}"><i
-                            class="fa fa-exclamation-circle"></i> {{currentPage.statistics.failed}} Failed</span>,
-            <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}}"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
+                        <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}} toggle" ng-click="showFailed()"><i
+                            class=" fa fa-exclamation-circle"></i> {{currentPage.statistics.failed}} Failed</span>,
+            <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}} toggle" ng-click="showPending()"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
             <span class="{{currentPage.statistics.count === 0 ? 'gray' : ''}}">{{currentPage.statistics.count}} Total ({{nanosToReadableUnit(currentPage.statistics.totalNanos)}})</span>
-            <span ng-if="currentPage.filtered > 0">({{ currentPage.filtered }} Filtered)</span>
+            <span ng-if="currentPage.filtered > 0" class="bold toggle" ng-click="clearFilter()">({{ currentPage.filtered }} Filtered)</span>
           </div>
 
           <!-- DROP DOWNS -->
@@ -353,14 +362,20 @@
 
         <div ng-if="currentPage.groupedScenarios.length > 0">
 
-          <div ng-repeat="scenarioGroup in currentPage.groupedScenarios">
+          <div class="scenario-group-row" ng-repeat="scenarioGroup in currentPage.groupedScenarios">
 
             <div class="row" ng-if="scenarioGroup.name !== 'all' ">
               <div class="small-12 column no-pad-left">
                 <h3 class="scenario-group-header toggle"
                     ng-click="scenarioGroup.expanded= !scenarioGroup.expanded">
-                  {{scenarioGroup.name}}
-                  <span class="secondary radius label group-count">{{scenarioGroup.values.length}}</span>
+                  <span class="scenario-group-header-name {{::scenarioGroup.counts.failed > 0 ? 'failed' : ''}}">{{::scenarioGroup.name}}
+                  <span class="secondary radius label group-count total">{{::scenarioGroup.values.length}}</span>
+                  <span class="radius label group-count alert failed" ng-if="scenarioGroup.counts.failed > 0"><i
+                      class="fa fa-exclamation-circle"></i> {{::scenarioGroup.counts.failed}} FAILED</span>
+                  <span class="secondary radius label group-count pending" ng-if="scenarioGroup.counts.pending > 0">
+                    <i class="fa fa-ban"></i> {{::scenarioGroup.counts.pending}} PENDING</span>
+                    <span class="duration"> ({{ ::nanosToReadableUnit(scenarioGroup.counts.durationInNanos) }})</span>
+                    </span>
                 </h3>
               </div>
             </div>
@@ -375,14 +390,21 @@
               <div class="row">
                 <div class="small-12 large-8 xlarge-6 column scenario-column">
 
-                  <!-- Scenario Title -->
 
+                  <!-- Scenario Title -->
                   <h4 class="toggle scenario-title {{getScenarioTitleStatusClass(scenario)}}"
                       ng-click="toggleScenario(scenario)">
                     <i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i>
+                    <span class="scenario-group-name"
+                          ng-if="::scenario.classTitle && scenarioGroup.name !== scenario.classTitle && scenario.classTitle !== currentPage.title">{{::scenario.classTitle}}</span>
                     {{::scenario.description.capitalize()}}
                     <span ng-if="scenario.scenarioCases.length > 1"
                           class="secondary radius label case-count">{{::scenario.scenarioCases.length}}</span>
+
+                    <i class="scenario-extended-description-icon fa fa-question-circle"
+                       title="Extended description available"
+                       ng-if="scenario.extendedDescription"></i>
+
                     <i ng-if="scenario.executionStatus === 'SUCCESS'"
                        class="check fa fa-check-square"></i>
                     <span ng-if="scenario.executionStatus === 'FAILED'"
@@ -399,6 +421,12 @@
 
                   <div ng-if="scenario.expanded || currentPage.print || currentPage.embed"
                        id="scenario-{{$index}}" class="scenario-content">
+
+                    <div class="scenario-extended-description"
+                         ng-if="scenario.extendedDescription && !scenario.extendedDescriptionExpanded"
+                         ng-bind-html="::scenario.extendedDescription">
+                    </div>
+
                     <div
                         ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
                       <h5 class="toggle" ng-click="case.expanded = !case.expanded"
@@ -479,7 +507,13 @@
                         </table>
                         <div ng-if="!scenario.casesAsTable">
                           <div ng-if="!scenario.scenarioCases[0].success" data-alert
-                               class="alert-box alert">FAILED: {{::case.errorMessage}}
+                               class="alert-box alert">
+                            <span class="toggle" ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
+                            <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
+                              FAILED: {{::case.errorMessage}}</span>
+
+                            <pre ng-if="case.stackTrace.expanded">{{ ::case.stackTrace.join('\n') }}</pre>
+
                           </div>
                         </div>
 
@@ -511,7 +545,11 @@
                                 </td>
                                 <td ng-if="!case.success">
                                   <div data-alert class="alert-box alert">
-                                    {{::case.errorMessage}}
+                                    <span class="toggle"
+                                          ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
+                                      <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
+                                    FAILED: {{::case.errorMessage}}</span>
+                                    <pre ng-if="case.stackTrace.expanded">{{ ::case.stackTrace.join('\n') }}</pre>
                                   </div>
                               <span ng-if="case.durationInNanos > 10000000"
                                     class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
@@ -562,7 +600,7 @@
 
         <div class="footer-bottom" ng-if="!currentPage.embed">
           <div class="small-12 columns">
-            Generated by <a href="http://jgiven.org">JGiven</a> 0.8.3 on
+            Generated by <a href="http://jgiven.org">JGiven</a> 0.9.1-SNAPSHOT on
             {{metaData.created}}
           </div>
         </div>
@@ -595,6 +633,8 @@
 <script src="lib/chartCtrl.js"></script>
 <script src="lib/reportCtrl.js"></script>
 <script src="lib/navigationCtrl.js"></script>
+<script src="lib/api.js"></script>
+<script src="js/custom.js"></script>
 <script src="data/metaData.js"></script>
 <script src="data/tags.js"></script>
 </body>

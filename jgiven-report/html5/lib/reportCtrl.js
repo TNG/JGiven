@@ -25,7 +25,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
 
   $scope.metaData = dataService.getMetaData();
 
-
   // Pager
 
   $scope.totalItems = 0;
@@ -34,6 +33,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
 
   $scope.showOptions = true;
 
+  $scope.customNavigationLinks = dataService.getCustomNavigationLinks();
 
   $scope.init = function () {
 
@@ -194,9 +194,11 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   $scope.updateCurrentPageToTestCase = function (testCase, options) {
     var className = splitClassName(testCase.className);
     scenarios = sortByDescription(testCase.scenarios);
+
     $scope.currentPage = {
-      subtitle: className.packageName,
-      title: className.className,
+      subtitle: className.packageName + (testCase.name ? '.' + className.className : ''),
+      title: testCase.name ? testCase.name : className.className,
+      description: testCase.description,
       breadcrumbs: className.packageName.split("."),
       options: optionService.getOptions(scenarios, options)
     };
@@ -236,6 +238,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     $scope.currentPage = {
       title: scenarios[0].description.capitalize(),
       subtitle: className,
+      description: scenarios[0].extendedDescription,
       breadcrumbs: ['SCENARIO'].concat(className.split('.')).concat([methodName]),
       options: optionService.getOptions(scenarios, options)
     };
@@ -597,7 +600,41 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     return words;
   };
 
+  $scope.showFailed = function () {
+    if ($location.path() === '/') {
+      $location.path('/failed');
+    } else {
+      $location.search('status', 'fail');
+    }
+  };
+
+  $scope.showPending = function () {
+    if ($location.path() === '/') {
+      $location.path('/pending');
+    } else {
+      $location.search('status', 'pending');
+    }
+  };
+
+  $scope.showSuccessful = function () {
+    if ($location.path() === '/') {
+      $location.path('/all');
+    }
+    $location.search('status', 'success');
+
+  };
+
+  $scope.clearFilter = function () {
+    if ($location.path() === '/') {
+      $location.path('/all');
+    } else {
+      $location.search('status', null);
+      $location.search('tags', null);
+      $location.search('classes', null);
+    }
+
+  };
+
   $scope.init();
 
-})
-;
+});
