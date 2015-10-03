@@ -28,6 +28,7 @@ given().a_step_with_a_$placeholderVariable_with_spaces( "foobar" );
 
 ## New Features
 
+* The name of the test class is now used by JGiven to group scenarios. The `@As` annotation can be used to define a different name. [#133](https://github.com/TNG/JGiven/issues/133)
 * Scenarios can now have an extended description by annotated the test method with `@ExtendedDescription`. [#35](https://github.com/TNG/JGiven/issues/35)
 * The stack trace of a failing scenario is now stored and shown in the HTML report [#95](https://github.com/TNG/JGiven/issues/95)
 * Formatter for step parameters can now be defined by using the `@JGivenConfiguration` annotation on a test class.
