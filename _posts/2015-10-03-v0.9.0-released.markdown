@@ -1,0 +1,10 @@
+---
+layout: post
+title:  "Version 0.9.0 Released"
+date:   2015-10-03 12:00:00
+categories: news
+---
+Version 0.9.0 of JGiven has been released. For details see the [release notes](https://github.com/TNG/JGiven/releases/tag/v0.9.0).
+
+[jgiven-gh]: https://github.com/TNG/JGiven
+[jgiven]:    http://jgiven.org
