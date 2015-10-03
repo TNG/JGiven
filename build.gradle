@@ -136,6 +136,7 @@ subprojects {
 
     test {
         systemProperty 'jgiven.report.dir', 'build/reports/jgiven/json'
+        systemProperty 'jgiven.report.text', 'false'
         systemProperty 'org.slf4j.simpleLogger.defaultLogLevel', 'warn'
         jacoco {
             destinationFile = file("${rootProject.projectDir}/build/jacoco/jacocoTest.exec")

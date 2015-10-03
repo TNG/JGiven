@@ -176,12 +176,12 @@
                   <a ng-click="summaryExpanded = !summaryExpanded">Summary</a>
                   <ul ng-if="summaryExpanded">
                     <li><a href="#all">All Scenarios<span
-                        class="label secondary round nav-count">{{getTotalStatistics().count}}</span></a></li>
+                        class="label secondary round nav-count">{{::getTotalStatistics().count}}</span></a></li>
                     <li><a href="#failed">Failed Scenarios<span
-                        class="label secondary round nav-count {{getTotalStatistics().failed > 0 ? 'failed' : ''}}">{{getTotalStatistics().failed}}</span></a>
+                        class="label secondary round nav-count {{::getTotalStatistics().failed > 0 ? 'failed' : ''}}">{{::getTotalStatistics().failed}}</span></a>
                     </li>
                     <li><a href="#pending">Pending Scenarios<span
-                        class="label secondary round nav-count ">{{getTotalStatistics().pending}}</span></a>
+                        class="label secondary round nav-count {{::getTotalStatistics().pending > 0 ? 'pending' : ''}}">{{::getTotalStatistics().pending}}</span></a>
                     </li>
                   </ul>
                 </li>
@@ -200,8 +200,8 @@
                 <!-- CLASSES -->
 
                 <li class="heading">
-                  <a class="toggle" ng-click="classNames.expanded = !classNames.expanded">Classes</a>
-                  <ul ng-if="classNames.expanded">
+                  <a class="toggle" ng-click="classesExpanded = !classesExpanded">Classes</a>
+                  <ul ng-if="classesExpanded">
                     <li ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
                       {{leaf.nodeName()}}
                     </a></li>
@@ -368,8 +368,13 @@
               <div class="small-12 column no-pad-left">
                 <h3 class="scenario-group-header toggle"
                     ng-click="scenarioGroup.expanded= !scenarioGroup.expanded">
-                  <span class="scenario-group-header-name">{{scenarioGroup.name}}
-                  <span class="secondary radius label group-count">{{scenarioGroup.values.length}}</span>
+                  <span class="scenario-group-header-name {{::scenarioGroup.counts.failed > 0 ? 'failed' : ''}}">{{::scenarioGroup.name}}
+                  <span class="secondary radius label group-count total">{{::scenarioGroup.values.length}}</span>
+                  <span class="radius label group-count alert failed" ng-if="scenarioGroup.counts.failed > 0"><i
+                      class="fa fa-exclamation-circle"></i> {{::scenarioGroup.counts.failed}} FAILED</span>
+                  <span class="secondary radius label group-count pending" ng-if="scenarioGroup.counts.pending > 0">
+                    <i class="fa fa-ban"></i> {{::scenarioGroup.counts.pending}} PENDING</span>
+                    <span class="duration"> ({{ ::nanosToReadableUnit(scenarioGroup.counts.durationInNanos) }})</span>
                     </span>
                 </h3>
               </div>
