@@ -343,10 +343,28 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     _.forEach(ownProperties(obj), function (p) {
       result.push({
         name: p,
-        values: obj[p]
+        values: obj[p],
+        counts: countFailedAndPending(obj[p])
       });
     });
     return _.sortBy(result, 'name');
+  }
+
+  function countFailedAndPending (scenarios) {
+    var counts = {
+      failed: 0,
+      pending: 0,
+      durationInNanos: 0
+    };
+    _.forEach(scenarios, function (scenario) {
+      if (scenario.executionStatus === 'FAILED') {
+        counts.failed++;
+      } else if (scenario.executionStatus !== 'SUCCESS') {
+        counts.pending++;
+      }
+      counts.durationInNanos += scenario.durationInNanos;
+    });
+    return counts;
   }
 
   function getOptionsFromSearch (search) {
