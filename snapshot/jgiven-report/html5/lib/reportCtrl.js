@@ -624,6 +624,17 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
 
   };
 
+  $scope.clearFilter = function () {
+    if ($location.path() === '/') {
+      $location.path('/all');
+    } else {
+      $location.search('status', null);
+      $location.search('tags', null);
+      $location.search('classes', null);
+    }
+
+  };
+
   $scope.init();
 
 });
