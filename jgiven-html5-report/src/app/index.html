@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{{ ::metaData.title }}</title>
+  <title ng-bind="metaData.title">Loading...</title>
   <link rel="stylesheet" href="css/normalize.css"/>
   <link rel="stylesheet" href="css/foundation.css"/>
   <link rel="stylesheet" href="css/font-awesome.min.css"/>
@@ -72,7 +72,7 @@
       <nav class="top-bar" data-topbar role="navigation" data-options="">
         <ul class="title-area">
           <li class="name">
-            <h1 id="title"><a href="#/">{{ ::metaData.title }}</a></h1>
+            <h1 id="title"><a href="#/" ng-bind="::metaData.title">Loading...</a></h1>
           </li>
         </ul>
 
@@ -177,12 +177,12 @@
                   <a ng-click="summaryExpanded = !summaryExpanded">Summary</a>
                   <ul ng-if="summaryExpanded">
                     <li><a href="#all">All Scenarios<span
-                        class="label secondary round nav-count">{{getTotalStatistics().count}}</span></a></li>
+                        class="label secondary round nav-count">{{::getTotalStatistics().count}}</span></a></li>
                     <li><a href="#failed">Failed Scenarios<span
-                        class="label secondary round nav-count {{getTotalStatistics().failed > 0 ? 'failed' : ''}}">{{getTotalStatistics().failed}}</span></a>
+                        class="label secondary round nav-count {{::getTotalStatistics().failed > 0 ? 'failed' : ''}}">{{::getTotalStatistics().failed}}</span></a>
                     </li>
                     <li><a href="#pending">Pending Scenarios<span
-                        class="label secondary round nav-count ">{{getTotalStatistics().pending}}</span></a>
+                        class="label secondary round nav-count {{::getTotalStatistics().pending > 0 ? 'pending' : ''}}">{{::getTotalStatistics().pending}}</span></a>
                     </li>
                   </ul>
                 </li>
@@ -201,8 +201,8 @@
                 <!-- CLASSES -->
 
                 <li class="heading">
-                  <a class="toggle" ng-click="classNames.expanded = !classNames.expanded">Classes</a>
-                  <ul ng-if="classNames.expanded">
+                  <a class="toggle" ng-click="classesExpanded = !classesExpanded">Classes</a>
+                  <ul ng-if="classesExpanded">
                     <li ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
                       {{leaf.nodeName()}}
                     </a></li>
@@ -292,7 +292,7 @@
                             class=" fa fa-exclamation-circle"></i> {{currentPage.statistics.failed}} Failed</span>,
             <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}} toggle" ng-click="showPending()"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
             <span class="{{currentPage.statistics.count === 0 ? 'gray' : ''}}">{{currentPage.statistics.count}} Total ({{nanosToReadableUnit(currentPage.statistics.totalNanos)}})</span>
-            <span ng-if="currentPage.filtered > 0" class="bold">({{ currentPage.filtered }} Filtered)</span>
+            <span ng-if="currentPage.filtered > 0" class="bold toggle" ng-click="clearFilter()">({{ currentPage.filtered }} Filtered)</span>
           </div>
 
           <!-- DROP DOWNS -->
@@ -363,14 +363,19 @@
 
         <div ng-if="currentPage.groupedScenarios.length > 0">
 
-          <div ng-repeat="scenarioGroup in currentPage.groupedScenarios">
+          <div class="scenario-group-row" ng-repeat="scenarioGroup in currentPage.groupedScenarios">
 
             <div class="row" ng-if="scenarioGroup.name !== 'all' ">
               <div class="small-12 column no-pad-left">
                 <h3 class="scenario-group-header toggle"
                     ng-click="scenarioGroup.expanded= !scenarioGroup.expanded">
-                  <span class="scenario-group-header-name">{{scenarioGroup.name}}
-                  <span class="secondary radius label group-count">{{scenarioGroup.values.length}}</span>
+                  <span class="scenario-group-header-name {{::scenarioGroup.counts.failed > 0 ? 'failed' : ''}}">{{::scenarioGroup.name}}
+                  <span class="secondary radius label group-count total">{{::scenarioGroup.values.length}}</span>
+                  <span class="radius label group-count alert failed" ng-if="scenarioGroup.counts.failed > 0"><i
+                      class="fa fa-exclamation-circle"></i> {{::scenarioGroup.counts.failed}} FAILED</span>
+                  <span class="secondary radius label group-count pending" ng-if="scenarioGroup.counts.pending > 0">
+                    <i class="fa fa-ban"></i> {{::scenarioGroup.counts.pending}} PENDING</span>
+                    <span class="duration"> ({{ ::nanosToReadableUnit(scenarioGroup.counts.durationInNanos) }})</span>
                     </span>
                 </h3>
               </div>
@@ -391,7 +396,8 @@
                   <h4 class="toggle scenario-title {{getScenarioTitleStatusClass(scenario)}}"
                       ng-click="toggleScenario(scenario)">
                     <i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i>
-                    <span class="scenario-group-name" ng-if="::scenario.groupName">{{::scenario.groupName}}</span>
+                    <span class="scenario-group-name"
+                          ng-if="::scenario.classTitle && scenarioGroup.name !== scenario.classTitle && scenario.classTitle !== currentPage.title">{{::scenario.classTitle}}</span>
                     {{::scenario.description.capitalize()}}
                     <span ng-if="scenario.scenarioCases.length > 1"
                           class="secondary radius label case-count">{{::scenario.scenarioCases.length}}</span>

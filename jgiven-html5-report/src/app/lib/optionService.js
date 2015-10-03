@@ -194,10 +194,10 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
         name: 'Class Title',
         apply: function (scenarios) {
           return toArrayOfGroups(_.groupBy(scenarios, function (scenario) {
-            if (scenario.groupName) {
-              return scenario.groupName;
+            if (scenario.classTitle) {
+              return scenario.classTitle;
             }
-            return ' <No Title>';
+            return '<No Title>';
           }));
         }
       },
@@ -254,7 +254,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
         name: 'A-Z',
         apply: function (scenarios) {
           return _.sortBy(scenarios, function (x) {
-            return x.groupName + ' ' + x.description.toLowerCase();
+            return (x.classTitle ? x.classTitle + ' ' : 'Z') + x.description.toLowerCase();
           });
         }
       },
@@ -264,7 +264,7 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
         name: 'Z-A',
         apply: function (scenarios) {
           return _.chain(scenarios).sortBy(function (x) {
-            return x.groupName + ' ' + x.description.toLowerCase();
+            return (x.classTitle ? x.classTitle + ' ' : 'Z') + x.description.toLowerCase();
           }).reverse().value();
         }
       },
@@ -343,10 +343,28 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
     _.forEach(ownProperties(obj), function (p) {
       result.push({
         name: p,
-        values: obj[p]
+        values: obj[p],
+        counts: countFailedAndPending(obj[p])
       });
     });
     return _.sortBy(result, 'name');
+  }
+
+  function countFailedAndPending (scenarios) {
+    var counts = {
+      failed: 0,
+      pending: 0,
+      durationInNanos: 0
+    };
+    _.forEach(scenarios, function (scenario) {
+      if (scenario.executionStatus === 'FAILED') {
+        counts.failed++;
+      } else if (scenario.executionStatus !== 'SUCCESS') {
+        counts.pending++;
+      }
+      counts.durationInNanos += scenario.durationInNanos;
+    });
+    return counts;
   }
 
   function getOptionsFromSearch (search) {
