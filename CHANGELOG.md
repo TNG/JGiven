@@ -33,6 +33,7 @@ given().a_step_with_a_$placeholderVariable_with_spaces( "foobar" );
 * The stack trace of a failing scenario is now stored and shown in the HTML report [#95](https://github.com/TNG/JGiven/issues/95)
 * Formatter for step parameters can now be defined by using the `@JGivenConfiguration` annotation on a test class.
 * HTML Report: made title of the HTML report configurable using the new `--title` parameter of the report generator [#131](https://github.com/TNG/JGiven/issues/131)
+* HTML Report: added possibility to provide a `custom.js` file that is included in the generated report. This allows you to further customize the report. [#129](https://github.com/TNG/JGiven/issues/129)
 * HTML Report: made status circle clickable to show failed, pending, or successful scenarios [#130](https://github.com/TNG/JGiven/issues/130)
 
 ## Fixed Issues
