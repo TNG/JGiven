@@ -7,24 +7,27 @@ jgivenReportApp.factory('dataService', [function () {
 
   var tagFile = jgivenReport.tagFile;
   var testCases = jgivenReport.scenarios;
-    
-  function getAllScenarios() {
-    return _.flatten(_.map(testCases, function (x) {
-      return x.scenarios;
+
+  function getAllScenarios () {
+    return _.flatten(_.map(testCases, function (testClass) {
+      return _.map(testClass.scenarios, function (scenario) {
+        scenario.classTitle = testClass.name;
+        return scenario;
+      });
     }), true);
   }
 
-  function getScenariosWhere(filter) {
+  function getScenariosWhere (filter) {
     return sortByDescription(_.filter(getAllScenarios(), filter));
   }
 
-  function getPendingScenarios() {
+  function getPendingScenarios () {
     return getScenariosWhere(function (x) {
       return x.executionStatus !== "FAILED" && x.executionStatus !== "SUCCESS";
     });
   }
 
-  function getFailedScenarios() {
+  function getFailedScenarios () {
     return getScenariosWhere(function (x) {
       return x.executionStatus === "FAILED";
     });
@@ -40,8 +43,12 @@ jgivenReportApp.factory('dataService', [function () {
       return testCases;
     },
 
-    getMetaData: function() {
+    getMetaData: function () {
       return jgivenReport.metaData;
+    },
+
+    getCustomNavigationLinks: function () {
+      return jgivenReport.customNavigationLinks;
     },
 
     getAllScenarios: getAllScenarios,
@@ -51,28 +58,3 @@ jgivenReportApp.factory('dataService', [function () {
   };
 }]);
 
-/**
- * Global variable that is used by the generated JSONP files
- */
-var jgivenReport = {
-  scenarios: [],
-
-  setTags: function setTags(tagFile) {
-    this.tagFile = tagFile;
-  },
-
-  setMetaData: function setMetaData(metaData) {
-    this.metaData = metaData;
-    _.forEach(metaData.data, function (x) {
-      document.writeln("<script src='data/" + x + "'></script>");
-    });
-  },
-
-  addScenarios: function addScenarios(scenarios) {
-    this.scenarios = this.scenarios.concat(scenarios);
-  },
-
-  setAllScenarios: function setAllScenarios(allScenarios) {
-    this.scenarios = allScenarios;
-  }
-};
