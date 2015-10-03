@@ -291,7 +291,7 @@
                             class=" fa fa-exclamation-circle"></i> {{currentPage.statistics.failed}} Failed</span>,
             <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}} toggle" ng-click="showPending()"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
             <span class="{{currentPage.statistics.count === 0 ? 'gray' : ''}}">{{currentPage.statistics.count}} Total ({{nanosToReadableUnit(currentPage.statistics.totalNanos)}})</span>
-            <span ng-if="currentPage.filtered > 0" class="bold">({{ currentPage.filtered }} Filtered)</span>
+            <span ng-if="currentPage.filtered > 0" class="bold toggle" ng-click="clearFilter()">({{ currentPage.filtered }} Filtered)</span>
           </div>
 
           <!-- DROP DOWNS -->
