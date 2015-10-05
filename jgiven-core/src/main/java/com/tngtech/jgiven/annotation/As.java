@@ -4,7 +4,7 @@ import java.lang.annotation.*;
 
 /**
  * This annotation can be used to override the default
- * representation for a step method or test method in the report.
+ * representation for a step method, test method or class name in the report.
  * 
  * <p>
  * Note that the '$' character keeps its special meaning and will be
