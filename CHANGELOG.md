@@ -46,6 +46,12 @@ given().a_step_with_a_$placeholderVariable_with_spaces( "foobar" );
 
 * Special characters like parentheses are not treated as part of a placeholder name anymore [#118](https://github.com/TNG/JGiven/issues/118)
 
+# v0.8.4
+
+## Fixed Issues
+
+* Fixed in issue with TestNG introduced with v0.8.3 that a failing case does not lead to failed TestNG status [#138](https://github.com/TNG/JGiven/issues/138)
+
 # v0.8.3
 
 ## Fixed Issues
