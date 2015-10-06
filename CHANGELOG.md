@@ -1,5 +1,9 @@
 # v0.9.1
 
+## New features
+
+* Global formatters now apply also to subtypes of the types they are configured for [#137](https://github.com/TNG/JGiven/issues/137)
+
 ## Fixed Issues
 
 * Fixed an issue with TestNG that when using a data provider and one case fails the TestNG status was still reported as success. [#138](https://github.com/TNG/JGiven/issues/138)
