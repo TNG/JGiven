@@ -7,6 +7,13 @@ import java.lang.annotation.RetentionPolicy;
 
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 
+/**
+ * This annotation can be applied to a test class to configure:
+ * <ul>
+ *     <li>Tags</li>
+ *     <li>Global formatter</li>
+ * </ul>
+ */
 @Retention( RetentionPolicy.RUNTIME )
 @Inherited
 @Documented

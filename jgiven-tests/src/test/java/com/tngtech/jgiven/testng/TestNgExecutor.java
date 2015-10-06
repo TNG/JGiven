@@ -1,15 +1,18 @@
 package com.tngtech.jgiven.testng;
 
-import com.tngtech.jgiven.testframework.TestExecutionResult;
-import com.tngtech.jgiven.testframework.TestExecutor;
+import java.util.List;
+
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 import org.testng.TestNG;
 
+import com.beust.jcommander.internal.Lists;
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.testframework.TestExecutionResult;
+import com.tngtech.jgiven.testframework.TestExecutor;
 
 public class TestNgExecutor extends TestExecutor {
 
@@ -30,7 +33,7 @@ public class TestNgExecutor extends TestExecutor {
         testng.run();
         Config.config().setReportEnabled( true );
         result.reportModel = testListenerAdapter.reportModel;
-        result.testResult = testListenerAdapter.testResult;
+        result.testResults = testListenerAdapter.testResults;
         return result;
     }
 
@@ -41,7 +44,7 @@ public class TestNgExecutor extends TestExecutor {
 
     static class ScenarioTestListenerAdapter extends TestListenerAdapter {
         ReportModel reportModel;
-        ITestResult testResult;
+        List<ITestResult> testResults = Lists.newArrayList();
 
         @Override
         public void onTestSuccess( ITestResult tr ) {
@@ -65,7 +68,7 @@ public class TestNgExecutor extends TestExecutor {
         }
 
         private void setTestResult( ITestResult tr ) {
-            testResult = tr;
+            testResults.add( tr );
             reportModel = ( (ScenarioTestBase<?, ?, ?>) tr.getInstance() ).getScenario().getModel();
         }
     }

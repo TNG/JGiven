@@ -1,3 +1,9 @@
+# v0.9.1
+
+## Fixed Issues
+
+* Fixed an issue with TestNG that when using a data provider and one case fails the TestNG status was still reported as success. [#138](https://github.com/TNG/JGiven/issues/138)
+
 # v0.9.0
 
 ## Backwards incompatible changes regarding placeholder variables

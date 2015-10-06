@@ -94,6 +94,7 @@ public class ScenarioTestListener implements ITestListener {
             scenario.finished();
         } catch( Throwable throwable ) {
             paramITestResult.setThrowable( throwable );
+            paramITestResult.setStatus( ITestResult.FAILURE );
         }
     }
 
