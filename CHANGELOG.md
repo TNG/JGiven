@@ -1,3 +1,9 @@
+# v0.8.4
+
+## Fixed Issues
+
+* Fixed in issue with TestNG introduced with v0.8.3 that a failing case does not lead to failed TestNG status [#138](https://github.com/TNG/JGiven/issues/138)
+
 # v0.8.3
 
 ## Fixed Issues
