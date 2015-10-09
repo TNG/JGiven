@@ -9,6 +9,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.Description;
+import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
+import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
 
@@ -183,8 +185,10 @@ public class ReportModel {
     }
 
     private String getTestNameToReadableString( Class<?> testClass ) {
-        String wordWithSpaces = WordUtil.splitCamelCaseToReadableText( testClass.getSimpleName() );
-        return wordWithSpaces.replaceAll( " Tests?$", "" );
+        AbstractJGivenConfiguration configuration = ConfigurationUtil.getConfiguration( testClass );
+        String regEx = configuration.getTestClassSuffixRegEx();
+        String classNameWithoutSuffix = testClass.getSimpleName().replaceAll( regEx + "$", "" );
+        return WordUtil.splitCamelCaseToReadableText( classNameWithoutSuffix );
     }
 
 }

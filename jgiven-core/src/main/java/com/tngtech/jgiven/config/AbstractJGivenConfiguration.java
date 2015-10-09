@@ -10,6 +10,7 @@ import com.tngtech.jgiven.impl.format.FormatterCache;
 public abstract class AbstractJGivenConfiguration {
     private final Map<Class<? extends Annotation>, TagConfiguration> tagConfigurations = Maps.newHashMap();
     private final FormatterCache formatterCache = new FormatterCache();
+    private String testClassSuffixRegEx = "Tests?";
 
     /**
      * Configures the given annotation as a tag.
@@ -42,12 +43,12 @@ public abstract class AbstractJGivenConfiguration {
      * <p>
      * For example,
      * given the following formatter are defined:
-     * 
+     *
      * <pre>
      * setFormatter( Object.class, formatterA );
      * setFormatter( String.class, formatterB );
      * </pre>
-     * 
+     *
      * When formatting a String,<br>
      * Then {@code formatterB} will be taken.
      * <p>
@@ -76,7 +77,22 @@ public abstract class AbstractJGivenConfiguration {
         formatterCache.setFormatter( typeToBeFormatted, formatter );
     }
 
+    /**
+     * Set a regular expression for a test class suffix that should be removed by JGiven in the report.
+     * <p>
+     * By default the regular expression is {@code Tests?}
+     *
+     * @param suffixRegEx a regular expression that match the suffix
+     */
+    public void setTestClassSuffixRegEx( String suffixRegEx ) {
+        testClassSuffixRegEx = suffixRegEx;
+    }
+
     public Formatter<?> getFormatter( final Class<?> typeToBeFormatted ) {
         return formatterCache.getFormatter( typeToBeFormatted );
+    }
+
+    public String getTestClassSuffixRegEx() {
+        return testClassSuffixRegEx;
     }
 }
