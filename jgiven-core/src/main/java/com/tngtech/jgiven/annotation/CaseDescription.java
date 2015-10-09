@@ -10,6 +10,7 @@ import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
  * By default, multiple cases in a parametrized scenario are described 
  * by just listing the parameter names with their corresponding values.
  * Sometimes, however, it is useful to provide an explicit description the provides more semantic background for each case.
+ * This annotation can be used to define custom descriptions.
  * 
  */
 @Documented
@@ -22,12 +23,16 @@ public @interface CaseDescription {
     public static final String NO_VALUE = " - no value - ";
 
     /**
-     * A pattern to define the case description
+     * The description of the test case. 
+     * <p>
+     * Placeholders of the form {@code $i} can be used that will be filled with the values of the ith parameter, starting from 0.
+     * <p>
+     * For example, a value {@code "Hi $0"} will be translated to {@code "Hi JGiven"} if "JGiven" is the value of the first parameter of the test method.
      */
     String value() default NO_VALUE;
 
     /**
-     * An implementation of the {@link com.tngtech.jgiven.annotation.CaseDescriptionProvider} to provide a case description
+     * A custom implementation of the {@link com.tngtech.jgiven.annotation.CaseDescriptionProvider} to provide a case description.
      */
     Class<? extends CaseDescriptionProvider> provider() default DefaultCaseDescriptionProvider.class;
 
