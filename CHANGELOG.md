@@ -1,8 +1,14 @@
+# v0.9.2
+
+## New Features
+
+* Cases can now have custom descriptions by using the new annotation `@CaseDescription` [#139](https://github.com/TNG/JGiven/issues/139).
+
 # v0.9.1
 
-## New features
+## New Features
 
-* Global formatters now apply also to subtypes of the types they are configured for [#137](https://github.com/TNG/JGiven/issues/137)
+* Global formatter now apply also to subtypes of the types they are configured for [#137](https://github.com/TNG/JGiven/issues/137)
 
 ## Fixed Issues
 

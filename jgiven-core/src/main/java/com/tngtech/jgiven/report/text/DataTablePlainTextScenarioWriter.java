@@ -54,8 +54,14 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
     private DataTable getDataTableModel( ScenarioModel scenarioModel ) {
         List<List<String>> result = Lists.newArrayList();
 
+        boolean withDescription = scenarioModel.getCase( 0 ).hasDescription();
+
         List<String> headerRow = Lists.newArrayList();
         headerRow.add( "#" );
+        if( withDescription ) {
+            headerRow.add( "Description" );
+        }
+
         headerRow.addAll( scenarioModel.getDerivedParameters() );
         headerRow.add( "Status" );
         result.add( headerRow );
@@ -64,6 +70,9 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
         for( ScenarioCaseModel c : scenarioModel.getScenarioCases() ) {
             List<String> row = Lists.newArrayList();
             row.add( "" + ( i++ ) );
+            if( withDescription ) {
+                row.add( c.getDescription() );
+            }
             row.addAll( c.getDerivedArguments() );
             row.add( getStatusText( c ) );
             result.add( row );
@@ -72,7 +81,7 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
     }
 
     private String getStatusText( ScenarioCaseModel c ) {
-        if(c.isSuccess()) {
+        if( c.isSuccess() ) {
             return "Success";
         }
         return "Failed: " + c.getErrorMessage();

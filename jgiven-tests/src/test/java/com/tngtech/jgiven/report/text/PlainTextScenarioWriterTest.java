@@ -180,4 +180,21 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
                 "     |   1 | a   |\n" +
                 "     |   2 | b   |\n" );
     }
+
+    @Test
+    @FeatureDataTables
+    public void a_description_column_is_generated_if_cases_have_a_description() throws UnsupportedEncodingException {
+        given().a_report_model_with_one_scenario()
+            .and().the_scenario_has_$_default_cases( 2 )
+            .and().case_$_has_description( 1, "some test description" )
+            .and().case_$_has_description( 2, "another case" );
+
+        when().the_plain_text_report_is_generated();
+        then().the_report_contains_text( "\n" +
+                "    | # | Description           | Status  |\n" +
+                "    +---+-----------------------+---------+\n" +
+                "    | 1 | some test description | Success |\n" +
+                "    | 2 | another case          | Success |\n" );
+
+    }
 }

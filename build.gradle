@@ -55,9 +55,9 @@ subprojects {
 
     ext {
         junitDataproviderVersion = '1.9.3'
-        junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.12'
         // set default junit version if not set via command line
-        junitParamsVersion = '1.0.3'
+        junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.12'
+        junitParamsVersion = '1.0.4'
         testngVersion = '6.8.7'
         assertjVersion = '1.7.0'
         slf4jVersion = '1.7.7'
@@ -199,12 +199,12 @@ subprojects {
 
     ext {
         sonatypeUsername = (rootProject.hasProperty('sonatypeUsername')) ?
-            rootProject.sonatypeUsername :
-            "$System.env.SONATYPE_USERNAME"
+                rootProject.sonatypeUsername :
+                "$System.env.SONATYPE_USERNAME"
 
         sonatypePassword = (rootProject.hasProperty('sonatypePassword')) ?
-            rootProject.sonatypePassword :
-            "$System.env.SONATYPE_PASSWORD"
+                rootProject.sonatypePassword :
+                "$System.env.SONATYPE_PASSWORD"
     }
 
     uploadArchives {

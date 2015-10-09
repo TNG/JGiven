@@ -6,11 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.ExtendedDescription;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.Quoted;
-import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
@@ -126,18 +122,23 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF case_$_of_scenario_$_has_failed( int caseNr, int scenarioNr ) {
-        getCase(scenarioNr, caseNr).setSuccess(false);
+        getCase( scenarioNr, caseNr ).setSuccess( false );
         return self();
     }
 
     public SELF case_$_fails_with_error_message( int ncase, String errorMessage ) {
-        getCase( ncase ).setErrorMessage( errorMessage);
-        getCase(ncase).setSuccess(false);
+        getCase( ncase ).setErrorMessage( errorMessage );
+        getCase( ncase ).setSuccess( false );
         return self();
     }
 
     public SELF case_$_has_arguments( int ncase, String... args ) {
         getCase( ncase ).setExplicitArguments( Arrays.asList( args ) );
+        return self();
+    }
+
+    public SELF case_$_has_description( int ncase, String description ) {
+        getCase( ncase ).setDescription( description );
         return self();
     }
 
@@ -259,4 +260,5 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         latestWord = word;
         return self();
     }
+
 }

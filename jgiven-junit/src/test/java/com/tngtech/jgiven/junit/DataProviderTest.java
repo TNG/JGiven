@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.jgiven.annotation.CaseDescription;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.format.BooleanFormatter;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
@@ -36,7 +37,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
         given().some_integer_value( intArg )
             .and().some_boolean_value( booleanArg );
         when().multiply_with_two();
-        then().the_value_is_$not_greater_than_zero(booleanArg);
+        then().the_value_is_$not_greater_than_zero( booleanArg );
 
         ScenarioCaseModel scenarioModel = getScenario().getScenarioCaseModel();
         List<String> arguments = scenarioModel.getExplicitArguments();
@@ -109,6 +110,20 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
         List<ScenarioCaseModel> cases = getScenario().getModel().getLastScenarioModel().getScenarioCases();
         assertThat( cases.get( cases.size() - 1 ).getExplicitArguments() ).containsExactly( b ? "foo" : "bar" );
+    }
+
+    @Test
+    @DataProvider( { "the first case, true", "the second case, false" } )
+    @CaseDescription( "$0" )
+    public void parameters_can_be_treated_as_case_description( String description, boolean b ) throws Throwable {
+
+        given().something();
+
+        getScenario().finished();
+
+        List<ScenarioCaseModel> cases = getScenario().getModel().getLastScenarioModel().getScenarioCases();
+        assertThat( cases.get( cases.size() - 1 ).getDescription() ).isEqualTo( description );
+
     }
 
 }

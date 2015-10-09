@@ -15,40 +15,40 @@ public interface ScenarioExecutor {
         FINISHED
     }
 
-    <T> T addStage(Class<T> stepsClass);
+    <T> T addStage( Class<T> stepsClass );
 
-    <T> T createStageClass(Class<T> stepsClass);
+    <T> T createStageClass( Class<T> stepsClass );
 
-    void addIntroWord(String word);
+    void addIntroWord( String word );
 
-    void readScenarioState(Object object);
+    void readScenarioState( Object object );
 
     /**
      * Used for DI frameworks to inject values into stages.
      */
-    void wireSteps(CanWire canWire);
+    void wireSteps( CanWire canWire );
 
     /**
      * Has to be called when the scenario is finished in order to execute after methods.
      */
     void finished() throws Throwable;
 
-    void injectSteps(Object stage);
+    void injectSteps( Object stage );
 
     boolean hasFailed();
 
     Throwable getFailedException();
 
-    void setFailedException(Exception e);
+    void setFailedException( Exception e );
 
-    void failed(Throwable e);
+    void failed( Throwable e );
 
     /**
      * Starts a scenario with the given description.
      *
      * @param description the description of the scenario
      */
-    void startScenario(String description);
+    void startScenario( String description );
 
     /**
      * Starts the scenario with the given method and arguments.
@@ -56,9 +56,9 @@ public interface ScenarioExecutor {
      * @param method the method that started the scenario
      * @param arguments the test arguments with their parameter names
      */
-    void startScenario(Method method, List<NamedArgument> arguments);
+    void startScenario( Method method, List<NamedArgument> arguments );
 
-    void setListener(ScenarioListener listener);
+    void setListener( ScenarioListener listener );
 
     void failIfPass();
 

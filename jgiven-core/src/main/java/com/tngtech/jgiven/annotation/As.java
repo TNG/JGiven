@@ -25,7 +25,8 @@ import java.lang.annotation.*;
  * }
  * </pre>
  * 
- * @since 0.7.4
+ * 
+ * @since 0.7.4. Since 0.9.0 this annotation can be applied to test classes as well
  */
 @Retention( RetentionPolicy.RUNTIME )
 @Target( { ElementType.METHOD, ElementType.TYPE } )

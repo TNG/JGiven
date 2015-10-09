@@ -26,6 +26,7 @@ import com.tngtech.jgiven.format.Formatter;
 import com.tngtech.jgiven.format.TableFormatter;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
+import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.*;
 import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
@@ -37,7 +38,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     private static final Set<String> STACK_TRACE_FILTER = ImmutableSet
         .of( "sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept", "$$EnhancerByCGLIB$$",
-                "java.lang.reflect", "net.sf.cglib.proxy", "com.sun.proxy" );
+            "java.lang.reflect", "net.sf.cglib.proxy", "com.sun.proxy" );
     private static final boolean FILTER_STACK_TRACE = Config.config().filterStackTrace();
 
     private ScenarioModel scenarioModel;
@@ -306,6 +307,23 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
         List<Formatting<?, ?>> formatter = getFormatter( method.getParameterTypes(), method.getParameterAnnotations() );
         setArguments( toStringList( formatter, getValues( namedArguments ) ) );
+        setCaseDescription( method, namedArguments );
+    }
+
+    private void setCaseDescription( Method method, List<NamedArgument> namedArguments ) {
+        if( method.isAnnotationPresent( CaseDescription.class ) ) {
+            CaseDescription annotation = method.getAnnotation( CaseDescription.class );
+            CaseDescriptionProvider caseDescriptionProvider = ReflectionUtil.newInstance( annotation.provider() );
+            String value = annotation.value();
+            List<?> values;
+            if( annotation.formatValues() ) {
+                values = scenarioCaseModel.getExplicitArguments();
+            } else {
+                values = getValues( namedArguments );
+            }
+            String caseDescription = caseDescriptionProvider.description( value, scenarioModel.getExplicitParameters(), values );
+            scenarioCaseModel.setDescription( caseDescription );
+        }
     }
 
     private List<Object> getValues( List<NamedArgument> namedArguments ) {

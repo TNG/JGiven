@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.annotation.DefaultTagDescriptionGenerator;
+import com.tngtech.jgiven.impl.tag.DefaultTagDescriptionGenerator;
 import com.tngtech.jgiven.annotation.TagDescriptionGenerator;
 
 /**
