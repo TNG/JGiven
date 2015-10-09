@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.tngtech.jgiven.report.model.InvocationMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,12 +25,16 @@ import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.exception.FailIfPassedException;
 import com.tngtech.jgiven.exception.JGivenUserException;
 import com.tngtech.jgiven.impl.inject.ValueInjector;
-import com.tngtech.jgiven.impl.intercept.*;
+import com.tngtech.jgiven.impl.intercept.NoOpScenarioListener;
+import com.tngtech.jgiven.impl.intercept.ScenarioListener;
+import com.tngtech.jgiven.impl.intercept.StandaloneStepMethodInterceptor;
+import com.tngtech.jgiven.impl.intercept.StepMethodHandler;
 import com.tngtech.jgiven.impl.util.FieldCache;
 import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
 import com.tngtech.jgiven.integration.CanWire;
+import com.tngtech.jgiven.report.model.InvocationMode;
 import com.tngtech.jgiven.report.model.NamedArgument;
 
 import net.sf.cglib.proxy.Enhancer;
@@ -120,8 +123,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
                 return;
             }
 
-            List<NamedArgument> namedArguments = ParameterNameUtil.mapArgumentsWithParameterNames( paramMethod,
-                Arrays.asList( arguments ) );
+            List<NamedArgument> namedArguments = ParameterNameUtil.mapArgumentsWithParameterNames( paramMethod, Arrays.asList( arguments ) );
             listener.stepMethodInvoked( paramMethod, namedArguments, mode );
         }
 

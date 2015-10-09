@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 import com.tngtech.jgiven.format.AnnotationArgumentFormatter;
 
 /**
- * Allows arguments of step methods to be formatted with an AnnotationArgumentFormatter.
+ * Allows arguments of step methods to be formatted with an {@link AnnotationArgumentFormatter}.
  * This annotation can only appear on custom annotations. 
  * The custom annotation can then be applied to step arguments
  * <p>

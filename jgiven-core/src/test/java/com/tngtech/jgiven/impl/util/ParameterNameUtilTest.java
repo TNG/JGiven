@@ -37,7 +37,7 @@ public class ParameterNameUtilTest {
     public void testMapArgumentsWithParameterNamesOf( AccessibleObject contructorOrMethod, List<Object> arguments,
             List<NamedArgument> expected ) {
         // When:
-        List<NamedArgument> result = ParameterNameUtil.mapArgumentsWithParameterNames(contructorOrMethod, arguments);
+        List<NamedArgument> result = ParameterNameUtil.mapArgumentsWithParameterNames( contructorOrMethod, arguments );
 
         // Then:
         assertThat( result ).containsExactly( expected.toArray( new NamedArgument[0] ) );

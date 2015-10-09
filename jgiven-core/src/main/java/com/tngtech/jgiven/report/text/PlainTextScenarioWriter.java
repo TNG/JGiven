@@ -12,6 +12,7 @@ import org.fusesource.jansi.Ansi.Color;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
+import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.*;
 
@@ -35,7 +36,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     @Override
     public void visitEnd( ScenarioCaseModel scenarioCase ) {
-        if( !scenarioCase.isSuccess()) {
+        if( !scenarioCase.isSuccess() ) {
             writer.println();
             writer.print( "FAILED: " + scenarioCase.getErrorMessage() );
         }
@@ -53,20 +54,17 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     protected void printCaseLine( ScenarioCaseModel scenarioCase ) {
         writer.print( "  Case " + scenarioCase.getCaseNr() + ": " );
-        List<String> arguments = scenarioCase.getExplicitArguments();
-        if( !arguments.isEmpty() ) {
-            List<String> parameterNames = currentScenarioModel.getExplicitParameters();
-            for( int i = 0; i < arguments.size(); i++ ) {
-                if( i < parameterNames.size() ) {
-                    writer.print( parameterNames.get( i ) + " = " );
-                }
-                writer.print( arguments.get( i ) );
-                if( i != arguments.size() - 1 ) {
-                    writer.print( ", " );
-                }
-            }
-        }
+        writer.print( getDescriptionOrDefault( scenarioCase ) );
         writer.println();
+    }
+
+    public String getDescriptionOrDefault( ScenarioCaseModel scenarioCase ) {
+        if( scenarioCase.hasDescription() ) {
+            return scenarioCase.getDescription();
+        } else {
+            return DefaultCaseDescriptionProvider.defaultDescription( currentScenarioModel.getExplicitParameters(),
+                scenarioCase.getExplicitArguments() );
+        }
     }
 
     static class MaxFillWordLengthGetter extends ReportModelVisitor {

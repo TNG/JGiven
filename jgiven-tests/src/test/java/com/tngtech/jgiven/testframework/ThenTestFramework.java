@@ -31,6 +31,11 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
         assertThat( result.getFailureCount() ).as( "failure count" ).isEqualTo( 0 );
     }
 
+    public SELF $_tests_fail( int nFailedTests ) {
+        assertThat( result.getFailureCount() ).isEqualTo( nFailedTests );
+        return self();
+    }
+
     public SELF the_test_fails() {
         assertThat( result.getFailureCount() ).as( "failure count" ).isGreaterThan( 0 );
         return self();

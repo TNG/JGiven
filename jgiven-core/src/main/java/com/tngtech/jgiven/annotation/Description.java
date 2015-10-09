@@ -3,7 +3,7 @@ package com.tngtech.jgiven.annotation;
 import java.lang.annotation.*;
 
 /**
- * This annotation can be used to give a test class a description.
+ * This annotation can be used to provide a description for a test class.
  * 
  * <h2>Deprecated usage</h2>
  * The {@code @Description} annotation can also be used to 
@@ -16,7 +16,7 @@ import java.lang.annotation.*;
  * @see com.tngtech.jgiven.annotation.As
  */
 @Retention( RetentionPolicy.RUNTIME )
-@Target( { ElementType.METHOD, ElementType.TYPE } )
+@Target( { ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER } )
 @Documented
 public @interface Description {
 

@@ -52,6 +52,12 @@ public class ScenarioCaseModel {
      */
     private long durationInNanos;
 
+    /**
+     * An optional description of the case.
+     * Can be {@code null}
+     */
+    private String description;
+
     public void accept( ReportModelVisitor visitor ) {
         visitor.visit( this );
         for( StepModel step : getSteps() ) {
@@ -145,5 +151,17 @@ public class ScenarioCaseModel {
 
     public void setErrorMessage( String errorMessage ) {
         this.errorMessage = errorMessage;
+    }
+
+    public void setDescription( String description ) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean hasDescription() {
+        return description != null;
     }
 }

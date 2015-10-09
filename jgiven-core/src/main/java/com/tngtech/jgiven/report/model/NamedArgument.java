@@ -28,8 +28,7 @@ public class NamedArgument {
             return false;
         }
         NamedArgument other = (NamedArgument) obj;
-        return Objects.equal( this.name, other.name )
-            && Objects.equal( this.value, other.value );
+        return Objects.equal( this.name, other.name ) && Objects.equal( this.value, other.value );
     }
 
     @Override
@@ -37,4 +36,7 @@ public class NamedArgument {
         return "NamedArgument [name=" + name + ", value=" + value + "]";
     }
 
+    public Object getValue() {
+        return value;
+    }
 }

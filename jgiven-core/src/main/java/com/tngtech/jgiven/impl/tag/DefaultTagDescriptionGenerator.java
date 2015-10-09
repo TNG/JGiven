@@ -1,7 +1,8 @@
-package com.tngtech.jgiven.annotation;
+package com.tngtech.jgiven.impl.tag;
 
 import java.lang.annotation.Annotation;
 
+import com.tngtech.jgiven.annotation.TagDescriptionGenerator;
 import com.tngtech.jgiven.config.TagConfiguration;
 
 /**
