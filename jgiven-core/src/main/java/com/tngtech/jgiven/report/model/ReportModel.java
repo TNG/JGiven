@@ -191,4 +191,7 @@ public class ReportModel {
         return WordUtil.splitCamelCaseToReadableText( classNameWithoutSuffix );
     }
 
+    public String getName() {
+        return name;
+    }
 }
