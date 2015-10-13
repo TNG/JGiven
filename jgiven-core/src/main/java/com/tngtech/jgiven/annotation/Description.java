@@ -16,7 +16,7 @@ import java.lang.annotation.*;
  * @see com.tngtech.jgiven.annotation.As
  */
 @Retention( RetentionPolicy.RUNTIME )
-@Target( { ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER } )
+@Target( { ElementType.METHOD, ElementType.TYPE } )
 @Documented
 public @interface Description {
 

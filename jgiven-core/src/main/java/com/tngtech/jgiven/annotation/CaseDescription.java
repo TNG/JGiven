@@ -12,6 +12,7 @@ import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
  * Sometimes, however, it is useful to provide an explicit description the provides more semantic background for each case.
  * This annotation can be used to define custom descriptions.
  * 
+ * @since 0.9.2
  */
 @Documented
 @Retention( RetentionPolicy.RUNTIME )
