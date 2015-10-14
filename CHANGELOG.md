@@ -3,6 +3,7 @@
 ## New Features
 
 * Cases can now have custom descriptions by using the new annotation `@CaseDescription` [#139](https://github.com/TNG/JGiven/issues/139).
+* Custom test class suffixes can now be configured using the `@AbstractJGivenConfiguration` annotation.
 
 # v0.9.1
 
