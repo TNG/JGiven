@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="css/print.css" media="print"/>
   <link rel="stylesheet" href="css/custom.css"/>
   <script src="js/modernizr.js"></script>
+
 </head>
 <body>
 
@@ -384,7 +385,7 @@
             <!-- SCENARIO LIST -->
 
             <div class="scenario {{$last ? 'last' : ''}}"
-                 ng-repeat="scenario in scenarioGroup.values"
+                 bindonce ng-repeat="scenario in scenarioGroup.values"
                  ng-if="scenarioGroup.expanded || currentPage.print || currentPage.embed">
 
               <div class="row">
@@ -427,22 +428,27 @@
                          ng-bind-html="::scenario.extendedDescription">
                     </div>
 
-                    <div
-                        ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
+                    <div bindonce
+                         ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
                       <h5 class="toggle" ng-click="case.expanded = !case.expanded"
                           ng-if="scenario.scenarioCases.length > 1 && !scenario.casesAsTable">
                         <i class="fa {{case.expanded ? 'fa-angle-down' : 'fa-angle-right'}} case-expand-icon"></i>Case
                         {{case.caseNr}}:
-                      <span ng-repeat="param in scenario.explicitParameters">
-                        {{param}} = {{case.explicitArguments[$index]}}<span
-                          ng-if="$index != scenario.explicitParameters.length - 1">, </span>
-                      </span>
+                        <span ng-if="case.description">
+                          {{case.description}}
+                        </span>
+                        <span ng-if="!case.description">
+                          <span ng-repeat="param in scenario.explicitParameters">
+                            {{param}} = {{case.explicitArguments[$index]}}<span
+                              ng-if="$index != scenario.explicitParameters.length - 1">, </span>
+                          </span>
+                          </span>
                       </h5>
 
                       <div ng-if="scenario.scenarioCases.length === 1 || scenario.casesAsTable || case.expanded"
                            class="steps">
                         <table class="steps">
-                          <tr class="steps" ng-repeat="step in case.steps">
+                          <tr class="steps" bindonce ng-repeat="step in case.steps">
 
                             <td class="steps intro-word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}">
                               {{::step.words[0].isIntroWord ?
@@ -455,7 +461,7 @@
                                     tooltip-popup-delay="250">
                                 <span
                                     class="word {{ ::scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{ ::word.isDifferent ? 'diff' : ''}}"
-                                    ng-repeat-start="word in getNonIntroWords(step.words)">
+                                    bindonce ng-repeat-start="word in getNonIntroWords(step.words)">
                                   <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
                                     <strong>&lt;{{::word.argumentInfo.parameterName}}&gt;</strong>
                                   </span>
@@ -465,9 +471,9 @@
                                       class="{{word.argumentInfo ? 'argument' : ''}} {{ word.value.indexOf('\n') > -1 ? 'multiline' : ''}}"
                                       >{{ ::word.argumentInfo.formattedValue || word.value }}</span> <!-- do not change formatting here, it is important for multiline values -->
                                   <table class="table-value" ng-if="word.argumentInfo.dataTable">
-                                    <tr ng-repeat="row in word.argumentInfo.dataTable.data">
+                                    <tr bindonce ng-repeat="row in word.argumentInfo.dataTable.data">
                                       <td class="{{ isHeaderCell($parent.$index, $index, word.argumentInfo.dataTable.headerType) ? 'header-cell' : '' }}"
-                                          ng-repeat="value in row track by $index">{{ ::value }}
+                                          bindonce ng-repeat="value in row track by $index">{{ ::value }}
                                       </td>
                                     </tr>
                                   </table>
@@ -479,7 +485,7 @@
                                 </span>
                                 <span ng-repeat-end></span>
                               </span>
-                              <span ng-repeat="scenarioCase in scenario.scenarioCases"
+                              <span bindonce ng-repeat="scenarioCase in scenario.scenarioCases"
                                     ng-init="step = scenarioCase.steps[$parent.$index]">
                                 <span ng-if="step.attachment && !step.attachment.showDirectly">
                                   <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
@@ -527,6 +533,7 @@
                             <table>
                               <tr>
                                 <th>#</th>
+                                <th ng-if="::scenario.scenarioCases[0].description">Description</th>
                                 <th ng-repeat="param in scenario.derivedParameters track by $index">
                                   {{::param}}
                                 </th>
@@ -534,6 +541,7 @@
                               </tr>
                               <tr ng-repeat="case in scenario.scenarioCases">
                                 <td>{{::case.caseNr}}</td>
+                                <td ng-if="::case.description" ng-bind="::case.description"></td>
                                 <td ng-repeat="arg in case.derivedArguments track by $index">
                                   {{::arg}}
                                 </td>
@@ -600,7 +608,7 @@
 
         <div class="footer-bottom" ng-if="!currentPage.embed">
           <div class="small-12 columns">
-            Generated by <a href="http://jgiven.org">JGiven</a> 0.9.1 on
+            Generated by <a href="http://jgiven.org">JGiven</a> 0.9.3-SNAPSHOT on
             {{metaData.created}}
           </div>
         </div>
@@ -621,6 +629,7 @@
 <script src="js/Chart.min.js"></script>
 <script src="js/angular-chart.js"></script>
 <script src="js/angular-local-storage.js"></script>
+<script src="js/bindonce.min.js"></script>
 <script src="js/lodash.min.js"></script>
 <script src="lib/util.js"></script>
 <script src="lib/app.js"></script>
