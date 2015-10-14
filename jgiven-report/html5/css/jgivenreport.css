@@ -48,6 +48,10 @@ h5 {
     padding: 0;
 }
 
+.top-bar, .top-bar-section ul li {
+    background-color: darkgreen;
+}
+
 .page-icon-bar {
     position: absolute;
     top: 0;
@@ -61,7 +65,7 @@ h5 {
 .expand-icon:hover, .collapse-icon:hover, .print-icon:hover,
 .scenario:hover .scenario-link-icon:hover,
 .remove-bookmark-icon:hover, .add-bookmark-icon:hover {
-    color: #008cba;
+    color: green;
 }
 
 .remove-bookmark-icon {
@@ -600,13 +604,34 @@ ul.tags {
     margin-left: 0.8rem;
 }
 
+ul.pagination li.current a {
+    background-color: green;
+}
+
+a, a:visited {
+    color: #5A5A5A;
+}
+
+.side-nav li a:not(.button) {
+    color: /*#5A5A5A*/ darkgreen;
+}
+
 .side-nav li a:not(.button) {
     padding: 0.5rem 1.8rem;
+}
+
+a:hover, a:focus,
+.side-nav li.heading a:hover,
+.side-nav li.heading a:focus,
+.side-nav li.heading li a:hover,
+.side-nav li.heading li a:focus {
+    color: green;
 }
 
 .side-nav li li a:not(.button) {
     padding-top: 0.1rem;
     padding-bottom: 0.1rem;
+    color: #5A5A5A;
 }
 
 .side-nav, .side-nav ul {
