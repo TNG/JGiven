@@ -143,22 +143,27 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
         then().the_report_title_is( "Test Title" );
     }
 
+    @Issue( "#146" )
     @Test
-    public void navigation_links_of_the_HTML_report_can_be_customized_using_a_custom_JS_file() throws Exception {
+    @DataProvider( {
+        "JGiven Documentation, http://jgiven.org/docs",
+        "Back, javascript:window.history.back()" } )
+    public void navigation_links_of_the_HTML_report_can_be_customized_using_a_custom_JS_file( String title, String href ) throws Exception {
         given().a_report_model()
             .and().the_report_exist_as_JSON_file();
         given().a_custom_JS_file_with_content(
             "jgivenReport.addNavigationLink( { \n"
-                    + "   href: 'http://jgiven.org/docs', \n"
-                    + "   text: 'JGiven Documentation', \n"
+                    + "   href: '" + href + "', \n"
+                    + "   text: '" + title + "', \n"
                     + "   target: '_blank' \n"
                     + "});" );
         whenReport.when().the_HTML_Report_Generator_is_executed();
 
         when().and().the_index_page_is_opened();
 
-        then().the_navigation_menu_has_a_link_with_text( "JGIVEN DOCUMENTATION" )
-            .and().href( "http://jgiven.org/docs" )
+        then().the_navigation_menu_has_a_link_with_text( title.toUpperCase() )
+            .and().href( href )
             .and().target( "_blank" );
     }
+
 }

@@ -3,6 +3,7 @@
 ## Fixed Issues
 
 * Fixed an issue that inline attachments are shown multiple times [#145](https://github.com/TNG/JGiven/issues/145)
+* HTML Report: allow arbitrary protocols in custom navigation links [#146](https://github.com/TNG/JGiven/issues/146)
 
 # v0.9.2
 
