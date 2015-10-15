@@ -32,14 +32,25 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
     }
 
     public void a_large_oval_circle() throws IOException {
-        drawOval( 800, 600 );
+        drawOval( 800, 600, Color.BLUE );
     }
 
     public void an_oval_circle() throws IOException {
-        drawOval( 300, 200 );
+        drawOval( 300, 200, Color.BLUE );
     }
 
-    private void drawOval( int width, int height ) throws IOException {
+    public void a_$_oval_circle( String color ) throws IOException {
+        drawOval( 300, 200, getColor( color ) );
+    }
+
+    private Color getColor( String color ) {
+        if( color.equals( "red" ) ) {
+            return Color.RED;
+        }
+        return Color.BLUE;
+    }
+
+    private void drawOval( int width, int height, Color color ) throws IOException {
         BufferedImage image = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
 
         Graphics2D g = image.createGraphics();
@@ -47,7 +58,7 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
             RenderingHints.VALUE_ANTIALIAS_ON );
 
         g.setStroke( new BasicStroke( 10 ) );
-        g.setPaint( Color.BLUE );
+        g.setPaint( color );
         g.drawOval( 10, 10, width - 20, height - 20 );
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

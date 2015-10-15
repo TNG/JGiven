@@ -478,12 +478,12 @@
                                     </tr>
                                   </table>
 
-                                  <div ng-if="step.attachment && step.attachment.showDirectly">
-                                    <img class="direct-image" ng-src="data/{{ step.attachment.value }}"
-                                         alt="{{ step.attachment.title }}"/>
-                                  </div>
                                 </span>
                                 <span ng-repeat-end></span>
+                                <div ng-if="step.attachment && step.attachment.showDirectly">
+                                  <img class="direct-image" ng-src="data/{{ step.attachment.value }}"
+                                       alt="{{ step.attachment.title }}"/>
+                                </div>
                               </span>
                               <span bindonce ng-repeat="scenarioCase in scenario.scenarioCases"
                                     ng-init="step = scenarioCase.steps[$parent.$index]">

@@ -1,10 +1,6 @@
 package com.tngtech.jgiven.report.analysis;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +9,7 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.report.model.ReportModelVisitor;
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.StepModel;
-import com.tngtech.jgiven.report.model.Word;
+import com.tngtech.jgiven.report.model.*;
 
 /**
  * Analyzes a report model and tries to infer which step method arguments match to which case argument.
@@ -44,6 +35,11 @@ public class CaseArgumentAnalyser {
         }
         CollectPhase collectPhase = new CollectPhase( scenarioModel );
         scenarioModel.accept( collectPhase );
+
+        if( collectPhase.noDataTablePossible ) {
+            scenarioModel.setCasesAsTable( false );
+            return;
+        }
 
         try {
             reduceMatrix( scenarioModel, collectPhase.argumentMatrix );
@@ -238,6 +234,7 @@ public class CaseArgumentAnalyser {
         List<Word> allWordsOfCurrentCase;
         ScenarioCaseModel currentCase;
         final ScenarioModel scenarioModel;
+        boolean noDataTablePossible;
 
         public CollectPhase( ScenarioModel model ) {
             this.scenarioModel = model;
@@ -254,6 +251,10 @@ public class CaseArgumentAnalyser {
 
         @Override
         public void visit( StepModel stepModel ) {
+            if( stepModel.getAttachment() != null && stepModel.getAttachment().isShowDirectly() ) {
+                this.noDataTablePossible = true;
+            }
+
             for( Word word : stepModel.words ) {
                 if( word.isArg() ) {
                     ArgumentHolder holder = new ArgumentHolder();

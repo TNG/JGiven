@@ -45,7 +45,11 @@ public class AttachmentModel {
         return binary;
     }
 
-    public void setShowDirectly(boolean showDirectly) {
+    public void setShowDirectly( boolean showDirectly ) {
         this.showDirectly = showDirectly ? true : null;
+    }
+
+    public boolean isShowDirectly() {
+        return showDirectly != null && showDirectly == true;
     }
 }

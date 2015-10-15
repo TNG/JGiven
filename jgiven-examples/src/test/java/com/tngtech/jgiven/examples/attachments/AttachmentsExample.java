@@ -39,4 +39,11 @@ public class AttachmentsExample extends SimpleScenarioTest<AttachmentsExampleSta
     public void large_attachments_can_be_zoomed() throws IOException {
         given().a_large_oval_circle();
     }
+
+    @Test
+    @DataProvider( { "blue", "red" } )
+    public void inline_attachments_can_be_used_when_having_multiple_cases( String color ) throws IOException {
+        given().a_$_oval_circle( color );
+    }
+
 }
