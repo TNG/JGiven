@@ -3,7 +3,7 @@
 ## Fixed Issues
 
 * HTML Report: Fixed an issue that inline attachments are shown multiple times [#145](https://github.com/TNG/JGiven/issues/145)
-* HTML Report: fixed an issue with attachments that could lead to the generation of attachments with identical names, overriding attachments of other scenarios [#144]((https://github.com/TNG/JGiven/issues/144)
+* HTML Report: fixed an issue with attachments that could lead to the generation of attachments with identical names, overriding attachments of other scenarios [#144](https://github.com/TNG/JGiven/issues/144)
 
 ## New Features
 
