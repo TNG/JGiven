@@ -4,11 +4,15 @@ import static javax.xml.bind.DatatypeConverter.parseBase64Binary;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Sets;
 import com.google.common.io.Files;
 import com.google.common.net.MediaType;
 import com.tngtech.jgiven.exception.JGivenInstallationException;
@@ -21,11 +25,17 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
     private static final Logger log = LoggerFactory.getLogger( Html5AttachmentGenerator.class );
     private static final String ATTACHMENT_DIRNAME = "attachments";
 
-    private int fileCounter;
     private File attachmentsDir;
+    private String subDir;
+    private Multiset<String> fileCounter = HashMultiset.create();
+    private Set<String> usedFileNames = Sets.newHashSet();
+    private String htmlSubDir;
 
     public void generateAttachments( File targetDir, ReportModel model ) {
-        attachmentsDir = new File( targetDir, ATTACHMENT_DIRNAME );
+        subDir = ATTACHMENT_DIRNAME + File.separatorChar + model.getClassName().replace( '.', File.separatorChar );
+        htmlSubDir = subDir.replace( File.separatorChar, '/' );
+        attachmentsDir = new File( targetDir, subDir );
+
         if( !attachmentsDir.exists() && !attachmentsDir.mkdirs() ) {
             throw new JGivenInstallationException( "Could not create directory " + attachmentsDir );
         }
@@ -49,7 +59,7 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
         }
 
         if( targetFile != null ) {
-            attachment.setValue( ATTACHMENT_DIRNAME + "/" + targetFile.getName() );
+            attachment.setValue( htmlSubDir + "/" + targetFile.getName() );
         } else {
             attachment.setValue( null );
         }
@@ -57,12 +67,8 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
     }
 
     private File writeImageFile( AttachmentModel attachment, MediaType mediaType ) {
-        if( !mediaType.is( MediaType.PNG ) ) {
-            log.error( "Mime type " + mediaType + " is not supported as an image attachment. Only PNG is supported." );
-        }
-
-        String extension = "png";
-        File targetFile = getTargetFile( extension );
+        String extension = getExtension( mediaType );
+        File targetFile = getTargetFile( attachment.getFileName(), extension );
         try {
             Files.write( parseBase64Binary( attachment.getValue() ), targetFile );
         } catch( IOException e ) {
@@ -71,21 +77,55 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
         return targetFile;
     }
 
-    private File getTargetFile( String extension ) {
-        return new File( attachmentsDir, "attachment" + getNextFileCounter() + "." + extension );
+    private String getExtension( MediaType mediaType ) {
+        if( mediaType.is( MediaType.SVG_UTF_8 ) ) {
+            return "svg";
+        }
+
+        if( mediaType.is( MediaType.ICO ) ) {
+            return "ico";
+        }
+
+        if( mediaType.is( MediaType.BMP ) ) {
+            return "bmp";
+        }
+
+        return mediaType.subtype();
+    }
+
+    File getTargetFile( String fileName, String extension ) {
+        if( fileName == null ) {
+            fileName = "attachment";
+        }
+
+        int count = fileCounter.count( fileName );
+        fileCounter.add( fileName );
+
+        String suffix = "";
+        if( count > 0 ) {
+            count += 1;
+            suffix = String.valueOf( count );
+        }
+
+        String fileNameWithExtension = fileName + suffix + "." + extension;
+
+        while( usedFileNames.contains( fileNameWithExtension ) ) {
+            fileCounter.add( fileName );
+            count++;
+            suffix = String.valueOf( count );
+            fileNameWithExtension = fileName + suffix + "." + extension;
+        }
+        usedFileNames.add( fileNameWithExtension );
+        return new File( attachmentsDir, fileNameWithExtension );
     }
 
     private File writeTextFile( AttachmentModel attachment ) {
-        File targetFile = getTargetFile( "txt" );
+        File targetFile = getTargetFile( attachment.getFileName(), "txt" );
         try {
             Files.write( attachment.getValue(), targetFile, Charsets.UTF_8 );
         } catch( IOException e ) {
             log.error( "Error while trying to write attachment to file " + targetFile, e );
         }
         return targetFile;
-    }
-
-    private int getNextFileCounter() {
-        return fileCounter++;
     }
 }

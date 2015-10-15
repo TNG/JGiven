@@ -3,6 +3,7 @@ package com.tngtech.jgiven.report.model;
 public class AttachmentModel {
     private String title;
     private String value;
+    private String fileName;
     private String mediaType;
     private boolean binary;
 
@@ -29,6 +30,14 @@ public class AttachmentModel {
         this.mediaType = mimeType;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName( String fileName ) {
+        this.fileName = fileName;
+    }
+
     public void setTitle( String title ) {
         this.title = title;
     }
@@ -52,4 +61,5 @@ public class AttachmentModel {
     public boolean isShowDirectly() {
         return showDirectly != null && showDirectly == true;
     }
+
 }

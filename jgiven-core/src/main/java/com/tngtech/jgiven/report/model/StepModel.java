@@ -116,9 +116,10 @@ public class StepModel {
         this.attachment = new AttachmentModel();
         this.attachment.setTitle( attachment.getTitle() );
         this.attachment.setValue( attachment.getContent() );
+        this.attachment.setFileName( attachment.getFileName() );
         this.attachment.setMediaType( attachment.getMediaType().asString() );
         this.attachment.setIsBinary( attachment.getMediaType().isBinary() );
-        this.attachment.setShowDirectly(attachment.getShowDirectly());
+        this.attachment.setShowDirectly( attachment.getShowDirectly() );
     }
 
     public AttachmentModel getAttachment() {

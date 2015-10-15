@@ -32,15 +32,15 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
     }
 
     public void a_large_oval_circle() throws IOException {
-        drawOval( 800, 600, Color.BLUE );
+        drawOval( 800, 600, Color.BLUE, "large-oval-circle" );
     }
 
     public void an_oval_circle() throws IOException {
-        drawOval( 300, 200, Color.BLUE );
+        drawOval( 300, 200, Color.BLUE, "oval-circle" );
     }
 
     public void a_$_oval_circle( String color ) throws IOException {
-        drawOval( 300, 200, getColor( color ) );
+        drawOval( 300, 200, getColor( color ),  "oval-circle" );
     }
 
     private Color getColor( String color ) {
@@ -50,7 +50,7 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
         return Color.BLUE;
     }
 
-    private void drawOval( int width, int height, Color color ) throws IOException {
+    private void drawOval( int width, int height, Color color, String fileName ) throws IOException {
         BufferedImage image = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
 
         Graphics2D g = image.createGraphics();
@@ -69,6 +69,7 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
             currentStep.addAttachment(
                 Attachment.fromBinaryBytes( bytes, MediaType.PNG )
                     .withTitle( "An oval drawn in Java" )
+                    .withFileName( fileName )
                     .showDirectly() );
         } finally {
             outputStream.close();

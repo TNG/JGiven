@@ -29,6 +29,12 @@ public class Attachment {
     private String title;
 
     /**
+     * An optional filename.
+     * Can be {@code null}.
+     */
+    private String fileName;
+
+    /**
      * The content of the attachment.
      * In case the media type is binary, this is a Base64 encoded string
      * Is never {@code null}
@@ -98,6 +104,25 @@ public class Attachment {
      */
     public String getTitle() {
         return title;
+    }
+
+    /**
+     * An optional filename for the attachment.
+     * Can be {@code null}.
+     */
+    public String getFileName() {
+        return fileName;
+    }
+
+    /**
+     * An optional filename for the attachment without the file type suffix.
+     * The name can be used by reporters.  
+     * 
+     * @since 0.9.3
+     */
+    public Attachment withFileName( String fileName ) {
+        this.fileName = fileName;
+        return this;
     }
 
     /**
