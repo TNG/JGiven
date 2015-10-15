@@ -1,3 +1,9 @@
+# v0.9.3
+
+## Fixed Issues
+
+* Fixed an issue that inline attachments are shown multiple times [#145](https://github.com/TNG/JGiven/issues/145)
+
 # v0.9.2
 
 ## New Features
