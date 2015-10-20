@@ -8,7 +8,7 @@ A JGiven scenario consists of multiple stages. Typically there is a stage for ea
 
 ## Step Methods
 
-A stage class contains multiple _step methods_ that can be called in a scenario and that will appear in the report. Every *non-private*, *non-static* method of a stage class can be used as a step method. There are no further requirements. In particular, no annotations are needed. Step methods should return the `this` reference so that chaining of calls is possible. In addition, a step method should be written in `snake_case` so that JGiven knows the correct casing of each word of the step.
+A stage class contains multiple _step methods_ that can be called in a scenario and that will appear in the report. Every *non-private*, *non-final*, *non-static* method of a stage class can be used as a step method. There are no further requirements. In particular, no annotations are needed. Step methods should return the `this` reference so that chaining of calls is possible. In addition, a step method should be written in `snake_case` so that JGiven knows the correct casing of each word of the step.
 
 The following code shows a valid step method of the `WhenCook` stage:
 {% highlight java %}
