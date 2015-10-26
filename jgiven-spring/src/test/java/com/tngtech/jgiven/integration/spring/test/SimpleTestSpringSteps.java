@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.tngtech.jgiven.integration.spring.JGivenStage;
+import com.tngtech.jgiven.integration.spring.config.TestSpringConfig;
 
 /**
  * example for a Spring Bean that is used as a step

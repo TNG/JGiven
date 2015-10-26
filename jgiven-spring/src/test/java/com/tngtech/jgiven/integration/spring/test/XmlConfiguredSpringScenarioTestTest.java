@@ -6,16 +6,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tngtech.jgiven.integration.spring.SpringScenarioTest;
-import com.tngtech.jgiven.integration.spring.config.TestSpringConfig;
 
 @RunWith( SpringJUnit4ClassRunner.class )
-@ContextConfiguration( classes = TestSpringConfig.class )
-public class MixedStagesSpringScenarioTestTest extends SpringScenarioTest<AnnotatedStage, SomeWhen, SomeThen> {
+@ContextConfiguration("/jgiven-spring.xml")
+public class XmlConfiguredSpringScenarioTestTest extends SpringScenarioTest<AnnotatedStage, AnnotatedStage, AnnotatedStage> {
 
     @Test
-    public void using_beans_and_ordinary_stages_together() {
+    public void spring_can_inject_beans_into_stages() {
         given().a_stage_that_is_a_spring_component();
-        when().is_used_in_combination_with_ordinary_stages();
-        then().mixing_them_works_as_expected();
+        when().methods_on_this_component_are_called();
+        then().beans_are_injected();
     }
 }

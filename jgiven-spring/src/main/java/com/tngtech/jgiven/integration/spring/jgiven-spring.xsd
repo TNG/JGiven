@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://jgiven.org/jgiven-spring" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"  targetNamespace="http://jgiven.org/jgiven-spring">
+<xs:element name="annotation-driven">
+  <xs:annotation>
+    <xs:documentation>
+      Use this to enable the annotation driven JGiven support. This declaration automatically registers a default SpringStepMethodInterceptor and SpringScenarioExecutor.
+      Additionally support for the @JGivenStage is configured.
+    </xs:documentation>
+  </xs:annotation>
+  <xs:complexType />
+</xs:element>
+</xs:schema>
