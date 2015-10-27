@@ -1,38 +1,18 @@
-package com.tngtech.jgiven.integration.spring.test;
+package com.tngtech.jgiven.integration.spring.config;
 
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 
-import com.tngtech.jgiven.integration.spring.JGivenStageAutoProxyCreator;
-import com.tngtech.jgiven.integration.spring.SpringScenarioExecutor;
-import com.tngtech.jgiven.integration.spring.SpringStepMethodInterceptor;
+import com.tngtech.jgiven.integration.spring.EnableJGiven;
 
 @Configuration
+// auto configuration for JGiven
+@EnableJGiven
 @ComponentScan(basePackages = "com.tngtech.jgiven.integration.spring.test")
 public class TestSpringConfig {
 
-    @Bean
-    @Scope("prototype")
-    public SpringStepMethodInterceptor springStepMethodInterceptor() {
-        return new SpringStepMethodInterceptor();
-    }
-
-    @Bean
-    @Scope("prototype")
-    public SpringScenarioExecutor springScenarioExecutor() {
-        return new SpringScenarioExecutor();
-    }
-
-    /*
-     * configure support for {@link JGivenStage} annotation
-     */
-    @Bean
-    public JGivenStageAutoProxyCreator jGivenStageAutoProxyCreator() {
-        return new JGivenStageAutoProxyCreator();
-    }
 
     /*
      * example for non-invasive usage of the {@link SpringStepMethodInterceptor}

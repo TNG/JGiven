@@ -6,6 +6,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.tngtech.jgiven.integration.spring.SpringScenarioTest;
+import com.tngtech.jgiven.integration.spring.config.TestSpringConfig;
 
 @RunWith( SpringJUnit4ClassRunner.class )
 @ContextConfiguration( classes = TestSpringConfig.class )
