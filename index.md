@@ -64,6 +64,6 @@ The source code of the corresponding JGiven tests are in the [jgiven-tests](http
 
 ### Talk on JGiven at BigTechday 8
 
-Jan Schäfer gave a talk on JGiven at the BigTechday 8. It explains the rational behind JGiven and gives an introduction into the main features of JGiven.
+Jan Schäfer gave a talk on JGiven at the BigTechday 8. It explains the rationale behind JGiven and gives an introduction into the main features of JGiven.
 
 <iframe class="shadow-frame" width="560" height="315" src="https://www.youtube.com/embed/gh_yjb3x8Yc" frameborder="0" allowfullscreen></iframe>
