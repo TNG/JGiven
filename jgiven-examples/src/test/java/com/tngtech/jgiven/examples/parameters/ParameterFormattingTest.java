@@ -30,6 +30,9 @@ public class ParameterFormattingTest extends SimpleScenarioTest<ParameterFormatt
 
         public void the_power_light_$_on( @Format( value = BooleanFormatter.class, args = { "is", "is not" } ) boolean isOrIsNot ) {}
 
+        public void a_very_long_parameter_value( String x ) {
+
+        }
     }
 
 }

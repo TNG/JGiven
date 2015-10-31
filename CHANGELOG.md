@@ -12,6 +12,7 @@
 * Underlines in parameter names are now replaced with spaces [#147](https://github.com/TNG/JGiven/issues/147)
 * HTML Report: highlight failing cases of a scenario [#150](https://github.com/TNG/JGiven/issues/150)
 * HTML Report: indicate the number of failed cases [#156](https://github.com/TNG/JGiven/issues/156)
+* HTML Report: limit the width of columns in the data table [#141](https://github.com/TNG/JGiven/issues/141)
 
 # v0.9.3
 

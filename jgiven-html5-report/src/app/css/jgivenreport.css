@@ -447,6 +447,11 @@ table.steps tr.steps:hover {
     max-height: 100%;
 }
 
+.data-table td {
+    max-width: 25rem;
+    overflow: auto;
+}
+
 .toggle {
     cursor: pointer;
 }
