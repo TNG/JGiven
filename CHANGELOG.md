@@ -3,6 +3,7 @@
 ## Fixed Issues
 
 * Blank values can now be formatted [#157](https://github.com/TNG/JGiven/issues/157)
+* Fixed an issue that the total duration of a scenario was shown as the duration of the first case instead of the sum of all case [#155](https://github.com/TNG/JGiven/issues/155)
 
 ## New Features
 

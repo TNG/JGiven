@@ -163,6 +163,7 @@ public class ReportModel {
         if( existingScenarioModel.isPresent() ) {
             AssertionUtil.assertTrue( scenarioModel.getScenarioCases().size() == 1, "ScenarioModel has more than one case" );
             existingScenarioModel.get().addCase( scenarioModel.getCase( 0 ) );
+            existingScenarioModel.get().addDurationInNanos( scenarioModel.getDurationInNanos() );
         } else {
             addScenarioModel( scenarioModel );
         }

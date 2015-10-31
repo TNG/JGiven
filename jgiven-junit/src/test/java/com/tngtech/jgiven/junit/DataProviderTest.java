@@ -126,4 +126,19 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
     }
 
+    @Test
+    @DataProvider( { "0", "1" } )
+    public void duration_of_multiple_cases_is_summed_up( int nr ) throws Throwable {
+
+        given().something();
+
+        getScenario().finished();
+
+        if( nr == 0 ) {
+            getScenario().getModel().getLastScenarioModel().setDurationInNanos( 0 );
+        } else {
+            assertThat( getScenario().getModel().getLastScenarioModel().getDurationInNanos() ).isNotEqualTo( 0 );
+        }
+    }
+
 }
