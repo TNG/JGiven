@@ -4,6 +4,7 @@
 
 * Blank values can now be formatted [#157](https://github.com/TNG/JGiven/issues/157)
 * Fixed an issue that the total duration of a scenario was shown as the duration of the first case instead of the sum of all case [#155](https://github.com/TNG/JGiven/issues/155)
+* HTML Report: fixed the issue that clicking the status doughnot does not work when the report has just been opened [#149](https://github.com/TNG/JGiven/issues/149)
 
 ## New Features
 

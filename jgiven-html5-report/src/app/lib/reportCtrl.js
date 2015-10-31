@@ -626,7 +626,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.showFailed = function () {
-    if ($location.path() === '/') {
+    if ($location.path() === '/' || $location.path() === '') {
       $location.path('/failed');
     } else {
       $location.search('status', 'fail');
@@ -634,7 +634,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.showPending = function () {
-    if ($location.path() === '/') {
+    if ($location.path() === '/' || $location.path() === '') {
       $location.path('/pending');
     } else {
       $location.search('status', 'pending');
@@ -642,7 +642,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.showSuccessful = function () {
-    if ($location.path() === '/') {
+    if ($location.path() === '/' || $location.path() === '') {
       $location.path('/all');
     }
     $location.search('status', 'success');
