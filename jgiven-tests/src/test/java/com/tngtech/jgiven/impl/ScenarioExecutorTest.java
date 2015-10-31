@@ -49,7 +49,7 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
 
         public void the_scenario_is_executed() {}
 
-        public void no_exeception_is_thrown() {
+        public void no_exception_is_thrown() {
             assertThat( true ).as( "no exception is thrown" ).isTrue();
         }
 
@@ -85,6 +85,6 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
     public void step_methods_can_have_primitive_arrays_as_parameters( String type, Object array ) {
         given().a_step_method_with_a_primitive_$_array_$_as_parameter( type, array );
         when().the_scenario_is_executed();
-        then().no_exeception_is_thrown();
+        then().no_exception_is_thrown();
     }
 }

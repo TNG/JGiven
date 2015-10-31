@@ -8,6 +8,7 @@
 ## New Features
 
 * Scenarios without steps can now be excluded from the report by using the new `--exclude-empty-scenarios` report generator option [#151](https://github.com/TNG/JGiven/issues/151)
+* Underlines in parameter names are now replaced with spaces [#147](https://github.com/TNG/JGiven/issues/147)
 
 # v0.9.3
 

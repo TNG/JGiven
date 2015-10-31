@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.jgiven.StepFunction;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.examples.coffeemachine.steps.GivenCoffee;
 import com.tngtech.jgiven.examples.coffeemachine.steps.ThenCoffee;
@@ -67,10 +68,10 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
         "0, 5, Error: No coffees left",
         "1, 5, Enjoy your coffee!",
     } )
-    public void correct_messages_are_shown( int coffeesLeft, int numberOfCoins, String message ) throws Exception {
+    public void correct_messages_are_shown( int coffees_left, int number_of_coins, String message ) throws Exception {
         given().a_coffee_machine()
-            .and().there_are_$_coffees_left_in_the_machine( coffeesLeft );
-        when().I_insert_$_one_euro_coins( numberOfCoins )
+            .and().there_are_$_coffees_left_in_the_machine( coffees_left );
+        when().I_insert_$_one_euro_coins( number_of_coins )
             .and().I_press_the_coffee_button();
         then().the_message_$_is_shown( message );
     }
@@ -79,13 +80,13 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     @FeatureDataTables
     @Issue( "#15" )
     @DataProvider( { "1", "3", "10" } )
-    public void serving_a_coffee_reduces_the_number_of_available_coffees_by_one( int initialCoffees ) {
+    public void serving_a_coffee_reduces_the_number_of_available_coffees_by_one( int initial_coffees ) {
         given().a_coffee_machine()
-            .and().there_are_$_coffees_left_in_the_machine( initialCoffees );
+            .and().there_are_$_coffees_left_in_the_machine( initial_coffees );
         when().I_insert_$_one_euro_coins( 2 )
             .and().I_press_the_coffee_button();
         then().a_coffee_should_be_served()
-            .and().there_are_$_coffees_left_in_the_machine( initialCoffees - 1 );
+            .and().there_are_$_coffees_left_in_the_machine( initial_coffees - 1 );
     }
 
     @Test
@@ -160,5 +161,17 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
 
         then().an_error_should_be_shown()
             .no_coffee_should_be_served();
+    }
+
+    @Test( timeout = 1000 )
+    public void shouldFailWithUnexpectedRuntimeException() throws Exception {
+        then().$( "should throw a runtime exception", //$NON-NLS-1$
+            new StepFunction<ThenCoffee>() {
+                @Override
+                public void apply( final ThenCoffee stage )
+                        throws Exception {
+                    Thread.sleep( 2000 );
+                }
+            } );
     }
 }

@@ -65,4 +65,7 @@ public final class WordUtil {
             );
     }
 
+    public static String fromSnakeCase( String name ) {
+        return name.replace( '_', ' ' );
+    }
 }

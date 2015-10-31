@@ -225,7 +225,15 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     public void setParameterNames( List<String> parameterNames ) {
-        scenarioModel.setExplicitParameters( parameterNames );
+        scenarioModel.setExplicitParameters( removeUnderlines( parameterNames ) );
+    }
+
+    private static List<String> removeUnderlines( List<String> parameterNames ) {
+        List<String> result = Lists.newArrayListWithCapacity( parameterNames.size() );
+        for( String paramName : parameterNames ) {
+            result.add( WordUtil.fromSnakeCase( paramName ) );
+        }
+        return result;
     }
 
     private String getDescription( Method paramMethod ) {
@@ -273,7 +281,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     private static String nameWithoutUnderlines( Method paramMethod ) {
-        return paramMethod.getName().replace( '_', ' ' );
+        return WordUtil.fromSnakeCase( paramMethod.getName() );
     }
 
     @Override

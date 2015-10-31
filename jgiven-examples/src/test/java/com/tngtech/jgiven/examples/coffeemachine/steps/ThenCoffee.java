@@ -49,8 +49,8 @@ public class ThenCoffee extends Stage<ThenCoffee> {
         return self();
     }
 
-    public ThenCoffee there_are_$_coffees_left_in_the_machine( int coffeesLeft ) {
-        assertThat( coffeeMachine.coffees ).isEqualTo( coffeesLeft );
+    public ThenCoffee there_are_$_coffees_left_in_the_machine( int coffees_left ) {
+        assertThat( coffeeMachine.coffees ).isEqualTo( coffees_left );
         return self();
     }
 

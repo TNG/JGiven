@@ -20,6 +20,7 @@ import com.tngtech.jgiven.format.*;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
 import com.tngtech.jgiven.impl.util.ApiUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
+import com.tngtech.jgiven.impl.util.WordUtil;
 
 public class StepFormatter {
     public static final String DEFAULT_NUMBERED_HEADER = "#";
@@ -416,7 +417,7 @@ public class StepFormatter {
                 "Parameters annotated with @Table must be the last ones. They cannot be used for $ substitution" );
         }
         String formattedValue = formatUsingFormatterOrNull( formatter, value );
-        String argumentName = arguments.get( index ).name;
+        String argumentName = WordUtil.fromSnakeCase( arguments.get( index ).name );
 
         formattedWords.add( Word.argWord( argumentName, defaultFormattedValue, formattedValue ) );
     }

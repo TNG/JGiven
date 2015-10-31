@@ -44,6 +44,15 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
         assertThat( arguments ).containsExactly( "" + intArg, "" + booleanArg, "" + caseNr );
     }
 
+    @Test
+    @DataProvider( { "0", "1" } )
+    public void underlines_in_parameters_are_replaced_with_spaces( int int_arg ) {
+        given().some_integer_value( int_arg );
+
+        List<String> explicitParameters = getScenario().getScenarioModel().getExplicitParameters();
+        assertThat( explicitParameters ).containsExactly( "int arg" );
+    }
+
     @DataProvider
     public static Object[][] trickyData() {
         return new Object[][] {
