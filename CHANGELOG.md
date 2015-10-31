@@ -9,12 +9,13 @@
 
 * Scenarios without steps can now be excluded from the report by using the new `--exclude-empty-scenarios` report generator option [#151](https://github.com/TNG/JGiven/issues/151)
 * Underlines in parameter names are now replaced with spaces [#147](https://github.com/TNG/JGiven/issues/147)
+* HTML Report: highlight failing cases of a scenario [#150](https://github.com/TNG/JGiven/issues/150)
 
 # v0.9.3
 
 ## Fixed Issues
 
-* HTML Report: Fixed an issue that inline attachments are shown multiple times [#145](https://github.com/TNG/JGiven/issues/145)
+* HTML Report: fixed an issue that inline attachments are shown multiple times [#145](https://github.com/TNG/JGiven/issues/145)
 * HTML Report: fixed an issue with attachments that could lead to the generation of attachments with identical names, overriding attachments of other scenarios [#144](https://github.com/TNG/JGiven/issues/144)
 
 ## New Features

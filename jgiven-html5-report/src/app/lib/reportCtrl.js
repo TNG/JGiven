@@ -580,6 +580,10 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     }
   };
 
+  $scope.getScenarioCaseTitleStatusClass = function (scenarioCase) {
+    return scenarioCase.success ? '' : 'failed';
+  };
+
   $scope.isHeaderCell = function (rowIndex, columnIndex, headerType) {
     if (rowIndex === 0 && (headerType === 'HORIZONTAL' || headerType === 'BOTH')) {
       return true;

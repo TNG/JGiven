@@ -152,6 +152,24 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     }
 
     @Test
+    @DataProvider( {
+        "true",
+        "false"
+    } )
+    public void a_scenario_with_a_failing_test_case_for_demonstration_purposes( boolean withCoffees ) {
+        given().a_coffee_machine();
+
+        if( withCoffees ) {
+            given().and().there_are_$_coffees_left_in_the_machine( 2 );
+        }
+
+        when().I_insert_$_one_euro_coins( 2 ).
+            and().I_press_the_coffee_button();
+
+        then().I_should_be_served_a_coffee();
+    }
+
+    @Test
     public void intro_words_are_not_required() {
         given().a_coffee_machine()
             .the_coffee_costs_$_dollar( 5 )

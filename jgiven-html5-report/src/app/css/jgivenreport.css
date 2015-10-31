@@ -235,6 +235,10 @@ span.scenario-group-header-name.failed {
     color: red;
 }
 
+.scenario-case-title.failed {
+    color: red;
+}
+
 .scenario-title.pending {
     color: gray;
 }

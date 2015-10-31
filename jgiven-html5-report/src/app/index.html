@@ -430,7 +430,8 @@
 
                     <div bindonce
                          ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
-                      <h5 class="toggle" ng-click="case.expanded = !case.expanded"
+                      <h5 class="scenario-case-title toggle {{getScenarioCaseTitleStatusClass(case)}}"
+                          ng-click="case.expanded = !case.expanded"
                           ng-if="scenario.scenarioCases.length > 1 && !scenario.casesAsTable">
                         <i class="fa {{case.expanded ? 'fa-angle-down' : 'fa-angle-right'}} case-expand-icon"></i>Case
                         {{case.caseNr}}:
@@ -442,7 +443,8 @@
                             {{param}} = {{case.explicitArguments[$index]}}<span
                               ng-if="$index != scenario.explicitParameters.length - 1">, </span>
                           </span>
-                          </span>
+                        </span>
+                        <i ng-if="!case.success" class="failed-icon fa fa-exclamation-circle"></i>
                       </h5>
 
                       <div ng-if="scenario.scenarioCases.length === 1 || scenario.casesAsTable || case.expanded"
