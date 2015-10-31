@@ -1,6 +1,10 @@
 language: java
 before_install:
 - npm install -g bower
+sudo: false
+cache:
+  directories:
+  - $HOME/.gradle
 install: "./gradlew classes"
 script:
 - "./gradlew test -DjunitVersion=4.9"
