@@ -2,14 +2,15 @@
 
 ## Fixed Issues
 
-* Blank values can now be formatted [#157](https://github.com/TNG/JGiven/issues/157)
+* Fixed an issue that blank values could not be formatted [#157](https://github.com/TNG/JGiven/issues/157)
 * Fixed an issue that the total duration of a scenario was shown as the duration of the first case instead of the sum of all case [#155](https://github.com/TNG/JGiven/issues/155)
-* HTML Report: fixed the issue that clicking the status doughnot does not work when the report has just been opened [#149](https://github.com/TNG/JGiven/issues/149)
+* HTML Report: fixed the minor issue that clicking the status doughnot does not work when the report has just been opened [#149](https://github.com/TNG/JGiven/issues/149)
 
 ## New Features
 
+* Spring support has been simplified by a new annotation `@EnableJGiven` and XML element <jgiven:annotation-driven />. Special thanks to TripleNail for this contribution. [#153](https://github.com/TNG/JGiven/pull/153)
 * Scenarios without steps can now be excluded from the report by using the new `--exclude-empty-scenarios` report generator option [#151](https://github.com/TNG/JGiven/issues/151)
-* Underlines in parameter names are now replaced with spaces [#147](https://github.com/TNG/JGiven/issues/147)
+* Underlines in parameter names are now replaced with spaces in the report [#147](https://github.com/TNG/JGiven/issues/147)
 * HTML Report: highlight failing cases of a scenario [#150](https://github.com/TNG/JGiven/issues/150)
 * HTML Report: indicate the number of failed cases [#156](https://github.com/TNG/JGiven/issues/156)
 * HTML Report: limit the width of columns in the data table [#141](https://github.com/TNG/JGiven/issues/141)

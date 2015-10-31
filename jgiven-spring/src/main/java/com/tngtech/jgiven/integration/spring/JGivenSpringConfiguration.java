@@ -10,19 +10,19 @@ import org.springframework.context.annotation.Scope;
  * {@code @Configuration} class that registers all beans an post-processors
  * for full JGiven Spring support
  *
- * @since 0.8.1
+ * @since 0.9.4
  */
 @Configuration
 public class JGivenSpringConfiguration {
 
     @Bean
-    @Scope("prototype")
+    @Scope( "prototype" )
     public SpringStepMethodInterceptor springStepMethodInterceptor() {
         return new SpringStepMethodInterceptor();
     }
 
     @Bean
-    @Scope("prototype")
+    @Scope( "prototype" )
     public SpringScenarioExecutor springScenarioExecutor() {
         return new SpringScenarioExecutor();
     }
@@ -31,7 +31,7 @@ public class JGivenSpringConfiguration {
      * configure support for {@link JGivenStage} annotation
      */
     @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    @Role( BeanDefinition.ROLE_INFRASTRUCTURE )
     public JGivenStageAutoProxyCreator jGivenStageAutoProxyCreator() {
         return new JGivenStageAutoProxyCreator();
     }

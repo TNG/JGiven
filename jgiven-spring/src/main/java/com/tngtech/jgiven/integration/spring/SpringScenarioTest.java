@@ -25,9 +25,9 @@ public class SpringScenarioTest<GIVEN, WHEN, THEN> extends
     public static final ScenarioReportRule writerRule = new ScenarioReportRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( this, getScenario() );
+    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( getScenario() );
 
-    public void setBeanFactory(BeanFactory beanFactory) {
-        getScenario().setExecutor(beanFactory.getBean(SpringScenarioExecutor.class));
+    public void setBeanFactory( BeanFactory beanFactory ) {
+        getScenario().setExecutor( beanFactory.getBean( SpringScenarioExecutor.class ) );
     }
 }
