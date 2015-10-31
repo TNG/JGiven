@@ -4,15 +4,27 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 
 public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<SELF> {
+    @ExpectedScenarioState
+    protected ReportModel reportModel;
+
     @ProvidedScenarioState
     protected List<ReportModel> reportModels = Lists.newArrayList();
 
     @ScenarioStage
     public GivenReportModel<?> givenReportModel;
+
+    @BeforeStage
+    public void useReportModel() {
+        if( reportModel != null ) {
+            reportModels.add( reportModel );
+        }
+    }
 
     public SELF $_report_models( int n ) {
         for( int i = 0; i < n; i++ ) {
@@ -77,4 +89,8 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         return self();
     }
 
+    public SELF scenario_$_has_no_steps( int i ) {
+        givenReportModel.scenario_$_has_no_steps(i);
+        return self();
+    }
 }

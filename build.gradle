@@ -162,6 +162,7 @@ subprojects {
         args '--sourceDir=build/reports/jgiven/json',
                 '--targetDir=build/reports/jgiven/html5',
                 '--format=html5',
+                '--exclude-empty-scenarios=true',
                 '--customcss=build/resources/test/jgiven/custom.css'
 
         classpath = configurations.testCompile

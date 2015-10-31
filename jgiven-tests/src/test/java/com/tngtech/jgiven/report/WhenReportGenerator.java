@@ -20,17 +20,20 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     @ScenarioRule
     protected final TemporaryFolder temporaryFolderRule = new TemporaryFolder();
 
-    @ProvidedScenarioState
-    protected File targetReportDir;
-
     @ExpectedScenarioState
     protected File jsonReportDirectory;
 
-    @ProvidedScenarioState
-    protected ReportGenerator htmlReportGenerator;
-
     @ExpectedScenarioState
     protected ReportGenerator.Config config;
+
+    @ProvidedScenarioState
+    protected File targetReportDir;
+
+    @ProvidedScenarioState
+    protected ReportGenerator reportGenerator;
+
+    @ProvidedScenarioState
+    protected CompleteReportModel completeReportModel;
 
     @BeforeStage
     public void setupTargetReportDir() throws IOException {
@@ -42,19 +45,19 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     }
 
     protected CompleteReportModel getCompleteReportModel() {
-        return new ReportModelReader().readDirectory( jsonReportDirectory );
+        return new ReportModelReader( config ).readDirectory( jsonReportDirectory );
     }
 
     private void createReportGenerator() {
-        htmlReportGenerator = new ReportGenerator();
-        htmlReportGenerator.setConfig( config );
-        htmlReportGenerator.setSourceDirectory( jsonReportDirectory );
-        htmlReportGenerator.setTargetDirectory( targetReportDir );
+        reportGenerator = new ReportGenerator();
+        reportGenerator.setConfig( config );
+        reportGenerator.setSourceDirectory( jsonReportDirectory );
+        reportGenerator.setTargetDirectory( targetReportDir );
     }
 
     public void the_report_generator_is_executed() throws Exception {
         createReportGenerator();
-        htmlReportGenerator.generate();
+        reportGenerator.generate();
     }
 
     public SELF the_plain_text_reporter_is_executed() {
@@ -64,12 +67,23 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
 
     public SELF the_report_generator_is_executed_with_format( Format format ) throws Exception {
         createReportGenerator();
-        htmlReportGenerator.setFormat( format );
-        htmlReportGenerator.generate();
+        reportGenerator.setFormat( format );
+        reportGenerator.generate();
         return self();
     }
 
     public SELF the_HTML5_report_has_been_generated() throws Exception {
         return the_report_generator_is_executed_with_format( Format.HTML5 );
+    }
+
+    public SELF the_exclude_empty_scenarios_option_is_set_to( boolean excludeEmptyScenarios ) {
+        config.setExcludeEmptyScenarios( excludeEmptyScenarios );
+        return self();
+    }
+
+    public SELF reading_the_report_model() {
+        createReportGenerator();
+        completeReportModel = reportGenerator.readReportModel();
+        return self();
     }
 }

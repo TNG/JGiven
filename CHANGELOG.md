@@ -4,6 +4,10 @@
 
 * Blank values can now be formatted [#157](https://github.com/TNG/JGiven/issues/157)
 
+## New Features
+
+* Scenarios without steps can now be excluded from the report by using the new `--exclude-empty-scenarios` report generator option [#151](https://github.com/TNG/JGiven/issues/151)
+
 # v0.9.3
 
 ## Fixed Issues

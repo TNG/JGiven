@@ -49,6 +49,13 @@ public class JGivenReportMojo extends AbstractMojo {
      */
     private String title;
 
+    /**
+     * Whether or not to exclude empty scenarios, i.e. scenarios without any steps,
+     * from the report
+     * @parameter expression="false"
+     */
+    boolean excludeEmptyScenarios;
+
     @Override
     public void execute() throws MojoExecutionException {
         try {
@@ -71,6 +78,7 @@ public class JGivenReportMojo extends AbstractMojo {
             generator.getConfig().setCustomCssFile( customCssFile );
             generator.getConfig().setCustomCssFile( customJsFile );
             generator.getConfig().setTitle( title );
+            generator.getConfig().setExcludeEmptyScenarios( excludeEmptyScenarios);
             generator.generate();
             getLog().info( "-------------------------------------------------------------------" );
             getLog().info( "Generated JGiven HTML reports to directory " + outputDirectory );

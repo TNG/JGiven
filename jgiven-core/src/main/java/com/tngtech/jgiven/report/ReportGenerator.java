@@ -51,6 +51,12 @@ public class ReportGenerator {
         File customCssFile;
         File customJsFile;
 
+        /**
+         * Whether or not to exclude empty scenarios, i.e. scenarios without any steps,
+         * from the report
+         */
+        boolean excludeEmptyScenarios;
+
         public void setTitle( String title ) {
             this.title = title;
         }
@@ -73,6 +79,14 @@ public class ReportGenerator {
 
         public File getCustomJsFile() {
             return customJsFile;
+        }
+
+        public void setExcludeEmptyScenarios( boolean excludeEmptyScenarios ) {
+            this.excludeEmptyScenarios = excludeEmptyScenarios;
+        }
+
+        public boolean getExcludeEmptyScenarios() {
+            return excludeEmptyScenarios;
         }
     }
 
@@ -102,6 +116,8 @@ public class ReportGenerator {
                 generator.config.customJsFile = new File( arg.split( "=" )[1] );
             } else if( arg.startsWith( "--title=" ) ) {
                 generator.config.title = arg.split( "=" )[1];
+            } else if( arg.startsWith( "--exclude-empty-scenarios=" ) ) {
+                generator.config.excludeEmptyScenarios = Boolean.parseBoolean( arg.split( "=" )[1] );
             } else if( arg.startsWith( "--format=" ) ) {
                 String formatArg = arg.split( "=" )[1];
                 Format format = Format.fromStringOrNull( formatArg );
@@ -126,7 +142,7 @@ public class ReportGenerator {
             return;
         }
 
-        CompleteReportModel reportModel = new ReportModelReader().readDirectory( getSourceDirectory() );
+        CompleteReportModel reportModel = readReportModel();
 
         if( format == HTML5 || format == HTML ) {
             generateHtml5Report( reportModel );
@@ -136,6 +152,10 @@ public class ReportGenerator {
             new AsciiDocReportGenerator().generate( reportModel, getTargetDirectory(), config );
         }
 
+    }
+
+    CompleteReportModel readReportModel() {
+        return new ReportModelReader( config ).readDirectory( getSourceDirectory() );
     }
 
     private void generateHtml5Report( CompleteReportModel reportModel ) throws IOException {
@@ -154,13 +174,17 @@ public class ReportGenerator {
     }
 
     private static void printUsageAndExit() {
-        System.err.println( "Options: \n"
-                + "  --format=<format>      the format of the report. Either html or text\n"
-                + "  --sourceDir=<dir>      the source directory where the JGiven JSON files are located\n"
-                + "  --targetDir=<dir>      the directory to generate the report to\n"
-                + "  --title=<title>        the title of the report\n"
-                + "  --customcss=<cssfile>  a custom CSS file to customize the HTML report\n"
-                + "  --customjs=<jsfile>    a custom JS file to customize the HTML report\n"
+        System.err
+            .println( "Options: \n"
+                    + "  --format=<format>      the format of the report. Either html or text\n"
+                    + "  --sourceDir=<dir>      the source directory where the JGiven JSON files are located\n"
+                    + "  --targetDir=<dir>      the directory to generate the report to\n"
+                    + "  --title=<title>        the title of the report\n"
+                    + "  --customcss=<cssfile>  a custom CSS file to customize the HTML report\n"
+                    + "  --customjs=<jsfile>    a custom JS file to customize the HTML report\n"
+                    + "  --exclude-empty-scenarios=<b>"
+                    + "                         exclude scenarios without steps from the report. "
+                    + "                         <b> in {true,false}. Default is false.\n"
             ); // NOSONAR
         System.exit( 1 );
     }

@@ -3,6 +3,7 @@ package com.tngtech.jgiven.report.model;
 import static java.util.Arrays.asList;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.tngtech.jgiven.Stage;
@@ -79,11 +80,12 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
-    public void the_report_has_$_scenarios( int n ) {
+    public SELF the_report_has_$_scenarios( int n ) {
         reportModel.getScenarios().clear();
         for( int i = 0; i < n; i++ ) {
             createScenarioModel( "something should happen " + i, "something_should_happen_" + i );
         }
+        return self();
     }
 
     public ReportModel getReportModel() {
@@ -261,4 +263,16 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
+    public SELF case_$_has_no_steps( int caseNr ) {
+        reportModel.getLastScenarioModel().getCase( caseNr - 1 ).setSteps( Collections.<StepModel>emptyList() );
+        return self();
+    }
+
+    public SELF scenario_$_has_no_steps( int i ) {
+        ScenarioModel scenarioModel = reportModel.getLastScenarioModel();
+        for( ScenarioCaseModel caseModel : scenarioModel.getScenarioCases() ) {
+            caseModel.setSteps( Collections.<StepModel>emptyList() );
+        }
+        return self();
+    }
 }
