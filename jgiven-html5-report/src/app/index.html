@@ -409,7 +409,7 @@
                     <i ng-if="scenario.executionStatus === 'SUCCESS'"
                        class="check fa fa-check-square"></i>
                     <span ng-if="scenario.executionStatus === 'FAILED'"
-                          class="failed label radius alert"><i class="fa fa-exclamation-circle"></i> FAILED</span>
+                          class="failed label radius alert"><i class="fa fa-exclamation-circle"></i>{{getNumberOfFailedCases(scenario)}} FAILED</span>
                     <span
                         ng-if="scenario.executionStatus === 'SCENARIO_PENDING' || scenario.executionStatus === 'SOME_STEPS_PENDING'"
                         class="pending label radius secondary"><i class="fa fa-ban"></i> PENDING</span>
@@ -444,7 +444,12 @@
                               ng-if="$index != scenario.explicitParameters.length - 1">, </span>
                           </span>
                         </span>
-                        <i ng-if="!case.success" class="failed-icon fa fa-exclamation-circle"></i>
+                         <span ng-if="!case.success"
+                               class="failed label radius alert"><i class="fa fa-exclamation-circle"></i> FAILED</span>
+
+                         <span ng-if="case.durationInNanos > 10000000"
+                               class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
+
                       </h5>
 
                       <div ng-if="scenario.scenarioCases.length === 1 || scenario.casesAsTable || case.expanded"
@@ -514,7 +519,7 @@
                           </tr>
                         </table>
                         <div ng-if="!scenario.casesAsTable">
-                          <div ng-if="!scenario.scenarioCases[0].success" data-alert
+                          <div ng-if="!case.success" data-alert
                                class="alert-box alert">
                             <span class="toggle" ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
                             <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>

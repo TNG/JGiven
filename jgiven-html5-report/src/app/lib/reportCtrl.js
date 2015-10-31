@@ -580,6 +580,27 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     }
   };
 
+  $scope.getNumberOfFailedCases = function (scenario) {
+    var nCases = scenario.scenarioCases.length;
+    if (nCases === 1) {
+      return '';
+    }
+
+    var failedCases = 0;
+
+    _.forEach(scenario.scenarioCases, function (aCase) {
+      if (!aCase.success) {
+        failedCases++;
+      }
+    });
+
+    if (failedCases < nCases) {
+      return " " + failedCases + " OF " + nCases + " CASES ";
+    } else {
+      return " ALL CASES";
+    }
+  };
+
   $scope.getScenarioCaseTitleStatusClass = function (scenarioCase) {
     return scenarioCase.success ? '' : 'failed';
   };
