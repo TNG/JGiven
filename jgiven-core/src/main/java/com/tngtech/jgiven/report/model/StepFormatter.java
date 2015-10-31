@@ -418,9 +418,7 @@ public class StepFormatter {
         String formattedValue = formatUsingFormatterOrNull( formatter, value );
         String argumentName = arguments.get( index ).name;
 
-        if( defaultFormattedValue != null && !defaultFormattedValue.isEmpty() ) {
-            formattedWords.add( Word.argWord( argumentName, defaultFormattedValue, formattedValue ) );
-        }
+        formattedWords.add( Word.argWord( argumentName, defaultFormattedValue, formattedValue ) );
     }
 
     @SuppressWarnings( "unchecked" )

@@ -66,6 +66,21 @@ public class StepFormatterTest {
         testFormatter( "$foo bar$", asList( "a" ), null, null, "" );
     }
 
+    static class EmptyFormatter implements ArgumentFormatter<String> {
+        @Override
+        public String format( String argumentToFormat, String... formatterArguments ) {
+            if( argumentToFormat == null ) {
+                return "<null>";
+            }
+
+            if( argumentToFormat.equals( "" ) ) {
+                return "<empty>";
+            }
+
+            return argumentToFormat;
+        }
+    }
+
     @DataProvider
     public static Object[][] formatterTestCases() {
         return new Object[][] {
@@ -75,6 +90,8 @@ public class StepFormatterTest {
             { "$", asList( true ), null, "", "true" },
             { "$$ foo", asList( true ), null, "", "\\$ foo true" },
             { "$", asList( 5d ), new PrintfFormatter(), "%.2f", "5[.,]00" },
+            { "$", asList( new Object[] { null } ), new EmptyFormatter(), "", "<null>" },
+            { "$", asList( "" ), new EmptyFormatter(), "", "<empty>" },
         };
     }
 

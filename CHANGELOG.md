@@ -1,3 +1,9 @@
+# v0.9.4
+
+## Fixed Issues
+
+* Blank values can now be formatted [#157](https://github.com/TNG/JGiven/issues/157)
+
 # v0.9.3
 
 ## Fixed Issues
