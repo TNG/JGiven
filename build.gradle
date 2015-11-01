@@ -17,12 +17,12 @@ apply plugin: 'com.github.kt3k.coveralls'
 description = 'JGiven - BDD in plain Java'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = '2.8'
 }
 
 allprojects {
     group = 'com.tngtech.jgiven'
-    version = '0.9.4-SNAPSHOT'
+    version = version
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
     ext.isCI = System.env.CI == "true"
     apply plugin: 'jacoco'
@@ -39,7 +39,6 @@ if (JavaVersion.current().isJava8Compatible()) {
         }
     }
 }
-
 
 subprojects {
     apply plugin: 'checkstyle'
@@ -272,6 +271,16 @@ subprojects {
         !(isCI && isReleaseVersion)
     }
 
+    uploadArchives.doFirst {
+        if (!isCI && isReleaseVersion && !JavaVersion.current().isJava8Compatible()) {
+            throw new GradleException("Releases have to be done with Java 8");
+        }
+    }
+
+    javadoc.onlyIf {
+        JavaVersion.current().isJava8Compatible()
+    }
+
 }
 
 task overallJacocoReport(type: JacocoReport) {
@@ -292,5 +301,4 @@ overallJacocoReport.dependsOn {
 coveralls.jacocoReportPath = 'build/reports/jacoco/overallJacocoReport/overallJacocoReport.xml'
 coveralls.sourceDirs = ["jgiven-core/src/main/java"]
 coveralls.saveAsFile = true
-
 
