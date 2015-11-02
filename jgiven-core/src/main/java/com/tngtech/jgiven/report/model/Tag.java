@@ -62,6 +62,12 @@ public class Tag {
      */
     private List<String> tags;
 
+    /**
+     * An optional href used in the HTML report.
+     * Can be {@code null}.
+     */
+    private String href;
+
     public Tag( String type ) {
         this.type = type;
     }
@@ -122,6 +128,14 @@ public class Tag {
 
     public String getStyle() {
         return style;
+    }
+
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
     }
 
     @SuppressWarnings( "unchecked" )
@@ -242,6 +256,7 @@ public class Tag {
         tag.description = this.description;
         tag.prependType = this.prependType;
         tag.tags = this.tags;
+        tag.href = this.href;
         return tag;
     }
 

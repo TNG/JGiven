@@ -4,8 +4,10 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.tngtech.jgiven.annotation.TagHrefGenerator;
 import com.tngtech.jgiven.impl.tag.DefaultTagDescriptionGenerator;
 import com.tngtech.jgiven.annotation.TagDescriptionGenerator;
+import com.tngtech.jgiven.impl.tag.DefaultTagHrefGenerator;
 
 /**
  * Represents the configuration of a tag.
@@ -25,6 +27,8 @@ public class TagConfiguration {
     private Class<? extends TagDescriptionGenerator> descriptionGenerator = DefaultTagDescriptionGenerator.class;
     private String name = "";
     private List<String> tags = Lists.newArrayList();
+    private String href = "";
+    private Class<? extends TagHrefGenerator> hrefGenerator = DefaultTagHrefGenerator.class;
 
     public TagConfiguration( Class<? extends Annotation> tagAnnotation ) {
         this.annotationType = tagAnnotation.getSimpleName();
@@ -102,6 +106,16 @@ public class TagConfiguration {
 
         public Builder tags( List<String> tags ) {
             configuration.tags = tags;
+            return this;
+        }
+
+        public Builder href( String s ) {
+            configuration.href = s;
+            return this;
+        }
+
+        public Builder hrefGenerator( Class<? extends TagHrefGenerator> hrefGenerator ) {
+            configuration.hrefGenerator = hrefGenerator;
             return this;
         }
 
@@ -196,6 +210,20 @@ public class TagConfiguration {
 
     public String getAnnotationType() {
         return annotationType;
+    }
+
+    /**
+     * @see com.tngtech.jgiven.annotation.IsTag#href
+     */
+    public String getHref() {
+        return href;
+    }
+
+    /**
+     * @see com.tngtech.jgiven.annotation.IsTag#hrefGenerator
+     */
+    public Class<? extends TagHrefGenerator> getHrefGenerator() {
+        return hrefGenerator;
     }
 
 }
