@@ -537,10 +537,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.getUrlFromTag = function getUrlFromTag (tag) {
+    if(tag.href) {
+      return tag.href;
+    }
     return '#tag/' + getTagName(tag) +
       (tag.value ? '/' + $window.encodeURIComponent(tag.value) : '');
-
-  }
+  };
 
   $scope.getTagByTagId = function (tagId) {
     return tagService.getTagByTagId(tagId);

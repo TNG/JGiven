@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.annotation;
 
 import com.tngtech.jgiven.impl.tag.DefaultTagDescriptionGenerator;
+import com.tngtech.jgiven.impl.tag.DefaultTagHrefGenerator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -138,5 +139,24 @@ public @interface IsTag {
      * @since 0.8.0
      */
     String style() default "";
+
+    /**
+     * An optional href of the tag that will appear in the generated report.
+     */
+    String href() default "";
+
+    /**
+     * An optional href generator that is used to dynamically generate
+     * the href depending on the concrete value of an annotation.
+     * <p>
+     * The class that implements {@link TagHrefGenerator} interface must
+     * be a public non-abstract class that is not a non-static inner class and must have a public default constructor.
+     * </p>
+     * <p>
+     * If this attribute is set, the {@link #href()} attribute is ignored.
+     * </p>
+     *
+     */
+    Class<? extends TagHrefGenerator> hrefGenerator() default DefaultTagHrefGenerator.class;
 
 }

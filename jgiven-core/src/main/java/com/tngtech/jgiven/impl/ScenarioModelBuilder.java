@@ -475,6 +475,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
 
         tag.setDescription( getDescriptionFromGenerator( tagConfig, annotation, value ) );
+        tag.setHref( getHref( tagConfig, annotation, value ) );
         return Arrays.asList( tag );
     }
 
@@ -485,7 +486,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
         return TagConfiguration.builder( annotation.annotationType() ).defaultValue( isTag.value() ).description( isTag.description() )
             .explodeArray( isTag.explodeArray() ).ignoreValue( isTag.ignoreValue() ).prependType( isTag.prependType() ).name( name )
             .descriptionGenerator( isTag.descriptionGenerator() ).cssClass( isTag.cssClass() ).color( isTag.color() )
-            .style( isTag.style() ).tags( getTagNames( isTag, annotation ) ).build();
+            .style( isTag.style() ).tags( getTagNames( isTag, annotation ) )
+            .href( isTag.href()).hrefGenerator( isTag.hrefGenerator() ).build();
 
     }
 
@@ -533,12 +535,23 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
     }
 
+    private String getHref( TagConfiguration tagConfiguration, Annotation annotation, Object value ) {
+        try {
+            return tagConfiguration.getHrefGenerator().newInstance().generateHref( tagConfiguration, annotation, value );
+        } catch( Exception e ) {
+            throw new JGivenWrongUsageException(
+                    "Error while trying to generate the href for annotation " + annotation + " using HrefGenerator class "
+                            + tagConfiguration.getHrefGenerator() + ": " + e.getMessage(), e );
+        }
+    }
+
     private List<Tag> getExplodedTags( Tag originalTag, Object[] values, Annotation annotation, TagConfiguration tagConfig ) {
         List<Tag> result = Lists.newArrayList();
         for( Object singleValue : values ) {
             Tag newTag = originalTag.copy();
             newTag.setValue( String.valueOf( singleValue ) );
             newTag.setDescription( getDescriptionFromGenerator( tagConfig, annotation, singleValue ) );
+            newTag.setHref( getHref( tagConfig, annotation, singleValue ) );
             result.add( newTag );
         }
         return result;
