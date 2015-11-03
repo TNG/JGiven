@@ -1,8 +1,10 @@
 package com.tngtech.jgiven.report.model;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -389,10 +391,21 @@ public class StepFormatter {
             return (Iterable<?>) value;
         }
         if( value.getClass().isArray() ) {
-            Object[] array = (Object[]) value;
-            return Arrays.asList( array );
+            return arrayToList( value );
         }
         return null;
+    }
+
+    private static Iterable<?> arrayToList( Object array ) {
+        int length = Array.getLength( array );
+        if( length == 0 ) {
+            return Collections.emptyList();
+        }
+        List<Object> result = Lists.newArrayList();
+        for( int i = 0; i < length; i++ ) {
+            result.add( Array.get( array, i ) );
+        }
+        return result;
     }
 
     private void addArgument( List<Word> formattedWords, int argCount, CharSequence word ) {

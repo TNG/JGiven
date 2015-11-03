@@ -107,6 +107,12 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
     }
 
     @Test
+    @DataProvider( { "1", "2" } )
+    public void table_parameters_are_ignored_by_the_case_analysis( Integer arg ) {
+        given().a_step_with_a_table_parameter( 1, 2, 3 );
+    }
+
+    @Test
     @DataProvider( { "true", "false" } )
     public void parameters_of_methods_can_be_formatted( @Format( value = BooleanFormatter.class, args = { "foo", "bar" } ) boolean b )
             throws Throwable {

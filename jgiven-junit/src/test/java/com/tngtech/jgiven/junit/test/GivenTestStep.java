@@ -43,6 +43,8 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         assertThat( fail ).isFalse();
     }
 
+    public void a_step_with_a_table_parameter( @Table int... args ) {}
+
     public static class CoffeePrice {
         String name;
         double price_in_EUR;
