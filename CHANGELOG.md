@@ -1,3 +1,9 @@
+# v0.9.5
+
+## Fixed Issues
+
+* Fixed issue with primitive arrays and the @Table annotation [#162](https://github.com/TNG/JGiven/issues/162)
+
 # v0.9.4
 
 ## Fixed Issues
