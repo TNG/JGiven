@@ -1,12 +1,12 @@
 package com.tngtech.jgiven.annotation;
 
-import com.tngtech.jgiven.impl.tag.DefaultTagDescriptionGenerator;
-import com.tngtech.jgiven.impl.tag.DefaultTagHrefGenerator;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import com.tngtech.jgiven.impl.tag.DefaultTagDescriptionGenerator;
+import com.tngtech.jgiven.impl.tag.DefaultTagHrefGenerator;
 
 /**
  * Marks an annotation to be used as a tag in JGiven reports.
@@ -142,6 +142,8 @@ public @interface IsTag {
 
     /**
      * An optional href of the tag that will appear in the generated report.
+     * 
+     * @since 0.9.5
      */
     String href() default "";
 
@@ -156,6 +158,7 @@ public @interface IsTag {
      * If this attribute is set, the {@link #href()} attribute is ignored.
      * </p>
      *
+     * @since 0.9.5
      */
     Class<? extends TagHrefGenerator> hrefGenerator() default DefaultTagHrefGenerator.class;
 

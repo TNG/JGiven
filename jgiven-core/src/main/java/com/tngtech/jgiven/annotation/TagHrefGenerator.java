@@ -1,8 +1,8 @@
 package com.tngtech.jgiven.annotation;
 
-import com.tngtech.jgiven.config.TagConfiguration;
-
 import java.lang.annotation.Annotation;
+
+import com.tngtech.jgiven.config.TagConfiguration;
 
 /**
  * Is used as an attribute of the {@link IsTag} annotation
@@ -11,6 +11,8 @@ import java.lang.annotation.Annotation;
  *     Implementations of this interface must be a public non-abstract class that is not a non-static inner class
  *     and must have a public default constructor.
  * </p>
+ *
+ * @since 0.9.5
  */
 public interface TagHrefGenerator {
 
@@ -29,5 +31,5 @@ public interface TagHrefGenerator {
      *              
      * @return the description of the annotation for the given value
      */
-    String generateHref(TagConfiguration tagConfiguration, Annotation annotation, Object value);
+    String generateHref( TagConfiguration tagConfiguration, Annotation annotation, Object value );
 }

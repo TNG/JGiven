@@ -1,11 +1,12 @@
 package com.tngtech.jgiven.impl.tag;
 
-import com.tngtech.jgiven.ScenarioRuleTest;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-
+import com.tngtech.jgiven.ScenarioRuleTest;
+import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 
 public class GoToTestHrefGeneratorTest {
 
@@ -13,13 +14,12 @@ public class GoToTestHrefGeneratorTest {
 
     @Test
     public void generatesAnchorHrefForTestClass() throws Exception {
-        String generatedHref = goToTestHrefGenerator.generateHref(null, null, ScenarioRuleTest.class);
-        assertThat(generatedHref, is("#class/com.tngtech.jgiven.ScenarioRuleTest"));
+        String generatedHref = goToTestHrefGenerator.generateHref( null, null, ScenarioRuleTest.class );
+        assertThat( generatedHref, is( "#class/com.tngtech.jgiven.ScenarioRuleTest" ) );
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test( expected = JGivenWrongUsageException.class )
     public void doesNotWorkWithClassesThatDoNotExtendScenarioTestBase() throws Exception {
-        Class classThatIsNotOfExpectedType = this.getClass();
-        goToTestHrefGenerator.generateHref(null, null, classThatIsNotOfExpectedType);
+        goToTestHrefGenerator.generateHref( null, null, "some non-class value" );
     }
 }
