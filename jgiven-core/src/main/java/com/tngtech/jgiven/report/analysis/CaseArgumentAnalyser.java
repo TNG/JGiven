@@ -251,12 +251,12 @@ public class CaseArgumentAnalyser {
 
         @Override
         public void visit( StepModel stepModel ) {
-            if( stepModel.getAttachment() != null && stepModel.getAttachment().isShowDirectly() ) {
+            if( ( stepModel.getAttachment() != null && stepModel.getAttachment().isShowDirectly() ) ) {
                 this.noDataTablePossible = true;
             }
 
             for( Word word : stepModel.words ) {
-                if( word.isArg() ) {
+                if( word.isArg() && !word.isDataTable() ) {
                     ArgumentHolder holder = new ArgumentHolder();
                     holder.word = word;
                     holder.params = getMatchingParameters( word );

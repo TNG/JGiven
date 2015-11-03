@@ -43,7 +43,13 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         assertThat( fail ).isFalse();
     }
 
-    public void a_step_with_a_table_parameter( @Table int... args ) {}
+    public void a_step_with_a_table_parameter_and_primitive_array( @Table int... args ) {}
+
+    public static class TestTableEntry {
+        int some_field = 1;
+    }
+
+    public void a_step_with_a_table_parameter( @Table TestTableEntry... args ) {}
 
     public static class CoffeePrice {
         String name;
