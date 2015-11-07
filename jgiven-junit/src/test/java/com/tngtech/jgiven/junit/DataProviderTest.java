@@ -12,6 +12,7 @@ import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.annotation.CaseDescription;
 import com.tngtech.jgiven.annotation.Format;
+import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.format.BooleanFormatter;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
@@ -108,23 +109,26 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
     @Test
     @DataProvider( { "1", "2" } )
-    public void table_parameters_work_with_primitive_arrays( Integer arg ) {
-        given().a_step_with_a_table_parameter_and_primitive_array( 1, 2, 3 );
-    }
-
-    @Test
-    @DataProvider( { "1", "2" } )
-    public void table_parameters_are_ignored_by_the_case_analysis( Integer arg ) throws Throwable {
-        given().a_step_with_a_table_parameter( new GivenTestStep.TestTableEntry() );
+    public void arguments_with_the_same_name_but_different_values_are_handled_correctly( Integer arg ) throws Throwable {
+        given().some_integer_value( arg + 1 )
+            .and().some_integer_value( arg + 2 );
 
         getScenario().finished();
+
         ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
         if( scenarioModel.getScenarioCases().size() == 2 ) {
             CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
             analyser.analyze( scenarioModel );
-            assertThat( scenarioModel.getDerivedParameters() ).isEmpty();
+            ScenarioCaseModel case0 = scenarioModel.getCase( 0 );
+            assertParameter( case0, 0, "someIntValue" );
+            assertParameter( case0, 1, "someIntValue2" );
         }
+    }
 
+    @Test
+    @DataProvider( { "1", "2" } )
+    public void table_parameters_work_with_primitive_arrays( Integer arg ) {
+        given().a_step_with_a_table_parameter_and_primitive_array( 1, 2, 3 );
     }
 
     @Test
@@ -168,6 +172,43 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
             getScenario().getModel().getLastScenarioModel().setDurationInNanos( 0 );
         } else {
             assertThat( getScenario().getModel().getLastScenarioModel().getDurationInNanos() ).isNotEqualTo( 0 );
+        }
+    }
+
+    @Test
+    @DataProvider( {
+        "foo",
+        "bar"
+    } )
+    public void two_identically_formatted_arguments_should_be_unified_in_one_parameter( @Quoted String arg ) throws Throwable {
+        given().some_quoted_string_value( arg )
+            .and().another_quoted_string_value( arg );
+
+        getScenario().finished();
+        ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
+        if( scenarioModel.getScenarioCases().size() == 2 ) {
+            CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
+            analyser.analyze( scenarioModel );
+            assertThat( scenarioModel.getDerivedParameters() ).hasSize( 1 );
+            assertThat( scenarioModel.getDerivedParameters().get( 0 ) ).isEqualTo( "arg" );
+        }
+    }
+
+    @Test
+    @DataProvider( {
+        "foo",
+        "bar"
+    } )
+    public void two_differently_formatted_arguments_but_with_the_same_value_should_become_two_parameters( String param ) throws Throwable {
+        given().some_quoted_string_value( param )
+            .and().some_string_value( param );
+
+        getScenario().finished();
+        ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
+        if( scenarioModel.getScenarioCases().size() == 2 ) {
+            CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
+            analyser.analyze( scenarioModel );
+            assertThat( scenarioModel.getDerivedParameters() ).containsExactly( "someQuotedStringValue", "someStringValue" );
         }
     }
 

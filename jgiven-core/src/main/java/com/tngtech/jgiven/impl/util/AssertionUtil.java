@@ -24,4 +24,8 @@ public class AssertionUtil {
         }
     }
 
+    public static void assertFalse( boolean condition, String msg ) {
+        assertTrue( !condition, msg );
+    }
+
 }

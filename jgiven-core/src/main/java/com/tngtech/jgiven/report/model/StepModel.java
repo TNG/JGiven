@@ -104,7 +104,7 @@ public class StepModel {
         this.extendedDescription = extendedDescription;
     }
 
-    public Iterable<Word> getWords() {
+    public List<Word> getWords() {
         return Collections.unmodifiableList( words );
     }
 

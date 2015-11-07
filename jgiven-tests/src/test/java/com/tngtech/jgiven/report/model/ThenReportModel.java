@@ -93,6 +93,11 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
         return self();
     }
 
+    public SELF the_scenario_has_no_derived_parameters() {
+        assertThat( reportModel.getLastScenarioModel().getDerivedParameters() ).isEmpty();
+        return self();
+    }
+
     public SELF the_scenario_has_derived_parameters( String... parameters ) {
         assertThat( reportModel.getLastScenarioModel().getDerivedParameters() ).containsExactly( parameters );
         return self();

@@ -1,14 +1,16 @@
 package com.tngtech.jgiven.report.analysis;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
+import com.google.common.collect.TreeMultiset;
+import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.report.model.*;
 
 /**
@@ -29,260 +31,334 @@ public class CaseArgumentAnalyser {
         }
     }
 
+    static class JoinedArgs {
+        final List<Word> words;
+
+        public JoinedArgs( Word word ) {
+            words = Lists.newArrayList( word );
+        }
+    }
+
     public void analyze( ScenarioModel scenarioModel ) {
-        if( scenarioModel.getScenarioCases().size() < 2 ) {
-            return;
-        }
-        CollectPhase collectPhase = new CollectPhase( scenarioModel );
-        scenarioModel.accept( collectPhase );
-
-        if( collectPhase.noDataTablePossible ) {
-            scenarioModel.setCasesAsTable( false );
+        if( scenarioModel.getScenarioCases().size() == 1 ) {
             return;
         }
 
-        try {
-            reduceMatrix( scenarioModel, collectPhase.argumentMatrix );
-            scenarioModel.setCasesAsTable( allStepsEqual( collectPhase.allWords ) );
-            if( !scenarioModel.isCasesAsTable() ) {
-                new CaseDifferenceAnalyzer().analyze( scenarioModel );
-            }
-
-        } catch( IndexOutOfBoundsException e ) {
-            log.info( "Scenario model " + scenarioModel.getClassName() + "." + scenarioModel.getTestMethodName()
-                    + " has no homogene cases."
-                    + " Cannot analyse argument cases" );
-            scenarioModel.setCasesAsTable( false );
+        if( !isStructuralIdentical( scenarioModel ) ) {
+            log.debug( "Cases are structurally different, cannot create data table" );
+            return;
         }
+        scenarioModel.setCasesAsTable( true );
 
-    }
+        // get all words that are arguments
+        List<List<Word>> argumentWords = collectArguments( scenarioModel );
+        AssertionUtil.assertFalse( argumentCountDiffer( argumentWords ), "Argument count differs" );
 
-    private boolean allStepsEqual( List<List<Word>> allWords ) {
-        List<Word> firstWords = allWords.get( 0 );
-        for( int i = 1; i < allWords.size(); i++ ) {
-            if( !wordsAreEqual( firstWords, allWords.get( i ) ) ) {
-                return false;
-            }
-        }
-        return true;
-    }
+        // filter out arguments that are the same in all cases
+        // only keep arguments that actually differ between cases
+        List<List<Word>> differentArguments = getDifferentArguments( argumentWords );
 
-    private boolean wordsAreEqual( List<Word> firstWords, List<Word> words ) {
-        if( firstWords.size() != words.size() ) {
-            return false;
-        }
-        for( int j = 0; j < words.size(); j++ ) {
-            Word firstWord = firstWords.get( j );
-            Word word = words.get( j );
-            if( firstWord.isArg() && word.isArg()
-                    && Objects.equal( firstWord.getArgumentInfo().getArgumentName(), word.getArgumentInfo().getArgumentName() ) ) {
-                continue;
-            }
-            if( !firstWord.equals( word ) ) {
-                return false;
-            }
-        }
-        return true;
-    }
+        // now join arguments that are the same within each case
+        List<List<JoinedArgs>> joinedArgs = joinEqualArguments( differentArguments );
 
-    private static final class CaseArguments {
-        final List<ArgumentHolder> arguments;
+        // finally we try to use the parameter names of the scenario
+        List<List<String>> explicitParameterValues = getExplicitParameterValues( scenarioModel.getScenarioCases() );
+        List<String> argumentNames = findArgumentNames( joinedArgs, explicitParameterValues, scenarioModel.getExplicitParameters() );
 
-        private CaseArguments( List<ArgumentHolder> arguments ) {
-            this.arguments = arguments;
-        }
+        List<List<Word>> arguments = getFirstWords( joinedArgs );
 
-        public ArgumentHolder get( int i ) {
-            return arguments.get( i );
+        setParameterNames( joinedArgs, argumentNames );
+        scenarioModel.setDerivedParameters( argumentNames );
+
+        for( int iCase = 0; iCase < arguments.size(); iCase++ ) {
+            scenarioModel.getCase( iCase ).setDerivedArguments( getFormattedValues( arguments.get( iCase ) ) );
         }
     }
 
-    static class ParameterReplacement {
-        List<Word> arguments;
-        ParameterMatch match;
-        String replacementName;
-        boolean isStepParameterName;
+    private List<List<String>> getExplicitParameterValues( List<ScenarioCaseModel> scenarioCases ) {
+        List<List<String>> explicitParameterValues = Lists.newArrayListWithExpectedSize( scenarioCases.size() );
 
-        public void updateToStepParameterName( Set<String> usedNames ) {
-            String name = arguments.get( 0 ).getArgumentInfo().getArgumentName();
-
-            int i = 1;
-            String suffix = "";
-            while( usedNames.contains( name + suffix ) ) {
-                i++;
-                suffix = "" + i;
-            }
-
-            replacementName = name + suffix;
-            usedNames.add( replacementName );
-            isStepParameterName = true;
-        }
-    }
-
-    private void reduceMatrix( ScenarioModel scenarioModel, List<CaseArguments> argumentMatrix ) {
-        int nArguments = argumentMatrix.get( 0 ).arguments.size();
-        Map<String, ParameterReplacement> usedParameters = Maps.newLinkedHashMap();
-        List<ParameterReplacement> parameterReplacements = Lists.newArrayList();
-        Set<String> usedNames = Sets.newHashSet();
-
-        for( int iArg = 0; iArg < nArguments; iArg++ ) {
-            List<Word> arguments = getArgumentsOfAllCases( argumentMatrix, iArg );
-
-            if( allArgumentsAreEqual( arguments ) ) {
-                continue;
-            }
-
-            ParameterReplacement replacement = new ParameterReplacement();
-            replacement.arguments = arguments;
-            parameterReplacements.add( replacement );
-
-            Collection<ParameterMatch> parameterMatches = getPossibleParameterNames( argumentMatrix, iArg );
-
-            if( !parameterMatches.isEmpty() ) {
-                Iterator<ParameterMatch> iterator = parameterMatches.iterator();
-                ParameterMatch match = iterator.next();
-                replacement.match = match;
-                replacement.replacementName = match.parameter;
-
-                usedNames.add( replacement.replacementName );
-                usedParameters.put( match.parameter, replacement );
-
-                if( iterator.hasNext() ) {
-                    log.debug( "Multiple parameter matches found for argument " + iArg + ": " + parameterMatches
-                            + ". Took the first one." );
-                }
-            } else {
-                replacement.updateToStepParameterName( usedNames );
-            }
+        for( ScenarioCaseModel caseModel : scenarioCases ) {
+            explicitParameterValues.add( caseModel.getExplicitArguments() );
         }
 
-        for( ParameterReplacement replacement : parameterReplacements ) {
-            boolean duplicate = scenarioModel.getDerivedParameters().contains( replacement.replacementName );
-            if( !duplicate ) {
-                scenarioModel.addDerivedParameter( replacement.replacementName );
-            }
-            for( int i = 0; i < replacement.arguments.size(); i++ ) {
-                Word word = replacement.arguments.get( i );
-                word.getArgumentInfo().setParameterName( replacement.replacementName );
-                if( !duplicate ) {
-                    scenarioModel.getCase( i ).addDerivedArguments( word.getFormattedValue() );
-                }
-            }
-        }
-
-    }
-
-    private Collection<ParameterMatch> getPossibleParameterNames( List<CaseArguments> argumentMatrix, int iArg ) {
-        Map<String, ParameterMatch> result = toMap( argumentMatrix.get( 0 ).arguments.get( iArg ).params );
-
-        for( int i = 1; i < argumentMatrix.size(); i++ ) {
-            Map<String, ParameterMatch> map = toMap( argumentMatrix.get( i ).arguments.get( iArg ).params );
-            for( String key : Lists.newArrayList( result.keySet() ) ) {
-                if( !map.containsKey( key ) ) {
-                    result.remove( key );
-                }
-            }
-        }
-        return result.values();
-    }
-
-    private Map<String, ParameterMatch> toMap( Set<ParameterMatch> params ) {
-        Map<String, ParameterMatch> result = Maps.newLinkedHashMap();
-        for( ParameterMatch match : params ) {
-            result.put( match.parameter, match );
-        }
-        return result;
-    }
-
-    private List<Word> getArgumentsOfAllCases( List<CaseArguments> argumentMatrix, int iArg ) {
-        List<Word> result = Lists.newArrayList();
-        for( int iCase = 0; iCase < argumentMatrix.size(); iCase++ ) {
-            result.add( argumentMatrix.get( iCase ).get( iArg ).word );
-        }
-        return result;
-    }
-
-    private boolean allArgumentsAreEqual( List<Word> arguments ) {
-        Word firstWord = arguments.get( 0 );
-        for( int i = 1; i < arguments.size(); i++ ) {
-            Word word = arguments.get( i );
-            if( !firstWord.equals( word ) ) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    static class ParameterMatch {
-        String parameter;
-        int index;
-    }
-
-    static class ArgumentHolder {
-        Word word;
-        Set<ParameterMatch> params;
+        return explicitParameterValues;
     }
 
     /**
-     * Collect all possible argument matches.
-     * This results in a set of possible case arguments for each step argument
+     * Finds for each JoinedArgs set the best fitting name.
+     * <p>
+     * First it is tried to find a name from the explicitParameterNames list, by comparing the argument values
+     * with the explicit case argument values. If no matching value can be found, the name of the argument is taken.
      */
-    static class CollectPhase extends ReportModelVisitor {
-        List<CaseArguments> argumentMatrix = Lists.newArrayList();
-        List<ArgumentHolder> argumentsOfCurrentCase;
-        List<List<Word>> allWords = Lists.newArrayList();
-        List<Word> allWordsOfCurrentCase;
-        ScenarioCaseModel currentCase;
-        final ScenarioModel scenarioModel;
-        boolean noDataTablePossible;
+    private List<String> findArgumentNames( List<List<JoinedArgs>> joinedArgs, List<List<String>> explicitParameterValues,
+            List<String> explicitParameterNames ) {
+        List<String> argumentNames = Lists.newArrayListWithExpectedSize( joinedArgs.get( 0 ).size() );
+        Multiset<String> paramNames = TreeMultiset.create();
 
-        public CollectPhase( ScenarioModel model ) {
-            this.scenarioModel = model;
-        }
+        arguments:
+        for( int iArg = 0; iArg < joinedArgs.get( 0 ).size(); iArg++ ) {
+            parameters:
+            for( int iParam = 0; iParam < explicitParameterNames.size(); iParam++ ) {
+                String paramName = explicitParameterNames.get( iParam );
 
-        @Override
-        public void visit( ScenarioCaseModel scenarioCase ) {
-            currentCase = scenarioCase;
-            argumentsOfCurrentCase = Lists.newArrayList();
-            argumentMatrix.add( new CaseArguments( argumentsOfCurrentCase ) );
-            allWordsOfCurrentCase = Lists.newArrayList();
-            allWords.add( allWordsOfCurrentCase );
-        }
+                boolean formattedValueMatches = true;
+                boolean valueMatches = true;
+                for( int iCase = 0; iCase < joinedArgs.size(); iCase++ ) {
+                    JoinedArgs args = joinedArgs.get( iCase ).get( iArg );
 
-        @Override
-        public void visit( StepModel stepModel ) {
-            if( ( stepModel.getAttachment() != null && stepModel.getAttachment().isShowDirectly() ) ) {
-                this.noDataTablePossible = true;
-            }
+                    String parameterValue = explicitParameterValues.get( iCase ).get( iParam );
 
-            for( Word word : stepModel.words ) {
-                if( word.isArg() && !word.isDataTable() ) {
-                    ArgumentHolder holder = new ArgumentHolder();
-                    holder.word = word;
-                    holder.params = getMatchingParameters( word );
-                    argumentsOfCurrentCase.add( holder );
-                }
-                allWordsOfCurrentCase.add( word );
-            }
-        }
+                    String formattedValue = args.words.get( 0 ).getFormattedValue();
+                    if( !formattedValue.equals( parameterValue ) ) {
+                        formattedValueMatches = false;
+                    }
 
-        private Set<ParameterMatch> getMatchingParameters( Word word ) {
-            Set<ParameterMatch> matchingParameters = Sets.newLinkedHashSet();
-            for( int i = 0; i < currentCase.getExplicitArguments().size(); i++ ) {
-                String argumentValue = currentCase.getExplicitArguments().get( i );
-                if( Objects.equal( word.getValue(), argumentValue ) ) {
-                    if( i < scenarioModel.getExplicitParameters().size() ) {
-                        ParameterMatch match = new ParameterMatch();
-                        match.index = i;
-                        match.parameter = scenarioModel.getExplicitParameters().get( i );
-                        if( Objects.equal( word.getFormattedValue(), argumentValue ) ) {
-                            matchingParameters.add( match );
-                        }
+                    String value = args.words.get( 0 ).getValue();
+                    if( !value.equals( parameterValue ) ) {
+                        valueMatches = false;
+                    }
+
+                    if( !formattedValueMatches && !valueMatches ) {
+                        continue parameters;
                     }
                 }
+
+                // on this point either all formatted values match or all values match (or both)
+                argumentNames.add( paramName );
+                paramNames.add( paramName );
+                continue arguments;
             }
-            return matchingParameters;
+
+            argumentNames.add( null );
+        }
+
+        Set<String> usedNames = Sets.newHashSet();
+        for( int iArg = 0; iArg < joinedArgs.get( 0 ).size(); iArg++ ) {
+            String name = argumentNames.get( iArg );
+            if( name == null || paramNames.count( name ) > 1 ) {
+                String origName = getArgumentName( joinedArgs, iArg );
+                name = findFreeName( usedNames, origName );
+                argumentNames.set( iArg, name );
+            }
+            usedNames.add( name );
+
+        }
+
+        return argumentNames;
+    }
+
+    private String getArgumentName( List<List<JoinedArgs>> joinedArgs, int iArg ) {
+        return joinedArgs.get( 0 ).get( iArg ).words.get( 0 ).getArgumentInfo().getArgumentName();
+    }
+
+    private String findFreeName( Set<String> usedNames, String origName ) {
+        String name = origName;
+        int counter = 2;
+        while( usedNames.contains( name ) ) {
+            name = origName + counter;
+            counter++;
+        }
+        usedNames.add( name );
+        return name;
+    }
+
+    private List<List<Word>> getFirstWords( List<List<JoinedArgs>> joinedArgs ) {
+        List<List<Word>> result = Lists.newArrayList();
+        for( int i = 0; i < joinedArgs.size(); i++ ) {
+            result.add( Lists.<Word>newArrayList() );
+        }
+
+        for( int i = 0; i < joinedArgs.size(); i++ ) {
+            for( int j = 0; j < joinedArgs.get( i ).size(); j++ ) {
+                result.get( i ).add( joinedArgs.get( i ).get( j ).words.get( 0 ) );
+            }
+        }
+
+        return result;
+    }
+
+    List<List<JoinedArgs>> joinEqualArguments( List<List<Word>> differentArguments ) {
+        List<List<JoinedArgs>> joined = Lists.newArrayList();
+        for( int i = 0; i < differentArguments.size(); i++ ) {
+            joined.add( Lists.<JoinedArgs>newArrayList() );
+        }
+
+        if( differentArguments.get( 0 ).isEmpty() ) {
+            return joined;
+        }
+
+        for( int iCase = 0; iCase < differentArguments.size(); iCase++ ) {
+            joined.get( iCase ).add( new JoinedArgs( differentArguments.get( iCase ).get( 0 ) ) );
+        }
+
+        int numberOfArgs = differentArguments.get( 0 ).size();
+
+        outer:
+        for( int i = 1; i < numberOfArgs; i++ ) {
+            inner:
+            for( int j = 0; j < joined.get( 0 ).size(); j++ ) {
+
+                for( int iCase = 0; iCase < differentArguments.size(); iCase++ ) {
+                    Word newWord = differentArguments.get( iCase ).get( i );
+                    Word joinedWord = joined.get( iCase ).get( j ).words.get( 0 );
+
+                    if( !newWord.getFormattedValue().equals( joinedWord.getFormattedValue() ) ) {
+                        continue inner;
+                    }
+                }
+
+                for( int iCase = 0; iCase < differentArguments.size(); iCase++ ) {
+                    joined.get( iCase ).get( j ).words.add( differentArguments.get( iCase ).get( i ) );
+                }
+
+                continue outer;
+            }
+
+            for( int iCase = 0; iCase < differentArguments.size(); iCase++ ) {
+                joined.get( iCase ).add( new JoinedArgs( differentArguments.get( iCase ).get( i ) ) );
+            }
+        }
+
+        return joined;
+    }
+
+    /**
+     * A scenario model is structural identical if all cases have exactly the same
+     * steps, except for values of step arguments.
+     * <p>
+     * This is implemented by comparing all cases with the first one
+     */
+    private boolean isStructuralIdentical( ScenarioModel scenarioModel ) {
+        ScenarioCaseModel firstCase = scenarioModel.getScenarioCases().get( 0 );
+
+        for( int iCase = 1; iCase < scenarioModel.getScenarioCases().size(); iCase++ ) {
+            ScenarioCaseModel caseModel = scenarioModel.getScenarioCases().get( iCase );
+            if( stepsAreDifferent( firstCase, caseModel ) ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean stepsAreDifferent( ScenarioCaseModel firstCase, ScenarioCaseModel caseModel ) {
+        if( firstCase.getSteps().size() != caseModel.getSteps().size() ) {
+            return true;
+        }
+
+        for( int iStep = 0; iStep < firstCase.getSteps().size(); iStep++ ) {
+            StepModel firstStep = firstCase.getStep( iStep );
+            StepModel stepModel = caseModel.getStep( iStep );
+
+            if( firstStep.getWords().size() != stepModel.getWords().size() ) {
+                return true;
+            }
+
+            if( wordsAreDifferent( firstStep, stepModel ) ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean wordsAreDifferent( StepModel firstStep, StepModel stepModel ) {
+        for( int iWord = 0; iWord < firstStep.getWords().size(); iWord++ ) {
+            Word firstWord = firstStep.getWord( iWord );
+            Word word = stepModel.getWord( iWord );
+
+            if( firstWord.isArg() != word.isArg() ) {
+                return true;
+            }
+
+            if( !firstWord.isArg() && !firstWord.getValue().equals( word.getValue() ) ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void setParameterNames( List<List<JoinedArgs>> differentArguments, List<String> argumentNames ) {
+        AssertionUtil.assertTrue( argumentNames.size() == differentArguments.get( 0 ).size(), "Number of argument names is wrong" );
+
+        for( int iArg = 0; iArg < argumentNames.size(); iArg++ ) {
+            for( int iCase = 0; iCase < differentArguments.size(); iCase++ ) {
+                for( Word word : differentArguments.get( iCase ).get( iArg ).words ) {
+                    word.getArgumentInfo().setParameterName( argumentNames.get( iArg ) );
+                }
+            }
         }
     }
 
+    private List<String> getFormattedValues( List<Word> words ) {
+        List<String> formattedValues = Lists.newArrayListWithExpectedSize( words.size() );
+        for( Word word : words ) {
+            formattedValues.add( word.getFormattedValue() );
+        }
+        return formattedValues;
+    }
+
+    /**
+     * Returns a list with argument words that are not equal in all cases
+     */
+    List<List<Word>> getDifferentArguments( List<List<Word>> argumentWords ) {
+        List<List<Word>> result = Lists.newArrayList();
+        for( int i = 0; i < argumentWords.size(); i++ ) {
+            result.add( Lists.<Word>newArrayList() );
+        }
+
+        int nWords = argumentWords.get( 0 ).size();
+
+        for( int iWord = 0; iWord < nWords; iWord++ ) {
+            Word wordOfFirstCase = argumentWords.get( 0 ).get( iWord );
+
+            boolean different = false;
+            for( int iCase = 1; iCase < argumentWords.size(); iCase++ ) {
+                Word wordOfCase = argumentWords.get( iCase ).get( iWord );
+                if( !wordOfCase.getFormattedValue().equals( wordOfFirstCase.getFormattedValue() ) ) {
+                    different = true;
+                    break;
+                }
+            }
+            if( different ) {
+                for( int iCase = 0; iCase < argumentWords.size(); iCase++ ) {
+                    result.get( iCase ).add( argumentWords.get( iCase ).get( iWord ) );
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private List<List<Word>> collectArguments( ScenarioModel scenarioModel ) {
+        List<List<Word>> argumentWords = Lists.newArrayList();
+
+        for( ScenarioCaseModel scenarioCaseModel : scenarioModel.getScenarioCases() ) {
+            argumentWords.add( findArgumentWords( scenarioCaseModel ) );
+        }
+        return argumentWords;
+    }
+
+    private boolean argumentCountDiffer( List<List<Word>> argumentWords ) {
+        int nArgs = argumentWords.get( 0 ).size();
+
+        for( int i = 1; i < argumentWords.size(); i++ ) {
+            if( argumentWords.get( i ).size() != nArgs ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<Word> findArgumentWords( ScenarioCaseModel scenarioCaseModel ) {
+        List<Word> arguments = Lists.newArrayList();
+        for( StepModel step : scenarioCaseModel.getSteps() ) {
+            for( Word word : step.getWords() ) {
+                if( word.isArg() ) {
+                    arguments.add( word );
+                }
+            }
+        }
+        return arguments;
+    }
 }

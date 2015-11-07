@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.annotation.Table;
 
 public class GivenTestStep extends Stage<GivenTestStep> {
@@ -44,6 +45,18 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     }
 
     public void a_step_with_a_table_parameter_and_primitive_array( @Table int... args ) {}
+
+    public GivenTestStep some_quoted_string_value( @Quoted String someQuotedStringValue ) {
+        return self();
+    }
+
+    public GivenTestStep some_string_value( String someStringValue ) {
+        return self();
+    }
+
+    public void another_quoted_string_value( @Quoted String anotherQuotedStringValue ) {
+
+    }
 
     public static class TestTableEntry {
         int some_field = 1;

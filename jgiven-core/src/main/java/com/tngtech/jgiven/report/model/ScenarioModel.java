@@ -1,9 +1,6 @@
 package com.tngtech.jgiven.report.model;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -105,6 +102,11 @@ public class ScenarioModel {
 
     public void addDurationInNanos( long durationInNanosDelta ) {
         this.durationInNanos += durationInNanosDelta;
+    }
+
+    public void setDerivedParameters( Collection<String> parameters ) {
+        this.derivedParameters.clear();
+        this.derivedParameters.addAll( parameters );
     }
 
     public void addDerivedParameter( String parameterName ) {

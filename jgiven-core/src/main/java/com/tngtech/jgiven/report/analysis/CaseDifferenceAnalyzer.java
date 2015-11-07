@@ -3,10 +3,12 @@ package com.tngtech.jgiven.report.analysis;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
-import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser.CollectPhase;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.Word;
+import com.google.common.base.Objects;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.tngtech.jgiven.report.model.*;
 
 public class CaseDifferenceAnalyzer {
 
@@ -162,6 +164,90 @@ public class CaseDifferenceAnalyzer {
 
         private boolean currentRowAtEnd() {
             return getCurrentIndex() == input.get( currentRow ).size();
+        }
+    }
+
+    private static final class CaseArguments {
+        final List<ArgumentHolder> arguments;
+
+        private CaseArguments( List<ArgumentHolder> arguments ) {
+            this.arguments = arguments;
+        }
+
+        public ArgumentHolder get( int i ) {
+            return arguments.get( i );
+        }
+    }
+
+    static class ParameterMatch {
+        String parameter;
+        int index;
+    }
+
+    static class ArgumentHolder {
+        Word word;
+        Set<ParameterMatch> params;
+    }
+
+    /**
+     * Collect all possible argument matches.
+     * This results in a set of possible case arguments for each step argument
+     */
+    static class CollectPhase extends ReportModelVisitor {
+        List<CaseArguments> argumentMatrix = Lists.newArrayList();
+        List<ArgumentHolder> argumentsOfCurrentCase;
+        List<List<Word>> allWords = Lists.newArrayList();
+        List<Word> allWordsOfCurrentCase;
+        ScenarioCaseModel currentCase;
+        final ScenarioModel scenarioModel;
+        boolean noDataTablePossible;
+
+        public CollectPhase( ScenarioModel model ) {
+            this.scenarioModel = model;
+        }
+
+        @Override
+        public void visit( ScenarioCaseModel scenarioCase ) {
+            currentCase = scenarioCase;
+            argumentsOfCurrentCase = Lists.newArrayList();
+            argumentMatrix.add( new CaseArguments( argumentsOfCurrentCase ) );
+            allWordsOfCurrentCase = Lists.newArrayList();
+            allWords.add( allWordsOfCurrentCase );
+        }
+
+        @Override
+        public void visit( StepModel stepModel ) {
+            if( ( stepModel.getAttachment() != null && stepModel.getAttachment().isShowDirectly() ) ) {
+                this.noDataTablePossible = true;
+            }
+
+            for( Word word : stepModel.words ) {
+                if( word.isArg() && !word.isDataTable() ) {
+                    ArgumentHolder holder = new ArgumentHolder();
+                    holder.word = word;
+                    holder.params = getMatchingParameters( word );
+                    argumentsOfCurrentCase.add( holder );
+                }
+                allWordsOfCurrentCase.add( word );
+            }
+        }
+
+        private Set<ParameterMatch> getMatchingParameters( Word word ) {
+            Set<ParameterMatch> matchingParameters = Sets.newLinkedHashSet();
+            for( int i = 0; i < currentCase.getExplicitArguments().size(); i++ ) {
+                String argumentValue = currentCase.getExplicitArguments().get( i );
+                if( Objects.equal( word.getValue(), argumentValue ) ) {
+                    if( i < scenarioModel.getExplicitParameters().size() ) {
+                        ParameterMatch match = new ParameterMatch();
+                        match.index = i;
+                        match.parameter = scenarioModel.getExplicitParameters().get( i );
+                        if( Objects.equal( word.getFormattedValue(), argumentValue ) ) {
+                            matchingParameters.add( match );
+                        }
+                    }
+                }
+            }
+            return matchingParameters;
         }
     }
 

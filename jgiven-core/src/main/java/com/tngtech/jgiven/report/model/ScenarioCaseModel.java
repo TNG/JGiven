@@ -26,7 +26,7 @@ public class ScenarioCaseModel {
 
     /**
      * Derived arguments are arguments that used as arguments to step methods.
-     * These have not to be the same as the explicit arguments.
+     * These need not to be the same as the explicit arguments.
      * However, typically they are somehow derived from them.
      * For data tables only the derived arguments are used, because
      * these are the only visible arguments.
@@ -163,5 +163,10 @@ public class ScenarioCaseModel {
 
     public boolean hasDescription() {
         return description != null;
+    }
+
+    public void setDerivedArguments( List<String> derivedArguments ) {
+        this.derivedArguments.clear();
+        this.derivedArguments.addAll( derivedArguments );
     }
 }
