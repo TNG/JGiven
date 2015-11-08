@@ -58,6 +58,14 @@ public class GivenTestStep extends Stage<GivenTestStep> {
 
     }
 
+    public static class TableClass {
+        public String value;
+    }
+
+    public void some_data_table( @Table TableClass... param ) {
+
+    }
+
     public static class TestTableEntry {
         int some_field = 1;
     }

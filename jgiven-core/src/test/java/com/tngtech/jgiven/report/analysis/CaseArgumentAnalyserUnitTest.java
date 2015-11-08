@@ -10,8 +10,10 @@ import org.junit.runner.RunWith;
 import com.google.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser.JoinedArgs;
 import com.tngtech.jgiven.report.model.AttachmentModel;
+import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.Word;
 
 @RunWith( DataProviderRunner.class )
@@ -89,5 +91,24 @@ public class CaseArgumentAnalyserUnitTest {
         secondAttachment.setShowDirectly( secondShowDirectly );
 
         assertThat( analyser.attachmentsAreStructurallyDifferent( firstAttachment, secondAttachment ) ).isEqualTo( expectedResult );
+    }
+
+    @Test
+    public void equal_data_tables_are_found() {
+        List<List<String>> data = Lists.newArrayList();
+        data.add( Lists.<String>newArrayList( "1" ) );
+
+        DataTable dataTable = new DataTable( Table.HeaderType.HORIZONTAL, data );
+        Word word = Word.argWord( "arg1", "foo", dataTable );
+
+        DataTable dataTable2 = new DataTable( Table.HeaderType.HORIZONTAL, data );
+        Word word2 = Word.argWord( "arg1", "foo", dataTable2 );
+
+        List<List<Word>> cases = Lists.newArrayList();
+        cases.add( Lists.<Word>newArrayList( word ) );
+        cases.add( Lists.<Word>newArrayList( word2 ) );
+
+        assertThat( analyser.getDifferentArguments( cases ).get( 0 ) ).isEmpty();
+
     }
 }

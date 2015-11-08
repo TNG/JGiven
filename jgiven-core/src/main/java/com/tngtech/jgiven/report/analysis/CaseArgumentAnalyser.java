@@ -300,6 +300,12 @@ public class CaseArgumentAnalyser {
             if( !firstWord.isArg() && !firstWord.getValue().equals( word.getValue() ) ) {
                 return true;
             }
+
+            if( firstWord.isArg() && firstWord.isDataTable()
+                    && !firstWord.getArgumentInfo().getDataTable().equals( word.getArgumentInfo().getDataTable() ) ) {
+                return true;
+            }
+
         }
         return false;
     }
@@ -338,6 +344,12 @@ public class CaseArgumentAnalyser {
         for( int iWord = 0; iWord < nWords; iWord++ ) {
             Word wordOfFirstCase = argumentWords.get( 0 ).get( iWord );
 
+            // data tables have equal here, otherwise
+            // the cases would be structurally different
+            if( wordOfFirstCase.isDataTable() ) {
+                continue;
+            }
+
             boolean different = false;
             for( int iCase = 1; iCase < argumentWords.size(); iCase++ ) {
                 Word wordOfCase = argumentWords.get( iCase ).get( iWord );
@@ -345,6 +357,7 @@ public class CaseArgumentAnalyser {
                     different = true;
                     break;
                 }
+
             }
             if( different ) {
                 for( int iCase = 0; iCase < argumentWords.size(); iCase++ ) {
