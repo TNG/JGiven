@@ -255,11 +255,37 @@ public class CaseArgumentAnalyser {
                 return true;
             }
 
+            if( attachmentsAreStructurallyDifferent( firstStep.getAttachment(), stepModel.getAttachment() ) ) {
+                return true;
+            }
+
             if( wordsAreDifferent( firstStep, stepModel ) ) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Attachments are only structurally different if one step has an inline attachment
+     * and the other step either has no inline attachment or the inline attachment is
+     * different.
+     */
+    boolean attachmentsAreStructurallyDifferent( AttachmentModel firstAttachment, AttachmentModel otherAttachment ) {
+
+        if( isInlineAttachment( firstAttachment ) != isInlineAttachment( otherAttachment ) ) {
+            return true;
+        }
+
+        if( isInlineAttachment( firstAttachment ) ) {
+            return !firstAttachment.getValue().equals( otherAttachment.getValue() );
+        }
+
+        return false;
+    }
+
+    private boolean isInlineAttachment( AttachmentModel attachmentModel ) {
+        return attachmentModel != null && attachmentModel.isShowDirectly();
     }
 
     private boolean wordsAreDifferent( StepModel firstStep, StepModel stepModel ) {

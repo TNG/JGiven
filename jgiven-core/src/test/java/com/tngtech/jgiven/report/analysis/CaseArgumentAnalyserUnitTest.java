@@ -5,11 +5,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.google.common.collect.Lists;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser.JoinedArgs;
+import com.tngtech.jgiven.report.model.AttachmentModel;
 import com.tngtech.jgiven.report.model.Word;
 
+@RunWith( DataProviderRunner.class )
 public class CaseArgumentAnalyserUnitTest {
 
     private CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
@@ -64,5 +69,25 @@ public class CaseArgumentAnalyserUnitTest {
         }
 
         return result;
+    }
+
+    @Test
+    @DataProvider( {
+        "foo, true, foo, true, false",
+        "foo, false, foo, true, true",
+        "foo, true, bar, true, true",
+        "foo, false, bar, false, false"
+    } )
+    public void inline_attachments_are_handed_correctly( String firstValue, boolean firstShowDirectly, String secondValue,
+            boolean secondShowDirectly, boolean expectedResult ) {
+        AttachmentModel firstAttachment = new AttachmentModel();
+        firstAttachment.setValue( firstValue );
+        firstAttachment.setShowDirectly( firstShowDirectly );
+
+        AttachmentModel secondAttachment = new AttachmentModel();
+        secondAttachment.setValue( secondValue );
+        secondAttachment.setShowDirectly( secondShowDirectly );
+
+        assertThat( analyser.attachmentsAreStructurallyDifferent( firstAttachment, secondAttachment ) ).isEqualTo( expectedResult );
     }
 }
