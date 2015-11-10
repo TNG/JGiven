@@ -41,6 +41,12 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
+    public GivenTestStep aStepInCamelCase() {
+        return self();
+    }
+
+
+
     @As( "a step with a bracket after a dollar $]" )
     public GivenTestStep a_step_with_a_bracket_after_a_dollar( int value ) {
         return self();
@@ -55,6 +61,10 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     }
 
     public GivenTestStep a_step_with_a_boolean_$_parameter( @Format( value = BooleanFormatter.class, args = { "yes", "no" } ) boolean b ) {
+        return self();
+    }
+
+    public GivenTestStep aStepInCamelCaseWithA$Parameter( String param ) {
         return self();
     }
 
