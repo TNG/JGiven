@@ -269,8 +269,26 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
     }
 
     @Test
+    public void camel_case_is_supported_in_steps() throws Throwable {
+        startScenario( "Scenario camel case steps" );
+        given().aStepInCamelCase();
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getCompleteSentence() ).isEqualTo( "Given a step in camel case" );
+    }
+
+    @Test
+    public void camel_case_is_supported_in_steps_with_parameters() throws Throwable {
+        startScenario( "Scenario camel case steps with parameter" );
+        given().aStepInCamelCaseWithA$Parameter("dollar");
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getCompleteSentence() ).isEqualTo( "Given a step in camel case with a dollar parameter" );
+    }
+
+    @Test
     public void the_Description_annotation_on_intro_words_is_evaluated() throws Throwable {
-        startScenario( "Scenario with an @As annotaiton" );
+        startScenario( "Scenario with an @As annotation" );
         given().an_intro_word_with_an_as_annotation().something();
         getScenario().finished();
         StepModel step = getScenario().getScenarioCaseModel().getFirstStep();

@@ -65,7 +65,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         if( description.contains( "_" ) ) {
             readableDescription = description.replace( '_', ' ' );
         } else if( !description.contains( " " ) ) {
-            readableDescription = camelCaseToReadableText( description );
+            readableDescription = camelCaseToCapitalizedReadableText( description );
         }
 
         scenarioCaseModel = new ScenarioCaseModel();
@@ -75,9 +75,12 @@ public class ScenarioModelBuilder implements ScenarioListener {
         scenarioModel.setDescription( readableDescription );
     }
 
-    private String camelCaseToReadableText( String camelCase ) {
-        String scenarioDescription = CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_UNDERSCORE, camelCase ).replace( '_', ' ' );
-        return WordUtil.capitalize( scenarioDescription );
+    private static String camelCaseToCapitalizedReadableText( String camelCase ) {
+        return WordUtil.capitalize( camelCaseToReadableText( camelCase ) );
+    }
+
+    private static String camelCaseToReadableText(String camelCase) {
+        return CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_UNDERSCORE, camelCase ).replace( '_', ' ' );
     }
 
     public void addStepMethod( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
@@ -250,7 +253,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
             return as.value();
         }
 
-        return nameWithoutUnderlines( paramMethod );
+        return nameWithSpaces( paramMethod );
     }
 
     public void setSuccess( boolean success ) {
@@ -280,8 +283,12 @@ public class ScenarioModelBuilder implements ScenarioListener {
         return stackTrace;
     }
 
-    private static String nameWithoutUnderlines( Method paramMethod ) {
-        return WordUtil.fromSnakeCase( paramMethod.getName() );
+    private static String nameWithSpaces( Method paramMethod ) {
+        String paraMethodName = paramMethod.getName();
+        if( paramMethod.getName().contains( "_" ) ) {
+            return WordUtil.fromSnakeCase( paraMethodName );
+        }
+        return camelCaseToReadableText( paraMethodName );
     }
 
     @Override
