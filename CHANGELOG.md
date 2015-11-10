@@ -5,6 +5,10 @@
 * Fixed issue with primitive arrays and the @Table annotation [#162](https://github.com/TNG/JGiven/issues/162)
 * Fixed an issue when using the `@Table` parameter that could lead to unwanted parameters in the data table [#161](https://github.com/TNG/JGiven/issues/161)
 
+## New Features
+
+* CamelCase in step methods is now supported (thanks to albertofaci) [#164](https://github.com/TNG/JGiven/issues/164), [PR #165](https://github.com/TNG/JGiven/pull/165)
+
 # v0.9.4
 
 ## Fixed Issues
