@@ -4,6 +4,7 @@
 
 * Fixed issue with primitive arrays and the @Table annotation [#162](https://github.com/TNG/JGiven/issues/162)
 * Fixed an issue when using the `@Table` parameter that could lead to unwanted parameters in the data table [#161](https://github.com/TNG/JGiven/issues/161)
+* Fixed an issue with the Maven Plugin where the customJsFile parameter actually set the customCssFile parameter [#167](https://github.com/TNG/JGiven/issues/167)
 
 ## New Features
 

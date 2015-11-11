@@ -76,9 +76,9 @@ public class JGivenReportMojo extends AbstractMojo {
             generator.setSourceDirectory( sourceDirectory );
             generator.setFormat( ReportGenerator.Format.fromStringOrNull( format ) );
             generator.getConfig().setCustomCssFile( customCssFile );
-            generator.getConfig().setCustomCssFile( customJsFile );
+            generator.getConfig().setCustomJsFile( customJsFile );
             generator.getConfig().setTitle( title );
-            generator.getConfig().setExcludeEmptyScenarios( excludeEmptyScenarios);
+            generator.getConfig().setExcludeEmptyScenarios( excludeEmptyScenarios );
             generator.generate();
             getLog().info( "-------------------------------------------------------------------" );
             getLog().info( "Generated JGiven HTML reports to directory " + outputDirectory );
