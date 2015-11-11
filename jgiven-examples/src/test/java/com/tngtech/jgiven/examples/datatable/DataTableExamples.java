@@ -52,6 +52,10 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
 
         public void a_list_of_POJOs_with_numbered_rows_and_custom_header(
                 @Table( numberedRowsHeader = "Counter" ) TestCustomer... testCustomer ) {}
+
+        public void a_two_dimensional_array_with_numbered_rows(
+                @Table( numberedRows = true, columnTitles = "t" ) Object[][] testCustomer ) {}
+
     }
 
     static class TestCustomer {
@@ -130,5 +134,12 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
             new TestCustomer( "Jane Roe", "jane@roe.com" ),
             new TestCustomer( "Lee Smith", "lee@smith.com" )
             );
+    }
+
+    @Test
+    public void two_dimensional_arrays_can_be_numbered() {
+        given().a_two_dimensional_array_with_numbered_rows( new Object[][] {
+            { "a" },
+            { "b" } } );
     }
 }

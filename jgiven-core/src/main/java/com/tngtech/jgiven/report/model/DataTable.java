@@ -1,7 +1,9 @@
 package com.tngtech.jgiven.report.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.Table.HeaderType;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 
@@ -22,7 +24,17 @@ public class DataTable {
 
     public DataTable( HeaderType headerType, List<List<String>> data ) {
         this.headerType = headerType;
-        this.data = data;
+        this.data = copy( data );
+    }
+
+    private List<List<String>> copy( List<List<String>> data ) {
+        List<List<String>> dataCopy = Lists.newArrayListWithExpectedSize( data.size() );
+
+        for( List<String> row : data ) {
+            dataCopy.add( new ArrayList<String>( row ) );
+        }
+
+        return dataCopy;
     }
 
     public HeaderType getHeaderType() {
