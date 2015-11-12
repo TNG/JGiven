@@ -197,4 +197,25 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
                 "    | 2 | another case          | Success |\n" );
 
     }
+
+    @Test
+    @FeatureDataTables
+    @Issue( "#152" )
+    public void new_lines_in_data_tables_do_not_break_the_table_layout() throws UnsupportedEncodingException {
+        given()
+            .a_report_model_with_one_scenario()
+            .and().the_scenario_has_$_default_cases( 2 )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 1, "some arg step", "1\n2", "aArg1" )
+            .and().case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( 2, "some arg step", "4", "aArg1" );
+
+        when().the_plain_text_report_is_generated();
+
+        then().the_report_contains_text( "<aArg1>" )
+            .and().the_report_contains_text( "\n" +
+                    "    | # | aArg1 | Status  |\n" +
+                    "    +---+-------+---------+\n" +
+                    "    | 1 |     1 | Success |\n" +
+                    "    |   |     2 |         |\n" +
+                    "    | 2 |     4 | Success |\n" );
+    }
 }

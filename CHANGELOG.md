@@ -6,6 +6,7 @@
 * Fixed an issue when using the `@Table` parameter that could lead to unwanted parameters in the data table [#161](https://github.com/TNG/JGiven/issues/161)
 * Fixed an issue with the Maven Plugin where the customJsFile parameter actually set the customCssFile parameter [#167](https://github.com/TNG/JGiven/issues/167)
 * Fixed an issue with the @Table annotation when combining numberedRows with columnTitles [#166](https://github.com/TNG/JGiven/issues/166)
+* Fixed an issue in the console report that new lines a data table messed up the layout of the table [#152](https://github.com/TNG/JGiven/issues/152)
 
 ## New Features
 
