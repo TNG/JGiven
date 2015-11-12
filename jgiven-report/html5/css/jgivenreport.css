@@ -2,6 +2,10 @@ body {
     height: 100%;
 }
 
+#title {
+    margin-left: 10px;
+}
+
 h2.subtitle {
     font-size: 1.1rem;
     color: #6f6f6f;
@@ -49,7 +53,7 @@ h5 {
 }
 
 .top-bar, .top-bar-section ul li {
-    background-color: darkgreen;
+    background-color: rgb(0, 128, 0);
 }
 
 .page-icon-bar {
@@ -232,6 +236,10 @@ span.scenario-group-header-name.failed {
 }
 
 .scenario-title.failed {
+    color: red;
+}
+
+.scenario-case-title.failed {
     color: red;
 }
 
@@ -439,6 +447,11 @@ table.steps tr.steps:hover {
     max-height: 100%;
 }
 
+.data-table td {
+    max-width: 25rem;
+    overflow: auto;
+}
+
 .toggle {
     cursor: pointer;
 }
@@ -613,7 +626,7 @@ a, a:visited {
 }
 
 .side-nav li a:not(.button) {
-    color: /*#5A5A5A*/ darkgreen;
+    color: rgb(85, 85, 85); /*#5A5A5A darkgreen; */
 }
 
 .side-nav li a:not(.button) {
