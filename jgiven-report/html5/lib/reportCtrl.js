@@ -537,10 +537,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.getUrlFromTag = function getUrlFromTag (tag) {
+    if(tag.href) {
+      return tag.href;
+    }
     return '#tag/' + getTagName(tag) +
       (tag.value ? '/' + $window.encodeURIComponent(tag.value) : '');
-
-  }
+  };
 
   $scope.getTagByTagId = function (tagId) {
     return tagService.getTagByTagId(tagId);
@@ -580,6 +582,31 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     }
   };
 
+  $scope.getNumberOfFailedCases = function (scenario) {
+    var nCases = scenario.scenarioCases.length;
+    if (nCases === 1) {
+      return '';
+    }
+
+    var failedCases = 0;
+
+    _.forEach(scenario.scenarioCases, function (aCase) {
+      if (!aCase.success) {
+        failedCases++;
+      }
+    });
+
+    if (failedCases < nCases) {
+      return " " + failedCases + " OF " + nCases + " CASES ";
+    } else {
+      return " ALL CASES";
+    }
+  };
+
+  $scope.getScenarioCaseTitleStatusClass = function (scenarioCase) {
+    return scenarioCase.success ? '' : 'failed';
+  };
+
   $scope.isHeaderCell = function (rowIndex, columnIndex, headerType) {
     if (rowIndex === 0 && (headerType === 'HORIZONTAL' || headerType === 'BOTH')) {
       return true;
@@ -601,7 +628,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.showFailed = function () {
-    if ($location.path() === '/') {
+    if ($location.path() === '/' || $location.path() === '') {
       $location.path('/failed');
     } else {
       $location.search('status', 'fail');
@@ -609,7 +636,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.showPending = function () {
-    if ($location.path() === '/') {
+    if ($location.path() === '/' || $location.path() === '') {
       $location.path('/pending');
     } else {
       $location.search('status', 'pending');
@@ -617,7 +644,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.showSuccessful = function () {
-    if ($location.path() === '/') {
+    if ($location.path() === '/' || $location.path() === '') {
       $location.path('/all');
     }
     $location.search('status', 'success');
