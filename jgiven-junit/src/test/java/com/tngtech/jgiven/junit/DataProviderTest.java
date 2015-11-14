@@ -236,7 +236,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
         "foo",
         "bar"
     } )
-    public void equal_data_tables_are_handled_correcty( String param ) throws Throwable {
+    public void equal_data_tables_are_handled_correctly( String param ) throws Throwable {
         GivenTestStep.TableClass table = new GivenTestStep.TableClass();
         table.value = "same value in all cases";
         given().some_data_table( table );
@@ -248,6 +248,20 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
             analyser.analyze( scenarioModel );
             assertThat( scenarioModel.isCasesAsTable() ).isTrue();
             assertThat( scenarioModel.getDerivedParameters() ).isEmpty();
+        }
+    }
+
+    @Test
+    @DataProvider( { "", "foo" } )
+    public void some_scenario( String value ) throws Throwable {
+        given().some_string_value( value );
+
+        getScenario().finished();
+        ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
+        if( scenarioModel.getScenarioCases().size() == 2 ) {
+            CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
+            analyser.analyze( scenarioModel );
+            assertThat( scenarioModel.isCasesAsTable() ).isTrue();
         }
     }
 
