@@ -9,10 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
-import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
@@ -20,11 +18,9 @@ import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.config.TagConfiguration;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
-import com.tngtech.jgiven.format.ArgumentFormatter;
-import com.tngtech.jgiven.format.DefaultFormatter;
-import com.tngtech.jgiven.format.Formatter;
-import com.tngtech.jgiven.format.TableFormatter;
+import com.tngtech.jgiven.impl.format.ParameterFormattingUtil;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
+import com.tngtech.jgiven.impl.util.AnnotationUtil;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
@@ -33,8 +29,6 @@ import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
 public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
-    private static final Formatting<?, ?> DEFAULT_FORMATTING = new StepFormatter.ArgumentFormatting<ArgumentFormatter<Object>, Object>(
-        new DefaultFormatter<Object>() );
 
     private static final Set<String> STACK_TRACE_FILTER = ImmutableSet
         .of( "sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept", "$$EnhancerByCGLIB$$",
@@ -116,7 +110,9 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
         List<NamedArgument> nonHiddenArguments = filterHiddenArguments( arguments, paramMethod.getParameterAnnotations() );
 
-        List<Formatting<?, ?>> formatters = getFormatter( paramMethod.getParameterTypes(), paramMethod.getParameterAnnotations() );
+        ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil( configuration );
+        List<Formatting<?, ?>> formatters = parameterFormattingUtil.getFormatter( paramMethod.getParameterTypes(), getNames( arguments ),
+            paramMethod.getParameterAnnotations() );
         stepModel.words = new StepFormatter( stepModel.name, nonHiddenArguments, formatters ).buildFormattedWords();
 
         if( introWord != null ) {
@@ -131,7 +127,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     private List<NamedArgument> filterHiddenArguments( List<NamedArgument> arguments, Annotation[][] parameterAnnotations ) {
         List<NamedArgument> result = Lists.newArrayList();
         for( int i = 0; i < parameterAnnotations.length; i++ ) {
-            if( !isHidden( parameterAnnotations[i] ) ) {
+            if( !AnnotationUtil.isHidden( parameterAnnotations[i] ) ) {
                 result.add( arguments.get( i ) );
             }
         }
@@ -143,75 +139,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
         introWord = new Word();
         introWord.setIntroWord( true );
         introWord.setValue( value );
-    }
-
-    private List<Formatting<?, ?>> getFormatter( Class<?>[] parameterTypes, Annotation[][] parameterAnnotations ) {
-        List<Formatting<?, ?>> res = Lists.newArrayList();
-        for( int i = 0; i < parameterTypes.length; i++ ) {
-            Annotation[] annotations = parameterAnnotations[i];
-            if( !isHidden( annotations ) ) {
-                res.add( getFormatting( parameterTypes[i], annotations ) );
-            }
-        }
-        return res;
-    }
-
-    private boolean isHidden( Annotation[] annotations ) {
-        for( Annotation annotation : annotations ) {
-            if( annotation instanceof Hidden ) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @SuppressWarnings( { "rawtypes", "unchecked" } )
-    private <T> Formatting<?, ?> getFormatting( Class<T> parameterType, Annotation[] annotations ) {
-        Formatting<?, ?> formatting = getFormatting( annotations, Sets.<Class<?>>newHashSet(), null );
-        if( formatting == null ) {
-            Formatter<T> formatter = (Formatter<T>) configuration.getFormatter( parameterType );
-            if( formatter != null ) {
-                formatting = new StepFormatter.TypeBasedFormatting<T>( formatter, annotations );
-            } else {
-                formatting = DEFAULT_FORMATTING;
-            }
-        }
-        return formatting;
-    }
-
-    /**
-     * Recursively searches for formatting annotations.
-     *
-     * @param visitedTypes used to prevent an endless loop
-     */
-    private Formatting<?, ?> getFormatting( Annotation[] annotations, Set<Class<?>> visitedTypes, Annotation originalAnnotation ) {
-        for( Annotation annotation : annotations ) {
-            try {
-                if( annotation instanceof Format ) {
-                    Format arg = (Format) annotation;
-                    return new StepFormatter.ArgumentFormatting( arg.value().newInstance(), arg.args() );
-                } else if( annotation instanceof Table ) {
-                    Table tableAnnotation = (Table) annotation;
-                    return new StepFormatter.ArgumentFormatting( new TableFormatter( tableAnnotation ) );
-                } else if( annotation instanceof AnnotationFormat ) {
-                    AnnotationFormat arg = (AnnotationFormat) annotation;
-                    return new StepFormatter.ArgumentFormatting(
-                        new StepFormatter.AnnotationBasedFormatter( arg.value().newInstance(), originalAnnotation ) );
-                } else {
-                    Class<? extends Annotation> annotationType = annotation.annotationType();
-                    if( !visitedTypes.contains( annotationType ) ) {
-                        visitedTypes.add( annotationType );
-                        Formatting<?, ?> formatting = getFormatting( annotationType.getAnnotations(), visitedTypes, annotation );
-                        if( formatting != null ) {
-                            return formatting;
-                        }
-                    }
-                }
-            } catch( Exception e ) {
-                throw Throwables.propagate( e );
-            }
-        }
-        return null;
     }
 
     private ScenarioCaseModel getCurrentScenarioCase() {
@@ -357,8 +284,11 @@ public class ScenarioModelBuilder implements ScenarioListener {
         // must come at last
         setMethodName( method.getName() );
 
-        List<Formatting<?, ?>> formatter = getFormatter( method.getParameterTypes(), method.getParameterAnnotations() );
-        setArguments( toStringList( formatter, getValues( namedArguments ) ) );
+        ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil( configuration );
+        List<Formatting<?, ?>> formatter = parameterFormattingUtil.getFormatter( method.getParameterTypes(), getNames( namedArguments ),
+            method.getParameterAnnotations() );
+
+        setArguments( parameterFormattingUtil.toStringList( formatter, getValues( namedArguments ) ) );
         setCaseDescription( method, namedArguments );
     }
 
@@ -396,23 +326,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     private void readConfiguration( Class<?> testClass ) {
         configuration = ConfigurationUtil.getConfiguration( testClass );
-    }
-
-    private List<String> toStringList( List<Formatting<?, ?>> formatter, List<?> arguments ) {
-        List<String> result = Lists.newArrayList();
-        for( int i = 0; i < arguments.size(); i++ ) {
-
-            Formatting<?, ?> formatting = DEFAULT_FORMATTING;
-            if( i < formatter.size() && formatter.get( i ) != null ) {
-                formatting = formatter.get( i );
-            }
-            result.add( formatUsingFormatterOrDefault( formatting, arguments.get( i ) ) );
-        }
-        return result;
-    }
-
-    private <T> String formatUsingFormatterOrDefault( Formatting<?, T> formatting, Object o ) {
-        return formatting.format( (T) o );
     }
 
     private void readAnnotations( Method method ) {

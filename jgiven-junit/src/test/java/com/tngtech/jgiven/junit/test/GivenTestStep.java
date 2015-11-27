@@ -2,10 +2,16 @@ package com.tngtech.jgiven.junit.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.lang.annotation.Annotation;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.format.table.TableFormatter;
+import com.tngtech.jgiven.report.model.DataTable;
 
 public class GivenTestStep extends Stage<GivenTestStep> {
 
@@ -83,6 +89,25 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     }
 
     public GivenTestStep the_following_data( @Table CoffeePrice... data ) {
+        return this;
+    }
+
+    public static class TestTableFormatter implements TableFormatter {
+
+        @Override
+        public DataTable format( Object tableArgument, Table tableAnnotation, String parameterName, Annotation... allAnnotations ) {
+            List<List<String>> data = Lists.newArrayList();
+            CoffeePrice[] castedTableArgument = (CoffeePrice[]) tableArgument;
+            data.add( Lists.newArrayList( parameterName ) );
+            for( CoffeePrice price : castedTableArgument ) {
+                data.add( Lists.newArrayList( price.name + ": " + price.price_in_EUR ) );
+            }
+            return new DataTable( Table.HeaderType.HORIZONTAL, data );
+        }
+    }
+
+    public GivenTestStep a_list_of_PoJos_with_custom_table_formatter(
+            @Table( formatter = TestTableFormatter.class ) CoffeePrice... coffeePrices ) {
         return this;
     }
 }

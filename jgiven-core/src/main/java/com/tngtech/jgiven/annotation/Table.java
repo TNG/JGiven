@@ -4,6 +4,10 @@ import static com.tngtech.jgiven.annotation.Table.HeaderType.HORIZONTAL;
 
 import java.lang.annotation.*;
 
+import com.tngtech.jgiven.format.table.DefaultTableFormatter;
+import com.tngtech.jgiven.format.table.FieldBasedRowFormatterFactory;
+import com.tngtech.jgiven.format.table.RowFormatterFactory;
+import com.tngtech.jgiven.format.table.TableFormatter;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
 
 /**
@@ -291,4 +295,28 @@ public @interface Table {
             return this == VERTICAL || this == BOTH;
         }
     }
+
+    /**
+     * The formatter to use to format the argument value as a table.
+     * The default implementation uses the {@link #rowFormatter()} to actually format
+     * the rows of the table.
+     * In general it much easier to provide a custom {@link #rowFormatter()} instead
+     * of providing a custom {@link #formatter()}
+     * 
+     * @since 0.10.0
+     */
+    Class<? extends TableFormatter> formatter() default DefaultTableFormatter.class;
+
+    /**
+     * Specifies a factory to create a custom {@link com.tngtech.jgiven.format.table.RowFormatter}
+     * that is used to format each row of the table.
+     * <p>
+     *     The default implementation uses the {@link com.tngtech.jgiven.format.table.FieldBasedRowFormatterFactory}.
+     *     As an alternative you can use the {@link com.tngtech.jgiven.format.table.ToStringRowFormatterFactory} or
+     *     implement your own one.
+     * </p>
+     *
+     * @since 0.10.0
+     */
+    Class<? extends RowFormatterFactory> rowFormatter() default FieldBasedRowFormatterFactory.class;
 }

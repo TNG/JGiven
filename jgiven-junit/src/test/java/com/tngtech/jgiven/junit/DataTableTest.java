@@ -32,4 +32,22 @@ public class DataTableTest extends ScenarioTest<GivenTestStep, WhenTestStep, The
         assertThat( tableValue.get( 2 ) ).containsExactly( "Cappuccino", "2.5" );
 
     }
+
+    @Test
+    public void test_custom_table_formatter() throws Throwable {
+        given().a_list_of_PoJos_with_custom_table_formatter(
+            new GivenTestStep.CoffeePrice( "Espresso", 1.5 ),
+            new GivenTestStep.CoffeePrice( "Cappuccino", 2.5 ) )
+            .and().some_boolean_value( true );
+
+        getScenario().finished();
+
+        Word lastWord = getScenario().getScenarioCaseModel().getFirstStep().getLastWord();
+        List<List<String>> tableValue = lastWord.getArgumentInfo().getDataTable().getData();
+        assertThat( tableValue ).isNotNull();
+        assertThat( tableValue.get( 0 ) ).containsExactly( "coffeePrices" );
+        assertThat( tableValue.get( 1 ) ).containsExactly( "Espresso: 1.5" );
+        assertThat( tableValue.get( 2 ) ).containsExactly( "Cappuccino: 2.5" );
+
+    }
 }

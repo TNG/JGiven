@@ -473,6 +473,7 @@ table.steps tr.steps:hover .nested-step .step-expand-icon {
 .direct-image {
     max-width: 500px;
     max-height: 400px;
+    margin-top: 0.8rem;
 }
 
 .direct-image:hover {
