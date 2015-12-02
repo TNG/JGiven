@@ -44,7 +44,7 @@ For example, the built-in `BooleanFormatter` can be used to format `boolean` val
 
 {% highlight java %}
 public SELF the_machine_is_$(
-    @Format( BooleanFormatter.class, args = { "on", "off" } ) boolean onOrOff ) {
+    @Format( value = BooleanFormatter.class, args = { "on", "off" } ) boolean onOrOff ) {
     ...
 }
 {% endhighlight %}
