@@ -1,5 +1,14 @@
 package com.tngtech.jgiven.report.text;
 
+import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD;
+import static org.fusesource.jansi.Ansi.Color.MAGENTA;
+
+import java.io.PrintWriter;
+import java.util.List;
+
+import org.fusesource.jansi.Ansi.Attribute;
+import org.fusesource.jansi.Ansi.Color;
+
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
@@ -7,19 +16,11 @@ import com.google.common.collect.Iterables;
 import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.*;
-import org.fusesource.jansi.Ansi.Attribute;
-import org.fusesource.jansi.Ansi.Color;
-
-import java.io.PrintWriter;
-import java.util.List;
-
-import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD;
-import static org.fusesource.jansi.Ansi.Color.MAGENTA;
 
 public class PlainTextScenarioWriter extends PlainTextWriter {
     private static final String INDENT = "   ";
-    public static final String NESTED_HEADING = "\\-- ";
-    public static final String NESTED_INDENT = "| ";
+    public static final String NESTED_HEADING = "|  ";
+    public static final String NESTED_INDENT = "|  ";
 
     protected ScenarioModel currentScenarioModel;
     protected ScenarioCaseModel currentCaseModel;
@@ -102,8 +103,6 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
             intro = INDENT + String.format( "%" + maxFillWordLength + "s ", " " );
         }
 
-
-
         int restSize = words.size();
         boolean printDataTable = false;
         if( words.size() > 1 ) {
@@ -134,23 +133,24 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
         }
     }
 
-    private void printNestedSteps(StepModel stepModel, int depth) {
+    private void printNestedSteps( StepModel stepModel, int depth ) {
         if( stepModel.hasNestedSteps() ) {
-            for( StepModel nestedStepModel: stepModel.nestedSteps ) {
-                writer.println(INDENT + INDENT + INDENT + Strings.repeat( NESTED_INDENT , depth ) + NESTED_HEADING + getNestedStepString(nestedStepModel));
-                printNestedSteps( nestedStepModel, depth + 1) ;
+            for( StepModel nestedStepModel : stepModel.nestedSteps ) {
+                writer.println( INDENT + INDENT + INDENT + Strings.repeat( NESTED_INDENT, depth ) + NESTED_HEADING
+                        + getNestedStepString( nestedStepModel ) );
+                printNestedSteps( nestedStepModel, depth + 1 );
             }
         }
     }
 
-    private String getNestedStepString(StepModel nestedStepModel) {
+    private String getNestedStepString( StepModel nestedStepModel ) {
         StringBuilder stringBuilder = new StringBuilder();
-        if( nestedStepModel.words.get(0).isIntroWord() ) {
-            stringBuilder.append(WordUtil.capitalize(nestedStepModel.words.get(0).getValue()));
-            stringBuilder.append(" ").append(joinWords(nestedStepModel.words.subList(1, nestedStepModel.words.size())));
+        if( nestedStepModel.words.get( 0 ).isIntroWord() ) {
+            stringBuilder.append( WordUtil.capitalize( nestedStepModel.words.get( 0 ).getValue() ) );
+            stringBuilder.append( " " ).append( joinWords( nestedStepModel.words.subList( 1, nestedStepModel.words.size() ) ) );
         }
         else {
-            stringBuilder.append(joinWords(nestedStepModel.words));
+            stringBuilder.append( joinWords( nestedStepModel.words ) );
         }
         return stringBuilder.toString();
     }
