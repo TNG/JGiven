@@ -4,12 +4,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
+import com.google.common.base.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.CaseFormat;
-import com.google.common.base.Strings;
-import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -44,6 +42,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
     private ScenarioModel scenarioModel;
     private ScenarioCaseModel scenarioCaseModel;
     private StepModel currentStep;
+
+    private Stack<StepAndMethod> stepStack = new Stack<StepAndMethod>();
 
     private Word introWord;
 
@@ -83,10 +83,27 @@ public class ScenarioModelBuilder implements ScenarioListener {
         return CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_UNDERSCORE, camelCase ).replace( '_', ' ' );
     }
 
-    public void addStepMethod( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
+    public void addStepMethod( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode, Method parentMethod) {
         StepModel stepModel = createStepModel( paramMethod, arguments, mode );
+
+        if( !stepStack.empty() ) {
+            while( !stepStack.empty() && !stepStack.peek().getMethod().equals( parentMethod )  ) {
+                stepStack.pop();
+            }
+            if( !stepStack.empty() ) {
+                stepStack.peek().getStepModel().addNestedStep(stepModel);
+            }
+        }
+
+        if( stepStack.empty() ) {
+            writeStep( stepModel );
+        }
+
+        if( paramMethod.isAnnotationPresent( NestedSteps.class ) ) {
+            stepStack.push( new StepAndMethod( paramMethod, stepModel ) );
+        }
+
         currentStep = stepModel;
-        writeStep( stepModel );
     }
 
     StepModel createStepModel( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
@@ -200,7 +217,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     public void writeStep( StepModel stepModel ) {
-        getCurrentScenarioCase().addStep( stepModel );
+        getCurrentScenarioCase().addStep(stepModel);
     }
 
     private ScenarioCaseModel getCurrentScenarioCase() {
@@ -211,11 +228,11 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     @Override
-    public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode ) {
+    public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode, Method parentMethod ) {
         if( method.isAnnotationPresent( IntroWord.class ) ) {
             introWordAdded( getDescription( method ) );
         } else {
-            addStepMethod( method, arguments, mode );
+            addStepMethod(method, arguments, mode, parentMethod);
         }
     }
 
@@ -593,6 +610,25 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     public ScenarioCaseModel getScenarioCaseModel() {
         return scenarioCaseModel;
+    }
+
+    private static class StepAndMethod {
+
+        StepModel stepModel;
+        Method method;
+
+        private StepAndMethod( Method method, StepModel stepModel ) {
+            this.method = method;
+            this.stepModel = stepModel;
+        }
+
+        public StepModel getStepModel() {
+            return stepModel;
+        }
+
+        public Method getMethod() {
+            return method;
+        }
     }
 
 }

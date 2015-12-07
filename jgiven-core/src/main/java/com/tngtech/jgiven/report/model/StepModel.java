@@ -1,12 +1,13 @@
 package com.tngtech.jgiven.report.model;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.tngtech.jgiven.attachment.Attachment;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
-import com.tngtech.jgiven.attachment.Attachment;
 
 public class StepModel {
     /**
@@ -18,6 +19,11 @@ public class StepModel {
      * All words of this step including the introduction word.
      */
     public List<Word> words = Lists.newArrayList();
+
+    /**
+     * Nested steps
+     */
+    public List<StepModel> nestedSteps = Lists.newArrayList();
 
     /**
      * The execution status of this step.
@@ -97,7 +103,7 @@ public class StepModel {
     }
 
     public boolean hasExtendedDescription() {
-        return extendedDescription != null;
+        return extendedDescription != null || Iterables.size( nestedSteps ) > 0;
     }
 
     public void setExtendedDescription( String extendedDescription ) {
@@ -124,5 +130,13 @@ public class StepModel {
 
     public AttachmentModel getAttachment() {
         return attachment;
+    }
+
+    public boolean hasNestedSteps() {
+        return Iterables.size( nestedSteps ) > 0;
+    }
+
+    public void addNestedStep( StepModel stepModel ) {
+        nestedSteps.add( stepModel );
     }
 }
