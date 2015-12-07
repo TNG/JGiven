@@ -3,8 +3,10 @@ package com.tngtech.jgiven.impl.intercept;
 import static com.tngtech.jgiven.report.model.InvocationMode.*;
 
 import java.lang.reflect.Method;
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.tngtech.jgiven.annotation.NestedSteps;
 import com.tngtech.jgiven.report.model.InvocationMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,11 @@ public class StepMethodInterceptor {
     private StepMethodHandler scenarioMethodHandler;
 
     private AtomicInteger stackDepth;
+
+    /**
+     * stack that represent method call context. @see NestedSteps.java
+     */
+    private Stack<Method> methodCallStack = new Stack<Method>();
 
     /**
      * Whether the method handler is called when a step method is invoked
@@ -51,10 +58,12 @@ public class StepMethodInterceptor {
             return invoker.proceed();
         }
 
-        boolean handleMethod = methodHandlingEnabled && stackDepth.get() == 0 && !method.getDeclaringClass().equals( Object.class );
+        boolean handleMethod = methodHandlingEnabled && shouldHandleMethod( method );
 
         if( handleMethod ) {
-            scenarioMethodHandler.handleMethod( receiver, method, parameters, mode );
+            mode = recalculateInvocationMode( mode );
+            Method parentMethod = ( methodCallStack.empty() )? null :  methodCallStack.peek();
+            scenarioMethodHandler.handleMethod( receiver, method, parameters, mode, parentMethod);
         }
 
         if( mode == SKIPPED || mode == PENDING ) {
@@ -63,17 +72,36 @@ public class StepMethodInterceptor {
 
         try {
             stackDepth.incrementAndGet();
+            methodCallStack.push(method);
             return invoker.proceed();
         } catch( Exception e ) {
             return handleThrowable( receiver, method, e, System.nanoTime() - started );
         } catch( AssertionError e ) {
             return handleThrowable( receiver, method, e, System.nanoTime() - started );
         } finally {
+            methodCallStack.pop();
             stackDepth.decrementAndGet();
             if( handleMethod ) {
                 scenarioMethodHandler.handleMethodFinished( System.nanoTime() - started );
             }
         }
+    }
+
+    private boolean shouldHandleMethod(Method method) {
+        if(method.getDeclaringClass().equals( Object.class )) {
+            return false;
+        }
+        if(methodCallStack != null && !methodCallStack.empty() && methodCallStack.peek().isAnnotationPresent(NestedSteps.class)) {
+            return true;
+        }
+        return stackDepth.get() == 0;
+    }
+
+    private InvocationMode recalculateInvocationMode( InvocationMode invocationMode ) {
+        if(methodCallStack.size() > 0) {
+            return InvocationMode.NESTED;
+        }
+        return invocationMode;
     }
 
     protected Object handleThrowable( Object receiver, Method method, Throwable t, long durationInNanos ) throws Throwable {

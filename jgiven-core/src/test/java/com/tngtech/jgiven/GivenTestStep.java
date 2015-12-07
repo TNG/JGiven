@@ -32,6 +32,33 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
+    public GivenTestStep something_further() {
+        return self();
+    }
+
+    public GivenTestStep something_else_that_fails() {
+        if( 1 == 1 ) {
+            throw new RuntimeException("failure");
+        }
+        return self();
+    }
+
+    @NestedSteps
+    public GivenTestStep something_with_nested_steps() {
+        return given().something().and().something_else();
+    }
+
+    @NestedSteps
+    public GivenTestStep something_with_multilevel_nested_steps() {
+        return given().something_with_nested_steps().and().something_further();
+    }
+
+    @NestedSteps
+    public GivenTestStep something_with_nested_steps_that_fails() {
+        return given().something().and().something_else_that_fails();
+    }
+
+
     public GivenTestStep an_array( Object argument ) {
         return self();
     }
