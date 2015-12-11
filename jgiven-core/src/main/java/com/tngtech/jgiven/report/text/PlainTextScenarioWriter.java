@@ -92,10 +92,10 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     @Override
     public void visit( StepModel stepModel ) {
-        printStep( stepModel, 0 );
+        printStep( stepModel, 0, false );
     }
 
-    private void printStep( StepModel stepModel, int depth ) {
+    private void printStep( StepModel stepModel, int depth, boolean showPassed ) {
         List<Word> words = stepModel.words;
 
         String introString = getIntroString( words, depth );
@@ -119,6 +119,8 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
         } else if( stepModel.isFailed() ) {
             rest = withColor( Color.RED, true, Attribute.INTENSITY_FAINT, rest );
             rest += withColor( Color.RED, true, Attribute.INTENSITY_BOLD, " (failed)" );
+        } else if( showPassed ) {
+            rest += " (passed)";
         }
         writer.println( introString + rest );
 
@@ -153,7 +155,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     private void printNestedSteps( StepModel stepModel, int depth ) {
         for( StepModel nestedStepModel : stepModel.getNestedSteps() ) {
-            printStep( nestedStepModel, depth + 1 );
+            printStep( nestedStepModel, depth + 1, stepModel.getStatus() == StepStatus.FAILED );
         }
     }
 

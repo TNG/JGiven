@@ -19,6 +19,7 @@ import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.format.BooleanFormatter;
+import com.tngtech.jgiven.report.model.StepModel;
 
 /**
  * Please note that we do explicitly <strong>not</strong> use the ScenarioTest class for JUnit,
@@ -103,7 +104,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
     }
 
     @Test
-    public void nested_steps_are_displayed_in_the_report() throws UnsupportedEncodingException {
+    public void nested_steps_are_displayed_in_the_report() throws Throwable {
         getScenario().startScenario( "test" );
 
         given().something_with_nested_steps();
@@ -111,20 +112,25 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         when().something_happens();
 
         then().something_has_happen()
-                .something_else_not();
+            .something_else_not();
 
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
-                .contains( ""
-                                + " Scenario: Test\n"
-                                + "\n"
-                                + "   Given something with nested steps\n"
-                                + "         |  Given something\n"
-                                + "         |  And something else\n"
-                                + "    When something happens\n"
-                                + "    Then something has happen\n"
-                                + "         something else not"
-                );
+            .contains( ""
+                    + " Scenario: Test\n"
+                    + "\n"
+                    + "   Given something with nested steps\n"
+                    + "         |  Given something\n"
+                    + "         |  And something else\n"
+                    + "    When something happens\n"
+                    + "    Then something has happen\n"
+                    + "         something else not"
+            );
+
+        StepModel parentStep = getScenario().getScenarioModel().getScenarioCases().get( 0 ).getStep( 0 );
+        long nestedDurations = parentStep.getNestedSteps().get( 0 ).getDurationInNanos() +
+                parentStep.getNestedSteps().get( 1 ).getDurationInNanos();
+        assertThat( parentStep.getDurationInNanos() ).isGreaterThanOrEqualTo( nestedDurations );
     }
 
     @Test
@@ -136,26 +142,26 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         when().something_happens();
 
         then().something_has_happen()
-                .something_else_not();
+            .something_else_not();
 
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
-                .contains( ""
-                                + " Scenario: Test\n"
-                                + "\n"
-                                + "   Given something with multilevel nested steps\n"
-                                + "         |  Given something with nested steps\n"
-                                + "         |  |  Given something\n"
-                                + "         |  |  And something else\n"
-                                + "         |  And something further\n"
-                                + "    When something happens\n"
-                                + "    Then something has happen\n"
-                                + "         something else not"
-                );
+            .contains( ""
+                    + " Scenario: Test\n"
+                    + "\n"
+                    + "   Given something with multilevel nested steps\n"
+                    + "         |  Given something with nested steps\n"
+                    + "         |  |  Given something\n"
+                    + "         |  |  And something else\n"
+                    + "         |  And something further\n"
+                    + "    When something happens\n"
+                    + "    Then something has happen\n"
+                    + "         something else not"
+            );
     }
 
     @Test
-    public void nested_step_failures_appear_in_the_top_level_enclosing_step() throws UnsupportedEncodingException {
+    public void nested_step_failures_appear_in_the_top_level_enclosing_step() throws Throwable {
         getScenario().startScenario( "test" );
 
         given().something_with_nested_steps_that_fails();
@@ -163,20 +169,20 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         when().something_happens();
 
         then().something_has_happen()
-                .something_else_not();
+            .something_else_not();
 
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
-                .contains( ""
-                                + " Scenario: Test\n"
-                                + "\n"
-                                + "   Given something with nested steps that fails\n"
-                                + "         |  Given something\n"
-                                + "         |  And something else that fails (failed)\n"
-                                + "    When something happens (skipped)\n"
-                                + "    Then something has happen (skipped)\n"
-                                + "         something else not (skipped)"
-                );
+            .contains( ""
+                    + " Scenario: Test\n"
+                    + "\n"
+                    + "   Given something with nested steps that fails (failed)\n"
+                    + "         |  Given something (passed)\n"
+                    + "         |  And something else that fails (failed)\n"
+                    + "    When something happens (skipped)\n"
+                    + "    Then something has happen (skipped)\n"
+                    + "         something else not (skipped)"
+            );
     }
 
     @Test

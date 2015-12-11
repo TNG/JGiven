@@ -1,5 +1,13 @@
 # v0.10.0
 
+## New Features
+
+### Nested Steps
+
+Steps can now have nested steps that are shown in the report. This is done by annotating parent steps with the new `@NestedSteps` annotation. [#17](https://github.com/TNG/JGiven/issues/17) [PR #174](https://github.com/TNG/JGiven/pull/174) Thanks to albertofaci!
+
+## Fixed Issues
+
 * Fixed the issue that exceptions called within step methods are captured [#173](https://github.com/TNG/JGiven/issues/173)
 
 # v0.9.5

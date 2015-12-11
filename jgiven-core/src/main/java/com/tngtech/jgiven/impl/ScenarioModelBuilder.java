@@ -315,8 +315,31 @@ public class ScenarioModelBuilder implements ScenarioListener {
             currentStep.setDurationInNanos( durationInNanos );
         }
         if( hasNestedSteps ) {
+            if( currentStep.getStatus() != StepStatus.FAILED ) {
+                currentStep.setStatus( getStatusFromNestedSteps( currentStep.getNestedSteps() ) );
+            }
             parentSteps.pop();
         }
+
+        if( !parentSteps.empty() ) {
+            currentStep = parentSteps.peek();
+        }
+    }
+
+    private StepStatus getStatusFromNestedSteps( List<StepModel> nestedSteps ) {
+        StepStatus status = StepStatus.PASSED;
+        for( StepModel nestedModel : nestedSteps ) {
+            StepStatus nestedStatus = nestedModel.getStatus();
+
+            switch( nestedStatus ) {
+                case FAILED:
+                    return StepStatus.FAILED;
+                case PENDING:
+                    status = StepStatus.PENDING;
+                    break;
+            }
+        }
+        return status;
     }
 
     @Override
@@ -607,25 +630,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     public ScenarioCaseModel getScenarioCaseModel() {
         return scenarioCaseModel;
-    }
-
-    private static class StepAndMethod {
-
-        StepModel stepModel;
-        Method method;
-
-        private StepAndMethod( Method method, StepModel stepModel ) {
-            this.method = method;
-            this.stepModel = stepModel;
-        }
-
-        public StepModel getStepModel() {
-            return stepModel;
-        }
-
-        public Method getMethod() {
-            return method;
-        }
     }
 
 }
