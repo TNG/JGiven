@@ -1,3 +1,7 @@
+# v0.10.0
+
+* Fixed the issue that exceptions called within step methods are captured [#173](https://github.com/TNG/JGiven/issues/173)
+
 # v0.9.5
 
 ## Fixed Issues
