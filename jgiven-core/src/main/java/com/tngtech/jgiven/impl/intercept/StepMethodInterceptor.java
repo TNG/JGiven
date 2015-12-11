@@ -3,15 +3,17 @@ package com.tngtech.jgiven.impl.intercept;
 import static com.tngtech.jgiven.report.model.InvocationMode.*;
 
 import java.lang.reflect.Method;
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.tngtech.jgiven.report.model.InvocationMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.tngtech.jgiven.annotation.DoNotIntercept;
+import com.tngtech.jgiven.annotation.NestedSteps;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.Pending;
+import com.tngtech.jgiven.report.model.InvocationMode;
 
 public class StepMethodInterceptor {
     private static final Logger log = LoggerFactory.getLogger( StepMethodInterceptor.class );
@@ -19,6 +21,13 @@ public class StepMethodInterceptor {
     private StepMethodHandler scenarioMethodHandler;
 
     private AtomicInteger stackDepth;
+
+    private int maxStepDepth = 1;
+
+    /**
+     * stack that represent method call context. @see NestedSteps.java
+     */
+    private final Stack<Method> methodCallStack = new Stack<Method>();
 
     /**
      * Whether the method handler is called when a step method is invoked
@@ -44,36 +53,62 @@ public class StepMethodInterceptor {
 
     public final Object doIntercept( final Object receiver, Method method,
             final Object[] parameters, Invoker invoker ) throws Throwable {
+        int currentStackDepth = stackDepth.incrementAndGet();
+        try {
+            if( !shouldInterceptMethod( method ) ) {
+                return invoker.proceed();
+            }
+            return intercept( receiver, method, parameters, invoker, currentStackDepth );
+        } finally {
+            stackDepth.decrementAndGet();
+        }
+    }
+
+    private Object intercept( Object receiver, Method method, Object[] parameters, Invoker invoker, int currentStackDepth )
+            throws Throwable {
         long started = System.nanoTime();
+
         InvocationMode mode = getInvocationMode( receiver, method );
 
         if( mode == DO_NOT_INTERCEPT ) {
             return invoker.proceed();
         }
 
-        boolean handleMethod = methodHandlingEnabled && stackDepth.get() == 0 && !method.getDeclaringClass().equals( Object.class );
+        boolean hasNestedSteps = method.isAnnotationPresent( NestedSteps.class );
 
-        if( handleMethod ) {
-            scenarioMethodHandler.handleMethod( receiver, method, parameters, mode );
+        if( methodHandlingEnabled ) {
+            scenarioMethodHandler.handleMethod( receiver, method, parameters, mode, hasNestedSteps );
         }
 
         if( mode == SKIPPED || mode == PENDING ) {
             return returnReceiverOrNull( receiver, method );
         }
 
+        if( hasNestedSteps ) {
+            maxStepDepth++;
+        }
+
         try {
-            stackDepth.incrementAndGet();
             return invoker.proceed();
         } catch( Exception e ) {
             return handleThrowable( receiver, method, e, System.nanoTime() - started );
         } catch( AssertionError e ) {
             return handleThrowable( receiver, method, e, System.nanoTime() - started );
         } finally {
-            stackDepth.decrementAndGet();
-            if( handleMethod ) {
-                scenarioMethodHandler.handleMethodFinished( System.nanoTime() - started );
+            if( hasNestedSteps ) {
+                maxStepDepth--;
+            }
+            if( methodHandlingEnabled ) {
+                scenarioMethodHandler.handleMethodFinished( System.nanoTime() - started, hasNestedSteps );
             }
         }
+    }
+
+    private boolean shouldInterceptMethod( Method method ) {
+        if( method.getDeclaringClass().equals( Object.class ) ) {
+            return false;
+        }
+        return stackDepth.get() <= maxStepDepth;
     }
 
     protected Object handleThrowable( Object receiver, Method method, Throwable t, long durationInNanos ) throws Throwable {

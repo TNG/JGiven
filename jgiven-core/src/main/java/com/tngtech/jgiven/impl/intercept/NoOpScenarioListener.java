@@ -19,7 +19,7 @@ public class NoOpScenarioListener implements ScenarioListener {
     public void scenarioStarted( Method method, List<NamedArgument> arguments ) {}
 
     @Override
-    public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode ) {}
+    public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps ) {}
 
     @Override
     public void introWordAdded( String introWord ) {}
@@ -28,7 +28,7 @@ public class NoOpScenarioListener implements ScenarioListener {
     public void stepMethodFailed( Throwable t ) {}
 
     @Override
-    public void stepMethodFinished( long durationInNanos ) {}
+    public void stepMethodFinished( long durationInNanos, boolean hasNestedSteps ) {}
 
     @Override
     public void scenarioFinished() {}

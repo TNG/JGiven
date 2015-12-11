@@ -103,7 +103,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
 
     class MethodHandler implements StepMethodHandler {
         @Override
-        public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode )
+        public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode, boolean hasNestedSteps )
                 throws Throwable {
 
             if( paramMethod.isSynthetic() && !paramMethod.isBridge() ) {
@@ -124,7 +124,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
             }
 
             List<NamedArgument> namedArguments = ParameterNameUtil.mapArgumentsWithParameterNames( paramMethod, Arrays.asList( arguments ) );
-            listener.stepMethodInvoked( paramMethod, namedArguments, mode );
+            listener.stepMethodInvoked( paramMethod, namedArguments, mode, hasNestedSteps );
         }
 
         @Override
@@ -134,8 +134,8 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
         }
 
         @Override
-        public void handleMethodFinished( long durationInNanos ) {
-            listener.stepMethodFinished( durationInNanos );
+        public void handleMethodFinished( long durationInNanos, boolean hasNestedSteps ) {
+            listener.stepMethodFinished( durationInNanos, hasNestedSteps );
         }
 
     }

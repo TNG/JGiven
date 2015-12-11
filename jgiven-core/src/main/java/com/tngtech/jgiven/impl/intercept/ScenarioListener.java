@@ -15,13 +15,13 @@ public interface ScenarioListener {
 
     void scenarioStarted( Method method, List<NamedArgument> arguments );
 
-    void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode );
+    void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps );
 
     void introWordAdded( String introWord );
 
     void stepMethodFailed( Throwable t );
 
-    void stepMethodFinished( long durationInNanos );
+    void stepMethodFinished( long durationInNanos, boolean hasNestedSteps );
 
     void scenarioFinished();
 

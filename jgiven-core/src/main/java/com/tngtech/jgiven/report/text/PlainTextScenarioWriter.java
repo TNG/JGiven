@@ -11,6 +11,7 @@ import org.fusesource.jansi.Ansi.Color;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
 import com.tngtech.jgiven.impl.util.WordUtil;
@@ -18,6 +19,8 @@ import com.tngtech.jgiven.report.model.*;
 
 public class PlainTextScenarioWriter extends PlainTextWriter {
     private static final String INDENT = "   ";
+    public static final String NESTED_HEADING = "|  ";
+    public static final String NESTED_INDENT = "|  ";
 
     protected ScenarioModel currentScenarioModel;
     protected ScenarioCaseModel currentCaseModel;
@@ -89,16 +92,13 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     @Override
     public void visit( StepModel stepModel ) {
-        String intro = "";
+        printStep( stepModel, 0 );
+    }
+
+    private void printStep( StepModel stepModel, int depth ) {
         List<Word> words = stepModel.words;
-        int introWord = 0;
-        if( words.get( 0 ).isIntroWord() ) {
-            intro = withColor( Color.BLUE, Attribute.INTENSITY_BOLD,
-                INDENT + String.format( "%" + maxFillWordLength + "s ", WordUtil.capitalize( words.get( 0 ).getValue() ) ) );
-            introWord = 1;
-        } else {
-            intro = INDENT + String.format( "%" + maxFillWordLength + "s ", " " );
-        }
+
+        String introString = getIntroString( words, depth );
 
         int restSize = words.size();
         boolean printDataTable = false;
@@ -108,10 +108,10 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
                 restSize = restSize - 1;
                 printDataTable = true;
             }
-
         }
-        String rest = joinWords( words.subList( introWord, restSize ) );
 
+        int introWordIndex = words.get( 0 ).isIntroWord() ? 1 : 0;
+        String rest = joinWords( words.subList( introWordIndex, restSize ) );
         if( stepModel.isPending() ) {
             rest = withColor( Color.BLACK, true, Attribute.INTENSITY_FAINT, rest + " (pending)" );
         } else if( stepModel.isSkipped() ) {
@@ -120,11 +120,40 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
             rest = withColor( Color.RED, true, Attribute.INTENSITY_FAINT, rest );
             rest += withColor( Color.RED, true, Attribute.INTENSITY_BOLD, " (failed)" );
         }
-        writer.println( intro + rest );
+        writer.println( introString + rest );
+
+        printNestedSteps( stepModel, depth );
 
         if( printDataTable ) {
             writer.println();
             printDataTable( words.get( words.size() - 1 ) );
+        }
+    }
+
+    private String getIntroString( List<Word> words, int depth ) {
+        String intro;
+        if( depth > 0 ) {
+            intro = INDENT + String.format( "%" + maxFillWordLength + "s ", " " ) +
+                    Strings.repeat( NESTED_INDENT, depth - 1 ) + NESTED_HEADING;
+
+            if( words.get( 0 ).isIntroWord() ) {
+                intro = intro + withColor( Color.BLUE, Attribute.INTENSITY_BOLD,
+                    WordUtil.capitalize( words.get( 0 ).getValue() ) ) + " ";
+            }
+        } else {
+            if( words.get( 0 ).isIntroWord() ) {
+                intro = INDENT + withColor( Color.BLUE, Attribute.INTENSITY_BOLD,
+                    String.format( "%" + maxFillWordLength + "s ", WordUtil.capitalize( words.get( 0 ).getValue() ) ) );
+            } else {
+                intro = INDENT + String.format( "%" + maxFillWordLength + "s ", " " );
+            }
+        }
+        return intro;
+    }
+
+    private void printNestedSteps( StepModel stepModel, int depth ) {
+        for( StepModel nestedStepModel : stepModel.getNestedSteps() ) {
+            printStep( nestedStepModel, depth + 1 );
         }
     }
 

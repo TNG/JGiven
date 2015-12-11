@@ -1,9 +1,8 @@
 package com.tngtech.jgiven.report.model;
 
-import com.tngtech.jgiven.report.model.StepStatus;
-
 public enum InvocationMode {
     NORMAL,
+    NESTED,
     FAILED,
     SKIPPED,
     PENDING,

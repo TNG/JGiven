@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.attachment.Attachment;
 
@@ -18,6 +19,12 @@ public class StepModel {
      * All words of this step including the introduction word.
      */
     public List<Word> words = Lists.newArrayList();
+
+    /**
+     * An optional list of nested steps
+     * Can be {@code null}
+     */
+    private List<StepModel> nestedSteps;
 
     /**
      * The execution status of this step.
@@ -97,7 +104,7 @@ public class StepModel {
     }
 
     public boolean hasExtendedDescription() {
-        return extendedDescription != null;
+        return extendedDescription != null || Iterables.size( nestedSteps ) > 0;
     }
 
     public void setExtendedDescription( String extendedDescription ) {
@@ -124,5 +131,23 @@ public class StepModel {
 
     public AttachmentModel getAttachment() {
         return attachment;
+    }
+
+    public void addNestedStep( StepModel stepModel ) {
+        if( nestedSteps == null ) {
+            nestedSteps = Lists.newArrayList();
+        }
+        nestedSteps.add( stepModel );
+    }
+
+    public List<StepModel> getNestedSteps() {
+        if( nestedSteps != null ) {
+            return nestedSteps;
+        }
+        return Collections.emptyList();
+    }
+
+    public void setNestedSteps( List<StepModel> nestedSteps ) {
+        this.nestedSteps = nestedSteps;
     }
 }

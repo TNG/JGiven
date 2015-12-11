@@ -44,6 +44,12 @@ public class ScenarioModelBuilder implements ScenarioListener {
     private ScenarioModel scenarioModel;
     private ScenarioCaseModel scenarioCaseModel;
     private StepModel currentStep;
+    private final Stack<StepModel> parentSteps = new Stack<StepModel>();
+
+    /**
+     * In case the current step is a step with nested steps, this list contains these steps
+     */
+    private List<StepModel> nestedSteps;
 
     private Word introWord;
 
@@ -79,14 +85,23 @@ public class ScenarioModelBuilder implements ScenarioListener {
         return WordUtil.capitalize( camelCaseToReadableText( camelCase ) );
     }
 
-    private static String camelCaseToReadableText(String camelCase) {
+    private static String camelCaseToReadableText( String camelCase ) {
         return CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_UNDERSCORE, camelCase ).replace( '_', ' ' );
     }
 
-    public void addStepMethod( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
+    public void addStepMethod( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps ) {
         StepModel stepModel = createStepModel( paramMethod, arguments, mode );
+
+        if( parentSteps.empty() ) {
+            getCurrentScenarioCase().addStep( stepModel );
+        } else {
+            parentSteps.peek().addNestedStep( stepModel );
+        }
+
+        if( hasNestedSteps ) {
+            parentSteps.push( stepModel );
+        }
         currentStep = stepModel;
-        writeStep( stepModel );
     }
 
     StepModel createStepModel( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
@@ -199,10 +214,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
         return null;
     }
 
-    public void writeStep( StepModel stepModel ) {
-        getCurrentScenarioCase().addStep( stepModel );
-    }
-
     private ScenarioCaseModel getCurrentScenarioCase() {
         if( scenarioCaseModel == null ) {
             scenarioStarted( "A Scenario" );
@@ -211,11 +222,11 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     @Override
-    public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode ) {
+    public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps ) {
         if( method.isAnnotationPresent( IntroWord.class ) ) {
             introWordAdded( getDescription( method ) );
         } else {
-            addStepMethod( method, arguments, mode );
+            addStepMethod( method, arguments, mode, hasNestedSteps );
         }
     }
 
@@ -293,15 +304,18 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     @Override
     public void stepMethodFailed( Throwable t ) {
-        if( !scenarioCaseModel.getSteps().isEmpty() ) {
-            scenarioCaseModel.getStep( scenarioCaseModel.getSteps().size() - 1 ).setStatus( StepStatus.FAILED );
+        if( currentStep != null ) {
+            currentStep.setStatus( StepStatus.FAILED );
         }
     }
 
     @Override
-    public void stepMethodFinished( long durationInNanos ) {
-        if( !scenarioCaseModel.getSteps().isEmpty() ) {
-            scenarioCaseModel.getSteps().get( scenarioCaseModel.getSteps().size() - 1 ).setDurationInNanos( durationInNanos );
+    public void stepMethodFinished( long durationInNanos, boolean hasNestedSteps ) {
+        if( currentStep != null ) {
+            currentStep.setDurationInNanos( durationInNanos );
+        }
+        if( hasNestedSteps ) {
+            parentSteps.pop();
         }
     }
 
@@ -494,7 +508,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
             .explodeArray( isTag.explodeArray() ).ignoreValue( isTag.ignoreValue() ).prependType( isTag.prependType() ).name( name )
             .descriptionGenerator( isTag.descriptionGenerator() ).cssClass( isTag.cssClass() ).color( isTag.color() )
             .style( isTag.style() ).tags( getTagNames( isTag, annotation ) )
-            .href( isTag.href()).hrefGenerator( isTag.hrefGenerator() ).build();
+            .href( isTag.href() ).hrefGenerator( isTag.hrefGenerator() ).build();
 
     }
 
@@ -547,8 +561,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
             return tagConfiguration.getHrefGenerator().newInstance().generateHref( tagConfiguration, annotation, value );
         } catch( Exception e ) {
             throw new JGivenWrongUsageException(
-                    "Error while trying to generate the href for annotation " + annotation + " using HrefGenerator class "
-                            + tagConfiguration.getHrefGenerator() + ": " + e.getMessage(), e );
+                "Error while trying to generate the href for annotation " + annotation + " using HrefGenerator class "
+                        + tagConfiguration.getHrefGenerator() + ": " + e.getMessage(), e );
         }
     }
 
@@ -593,6 +607,25 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     public ScenarioCaseModel getScenarioCaseModel() {
         return scenarioCaseModel;
+    }
+
+    private static class StepAndMethod {
+
+        StepModel stepModel;
+        Method method;
+
+        private StepAndMethod( Method method, StepModel stepModel ) {
+            this.method = method;
+            this.stepModel = stepModel;
+        }
+
+        public StepModel getStepModel() {
+            return stepModel;
+        }
+
+        public Method getMethod() {
+            return method;
+        }
     }
 
 }
