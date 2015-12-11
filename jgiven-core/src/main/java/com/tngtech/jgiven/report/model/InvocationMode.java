@@ -18,8 +18,6 @@ public enum InvocationMode {
                 return StepStatus.PENDING;
             case SKIPPED:
                 return StepStatus.SKIPPED;
-            case NESTED:
-                return StepStatus.NESTED;
             default:
                 throw new IllegalArgumentException( this.toString() );
         }
