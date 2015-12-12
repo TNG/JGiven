@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.examples.nested;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.testng.Assert;
 
@@ -16,6 +18,17 @@ public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedSt
     public void a_scenario_with_nested_steps() {
 
         given().I_fill_out_the_registration_form_with_valid_values();
+
+        when().I_submit_the_form();
+
+        then().the_password_matches();
+
+    }
+
+    @Test
+    public void a_scenario_with_a_failing_nested_step_on_purpose() {
+
+        given().I_fill_out_the_registration_form_with_invalid_values();
 
         when().I_submit_the_form();
 
@@ -43,6 +56,18 @@ public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedSt
                 .and().I_enter_a_email_address( "franky@acme.com" )
                 .and().I_enter_a_password( "password1234" )
                 .and().I_enter_a_repeated_password( "password1234" );
+        }
+
+        @NestedSteps
+        public NestedStage I_fill_out_the_registration_form_with_invalid_values() {
+            return I_enter_a_name( "Franky" )
+                .and().I_enter_a_email_address( "franky@acme.com" )
+                .and().something_fails_for_demonstration_purposes();
+        }
+
+        public NestedStage something_fails_for_demonstration_purposes() {
+            assertThat( true ).as( "Fails on purpose" ).isFalse();
+            return self();
         }
 
         @NestedSteps
