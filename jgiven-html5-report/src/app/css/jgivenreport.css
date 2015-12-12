@@ -269,6 +269,7 @@ span.scenario-group-header-name.failed {
     padding-left: 1rem;
     border-left: 1px solid #eee;
     margin-left: 1px;
+    line-height: 1.4;
 }
 
 .has-tip {
@@ -343,7 +344,7 @@ td.steps.intro-word .step-expand-icon {
 }
 
 .nested-step .step-expand-icon {
-    top: 1px;
+    top: 3px;
     left: -1px;
     background-color: white;
 }
