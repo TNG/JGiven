@@ -115,8 +115,12 @@
   <span ng-if="step.durationInNanos > 10000000"
         class="duration"> ({{ ::nanosToReadableUnit(step.durationInNanos) }})</span>
 
-  <div class="nested-step" ng-if="step.nestedSteps" ng-init="nestedStep=true">
-    <div ng-repeat="step in step.nestedSteps track by $index">
+  <div ng-if="step.nestedSteps && step.expanded" ng-init="nestedStep=true">
+    <div class="nested-step {{::step.nestedSteps ? 'toggle' : ''}}" ng-repeat="step in step.nestedSteps track by $index"
+         ng-click="step.expanded = !step.expanded; $event.stopPropagation();">
+      <i ng-if="::step.nestedSteps"
+         class="fa {{step.expanded ? 'fa-angle-down' : 'fa-angle-right'}} step-expand-icon"></i>
+
       <span ng-include="'step_template.html'"/>
     </div>
   </div>
@@ -518,9 +522,12 @@
                       <div ng-if="scenario.scenarioCases.length === 1 || scenario.casesAsTable || case.expanded"
                            class="steps">
                         <table class="steps">
-                          <tr class="steps" bindonce ng-repeat="step in case.steps">
-
+                          <tr class="steps {{::step.nestedSteps ? 'toggle' : ''}}" bindonce ng-repeat="step in case.steps"
+                              ng-click="step.expanded = !step.expanded">
                             <td class="steps intro-word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}">
+                              <i ng-if="::step.nestedSteps"
+                                 class="fa {{step.expanded ? 'fa-angle-down' : 'fa-angle-right'}} step-expand-icon"></i>
+
                               {{::step.words[0].isIntroWord ?
                               step.words[0].value.capitalize() : ''}}
                             </td>
