@@ -19,8 +19,8 @@ import com.tngtech.jgiven.report.model.*;
 
 public class PlainTextScenarioWriter extends PlainTextWriter {
     private static final String INDENT = "   ";
-    public static final String NESTED_HEADING = "|  ";
-    public static final String NESTED_INDENT = "|  ";
+    public static final String NESTED_HEADING = "  ";
+    public static final String NESTED_INDENT = "  ";
 
     protected ScenarioModel currentScenarioModel;
     protected ScenarioCaseModel currentCaseModel;

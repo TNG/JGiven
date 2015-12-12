@@ -18,6 +18,7 @@ import com.tngtech.jgiven.annotation.Hidden;
  */
 public class StageBase<SELF extends StageBase<?>> {
 
+    @Hidden
     @SuppressWarnings( "unchecked" )
     public SELF self() {
         return (SELF) this;
