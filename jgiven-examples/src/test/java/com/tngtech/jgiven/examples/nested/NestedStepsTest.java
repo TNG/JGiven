@@ -47,7 +47,8 @@ public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedSt
 
         @NestedSteps
         public NestedStage I_enter_a_name( String name ) {
-            return I_think_a_name( name ).and().I_write_the_name( name );
+            return I_think_a_name( name )
+                .and().I_write_the_name( name );
         }
 
         public NestedStage I_think_a_name( String name ) {

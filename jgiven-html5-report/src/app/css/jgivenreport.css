@@ -264,6 +264,11 @@ span.scenario-group-header-name.failed {
     margin-left: 1.3rem;
 }
 
+.nested-step {
+    padding-left: 1rem;
+    border-left: 1px solid #eee;
+}
+
 .has-tip {
     font-weight: normal !important;
 }

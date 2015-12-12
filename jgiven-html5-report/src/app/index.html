@@ -60,6 +60,69 @@
 </script>
 
 
+<script type="text/ng-template" id="step_template.html">
+  <span aria-haspopup="{{ ::step.extendedDescription ? 'true' : 'false'"
+        class="{{ ::step.extendedDescription ? 'has-tip' : '' }}"
+        tooltip-html-unsafe="{{ ::step.extendedDescription }}"
+        tooltip-popup-delay="250">
+    <span
+        class="word {{ ::scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{ ::word.isDifferent ? 'diff' : ''}}"
+        bindonce ng-repeat-start="word in (nestedStep ? step.words : getNonIntroWords(step.words))">
+      <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
+        <strong>&lt;{{::word.argumentInfo.parameterName}}&gt;</strong>
+      </span>
+
+      <span
+          ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName) && !word.argumentInfo.dataTable"
+          class="{{word.argumentInfo ? 'argument' : ''}} {{ word.value.indexOf('\n') > -1 ? 'multiline' : ''}}"
+          >{{ ::word.argumentInfo.formattedValue || word.value }}</span> <!-- do not change formatting here, it is important for multiline values -->
+      <table class="table-value" ng-if="word.argumentInfo.dataTable">
+        <tr bindonce ng-repeat="row in word.argumentInfo.dataTable.data">
+          <td class="{{ isHeaderCell($parent.$index, $index, word.argumentInfo.dataTable.headerType) ? 'header-cell' : '' }}"
+              bindonce ng-repeat="value in row track by $index">{{ ::value }}
+          </td>
+        </tr>
+      </table>
+
+    </span>
+      <span ng-repeat-end></span>
+    <div ng-if="step.attachment && step.attachment.showDirectly">
+      <img class="direct-image" ng-src="data/{{ step.attachment.value }}"
+           alt="{{ step.attachment.title }}"/>
+    </div>
+  </span>
+  <span bindonce ng-repeat="scenarioCase in scenario.scenarioCases"
+        ng-init="step = scenarioCase.steps[$parent.$index]">
+          <span ng-if="step.attachment && !step.attachment.showDirectly">
+            <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
+                  class="{{ step.attachment.title ? 'has-tip' : '' }}"
+                  tooltip-html-unsafe="{{ step.attachment.title }}"
+                  tooltip-popup-delay="250">
+              <a target="_blank" href="data/{{ step.attachment.value }}">
+                <i class="fa fa-paperclip"><span class="attachment-index"
+                                                 ng-if="scenario.scenarioCases.length > 1">{{ scenarioCase.caseNr }}</span></i>
+              </a>
+            </span>
+          </span>
+  </span>
+  <span ng-if="scenario.executionStatus !== 'SUCCESS'">
+          <i ng-if="step.status === 'PASSED'" class="small-check fa fa-check-square"></i>
+          <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-exclamation-circle"></i>
+          <i ng-if="step.status === 'SKIPPED'" class="skipped fa fa-ban"></i>
+          <i ng-if="step.status === 'PENDING'" title="Pending"
+             class="skipped fa fa-ban"></i>
+        </span>
+  <span ng-if="step.durationInNanos > 10000000"
+        class="duration"> ({{ ::nanosToReadableUnit(step.durationInNanos) }})</span>
+
+  <div class="nested-step" ng-if="step.nestedSteps" ng-init="nestedStep=true">
+    <div ng-repeat="step in step.nestedSteps track by $index">
+      <span ng-include="'step_template.html'"/>
+    </div>
+  </div>
+
+</script>
+
 <div class="off-canvas-wrap" data-offcanvas>
 
   <div class="inner-wrap">
@@ -462,59 +525,7 @@
                               step.words[0].value.capitalize() : ''}}
                             </td>
                             <td class="steps">
-                              <span aria-haspopup="{{ ::step.extendedDescription ? 'true' : 'false'"
-                                    class="{{ ::step.extendedDescription ? 'has-tip' : '' }}"
-                                    tooltip-html-unsafe="{{ ::step.extendedDescription }}"
-                                    tooltip-popup-delay="250">
-                                <span
-                                    class="word {{ ::scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{ ::word.isDifferent ? 'diff' : ''}}"
-                                    bindonce ng-repeat-start="word in getNonIntroWords(step.words)">
-                                  <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
-                                    <strong>&lt;{{::word.argumentInfo.parameterName}}&gt;</strong>
-                                  </span>
-
-                                  <span
-                                      ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName) && !word.argumentInfo.dataTable"
-                                      class="{{word.argumentInfo ? 'argument' : ''}} {{ word.value.indexOf('\n') > -1 ? 'multiline' : ''}}"
-                                      >{{ ::word.argumentInfo.formattedValue || word.value }}</span> <!-- do not change formatting here, it is important for multiline values -->
-                                  <table class="table-value" ng-if="word.argumentInfo.dataTable">
-                                    <tr bindonce ng-repeat="row in word.argumentInfo.dataTable.data">
-                                      <td class="{{ isHeaderCell($parent.$index, $index, word.argumentInfo.dataTable.headerType) ? 'header-cell' : '' }}"
-                                          bindonce ng-repeat="value in row track by $index">{{ ::value }}
-                                      </td>
-                                    </tr>
-                                  </table>
-
-                                </span>
-                                <span ng-repeat-end></span>
-                                <div ng-if="step.attachment && step.attachment.showDirectly">
-                                  <img class="direct-image" ng-src="data/{{ step.attachment.value }}"
-                                       alt="{{ step.attachment.title }}"/>
-                                </div>
-                              </span>
-                              <span bindonce ng-repeat="scenarioCase in scenario.scenarioCases"
-                                    ng-init="step = scenarioCase.steps[$parent.$index]">
-                                <span ng-if="step.attachment && !step.attachment.showDirectly">
-                                  <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
-                                        class="{{ step.attachment.title ? 'has-tip' : '' }}"
-                                        tooltip-html-unsafe="{{ step.attachment.title }}"
-                                        tooltip-popup-delay="250">
-                                    <a target="_blank" href="data/{{ step.attachment.value }}">
-                                      <i class="fa fa-paperclip"><span class="attachment-index"
-                                                                       ng-if="scenario.scenarioCases.length > 1">{{ scenarioCase.caseNr }}</span></i>
-                                    </a>
-                                  </span>
-                                </span>
-                              </span>
-                              <span ng-if="scenario.executionStatus !== 'SUCCESS'">
-                                <i ng-if="step.status === 'PASSED'" class="small-check fa fa-check-square"></i>
-                                <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-exclamation-circle"></i>
-                                <i ng-if="step.status === 'SKIPPED'" class="skipped fa fa-ban"></i>
-                                <i ng-if="step.status === 'PENDING'" title="Pending"
-                                   class="skipped fa fa-ban"></i>
-                              </span>
-                              <span ng-if="step.durationInNanos > 10000000"
-                                    class="duration"> ({{ ::nanosToReadableUnit(step.durationInNanos) }})</span>
+                              <span ng-include="'step_template.html'"/>
                             </td>
                           </tr>
                         </table>
