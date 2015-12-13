@@ -18,6 +18,7 @@ import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.config.TagConfiguration;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
+import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.impl.format.ParameterFormattingUtil;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
@@ -25,7 +26,6 @@ import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.*;
-import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
 public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
@@ -111,7 +111,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         List<NamedArgument> nonHiddenArguments = filterHiddenArguments( arguments, paramMethod.getParameterAnnotations() );
 
         ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil( configuration );
-        List<Formatting<?, ?>> formatters = parameterFormattingUtil.getFormatter( paramMethod.getParameterTypes(), getNames( arguments ),
+        List<ObjectFormatter<?>> formatters = parameterFormattingUtil.getFormatter( paramMethod.getParameterTypes(), getNames( arguments ),
             paramMethod.getParameterAnnotations() );
         stepModel.words = new StepFormatter( stepModel.name, nonHiddenArguments, formatters ).buildFormattedWords();
 
@@ -285,7 +285,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         setMethodName( method.getName() );
 
         ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil( configuration );
-        List<Formatting<?, ?>> formatter = parameterFormattingUtil.getFormatter( method.getParameterTypes(), getNames( namedArguments ),
+        List<ObjectFormatter<?>> formatter = parameterFormattingUtil.getFormatter( method.getParameterTypes(), getNames( namedArguments ),
             method.getParameterAnnotations() );
 
         setArguments( parameterFormattingUtil.toStringList( formatter, getValues( namedArguments ) ) );

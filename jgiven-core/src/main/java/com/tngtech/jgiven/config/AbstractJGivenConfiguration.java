@@ -7,7 +7,7 @@ import com.google.common.collect.Maps;
 import com.tngtech.jgiven.format.Formatter;
 import com.tngtech.jgiven.impl.format.FormatterCache;
 
-public abstract class AbstractJGivenConfiguration {
+public abstract class AbstractJGivenConfiguration implements FormatterConfiguration {
     private final Map<Class<? extends Annotation>, TagConfiguration> tagConfigurations = Maps.newHashMap();
     private final FormatterCache formatterCache = new FormatterCache();
     private String testClassSuffixRegEx = "Tests?";
@@ -88,6 +88,7 @@ public abstract class AbstractJGivenConfiguration {
         testClassSuffixRegEx = suffixRegEx;
     }
 
+    @Override
     public Formatter<?> getFormatter( final Class<?> typeToBeFormatted ) {
         return formatterCache.getFormatter( typeToBeFormatted );
     }

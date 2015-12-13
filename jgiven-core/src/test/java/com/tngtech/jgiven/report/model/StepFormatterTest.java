@@ -16,9 +16,9 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.NotFormatter;
+import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
 import com.tngtech.jgiven.report.model.StepFormatter.ArgumentFormatting;
-import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
 @RunWith( DataProviderRunner.class )
 public class StepFormatterTest {
@@ -93,7 +93,7 @@ public class StepFormatterTest {
     @SuppressWarnings( { "unchecked", "rawtypes" } )
     public void testFormatter( String source, List<? extends Object> arguments, ArgumentFormatter<?> formatter, String formatterArg,
             String expectedResult ) {
-        List<Formatting<?, ?>> asList = newArrayList();
+        List<ObjectFormatter<?>> asList = newArrayList();
         if( formatter != null ) {
             asList.add( new ArgumentFormatting( formatter, formatterArg ) );
         } else {

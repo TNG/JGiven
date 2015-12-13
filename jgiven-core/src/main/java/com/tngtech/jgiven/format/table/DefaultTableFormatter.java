@@ -9,6 +9,7 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.config.FormatterConfiguration;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
@@ -21,18 +22,15 @@ import com.tngtech.jgiven.report.model.DataTable;
  */
 public class DefaultTableFormatter implements TableFormatter {
     public static final String DEFAULT_NUMBERED_HEADER = "#";
+    private final FormatterConfiguration formatterConfiguration;
+
+    public DefaultTableFormatter( FormatterConfiguration formatterConfiguration ) {
+        this.formatterConfiguration = formatterConfiguration;
+    }
 
     @Override
     public DataTable format( Object tableArgument, Table tableAnnotation, String parameterName, Annotation... allAnnotations ) {
-        return toTableValue( tableArgument, tableAnnotation, parameterName, allAnnotations );
-    }
-
-    /**
-     * Creates a {@link com.tngtech.jgiven.report.model.DataTable} from a given tableValue and a {@link com.tngtech.jgiven.annotation.Table}
-     * annotation.
-     */
-    public static DataTable toTableValue( Object tableValue, Table tableAnnotation, String parameterName, Annotation... annotations ) {
-        DataTable dataTable = toDataTable( tableValue, tableAnnotation, parameterName, annotations );
+        DataTable dataTable = toDataTable( tableArgument, tableAnnotation, parameterName, allAnnotations );
         addNumberedRows( tableAnnotation, dataTable );
         addNumberedColumns( tableAnnotation, dataTable );
         return dataTable;
@@ -90,7 +88,7 @@ public class DefaultTableFormatter implements TableFormatter {
         }
     }
 
-    private static DataTable toDataTable( Object tableValue, Table tableAnnotation, String parameterName, Annotation[] annotations ) {
+    private DataTable toDataTable( Object tableValue, Table tableAnnotation, String parameterName, Annotation[] annotations ) {
 
         List<List<String>> result = Lists.newArrayList();
 
@@ -125,11 +123,12 @@ public class DefaultTableFormatter implements TableFormatter {
         return new DataTable( tableAnnotation.header(), result );
     }
 
-    static DataTable pojosToTableValue( Iterable<?> objects, final Table tableAnnotation, String parameterName, Annotation[] annotations ) {
+    DataTable pojosToTableValue( Iterable<?> objects, final Table tableAnnotation, String parameterName, Annotation[] annotations ) {
         Object first = objects.iterator().next();
 
         RowFormatterFactory objectRowFormatterFactory = ReflectionUtil.newInstance( tableAnnotation.rowFormatter() );
-        RowFormatter formatter = objectRowFormatterFactory.create( first.getClass(), tableAnnotation, parameterName, annotations );
+        RowFormatter formatter = objectRowFormatterFactory.create( first.getClass(), tableAnnotation, parameterName, annotations,
+            formatterConfiguration );
 
         List<List<String>> list = Lists.newArrayList();
         if( tableAnnotation.columnTitles().length > 0 ) {

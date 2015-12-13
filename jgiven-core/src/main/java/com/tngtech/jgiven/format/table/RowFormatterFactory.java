@@ -3,6 +3,7 @@ package com.tngtech.jgiven.format.table;
 import java.lang.annotation.Annotation;
 
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.config.FormatterConfiguration;
 
 /**
  * Factory for creating ObjectRowFormatter instances
@@ -10,6 +11,7 @@ import com.tngtech.jgiven.annotation.Table;
  * @see com.tngtech.jgiven.annotation.Table
  * @since 0.10.0
  */
-public interface RowFormatterFactory<T extends RowFormatter> {
-    T create( Class<?> type, Table tableAnnotation, String parameterName, Annotation[] annotations );
+public interface RowFormatterFactory {
+    RowFormatter create( Class<?> type, Table tableAnnotation, String parameterName, Annotation[] annotations,
+            FormatterConfiguration configuration );
 }

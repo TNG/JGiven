@@ -16,7 +16,8 @@ public abstract class RowFormatter {
     public abstract List<String> header();
 
     /**
-     * Generates a single row of the data table for the given object
+     * Generates a single row of the data table for the given object.
+     * This method is called for each object of the input.
      */
     public abstract List<String> formatRow( Object object );
 

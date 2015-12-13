@@ -8,7 +8,7 @@ import java.lang.reflect.Array;
  * except for arrays where {@link java.util.Arrays#deepToString(Object[])} is used.
  * @param <T>
  */
-public class DefaultFormatter<T> implements ArgumentFormatter<T>, Formatter<T> {
+public class DefaultFormatter<T> implements ArgumentFormatter<T>, Formatter<T>, ObjectFormatter<T> {
     public static final DefaultFormatter INSTANCE = new DefaultFormatter();
 
     @Override
@@ -21,6 +21,7 @@ public class DefaultFormatter<T> implements ArgumentFormatter<T>, Formatter<T> {
         return format( argumentToFormat );
     }
 
+    @Override
     public String format( T argumentToFormat ) {
         if( argumentToFormat == null ) {
             return "null";
@@ -41,4 +42,5 @@ public class DefaultFormatter<T> implements ArgumentFormatter<T>, Formatter<T> {
 
         return String.valueOf( argumentToFormat );
     }
+
 }

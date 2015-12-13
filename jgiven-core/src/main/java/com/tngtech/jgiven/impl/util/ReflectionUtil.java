@@ -108,6 +108,15 @@ public class ReflectionUtil {
         };
     }
 
+    public static boolean hasConstructor( Class<?> type, Class<?>... parameterTypes ) {
+        try {
+            type.getDeclaredConstructor( parameterTypes );
+            return true;
+        } catch( NoSuchMethodException e ) {
+            return false;
+        }
+    }
+
     public interface FieldPredicate {
         boolean isTrue( Field field ) throws Exception;
     }
@@ -137,11 +146,15 @@ public class ReflectionUtil {
 
     }
 
-    public static <T> T newInstance( Class<T> value ) {
+    public static <T> T newInstance( Class<T> type ) {
+        return newInstance( type, new Class<?>[0] );
+    }
+
+    public static <T> T newInstance( Class<T> type, Class<?>[] parameterTypes, Object... parameterValues ) {
         try {
-            Constructor<T> constructor = value.getDeclaredConstructor();
+            Constructor<T> constructor = type.getDeclaredConstructor( parameterTypes );
             constructor.setAccessible( true );
-            return constructor.newInstance();
+            return constructor.newInstance( parameterValues );
         } catch( InstantiationException e ) {
             throw new RuntimeException( e );
         } catch( IllegalAccessException e ) {

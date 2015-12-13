@@ -13,7 +13,10 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.DataTables;
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.config.FormatterConfiguration;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
+import com.tngtech.jgiven.format.DefaultFormatter;
+import com.tngtech.jgiven.format.Formatter;
 import com.tngtech.jgiven.format.table.DefaultTableFormatter;
 
 @RunWith( DataProviderRunner.class )
@@ -136,7 +139,12 @@ public class DataTableFormatterTest {
     }
 
     public static DataTable toTableValue( Object tableValue, Table tableAnnotation ) {
-        return DefaultTableFormatter.toTableValue( tableValue, tableAnnotation, "param1" );
+        return new DefaultTableFormatter( new FormatterConfiguration() {
+            @Override
+            public Formatter<?> getFormatter( Class<?> typeToBeFormatted ) {
+                return DefaultFormatter.INSTANCE;
+            }
+        } ).format( tableValue, tableAnnotation, "param1" );
     }
 
     @Test

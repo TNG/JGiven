@@ -8,19 +8,16 @@ import java.util.regex.Pattern;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
-import com.tngtech.jgiven.format.AnnotationArgumentFormatter;
-import com.tngtech.jgiven.format.ArgumentFormatter;
-import com.tngtech.jgiven.format.DefaultFormatter;
-import com.tngtech.jgiven.format.Formatter;
+import com.tngtech.jgiven.format.*;
 import com.tngtech.jgiven.format.table.TableFormatter;
 import com.tngtech.jgiven.impl.util.WordUtil;
 
 public class StepFormatter {
     private final String stepDescription;
     private final List<NamedArgument> arguments;
-    private final List<Formatting<?, ?>> formatters;
+    private final List<ObjectFormatter<?>> formatters;
 
-    public abstract static class Formatting<F, T> {
+    public abstract static class Formatting<F, T> implements ObjectFormatter<T> {
         protected final F formatter;
 
         Formatting( F formatter ) {
@@ -29,7 +26,7 @@ public class StepFormatter {
 
         public abstract String format( T o );
 
-        F getFormatter() {
+        public F getFormatter() {
             return formatter;
         }
     }
@@ -101,7 +98,7 @@ public class StepFormatter {
         }
     }
 
-    public StepFormatter( String stepDescription, List<NamedArgument> arguments, List<Formatting<?, ?>> formatters ) {
+    public StepFormatter( String stepDescription, List<NamedArgument> arguments, List<ObjectFormatter<?>> formatters ) {
         this.stepDescription = stepDescription;
         this.arguments = arguments;
         this.formatters = formatters;
@@ -215,11 +212,7 @@ public class StepFormatter {
         Object value = arguments.get( index ).value;
         String defaultFormattedValue = toDefaultStringFormat( value );
 
-        Formatting<?, ?> formatter = formatters.get( index );
-        if( formatter != null && formatter.getFormatter() instanceof TableFormatter ) {
-            throw new JGivenWrongUsageException(
-                "Parameters annotated with @Table must be the last ones. They cannot be used for $ substitution" );
-        }
+        ObjectFormatter<?> formatter = formatters.get( index );
         String formattedValue = formatUsingFormatterOrNull( formatter, value );
         String argumentName = WordUtil.fromSnakeCase( arguments.get( index ).name );
 
@@ -227,7 +220,7 @@ public class StepFormatter {
     }
 
     @SuppressWarnings( "unchecked" )
-    private <T> String formatUsingFormatterOrNull( Formatting<?, T> argumentFormatter, Object value ) {
+    private <T> String formatUsingFormatterOrNull( ObjectFormatter<T> argumentFormatter, Object value ) {
         if( argumentFormatter == null ) {
             return null;
         }

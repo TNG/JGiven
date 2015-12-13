@@ -11,6 +11,7 @@ import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.config.FormatterConfiguration;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 
@@ -115,4 +116,20 @@ public class FieldBasedRowFormatter extends RowFormatter {
         return newList;
     }
 
+    /**
+     * Factory for creating instances of {@link com.tngtech.jgiven.format.table.FieldBasedRowFormatter}
+     *
+     * @see com.tngtech.jgiven.format.table.FieldBasedRowFormatter
+     * @see com.tngtech.jgiven.format.table.RowFormatterFactory
+     * @see com.tngtech.jgiven.annotation.Table
+     * @see PlainRowFormatter.Factory
+     * @since 0.9.6
+     */
+    public static class Factory implements RowFormatterFactory {
+        @Override
+        public RowFormatter create( Class type, Table tableAnnotation, String parameterName, Annotation[] annotations,
+                FormatterConfiguration configuration ) {
+            return new FieldBasedRowFormatter( type, tableAnnotation, parameterName, annotations );
+        }
+    }
 }

@@ -4,8 +4,8 @@ import static com.tngtech.jgiven.annotation.Table.HeaderType.HORIZONTAL;
 
 import java.lang.annotation.*;
 
+import com.tngtech.jgiven.format.table.DefaultRowFormatterFactory;
 import com.tngtech.jgiven.format.table.DefaultTableFormatter;
-import com.tngtech.jgiven.format.table.FieldBasedRowFormatterFactory;
 import com.tngtech.jgiven.format.table.RowFormatterFactory;
 import com.tngtech.jgiven.format.table.TableFormatter;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
@@ -14,13 +14,21 @@ import com.tngtech.jgiven.impl.util.AnnotationUtil;
  * Marks the parameter of a step method as a data table.
  * Such parameters are represented as tables in the report.
  * <p>
- * Only parameters that implement {@link java.lang.Iterable} or arrays can be treated as data tables.
- * The elements can either be again {@link java.lang.Iterable} instances the data for each row
- * of the table.
+ * In principle, every object can be represented as a table. However, JGiven treats certain types of objects
+ * in a special way.
  * <p>
- * Note, that in that case the first list is taken as the header of the table if the {@link Table#columnTitles()} are not set.
+ * If a parameter implements the {@link java.lang.Iterable} or is an instance of an array then each element of
+ * the Iterable is interpreted as a single row of the table. Otherwise JGiven will only create a single row.
  * <p>
- * Elements can also be plain POJOs, in which case the field names become the headers and field values the data.
+ * The elements are again interpreted differently whether they are instances of {@link java.lang.Iterable} or not.
+ * <p>
+ * If the elements are instances of Iterable then each element becomes a cell in the row.
+ * Note that the first list is taken as the header of the table if the {@link Table#columnTitles()} is not set.
+ * <p>
+ * If the elements are not instances of Iterable, the field names become the headers and field values the data.
+ * This can be overridden by the {@link #objectFormatting()} attribute.
+ * <p>
+ * It is also possible to completely replace the way JGiven translates arguments to tables by using the {@link #formatter()} attribute    
  * <p>
  * <h3>Example</h3>
  * <h4>Some POJO</h4>
@@ -298,25 +306,48 @@ public @interface Table {
 
     /**
      * The formatter to use to format the argument value as a table.
-     * The default implementation uses the {@link #rowFormatter()} to actually format
-     * the rows of the table.
-     * In general it much easier to provide a custom {@link #rowFormatter()} instead
-     * of providing a custom {@link #formatter()}
+     * If you only want to override how POJOs are formatted you should
+     * use the {@link #rowFormatter()} attribute
      * 
      * @since 0.10.0
      */
     Class<? extends TableFormatter> formatter() default DefaultTableFormatter.class;
 
     /**
+     * How to format rows when the rows are plain Objects, i.e. no Iterables
+     * 
+     * @since 0.10.0
+     */
+    ObjectFormatting objectFormatting() default ObjectFormatting.FIELDS;
+
+    /**
+     * Possible choices for the {@link #objectFormatting()} attribute
+     * 
+     * @since 0.10.0
+     */
+    public enum ObjectFormatting {
+        /**
+         * Each field of the object becomes a column in the table
+         */
+        FIELDS,
+
+        /**
+         * There is only one column and the values are created by formatting
+         * each Object using the standard JGiven formatting. 
+         */
+        PLAIN
+    }
+
+    /**
      * Specifies a factory to create a custom {@link com.tngtech.jgiven.format.table.RowFormatter}
-     * that is used to format each row of the table.
+     * that is used to format POJOs each row of the table.
      * <p>
-     *     The default implementation uses the {@link com.tngtech.jgiven.format.table.FieldBasedRowFormatterFactory}.
-     *     As an alternative you can use the {@link com.tngtech.jgiven.format.table.ToStringRowFormatterFactory} or
-     *     implement your own one.
+     *     The default implementation evaluates the {@link #objectFormatting()} attribute and
+     *     creates corresponding RowFormatters
      * </p>
      *
      * @since 0.10.0
      */
-    Class<? extends RowFormatterFactory> rowFormatter() default FieldBasedRowFormatterFactory.class;
+    Class<? extends RowFormatterFactory> rowFormatter() default DefaultRowFormatterFactory.class;
+
 }
