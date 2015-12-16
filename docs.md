@@ -15,6 +15,7 @@ permalink: /docs/
 * [Parameterized Scenarios]({{site.baseurl}}/docs/parameterizedscenarios/)
 * [Tags]({{site.baseurl}}/docs/tags/)
 * [Attachments]({{site.baseurl}}/docs/attachments/)
+* [Exception Handling]({{site.baseurl}}/docs/exceptions/)
 * [Spring]({{site.baseurl}}/docs/spring/)
 
 ## API Documentation
