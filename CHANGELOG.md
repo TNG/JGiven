@@ -6,6 +6,10 @@
 
 Steps can now have nested steps that are shown in the report. This is done by annotating parent steps with the new `@NestedSteps` annotation. [#17](https://github.com/TNG/JGiven/issues/17) [PR #174](https://github.com/TNG/JGiven/pull/174) Thanks to albertofaci!
 
+### Other
+
+* HTML Report: case tables have sortable columns now [#175](https://github.com/TNG/JGiven/pull/175)
+
 ## Fixed Issues
 
 * Fixed the issue that exceptions called within step methods are captured [#173](https://github.com/TNG/JGiven/issues/173)
