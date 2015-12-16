@@ -32,6 +32,9 @@
     "angular-chart.js": "0.7.2",
     "angular-local-storage": "0.1.5",
     "angular-mocks": "1.4.1",
-    "angular-bindonce": "0.3.3"
+    "angular-bindonce": "0.3.3",
+    "datatables.net": "~1.10.10",
+    "datatables.net-dt": "~1.10.10",
+    "datatables.net-zf": "~1.10.10"
   }
 }
