@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/foundation.css"/>
   <link rel="stylesheet" href="css/font-awesome.min.css"/>
   <link rel="stylesheet" href="css/angular-chart.css"/>
+  <link rel="stylesheet" href="css/dataTables.foundation.min.css"/>
   <link rel="stylesheet" href="css/jgivenreport.css"/>
   <link rel="stylesheet" href="css/print.css" media="print"/>
   <link rel="stylesheet" href="css/custom.css"/>
@@ -490,6 +491,8 @@
                   <div ng-if="scenario.expanded || currentPage.print || currentPage.embed"
                        id="scenario-{{$index}}" class="scenario-content">
 
+                    {{scenarioIndex=$index;""}}
+
                     <div class="scenario-extended-description"
                          ng-if="scenario.extendedDescription && !scenario.extendedDescriptionExpanded"
                          ng-bind-html="::scenario.extendedDescription">
@@ -555,7 +558,8 @@
                           <div ng-if="scenario.casesAsTable">
                             <p></p>
                             <h6>Cases</h6>
-                            <table class="data-table">
+                            <table class="data-table" id="scenario-table-{{scenarioIndex}}" ng-init="initScenario(scenarioIndex)">
+                              <thead>
                               <tr>
                                 <th>#</th>
                                 <th ng-if="::scenario.scenarioCases[0].description">Description</th>
@@ -564,6 +568,8 @@
                                 </th>
                                 <th>Status</th>
                               </tr>
+                              </thead>
+                              <tbody>
                               <tr ng-repeat="case in scenario.scenarioCases">
                                 <td>{{::case.caseNr}}</td>
                                 <td ng-if="::case.description" ng-bind="::case.description"></td>
@@ -589,6 +595,7 @@
 
                                 </td>
                               </tr>
+                              </tbody>
                             </table>
                           </div>
                         </div>
@@ -656,6 +663,8 @@
 <script src="js/angular-local-storage.js"></script>
 <script src="js/bindonce.min.js"></script>
 <script src="js/lodash.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/dataTables.foundation.min.js"></script>
 <script src="lib/util.js"></script>
 <script src="lib/app.js"></script>
 <script src="lib/offCanvasDirective.js"></script>
