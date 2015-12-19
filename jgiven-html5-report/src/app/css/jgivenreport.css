@@ -30,6 +30,10 @@ h5 {
     margin-left: 0.5rem;
 }
 
+a, a:visited {
+    color: #5A5A5A;
+}
+
 .header-fixed {
     position: fixed;
     z-index: 1000;
@@ -224,6 +228,14 @@ span.scenario-group-header-name.failed {
     max-width: 35rem;
     border-bottom: 1px solid #f0f0f0;
     margin-bottom: 0.5rem;
+}
+
+.scenario-extended-description p {
+    font-size: 0.9rem;
+}
+
+.scenario-extended-description a {
+    color: rgb(60, 120, 60)
 }
 
 .scenario-group-name {
@@ -653,10 +665,6 @@ ul.tags {
 
 ul.pagination li.current a {
     background-color: green;
-}
-
-a, a:visited {
-    color: #5A5A5A;
 }
 
 .side-nav li a:not(.button) {
