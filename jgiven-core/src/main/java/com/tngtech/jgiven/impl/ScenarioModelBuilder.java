@@ -199,7 +199,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     public void setException( Throwable throwable ) {
-        scenarioCaseModel.setErrorMessage( throwable.getMessage() );
+        scenarioCaseModel.setErrorMessage( throwable.getClass().getName() + ": " + throwable.getMessage() );
         scenarioCaseModel.setStackTrace( getStackTrace( throwable, FILTER_STACK_TRACE ) );
     }
 

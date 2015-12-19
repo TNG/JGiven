@@ -9,6 +9,7 @@ Steps can now have nested steps that are shown in the report. This is done by an
 ### Other
 
 * HTML Report: case tables have sortable columns now [#175](https://github.com/TNG/JGiven/pull/175)
+* Exception type is now added to the error message of a failed step [#154](https://github.com/TNG/JGiven/issues/154)
 
 ## Fixed Issues
 
