@@ -280,7 +280,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
     @Test
     public void camel_case_is_supported_in_steps_with_parameters() throws Throwable {
         startScenario( "Scenario camel case steps with parameter" );
-        given().aStepInCamelCaseWithA$Parameter("dollar");
+        given().aStepInCamelCaseWithA$Parameter( "dollar" );
         getScenario().finished();
         StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
         assertThat( step.getCompleteSentence() ).isEqualTo( "Given a step in camel case with a dollar parameter" );
@@ -357,7 +357,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
 
         }
         ScenarioCaseModel scenarioCaseModel = getScenario().getScenarioCaseModel();
-        assertThat( scenarioCaseModel.getErrorMessage() ).isEqualTo( "test error" );
+        assertThat( scenarioCaseModel.getErrorMessage() ).isEqualTo( "java.lang.IllegalArgumentException: test error" );
         assertThat( scenarioCaseModel.getStackTrace().get( 0 ) ).matches(
             "com.tngtech.jgiven.impl.ScenarioModelBuilderTest\\$FailingTestStage.a_failing_test\\(ScenarioModelBuilderTest.java:\\d+\\)" );
     }
