@@ -6,7 +6,9 @@ import org.junit.runner.RunWith;
 import com.google.common.base.Strings;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.annotation.CaseDescription;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 
 @RunWith( DataProviderRunner.class )
@@ -59,4 +61,25 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
         given().a_very_long_parameter_value( "" + caseNr + Strings.repeat( "x", 4000 ) );
     }
 
+    @DataProvider
+    public static Object[][] manyValues() {
+        Object[][] result = new Object[100][];
+
+        for( int i = 0; i < result.length; i++ ) {
+
+            result[i] = new Object[] { "some grouping value " + ( i / 10 ), "value " + ( i % 10 ) };
+        }
+
+        return result;
+    }
+
+    @Test
+    @ExtendedDescription( "This scenario shows how large case tables are shown in JGiven. As soon as a table has more than 10 entries,"
+            + " additional features like pagination and searching will be added. This scenario also has some failing steps for demonstration purposes."
+            + "<p>Btw. this description was created with the <a target='_blank' href='http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/ExtendedDescription.html'>@ExtendedDescription</a> annotation" )
+    @UseDataProvider( "manyValues" )
+    public void a_scenario_with_many_cases( String grouping, String value ) {
+        given().some_group_value( grouping )
+            .and().another_value( value );
+    }
 }
