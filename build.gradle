@@ -1,5 +1,6 @@
 apply plugin: 'sonar-runner'
 
+
 buildscript {
     repositories {
         mavenCentral()
@@ -9,9 +10,11 @@ buildscript {
     dependencies {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
         classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.2'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
     }
 }
 
+apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.github.kt3k.coveralls'
 
 description = 'JGiven - BDD in plain Java'
@@ -53,18 +56,18 @@ subprojects {
     sourceCompatibility = targetCompatibility = 1.6
 
     ext {
-        junitDataproviderVersion = '1.9.3'
+        junitDataproviderVersion = '1.10.2'
         // set default junit version if not set via command line
         junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.12'
         junitParamsVersion = '1.0.4'
-        testngVersion = '6.8.7'
-        assertjVersion = '1.7.0'
-        slf4jVersion = '1.7.7'
+        testngVersion = '6.9.10'
+        assertjVersion = '3.2.0'
+        slf4jVersion = '1.7.13'
         cglibVersion = '2.2.2'
         paranamerVersion = '2.8'
         jansiVersion = '1.11'
-        gsonVersion = '2.3'
-        guavaVersion = '18.0'
+        gsonVersion = '2.5'
+        guavaVersion = '19.0'
         springVersion = '3.2.4.RELEASE'
         checkstyleVersion = '2.12.1'
         jacocoVersion = '0.7.2.201409121644'
