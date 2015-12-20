@@ -558,13 +558,12 @@
                           <div ng-if="scenario.casesAsTable" ng-controller="CasesTableCtrl as casesTableCtrl">
                             <p></p>
                             <h6 class="cases-table-header">Cases
-                              <ul ng-if="cases.length > 2" class="button-group radius right">
+                              <ul ng-if="scenario.scenarioCases.length > 2" class="button-group radius right">
                                 <li><a class="button dropdown small secondary group-by"
-                                       dropdown-toggle="#select-case-group-{{scenario-index}}">Group by <b>{{groupColumn ? groupColumn.name
-                                  :
-                                  ''}}</b></a>
-                                  <ul id="select-case-group-{{scenario-index}}" class="f-dropdown">
-                                    <li ng-repeat="col in groupColumns()">
+                                       dropdown-toggle="#select-case-group-{{scenarioIndex}}">Group by <b>{{groupColumn ? groupColumn.name
+                                  : ''}}</b></a>
+                                  <ul id="select-case-group-{{scenarioIndex}}" class="f-dropdown">
+                                    <li ng-repeat="col in groupColumns">
                                       <a ng-click="changeGrouping(col)"><i
                                           class="fa fa-check {{col.grouping ? 'selected' : 'unselected'}}"></i>
                                         {{col.name}}</a>
@@ -607,7 +606,10 @@
                                 <td ng-hide="col.grouping && !col.isStatus" ng-repeat="col in columns track by $index">
                                   <div ng-if="!col.isStatus">{{col.getValue(case)}}</div>
                                   <div ng-if="col.isStatus">
-                                    <div ng-if="case.success"><i class="check fa fa-check-square"></i></div>
+                                    <div ng-if="case.success"><i class="check fa fa-check-square"></i>
+                                    <span ng-if="case.durationInNanos > 10000000"
+                                          class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
+                                    </div>
 
                                     <div ng-if="!case.success" data-alert class="alert-box alert">
                                       <span class="toggle"
@@ -615,9 +617,9 @@
                                         <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
                                       FAILED: {{::case.errorMessage}}</span>
                                       <pre ng-if="case.stackTrace.expanded">{{ ::case.stackTrace.join('\n') }}</pre>
-                                    </div>
                                     <span ng-if="case.durationInNanos > 10000000"
                                           class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
+                                    </div>
                                   </div>
                                 </td>
                               </tr>
