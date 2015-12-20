@@ -2,6 +2,10 @@ body {
     height: 100%;
 }
 
+#title {
+    margin-left: 10px;
+}
+
 h2.subtitle {
     font-size: 1.1rem;
     color: #6f6f6f;
@@ -26,6 +30,10 @@ h5 {
     margin-left: 0.5rem;
 }
 
+a, a:visited {
+    color: #5A5A5A;
+}
+
 .header-fixed {
     position: fixed;
     z-index: 1000;
@@ -48,6 +56,10 @@ h5 {
     padding: 0;
 }
 
+.top-bar, .top-bar-section ul li {
+    background-color: rgb(0, 128, 0);
+}
+
 .page-icon-bar {
     position: absolute;
     top: 0;
@@ -61,7 +73,7 @@ h5 {
 .expand-icon:hover, .collapse-icon:hover, .print-icon:hover,
 .scenario:hover .scenario-link-icon:hover,
 .remove-bookmark-icon:hover, .add-bookmark-icon:hover {
-    color: #008cba;
+    color: green;
 }
 
 .remove-bookmark-icon {
@@ -175,6 +187,27 @@ span.scenario-group-header-name.failed {
     margin-right: 0.5rem;
 }
 
+.fa.fa-check.unselected {
+    color: white;
+}
+
+.cases-group-header {
+    background-color: #e8e8e8;
+    border-bottom: 1px solid #ddd;
+}
+
+.button.group-by {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.button.icon-button {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
 .scenario-list-button-bar .fa.selected {
     color: black;
 }
@@ -218,6 +251,14 @@ span.scenario-group-header-name.failed {
     margin-bottom: 0.5rem;
 }
 
+.scenario-extended-description p {
+    font-size: 0.9rem;
+}
+
+.scenario-extended-description a {
+    color: rgb(60, 120, 60)
+}
+
 .scenario-group-name {
     color: #555;
     margin-right: 0.5rem;
@@ -228,6 +269,10 @@ span.scenario-group-header-name.failed {
 }
 
 .scenario-title.failed {
+    color: red;
+}
+
+.scenario-case-title.failed {
     color: red;
 }
 
@@ -250,6 +295,14 @@ span.scenario-group-header-name.failed {
     list-style-type: none;
     padding-top: 0.5rem;
     margin-left: 1.3rem;
+}
+
+.nested-step {
+    position: relative;
+    padding-left: 1rem;
+    border-left: 1px solid #eee;
+    margin-left: 1px;
+    line-height: 1.4;
 }
 
 .has-tip {
@@ -310,6 +363,23 @@ td.steps.intro-word {
     text-align: right;
     vertical-align: top;
     font-size: 1rem;
+    position: relative;
+}
+
+.step-expand-icon {
+    position: absolute;
+    color: #888;
+}
+
+td.steps.intro-word .step-expand-icon {
+    top: 4px;
+    left: -0.6rem;
+}
+
+.nested-step .step-expand-icon {
+    top: 3px;
+    left: -1px;
+    background-color: white;
 }
 
 table.steps tr.steps {
@@ -317,6 +387,14 @@ table.steps tr.steps {
 }
 
 table.steps tr.steps:hover {
+    background-color: #eee;
+}
+
+table.steps tr.steps:hover .nested-step {
+    border-left: 1px solid #aaa;
+}
+
+table.steps tr.steps:hover .nested-step .step-expand-icon {
     background-color: #eee;
 }
 
@@ -428,6 +506,7 @@ table.steps tr.steps:hover {
 .direct-image {
     max-width: 500px;
     max-height: 400px;
+    margin-top: 0.8rem;
 }
 
 .direct-image:hover {
@@ -435,8 +514,26 @@ table.steps tr.steps:hover {
     max-height: 100%;
 }
 
+.data-table td {
+    max-width: 25rem;
+    overflow: auto;
+}
+
 .toggle {
     cursor: pointer;
+}
+
+.sort-icon {
+    color: #aaa;
+    font-size: 0.8rem;
+}
+
+.fa-caret-up {
+    top: -3px;
+}
+
+.fa-caret-down {
+    top: 3px;
 }
 
 input.search {
@@ -600,13 +697,30 @@ ul.tags {
     margin-left: 0.8rem;
 }
 
+ul.pagination li.current a {
+    background-color: green;
+}
+
+.side-nav li a:not(.button) {
+    color: rgb(85, 85, 85); /*#5A5A5A darkgreen; */
+}
+
 .side-nav li a:not(.button) {
     padding: 0.5rem 1.8rem;
+}
+
+a:hover, a:focus,
+.side-nav li.heading a:hover,
+.side-nav li.heading a:focus,
+.side-nav li.heading li a:hover,
+.side-nav li.heading li a:focus {
+    color: green;
 }
 
 .side-nav li li a:not(.button) {
     padding-top: 0.1rem;
     padding-bottom: 0.1rem;
+    color: #5A5A5A;
 }
 
 .side-nav, .side-nav ul {
