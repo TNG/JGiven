@@ -187,6 +187,27 @@ span.scenario-group-header-name.failed {
     margin-right: 0.5rem;
 }
 
+.fa.fa-check.unselected {
+    color: white;
+}
+
+.cases-group-header {
+    background-color: #e8e8e8;
+    border-bottom: 1px solid #ddd;
+}
+
+.button.group-by {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.button.icon-button {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
 .scenario-list-button-bar .fa.selected {
     color: black;
 }

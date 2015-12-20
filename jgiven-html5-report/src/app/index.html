@@ -557,11 +557,35 @@
                         <div>
                           <div ng-if="scenario.casesAsTable" ng-controller="CasesTableCtrl as casesTableCtrl">
                             <p></p>
-                            <h6>Cases</h6>
-                            <table class="data-table">
+                            <h6 class="cases-table-header">Cases
+                              <ul ng-if="cases.length > 2" class="button-group radius right">
+                                <li><a class="button dropdown small secondary group-by"
+                                       dropdown-toggle="#select-case-group-{{scenario-index}}">Group by <b>{{groupColumn ? groupColumn.name
+                                  :
+                                  ''}}</b></a>
+                                  <ul id="select-case-group-{{scenario-index}}" class="f-dropdown">
+                                    <li ng-repeat="col in groupColumns()">
+                                      <a ng-click="changeGrouping(col)"><i
+                                          class="fa fa-check {{col.grouping ? 'selected' : 'unselected'}}"></i>
+                                        {{col.name}}</a>
+                                    </li>
+                                  </ul>
+                                </li>
+                                <li>
+                                  <a title="Expand Groups" ng-click="expandGroups()" class="button small secondary icon-button"><i
+                                      class="fa fa-expand"></i></a>
+                                </li>
+                                <li>
+                                  <a title="Collapse Groups" ng-click="collapseGroups()" class="button small secondary icon-button"><i
+                                      class="fa fa-compress"></i></a>
+                                </li>
+                              </ul>
+                            </h6>
+                            <table class="data-table" style="width:100%">
                               <thead>
                               <tr>
-                                <th ng-click="changeSorting(col)" nowrap class="toggle" ng-repeat="col in columns track by $index">
+                                <th ng-hide="col.grouping && !col.isStatus" ng-click="changeSorting(col)" nowrap class="toggle"
+                                    ng-repeat="col in columns track by $index">
                                   {{col.name}}<span class="fa-stack fa-lg sort-icon">
                                 <i ng-hide="col.sorting === 'asc'" class="fa fa-caret-up sort-icon fa-stack-1x"></i>
                                 <i ng-hide="col.sorting === 'desc'" class="fa fa-caret-down sort-icon fa-stack-1x"></i>
@@ -570,29 +594,31 @@
                               </tr>
                               </thead>
                               <tbody>
-                              <tr ng-repeat="case in cases">
-                                <td>{{::case.caseNr}}</td>
-                                <td ng-if="::case.description" ng-bind="::case.description"></td>
-                                <td ng-repeat="arg in case.derivedArguments track by $index">
-                                  {{::arg}}
-                                </td>
-                                <td ng-if="case.success"><i
-                                    class="check fa fa-check-square"/>
-                              <span ng-if="case.durationInNanos > 10000000"
-                                    class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
+                              <tr ng-hide="group.hide" ng-repeat-start="group in groups">
+                                <td colspan="{{columns.length}}" class="cases-group-header toggle"
+                                    ng-click="group.expanded = !group.expanded">
+                                  <b><i class="fa fa-fw {{group.expanded ? 'fa-angle-down' : 'fa-angle-right'}}"></i></b>
 
+                                  <span ng-if="!groupColumn.isStatus"><b>{{group.name}}</b></span>
+                                  <span ng-if="groupColumn.isStatus"><b>{{group.name === true ? 'Success' : 'Failed'}}</b></span>
                                 </td>
-                                <td ng-if="!case.success">
-                                  <div data-alert class="alert-box alert">
-                                    <span class="toggle"
-                                          ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
-                                      <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
-                                    FAILED: {{::case.errorMessage}}</span>
-                                    <pre ng-if="case.stackTrace.expanded">{{ ::case.stackTrace.join('\n') }}</pre>
+                              </tr>
+                              <tr ng-show="group.expanded" ng-repeat="case in group.cases track by $index" ng-repeat-end>
+                                <td ng-hide="col.grouping && !col.isStatus" ng-repeat="col in columns track by $index">
+                                  <div ng-if="!col.isStatus">{{col.getValue(case)}}</div>
+                                  <div ng-if="col.isStatus">
+                                    <div ng-if="case.success"><i class="check fa fa-check-square"></i></div>
+
+                                    <div ng-if="!case.success" data-alert class="alert-box alert">
+                                      <span class="toggle"
+                                            ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
+                                        <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
+                                      FAILED: {{::case.errorMessage}}</span>
+                                      <pre ng-if="case.stackTrace.expanded">{{ ::case.stackTrace.join('\n') }}</pre>
+                                    </div>
+                                    <span ng-if="case.durationInNanos > 10000000"
+                                          class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
                                   </div>
-                              <span ng-if="case.durationInNanos > 10000000"
-                                    class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
-
                                 </td>
                               </tr>
                               </tbody>

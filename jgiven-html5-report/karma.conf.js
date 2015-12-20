@@ -16,9 +16,9 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       'build/bower_components/**/dist/jquery.js',
-      'build/bower_components/**/angular.js',
-      'build/bower_components/**/angular-sanitize.js',
-      'build/bower_components/**/angular-mocks.js',
+      'build/bower_components/angular/angular.js',
+      'build/bower_components/angular-sanitize/angular-sanitize.js',
+      'build/bower_components/angular-mocks/angular-mocks.js',
       'build/bower_components/**/mm-foundation-tpls.js',
       'build/bower_components/**/foundation.js',
       'build/bower_components/**/Chart.js',
