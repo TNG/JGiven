@@ -239,6 +239,9 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
     if (tagInstance.description) {
     	tag.description = tagInstance.description;
     }
+    if (tagInstance.href) {
+      tag.href = tagInstance.href;
+    }
     return tag;
   }
 
