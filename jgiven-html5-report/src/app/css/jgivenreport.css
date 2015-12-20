@@ -502,6 +502,19 @@ table.steps tr.steps:hover .nested-step .step-expand-icon {
     cursor: pointer;
 }
 
+.sort-icon {
+    color: #aaa;
+    font-size: 0.8rem;
+}
+
+.fa-caret-up {
+    top: -3px;
+}
+
+.fa-caret-down {
+    top: 3px;
+}
+
 input.search {
     position: relative;
     border-radius: 5rem;

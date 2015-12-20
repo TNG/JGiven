@@ -306,12 +306,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     $scope.updateLocationSearchOptions();
   };
 
-  $scope.initScenario = function (index) {
-    $timeout(function () {
-      $('#scenario-table-' + index).DataTable({paging: false, searching: false, info: false});
-    });
-  };
-
   $scope.applyPagination = function applyPagination (filteredScenarios) {
     var start = ($scope.currentPageNr - 1) * $scope.itemsPerPage;
     return filteredScenarios.slice(start, start + $scope.itemsPerPage);

@@ -555,22 +555,22 @@
                         <!-- Cases Table -->
 
                         <div>
-                          <div ng-if="scenario.casesAsTable">
+                          <div ng-if="scenario.casesAsTable" ng-controller="CasesTableCtrl as casesTableCtrl">
                             <p></p>
                             <h6>Cases</h6>
-                            <table class="data-table" id="scenario-table-{{scenarioIndex}}" ng-init="initScenario(scenarioIndex)">
+                            <table class="data-table">
                               <thead>
                               <tr>
-                                <th>#</th>
-                                <th ng-if="::scenario.scenarioCases[0].description">Description</th>
-                                <th ng-repeat="param in scenario.derivedParameters track by $index">
-                                  {{::param}}
+                                <th ng-click="changeSorting(col)" nowrap class="toggle" ng-repeat="col in columns track by $index">
+                                  {{col.name}}<span class="fa-stack fa-lg sort-icon">
+                                <i ng-hide="col.sorting === 'asc'" class="fa fa-caret-up sort-icon fa-stack-1x"></i>
+                                <i ng-hide="col.sorting === 'desc'" class="fa fa-caret-down sort-icon fa-stack-1x"></i>
+                                </span>
                                 </th>
-                                <th>Status</th>
                               </tr>
                               </thead>
                               <tbody>
-                              <tr ng-repeat="case in scenario.scenarioCases">
+                              <tr ng-repeat="case in cases">
                                 <td>{{::case.caseNr}}</td>
                                 <td ng-if="::case.description" ng-bind="::case.description"></td>
                                 <td ng-repeat="arg in case.derivedArguments track by $index">
@@ -674,6 +674,7 @@
 <script src="lib/searchService.js"></script>
 <script src="lib/optionService.js"></script>
 <script src="lib/chartCtrl.js"></script>
+<script src="lib/casesTableCtrl.js"></script>
 <script src="lib/reportCtrl.js"></script>
 <script src="lib/navigationCtrl.js"></script>
 <script src="lib/api.js"></script>
