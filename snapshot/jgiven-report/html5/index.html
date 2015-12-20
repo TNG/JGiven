@@ -8,10 +8,12 @@
   <link rel="stylesheet" href="css/foundation.css"/>
   <link rel="stylesheet" href="css/font-awesome.min.css"/>
   <link rel="stylesheet" href="css/angular-chart.css"/>
+  <link rel="stylesheet" href="css/dataTables.foundation.min.css"/>
   <link rel="stylesheet" href="css/jgivenreport.css"/>
   <link rel="stylesheet" href="css/print.css" media="print"/>
   <link rel="stylesheet" href="css/custom.css"/>
   <script src="js/modernizr.js"></script>
+
 </head>
 <body>
 
@@ -58,6 +60,73 @@
 
 </script>
 
+
+<script type="text/ng-template" id="step_template.html">
+  <span aria-haspopup="{{ ::step.extendedDescription ? 'true' : 'false'"
+        class="{{ ::step.extendedDescription ? 'has-tip' : '' }}"
+        tooltip-html-unsafe="{{ ::step.extendedDescription }}"
+        tooltip-popup-delay="250">
+    <span
+        class="word {{ ::scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{ ::word.isDifferent ? 'diff' : ''}}"
+        bindonce ng-repeat-start="word in (nestedStep ? step.words : getNonIntroWords(step.words))">
+      <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
+        <strong>&lt;{{::word.argumentInfo.parameterName}}&gt;</strong>
+      </span>
+
+      <span
+          ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName) && !word.argumentInfo.dataTable"
+          class="{{word.argumentInfo ? 'argument' : ''}} {{ word.value.indexOf('\n') > -1 ? 'multiline' : ''}}"
+          >{{ ::word.argumentInfo.formattedValue || word.value }}</span> <!-- do not change formatting here, it is important for multiline values -->
+      <table class="table-value" ng-if="word.argumentInfo.dataTable">
+        <tr bindonce ng-repeat="row in word.argumentInfo.dataTable.data">
+          <td class="{{ isHeaderCell($parent.$index, $index, word.argumentInfo.dataTable.headerType) ? 'header-cell' : '' }}"
+              bindonce ng-repeat="value in row track by $index">{{ ::value }}
+          </td>
+        </tr>
+      </table>
+
+    </span>
+      <span ng-repeat-end></span>
+    <div ng-if="step.attachment && step.attachment.showDirectly">
+      <img class="direct-image" ng-src="data/{{ step.attachment.value }}"
+           alt="{{ step.attachment.title }}"/>
+    </div>
+  </span>
+  <span bindonce ng-repeat="scenarioCase in scenario.scenarioCases"
+        ng-init="step = scenarioCase.steps[$parent.$index]">
+          <span ng-if="step.attachment && !step.attachment.showDirectly">
+            <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
+                  class="{{ step.attachment.title ? 'has-tip' : '' }}"
+                  tooltip-html-unsafe="{{ step.attachment.title }}"
+                  tooltip-popup-delay="250">
+              <a target="_blank" href="data/{{ step.attachment.value }}">
+                <i class="fa fa-paperclip"><span class="attachment-index"
+                                                 ng-if="scenario.scenarioCases.length > 1">{{ scenarioCase.caseNr }}</span></i>
+              </a>
+            </span>
+          </span>
+  </span>
+  <span ng-if="scenario.executionStatus !== 'SUCCESS'">
+          <i ng-if="step.status === 'PASSED'" class="small-check fa fa-check-square"></i>
+          <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-exclamation-circle"></i>
+          <i ng-if="step.status === 'SKIPPED'" class="skipped fa fa-ban"></i>
+          <i ng-if="step.status === 'PENDING'" title="Pending"
+             class="skipped fa fa-ban"></i>
+        </span>
+  <span ng-if="step.durationInNanos > 10000000"
+        class="duration"> ({{ ::nanosToReadableUnit(step.durationInNanos) }})</span>
+
+  <div ng-if="step.nestedSteps && step.expanded" ng-init="nestedStep=true">
+    <div class="nested-step {{::step.nestedSteps ? 'toggle' : ''}}" ng-repeat="step in step.nestedSteps track by $index"
+         ng-click="step.expanded = !step.expanded; $event.stopPropagation();">
+      <i ng-if="::step.nestedSteps"
+         class="fa {{step.expanded ? 'fa-angle-down' : 'fa-angle-right'}} step-expand-icon"></i>
+
+      <span ng-include="'step_template.html'"/>
+    </div>
+  </div>
+
+</script>
 
 <div class="off-canvas-wrap" data-offcanvas>
 
@@ -384,7 +453,7 @@
             <!-- SCENARIO LIST -->
 
             <div class="scenario {{$last ? 'last' : ''}}"
-                 ng-repeat="scenario in scenarioGroup.values"
+                 bindonce ng-repeat="scenario in scenarioGroup.values"
                  ng-if="scenarioGroup.expanded || currentPage.print || currentPage.embed">
 
               <div class="row">
@@ -408,7 +477,7 @@
                     <i ng-if="scenario.executionStatus === 'SUCCESS'"
                        class="check fa fa-check-square"></i>
                     <span ng-if="scenario.executionStatus === 'FAILED'"
-                          class="failed label radius alert"><i class="fa fa-exclamation-circle"></i> FAILED</span>
+                          class="failed label radius alert"><i class="fa fa-exclamation-circle"></i>{{getNumberOfFailedCases(scenario)}} FAILED</span>
                     <span
                         ng-if="scenario.executionStatus === 'SCENARIO_PENDING' || scenario.executionStatus === 'SOME_STEPS_PENDING'"
                         class="pending label radius secondary"><i class="fa fa-ban"></i> PENDING</span>
@@ -422,14 +491,17 @@
                   <div ng-if="scenario.expanded || currentPage.print || currentPage.embed"
                        id="scenario-{{$index}}" class="scenario-content">
 
+                    {{scenarioIndex=$index;""}}
+
                     <div class="scenario-extended-description"
                          ng-if="scenario.extendedDescription && !scenario.extendedDescriptionExpanded"
                          ng-bind-html="::scenario.extendedDescription">
                     </div>
 
-                    <div
-                        ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
-                      <h5 class="toggle" ng-click="case.expanded = !case.expanded"
+                    <div bindonce
+                         ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
+                      <h5 class="scenario-case-title toggle {{getScenarioCaseTitleStatusClass(case)}}"
+                          ng-click="case.expanded = !case.expanded"
                           ng-if="scenario.scenarioCases.length > 1 && !scenario.casesAsTable">
                         <i class="fa {{case.expanded ? 'fa-angle-down' : 'fa-angle-right'}} case-expand-icon"></i>Case
                         {{case.caseNr}}:
@@ -441,77 +513,34 @@
                             {{param}} = {{case.explicitArguments[$index]}}<span
                               ng-if="$index != scenario.explicitParameters.length - 1">, </span>
                           </span>
-                          </span>
+                        </span>
+                         <span ng-if="!case.success"
+                               class="failed label radius alert"><i class="fa fa-exclamation-circle"></i> FAILED</span>
+
+                         <span ng-if="case.durationInNanos > 10000000"
+                               class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
+
                       </h5>
 
                       <div ng-if="scenario.scenarioCases.length === 1 || scenario.casesAsTable || case.expanded"
                            class="steps">
                         <table class="steps">
-                          <tr class="steps" ng-repeat="step in case.steps">
-
+                          <tr class="steps {{::step.nestedSteps ? 'toggle' : ''}}" bindonce ng-repeat="step in case.steps"
+                              ng-click="step.expanded = !step.expanded">
                             <td class="steps intro-word {{scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}">
+                              <i ng-if="::step.nestedSteps"
+                                 class="fa {{step.expanded ? 'fa-angle-down' : 'fa-angle-right'}} step-expand-icon"></i>
+
                               {{::step.words[0].isIntroWord ?
                               step.words[0].value.capitalize() : ''}}
                             </td>
                             <td class="steps">
-                              <span aria-haspopup="{{ ::step.extendedDescription ? 'true' : 'false'"
-                                    class="{{ ::step.extendedDescription ? 'has-tip' : '' }}"
-                                    tooltip-html-unsafe="{{ ::step.extendedDescription }}"
-                                    tooltip-popup-delay="250">
-                                <span
-                                    class="word {{ ::scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{ ::word.isDifferent ? 'diff' : ''}}"
-                                    ng-repeat-start="word in getNonIntroWords(step.words)">
-                                  <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
-                                    <strong>&lt;{{::word.argumentInfo.parameterName}}&gt;</strong>
-                                  </span>
-
-                                  <span
-                                      ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName) && !word.argumentInfo.dataTable"
-                                      class="{{word.argumentInfo ? 'argument' : ''}} {{ word.value.indexOf('\n') > -1 ? 'multiline' : ''}}"
-                                      >{{ ::word.argumentInfo.formattedValue || word.value }}</span> <!-- do not change formatting here, it is important for multiline values -->
-                                  <table class="table-value" ng-if="word.argumentInfo.dataTable">
-                                    <tr ng-repeat="row in word.argumentInfo.dataTable.data">
-                                      <td class="{{ isHeaderCell($parent.$index, $index, word.argumentInfo.dataTable.headerType) ? 'header-cell' : '' }}"
-                                          ng-repeat="value in row track by $index">{{ ::value }}
-                                      </td>
-                                    </tr>
-                                  </table>
-
-                                  <div ng-if="step.attachment && step.attachment.showDirectly">
-                                    <img class="direct-image" ng-src="data/{{ step.attachment.value }}"
-                                         alt="{{ step.attachment.title }}"/>
-                                  </div>
-                                </span>
-                                <span ng-repeat-end></span>
-                              </span>
-                              <span ng-repeat="scenarioCase in scenario.scenarioCases"
-                                    ng-init="step = scenarioCase.steps[$parent.$index]">
-                                <span ng-if="step.attachment && !step.attachment.showDirectly">
-                                  <span aria-haspopup="{{ step.attachment.title ? 'true' : 'false'"
-                                        class="{{ step.attachment.title ? 'has-tip' : '' }}"
-                                        tooltip-html-unsafe="{{ step.attachment.title }}"
-                                        tooltip-popup-delay="250">
-                                    <a target="_blank" href="data/{{ step.attachment.value }}">
-                                      <i class="fa fa-paperclip"><span class="attachment-index"
-                                                                       ng-if="scenario.scenarioCases.length > 1">{{ scenarioCase.caseNr }}</span></i>
-                                    </a>
-                                  </span>
-                                </span>
-                              </span>
-                              <span ng-if="scenario.executionStatus !== 'SUCCESS'">
-                                <i ng-if="step.status === 'PASSED'" class="small-check fa fa-check-square"></i>
-                                <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-exclamation-circle"></i>
-                                <i ng-if="step.status === 'SKIPPED'" class="skipped fa fa-ban"></i>
-                                <i ng-if="step.status === 'PENDING'" title="Pending"
-                                   class="skipped fa fa-ban"></i>
-                              </span>
-                              <span ng-if="step.durationInNanos > 10000000"
-                                    class="duration"> ({{ ::nanosToReadableUnit(step.durationInNanos) }})</span>
+                              <span ng-include="'step_template.html'"/>
                             </td>
                           </tr>
                         </table>
                         <div ng-if="!scenario.casesAsTable">
-                          <div ng-if="!scenario.scenarioCases[0].success" data-alert
+                          <div ng-if="!case.success" data-alert
                                class="alert-box alert">
                             <span class="toggle" ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
                             <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
@@ -526,43 +555,73 @@
                         <!-- Cases Table -->
 
                         <div>
-                          <div ng-if="scenario.casesAsTable">
+                          <div ng-if="scenario.casesAsTable" ng-controller="CasesTableCtrl as casesTableCtrl">
                             <p></p>
-                            <h6>Cases</h6>
-                            <table>
+                            <h6 class="cases-table-header">Cases
+                              <ul ng-if="cases.length > 2" class="button-group radius right">
+                                <li><a class="button dropdown small secondary group-by"
+                                       dropdown-toggle="#select-case-group-{{scenario-index}}">Group by <b>{{groupColumn ? groupColumn.name
+                                  :
+                                  ''}}</b></a>
+                                  <ul id="select-case-group-{{scenario-index}}" class="f-dropdown">
+                                    <li ng-repeat="col in groupColumns()">
+                                      <a ng-click="changeGrouping(col)"><i
+                                          class="fa fa-check {{col.grouping ? 'selected' : 'unselected'}}"></i>
+                                        {{col.name}}</a>
+                                    </li>
+                                  </ul>
+                                </li>
+                                <li>
+                                  <a title="Expand Groups" ng-click="expandGroups()" class="button small secondary icon-button"><i
+                                      class="fa fa-expand"></i></a>
+                                </li>
+                                <li>
+                                  <a title="Collapse Groups" ng-click="collapseGroups()" class="button small secondary icon-button"><i
+                                      class="fa fa-compress"></i></a>
+                                </li>
+                              </ul>
+                            </h6>
+                            <table class="data-table" style="width:100%">
+                              <thead>
                               <tr>
-                                <th>#</th>
-                                <th ng-if="::scenario.scenarioCases[0].description">Description</th>
-                                <th ng-repeat="param in scenario.derivedParameters track by $index">
-                                  {{::param}}
+                                <th ng-hide="col.grouping && !col.isStatus" ng-click="changeSorting(col)" nowrap class="toggle"
+                                    ng-repeat="col in columns track by $index">
+                                  {{col.name}}<span class="fa-stack fa-lg sort-icon">
+                                <i ng-hide="col.sorting === 'asc'" class="fa fa-caret-up sort-icon fa-stack-1x"></i>
+                                <i ng-hide="col.sorting === 'desc'" class="fa fa-caret-down sort-icon fa-stack-1x"></i>
+                                </span>
                                 </th>
-                                <th>Status</th>
                               </tr>
-                              <tr ng-repeat="case in scenario.scenarioCases">
-                                <td>{{::case.caseNr}}</td>
-                                <td ng-if="::case.description" ng-bind="::case.description"></td>
-                                <td ng-repeat="arg in case.derivedArguments track by $index">
-                                  {{::arg}}
-                                </td>
-                                <td ng-if="case.success"><i
-                                    class="check fa fa-check-square"/>
-                              <span ng-if="case.durationInNanos > 10000000"
-                                    class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
+                              </thead>
+                              <tbody>
+                              <tr ng-hide="group.hide" ng-repeat-start="group in groups">
+                                <td colspan="{{columns.length}}" class="cases-group-header toggle"
+                                    ng-click="group.expanded = !group.expanded">
+                                  <b><i class="fa fa-fw {{group.expanded ? 'fa-angle-down' : 'fa-angle-right'}}"></i></b>
 
+                                  <span ng-if="!groupColumn.isStatus"><b>{{group.name}}</b></span>
+                                  <span ng-if="groupColumn.isStatus"><b>{{group.name === true ? 'Success' : 'Failed'}}</b></span>
                                 </td>
-                                <td ng-if="!case.success">
-                                  <div data-alert class="alert-box alert">
-                                    <span class="toggle"
-                                          ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
-                                      <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
-                                    FAILED: {{::case.errorMessage}}</span>
-                                    <pre ng-if="case.stackTrace.expanded">{{ ::case.stackTrace.join('\n') }}</pre>
+                              </tr>
+                              <tr ng-show="group.expanded" ng-repeat="case in group.cases track by $index" ng-repeat-end>
+                                <td ng-hide="col.grouping && !col.isStatus" ng-repeat="col in columns track by $index">
+                                  <div ng-if="!col.isStatus">{{col.getValue(case)}}</div>
+                                  <div ng-if="col.isStatus">
+                                    <div ng-if="case.success"><i class="check fa fa-check-square"></i></div>
+
+                                    <div ng-if="!case.success" data-alert class="alert-box alert">
+                                      <span class="toggle"
+                                            ng-click="case.stackTrace.expanded = !case.stackTrace.expanded">
+                                        <i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i>
+                                      FAILED: {{::case.errorMessage}}</span>
+                                      <pre ng-if="case.stackTrace.expanded">{{ ::case.stackTrace.join('\n') }}</pre>
+                                    </div>
+                                    <span ng-if="case.durationInNanos > 10000000"
+                                          class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
                                   </div>
-                              <span ng-if="case.durationInNanos > 10000000"
-                                    class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
-
                                 </td>
                               </tr>
+                              </tbody>
                             </table>
                           </div>
                         </div>
@@ -607,7 +666,7 @@
 
         <div class="footer-bottom" ng-if="!currentPage.embed">
           <div class="small-12 columns">
-            Generated by <a href="http://jgiven.org">JGiven</a> 0.9.2-SNAPSHOT on
+            Generated by <a href="http://jgiven.org">JGiven</a> 0.10.0-SNAPSHOT on
             {{metaData.created}}
           </div>
         </div>
@@ -628,7 +687,10 @@
 <script src="js/Chart.min.js"></script>
 <script src="js/angular-chart.js"></script>
 <script src="js/angular-local-storage.js"></script>
+<script src="js/bindonce.min.js"></script>
 <script src="js/lodash.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+<script src="js/dataTables.foundation.min.js"></script>
 <script src="lib/util.js"></script>
 <script src="lib/app.js"></script>
 <script src="lib/offCanvasDirective.js"></script>
@@ -638,6 +700,7 @@
 <script src="lib/searchService.js"></script>
 <script src="lib/optionService.js"></script>
 <script src="lib/chartCtrl.js"></script>
+<script src="lib/casesTableCtrl.js"></script>
 <script src="lib/reportCtrl.js"></script>
 <script src="lib/navigationCtrl.js"></script>
 <script src="lib/api.js"></script>
