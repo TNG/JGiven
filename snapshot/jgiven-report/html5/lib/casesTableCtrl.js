@@ -1,7 +1,8 @@
 jgivenReportApp.controller('CasesTableCtrl', function ($scope) {
-
+  var self = this;
 
   $scope.columns = initializeColumns($scope.scenario);
+  $scope.groupColumns = getGroupColumns($scope.columns);
   $scope.cases = $scope.scenario.scenarioCases;
   $scope.groups = allGroup($scope.cases);
   $scope.sortColumn = $scope.columns[0];
@@ -16,8 +17,8 @@ jgivenReportApp.controller('CasesTableCtrl', function ($scope) {
     }]
   }
 
-  $scope.groupColumns = function () {
-    return _.filter($scope.columns, function (col) {
+  function getGroupColumns (columns) {
+    return _.filter(columns, function (col) {
       return col.canGroup;
     });
   };
