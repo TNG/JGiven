@@ -12,11 +12,13 @@ import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.config.FormatterConfiguration;
 import com.tngtech.jgiven.exception.AmbiguousFormattingException;
+import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.Formatter;
 import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.format.table.TableFormatter;
+import com.tngtech.jgiven.format.table.TableFormatterFactory;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.report.model.StepFormatter;
@@ -52,10 +54,9 @@ public class ParameterFormattingUtil {
      * @param parameterName
      */
     private StepFormatter.Formatting<?, ?> getFormatting( Annotation[] annotations, Set<Class<?>> visitedTypes,
-            Annotation originalAnnotation,
-            String parameterName ) {
-        Table tableAnnotation = null;
+            Annotation originalAnnotation, String parameterName ) {
         List<StepFormatter.Formatting<?, ?>> foundFormatting = Lists.newArrayList();
+        Table tableAnnotation = null;
         for( Annotation annotation : annotations ) {
             try {
                 if( annotation instanceof Format ) {
@@ -88,7 +89,11 @@ public class ParameterFormattingUtil {
         }
 
         if( tableAnnotation != null ) {
-            return getTableFormatting( annotations, parameterName, tableAnnotation, foundFormatting );
+            ObjectFormatter<?> objectFormatter = foundFormatting.isEmpty()
+                    ? DefaultFormatter.INSTANCE
+                    : foundFormatting.get( 0 );
+            return getTableFormatting( annotations, parameterName, tableAnnotation, objectFormatter );
+
         }
 
         if( foundFormatting.isEmpty() ) {
@@ -99,24 +104,28 @@ public class ParameterFormattingUtil {
     }
 
     private StepFormatter.Formatting<?, ?> getTableFormatting( Annotation[] annotations, String parameterName, Table annotation,
-            List<StepFormatter.Formatting<?, ?>> foundFormatting ) {
+            ObjectFormatter<?> objectFormatter ) {
         Table tableAnnotation = annotation;
-        Class<? extends TableFormatter> formatterClass = tableAnnotation.formatter();
 
-        if( !foundFormatting.isEmpty() ) {
-            StepFormatter.Formatting<?, ?> formatting = foundFormatting.get( 0 );
-            Object formatter = formatting.getFormatter();
+        TableFormatterFactory factory = createTableFormatterFactory( parameterName, tableAnnotation );
+
+        TableFormatter tableFormatter = factory.create( configuration, objectFormatter );
+
+        return new StepFormatter.TableFormatting( tableFormatter, tableAnnotation, parameterName, annotations );
+    }
+
+    private TableFormatterFactory createTableFormatterFactory( String parameterName, Table tableAnnotation ) {
+        Class<? extends TableFormatterFactory> formatterFactoryClass = tableAnnotation.formatter();
+
+        try {
+            return ReflectionUtil.newInstance( formatterFactoryClass );
+        } catch( Exception e ) {
+            throw new JGivenWrongUsageException(
+                "Could not create an instance of " + formatterFactoryClass.getName()
+                        + " which was specified at the @Table annotation for parameter '" + parameterName
+                        + "'. Most likely this was due to a missing default constructor",
+                TableFormatterFactory.class, e );
         }
-
-        TableFormatter tableFormatter;
-        if( ReflectionUtil.hasConstructor( formatterClass, FormatterConfiguration.class ) ) {
-            tableFormatter = ReflectionUtil.newInstance( formatterClass, new Class<?>[] { FormatterConfiguration.class }, configuration );
-        } else {
-            tableFormatter = ReflectionUtil.newInstance( formatterClass );
-        }
-
-        return new StepFormatter.TableFormatting( tableFormatter, tableAnnotation,
-            parameterName, annotations );
     }
 
     public List<String> toStringList( List<ObjectFormatter<?>> formatter, List<?> arguments ) {

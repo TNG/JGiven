@@ -13,6 +13,7 @@ import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.config.FormatterConfiguration;
 import com.tngtech.jgiven.format.DefaultFormatter;
+import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 
 /**
@@ -30,7 +31,8 @@ public class FieldBasedRowFormatter extends RowFormatter {
     private List<Field> fields;
     boolean[] nonNullColumns;
 
-    public FieldBasedRowFormatter( Class<?> type, Table tableAnnotation, String parameterName, Annotation[] annotations ) {
+    public FieldBasedRowFormatter( Class<?> type, String parameterName, Table tableAnnotation,
+            Annotation[] annotations ) {
         this.type = type;
         this.tableAnnotation = tableAnnotation;
         this.parameterName = parameterName;
@@ -127,9 +129,10 @@ public class FieldBasedRowFormatter extends RowFormatter {
      */
     public static class Factory implements RowFormatterFactory {
         @Override
-        public RowFormatter create( Class type, Table tableAnnotation, String parameterName, Annotation[] annotations,
-                FormatterConfiguration configuration ) {
-            return new FieldBasedRowFormatter( type, tableAnnotation, parameterName, annotations );
+        public RowFormatter create( Class<?> parameterType, String parameterName, Table tableAnnotation,
+                Annotation[] annotations,
+                FormatterConfiguration configuration, ObjectFormatter<?> objectFormatter ) {
+            return new FieldBasedRowFormatter( parameterType, parameterName, tableAnnotation, annotations );
         }
     }
 }

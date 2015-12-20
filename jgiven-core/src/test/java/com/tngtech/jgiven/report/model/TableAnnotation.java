@@ -3,10 +3,10 @@ package com.tngtech.jgiven.report.model;
 import java.lang.annotation.Annotation;
 
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.format.table.DefaultRowFormatterFactory;
 import com.tngtech.jgiven.format.table.DefaultTableFormatter;
-import com.tngtech.jgiven.format.table.FieldBasedRowFormatter;
 import com.tngtech.jgiven.format.table.RowFormatterFactory;
-import com.tngtech.jgiven.format.table.TableFormatter;
+import com.tngtech.jgiven.format.table.TableFormatterFactory;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
 
 public class TableAnnotation implements Table {
@@ -21,8 +21,8 @@ public class TableAnnotation implements Table {
     boolean numberedColumns = false;
     String numberedRowsHeader = AnnotationUtil.ABSENT;
     String numberedColumnsHeader = AnnotationUtil.ABSENT;
-    Class<DefaultTableFormatter> formatter = DefaultTableFormatter.class;
-    Class<? extends RowFormatterFactory> objectRowFormatter = FieldBasedRowFormatter.Factory.class;
+    Class<DefaultTableFormatter.Factory> formatter = DefaultTableFormatter.Factory.class;
+    Class<? extends RowFormatterFactory> rowFormatter = DefaultRowFormatterFactory.class;
     ObjectFormatting objectFormatting = ObjectFormatting.FIELDS;
 
     @Override
@@ -76,7 +76,7 @@ public class TableAnnotation implements Table {
     }
 
     @Override
-    public Class<? extends TableFormatter> formatter() {
+    public Class<? extends TableFormatterFactory> formatter() {
         return formatter;
     }
 
@@ -87,7 +87,7 @@ public class TableAnnotation implements Table {
 
     @Override
     public Class<? extends RowFormatterFactory> rowFormatter() {
-        return objectRowFormatter;
+        return rowFormatter;
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.config.FormatterConfiguration;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.DefaultFormatter;
+import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
 import com.tngtech.jgiven.impl.util.ApiUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
@@ -23,9 +24,11 @@ import com.tngtech.jgiven.report.model.DataTable;
 public class DefaultTableFormatter implements TableFormatter {
     public static final String DEFAULT_NUMBERED_HEADER = "#";
     private final FormatterConfiguration formatterConfiguration;
+    private final ObjectFormatter<?> objectFormatter;
 
-    public DefaultTableFormatter( FormatterConfiguration formatterConfiguration ) {
+    public DefaultTableFormatter( FormatterConfiguration formatterConfiguration, ObjectFormatter<?> objectFormatter ) {
         this.formatterConfiguration = formatterConfiguration;
+        this.objectFormatter = objectFormatter;
     }
 
     @Override
@@ -127,14 +130,17 @@ public class DefaultTableFormatter implements TableFormatter {
         Object first = objects.iterator().next();
 
         RowFormatterFactory objectRowFormatterFactory = ReflectionUtil.newInstance( tableAnnotation.rowFormatter() );
-        RowFormatter formatter = objectRowFormatterFactory.create( first.getClass(), tableAnnotation, parameterName, annotations,
-            formatterConfiguration );
+        RowFormatter formatter = objectRowFormatterFactory.create( first.getClass(), parameterName, tableAnnotation, annotations,
+            formatterConfiguration, objectFormatter );
 
         List<List<String>> list = Lists.newArrayList();
-        if( tableAnnotation.columnTitles().length > 0 ) {
-            list.add( Arrays.asList( tableAnnotation.columnTitles() ) );
-        } else {
-            list.add( formatter.header() );
+
+        if( tableAnnotation.header() != Table.HeaderType.NONE ) {
+            if( tableAnnotation.columnTitles().length > 0 ) {
+                list.add( Arrays.asList( tableAnnotation.columnTitles() ) );
+            } else {
+                list.add( formatter.header() );
+            }
         }
 
         for( Object o : objects ) {
@@ -203,4 +209,10 @@ public class DefaultTableFormatter implements TableFormatter {
         return DefaultFormatter.INSTANCE.format( value );
     }
 
+    public static class Factory implements TableFormatterFactory {
+        @Override
+        public TableFormatter create( FormatterConfiguration formatterConfiguration, ObjectFormatter<?> objectFormatter ) {
+            return new DefaultTableFormatter( formatterConfiguration, objectFormatter );
+        }
+    }
 }

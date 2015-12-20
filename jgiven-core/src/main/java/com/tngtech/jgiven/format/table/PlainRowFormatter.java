@@ -22,10 +22,11 @@ public class PlainRowFormatter extends RowFormatter {
     private final ObjectFormatter objectFormatter;
 
     public PlainRowFormatter( Class<?> type, Table tableAnnotation, String columnHeader, Annotation[] annotations,
-            FormatterConfiguration configuration ) {
+            FormatterConfiguration configuration, ObjectFormatter objectFormatter ) {
         this.columnHeader = columnHeader;
         ParameterFormattingUtil formattingUtil = new ParameterFormattingUtil( configuration );
-        this.objectFormatter = formattingUtil.getFormatting( type, "<unknown>", annotations );
+
+        this.objectFormatter = objectFormatter;
     }
 
     @Override
@@ -46,9 +47,10 @@ public class PlainRowFormatter extends RowFormatter {
      */
     public static class Factory implements RowFormatterFactory {
         @Override
-        public RowFormatter create( Class type, Table tableAnnotation, String parameterName, Annotation[] annotations,
-                FormatterConfiguration configuration ) {
-            return new PlainRowFormatter( type, tableAnnotation, parameterName, annotations, configuration );
+        public RowFormatter create( Class<?> parameterType, String parameterName, Table tableAnnotation,
+                Annotation[] annotations,
+                FormatterConfiguration configuration, ObjectFormatter<?> objectFormatter ) {
+            return new PlainRowFormatter( parameterType, tableAnnotation, parameterName, annotations, configuration, objectFormatter );
         }
     }
 }

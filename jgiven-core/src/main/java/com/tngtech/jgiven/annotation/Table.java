@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 import com.tngtech.jgiven.format.table.DefaultRowFormatterFactory;
 import com.tngtech.jgiven.format.table.DefaultTableFormatter;
 import com.tngtech.jgiven.format.table.RowFormatterFactory;
-import com.tngtech.jgiven.format.table.TableFormatter;
+import com.tngtech.jgiven.format.table.TableFormatterFactory;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
 
 /**
@@ -286,7 +286,7 @@ public @interface Table {
         HORIZONTAL,
 
         /**
-         * Treat the first column as a header0
+         * Treat the first column as a header
          */
         VERTICAL,
 
@@ -305,16 +305,17 @@ public @interface Table {
     }
 
     /**
-     * The formatter to use to format the argument value as a table.
+     * The formatter to use to translate the parameter object to a table.
      * If you only want to override how POJOs are formatted you should
-     * use the {@link #rowFormatter()} attribute
+     * use the {@link #objectFormatting()} or {@link #rowFormatter()} attribute
      * 
      * @since 0.10.0
      */
-    Class<? extends TableFormatter> formatter() default DefaultTableFormatter.class;
+    Class<? extends TableFormatterFactory> formatter() default DefaultTableFormatter.Factory.class;
 
     /**
-     * How to format rows when the rows are plain Objects, i.e. no Iterables
+     * How to format rows when the rows are plain Objects, i.e. no Iterables.
+     * Note that this setting is ignore if a different {@link #rowFormatter()} is set
      * 
      * @since 0.10.0
      */
@@ -343,7 +344,7 @@ public @interface Table {
      * that is used to format POJOs each row of the table.
      * <p>
      *     The default implementation evaluates the {@link #objectFormatting()} attribute and
-     *     creates corresponding RowFormatters
+     *     creates a corresponding RowFormatter
      * </p>
      *
      * @since 0.10.0

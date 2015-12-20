@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.config.FormatterConfiguration;
+import com.tngtech.jgiven.format.DefaultFormatter;
+import com.tngtech.jgiven.format.ObjectFormatter;
 
 /**
  * Default RowFormatterFactory that evaluates the {@link com.tngtech.jgiven.annotation.Table#objectFormatting()}
@@ -16,12 +18,18 @@ import com.tngtech.jgiven.config.FormatterConfiguration;
  */
 public class DefaultRowFormatterFactory implements RowFormatterFactory {
     @Override
-    public RowFormatter create( Class type, Table tableAnnotation, String parameterName, Annotation[] annotations,
-            FormatterConfiguration configuration ) {
-        RowFormatterFactory factory = tableAnnotation.objectFormatting() == Table.ObjectFormatting.FIELDS
-                ? new FieldBasedRowFormatter.Factory()
-                : new PlainRowFormatter.Factory();
+    public RowFormatter create( Class<?> parameterType, String parameterName, Table tableAnnotation,
+            Annotation[] annotations, FormatterConfiguration configuration, ObjectFormatter<?> objectFormatter ) {
+        Table.ObjectFormatting objectFormatting = tableAnnotation.objectFormatting();
+        RowFormatterFactory factory;
 
-        return factory.create( type, tableAnnotation, parameterName, annotations, configuration );
+        if( objectFormatting == Table.ObjectFormatting.PLAIN
+                || !( objectFormatter instanceof DefaultFormatter ) ) {
+            factory = new PlainRowFormatter.Factory();
+        } else {
+            factory = new FieldBasedRowFormatter.Factory();
+        }
+
+        return factory.create( parameterType, parameterName, tableAnnotation, annotations, configuration, objectFormatter );
     }
 }

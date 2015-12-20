@@ -7,10 +7,15 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.config.FormatterConfiguration;
+import com.tngtech.jgiven.format.BooleanFormatter;
+import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.format.table.TableFormatter;
+import com.tngtech.jgiven.format.table.TableFormatterFactory;
 import com.tngtech.jgiven.report.model.DataTable;
 
 public class GivenTestStep extends Stage<GivenTestStep> {
@@ -92,6 +97,15 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return this;
     }
 
+    public GivenTestStep a_list_of_booleans( @Table @Format( value = BooleanFormatter.class, args = { "on", "off" } ) List<Boolean> booleans ) {
+        return this;
+    }
+
+    public GivenTestStep a_list_of_booleans_without_header( @Table( header = Table.HeaderType.NONE ) @Format(
+        value = BooleanFormatter.class, args = { "on", "off" } ) List<Boolean> booleans ) {
+        return this;
+    }
+
     public static class TestTableFormatter implements TableFormatter {
 
         @Override
@@ -104,10 +118,18 @@ public class GivenTestStep extends Stage<GivenTestStep> {
             }
             return new DataTable( Table.HeaderType.HORIZONTAL, data );
         }
+
+        public static class Factory implements TableFormatterFactory {
+
+            @Override
+            public TableFormatter create( FormatterConfiguration formatterConfiguration, ObjectFormatter<?> objectFormatter ) {
+                return new TestTableFormatter();
+            }
+        }
     }
 
     public GivenTestStep a_list_of_PoJos_with_custom_table_formatter(
-            @Table( formatter = TestTableFormatter.class ) CoffeePrice... coffeePrices ) {
+            @Table( formatter = TestTableFormatter.Factory.class ) CoffeePrice... coffeePrices ) {
         return this;
     }
 }
