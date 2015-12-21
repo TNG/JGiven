@@ -70,9 +70,9 @@ public class ScenarioBase {
         executor.wireSteps( canWire );
     }
 
-    public ScenarioBase startScenario( Method method, List<NamedArgument> arguments ) {
+    public ScenarioBase startScenario( Class<?> testClass, Method method, List<NamedArgument> arguments ) {
         performInitialization();
-        executor.startScenario( method, arguments );
+        executor.startScenario( testClass, method, arguments );
         return this;
     }
 

@@ -13,7 +13,7 @@ public interface ScenarioListener {
 
     void scenarioStarted( String string );
 
-    void scenarioStarted( Method method, List<NamedArgument> arguments );
+    void scenarioStarted( Class<?> testClass, Method method, List<NamedArgument> arguments );
 
     void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps );
 

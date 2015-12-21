@@ -436,8 +436,8 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
      * @param arguments the test arguments with their parameter names
      */
     @Override
-    public void startScenario( Method method, List<NamedArgument> arguments ) {
-        listener.scenarioStarted( method, arguments );
+    public void startScenario( Class<?> testClass, Method method, List<NamedArgument> arguments ) {
+        listener.scenarioStarted( testClass, method, arguments );
 
         if( method.isAnnotationPresent( Pending.class ) ) {
             Pending annotation = method.getAnnotation( Pending.class );

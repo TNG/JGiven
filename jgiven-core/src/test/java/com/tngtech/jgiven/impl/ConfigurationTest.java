@@ -26,7 +26,7 @@ public class ConfigurationTest extends ScenarioTestBase<ConfigurationTest.FooSta
     @Test
     public void testFormatterConfiguration() throws Throwable {
         getScenario().setModel( new ReportModel() );
-        getScenario().startScenario( ConfigurationTest.class.getMethod( "testFormatterConfiguration" ),
+        getScenario().startScenario( this.getClass(), ConfigurationTest.class.getMethod( "testFormatterConfiguration" ),
             Collections.<NamedArgument>emptyList() );
         given().some_step( new FooParam() );
         given().another_step( new FooParam() );

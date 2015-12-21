@@ -16,7 +16,7 @@ public class NoOpScenarioListener implements ScenarioListener {
     public void scenarioStarted( String string ) {}
 
     @Override
-    public void scenarioStarted( Method method, List<NamedArgument> arguments ) {}
+    public void scenarioStarted( Class<?> testClass, Method method, List<NamedArgument> arguments ) {}
 
     @Override
     public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps ) {}

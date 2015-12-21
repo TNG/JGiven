@@ -8,12 +8,7 @@ import static org.junit.Assume.assumeTrue;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.MethodRule;
@@ -112,7 +107,7 @@ public class ScenarioExecutionRule implements MethodRule {
         scenario.setModel( reportModel );
         scenario.getExecutor().injectSteps( target );
 
-        scenario.startScenario( testMethod.getMethod(), getNamedArguments( base, testMethod, target ) );
+        scenario.startScenario( target.getClass(), testMethod.getMethod(), getNamedArguments( base, testMethod, target ) );
 
         // inject state from the test itself
         scenario.getExecutor().readScenarioState( target );

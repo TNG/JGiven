@@ -18,6 +18,7 @@ The `@Table` annotation to format step parameters as tables has been extended wi
 
 ## Fixed Issues
 
+* Fixed the issue that tags of subclasses would not be visible on scenarios of superclasses [#171](https://github.com/TNG/JGiven/issues/171)
 * Fixed the issue that exceptions called within step methods are captured [#173](https://github.com/TNG/JGiven/issues/173)
 
 # v0.9.5

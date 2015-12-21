@@ -276,9 +276,9 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     @Override
-    public void scenarioStarted( Method method, List<NamedArgument> namedArguments ) {
-        readConfiguration( method.getDeclaringClass() );
-        readAnnotations( method );
+    public void scenarioStarted( Class<?> testClass, Method method, List<NamedArgument> namedArguments ) {
+        readConfiguration( testClass );
+        readAnnotations( testClass, method );
         setParameterNames( getNames( namedArguments ) );
 
         // must come at last
@@ -328,7 +328,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         configuration = ConfigurationUtil.getConfiguration( testClass );
     }
 
-    private void readAnnotations( Method method ) {
+    private void readAnnotations( Class<?> testClass, Method method ) {
         String scenarioDescription = method.getName();
 
         if( method.isAnnotationPresent( Description.class ) ) {
@@ -348,7 +348,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
 
         if( scenarioCaseModel.getCaseNr() == 1 ) {
-            addTags( method.getDeclaringClass().getAnnotations() );
+            addTags( testClass.getAnnotations() );
             addTags( method.getAnnotations() );
         }
     }

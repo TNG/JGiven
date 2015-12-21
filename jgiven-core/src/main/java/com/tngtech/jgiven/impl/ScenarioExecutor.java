@@ -56,7 +56,7 @@ public interface ScenarioExecutor {
      * @param method the method that started the scenario
      * @param arguments the test arguments with their parameter names
      */
-    void startScenario( Method method, List<NamedArgument> arguments );
+    void startScenario( Class<?> testClass, Method method, List<NamedArgument> arguments );
 
     void setListener( ScenarioListener listener );
 

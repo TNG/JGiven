@@ -51,7 +51,7 @@ public class ScenarioTestListener implements ITestListener {
         scenario.getExecutor().injectSteps( instance );
 
         Method method = paramITestResult.getMethod().getConstructorOrMethod().getMethod();
-        scenario.startScenario( method, getArgumentsFrom( method, paramITestResult ) );
+        scenario.startScenario( instance.getClass(), method, getArgumentsFrom( method, paramITestResult ) );
 
         // inject state from the test itself
         scenario.getExecutor().readScenarioState( instance );
