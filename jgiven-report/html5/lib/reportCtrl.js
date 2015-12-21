@@ -224,8 +224,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     $scope.currentPage = {
       title: tagNameNode.nodeName(),
       description: "",
-      breadcrumbs: ['TAGS', tagNameNode.nodeName()
-      ],
+      breadcrumbs: ['TAGS', tagNameNode.nodeName()],
       options: optionService.getOptions(scenarios, options)
     };
     $scope.applyOptions();
@@ -305,7 +304,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     page.statistics = $scope.gatherStatistics(filteredScenarios);
     page.filtered = scenarios.length - filteredScenarios.length;
     $scope.updateLocationSearchOptions();
-  }
+  };
 
   $scope.applyPagination = function applyPagination (filteredScenarios) {
     var start = ($scope.currentPageNr - 1) * $scope.itemsPerPage;
@@ -537,7 +536,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.getUrlFromTag = function getUrlFromTag (tag) {
-    if(tag.href) {
+    if (tag.href) {
       return tag.href;
     }
     return '#tag/' + getTagName(tag) +
