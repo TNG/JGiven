@@ -74,8 +74,8 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
     }
 
     @Test
-    @ExtendedDescription( "This scenario shows how large case tables are shown in JGiven. As soon as a table has more than 10 entries,"
-            + " additional features like pagination and searching will be added. This scenario also has some failing steps for demonstration purposes."
+    @ExtendedDescription( "This scenario shows how large case tables are shown in JGiven. As soon as a table has more than 2 entries,"
+            + " grouping by values is possible. This scenario also has some failing steps for demonstration purposes."
             + "<p>Btw. this description was created with the <a target='_blank' href='http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/ExtendedDescription.html'>@ExtendedDescription</a> annotation" )
     @UseDataProvider( "manyValues" )
     public void a_scenario_with_many_cases( String grouping, String value ) {
