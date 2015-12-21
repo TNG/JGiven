@@ -6,9 +6,14 @@
 
 Steps can now have nested steps that are shown in the report. This is done by annotating parent steps with the new `@NestedSteps` annotation. [#17](https://github.com/TNG/JGiven/issues/17) [PR #174](https://github.com/TNG/JGiven/pull/174) Thanks to albertofaci!
 
+### Additional Table Formatting Options
+
+The `@Table` annotation to format step parameters as tables has been extended with several options to further customize the formatting of the resulting tables. [#122](https://github.com/TNG/JGiven/issues/122)
+
 ### Other
 
-* HTML Report: case tables have sortable columns now [#175](https://github.com/TNG/JGiven/pull/175)
+* HTML Report: case tables have sortable columns [#175](https://github.com/TNG/JGiven/pull/175)
+* HTML Report: case tables can be grouped by values [#168](https://github.com/TNG/JGiven/issues/168)
 * Exception type is now added to the error message of a failed step [#154](https://github.com/TNG/JGiven/issues/154)
 
 ## Fixed Issues
