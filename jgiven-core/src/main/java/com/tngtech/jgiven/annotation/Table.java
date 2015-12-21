@@ -315,14 +315,16 @@ public @interface Table {
 
     /**
      * How to format rows when the rows are plain Objects, i.e. no Iterables.
-     * Note that this setting is ignore if a different {@link #rowFormatter()} is set
+     * Note that this setting is ignore if a different {@link #rowFormatter()} is set.
+     * In addition, JGiven will automatically switch to the {@link com.tngtech.jgiven.annotation.Table.ObjectFormatting#PLAIN}
+     * formatter when there is an additional formatting annotation besides the {@code @Table} annotation.
      * 
      * @since 0.10.0
      */
     ObjectFormatting objectFormatting() default ObjectFormatting.FIELDS;
 
     /**
-     * Possible choices for the {@link #objectFormatting()} attribute
+     * Possible choices for the {@link #objectFormatting()} attribute.
      * 
      * @since 0.10.0
      */
