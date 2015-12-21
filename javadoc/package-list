@@ -5,6 +5,7 @@ com.tngtech.jgiven.base
 com.tngtech.jgiven.config
 com.tngtech.jgiven.exception
 com.tngtech.jgiven.format
+com.tngtech.jgiven.format.table
 com.tngtech.jgiven.integration
 com.tngtech.jgiven.lang.de
 com.tngtech.jgiven.report
