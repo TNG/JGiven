@@ -201,11 +201,13 @@ span.scenario-group-header-name.failed {
     padding-bottom: 0.5rem;
     padding-left: 1rem;
     margin-bottom: 0.5rem;
+    background-color: white;
 }
 
 .button.icon-button {
     padding: 0.5rem;
     margin-bottom: 0.5rem;
+    background-color: white;
 }
 
 .scenario-list-button-bar .fa.selected {
