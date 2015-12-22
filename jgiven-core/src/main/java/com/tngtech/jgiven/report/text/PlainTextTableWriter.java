@@ -76,7 +76,7 @@ public class PlainTextTableWriter extends PlainTextWriter {
 
         int nRows = 0;
         for( String cell : row ) {
-            List<String> lines = FluentIterable.from( Splitter.on( '\n' ).split( cell ) ).toList();
+            List<String> lines = FluentIterable.from( Splitter.onPattern( "\\r?\\n" ).split( cell ) ).toList();
             if( lines.size() > nRows ) {
                 nRows = lines.size();
             }
@@ -116,7 +116,7 @@ public class PlainTextTableWriter extends PlainTextWriter {
             List<String> row = dataTableModel.get( nrow );
             for( int ncol = 0; ncol < row.size(); ncol++ ) {
                 String value = row.get( ncol );
-                int width = value.length();
+                int width = Math.max( value.length(), 1 );
                 ColumnSpec spec = result[ncol];
                 if( spec == null ) {
                     spec = new ColumnSpec();
