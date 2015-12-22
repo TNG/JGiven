@@ -35,7 +35,7 @@ public class DefaultCaseDescriptionProvider implements CaseDescriptionProvider {
                     replacement = "\\$";
                 } else {
                     int i = Integer.parseInt( group );
-                    replacement = String.valueOf( parameterValues.get( i ) );
+                    replacement = Matcher.quoteReplacement( String.valueOf( parameterValues.get( i ) ) );
                 }
             }
 
