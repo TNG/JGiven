@@ -4,16 +4,15 @@ title: Installation
 permalink: /docs/installation/
 ---
 
-The installation of JGiven depends on the build tool that you are using.
+The installation of JGiven depends on the build and unit testing tool that you are using.
 
-## Maven
+## JUnit
+
+Note that `jgiven-junit` does not directly depend on JUnit, thus you also must have a dependency to JUnit itself.
+JGiven requires at least JUnit v4.9, while the recommended version is v4.11.
 
 ### Maven Dependency
 
-Depending on the testing framework you need either te `jgiven-junit` or the `jgiven-testng` dependency.
-
-
-#### JUnit
 ```
 <dependency>
    <groupId>com.tngtech.jgiven</groupId>
@@ -23,10 +22,22 @@ Depending on the testing framework you need either te `jgiven-junit` or the `jgi
 </dependency>
 ```
 
-Note that `jgiven-junit` does not directly depend on JUnit, thus you also must have a dependency to JUnit itself.
-JGiven requires at least JUnit v4.9, while the recommended version is 4.11.
+### Gradle Dependency
 
-#### TestNG
+```
+dependencies {
+...
+   testCompile 'com.tngtech.jgiven:jgiven-junit:{{ site.version }}'
+...
+}
+```
+
+## TestNG
+
+Note that `jgiven-testng` does not directly depend on TestNG, thus you also must have a dependency to TestNG itself.
+
+### Maven Dependency
+
 ```
 <dependency>
    <groupId>com.tngtech.jgiven</groupId>
@@ -36,10 +47,21 @@ JGiven requires at least JUnit v4.9, while the recommended version is 4.11.
 </dependency>
 ```
 
-Note that `jgiven-testng` does not directly depend on TestNG, thus you also must have a dependency to TestNG itself.
+### Gradle Dependency
 
-#### HTML5 Report
-JGiven provides a basic static HTML report. In order to get a model HTML5-based report you have to add the following dependency:
+```
+dependencies {
+...
+   testCompile 'com.tngtech.jgiven:jgiven-testng:{{ site.version }}'
+...
+}
+```
+
+## HTML5 Report
+
+JGiven provides a basic static HTML report. In order to get a model HTML5-based report you have to add the dependency in addition to the above dependency.
+
+### Maven Dependency
 
 ```
 <dependency>
@@ -48,6 +70,16 @@ JGiven provides a basic static HTML report. In order to get a model HTML5-based 
    <version>{{ site.version }}</version>
    <scope>test</scope>
 </dependency>
+```
+
+### Gradle Dependency
+
+```
+dependencies {
+...
+   testCompile 'com.tngtech.jgiven:jgiven-html5-report:{{ site.version }}'
+...
+}
 ```
 
 ## Java Compiler Note
