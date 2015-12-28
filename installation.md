@@ -4,10 +4,11 @@ title: Installation
 permalink: /docs/installation/
 ---
 
-The installation of JGiven depends on the build and unit testing tool that you are using.
+The installation of JGiven depends on the build and testing framework that you are using. JGiven works with JUnit and TestNG.
 
 ## JUnit
 
+If you are using JUnit, you must depend on the `jgiven-junit` artifact.
 Note that `jgiven-junit` does not directly depend on JUnit, thus you also must have a dependency to JUnit itself.
 JGiven requires at least JUnit v4.9, while the recommended version is v4.11.
 
@@ -34,6 +35,7 @@ dependencies {
 
 ## TestNG
 
+If you are using TestNG, you must depend on the `jgiven-testng` artifact.
 Note that `jgiven-testng` does not directly depend on TestNG, thus you also must have a dependency to TestNG itself.
 
 ### Maven Dependency
@@ -59,7 +61,7 @@ dependencies {
 
 ## HTML5 Report
 
-JGiven provides a basic static HTML report. In order to get a model HTML5-based report you have to add the dependency in addition to the above dependency.
+In order to generate an HTML report, you have to add the following dependency in addition to the above dependency.
 
 ### Maven Dependency
 
@@ -84,10 +86,6 @@ dependencies {
 
 ## Java Compiler Note
 
-Note that you should complile your test classes with all debugging informations (`javac -g`). Otherwise JGiven cannot obtain the parameter names of step methods and will generate names of the form `argX` instead.
-
-### Java 8 Note (JGiven < 0.8.1)
-
-If you are using Java 8 and a JGiven version < 0.8.1, you should compile your test code with the `-parameters` option of the `javac` compiler. Otherwise JGiven cannot obtain the parameter names of step methods and will generate generic names of the form argX instead.
+Note that you should compile your test classes with all debugging information (`javac -g`). Otherwise JGiven cannot obtain the parameter names of step methods and will generate names of the form `argX` instead.
 
 Next: [Getting Started]({{site.baseurl}}/docs/gettingstarted/)
