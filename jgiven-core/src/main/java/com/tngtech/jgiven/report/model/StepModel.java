@@ -13,12 +13,12 @@ public class StepModel {
     /**
      * The original name of this step as it appeared in the Java code.
      */
-    public String name;
+    private String name;
 
     /**
      * All words of this step including the introduction word.
      */
-    public List<Word> words = Lists.newArrayList();
+    private List<Word> words = Lists.newArrayList();
 
     /**
      * An optional list of nested steps
@@ -47,11 +47,20 @@ public class StepModel {
      */
     private AttachmentModel attachment;
 
+    /**
+     * Whether this step is a section title.
+     * Section titles look differently in the generated report.
+     * Can be {@code null} which is equivalent to {@code false}
+     * 
+     * @since 0.10.2
+     */
+    private Boolean isSectionTitle;
+
     public StepModel() {}
 
     public StepModel( String name, List<Word> words ) {
-        this.name = name;
-        this.words = Lists.newArrayList( words );
+        this.setName( name );
+        this.setWords( Lists.newArrayList( words ) );
     }
 
     public void accept( ReportModelVisitor visitor ) {
@@ -59,7 +68,7 @@ public class StepModel {
     }
 
     public String getCompleteSentence() {
-        return Joiner.on( ' ' ).join( words );
+        return Joiner.on( ' ' ).join( this.words );
     }
 
     public StepModel addWords( Word... words ) {
@@ -96,7 +105,7 @@ public class StepModel {
     }
 
     public Word getWord( int i ) {
-        return this.words.get( i );
+        return words.get( i );
     }
 
     public String getExtendedDescription() {
@@ -116,7 +125,7 @@ public class StepModel {
     }
 
     public Word getLastWord() {
-        return words.get( words.size() - 1 );
+        return this.words.get( this.words.size() - 1 );
     }
 
     public void setAttachment( Attachment attachment ) {
@@ -149,5 +158,29 @@ public class StepModel {
 
     public void setNestedSteps( List<StepModel> nestedSteps ) {
         this.nestedSteps = nestedSteps;
+    }
+
+    public Boolean isSectionTitle() {
+        return isSectionTitle == null ? false : isSectionTitle;
+    }
+
+    public void setIsSectionTitle( boolean isSectionTitle ) {
+        this.isSectionTitle = isSectionTitle ? true : null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName( String name ) {
+        this.name = name;
+    }
+
+    public void setWords( List<Word> words ) {
+        this.words = words;
+    }
+
+    public void addIntroWord( Word introWord ) {
+        words.add( 0, introWord );
     }
 }

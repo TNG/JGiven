@@ -217,13 +217,13 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
         assertThat( case0.getSteps() ).extracting( "skipped" ).isEqualTo( asList( false, false, false ) );
 
         StepModel step0 = case0.getSteps().get( 0 );
-        assertThat( step0.words ).hasSize( 4 );
+        assertThat( step0.getWords() ).hasSize( 4 );
         assertThat( step0.getCompleteSentence() ).isEqualTo( "Given " + a + " and " + b );
-        assertThat( extractIsArg( step0.words ) ).isEqualTo( Arrays.asList( false, true, false, true ) );
+        assertThat( extractIsArg( step0.getWords() ) ).isEqualTo( Arrays.asList( false, true, false, true ) );
 
         StepModel step2 = case0.getSteps().get( 2 );
-        assertThat( step2.words ).hasSize( 3 );
-        assertThat( extractIsArg( step2.words ) ).isEqualTo( Arrays.asList( false, false, true ) );
+        assertThat( step2.getWords() ).hasSize( 3 );
+        assertThat( extractIsArg( step2.getWords() ) ).isEqualTo( Arrays.asList( false, false, true ) );
     }
 
     public static List<Boolean> extractIsArg( List<Word> words ) {
@@ -256,7 +256,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
 
         getScenario().finished();
         StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
-        assertThat( step.words.get( 2 ).getValue() ).isEqualTo( expected );
+        assertThat( step.getWords().get( 2 ).getValue() ).isEqualTo( expected );
     }
 
     @Test
@@ -292,7 +292,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
         given().an_intro_word_with_an_as_annotation().something();
         getScenario().finished();
         StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
-        assertThat( step.words.get( 0 ).getValue() ).isEqualTo( "another description" );
+        assertThat( step.getWords().get( 0 ).getValue() ).isEqualTo( "another description" );
     }
 
     @Test
@@ -301,7 +301,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
         given().a_step_with_a_printf_annotation_$( 5.2 );
         getScenario().finished();
         StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
-        assertThat( step.words.get( 2 ).getFormattedValue() ).isEqualTo( String.format( "%.2f", 5.2 ) );
+        assertThat( step.getWords().get( 2 ).getFormattedValue() ).isEqualTo( String.format( "%.2f", 5.2 ) );
     }
 
     @Test
@@ -325,7 +325,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
         stage.abstract_step();
         getScenario().finished();
         StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
-        assertThat( step.words.get( 0 ).getFormattedValue() ).isEqualTo( "abstract step" );
+        assertThat( step.getWords().get( 0 ).getFormattedValue() ).isEqualTo( "abstract step" );
     }
 
     @Test
@@ -336,7 +336,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
         stage.normal_step();
         getScenario().finished();
         StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
-        assertThat( step.words.get( 0 ).getFormattedValue() ).isEqualTo( "normal step" );
+        assertThat( step.getWords().get( 0 ).getFormattedValue() ).isEqualTo( "normal step" );
     }
 
     static class DoNotInterceptClass {

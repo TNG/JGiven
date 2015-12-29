@@ -101,4 +101,17 @@ public class ScenarioBase {
         AssertionUtil.assertTrue( !initialized, "Scenario is already initialized" );
     }
 
+    /**
+     * Adds a new section to the scenario
+     * <h1>EXPERIMENTAL FEATURE</h1>
+     * This is an experimental feature. It might change in the future.
+     * If you have any feedback regarding this feature, please let us know
+     * by creating an issue at https://github.com/TNG/JGiven/issues
+     * @param sectionTitle the title of the section
+     * @since 0.11.0
+     */
+    public void section( String sectionTitle ) {
+        executor.addSection( sectionTitle );
+    }
+
 }

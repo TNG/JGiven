@@ -170,7 +170,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF step_$_is_named( int i, String name ) {
-        getCase( 1 ).getStep( i - 1 ).words.get( 1 ).setValue( name );
+        getCase( 1 ).getStep( i - 1 ).getWords().get( 1 ).setValue( name );
         return self();
     }
 

@@ -68,11 +68,44 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
             .contains( ""
-                    + " Scenario: Test\n"
+                    + " Test\n"
                     + "\n"
                     + "   Given something\n"
                     + "     And something else\n"
                     + "    When something happens\n"
+                    + "    Then something has happen\n"
+                    + "     But something else not"
+            );
+    }
+
+    @Test
+    public void sections_are_shown_correctly_in_the_plain_text_report() throws UnsupportedEncodingException {
+        getScenario().startScenario( "test" );
+
+        section( "A first section" );
+        given().something()
+            .and().something_else();
+
+        when().something_happens();
+
+        section( "Another section" );
+
+        then().something_has_happen()
+            .but().something_else_not();
+
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
+            .contains( ""
+                    + " Test\n"
+                    + "\n"
+                    + "   A first section\n"
+                    + "\n"
+                    + "   Given something\n"
+                    + "     And something else\n"
+                    + "    When something happens\n"
+                    + "\n"
+                    + "   Another section\n"
+                    + "\n"
                     + "    Then something has happen\n"
                     + "     But something else not"
             );
@@ -93,7 +126,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
             .contains( ""
-                    + " Scenario: Test\n"
+                    + " Test\n"
                     + "\n"
                     + "   Given something\n"
                     + "         something else\n"
@@ -117,7 +150,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
             .contains( ""
-                    + " Scenario: Test\n"
+                    + " Test\n"
                     + "\n"
                     + "   Given something with nested steps\n"
                     + "           Given something\n"
@@ -147,7 +180,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
             .contains( ""
-                    + " Scenario: Test\n"
+                    + " Test\n"
                     + "\n"
                     + "   Given something with multilevel nested steps\n"
                     + "           Given something with nested steps\n"
@@ -174,7 +207,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
             .contains( ""
-                    + " Scenario: Test\n"
+                    + " Test\n"
                     + "\n"
                     + "   Given something with nested steps that fails (failed)\n"
                     + "           Given something (passed)\n"

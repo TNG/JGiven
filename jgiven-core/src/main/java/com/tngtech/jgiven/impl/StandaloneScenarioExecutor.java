@@ -473,4 +473,9 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
         failIfPass = true;
     }
 
+    @Override
+    public void addSection( String sectionTitle ) {
+        listener.sectionAdded( sectionTitle );
+    }
+
 }

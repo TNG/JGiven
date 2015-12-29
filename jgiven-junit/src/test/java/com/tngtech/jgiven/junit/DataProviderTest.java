@@ -85,7 +85,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
     }
 
     private void assertParameter( ScenarioCaseModel case0, int step, String parameter ) {
-        Word word = case0.getStep( step ).words.get( 2 );
+        Word word = case0.getStep( step ).getWords().get( 2 );
         assertThat( word.getArgumentInfo().getParameterName() ).isEqualTo( parameter );
     }
 

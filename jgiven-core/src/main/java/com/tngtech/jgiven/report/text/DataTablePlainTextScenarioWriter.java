@@ -25,7 +25,7 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
     protected String wordToString( Word word ) {
         if( word.isArg() && word.getArgumentInfo().isParameter() ) {
             String parameterName = word.getArgumentInfo().getParameterName();
-            return "<" + parameterName + ">";
+            return bold( "<" + parameterName + ">" );
         }
         return super.wordToString( word );
     }
@@ -42,13 +42,13 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
 
     @Override
     public void visitEnd( ScenarioModel scenarioModel ) {
-        writer.println( "  Cases:\n" );
+        writer.println( bold( "  Cases:" ) + "\n" );
 
         DataTable dataTableModel = getDataTableModel( scenarioModel );
         PlainTextTableWriter dataTableWriter = new PlainTextTableWriter( writer, withColor );
 
-        String caseIndent = "    ";
-        dataTableWriter.writeDataTable( dataTableModel, caseIndent );
+        dataTableWriter.writeDataTable( dataTableModel, INDENT );
+        writer.println();
     }
 
     private DataTable getDataTableModel( ScenarioModel scenarioModel ) {

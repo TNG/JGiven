@@ -1,8 +1,5 @@
 package com.tngtech.jgiven.report.text;
 
-import static org.fusesource.jansi.Ansi.Attribute.INTENSITY_BOLD;
-import static org.fusesource.jansi.Ansi.Color.MAGENTA;
-
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -18,13 +15,14 @@ import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.*;
 
 public class PlainTextScenarioWriter extends PlainTextWriter {
-    private static final String INDENT = "   ";
+    protected static final String INDENT = "   ";
     public static final String NESTED_HEADING = "  ";
     public static final String NESTED_INDENT = "  ";
 
     protected ScenarioModel currentScenarioModel;
     protected ScenarioCaseModel currentCaseModel;
     private int maxFillWordLength;
+    private boolean firstStep;
 
     public PlainTextScenarioWriter( PrintWriter printWriter, boolean withColor ) {
         super( printWriter, withColor );
@@ -32,16 +30,16 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     @Override
     public void visit( ScenarioModel scenarioModel ) {
-        writer.print( "\n" + withColor( MAGENTA, INTENSITY_BOLD, " Scenario: " ) );
-        println( Color.MAGENTA, scenarioModel.getDescription() + "\n" );
+        writer.println( "\n " + bold( WordUtil.capitalize( scenarioModel.getDescription() ) ) + "\n" );
         currentScenarioModel = scenarioModel;
+        firstStep = true;
     }
 
     @Override
     public void visitEnd( ScenarioCaseModel scenarioCase ) {
         if( !scenarioCase.isSuccess() ) {
             writer.println();
-            writer.print( "FAILED: " + scenarioCase.getErrorMessage() );
+            writer.print( withColor( Color.RED, Attribute.INTENSITY_BOLD, "FAILED: " + scenarioCase.getErrorMessage() ) );
         }
         writer.println();
     }
@@ -56,8 +54,8 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     }
 
     protected void printCaseLine( ScenarioCaseModel scenarioCase ) {
-        writer.print( "  Case " + scenarioCase.getCaseNr() + ": " );
-        writer.print( getDescriptionOrDefault( scenarioCase ) );
+        writer.print( bold( "  Case " + scenarioCase.getCaseNr() + ": " ) );
+        writer.println( bold( getDescriptionOrDefault( scenarioCase ) ) );
         writer.println();
     }
 
@@ -80,7 +78,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
         @Override
         public void visit( StepModel stepModel ) {
-            Word word = stepModel.words.get( 0 );
+            Word word = stepModel.getWords().get( 0 );
             if( word.isIntroWord() ) {
                 int length = word.getValue().length();
                 if( length > maxLength ) {
@@ -93,10 +91,16 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     @Override
     public void visit( StepModel stepModel ) {
         printStep( stepModel, 0, false );
+        firstStep = false;
     }
 
     private void printStep( StepModel stepModel, int depth, boolean showPassed ) {
-        List<Word> words = stepModel.words;
+        List<Word> words = stepModel.getWords();
+
+        if( stepModel.isSectionTitle() ) {
+            printSectionTitle( stepModel );
+            return;
+        }
 
         String introString = getIntroString( words, depth );
 
@@ -111,25 +115,33 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
         }
 
         int introWordIndex = words.get( 0 ).isIntroWord() ? 1 : 0;
-        String rest = joinWords( words.subList( introWordIndex, restSize ) );
+        String line = introString + joinWords( words.subList( introWordIndex, restSize ) );
         if( stepModel.isPending() ) {
-            rest = withColor( Color.BLACK, true, Attribute.INTENSITY_FAINT, rest + " (pending)" );
+            line = gray( line + " (pending)" );
         } else if( stepModel.isSkipped() ) {
-            rest = withColor( Color.BLACK, true, Attribute.INTENSITY_FAINT, rest + " (skipped)" );
+            line = gray( line + " (skipped)" );
         } else if( stepModel.isFailed() ) {
-            rest = withColor( Color.RED, true, Attribute.INTENSITY_FAINT, rest );
-            rest += withColor( Color.RED, true, Attribute.INTENSITY_BOLD, " (failed)" );
+            line = boldRed( line + " (failed)" );
         } else if( showPassed ) {
-            rest += " (passed)";
+            line = green( line + " (passed)" );
         }
-        writer.println( introString + rest );
 
-        printNestedSteps( stepModel, depth );
+        writer.println( line );
+
+        printNestedSteps( stepModel, depth, showPassed );
 
         if( printDataTable ) {
             writer.println();
             printDataTable( words.get( words.size() - 1 ) );
         }
+    }
+
+    private void printSectionTitle( StepModel stepModel ) {
+        if( !firstStep ) {
+            writer.println();
+        }
+        writer.println( INDENT + bold( joinWords( stepModel.getWords() ) ) );
+        writer.println();
     }
 
     private String getIntroString( List<Word> words, int depth ) {
@@ -139,13 +151,11 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
                     Strings.repeat( NESTED_INDENT, depth - 1 ) + NESTED_HEADING;
 
             if( words.get( 0 ).isIntroWord() ) {
-                intro = intro + withColor( Color.BLUE, Attribute.INTENSITY_BOLD,
-                    WordUtil.capitalize( words.get( 0 ).getValue() ) ) + " ";
+                intro = intro + WordUtil.capitalize( words.get( 0 ).getValue() ) + " ";
             }
         } else {
             if( words.get( 0 ).isIntroWord() ) {
-                intro = INDENT + withColor( Color.BLUE, Attribute.INTENSITY_BOLD,
-                    String.format( "%" + maxFillWordLength + "s ", WordUtil.capitalize( words.get( 0 ).getValue() ) ) );
+                intro = INDENT + String.format( "%" + maxFillWordLength + "s ", WordUtil.capitalize( words.get( 0 ).getValue() ) );
             } else {
                 intro = INDENT + String.format( "%" + maxFillWordLength + "s ", " " );
             }
@@ -153,16 +163,15 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
         return intro;
     }
 
-    private void printNestedSteps( StepModel stepModel, int depth ) {
+    private void printNestedSteps( StepModel stepModel, int depth, boolean showPassed ) {
         for( StepModel nestedStepModel : stepModel.getNestedSteps() ) {
-            printStep( nestedStepModel, depth + 1, stepModel.getStatus() == StepStatus.FAILED );
+            printStep( nestedStepModel, depth + 1, stepModel.getStatus() == StepStatus.FAILED || showPassed );
         }
     }
 
     private void printDataTable( Word word ) {
         PlainTextTableWriter plainTextTableWriter = new PlainTextTableWriter( writer, withColor );
-        String indent = INDENT + "  ";
-        plainTextTableWriter.writeDataTable( word.getArgumentInfo().getDataTable(), indent );
+        plainTextTableWriter.writeDataTable( word.getArgumentInfo().getDataTable(), INDENT + "  " );
         writer.println();
     }
 

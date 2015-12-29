@@ -25,6 +25,29 @@ public class PlainTextWriter extends ReportModelVisitor {
         return withColor( color, false, null, text );
     }
 
+    String gray( String text ) {
+        return withColor( Color.BLACK, true, null, text );
+    }
+
+    String green( String text ) {
+        return withColor( Color.GREEN, text );
+    }
+
+    String boldGray( String text ) {
+        return withColor( Color.BLACK, true, Attribute.INTENSITY_BOLD, text );
+    }
+
+    String boldRed( String text ) {
+        return withColor( Color.RED, false, Attribute.INTENSITY_BOLD, text );
+    }
+
+    String bold( String text ) {
+        if( withColor ) {
+            return Ansi.ansi().bold().a( text ).boldOff().toString();
+        }
+        return text;
+    }
+
     String withColor( Color color, Attribute attribute, String text ) {
         return withColor( color, false, attribute, text );
     }
