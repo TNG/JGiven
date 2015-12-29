@@ -38,7 +38,7 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
 
         public void the_method_does_not_appear_in_the_report( @Hidden ScenarioCaseModel scenarioCaseModel ) {
             StepModel stepModel = scenarioCaseModel.getFirstStep();
-            assertThat( stepModel.words.get( 1 ).getValue() )
+            assertThat( stepModel.getWords().get( 1 ).getValue() )
                 .isNotEqualTo( "buildString" )
                 .isEqualTo( "some stage with method called during construction" );
         }

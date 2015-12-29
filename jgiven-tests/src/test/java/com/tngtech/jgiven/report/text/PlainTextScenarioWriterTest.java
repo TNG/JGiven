@@ -99,11 +99,11 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
         then().the_report_contains_text( "<aArg1>" )
             .and().the_report_contains_text( "<aArg2>" )
             .and().the_report_contains_text( "\n" +
-                    "    | # |   aArg1 | aArg2 | Status             |\n" +
-                    "    +---+---------+-------+--------------------+\n" +
-                    "    | 1 |      43 | arg11 | Success            |\n" +
-                    "    | 2 |       4 | arg21 | Failed: Some Error |\n" +
-                    "    | 3 | 1234567 | arg31 | Success            |\n" );
+                    "   | # |   aArg1 | aArg2 | Status             |\n" +
+                    "   +---+---------+-------+--------------------+\n" +
+                    "   | 1 |      43 | arg11 | Success            |\n" +
+                    "   | 2 |       4 | arg21 | Failed: Some Error |\n" +
+                    "   | 3 | 1234567 | arg31 | Success            |\n" );
     }
 
     @Test
@@ -131,10 +131,10 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
         then().the_report_contains_text( "<anArg>" )
             .and().the_report_contains_text( "<anotherArg>" )
             .and().the_report_contains_text( "\n" +
-                    "    | # | anArg | anotherArg | Status  |\n" +
-                    "    +---+-------+------------+---------+\n" +
-                    "    | 1 | off   | is not     | Success |\n" +
-                    "    | 2 | on    | is         | Success |\n" );
+                    "   | # | anArg | anotherArg | Status  |\n" +
+                    "   +---+-------+------------+---------+\n" +
+                    "   | 1 | off   | is not     | Success |\n" +
+                    "   | 2 | on    | is         | Success |\n" );
     }
 
     @Test
@@ -150,10 +150,10 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
 
         then().the_report_contains_text( "<arg>" )
             .and().the_report_contains_text( "\n" +
-                    "    | # | arg              | Status  |\n" +
-                    "    +---+------------------+---------+\n" +
-                    "    | 1 | non empty string | Success |\n" +
-                    "    | 2 |                  | Success |\n" );
+                    "   | # | arg              | Status  |\n" +
+                    "   +---+------------------+---------+\n" +
+                    "   | 1 | non empty string | Success |\n" +
+                    "   | 2 |                  | Success |\n" );
     }
 
     @Test
@@ -191,10 +191,10 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
 
         when().the_plain_text_report_is_generated();
         then().the_report_contains_text( "\n" +
-                "    | # | Description           | Status  |\n" +
-                "    +---+-----------------------+---------+\n" +
-                "    | 1 | some test description | Success |\n" +
-                "    | 2 | another case          | Success |\n" );
+                "   | # | Description           | Status  |\n" +
+                "   +---+-----------------------+---------+\n" +
+                "   | 1 | some test description | Success |\n" +
+                "   | 2 | another case          | Success |\n" );
 
     }
 
@@ -212,10 +212,10 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
 
         then().the_report_contains_text( "<aArg1>" )
             .and().the_report_contains_text( "\n" +
-                    "    | # | aArg1 | Status  |\n" +
-                    "    +---+-------+---------+\n" +
-                    "    | 1 |     1 | Success |\n" +
-                    "    |   |     2 |         |\n" +
-                    "    | 2 |     4 | Success |\n" );
+                    "   | # | aArg1 | Status  |\n" +
+                    "   +---+-------+---------+\n" +
+                    "   | 1 |     1 | Success |\n" +
+                    "   |   |     2 |         |\n" +
+                    "   | 2 |     4 | Success |\n" );
     }
 }

@@ -28,4 +28,6 @@ public interface ScenarioListener {
     void attachmentAdded( Attachment attachment );
 
     void extendedDescriptionUpdated( String extendedDescription );
+
+    void sectionAdded( String sectionTitle );
 }

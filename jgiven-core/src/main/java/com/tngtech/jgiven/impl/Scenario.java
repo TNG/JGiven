@@ -134,4 +134,5 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
         addIntroWord( translatedGiven );
         return getThenStage();
     }
+
 }

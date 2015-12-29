@@ -21,6 +21,8 @@ public interface ScenarioExecutor {
 
     void addIntroWord( String word );
 
+    void addSection( String sectionTitle );
+
     void readScenarioState( Object object );
 
     /**

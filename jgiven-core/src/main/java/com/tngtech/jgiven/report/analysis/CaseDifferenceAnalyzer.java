@@ -221,7 +221,7 @@ public class CaseDifferenceAnalyzer {
                 this.noDataTablePossible = true;
             }
 
-            for( Word word : stepModel.words ) {
+            for( Word word : stepModel.getWords() ) {
                 if( word.isArg() && !word.isDataTable() ) {
                     ArgumentHolder holder = new ArgumentHolder();
                     holder.word = word;

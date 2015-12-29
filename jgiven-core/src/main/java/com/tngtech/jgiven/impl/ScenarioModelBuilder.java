@@ -101,7 +101,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     StepModel createStepModel( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
         StepModel stepModel = new StepModel();
 
-        stepModel.name = getDescription( paramMethod );
+        stepModel.setName( getDescription( paramMethod ) );
 
         ExtendedDescription extendedDescriptionAnnotation = paramMethod.getAnnotation( ExtendedDescription.class );
         if( extendedDescriptionAnnotation != null ) {
@@ -113,10 +113,10 @@ public class ScenarioModelBuilder implements ScenarioListener {
         ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil( configuration );
         List<ObjectFormatter<?>> formatters = parameterFormattingUtil.getFormatter( paramMethod.getParameterTypes(), getNames( arguments ),
             paramMethod.getParameterAnnotations() );
-        stepModel.words = new StepFormatter( stepModel.name, nonHiddenArguments, formatters ).buildFormattedWords();
+        stepModel.setWords( new StepFormatter( stepModel.getName(), nonHiddenArguments, formatters ).buildFormattedWords() );
 
         if( introWord != null ) {
-            stepModel.words.add( 0, introWord );
+            stepModel.addIntroWord( introWord );
             introWord = null;
         }
 
@@ -531,6 +531,15 @@ public class ScenarioModelBuilder implements ScenarioListener {
     @Override
     public void extendedDescriptionUpdated( String extendedDescription ) {
         currentStep.setExtendedDescription( extendedDescription );
+    }
+
+    @Override
+    public void sectionAdded( String sectionTitle ) {
+        StepModel stepModel = new StepModel();
+        stepModel.setName( sectionTitle );
+        stepModel.addWords( new Word( sectionTitle ) );
+        stepModel.setIsSectionTitle( true );
+        getCurrentScenarioCase().addStep( stepModel );
     }
 
     public ReportModel getReportModel() {

@@ -44,8 +44,8 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         assertThat( scenarioCase.getSteps() ).hasSize( 1 );
 
         StepModel step = scenarioCase.getSteps().get( 0 );
-        assertThat( step.name ).isEqualTo( "some test step" );
-        assertThat( step.words ).isEqualTo( Arrays.asList( Word.introWord( "Given" ), new Word( "some test step" ) ) );
+        assertThat( step.getName() ).isEqualTo( "some test step" );
+        assertThat( step.getWords() ).isEqualTo( Arrays.asList( Word.introWord( "Given" ), new Word( "some test step" ) ) );
         assertThat( step.isPending() ).isFalse();
 
     }

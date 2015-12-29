@@ -2,6 +2,7 @@ package com.tngtech.jgiven.impl;
 
 import java.io.File;
 
+import com.tngtech.jgiven.confg.ConfigValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,7 @@ public class Config {
 
     private static final String TRUE = "true";
     private static final String FALSE = "false";
+    private static final String AUTO = "auto";
     private static final String JGIVEN_REPORT_ENABLED = "jgiven.report.enabled";
     private static final String JGIVEN_REPORT_DIR = "jgiven.report.dir";
     private static final String JGIVEN_REPORT_TEXT = "jgiven.report.text";
@@ -57,8 +59,8 @@ public class Config {
         System.setProperty( JGIVEN_REPORT_ENABLED, "" + enabled );
     }
 
-    public boolean textColorEnabled() {
-        return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_REPORT_TEXT_COLOR, TRUE ) );
+    public ConfigValue textColorEnabled() {
+        return ConfigValue.fromString( System.getProperty( JGIVEN_REPORT_TEXT_COLOR, AUTO ) );
     }
 
     public boolean textReport() {
