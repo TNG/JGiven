@@ -1,3 +1,21 @@
+# v0.11.0
+## New Features
+
+### Sections
+
+Scenarios can have sections now. This allows you to structure larger scenarios into several parts with a title. [PR#181](https://github.com/TNG/JGiven/pull/181)
+
+Example:
+```
+section("This is a section title");
+given().something();
+when().something();
+
+section("This is another section title");
+when().something_else();
+then().something();
+```
+
 # v0.10.1
 
 ## New Features
