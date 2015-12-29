@@ -1,4 +1,5 @@
 # v0.11.0
+
 ## New Features
 
 ### Sections
@@ -15,6 +16,17 @@ section("This is another section title");
 when().something_else();
 then().something();
 ```
+
+Sections appear in the console output as well as the HTML report.
+
+### Changes regarding colors in the console output
+
+The color used in the console output has been changed. It is now less colorful and usable on dark and light backgrounds. Setting the system property `jgiven.report.text.color` to `true` now always enables the color output, even if the output is not a TTY.
+
+## Fixed Issues
+
+* Fixed an issue with carriage returns messing up the cases table. [#178](https://github.com/TNG/JGiven/issues/178)
+* Fixed an issue with certain characters used in a `@CaseDescription` annotation. [#177](https://github.com/TNG/JGiven/issues/177)
 
 # v0.10.1
 
