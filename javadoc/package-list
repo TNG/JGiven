@@ -2,6 +2,7 @@ com.tngtech.jgiven
 com.tngtech.jgiven.annotation
 com.tngtech.jgiven.attachment
 com.tngtech.jgiven.base
+com.tngtech.jgiven.confg
 com.tngtech.jgiven.config
 com.tngtech.jgiven.exception
 com.tngtech.jgiven.format
