@@ -368,6 +368,16 @@ td.steps.intro-word {
     position: relative;
 }
 
+td.steps.section-title {
+    text-align: left;
+    font-size: 0.8rem;
+    position: relative;
+    padding-top: 0.8rem;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    text-transform: uppercase;
+}
+
 .step-expand-icon {
     position: absolute;
     color: #888;
