@@ -1,4 +1,4 @@
-# Example that shows how to use JGiven with Spring Boot
+# JGiven with Spring Boot
 
 ```
 ./gradlew test
