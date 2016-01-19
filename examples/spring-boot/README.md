@@ -2,5 +2,5 @@
 
 ```
 ./gradlew test
-firefox out/reports/jgiven/html/index.html
+firefox build/reports/jgiven/html/index.html
 ```

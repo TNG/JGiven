@@ -40,13 +40,13 @@ task wrapper(type: Wrapper) {
 }
 
 test {
-    systemProperty 'jgiven.report.dir', 'out/reports/jgiven/json'
+    systemProperty 'jgiven.report.dir', 'build/reports/jgiven/json'
 }
 
 task jgivenReport(type: JavaExec) {
     main = 'com.tngtech.jgiven.report.ReportGenerator'
-    args '--sourceDir=out/reports/jgiven/json',
-            '--targetDir=out/reports/jgiven/html',
+    args '--sourceDir=build/reports/jgiven/json',
+            '--targetDir=build/reports/jgiven/html',
             '--format=html'
 
     classpath = configurations.testCompile
