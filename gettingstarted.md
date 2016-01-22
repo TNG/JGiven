@@ -28,8 +28,8 @@ To make your class compile, create the following three classes:
 {% highlight java %}
 import com.tngtech.jgiven.Stage;
 
-public class GivenSomeStage extends Stage<GivenSomeStage> {
-   public GivenSomeStage some_state() {
+public class GivenSomeState extends Stage<GivenSomeState> {
+   public GivenSomeState some_state() {
       return self();
    }
 }
@@ -58,7 +58,7 @@ import org.junit.Test;
 import com.tngtech.jgiven.junit.ScenarioTest;
 
 public class MyShinyJGivenTest extends
-   ScenarioTest<GivenSomeStage, WhenSomeAction, ThenSomeOutcome> {
+   ScenarioTest<GivenSomeState, WhenSomeAction, ThenSomeOutcome> {
 
    @Test
    public void something_should_happen() {
