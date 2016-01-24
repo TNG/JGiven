@@ -12,3 +12,4 @@ artifacts
 .*.swp
 /test-output
 phantomjsdriver.log
+.gradle

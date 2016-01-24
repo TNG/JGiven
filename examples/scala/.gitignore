@@ -1,0 +1,12 @@
+/RUNNING_PID
+/logs/
+/project/*-shim.sbt
+/project/project/
+/project/target/
+/target/
+.cache*
+.sbtserver
+activator*
+.history
+*.iws
+.sbtserver*
