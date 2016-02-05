@@ -33,8 +33,6 @@
     "angular-local-storage": "0.1.5",
     "angular-mocks": "1.4.8",
     "angular-bindonce": "0.3.3",
-    "datatables.net": "~1.10.10",
-    "datatables.net-dt": "~1.10.10",
-    "datatables.net-zf": "~1.10.10"
+    "pako":"0.2.8"
   }
 }

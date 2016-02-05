@@ -1,10 +1,14 @@
 package com.tngtech.jgiven.report.html5;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import javax.xml.bind.DatatypeConverter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,18 +20,18 @@ import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
-import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.report.model.ReportModelFile;
-import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.*;
 
 public class Html5ReportGenerator extends AbstractReportGenerator {
     private static final Logger log = LoggerFactory.getLogger( Html5ReportGenerator.class );
     private static final int MAX_BATCH_SIZE = 100;
 
-    private PrintStream writer;
+    private PrintStream fileStream;
     private MetaData metaData = new MetaData();
     private int caseCountOfCurrentBatch;
     private File dataDirectory;
+    private ByteArrayOutputStream byteStream;
+    private PrintStream contentStream;
 
     @Override
     public void generate() {
@@ -60,28 +64,50 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
         }
     }
 
-    private void createDataFiles() {
+    private void createDataFiles() throws IOException {
         for( ReportModelFile file : completeReportModel.getAllReportModels() ) {
             handleReportModel( file.model, file.file );
         }
         closeWriter();
     }
 
-    public void handleReportModel( ReportModel model, File file ) {
+    public void handleReportModel( ReportModel model, File file ) throws IOException {
         new Html5AttachmentGenerator().generateAttachments( dataDirectory, model );
 
         createWriter();
 
+        if( caseCountOfCurrentBatch > 0 ) {
+            contentStream.append( "," );
+        }
+
+        deleteUnusedCaseSteps( model );
         caseCountOfCurrentBatch += getCaseCount( model );
 
         // do not serialize tags as they are serialized separately
         model.setTagMap( null );
 
-        new Gson().toJson( model, writer );
-        writer.append( "," );
+        new Gson().toJson( model, contentStream );
 
         if( caseCountOfCurrentBatch > MAX_BATCH_SIZE ) {
             closeWriter();
+        }
+    }
+
+    /**
+     * Deletes all steps of scenario cases where a data table
+     * is generated to reduce the size of the data file. 
+     * In this case only the steps of the first scenario case are actually needed. 
+     */
+    private void deleteUnusedCaseSteps( ReportModel model ) {
+
+        for( ScenarioModel scenarioModel : model.getScenarios() ) {
+            if( scenarioModel.isCasesAsTable() ) {
+                List<ScenarioCaseModel> cases = scenarioModel.getScenarioCases();
+                for( int i = 1; i < cases.size(); i++ ) {
+                    ScenarioCaseModel caseModel = cases.get( i );
+                    caseModel.setSteps( Collections.<StepModel>emptyList() );
+                }
+            }
         }
     }
 
@@ -94,18 +120,23 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
         return count;
     }
 
-    private void closeWriter() {
-        if( writer != null ) {
-            this.writer.append( "]);" );
-            writer.flush();
-            ResourceUtil.close( writer );
-            writer = null;
+    private void closeWriter() throws IOException {
+        if( fileStream != null ) {
+            contentStream.append( "]}" );
+            contentStream.flush();
+            ResourceUtil.close( contentStream );
+            String base64String = DatatypeConverter.printBase64Binary( byteStream.toByteArray() );
+            this.fileStream.append( "'" + base64String + "'" );
+            this.fileStream.append( ");" );
+            fileStream.flush();
+            ResourceUtil.close( fileStream );
+            fileStream = null;
             log.info( "Written " + caseCountOfCurrentBatch + " scenarios to " + metaData.data.get( metaData.data.size() - 1 ) );
         }
     }
 
     private void createWriter() {
-        if( this.writer == null ) {
+        if( this.fileStream == null ) {
             String fileName = "data" + metaData.data.size() + ".js";
             metaData.data.add( fileName );
             File targetFile = new File( dataDirectory, fileName );
@@ -113,8 +144,12 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
             caseCountOfCurrentBatch = 0;
 
             try {
-                this.writer = new PrintStream( new FileOutputStream( targetFile ), false, "utf-8" );
-                this.writer.append( "jgivenReport.addScenarios([" );
+                this.byteStream = new ByteArrayOutputStream();
+                this.contentStream = new PrintStream( new GZIPOutputStream( byteStream ) );
+                this.contentStream.append( "{\"scenarios\":[" );
+
+                this.fileStream = new PrintStream( new FileOutputStream( targetFile ), false, "utf-8" );
+                this.fileStream.append( "jgivenReport.addZippedScenarios(" );
             } catch( Exception e ) {
                 throw new RuntimeException( "Could not open file " + targetFile + " for writing", e );
             }

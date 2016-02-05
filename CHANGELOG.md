@@ -1,3 +1,11 @@
+# v0.11.1
+
+## New Features
+
+### HTML Report size reduction
+
+* The size of the HTML report has been greatly reduced by compressing the scenario data with gzip. This significantly reduces the load time of large reports on slow network connections. [#186](https://github.com/TNG/JGiven/pull/186)
+
 # v0.11.0
 
 ## New Features
