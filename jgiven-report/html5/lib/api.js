@@ -19,6 +19,12 @@ var jgivenReport = {
     });
   },
 
+  addZippedScenarios: function addZippedScenarios (zip) {
+    var string = pako.ungzip(atob(zip), {to: 'string'})
+    var unzipped = JSON.parse(string);
+    this.addScenarios(unzipped.scenarios);
+  },
+
   addScenarios: function addScenarios (scenarios) {
     this.scenarios = this.scenarios.concat(scenarios);
   },
