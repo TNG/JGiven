@@ -129,6 +129,10 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
 
         @Override
         public void handleThrowable( Throwable t ) throws Throwable {
+            if( t.getClass().getName().equals( "org.junit.AssumptionViolatedException" ) ) {
+                throw t;
+            }
+
             listener.stepMethodFailed( t );
             failed( t );
         }

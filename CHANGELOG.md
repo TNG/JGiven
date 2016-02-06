@@ -9,6 +9,7 @@
 ## Fixed Issues
 
 * HTML Report: fixed an issue with the search input in the mobile menu that was hidden on mobile devices when the virtual keyboard appeared. [#182](https://github.com/TNG/JGiven/issues/182)
+* JUnit: throwing an AssumptionViolationException will not lead to a failed scenario anymore. Instead, the scenario will be ignored and will not appear in the report at all. [#185](https://github.com/TNG/JGiven/issues/185)
 
 # v0.11.0
 
