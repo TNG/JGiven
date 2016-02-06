@@ -4,7 +4,11 @@
 
 ### HTML Report size reduction
 
-* The size of the HTML report has been greatly reduced by compressing the scenario data with gzip. This significantly reduces the load time of large reports on slow network connections. [#186](https://github.com/TNG/JGiven/pull/186)
+* The size of the HTML report has been greatly reduced by compressing the scenario data with gzip. This significantly reduces the load time of large reports on slow network connections. [#186](https://github.com/TNG/JGiven/issues/186)
+
+## Fixed Issues
+
+* HTML Report: fixed an issue with the search input in the mobile menu that was hidden on mobile devices when the virtual keyboard appeared. [#182](https://github.com/TNG/JGiven/issues/182)
 
 # v0.11.0
 
