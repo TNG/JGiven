@@ -79,7 +79,7 @@ public void scenarios_can_have_tags() {
 In the report the tag will now be `ACME-123` instead of `Story`.
 
 If you want that the type is prepended to the value in the report you can set the `prependType` attribute of the `IsTag` annotation to `true`. In this case the tag will be shown as `Story-ACME-123`.
-Note that this feature works in combination with the `type` attribute.
+Note that this feature works in combination with the `name` attribute.
 
 Annotations with the same type but different values are grouped in the report. E.g. multiple `@Story` tags with different values will be grouped under `Story`.
 
