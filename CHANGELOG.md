@@ -1,3 +1,9 @@
+# v0.11.2
+
+## Fixed Issues
+
+* Fixed an issue introduced with v0.11.1 that for scenarios with attachments and multiple cases, only the attachment of the first case was shown in the HTML report [#191](https://github.com/TNG/JGiven/issues/191)
+
 # v0.11.1
 
 ## New Features
