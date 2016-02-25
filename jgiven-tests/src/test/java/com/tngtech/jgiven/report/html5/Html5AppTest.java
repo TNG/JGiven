@@ -121,10 +121,10 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
         String content2 = "A second Example Attachment\nwith some example content";
 
         given().a_report_model()
-            .and().the_scenario_has_parameters( "foo" )
+            .and().the_scenario_has_one_parameter()
             .and().the_scenario_has_$_default_cases( 2 )
-            .and().step_$_of_case_$_has_a_text_attachment_with_content( 1, 1, content1 )
-            .and().step_$_of_case_$_has_a_text_attachment_with_content( 1, 2, content2 )
+            .and().step_$_of_case_$_has_a_text_attachment( 1, 1 )
+            .and().step_$_of_case_$_has_a_text_attachment( 1, 2 )
             .and().the_report_exist_as_JSON_file();
 
         whenReport
@@ -132,9 +132,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
 
         when().the_page_of_scenario_$_is_opened( 1 );
 
-        then().$_attachment_icons_exist( 2 )
-            .and().the_content_of_the_attachment_referenced_by_icon_$_is( 1, content1 )
-            .and().the_content_of_the_attachment_referenced_by_icon_$_is( 2, content2 );
+        then().$_attachment_icons_exist( 2 );
     }
 
     @Test
