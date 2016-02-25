@@ -74,6 +74,11 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         return self();
     }
 
+    public SELF the_scenario_has_parameters( String... params ) {
+        givenReportModel.the_scenario_has_parameters( params );
+        return self();
+    }
+
     public SELF the_scenario_has_$_default_cases( int ncases ) {
         givenReportModel.the_scenario_has_$_default_cases( ncases );
         return self();
@@ -84,13 +89,18 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         return self();
     }
 
+    public SELF step_$_of_case_$_has_a_text_attachment_with_content( int stepNr, int caseNr, String content ) {
+        givenReportModel.step_$_of_case_$_has_an_attachment_with_content( stepNr, caseNr, content );
+        return self();
+    }
+
     public SELF step_$_of_scenario_$_has_a_text_attachment_with_content( int stepNr, int scenarioNr, String content ) {
         givenReportModel.step_$_of_scenario_$_has_an_attachment_with_content( stepNr, scenarioNr, content );
         return self();
     }
 
     public SELF scenario_$_has_no_steps( int i ) {
-        givenReportModel.scenario_$_has_no_steps(i);
+        givenReportModel.scenario_$_has_no_steps( i );
         return self();
     }
 }

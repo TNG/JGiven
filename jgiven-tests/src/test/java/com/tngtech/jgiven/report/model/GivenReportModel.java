@@ -243,12 +243,22 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF step_$_of_scenario_$_has_an_attachment_with_content( int stepNr, int scenarioNr, String content ) {
         StepModel step = getStep( stepNr, scenarioNr );
-        step.setAttachment( Attachment.fromText( content, MediaType.PLAIN_TEXT ) );
+        step.setAttachment( Attachment.fromText( content, MediaType.PLAIN_TEXT_UTF_8 ) );
+        return self();
+    }
+
+    public SELF step_$_of_case_$_has_an_attachment_with_content( int stepNr, int caseNr, String content ) {
+        StepModel step = getStep( stepNr, 1, caseNr );
+        step.setAttachment( Attachment.fromText( content, MediaType.PLAIN_TEXT_UTF_8 ) );
         return self();
     }
 
     private StepModel getStep( int stepNr, int scenarioNr ) {
-        return reportModel.getScenarios().get( scenarioNr - 1 ).getScenarioCases().get( 0 ).getStep( stepNr - 1 );
+        return getStep( stepNr, scenarioNr, 1 );
+    }
+
+    private StepModel getStep( int stepNr, int scenarioNr, int caseNr ) {
+        return reportModel.getScenarios().get( scenarioNr - 1 ).getScenarioCases().get( caseNr - 1 ).getStep( stepNr - 1 );
     }
 
     public SELF a_step_has_a_data_table_with_following_values( @Table List<List<String>> dataTable ) {

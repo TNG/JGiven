@@ -27,6 +27,11 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
         return self();
     }
 
+    public SELF $_attachment_icons_exist( int nrIcons ) {
+        assertThat( findAttachmentIcon() ).hasSize( nrIcons );
+        return self();
+    }
+
     public SELF an_attachment_icon_exists() {
         assertThat( findAttachmentIcon() ).isNotEmpty();
         return self();
@@ -36,8 +41,12 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
         return webDriver.findElements( By.className( "fa-paperclip" ) );
     }
 
-    public SELF the_content_of_the_referenced_attachment_is( String content ) throws IOException, URISyntaxException {
-        String href = findAttachmentIcon().get( 0 ).findElement( By.xpath( ".." ) ).getAttribute( "href" );
+    public SELF the_content_of_the_attachment_referenced_by_the_icon_is( String content ) throws IOException, URISyntaxException {
+        return the_content_of_the_attachment_referenced_by_icon_$_is( 1, content );
+    }
+
+    public SELF the_content_of_the_attachment_referenced_by_icon_$_is( int iconNr, String content ) throws IOException, URISyntaxException {
+        String href = findAttachmentIcon().get( iconNr - 1 ).findElement( By.xpath( ".." ) ).getAttribute( "href" );
         String foundContent = Files.readFile( new File( new URL( href ).toURI() ) ).trim();
         assertThat( content ).isEqualTo( foundContent );
         return self();

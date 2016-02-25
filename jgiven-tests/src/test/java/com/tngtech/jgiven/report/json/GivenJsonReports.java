@@ -12,6 +12,7 @@ import com.google.common.io.Files;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.report.ReportGenerator;
+import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 import com.tngtech.jgiven.report.model.GivenReportModels;
 import com.tngtech.jgiven.report.model.ReportModel;
 
@@ -47,6 +48,7 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenRep
         jsonReportDirectory = temporaryFolderRule.newFolder( "tmpJsonReports" );
 
         for( ReportModel reportModel : reportModels ) {
+            new CaseArgumentAnalyser().analyze( reportModel );
             File jsonReportFile = new File( jsonReportDirectory, reportModel.getClassName() + ".json" );
 
             jsonReportFiles.add( jsonReportFile );

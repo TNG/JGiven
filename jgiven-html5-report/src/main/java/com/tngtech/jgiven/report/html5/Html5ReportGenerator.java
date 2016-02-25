@@ -101,7 +101,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
     private void deleteUnusedCaseSteps( ReportModel model ) {
 
         for( ScenarioModel scenarioModel : model.getScenarios() ) {
-            if( scenarioModel.isCasesAsTable() ) {
+            if( scenarioModel.isCasesAsTable() && !hasAttachment( scenarioModel ) ) {
                 List<ScenarioCaseModel> cases = scenarioModel.getScenarioCases();
                 for( int i = 1; i < cases.size(); i++ ) {
                     ScenarioCaseModel caseModel = cases.get( i );
@@ -109,6 +109,19 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
                 }
             }
         }
+    }
+
+    private boolean hasAttachment( ScenarioModel scenarioModel ) {
+        return hasAttachment( scenarioModel.getCase( 0 ) );
+    }
+
+    private boolean hasAttachment( ScenarioCaseModel aCase ) {
+        for( StepModel model : aCase.getSteps() ) {
+            if( model.getAttachment() != null ) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private int getCaseCount( ReportModel model ) {

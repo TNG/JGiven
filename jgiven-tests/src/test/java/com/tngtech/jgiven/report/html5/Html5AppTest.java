@@ -114,6 +114,30 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
     }
 
     @Test
+    @Issue( "#191" )
+    @FeatureAttachments
+    public void attachments_of_all_cases_appear_in_the_HTML5_report_when_having_a_data_table() throws Exception {
+        String content1 = "Some Example Attachment\nwith some example content";
+        String content2 = "A second Example Attachment\nwith some example content";
+
+        given().a_report_model()
+            .and().the_scenario_has_parameters( "foo" )
+            .and().the_scenario_has_$_default_cases( 2 )
+            .and().step_$_of_case_$_has_a_text_attachment_with_content( 1, 1, content1 )
+            .and().step_$_of_case_$_has_a_text_attachment_with_content( 1, 2, content2 )
+            .and().the_report_exist_as_JSON_file();
+
+        whenReport
+            .and().the_HTML_Report_Generator_is_executed();
+
+        when().the_page_of_scenario_$_is_opened( 1 );
+
+        then().$_attachment_icons_exist( 2 )
+            .and().the_content_of_the_attachment_referenced_by_icon_$_is( 1, content1 )
+            .and().the_content_of_the_attachment_referenced_by_icon_$_is( 2, content2 );
+    }
+
+    @Test
     @FeatureAttachments
     public void attachments_appear_in_the_HTML5_report() throws Exception {
         String content = "Some Example Attachment\nwith some example content";
@@ -127,7 +151,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
         when().the_page_of_scenario_$_is_opened( 1 );
 
         then().an_attachment_icon_exists()
-            .and().the_content_of_the_referenced_attachment_is( content );
+            .and().the_content_of_the_attachment_referenced_by_the_icon_is( content );
     }
 
     @Test
