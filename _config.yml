@@ -7,7 +7,7 @@ url: "http://jgiven.org"
 # Build settings
 markdown: kramdown
 permalink: pretty
-pygments: true
+highlighter: pygments
 
 kramdown:
     input: GFM
