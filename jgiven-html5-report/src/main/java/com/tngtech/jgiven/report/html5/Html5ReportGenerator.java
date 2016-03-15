@@ -158,7 +158,8 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
 
             try {
                 this.byteStream = new ByteArrayOutputStream();
-                this.contentStream = new PrintStream( new GZIPOutputStream( byteStream ) );
+                // pako client side library expects byte stream to be UTF-8 encoded
+                this.contentStream = new PrintStream( new GZIPOutputStream( byteStream ), false, "utf-8" );
                 this.contentStream.append( "{\"scenarios\":[" );
 
                 this.fileStream = new PrintStream( new FileOutputStream( targetFile ), false, "utf-8" );
