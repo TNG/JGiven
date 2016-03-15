@@ -96,7 +96,7 @@ public class PlainTextTableWriterTest {
         String s = sw.toString();
         String expected1 = firstString.equals( "" ) ? " " : firstString;
         String expected2 = secondString.equals( "" ) ? " " : secondString;
-        assertThat( s ).isEqualTo( "| " + expected1 + " | " + expected2 + " |\n" );
+        assertThat( s ).isEqualTo( "| " + expected1 + " | " + expected2 + " |" + System.getProperty("line.separator") );
 
     }
 }
