@@ -15,8 +15,9 @@ import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
  * @since 0.9.2
  */
 @Documented
+@Inherited
 @Retention( RetentionPolicy.RUNTIME )
-@Target( ElementType.METHOD )
+@Target( { ElementType.METHOD, ElementType.TYPE } )
 public @interface CaseDescription {
     /**
      * Dummy value to indicate that no value was set

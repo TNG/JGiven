@@ -289,12 +289,19 @@ public class ScenarioModelBuilder implements ScenarioListener {
             method.getParameterAnnotations() );
 
         setArguments( parameterFormattingUtil.toStringList( formatter, getValues( namedArguments ) ) );
-        setCaseDescription( method, namedArguments );
+        setCaseDescription( testClass, method, namedArguments );
     }
 
-    private void setCaseDescription( Method method, List<NamedArgument> namedArguments ) {
+    private void setCaseDescription( Class<?> testClass, Method method, List<NamedArgument> namedArguments ) {
+
+        CaseDescription annotation = null;
         if( method.isAnnotationPresent( CaseDescription.class ) ) {
-            CaseDescription annotation = method.getAnnotation( CaseDescription.class );
+            annotation = method.getAnnotation( CaseDescription.class );
+        } else if( testClass.isAnnotationPresent( CaseDescription.class ) ) {
+            annotation = testClass.getAnnotation( CaseDescription.class );
+        }
+
+        if( annotation != null ) {
             CaseDescriptionProvider caseDescriptionProvider = ReflectionUtil.newInstance( annotation.provider() );
             String value = annotation.value();
             List<?> values;
