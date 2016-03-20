@@ -1,3 +1,9 @@
+# v0.11.3
+
+## Fixed Issues
+
+* Fixed an issue introduced with v0.11.1 that made the report generation dependent on the locale of the system instead of using utf-8 [PR#196](https://github.com/TNG/JGiven/pull/196) (thanks to ahus1)
+
 # v0.11.2
 
 ## Fixed Issues
