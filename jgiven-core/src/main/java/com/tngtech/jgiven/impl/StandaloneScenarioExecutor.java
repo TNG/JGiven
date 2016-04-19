@@ -189,9 +189,6 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     }
 
     private <T> T update( T t ) throws Throwable {
-        if( currentStage == t ) { // NOSONAR: reference comparison OK here
-            return t;
-        }
 
         if( currentStage == null ) {
             ensureBeforeStepsAreExecuted();

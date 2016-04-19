@@ -22,22 +22,26 @@ public class ComposedStepInjectionTest extends ScenarioTest {
 
     @Test
     public void substeps_are_injected_into_test_case() {
-        customerSteps.given().a_customer();
-        thenCustomer.then().the_site_language_is("de-DE");
+        customerSteps.given().a_customer().the_default_language();
+        thenCustomer.then().the_site_language_is( "de-DE" );
     }
 
 
     static class CustomerSteps extends Stage<CustomerSteps> {
 
-        @ProvidedScenarioState
-        Customer customer;
-
         @ComposedScenarioStage
         LanguageSteps languageSteps;
 
+        @ScenarioState
+        String language;
+
         public CustomerSteps a_customer() {
-            customer = new Customer();
-            languageSteps.the_site_language_is_set_to("de-DE");
+            languageSteps.the_site_language_is_set_to( "de-DE" );
+            return self();
+        }
+
+        public CustomerSteps the_default_language() {
+            assertThat(language).isEqualTo( "de-DE" );
             return self();
         }
 
@@ -48,7 +52,7 @@ public class ComposedStepInjectionTest extends ScenarioTest {
         @ScenarioState
         String language;
 
-        public LanguageSteps the_site_language_is_set_to(String language) {
+        public LanguageSteps the_site_language_is_set_to( String language ) {
             this.language = language;
             return this;
         }
@@ -67,10 +71,10 @@ public class ComposedStepInjectionTest extends ScenarioTest {
         OtherLanguageSteps otherLanguageSteps;
 
 
-        public ThenCustomer the_site_language_is(String expectedLanguage) {
-            assertThat(language).isEqualTo(expectedLanguage);
-            assertThat(languageSteps.language).isEqualTo(expectedLanguage);
-            assertThat(otherLanguageSteps.language).isEqualTo(expectedLanguage);
+        public ThenCustomer the_site_language_is( String expectedLanguage) {
+            assertThat( language ).isEqualTo( expectedLanguage );
+            assertThat( languageSteps.language ).isEqualTo( expectedLanguage );
+            assertThat( otherLanguageSteps.language ).isEqualTo (expectedLanguage );
 
             return self();
         }
@@ -84,7 +88,5 @@ public class ComposedStepInjectionTest extends ScenarioTest {
 
     }
 
-    static class Customer {
-    }
 
 }
