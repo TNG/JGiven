@@ -189,6 +189,11 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     }
 
     private <T> T update( T t ) throws Throwable {
+        if( currentStage == t ) { // NOSONAR: reference comparison OK here
+            readScenarioState( currentStage );
+            updateScenarioState( currentStage );
+            return t;
+        }
 
         if( currentStage == null ) {
             ensureBeforeStepsAreExecuted();
@@ -197,7 +202,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
             readScenarioState( currentStage );
         }
 
-        injector.updateValues( t );
+        updateScenarioState( t );
 
         StageState stageState = getStageState( t );
         if( !stageState.beforeStageCalled ) {
@@ -207,6 +212,10 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
 
         currentStage = t;
         return t;
+    }
+
+    private <T> void updateScenarioState( T t ) {
+        injector.updateValues( t );
     }
 
     private void executeAfterStageMethods( Object stage ) throws Throwable {
