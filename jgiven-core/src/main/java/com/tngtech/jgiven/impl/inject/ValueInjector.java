@@ -14,6 +14,7 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState.Resolution;
+import com.tngtech.jgiven.annotation.ComposedScenarioStage;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
 import com.tngtech.jgiven.impl.util.FieldCache;
 
@@ -63,9 +64,13 @@ public class ValueInjector {
     }
 
     private List<Field> getScenarioFields( Object object ) {
-        return FieldCache.get( object.getClass() ).getFieldsWithAnnotation( ScenarioState.class, ProvidedScenarioState.class,
-            ExpectedScenarioState.class );
+        return FieldCache.get( object.getClass() ).getFieldsWithAnnotation( ScenarioState.class, ProvidedScenarioState.class, ExpectedScenarioState.class );
     }
+
+    private List<Field> getComposedStageFields(Object object ) {
+        return FieldCache.get( object.getClass() ).getFieldsWithAnnotation( ComposedScenarioStage.class );
+    }
+
 
     @SuppressWarnings( "unchecked" )
     public void readValues( Object object ) {
@@ -78,6 +83,15 @@ public class ValueInjector {
             } catch( IllegalAccessException e ) {
                 throw new RuntimeException( "Error while reading field " + field, e );
             }
+        }
+        for(Field field : getComposedStageFields(object ) ) {
+            try {
+                Object substage = field.get(object);
+                readValues( substage );
+            } catch( IllegalAccessException e ) {
+                throw new RuntimeException( "Error while reading substage field " + field, e );
+            }
+
         }
     }
 
@@ -92,7 +106,15 @@ public class ValueInjector {
                     log.debug( "Setting field {} to value {}", field, value );
                 }
             } catch( IllegalAccessException e ) {
-                throw new RuntimeException( "Error while update field " + field, e );
+                throw new RuntimeException( "Error while updating field " + field, e );
+            }
+        }
+        for(Field field : getComposedStageFields(object ) ) {
+            try {
+                Object substageObject = field.get(object);
+                updateValues( substageObject );
+            } catch( IllegalAccessException e ) {
+                throw new RuntimeException( "Error while updating field " + field, e );
             }
         }
     }
@@ -144,6 +166,9 @@ public class ValueInjector {
             }
             if( annotation instanceof ExpectedScenarioState ) {
                 return ( (ExpectedScenarioState) annotation ).resolution();
+            }
+            if( annotation instanceof ComposedScenarioStage) {
+                return Resolution.TYPE;
             }
         }
         throw new IllegalArgumentException( "Field " + field + " has no valid annotation" );

@@ -391,7 +391,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     @Override
     @SuppressWarnings( "unchecked" )
     public void injectSteps( Object stage ) {
-        for( Field field : FieldCache.get( stage.getClass() ).getFieldsWithAnnotation( ScenarioStage.class ) ) {
+        for( Field field : FieldCache.get( stage.getClass() ).getFieldsWithAnnotation( ScenarioStage.class, ComposedScenarioStage.class ) ) {
             Object steps = addStage( field.getType() );
             ReflectionUtil.setField( field, stage, steps, ", annotated with @ScenarioStage" );
         }

@@ -11,12 +11,19 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     @ProvidedScenarioState
     int value2;
 
+    @ComposedScenarioStage
+    GivenTestComposedStep givenTestComposedStep;
+
     public void some_integer_value( int someIntValue ) {
         this.value1 = someIntValue;
     }
 
     public void another_integer_value( int anotherValue ) {
         this.value2 = anotherValue;
+    }
+
+    public void an_integer_value_set_in_a_substep ( int substepValue ) {
+        givenTestComposedStep.some_integer_value_in_the_substep(substepValue );
     }
 
     public void $d_and_$d( int value1, int value2 ) {
