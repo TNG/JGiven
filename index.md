@@ -67,3 +67,9 @@ The source code of the corresponding JGiven tests are in the [jgiven-tests](http
 Jan Schäfer gave a talk on JGiven at the BigTechday 8. It explains the rationale behind JGiven and gives an introduction into the main features of JGiven.
 
 <iframe class="shadow-frame" width="560" height="315" src="https://www.youtube.com/embed/gh_yjb3x8Yc" frameborder="0" allowfullscreen></iframe>
+
+### Talk on JGiven at Devoxx France 2016 (in French)
+
+Marie-Laure Thuret (<a href="https://twitter.com/mlthuret">@mlthuret</a>) and Clément Héliou (<a href="https://twitter.com/c_heliou">@c_heliou</a>) did a Live-Coding session with JGiven at Devoxx France 2016.
+
+<iframe class="shadow-frame" width="560" height="315" src="https://www.youtube.com/embed/4oFl4nxoshM" frameborder="0" allowfullscreen></iframe>
