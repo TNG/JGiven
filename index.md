@@ -70,6 +70,6 @@ Jan Schäfer gave a talk on JGiven at the BigTechday 8. It explains the rational
 
 ### Talk on JGiven at Devoxx France 2016 (in French)
 
-Marie-Laure Thuret (<a href="https://twitter.com/mlthuret">@mlthuret</a>) and Clément Héliou (<a href="https://twitter.com/c_heliou">@c_heliou</a>) did a Live-Coding session with JGiven at Devoxx France 2016.
+Marie-Laure Thuret (<a href="https://twitter.com/mlthuret">@mlthuret</a>) and Clément Héliou (<a href="https://twitter.com/c_heliou">@c_heliou</a>) did a live coding session with JGiven at Devoxx France 2016.
 
 <iframe class="shadow-frame" width="560" height="315" src="https://www.youtube.com/embed/4oFl4nxoshM" frameborder="0" allowfullscreen></iframe>
