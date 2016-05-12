@@ -2,7 +2,6 @@ package com.tngtech.jgiven.junit.injection;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.annotation.ComposedScenarioStage;
@@ -22,8 +21,11 @@ public class ComposedStepInjectionTest extends ScenarioTest {
 
     @Test
     public void substeps_are_injected_into_test_case() {
-        customerSteps.given().a_customer().the_default_language();
-        thenCustomer.then().the_site_language_is( "de-DE" );
+        customerSteps.given().a_customer()
+            .and().the_default_language_is_set()
+            .and().the_default_colour_is_set();
+        thenCustomer.then().the_site_language_is( "de-DE" )
+            .and().the_site_color_is( "Red" );
     }
 
 
@@ -32,16 +34,28 @@ public class ComposedStepInjectionTest extends ScenarioTest {
         @ComposedScenarioStage
         LanguageSteps languageSteps;
 
+        @ComposedScenarioStage
+        ColorSteps colorSteps;
+
         @ScenarioState
         String language;
 
+        @ScenarioState
+        String color;
+
         public CustomerSteps a_customer() {
             languageSteps.the_site_language_is_set_to( "de-DE" );
+            colorSteps.the_site_color_is_set_to( "Red" );
             return self();
         }
 
-        public CustomerSteps the_default_language() {
-            assertThat(language).isEqualTo( "de-DE" );
+        public CustomerSteps the_default_language_is_set() {
+            assertThat( language ).isEqualTo( "de-DE" );
+            return self();
+        }
+
+        public CustomerSteps the_default_colour_is_set() {
+            assertThat( color ).isEqualTo( "Red" );
             return self();
         }
 
@@ -59,6 +73,18 @@ public class ComposedStepInjectionTest extends ScenarioTest {
 
     }
 
+    static class ColorSteps extends Stage<ColorSteps> {
+
+        @ScenarioState
+        String color;
+
+        public ColorSteps the_site_color_is_set_to( String color ) {
+            this.color = color;
+            return this;
+        }
+
+    }
+
     static class ThenCustomer extends Stage<ThenCustomer> {
 
         @ExpectedScenarioState
@@ -70,6 +96,9 @@ public class ComposedStepInjectionTest extends ScenarioTest {
         @ComposedScenarioStage
         OtherLanguageSteps otherLanguageSteps;
 
+        @ExpectedScenarioState
+        String color;
+
 
         public ThenCustomer the_site_language_is( String expectedLanguage) {
             assertThat( language ).isEqualTo( expectedLanguage );
@@ -79,6 +108,10 @@ public class ComposedStepInjectionTest extends ScenarioTest {
             return self();
         }
 
+        public ThenCustomer the_site_color_is( String expectedSiteColor ) {
+            assertThat( color ).isEqualTo( expectedSiteColor );
+            return self();
+        }
     }
 
     static class OtherLanguageSteps extends Stage<OtherLanguageSteps> {
