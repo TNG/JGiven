@@ -42,7 +42,7 @@ public class SpringStepMethodInterceptor extends StepMethodInterceptor implement
                 return invocation.proceed();
             }
         };
-        if (getScenarioMethodHandler() == null || getStackDepth() == null) {
+        if (getScenarioMethodHandler() == null || getStack() == null) {
             return invoker.proceed(); // not running in JGiven context
         }
         return doIntercept(receiver, method, parameters, invoker);

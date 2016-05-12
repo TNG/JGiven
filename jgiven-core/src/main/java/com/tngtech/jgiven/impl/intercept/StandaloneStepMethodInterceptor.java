@@ -1,7 +1,9 @@
 package com.tngtech.jgiven.impl.intercept;
 
+import com.tngtech.jgiven.impl.StackElement;
+
 import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Stack;
 
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -13,8 +15,8 @@ import net.sf.cglib.proxy.MethodProxy;
 public class StandaloneStepMethodInterceptor extends StepMethodInterceptor implements MethodInterceptor {
 
     public StandaloneStepMethodInterceptor(
-            StepMethodHandler scenarioMethodHandler, AtomicInteger stackDepth) {
-        super(scenarioMethodHandler, stackDepth);
+        StepMethodHandler scenarioMethodHandler, Stack<StackElement> stack) {
+        super(scenarioMethodHandler, stack);
     }
 
     @Override

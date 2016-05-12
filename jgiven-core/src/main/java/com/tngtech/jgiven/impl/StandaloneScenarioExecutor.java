@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Stack;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,10 +56,12 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     private boolean executeLifeCycleMethods = true;
 
     /**
-     * Measures the stack depth of methods called on the step definition object.
-     * Only the top-level method calls are used for reporting.
+     * Contains the stack of calls. Only top level and @NestedSteps children
+     * are used for reporting
+     * Only top-level @ScenarioStage and any nested @ComponentScenarioStage
+     * are used to update the context
      */
-    protected final AtomicInteger stackDepth = new AtomicInteger();
+    protected final Stack<StackElement> stack = new Stack<StackElement>();
 
     protected final Map<Class<?>, StageState> stages = Maps.newLinkedHashMap();
 
@@ -68,7 +70,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     private final ValueInjector injector = new ValueInjector();
     private ScenarioListener listener = new NoOpScenarioListener();
     protected final StepMethodHandler methodHandler = new MethodHandler();
-    private final StandaloneStepMethodInterceptor methodInterceptor = new StandaloneStepMethodInterceptor( methodHandler, stackDepth );
+    private final StandaloneStepMethodInterceptor methodInterceptor = new StandaloneStepMethodInterceptor(methodHandler, stack);
     private Throwable failedException;
     private boolean failIfPass;
     private boolean suppressExceptions;
@@ -123,8 +125,31 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
                 return;
             }
 
+            if(stack.size() > INITIAL_MAX_STEP_DEPTH && !nestedStepsActiveInStack() ) {
+                return;
+            }
+
             List<NamedArgument> namedArguments = ParameterNameUtil.mapArgumentsWithParameterNames( paramMethod, Arrays.asList( arguments ) );
             listener.stepMethodInvoked( paramMethod, namedArguments, mode, hasNestedSteps );
+        }
+
+        private boolean nestedStepsActiveInStack() {
+            if(stack.empty()) {
+                return false;
+            }
+            if(stack.peek().isNestedMethod()) {
+                return true;
+            }
+            StackElement top = stack.pop();
+            try {
+                if(stack.empty()) {
+                    return false;
+                }
+                return stack.peek().isNestedMethod();
+            }
+            finally {
+                stack.push(top);
+            }
         }
 
         @Override
@@ -200,7 +225,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
             readScenarioState( currentStage );
         }
 
-        injector.updateValues( t );
+        updateScenarioState( t );
 
         StageState stageState = getStageState( t );
         if( !stageState.beforeStageCalled ) {
@@ -210,6 +235,10 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
 
         currentStage = t;
         return t;
+    }
+
+    private <T> void updateScenarioState( T t ) {
+        injector.updateValues( t );
     }
 
     private void executeAfterStageMethods( Object stage ) throws Throwable {
@@ -391,7 +420,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     @Override
     @SuppressWarnings( "unchecked" )
     public void injectSteps( Object stage ) {
-        for( Field field : FieldCache.get( stage.getClass() ).getFieldsWithAnnotation( ScenarioStage.class ) ) {
+        for( Field field : FieldCache.get( stage.getClass() ).getFieldsWithAnnotation( ScenarioStage.class, ComposedScenarioStage.class ) ) {
             Object steps = addStage( field.getType() );
             ReflectionUtil.setField( field, stage, steps, ", annotated with @ScenarioStage" );
         }

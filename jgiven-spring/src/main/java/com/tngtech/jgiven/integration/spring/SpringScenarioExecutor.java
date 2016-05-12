@@ -45,7 +45,7 @@ public class SpringScenarioExecutor extends StandaloneScenarioExecutor implement
                 if (advisor.getAdvice() instanceof SpringStepMethodInterceptor ) {
                     SpringStepMethodInterceptor interceptor = (SpringStepMethodInterceptor)advisor.getAdvice();
                     interceptor.setScenarioMethodHandler(this.methodHandler);
-                    interceptor.setStackDepth(this.stackDepth);
+                    interceptor.setStack(this.stack);
                     interceptor.enableMethodHandling(true);
                 }
             }

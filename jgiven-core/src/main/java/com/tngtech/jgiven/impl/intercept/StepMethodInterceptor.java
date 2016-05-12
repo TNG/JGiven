@@ -1,18 +1,24 @@
 package com.tngtech.jgiven.impl.intercept;
 
+import com.google.common.collect.Sets;
+
 import static com.tngtech.jgiven.report.model.InvocationMode.*;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Set;
 import java.util.Stack;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.tngtech.jgiven.annotation.ComposedScenarioStage;
 import com.tngtech.jgiven.annotation.DoNotIntercept;
 import com.tngtech.jgiven.annotation.NestedSteps;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.Pending;
+import com.tngtech.jgiven.impl.ScenarioExecutor;
+import com.tngtech.jgiven.impl.StackElement;
 import com.tngtech.jgiven.report.model.InvocationMode;
 
 public class StepMethodInterceptor {
@@ -20,9 +26,9 @@ public class StepMethodInterceptor {
 
     private StepMethodHandler scenarioMethodHandler;
 
-    private AtomicInteger stackDepth;
+    private Stack<StackElement> stack;
 
-    private int maxStepDepth = 1;
+    private int maxStepDepth = ScenarioExecutor.INITIAL_MAX_STEP_DEPTH;
 
     /**
      * stack that represent method call context. @see NestedSteps.java
@@ -46,22 +52,35 @@ public class StepMethodInterceptor {
         Object proceed() throws Throwable;
     };
 
-    public StepMethodInterceptor( StepMethodHandler scenarioMethodHandler, AtomicInteger stackDepth ) {
+    public StepMethodInterceptor(StepMethodHandler scenarioMethodHandler, Stack<StackElement> stack) {
         this.scenarioMethodHandler = scenarioMethodHandler;
-        this.stackDepth = stackDepth;
+        this.stack = stack;
     }
 
-    public final Object doIntercept( final Object receiver, Method method,
-            final Object[] parameters, Invoker invoker ) throws Throwable {
-        int currentStackDepth = stackDepth.incrementAndGet();
+    public final Object doIntercept( final Object receiver, Method method, final Object[] parameters, Invoker invoker ) throws Throwable {
+
+        Set<Class<?>> composedStages = collectComposedStageClassesInMethodDeclaringClass( method );
+
+        stack.push(new StackElement(receiver, method, composedStages));
+
         try {
             if( !shouldInterceptMethod( method ) ) {
                 return invoker.proceed();
             }
-            return intercept( receiver, method, parameters, invoker, currentStackDepth );
+            return intercept( receiver, method, parameters, invoker, stack.size() );
         } finally {
-            stackDepth.decrementAndGet();
+            stack.pop();
         }
+    }
+
+    private Set<Class<?>> collectComposedStageClassesInMethodDeclaringClass( Method method ) {
+        Set<Class<?>> composedStages = Sets.newHashSet();
+        for(Field f: method.getDeclaringClass().getDeclaredFields()) {
+            if(f.isAnnotationPresent(ComposedScenarioStage.class)) {
+                composedStages.add(f.getType());
+            }
+        }
+        return composedStages;
     }
 
     private Object intercept( Object receiver, Method method, Object[] parameters, Invoker invoker, int currentStackDepth )
@@ -108,7 +127,32 @@ public class StepMethodInterceptor {
         if( method.getDeclaringClass().equals( Object.class ) ) {
             return false;
         }
-        return stackDepth.get() <= maxStepDepth;
+        if( isMethodCalledFromComposedScenarioStage( method ) ) {
+            return true;
+        }
+        return stack.size() <= maxStepDepth;
+    }
+
+    private boolean isMethodCalledFromComposedScenarioStage(Method method) {
+        if(stack.empty()) {
+            return false;
+        }
+        StackElement top = stack.pop();
+        try {
+            if(stack.empty()) {
+                return false;
+            }
+            StackElement previous = stack.peek();
+            for(Class<?> composedStageType : previous.getComposedStages()) {
+                if(method.getDeclaringClass().equals(composedStageType)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        finally {
+            stack.push(top);
+        }
     }
 
     protected Object handleThrowable( Object receiver, Method method, Throwable t, long durationInNanos ) throws Throwable {
@@ -174,16 +218,16 @@ public class StepMethodInterceptor {
         return scenarioMethodHandler;
     }
 
-    public AtomicInteger getStackDepth() {
-        return stackDepth;
+    public Stack<StackElement> getStack() {
+        return stack;
     }
 
     public void setScenarioMethodHandler( StepMethodHandler scenarioMethodHandler ) {
         this.scenarioMethodHandler = scenarioMethodHandler;
     }
 
-    public void setStackDepth( AtomicInteger stackDepth ) {
-        this.stackDepth = stackDepth;
+    public void setStack( Stack<StackElement> stack ) {
+        this.stack = stack;
     }
 
 }
