@@ -87,7 +87,7 @@ public class StandaloneScenarioExecutorTest {
     public void steps_are_injected() {
         ScenarioExecutor executor = new StandaloneScenarioExecutor();
         TestClass testClass = new TestClass();
-        executor.injectSteps( testClass );
+        executor.injectStages( testClass );
 
         assertThat( testClass.step ).isNotNull();
         assertThat( testClass.step.subStep ).isNotNull();
@@ -98,7 +98,7 @@ public class StandaloneScenarioExecutorTest {
         ScenarioExecutor executor = new StandaloneScenarioExecutor();
         RecursiveTestClass testClass = new RecursiveTestClass();
 
-        executor.injectSteps( testClass );
+        executor.injectStages( testClass );
 
         assertThat( testClass.step ).isNotNull();
         assertThat( testClass.step.step ).isSameAs( testClass.step );

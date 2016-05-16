@@ -48,7 +48,7 @@ public class ScenarioTestListener implements ITestListener {
 
         ReportModel reportModel = getReportModel( instance.getClass() );
         scenario.setModel( reportModel );
-        scenario.getExecutor().injectSteps( instance );
+        scenario.getExecutor().injectStages( instance );
 
         Method method = paramITestResult.getMethod().getConstructorOrMethod().getMethod();
         scenario.startScenario( instance.getClass(), method, getArgumentsFrom( method, paramITestResult ) );

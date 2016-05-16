@@ -37,7 +37,7 @@ public interface ScenarioExecutor {
      */
     void finished() throws Throwable;
 
-    void injectSteps( Object stage );
+    void injectStages( Object stage );
 
     boolean hasFailed();
 

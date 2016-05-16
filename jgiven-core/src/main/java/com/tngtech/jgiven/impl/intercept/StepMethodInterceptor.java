@@ -1,24 +1,22 @@
 package com.tngtech.jgiven.impl.intercept;
 
-import com.google.common.collect.Sets;
+import static com.tngtech.jgiven.report.model.InvocationMode.DO_NOT_INTERCEPT;
+import static com.tngtech.jgiven.report.model.InvocationMode.NORMAL;
+import static com.tngtech.jgiven.report.model.InvocationMode.PENDING;
+import static com.tngtech.jgiven.report.model.InvocationMode.SKIPPED;
 
-import static com.tngtech.jgiven.report.model.InvocationMode.*;
-
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Set;
 import java.util.Stack;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.tngtech.jgiven.annotation.ComposedScenarioStage;
 import com.tngtech.jgiven.annotation.DoNotIntercept;
+import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.NestedSteps;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.impl.ScenarioExecutor;
-import com.tngtech.jgiven.impl.StackElement;
 import com.tngtech.jgiven.report.model.InvocationMode;
 
 public class StepMethodInterceptor {
@@ -26,19 +24,20 @@ public class StepMethodInterceptor {
 
     private StepMethodHandler scenarioMethodHandler;
 
-    private Stack<StackElement> stack;
+    private StageTransitionHandler stageTransitionHandler;
+
+    /**
+     * Contains the stack of call receivers. This is used to update
+     * the state of a parent stage after a call to a child stage has returned
+     */
+    protected final Stack<Object> stageStack = new Stack<Object>();
 
     private int maxStepDepth = ScenarioExecutor.INITIAL_MAX_STEP_DEPTH;
 
     /**
-     * stack that represent method call context. @see NestedSteps.java
+     * Whether methods should be intercepted or not
      */
-    private final Stack<Method> methodCallStack = new Stack<Method>();
-
-    /**
-     * Whether the method handler is called when a step method is invoked
-     */
-    private boolean methodHandlingEnabled;
+    private boolean interceptingEnabled;
 
     /**
      * Whether step methods are actually executed or just skipped
@@ -52,35 +51,31 @@ public class StepMethodInterceptor {
         Object proceed() throws Throwable;
     };
 
-    public StepMethodInterceptor(StepMethodHandler scenarioMethodHandler, Stack<StackElement> stack) {
+    public StepMethodInterceptor( StepMethodHandler scenarioMethodHandler, StageTransitionHandler stageTransitionHandler ) {
         this.scenarioMethodHandler = scenarioMethodHandler;
-        this.stack = stack;
+        this.stageTransitionHandler = stageTransitionHandler;
     }
 
     public final Object doIntercept( final Object receiver, Method method, final Object[] parameters, Invoker invoker ) throws Throwable {
+        if( !shouldInterceptMethod( method ) ) {
+            return invoker.proceed();
+        }
 
-        Set<Class<?>> composedStages = collectComposedStageClassesInMethodDeclaringClass( method );
+        int currentStackDepth = stageStack.size();
+        Object parentStage = null;
+        if( !stageStack.isEmpty() ) {
+            parentStage = stageStack.peek();
+        }
 
-        stack.push(new StackElement(receiver, method, composedStages));
-
+        stageStack.push( receiver );
         try {
-            if( !shouldInterceptMethod( method ) ) {
-                return invoker.proceed();
-            }
-            return intercept( receiver, method, parameters, invoker, stack.size() );
-        } finally {
-            stack.pop();
-        }
-    }
+            stageTransitionHandler.enterStage( parentStage, receiver );
 
-    private Set<Class<?>> collectComposedStageClassesInMethodDeclaringClass( Method method ) {
-        Set<Class<?>> composedStages = Sets.newHashSet();
-        for(Field f: method.getDeclaringClass().getDeclaredFields()) {
-            if(f.isAnnotationPresent(ComposedScenarioStage.class)) {
-                composedStages.add(f.getType());
-            }
+            return intercept( receiver, method, parameters, invoker, currentStackDepth );
+        } finally {
+            stageStack.pop();
+            stageTransitionHandler.leaveStage( parentStage, receiver );
         }
-        return composedStages;
     }
 
     private Object intercept( Object receiver, Method method, Object[] parameters, Invoker invoker, int currentStackDepth )
@@ -95,7 +90,8 @@ public class StepMethodInterceptor {
 
         boolean hasNestedSteps = method.isAnnotationPresent( NestedSteps.class );
 
-        if( methodHandlingEnabled ) {
+        boolean handleMethod = shouldHandleMethod( method );
+        if( handleMethod ) {
             scenarioMethodHandler.handleMethod( receiver, method, parameters, mode, hasNestedSteps );
         }
 
@@ -110,53 +106,49 @@ public class StepMethodInterceptor {
         try {
             return invoker.proceed();
         } catch( Exception e ) {
-            return handleThrowable( receiver, method, e, System.nanoTime() - started );
+            return handleThrowable( receiver, method, e, System.nanoTime() - started, handleMethod );
         } catch( AssertionError e ) {
-            return handleThrowable( receiver, method, e, System.nanoTime() - started );
+            return handleThrowable( receiver, method, e, System.nanoTime() - started, handleMethod );
         } finally {
             if( hasNestedSteps ) {
                 maxStepDepth--;
             }
-            if( methodHandlingEnabled ) {
+            if( handleMethod ) {
                 scenarioMethodHandler.handleMethodFinished( System.nanoTime() - started, hasNestedSteps );
             }
         }
     }
 
+    private boolean shouldHandleMethod( Method method ) {
+        if( method.isSynthetic() && !method.isBridge() ) {
+            return false;
+        }
+
+        if( method.isAnnotationPresent( Hidden.class ) ) {
+            return false;
+        }
+
+        if( stageStack.size() > maxStepDepth ) {
+            return false;
+        }
+
+        return true;
+    }
+
     private boolean shouldInterceptMethod( Method method ) {
+        if( !interceptingEnabled ) {
+            return false;
+        }
+
         if( method.getDeclaringClass().equals( Object.class ) ) {
             return false;
         }
-        if( isMethodCalledFromComposedScenarioStage( method ) ) {
-            return true;
-        }
-        return stack.size() <= maxStepDepth;
+        return true;
     }
 
-    private boolean isMethodCalledFromComposedScenarioStage(Method method) {
-        if(stack.empty()) {
-            return false;
-        }
-        StackElement top = stack.pop();
-        try {
-            if(stack.empty()) {
-                return false;
-            }
-            StackElement previous = stack.peek();
-            for(Class<?> composedStageType : previous.getComposedStages()) {
-                if(method.getDeclaringClass().equals(composedStageType)){
-                    return true;
-                }
-            }
-            return false;
-        }
-        finally {
-            stack.push(top);
-        }
-    }
-
-    protected Object handleThrowable( Object receiver, Method method, Throwable t, long durationInNanos ) throws Throwable {
-        if( methodHandlingEnabled ) {
+    protected Object handleThrowable( Object receiver, Method method, Throwable t, long durationInNanos, boolean handleMethod )
+            throws Throwable {
+        if( handleMethod ) {
             scenarioMethodHandler.handleThrowable( t );
             return returnReceiverOrNull( receiver, method );
         }
@@ -187,7 +179,6 @@ public class StepMethodInterceptor {
 
         if( !methodExecutionEnabled ) {
             return SKIPPED;
-
         }
 
         if( method.isAnnotationPresent( NotImplementedYet.class )
@@ -201,16 +192,16 @@ public class StepMethodInterceptor {
     }
 
     public void enableMethodHandling( boolean b ) {
-        this.methodHandlingEnabled = b;
+        interceptingEnabled = b;
     }
 
     public void disableMethodExecution() {
-        this.methodExecutionEnabled = false;
+        methodExecutionEnabled = false;
     }
 
     public boolean enableMethodExecution( boolean b ) {
         boolean previousMethodExecution = methodExecutionEnabled;
-        this.methodExecutionEnabled = b;
+        methodExecutionEnabled = b;
         return previousMethodExecution;
     }
 
@@ -218,16 +209,11 @@ public class StepMethodInterceptor {
         return scenarioMethodHandler;
     }
 
-    public Stack<StackElement> getStack() {
-        return stack;
-    }
-
     public void setScenarioMethodHandler( StepMethodHandler scenarioMethodHandler ) {
         this.scenarioMethodHandler = scenarioMethodHandler;
     }
 
-    public void setStack( Stack<StackElement> stack ) {
-        this.stack = stack;
+    public void setStageTransitionHandler( StageTransitionHandler stageTransitionHandler ) {
+        this.stageTransitionHandler = stageTransitionHandler;
     }
-
 }

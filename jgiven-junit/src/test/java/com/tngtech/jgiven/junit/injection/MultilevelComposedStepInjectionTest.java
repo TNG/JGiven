@@ -1,16 +1,13 @@
 package com.tngtech.jgiven.junit.injection;
 
-import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.ComposedScenarioStage;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.ScenarioStage;
-import com.tngtech.jgiven.annotation.ScenarioState;
-import com.tngtech.jgiven.junit.ScenarioTest;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.junit.ScenarioTest;
 
 public class MultilevelComposedStepInjectionTest extends ScenarioTest {
 
@@ -26,10 +23,9 @@ public class MultilevelComposedStepInjectionTest extends ScenarioTest {
         thenCustomer.then().the_site_language_is( "de-DE" );
     }
 
-
     static class CustomerSteps extends Stage<CustomerSteps> {
 
-        @ComposedScenarioStage
+        @ScenarioStage
         LanguageSteps languageSteps;
 
         public CustomerSteps a_customer() {
@@ -41,13 +37,16 @@ public class MultilevelComposedStepInjectionTest extends ScenarioTest {
 
     static class LanguageSteps extends Stage<LanguageSteps> {
 
-
-        @ComposedScenarioStage
+        @ScenarioStage
         OtherLanguageSteps otherLanguageSteps;
 
         public LanguageSteps the_site_language_is_set_to( String language ) {
             otherLanguageSteps.the_site_language_is_set_to( language );
             return this;
+        }
+
+        public void the_site_language_is( String expectedLanguage ) {
+            otherLanguageSteps.the_site_language_is( expectedLanguage );
         }
 
     }
@@ -57,17 +56,16 @@ public class MultilevelComposedStepInjectionTest extends ScenarioTest {
         @ExpectedScenarioState
         String language;
 
-        @ComposedScenarioStage
+        @ScenarioStage
         LanguageSteps languageSteps;
 
-        @ComposedScenarioStage
+        @ScenarioStage
         OtherLanguageSteps otherLanguageSteps;
-
 
         public ThenCustomer the_site_language_is( String expectedLanguage ) {
             assertThat( language ).isEqualTo( expectedLanguage );
-            assertThat( languageSteps.otherLanguageSteps.language ).isEqualTo( expectedLanguage );
-            assertThat( otherLanguageSteps.language ).isEqualTo( expectedLanguage );
+            languageSteps.the_site_language_is( expectedLanguage );
+            otherLanguageSteps.the_site_language_is( expectedLanguage );
 
             return self();
         }
@@ -79,15 +77,17 @@ public class MultilevelComposedStepInjectionTest extends ScenarioTest {
         @ExpectedScenarioState
         String language;
 
-        public OtherLanguageSteps the_site_language_is_set_to(String language) {
+        public OtherLanguageSteps the_site_language_is_set_to( String language ) {
             this.language = language;
             return this;
         }
 
+        public void the_site_language_is( String expectedLanguage ) {
+            assertThat( language ).isEqualTo( expectedLanguage );
+        }
 
     }
 
-    static class Customer {
-    }
+    static class Customer {}
 
 }
