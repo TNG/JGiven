@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +19,21 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.CurrentStep;
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.AfterScenario;
+import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.BeforeScenario;
+import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.NotImplementedYet;
+import com.tngtech.jgiven.annotation.Pending;
+import com.tngtech.jgiven.annotation.ScenarioRule;
+import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.exception.FailIfPassedException;
 import com.tngtech.jgiven.exception.JGivenUserException;
 import com.tngtech.jgiven.impl.inject.ValueInjector;
 import com.tngtech.jgiven.impl.intercept.NoOpScenarioListener;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
+import com.tngtech.jgiven.impl.intercept.StageTransitionHandler;
 import com.tngtech.jgiven.impl.intercept.StandaloneStepMethodInterceptor;
 import com.tngtech.jgiven.impl.intercept.StepMethodHandler;
 import com.tngtech.jgiven.impl.util.FieldCache;
@@ -45,21 +52,15 @@ import net.sf.cglib.proxy.Enhancer;
 public class StandaloneScenarioExecutor implements ScenarioExecutor {
     private static final Logger log = LoggerFactory.getLogger( StandaloneScenarioExecutor.class );
 
-    private Object currentStage;
+    private Object currentTopLevelStage;
     private State state = State.INIT;
-    private boolean beforeStepsWereExecuted;
+    private boolean beforeScenarioMethodsExecuted;
 
     /**
      * Whether life cycle methods should be executed.
      * This is only false for scenarios that are annotated with @NotImplementedYet
      */
     private boolean executeLifeCycleMethods = true;
-
-    /**
-     * Measures the stack depth of methods called on the step definition object.
-     * Only the top-level method calls are used for reporting.
-     */
-    protected final AtomicInteger stackDepth = new AtomicInteger();
 
     protected final Map<Class<?>, StageState> stages = Maps.newLinkedHashMap();
 
@@ -68,7 +69,10 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     private final ValueInjector injector = new ValueInjector();
     private ScenarioListener listener = new NoOpScenarioListener();
     protected final StepMethodHandler methodHandler = new MethodHandler();
-    private final StandaloneStepMethodInterceptor methodInterceptor = new StandaloneStepMethodInterceptor( methodHandler, stackDepth );
+    protected final StageTransitionHandler stageTransitionHandler = new StageTransitionHandlerImpl();
+    private final StandaloneStepMethodInterceptor methodInterceptor = new StandaloneStepMethodInterceptor( methodHandler,
+        stageTransitionHandler );
+
     private Throwable failedException;
     private boolean failIfPass;
     private boolean suppressExceptions;
@@ -82,6 +86,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
         final Object instance;
         boolean afterStageCalled;
         boolean beforeStageCalled;
+        public Object currentChildStage;
 
         StageState( Object instance ) {
             this.instance = instance;
@@ -103,27 +108,11 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
 
     class MethodHandler implements StepMethodHandler {
         @Override
-        public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode, boolean hasNestedSteps )
-                throws Throwable {
+        public void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode,
+                boolean hasNestedSteps ) throws Throwable {
 
-            if( paramMethod.isSynthetic() && !paramMethod.isBridge() ) {
-                return;
-            }
-
-            if( paramMethod.isAnnotationPresent( AfterStage.class )
-                    || paramMethod.isAnnotationPresent( BeforeStage.class )
-                    || paramMethod.isAnnotationPresent( BeforeScenario.class )
-                    || paramMethod.isAnnotationPresent( AfterScenario.class ) ) {
-                return;
-            }
-
-            update( stageInstance );
-
-            if( paramMethod.isAnnotationPresent( Hidden.class ) ) {
-                return;
-            }
-
-            List<NamedArgument> namedArguments = ParameterNameUtil.mapArgumentsWithParameterNames( paramMethod, Arrays.asList( arguments ) );
+            List<NamedArgument> namedArguments = ParameterNameUtil.mapArgumentsWithParameterNames( paramMethod,
+                Arrays.asList( arguments ) );
             listener.stepMethodInvoked( paramMethod, namedArguments, mode, hasNestedSteps );
         }
 
@@ -144,6 +133,83 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
 
     }
 
+    class StageTransitionHandlerImpl implements StageTransitionHandler {
+
+        @Override
+        public void enterStage( Object parentStage, Object childStage ) throws Throwable {
+            if( parentStage == childStage || currentTopLevelStage == childStage ) { // NOSONAR: reference comparison OK
+                return;
+            }
+
+            // if currentStage == null, this means that no stage at
+            // all has been executed, thus we call all beforeScenarioMethods
+            if( currentTopLevelStage == null ) {
+                ensureBeforeScenarioMethodsAreExecuted();
+            } else {
+                // in case parentStage == null, this is the first top-level
+                // call on this stage, thus we have to call the afterStage methods
+                // from the current top level stage
+                if( parentStage == null ) {
+                    executeAfterStageMethods( currentTopLevelStage );
+                    readScenarioState( currentTopLevelStage );
+                } else {
+                    // as the parent stage is not null, we have a true child call
+                    // thus we have to read the state from the parent stage
+                    readScenarioState( parentStage );
+
+                    // if there has been a child stage that was executed before
+                    // and the new child stage is different, we have to execute
+                    // the after stage methods of the previous child stage
+                    StageState stageState = getStageState( parentStage );
+                    if( stageState.currentChildStage != null && stageState.currentChildStage != childStage
+                            && !afterStageMethodsCalled( stageState.currentChildStage ) ) {
+                        updateScenarioState( stageState.currentChildStage );
+                        executeAfterStageMethods( stageState.currentChildStage );
+                        readScenarioState( stageState.currentChildStage );
+                    }
+
+                    stageState.currentChildStage = childStage;
+                }
+            }
+
+            updateScenarioState( childStage );
+
+            StageState stageState = getStageState( childStage );
+            if( !stageState.beforeStageCalled ) {
+                stageState.beforeStageCalled = true;
+                executeBeforeStageSteps( childStage );
+            }
+
+            if( parentStage == null ) {
+                currentTopLevelStage = childStage;
+            }
+        }
+
+        @Override
+        public void leaveStage( Object parentStage, Object childStage ) throws Throwable {
+            if( parentStage == childStage || parentStage == null ) {
+                return;
+            }
+
+            readScenarioState( childStage );
+
+            // in case we leave a child stage that itself had a child stage
+            // we have to execute the after stage method of that transitive child
+            StageState childState = getStageState( childStage );
+            if( childState.currentChildStage != null ) {
+                updateScenarioState( childState.currentChildStage );
+                if( executeAfterStageMethods( childState.currentChildStage ) ) {
+                    readScenarioState( childState.currentChildStage );
+                    updateScenarioState( childStage );
+                }
+                childState.currentChildStage = null;
+            }
+
+            updateScenarioState( parentStage );
+        }
+
+    }
+
     @Override
     @SuppressWarnings( "unchecked" )
     public <T> T addStage( Class<T> stepsClass ) {
@@ -155,7 +221,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
 
         stages.put( stepsClass, new StageState( result ) );
         gatherRules( result );
-        injectSteps( result );
+        injectStages( result );
         return result;
     }
 
@@ -188,44 +254,29 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
 
     }
 
-    private <T> T update( T t ) throws Throwable {
-        if( currentStage == t ) { // NOSONAR: reference comparison OK here
-            return t;
-        }
-
-        if( currentStage == null ) {
-            ensureBeforeStepsAreExecuted();
-        } else {
-            executeAfterStageMethods( currentStage );
-            readScenarioState( currentStage );
-        }
-
+    private <T> void updateScenarioState( T t ) {
         injector.updateValues( t );
-
-        StageState stageState = getStageState( t );
-        if( !stageState.beforeStageCalled ) {
-            stageState.beforeStageCalled = true;
-            executeBeforeStageSteps( t );
-        }
-
-        currentStage = t;
-        return t;
     }
 
-    private void executeAfterStageMethods( Object stage ) throws Throwable {
+    private boolean afterStageMethodsCalled( Object stage ) {
+        return getStageState( stage ).afterStageCalled;
+    }
+
+    private boolean executeAfterStageMethods( Object stage ) throws Throwable {
         StageState stageState = getStageState( stage );
         if( stageState.afterStageCalled ) {
-            return;
+            return false;
         }
         stageState.afterStageCalled = true;
         executeAnnotatedMethods( stage, AfterStage.class );
+        return true;
     }
 
     public StageState getStageState( Object stage ) {
         return stages.get( stage.getClass().getSuperclass() );
     }
 
-    private void ensureBeforeStepsAreExecuted() throws Throwable {
+    private void ensureBeforeScenarioMethodsAreExecuted() throws Throwable {
         if( state != State.INIT ) {
             return;
         }
@@ -237,10 +288,10 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
                 invokeRuleMethod( rule, "before" );
             }
 
-            beforeStepsWereExecuted = true;
+            beforeScenarioMethodsExecuted = true;
 
             for( StageState stage : stages.values() ) {
-                executeBeforeScenarioSteps( stage.instance );
+                executeBeforeScenarioMethods( stage.instance );
             }
         } catch( Throwable e ) {
             failed( e );
@@ -296,7 +347,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
         executeAnnotatedMethods( stage, BeforeStage.class );
     }
 
-    private void executeBeforeScenarioSteps( Object stage ) throws Throwable {
+    private void executeBeforeScenarioMethods( Object stage ) throws Throwable {
         executeAnnotatedMethods( stage, BeforeScenario.class );
     }
 
@@ -340,15 +391,15 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
 
     private void callFinishLifeCycleMethods() throws Throwable {
         Throwable firstThrownException = failedException;
-        if( beforeStepsWereExecuted ) {
-            if( currentStage != null ) {
-                try {
-                    executeAfterStageMethods( currentStage );
-                } catch( AssertionError e ) {
-                    firstThrownException = logAndGetFirstException( firstThrownException, e );
-                } catch( Exception e ) {
-                    firstThrownException = logAndGetFirstException( firstThrownException, e );
+        if( beforeScenarioMethodsExecuted ) {
+            try {
+                if( currentTopLevelStage != null ) {
+                    executeAfterStageMethods( currentTopLevelStage );
                 }
+            } catch( AssertionError e ) {
+                firstThrownException = logAndGetFirstException( firstThrownException, e );
+            } catch( Exception e ) {
+                firstThrownException = logAndGetFirstException( firstThrownException, e );
             }
 
             for( StageState stage : reverse( newArrayList( stages.values() ) ) ) {
@@ -390,7 +441,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
 
     @Override
     @SuppressWarnings( "unchecked" )
-    public void injectSteps( Object stage ) {
+    public void injectStages( Object stage ) {
         for( Field field : FieldCache.get( stage.getClass() ).getFieldsWithAnnotation( ScenarioStage.class ) ) {
             Object steps = addStage( field.getType() );
             ReflectionUtil.setField( field, stage, steps, ", annotated with @ScenarioStage" );

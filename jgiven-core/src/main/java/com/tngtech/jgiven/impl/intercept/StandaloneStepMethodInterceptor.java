@@ -1,7 +1,6 @@
 package com.tngtech.jgiven.impl.intercept;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -13,12 +12,13 @@ import net.sf.cglib.proxy.MethodProxy;
 public class StandaloneStepMethodInterceptor extends StepMethodInterceptor implements MethodInterceptor {
 
     public StandaloneStepMethodInterceptor(
-            StepMethodHandler scenarioMethodHandler, AtomicInteger stackDepth) {
-        super(scenarioMethodHandler, stackDepth);
+            StepMethodHandler scenarioMethodHandler, StageTransitionHandler stageStateUpdater ) {
+        super( scenarioMethodHandler, stageStateUpdater );
     }
 
     @Override
-    public Object intercept( final Object receiver, Method method, final Object[] parameters, final MethodProxy methodProxy ) throws Throwable {
+    public Object intercept( final Object receiver, Method method, final Object[] parameters, final MethodProxy methodProxy )
+            throws Throwable {
         Invoker invoker = new Invoker() {
 
             @Override
@@ -27,9 +27,7 @@ public class StandaloneStepMethodInterceptor extends StepMethodInterceptor imple
             }
 
         };
-        return doIntercept(receiver, method, parameters, invoker);
+        return doIntercept( receiver, method, parameters, invoker );
     }
-
-
 
 }

@@ -38,30 +38,31 @@ public class SpringScenarioExecutor extends StandaloneScenarioExecutor implement
     @Override
     public <T> T createStageClass( Class<T> stepsClass ) {
         try {
-            T bean = applicationContext.getBean(stepsClass);
-            Advised advised = (Advised)bean;
+            T bean = applicationContext.getBean( stepsClass );
+            Advised advised = (Advised) bean;
             Advisor[] advisors = advised.getAdvisors();
-            for (Advisor advisor : advisors) {
-                if (advisor.getAdvice() instanceof SpringStepMethodInterceptor ) {
-                    SpringStepMethodInterceptor interceptor = (SpringStepMethodInterceptor)advisor.getAdvice();
-                    interceptor.setScenarioMethodHandler(this.methodHandler);
-                    interceptor.setStackDepth(this.stackDepth);
-                    interceptor.enableMethodHandling(true);
+            for( Advisor advisor : advisors ) {
+                if( advisor.getAdvice() instanceof SpringStepMethodInterceptor ) {
+                    SpringStepMethodInterceptor interceptor = (SpringStepMethodInterceptor) advisor.getAdvice();
+                    interceptor.setScenarioMethodHandler( methodHandler );
+                    interceptor.setStageTransitionHandler( stageTransitionHandler );
+                    interceptor.enableMethodHandling( true );
                 }
             }
             return bean;
-        } catch (NoSuchBeanDefinitionException nbe) {
-            return super.createStageClass(stepsClass);
-        } catch (ClassCastException cce) {
-            log.error("class " + ClassUtils.getShortName(stepsClass) + " is not advised with SpringStepMethodInterceptor. Falling back to cglib based proxy, strange things may happen.");
-            return super.createStageClass(stepsClass);
+        } catch( NoSuchBeanDefinitionException nbe ) {
+            return super.createStageClass( stepsClass );
+        } catch( ClassCastException cce ) {
+            log.error( "class " + ClassUtils.getShortName( stepsClass )
+                    + " is not advised with SpringStepMethodInterceptor. Falling back to cglib based proxy, strange things may happen." );
+            return super.createStageClass( stepsClass );
         }
     }
 
     @Override
     public StageState getStageState( Object stage ) {
-        StageState stageState = stages.get( stage.getClass());
-        return stageState != null ? stageState : super.getStageState(stage);
+        StageState stageState = stages.get( stage.getClass() );
+        return stageState != null ? stageState : super.getStageState( stage );
     }
 
 }

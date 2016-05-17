@@ -1,6 +1,12 @@
 package com.tngtech.jgiven;
 
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.As;
+import com.tngtech.jgiven.annotation.Format;
+import com.tngtech.jgiven.annotation.Formatf;
+import com.tngtech.jgiven.annotation.IntroWord;
+import com.tngtech.jgiven.annotation.NestedSteps;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.format.BooleanFormatter;
 
 public class GivenTestStep extends Stage<GivenTestStep> {
@@ -11,12 +17,19 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     @ProvidedScenarioState
     int value2;
 
+    @ScenarioStage
+    GivenTestComposedStep givenTestComposedStep;
+
     public void some_integer_value( int someIntValue ) {
-        this.value1 = someIntValue;
+        value1 = someIntValue;
     }
 
     public void another_integer_value( int anotherValue ) {
-        this.value2 = anotherValue;
+        value2 = anotherValue;
+    }
+
+    public void an_integer_value_set_in_a_substep( int substepValue ) {
+        givenTestComposedStep.some_integer_value_in_the_substep( substepValue );
     }
 
     public void $d_and_$d( int value1, int value2 ) {
@@ -38,7 +51,7 @@ public class GivenTestStep extends Stage<GivenTestStep> {
 
     public GivenTestStep something_else_that_fails() {
         if( 1 == 1 ) {
-            throw new RuntimeException("failure");
+            throw new RuntimeException( "failure" );
         }
         return self();
     }
@@ -58,7 +71,6 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return given().something().and().something_else_that_fails();
     }
 
-
     public GivenTestStep an_array( Object argument ) {
         return self();
     }
@@ -72,14 +84,12 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
-
-
     @As( "a step with a bracket after a dollar $]" )
     public GivenTestStep a_step_with_a_bracket_after_a_dollar( int value ) {
         return self();
     }
 
-    public GivenTestStep a_step_with_a_printf_annotation_$( @Formatf( "%.2f" ) double d ) {
+    public GivenTestStep a_step_with_a_printf_annotation_$( @Formatf( "%.2f" ) double d) {
         return self();
     }
 
@@ -87,7 +97,7 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
-    public GivenTestStep a_step_with_a_boolean_$_parameter( @Format( value = BooleanFormatter.class, args = { "yes", "no" } ) boolean b ) {
+    public GivenTestStep a_step_with_a_boolean_$_parameter( @Format( value = BooleanFormatter.class, args = { "yes", "no" } ) boolean b) {
         return self();
     }
 

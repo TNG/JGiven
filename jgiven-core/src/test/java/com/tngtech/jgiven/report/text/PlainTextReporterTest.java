@@ -74,8 +74,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
                     + "     And something else\n"
                     + "    When something happens\n"
                     + "    Then something has happen\n"
-                    + "     But something else not"
-            );
+                    + "     But something else not" );
     }
 
     @Test
@@ -107,8 +106,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
                     + "   Another section\n"
                     + "\n"
                     + "    Then something has happen\n"
-                    + "     But something else not"
-            );
+                    + "     But something else not" );
     }
 
     @Test
@@ -132,8 +130,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
                     + "         something else\n"
                     + "    When something happens\n"
                     + "    Then something has happen\n"
-                    + "         something else not"
-            );
+                    + "         something else not" );
     }
 
     @Test
@@ -157,8 +154,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
                     + "           And something else\n"
                     + "    When something happens\n"
                     + "    Then something has happen\n"
-                    + "         something else not"
-            );
+                    + "         something else not" );
 
         StepModel parentStep = getScenario().getScenarioModel().getScenarioCases().get( 0 ).getStep( 0 );
         long nestedDurations = parentStep.getNestedSteps().get( 0 ).getDurationInNanos() +
@@ -189,8 +185,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
                     + "           And something further\n"
                     + "    When something happens\n"
                     + "    Then something has happen\n"
-                    + "         something else not"
-            );
+                    + "         something else not" );
     }
 
     @Test
@@ -214,8 +209,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
                     + "           And something else that fails (failed)\n"
                     + "    When something happens (skipped)\n"
                     + "    Then something has happen (skipped)\n"
-                    + "         something else not (skipped)"
-            );
+                    + "         something else not (skipped)" );
     }
 
     @Test
@@ -274,6 +268,25 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         stage.quoted_$_test( "foo" );
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string ).contains( "quoted \"foo\" test" );
+    }
+
+    @Test
+    public void substeps_access_are_not_printed_in_report() throws UnsupportedEncodingException {
+        getScenario().startScenario( "substeps" );
+
+        given().an_integer_value_set_in_a_substep( 4 );
+        when().something_happens();
+        then().the_substep_value_is( 4 )
+            .and().the_substep_value_referred_in_the_step_is( 4 );
+
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+
+        assertThat( string.replaceAll( System.getProperty( "line.separator" ), "\n" ) )
+            .contains(
+                "   Given an integer value set in a substep 4\n"
+                        + "    When something happens\n"
+                        + "    Then the substep value is 4\n"
+                        + "     And the substep value referred in the step is 4" );
     }
 
 }

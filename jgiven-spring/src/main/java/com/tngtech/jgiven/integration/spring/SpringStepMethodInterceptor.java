@@ -27,11 +27,11 @@ import com.tngtech.jgiven.impl.intercept.StepMethodInterceptor;
 public class SpringStepMethodInterceptor extends StepMethodInterceptor implements MethodInterceptor {
 
     public SpringStepMethodInterceptor() {
-        super(null, null);
+        super( null, null );
     }
 
     @Override
-    public Object invoke(final MethodInvocation invocation) throws Throwable {
+    public Object invoke( final MethodInvocation invocation ) throws Throwable {
         Object receiver = invocation.getThis();
         Method method = invocation.getMethod();
         Object[] parameters = invocation.getArguments();
@@ -42,10 +42,10 @@ public class SpringStepMethodInterceptor extends StepMethodInterceptor implement
                 return invocation.proceed();
             }
         };
-        if (getScenarioMethodHandler() == null || getStackDepth() == null) {
+        if( getScenarioMethodHandler() == null ) {
             return invoker.proceed(); // not running in JGiven context
         }
-        return doIntercept(receiver, method, parameters, invoker);
+        return doIntercept( receiver, method, parameters, invoker );
     }
 
 }

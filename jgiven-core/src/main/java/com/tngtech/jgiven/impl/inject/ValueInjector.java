@@ -92,7 +92,7 @@ public class ValueInjector {
                     log.debug( "Setting field {} to value {}", field, value );
                 }
             } catch( IllegalAccessException e ) {
-                throw new RuntimeException( "Error while update field " + field, e );
+                throw new RuntimeException( "Error while updating field " + field, e );
             }
         }
     }

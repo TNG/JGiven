@@ -9,6 +9,8 @@ import com.tngtech.jgiven.report.model.NamedArgument;
 
 public interface ScenarioExecutor {
 
+    static final int INITIAL_MAX_STEP_DEPTH = 1;
+
     public enum State {
         INIT,
         STARTED,
@@ -35,7 +37,7 @@ public interface ScenarioExecutor {
      */
     void finished() throws Throwable;
 
-    void injectSteps( Object stage );
+    void injectStages( Object stage );
 
     boolean hasFailed();
 
