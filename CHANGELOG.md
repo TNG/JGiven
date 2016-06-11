@@ -1,3 +1,9 @@
+# v0.11.4
+
+## Fixed Issues
+
+* Don't show multiple indexed attachments when cases are not shown as tables [#207](https://github.com/TNG/JGiven/pull/207) (thanks to ahus1)
+
 # v0.11.3
 
 ## New Features
