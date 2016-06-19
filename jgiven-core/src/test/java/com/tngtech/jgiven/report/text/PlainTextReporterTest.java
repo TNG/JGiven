@@ -6,7 +6,9 @@ import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
@@ -16,8 +18,10 @@ import com.tngtech.jgiven.GivenTestStep;
 import com.tngtech.jgiven.ThenTestStep;
 import com.tngtech.jgiven.WhenTestStep;
 import com.tngtech.jgiven.annotation.Format;
+import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.BooleanFormatter;
 import com.tngtech.jgiven.report.model.StepModel;
 
@@ -28,6 +32,10 @@ import com.tngtech.jgiven.report.model.StepModel;
  */
 @RunWith( DataProviderRunner.class )
 public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {
+
+    @Rule
+    public final ExpectedException expected = ExpectedException.none();
+
     @DataProvider
     public static Object[][] testData() {
         return new Object[][] {
@@ -248,6 +256,10 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         public void yesno_$_formatted( @YesNo boolean b ) {}
 
         public void quoted_$_test( @Quoted String s ) {}
+
+        public void argument_$_multiple_formatters( @Formatf( "(%s)" ) @Quoted @YesNo boolean b ) {}
+
+        public void argument_$_multiple_wrong_formatters( @YesNo @Formatf( "(%s)" ) @Quoted boolean b ) {}
     }
 
     @Test
@@ -268,6 +280,25 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
         stage.quoted_$_test( "foo" );
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string ).contains( "quoted \"foo\" test" );
+    }
+
+    @Test
+    public void multiple_formatter_annotations_can_be_specified() throws UnsupportedEncodingException {
+        getScenario().startScenario( "test" );
+        FormattedSteps stage = getScenario().addStage( FormattedSteps.class );
+
+        stage.argument_$_multiple_formatters( true );
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string ).contains( "argument (\"yes\") multiple formatters" );
+    }
+
+    @Test
+    public void chained_formatter_annotations_must_apply_to_strings() throws UnsupportedEncodingException {
+        getScenario().startScenario( "test" );
+        FormattedSteps stage = getScenario().addStage( FormattedSteps.class );
+
+        expected.expect( JGivenWrongUsageException.class );
+        stage.argument_$_multiple_wrong_formatters( true );
     }
 
     @Test

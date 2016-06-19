@@ -98,6 +98,36 @@ public class StepFormatter {
         }
     }
 
+    public static class ChainedFormatting<T> extends Formatting<ObjectFormatter<T>, T> {
+
+        private final List<Formatting<?, String>> formattings = Lists.newArrayList();
+
+        public ChainedFormatting( ObjectFormatter<T> innerFormatting ) {
+            super( innerFormatting );
+        }
+
+        @Override
+        public String format( T o ) {
+            String result = getFormatter().format( o );
+            for( Formatting<?, String> formatting : formattings ) {
+                try {
+                    result = formatting.format( result );
+                } catch( ClassCastException e ) {
+                    throw new JGivenWrongUsageException( "Could not apply the formatter. " +
+                            "When using multiple formatters on an argument, all but the last need to apply to strings.", e );
+                }
+            }
+
+            return result;
+        }
+
+        public ChainedFormatting<T> addFormatting( Formatting<?, String> formatting ) {
+            formattings.add( formatting );
+            return this;
+        }
+
+    }
+
     public StepFormatter( String stepDescription, List<NamedArgument> arguments, List<ObjectFormatter<?>> formatters ) {
         this.stepDescription = stepDescription;
         this.arguments = arguments;
