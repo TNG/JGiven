@@ -1,12 +1,5 @@
 package com.tngtech.jgiven.report.analysis;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.google.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -15,6 +8,12 @@ import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser.JoinedArgs;
 import com.tngtech.jgiven.report.model.AttachmentModel;
 import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.Word;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( DataProviderRunner.class )
 public class CaseArgumentAnalyserUnitTest {
@@ -22,9 +21,9 @@ public class CaseArgumentAnalyserUnitTest {
     private CaseArgumentAnalyser analyser = new CaseArgumentAnalyser();
 
     static final String[][] testInput1 = new String[][] {
-        { "arg1", "arg2" },
-        { "x", "x" },
-        { "a", "a" } };
+            { "arg1", "arg2" },
+            { "x", "x" },
+            { "a", "a" } };
 
     @Test
     public void identical_arguments_should_be_joined() {
@@ -33,9 +32,9 @@ public class CaseArgumentAnalyserUnitTest {
     }
 
     static final String[][] testInput2 = new String[][] {
-        { "arg1", "arg2" },
-        { "x", "y" },
-        { "a", "a" } };
+            { "arg1", "arg2" },
+            { "x", "y" },
+            { "a", "a" } };
 
     @Test
     public void different_arguments_should_not_be_joined() {
@@ -44,9 +43,9 @@ public class CaseArgumentAnalyserUnitTest {
     }
 
     static final String[][] testInput3 = new String[][] {
-        { "arg1", "arg2", "arg3" },
-        { "x", "y", "x" },
-        { "a", "a", "a" } };
+            { "arg1", "arg2", "arg3" },
+            { "x", "y", "x" },
+            { "a", "a", "a" } };
 
     @Test
     public void identical_arguments_should_be_joined_but_different_not() {
@@ -75,10 +74,10 @@ public class CaseArgumentAnalyserUnitTest {
 
     @Test
     @DataProvider( {
-        "foo, true, foo, true, false",
-        "foo, false, foo, true, true",
-        "foo, true, bar, true, true",
-        "foo, false, bar, false, false"
+            "foo, true, foo, true, false",
+            "foo, false, foo, true, true",
+            "foo, true, bar, true, true",
+            "foo, false, bar, false, false"
     } )
     public void inline_attachments_are_handed_correctly( String firstValue, boolean firstShowDirectly, String secondValue,
             boolean secondShowDirectly, boolean expectedResult ) {
@@ -90,7 +89,7 @@ public class CaseArgumentAnalyserUnitTest {
         secondAttachment.setValue( secondValue );
         secondAttachment.setShowDirectly( secondShowDirectly );
 
-        assertThat( analyser.attachmentsAreStructurallyDifferent( firstAttachment, secondAttachment ) ).isEqualTo( expectedResult );
+        assertThat( analyser.attachmentIsStructurallyDifferent( firstAttachment, secondAttachment ) ).isEqualTo( expectedResult );
     }
 
     @Test

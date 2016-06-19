@@ -1,28 +1,9 @@
 package com.tngtech.jgiven.junit;
 
-import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.NAME;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.AfterScenario;
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.BeforeScenario;
-import com.tngtech.jgiven.annotation.BeforeStage;
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.annotation.Hidden;
-import com.tngtech.jgiven.annotation.JGivenConfiguration;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.ScenarioRule;
-import com.tngtech.jgiven.annotation.ScenarioState;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
@@ -31,6 +12,13 @@ import com.tngtech.jgiven.junit.test.BeforeAfterTestStage;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
 import com.tngtech.jgiven.report.model.AttachmentModel;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.List;
+
+import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.NAME;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( DataProviderRunner.class )
 @JGivenConfiguration( TestConfiguration.class )
@@ -85,7 +73,8 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         stage.something();
     }
 
-    static class SomeType {}
+    static class SomeType {
+    }
 
     public static class TestStageWithAmbiguousFields {
         @ScenarioState
@@ -94,7 +83,8 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         @ScenarioState
         SomeType secondType;
 
-        public void something() {}
+        public void something() {
+        }
     }
 
     @Test
@@ -111,7 +101,8 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         @ScenarioState( resolution = NAME )
         SomeType secondType;
 
-        public void something() {}
+        public void something() {
+        }
     }
 
     @Test( expected = IllegalStateException.class )
@@ -177,7 +168,8 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     }
 
     @SuppressWarnings( "serial" )
-    static class SomeExceptionInAfterStage extends RuntimeException {}
+    static class SomeExceptionInAfterStage extends RuntimeException {
+    }
 
     static class AssertionInAfterStage extends Stage<AssertionInAfterStage> {
         @AfterStage
@@ -185,7 +177,8 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
             throw new SomeExceptionInAfterStage();
         }
 
-        public void something() {}
+        public void something() {
+        }
     }
 
     @Test( expected = SomeExceptionInAfterStage.class )
@@ -240,7 +233,8 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         @ProvidedScenarioState
         String someString = "test";
 
-        public void something() {}
+        public void something() {
+        }
     }
 
     static class SomeStageWithAHiddenMethod {
@@ -272,7 +266,8 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
             assertThat( someString ).isNotNull();
         }
 
-        public void something() {}
+        public void something() {
+        }
     }
 
     @Test
@@ -304,11 +299,11 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
         steps.add_attachment();
 
-        AttachmentModel attachment = getScenario().getScenarioCaseModel().getFirstStep().getAttachment();
+        List<AttachmentModel> attachments = getScenario().getScenarioCaseModel().getFirstStep().getAttachments();
 
-        assertThat( attachment ).isNotNull();
-        assertThat( attachment.getValue() ).isEqualTo( "FOOBAR" );
-        assertThat( attachment.getMediaType() ).isEqualTo( MediaType.PLAIN_TEXT.asString() );
+        assertThat( attachments ).hasSize( 1 );
+        assertThat( attachments.get( 0 ).getValue() ).isEqualTo( "FOOBAR" );
+        assertThat( attachments.get( 0 ).getMediaType() ).isEqualTo( MediaType.PLAIN_TEXT.asString() );
     }
 
     @Test
@@ -328,7 +323,8 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     static class ConcreteStage extends AbstractStage {
         @Override
-        public void abstract_step() {}
+        public void abstract_step() {
+        }
     }
 
     @Test

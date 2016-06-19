@@ -153,6 +153,26 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
     }
 
     @Test
+    @FeatureAttachments
+    public void steps_can_have_multiple_attachments() throws Exception {
+        String content1 = "Some Example Attachment\nwith some example content";
+        String content2 = "Another Example Attachment\nwith some example content";
+        given().a_report_model()
+                .and().step_$_of_scenario_$_has_a_text_attachment_with_content( 1, 1, content1 )
+                .and().step_$_of_scenario_$_has_another_text_attachment_with_content( 1,1, content2 )
+                .and().the_report_exist_as_JSON_file();
+
+        whenReport
+                .and().the_HTML_Report_Generator_is_executed();
+
+        when().the_page_of_scenario_$_is_opened( 1 );
+
+        then().$_attachment_icons_exist( 2 )
+                .and().the_content_of_the_attachment_referenced_by_icon_$_is( 1, content1 )
+                .and().the_content_of_the_attachment_referenced_by_icon_$_is( 2, content2 );
+    }
+
+    @Test
     public void the_configured_title_appears_in_the_generated_HTML_report() throws Exception {
         given().a_report_model()
             .and().the_report_exist_as_JSON_file();

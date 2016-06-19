@@ -16,7 +16,12 @@ public class AttachmentsExample extends SimpleScenarioTest<AttachmentsExampleSta
     public void attachments_can_be_added_to_steps() {
         given().some_text_content( "Hello World" );
         then().it_can_be_added_as_an_attachment_to_the_step_with_title( "Hi" );
+    }
 
+    @Test
+    public void steps_can_have_multiple_attachments() {
+        given().some_text_content( "Hi There" );
+        then().it_can_be_added_as_an_attachment_multiple_times_to_the_step();
     }
 
     @Test

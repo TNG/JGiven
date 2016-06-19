@@ -1,17 +1,16 @@
 package com.tngtech.jgiven.report.analysis;
 
-import java.util.List;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Sets;
 import com.google.common.collect.TreeMultiset;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.report.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * Analyzes a report model and tries to infer which step method arguments match to which case argument.
@@ -255,7 +254,7 @@ public class CaseArgumentAnalyser {
                 return true;
             }
 
-            if( attachmentsAreStructurallyDifferent( firstStep.getAttachment(), stepModel.getAttachment() ) ) {
+            if( attachmentsAreStructurallyDifferent( firstStep.getAttachments(), stepModel.getAttachments() ) ) {
                 return true;
             }
 
@@ -271,8 +270,20 @@ public class CaseArgumentAnalyser {
      * and the other step either has no inline attachment or the inline attachment is
      * different.
      */
-    boolean attachmentsAreStructurallyDifferent( AttachmentModel firstAttachment, AttachmentModel otherAttachment ) {
+    boolean attachmentsAreStructurallyDifferent( List<AttachmentModel> firstAttachments, List<AttachmentModel> otherAttachments ) {
+        if( firstAttachments.size() != otherAttachments.size() ) {
+            return true;
+        }
 
+        for( int i = 0; i < firstAttachments.size(); i++ ) {
+            if( attachmentIsStructurallyDifferent( firstAttachments.get( i ), otherAttachments.get( i ) ) ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean attachmentIsStructurallyDifferent( AttachmentModel firstAttachment, AttachmentModel otherAttachment ) {
         if( isInlineAttachment( firstAttachment ) != isInlineAttachment( otherAttachment ) ) {
             return true;
         }

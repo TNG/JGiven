@@ -1,6 +1,8 @@
 package com.tngtech.jgiven.report.html5;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.testng.reporters.Files;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,9 +10,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.testng.reporters.Files;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SELF> {
 

@@ -1,18 +1,5 @@
 package com.tngtech.jgiven.report.html5;
 
-import java.io.*;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.zip.GZIPOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import javax.xml.bind.DatatypeConverter;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
@@ -21,6 +8,17 @@ import com.google.gson.Gson;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.xml.bind.DatatypeConverter;
+import java.io.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class Html5ReportGenerator extends AbstractReportGenerator {
     private static final Logger log = LoggerFactory.getLogger( Html5ReportGenerator.class );
@@ -117,7 +115,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
 
     private boolean hasAttachment( ScenarioCaseModel aCase ) {
         for( StepModel model : aCase.getSteps() ) {
-            if( model.getAttachment() != null ) {
+            if( model.hasAttachment() ) {
                 return true;
             }
         }

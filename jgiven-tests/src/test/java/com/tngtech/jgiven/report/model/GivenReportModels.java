@@ -109,6 +109,11 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         return self();
     }
 
+    public SELF step_$_of_scenario_$_has_another_text_attachment_with_content( int stepNr, int scenarioNr, String content ) {
+        givenReportModel.step_$_of_scenario_$_has_another_attachment_with_content( stepNr, scenarioNr, content );
+        return self();
+    }
+
     public SELF scenario_$_has_no_steps( int i ) {
         givenReportModel.scenario_$_has_no_steps( i );
         return self();

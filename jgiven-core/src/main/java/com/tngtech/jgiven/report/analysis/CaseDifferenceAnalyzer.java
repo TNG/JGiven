@@ -217,7 +217,7 @@ public class CaseDifferenceAnalyzer {
 
         @Override
         public void visit( StepModel stepModel ) {
-            if( ( stepModel.getAttachment() != null && stepModel.getAttachment().isShowDirectly() ) ) {
+            if( stepModel.hasInlineAttachment() ) {
                 this.noDataTablePossible = true;
             }
 

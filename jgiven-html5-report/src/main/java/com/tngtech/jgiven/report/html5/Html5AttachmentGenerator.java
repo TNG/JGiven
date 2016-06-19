@@ -1,14 +1,5 @@
 package com.tngtech.jgiven.report.html5;
 
-import static javax.xml.bind.DatatypeConverter.parseBase64Binary;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Charsets;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -20,6 +11,15 @@ import com.tngtech.jgiven.report.model.AttachmentModel;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
 import com.tngtech.jgiven.report.model.StepModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+
+import static javax.xml.bind.DatatypeConverter.parseBase64Binary;
 
 class Html5AttachmentGenerator extends ReportModelVisitor {
     private static final Logger log = LoggerFactory.getLogger( Html5AttachmentGenerator.class );
@@ -44,11 +44,13 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
 
     @Override
     public void visit( StepModel stepModel ) {
-        AttachmentModel attachment = stepModel.getAttachment();
-        if( attachment == null ) {
-            return;
+        List<AttachmentModel> attachments = stepModel.getAttachments();
+        for( AttachmentModel attachment : attachments ) {
+            writeAttachment( attachment );
         }
+    }
 
+    private void writeAttachment( AttachmentModel attachment ) {
         String mimeType = attachment.getMediaType();
         MediaType mediaType = MediaType.parse( mimeType );
         File targetFile = null;

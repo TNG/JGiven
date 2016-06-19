@@ -1,13 +1,13 @@
 package com.tngtech.jgiven.report.model;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.attachment.Attachment;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class StepModel {
     /**
@@ -43,20 +43,22 @@ public class StepModel {
     private String extendedDescription;
 
     /**
-     * An optional attachment of the step
+     * Attachments of the step.
+     * Is {@code null} if there are no attachments
      */
-    private AttachmentModel attachment;
+    private List<AttachmentModel> attachments;
 
     /**
      * Whether this step is a section title.
      * Section titles look differently in the generated report.
      * Can be {@code null} which is equivalent to {@code false}
-     * 
+     *
      * @since 0.10.2
      */
     private Boolean isSectionTitle;
 
-    public StepModel() {}
+    public StepModel() {
+    }
 
     public StepModel( String name, List<Word> words ) {
         this.setName( name );
@@ -128,18 +130,41 @@ public class StepModel {
         return this.words.get( this.words.size() - 1 );
     }
 
+    /**
+     * @deprecated use addAttachment instead
+     */
+    @Deprecated
     public void setAttachment( Attachment attachment ) {
-        this.attachment = new AttachmentModel();
-        this.attachment.setTitle( attachment.getTitle() );
-        this.attachment.setValue( attachment.getContent() );
-        this.attachment.setFileName( attachment.getFileName() );
-        this.attachment.setMediaType( attachment.getMediaType().asString() );
-        this.attachment.setIsBinary( attachment.getMediaType().isBinary() );
-        this.attachment.setShowDirectly( attachment.getShowDirectly() );
+        addAttachment( attachment );
     }
 
+    public void addAttachment( Attachment attachment ) {
+        if( attachments == null ) {
+            attachments = Lists.newArrayList();
+        }
+        AttachmentModel attachmentModel = new AttachmentModel();
+        attachmentModel.setTitle( attachment.getTitle() );
+        attachmentModel.setValue( attachment.getContent() );
+        attachmentModel.setFileName( attachment.getFileName() );
+        attachmentModel.setMediaType( attachment.getMediaType().asString() );
+        attachmentModel.setIsBinary( attachment.getMediaType().isBinary() );
+        attachmentModel.setShowDirectly( attachment.getShowDirectly() );
+        attachments.add( attachmentModel );
+    }
+
+    /**
+     * @deprecated use {@link #getAttachments}
+     */
+    @Deprecated
     public AttachmentModel getAttachment() {
-        return attachment;
+        return attachments.get( 0 );
+    }
+
+    public List<AttachmentModel> getAttachments() {
+        if( attachments != null ) {
+            return attachments;
+        }
+        return Collections.emptyList();
     }
 
     public void addNestedStep( StepModel stepModel ) {
@@ -182,5 +207,21 @@ public class StepModel {
 
     public void addIntroWord( Word introWord ) {
         words.add( 0, introWord );
+    }
+
+    public boolean hasInlineAttachment() {
+        if( attachments == null ) {
+            return false;
+        }
+        for( AttachmentModel model : attachments ) {
+            if( model.isShowDirectly() ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasAttachment() {
+        return !getAttachments().isEmpty();
     }
 }

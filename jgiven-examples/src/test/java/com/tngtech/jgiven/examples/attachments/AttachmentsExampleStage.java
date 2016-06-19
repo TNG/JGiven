@@ -1,18 +1,17 @@
 package com.tngtech.jgiven.examples.attachments;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
 
@@ -27,8 +26,12 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
 
     public void it_can_be_added_as_an_attachment_to_the_step_with_title( String title ) {
         currentStep.addAttachment( Attachment.plainText( content )
-            .withTitle( title ) );
+                .withTitle( title ) );
+    }
 
+    public void it_can_be_added_as_an_attachment_multiple_times_to_the_step() {
+        currentStep.addAttachment( Attachment.plainText( content ).withTitle( "First Attachment" ) );
+        currentStep.addAttachment( Attachment.plainText( content ).withTitle( "Second Attachment" ) );
     }
 
     public void a_large_oval_circle() throws IOException {
@@ -40,7 +43,7 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
     }
 
     public void a_$_oval_circle( String color ) throws IOException {
-        drawOval( 300, 200, getColor( color ),  "oval-circle" );
+        drawOval( 300, 200, getColor( color ), "oval-circle" );
     }
 
     private Color getColor( String color ) {
@@ -55,7 +58,7 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
 
         Graphics2D g = image.createGraphics();
         g.setRenderingHint( RenderingHints.KEY_ANTIALIASING,
-            RenderingHints.VALUE_ANTIALIAS_ON );
+                RenderingHints.VALUE_ANTIALIAS_ON );
 
         g.setStroke( new BasicStroke( 10 ) );
         g.setPaint( color );
@@ -67,10 +70,10 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
             byte[] bytes = outputStream.toByteArray();
 
             currentStep.addAttachment(
-                Attachment.fromBinaryBytes( bytes, MediaType.PNG )
-                    .withTitle( "An oval drawn in Java" )
-                    .withFileName( fileName )
-                    .showDirectly() );
+                    Attachment.fromBinaryBytes( bytes, MediaType.PNG )
+                            .withTitle( "An oval drawn in Java" )
+                            .withFileName( fileName )
+                            .showDirectly() );
         } finally {
             outputStream.close();
         }

@@ -1,16 +1,16 @@
 package com.tngtech.jgiven.report.model;
 
-import static java.util.Arrays.asList;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
 
@@ -62,12 +62,12 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         }
 
         scenarioCaseModel
-            .addStep( new StepModel( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ) ) );
+                .addStep( new StepModel( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ) ) );
         i = 0;
         for( String arg : scenarioCaseModel.getExplicitArguments() ) {
             String argumentName = "stepArg" + i++;
             scenarioCaseModel.addStep( new StepModel( "something_happens", asList( Word.introWord( "when" ),
-                Word.argWord( argumentName, arg, (String) null ) ) ) );
+                    Word.argWord( argumentName, arg, (String) null ) ) ) );
         }
     }
 
@@ -196,9 +196,9 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
             @Quoted String argName ) {
         lastArgWord = Word.argWord( argName, arg, arg );
         getCase( ncase )
-            .addStep(
-                new StepModel( name,
-                    Arrays.asList( Word.introWord( "when" ), new Word( name ), lastArgWord ) ) );
+                .addStep(
+                        new StepModel( name,
+                                Arrays.asList( Word.introWord( "when" ), new Word( name ), lastArgWord ) ) );
         return self();
     }
 
@@ -234,7 +234,8 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         }
     }
 
-    public void transpose_set_to( boolean b ) {}
+    public void transpose_set_to( boolean b ) {
+    }
 
     public SELF header_type_set_to( Table.HeaderType headerType ) {
         latestWord.getArgumentInfo().getDataTable().setHeaderType( headerType );
@@ -243,14 +244,18 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF step_$_of_scenario_$_has_an_attachment_with_content( int stepNr, int scenarioNr, String content ) {
         StepModel step = getStep( stepNr, scenarioNr );
-        step.setAttachment( Attachment.fromText( content, MediaType.PLAIN_TEXT_UTF_8 ) );
+        step.addAttachment( Attachment.fromText( content, MediaType.PLAIN_TEXT_UTF_8 ) );
         return self();
     }
 
     public SELF step_$_of_case_$_has_an_attachment_with_content( int stepNr, int caseNr, String content ) {
         StepModel step = getStep( stepNr, 1, caseNr );
-        step.setAttachment( Attachment.fromText( content, MediaType.PLAIN_TEXT_UTF_8 ) );
+        step.addAttachment( Attachment.fromText( content, MediaType.PLAIN_TEXT_UTF_8 ) );
         return self();
+    }
+
+    public SELF step_$_of_scenario_$_has_another_attachment_with_content( int stepNr, int scenarioNr, String content ) {
+        return step_$_of_scenario_$_has_an_attachment_with_content( stepNr, scenarioNr, content );
     }
 
     private StepModel getStep( int stepNr, int scenarioNr ) {
@@ -285,4 +290,5 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         }
         return self();
     }
+
 }
