@@ -307,15 +307,15 @@ public @interface Table {
     /**
      * The formatter to use to translate the parameter object to a table.
      * If you only want to override how POJOs are formatted you should
-     * use the {@link #objectFormatting()} or {@link #rowFormatter()} attribute
-     * 
+     * use the {@link #objectFormatting()} or {@link #rowFormatter()} attribute.
+     *
      * @since 0.10.0
      */
     Class<? extends TableFormatterFactory> formatter() default DefaultTableFormatter.Factory.class;
 
     /**
      * How to format rows when the rows are plain Objects, i.e. no Iterables.
-     * Note that this setting is ignore if a different {@link #rowFormatter()} is set.
+     * Note that this setting is ignored if a different {@link #rowFormatter()} is set.
      * In addition, JGiven will automatically switch to the {@link com.tngtech.jgiven.annotation.Table.ObjectFormatting#PLAIN}
      * formatter when there is an additional formatting annotation besides the {@code @Table} annotation.
      * 
