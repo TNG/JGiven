@@ -1,3 +1,7 @@
+# v0.12.0
+
+* Allow multiple formatter annotations on arguments, e.g., "@Quoted @YesNo", see [#204](https://github.com/TNG/JGiven/issues/204).
+
 # v0.11.4
 
 ## Fixed Issues

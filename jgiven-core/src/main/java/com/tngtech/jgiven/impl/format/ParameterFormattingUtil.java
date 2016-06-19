@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.base.Throwables;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.AnnotationFormat;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.config.FormatterConfiguration;
-import com.tngtech.jgiven.exception.AmbiguousFormattingException;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.DefaultFormatter;
@@ -22,6 +22,8 @@ import com.tngtech.jgiven.format.table.TableFormatterFactory;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.report.model.StepFormatter;
+import com.tngtech.jgiven.report.model.StepFormatter.ChainedFormatting;
+import com.tngtech.jgiven.report.model.StepFormatter.Formatting;
 
 public class ParameterFormattingUtil {
     private static final StepFormatter.Formatting<?, ?> DEFAULT_FORMATTING = new StepFormatter.ArgumentFormatting<ArgumentFormatter<Object>, Object>(
@@ -36,15 +38,16 @@ public class ParameterFormattingUtil {
     @SuppressWarnings( { "rawtypes", "unchecked" } )
     public <T> ObjectFormatter<?> getFormatting( Class<T> parameterType, String parameterName, Annotation[] annotations ) {
         ObjectFormatter<?> formatting = getFormatting( annotations, Sets.<Class<?>>newHashSet(), null, parameterName );
-        if( formatting == null ) {
-            Formatter<T> formatter = (Formatter<T>) configuration.getFormatter( parameterType );
-            if( formatter != null ) {
-                formatting = new StepFormatter.TypeBasedFormatting<T>( formatter, annotations );
-            } else {
-                formatting = DEFAULT_FORMATTING;
-            }
+        if( formatting != null ) {
+            return formatting;
         }
-        return formatting;
+
+        Formatter<T> formatter = (Formatter<T>) configuration.getFormatter( parameterType );
+        if( formatter != null ) {
+            return new StepFormatter.TypeBasedFormatting<T>( formatter, annotations );
+        }
+
+        return DEFAULT_FORMATTING;
     }
 
     /**
@@ -85,7 +88,16 @@ public class ParameterFormattingUtil {
         }
 
         if( foundFormatting.size() > 1 ) {
-            throw new AmbiguousFormattingException( "Found more than one formatting annotation at parameter " + parameterName );
+            Formatting<?, ?> innerFormatting = Iterables.getLast( foundFormatting );
+            foundFormatting.remove( innerFormatting );
+
+            ChainedFormatting<?> chainedFormatting = new StepFormatter.ChainedFormatting<Object>( (ObjectFormatter<Object>) innerFormatting );
+            for( StepFormatter.Formatting<?, ?> formatting : Lists.reverse( foundFormatting ) ) {
+                chainedFormatting.addFormatting( (StepFormatter.Formatting<?, String>) formatting );
+            }
+
+            foundFormatting.clear();
+            foundFormatting.add( chainedFormatting );
         }
 
         if( tableAnnotation != null ) {
@@ -93,7 +105,6 @@ public class ParameterFormattingUtil {
                     ? DefaultFormatter.INSTANCE
                     : foundFormatting.get( 0 );
             return getTableFormatting( annotations, parameterName, tableAnnotation, objectFormatter );
-
         }
 
         if( foundFormatting.isEmpty() ) {
