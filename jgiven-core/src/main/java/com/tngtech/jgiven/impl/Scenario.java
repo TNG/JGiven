@@ -125,13 +125,13 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
         return getGivenStage();
     }
 
-    public WHEN when( String translatedGiven ) {
-        addIntroWord( translatedGiven );
+    public WHEN when( String translatedWhen ) {
+        addIntroWord( translatedWhen );
         return getWhenStage();
     }
 
-    public THEN then( String translatedGiven ) {
-        addIntroWord( translatedGiven );
+    public THEN then( String translatedThen ) {
+        addIntroWord( translatedThen );
         return getThenStage();
     }
 
