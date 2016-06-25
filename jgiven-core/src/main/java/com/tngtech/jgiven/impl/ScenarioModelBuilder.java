@@ -141,6 +141,24 @@ public class ScenarioModelBuilder implements ScenarioListener {
         introWord.setValue( value );
     }
 
+    @Override
+    public void stepCommentAdded( List<NamedArgument> arguments ) {
+        if( arguments == null || arguments.size() != 1 ) {
+            throw new JGivenWrongUsageException( "A step comment method must have exactly one parameter." );
+        }
+
+        if( !( arguments.get( 0 ).getValue() instanceof String ) ) {
+            throw new JGivenWrongUsageException( "The step comment method parameter must be a string." );
+        }
+
+        if( currentStep == null ) {
+            throw new JGivenWrongUsageException( "A step comment must be added after the corresponding step, "
+                    + "but no step has been executed yet." );
+        }
+
+        currentStep.setComment( (String) arguments.get( 0 ).getValue() );
+    }
+
     private ScenarioCaseModel getCurrentScenarioCase() {
         if( scenarioCaseModel == null ) {
             scenarioStarted( "A Scenario" );
@@ -152,6 +170,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
     public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps ) {
         if( method.isAnnotationPresent( IntroWord.class ) ) {
             introWordAdded( getDescription( method ) );
+        } else if( method.isAnnotationPresent( StepComment.class ) ) {
+            stepCommentAdded( arguments );
         } else {
             addStepMethod( method, arguments, mode, hasNestedSteps );
         }

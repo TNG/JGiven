@@ -19,6 +19,8 @@ public interface ScenarioListener {
 
     void introWordAdded( String introWord );
 
+    void stepCommentAdded( List<NamedArgument> arguments );
+
     void stepMethodFailed( Throwable t );
 
     void stepMethodFinished( long durationInNanos, boolean hasNestedSteps );

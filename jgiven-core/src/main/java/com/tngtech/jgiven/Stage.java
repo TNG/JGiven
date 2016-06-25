@@ -1,6 +1,7 @@
 package com.tngtech.jgiven;
 
 import com.tngtech.jgiven.annotation.IntroWord;
+import com.tngtech.jgiven.annotation.StepComment;
 import com.tngtech.jgiven.base.StageBase;
 
 /**
@@ -39,6 +40,11 @@ public class Stage<SELF extends Stage<?>> extends StageBase<SELF> {
 
     @IntroWord
     public SELF but() {
+        return self();
+    }
+
+    @StepComment
+    public SELF comment( String comment ) {
         return self();
     }
 

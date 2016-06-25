@@ -25,6 +25,9 @@ public class NoOpScenarioListener implements ScenarioListener {
     public void introWordAdded( String introWord ) {}
 
     @Override
+    public void stepCommentAdded( List<NamedArgument> arguments ) {}
+
+    @Override
     public void stepMethodFailed( Throwable t ) {}
 
     @Override

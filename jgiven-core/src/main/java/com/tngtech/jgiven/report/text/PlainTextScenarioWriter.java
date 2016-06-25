@@ -126,6 +126,10 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
             line = green( line + " (passed)" );
         }
 
+        if( !Strings.isNullOrEmpty( stepModel.getComment() ) ) {
+            line = line + gray( String.format( " [%s]", stepModel.getComment() ) );
+        }
+
         writer.println( line );
 
         printNestedSteps( stepModel, depth, showPassed );

@@ -1,6 +1,7 @@
 # v0.12.0
 
 * Allow multiple formatter annotations on arguments, e.g., "@Quoted @YesNo", see [#204](https://github.com/TNG/JGiven/issues/204).
+* Added a new comment() method to provide further information on specific step method invocations, see [#50](https://github.com/TNG/JGiven/issues/50).
 
 # v0.11.4
 
