@@ -320,4 +320,14 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
                         + "     And the substep value referred in the step is 4" );
     }
 
+    @Test
+    public void step_comments_are_printed() throws UnsupportedEncodingException {
+        getScenario().startScenario( "comments" );
+
+        given().something().comment( "This is a comment." );
+
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string ).contains( "something [This is a comment.]" );
+    }
+
 }
