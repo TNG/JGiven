@@ -57,6 +57,14 @@ public class StepModel {
      */
     private Boolean isSectionTitle;
 
+    /**
+     * An optional comment for this step.
+     * Can be {@code null}.
+     *
+     * @since 0.12.0
+     */
+    private String comment;
+
     public StepModel() {
     }
 
@@ -120,6 +128,14 @@ public class StepModel {
 
     public void setExtendedDescription( String extendedDescription ) {
         this.extendedDescription = extendedDescription;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment( String comment ) {
+        this.comment = comment;
     }
 
     public List<Word> getWords() {
