@@ -22,6 +22,7 @@ public class TagHierarchyExampleTest extends SimpleScenarioTest<TagHierarchyExam
         then().the_tags_appear_in_a_hierarchy();
     }
 
+    @TagThatIsNotVisibleInNavigation
     @AnotherExampleSubCategory
     @Test
     public void parent_tags_can_have_values() {

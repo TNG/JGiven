@@ -1,7 +1,15 @@
 # v0.12.0
 
+## New Features
+
 * Allow multiple formatter annotations on arguments, e.g., "@Quoted @YesNo", see [#204](https://github.com/TNG/JGiven/issues/204).
 * Added a new comment() method to provide further information on specific step method invocations, see [#50](https://github.com/TNG/JGiven/issues/50).
+* Steps can now have multiple attachments [#194](https://github.com/TNG/JGiven/issues/194).
+* Tags can now be hidden from the navigation bar in the HTML report by setting the `showInNavigation` attribute to `false` [#211](https://github.com/TNG/JGiven/issues/211).
+
+## Breaking Changes in the JSON model
+
+* Due to the introduction of multiple attachments per step, the JSON model had to be changed in an backwards-incompatible way. Instead of a single field `attachment` that holds a single attachment object, a step has now an `attachments` field that holds an array of attachment objects.
 
 # v0.11.4
 

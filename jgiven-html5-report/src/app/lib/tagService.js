@@ -31,7 +31,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
    * where a tag entry contains the tag definition and the list of scenarios
    * that are tagged with that tag
    */
-  function getTagScenarioMap(scenarios) {
+  function getTagScenarioMap (scenarios) {
     var tagScenarioMap = {};
     _.forEach(scenarios, function (testCase) {
       _.forEach(testCase.scenarios, function (scenario) {
@@ -43,7 +43,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
           var tag = addEntry(tagId).tag;
           scenario.tags.push(tag);
 
-          function addEntry(tagId) {
+          function addEntry (tagId) {
             var tag = getTagByTagId(tagId);
             var tagKey = getTagKey(tag);
             var tagEntry = tagScenarioMap[tagKey];
@@ -72,7 +72,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
     return tagScenarioMap;
   }
 
-  function getRootTags() {
+  function getRootTags () {
     if (!rootTags) {
       rootTags = calculateRootTags();
     }
@@ -83,8 +83,10 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
    * Builds up a hierarchy of tag nodes that is shown in the
    * navigation and returns the list of root nodes
    */
-  function calculateRootTags() {
+  function calculateRootTags () {
     _.forEach(_.values(tagScenarioMap), function (tagEntry) {
+      if (tagEntry.tag.hideInNav) return;
+
       var tagNode = getTagNode(tagEntry);
       var name = getTagName(tagEntry.tag);
       var nameNode = tagNameMap[name];
@@ -116,7 +118,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
       });
 
 
-    function getTagNode(tagEntry) {
+    function getTagNode (tagEntry) {
       var tag = tagEntry.tag;
       var key = getTagKey(tag);
       var tagNode = tagNodeMap[key];
@@ -135,7 +137,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
       return tagNode;
     }
 
-    function createTagNode(tagEntry) {
+    function createTagNode (tagEntry) {
       var tag = tagEntry.tag;
       var scenarios = tagEntry.scenarios;
       var node = createNode(tagToString(tag));
@@ -161,7 +163,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
      * A name node is a pseudo tag node that
      * has as sub nodes all tags with the same name
      */
-    function createNameNode(name) {
+    function createNameNode (name) {
       var node = createNode(name);
 
       node.url = function () {
@@ -183,7 +185,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
       return node;
     }
 
-    function createNode(name) {
+    function createNode (name) {
       var subTags = [];
       return {
 
@@ -218,26 +220,26 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
     }
   }
 
-  function getScenariosByTag(tag) {
+  function getScenariosByTag (tag) {
     return tagScenarioMap[getTagKey(tag)].scenarios;
   }
 
-  function getTagByKey(tagKey) {
+  function getTagByKey (tagKey) {
     var tagEntry = tagScenarioMap[tagKey];
     return tagEntry && tagEntry.tag;
   }
 
-  function getTagNameNode(name) {
+  function getTagNameNode (name) {
     return tagNameMap[name];
   }
 
-  function getTagByTagId(tagId) {
+  function getTagByTagId (tagId) {
     var tagInstance = dataService.getTagFile().tags[tagId];
     var tagType = dataService.getTagFile().tagTypeMap[tagInstance.tagType];
     var tag = Object.create(tagType);
     tag.value = tagInstance.value;
     if (tagInstance.description) {
-    	tag.description = tagInstance.description;
+      tag.description = tagInstance.description;
     }
     if (tagInstance.href) {
       tag.href = tagInstance.href;

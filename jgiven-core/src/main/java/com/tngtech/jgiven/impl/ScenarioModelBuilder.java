@@ -1,12 +1,5 @@
 package com.tngtech.jgiven.impl;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
@@ -26,6 +19,12 @@ import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.*;
 
 public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
@@ -412,6 +411,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
             tag.setPrependType( true );
         }
 
+        tag.setShowInNavigation( tagConfig.showInNavigation() );
+
         if( !Strings.isNullOrEmpty( tagConfig.getCssClass() ) ) {
             tag.setCssClass( tagConfig.getCssClass() );
         }
@@ -471,7 +472,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
             .explodeArray( isTag.explodeArray() ).ignoreValue( isTag.ignoreValue() ).prependType( isTag.prependType() ).name( name )
             .descriptionGenerator( isTag.descriptionGenerator() ).cssClass( isTag.cssClass() ).color( isTag.color() )
             .style( isTag.style() ).tags( getTagNames( isTag, annotation ) )
-            .href( isTag.href() ).hrefGenerator( isTag.hrefGenerator() ).build();
+            .href( isTag.href() ).hrefGenerator( isTag.hrefGenerator() )
+            .showInNavigation( isTag.showInNavigation() ).build();
 
     }
 

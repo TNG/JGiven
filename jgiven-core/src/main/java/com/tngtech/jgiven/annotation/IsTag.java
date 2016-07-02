@@ -1,12 +1,12 @@
 package com.tngtech.jgiven.annotation;
 
+import com.tngtech.jgiven.impl.tag.DefaultTagDescriptionGenerator;
+import com.tngtech.jgiven.impl.tag.DefaultTagHrefGenerator;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.tngtech.jgiven.impl.tag.DefaultTagDescriptionGenerator;
-import com.tngtech.jgiven.impl.tag.DefaultTagHrefGenerator;
 
 /**
  * Marks an annotation to be used as a tag in JGiven reports.
@@ -68,7 +68,7 @@ public @interface IsTag {
      * <p>
      * If this attribute is set, the {@link #description()} attribute is ignored.
      * </p>
-     * 
+     *
      * @since 0.7.0
      */
     Class<? extends TagDescriptionGenerator> descriptionGenerator() default DefaultTagDescriptionGenerator.class;
@@ -102,7 +102,7 @@ public @interface IsTag {
      * <p>
      * Non-HTML reports ignore this attribute
      * </p>
-     * 
+     *
      * @since 0.7.2
      */
     String cssClass() default "";
@@ -120,7 +120,7 @@ public @interface IsTag {
      * This attribute is for simple use cases.
      * For advanced styling options use the {@link #cssClass()} or {@link #style()} attributes instead.
      * </p>
-     * 
+     *
      * @since 0.7.2
      */
     String color() default "";
@@ -135,14 +135,14 @@ public @interface IsTag {
      * <p>
      * Non-HTML reports ignore this attribute
      * </p>
-     * 
+     *
      * @since 0.8.0
      */
     String style() default "";
 
     /**
      * An optional href of the tag that will appear in the generated report.
-     * 
+     *
      * @since 0.9.5
      */
     String href() default "";
@@ -161,5 +161,12 @@ public @interface IsTag {
      * @since 0.9.5
      */
     Class<? extends TagHrefGenerator> hrefGenerator() default DefaultTagHrefGenerator.class;
+
+    /**
+     * Whether the tag should be shown in the navigation part of the report
+     *
+     * @since 0.12.0
+     */
+    boolean showInNavigation() default true;
 
 }

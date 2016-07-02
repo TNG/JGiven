@@ -1,17 +1,17 @@
 package com.tngtech.jgiven.config;
 
+import com.google.common.collect.Lists;
+import com.tngtech.jgiven.annotation.TagDescriptionGenerator;
+import com.tngtech.jgiven.annotation.TagHrefGenerator;
+import com.tngtech.jgiven.impl.tag.DefaultTagDescriptionGenerator;
+import com.tngtech.jgiven.impl.tag.DefaultTagHrefGenerator;
+
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-import com.tngtech.jgiven.annotation.TagHrefGenerator;
-import com.tngtech.jgiven.impl.tag.DefaultTagDescriptionGenerator;
-import com.tngtech.jgiven.annotation.TagDescriptionGenerator;
-import com.tngtech.jgiven.impl.tag.DefaultTagHrefGenerator;
-
 /**
  * Represents the configuration of a tag.
- * 
+ *
  * @see com.tngtech.jgiven.annotation.IsTag for a documentation of the different values.
  */
 public class TagConfiguration {
@@ -29,6 +29,7 @@ public class TagConfiguration {
     private List<String> tags = Lists.newArrayList();
     private String href = "";
     private Class<? extends TagHrefGenerator> hrefGenerator = DefaultTagHrefGenerator.class;
+    private boolean showInNavigation = true;
 
     public TagConfiguration( Class<? extends Annotation> tagAnnotation ) {
         this.annotationType = tagAnnotation.getSimpleName();
@@ -116,6 +117,11 @@ public class TagConfiguration {
 
         public Builder hrefGenerator( Class<? extends TagHrefGenerator> hrefGenerator ) {
             configuration.hrefGenerator = hrefGenerator;
+            return this;
+        }
+
+        public Builder showInNavigation( boolean value ) {
+            configuration.showInNavigation = value;
             return this;
         }
 
@@ -224,6 +230,13 @@ public class TagConfiguration {
      */
     public Class<? extends TagHrefGenerator> getHrefGenerator() {
         return hrefGenerator;
+    }
+
+    /**
+     * @see com.tngtech.jgiven.annotation.IsTag#showInNavigation
+     */
+    public boolean showInNavigation() {
+        return showInNavigation;
     }
 
 }

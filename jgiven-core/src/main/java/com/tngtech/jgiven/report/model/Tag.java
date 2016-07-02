@@ -1,11 +1,11 @@
 package com.tngtech.jgiven.report.model;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A tag represents a Java annotation of a scenario-test.
@@ -35,7 +35,7 @@ public class Tag {
     /**
      * Whether the type should be prepended in the report.
      * <p>
-     * Is either {@code true} or {@code null}    
+     * Is either {@code true} or {@code null}
      */
     private Boolean prependType;
 
@@ -67,6 +67,14 @@ public class Tag {
      * Can be {@code null}.
      */
     private String href;
+
+    /**
+     * Whether the tag should appear in the navigation part of the report
+     * <p>
+     * Is either {@code true} or {@code null}
+     */
+    private Boolean hideInNav;
+    private boolean shownInNavigation;
 
     public Tag( String type ) {
         this.type = type;
@@ -134,7 +142,7 @@ public class Tag {
         return href;
     }
 
-    public void setHref(String href) {
+    public void setHref( String href ) {
         this.href = href;
     }
 
@@ -160,6 +168,10 @@ public class Tag {
     public Tag setPrependType( boolean prependType ) {
         this.prependType = prependType ? true : null;
         return this;
+    }
+
+    public void setShowInNavigation( boolean show ) {
+        this.hideInNav = show ? null : true;
     }
 
     @Override
@@ -213,7 +225,7 @@ public class Tag {
     /**
      * Returns a string representation where all non-alphanumeric characters are replaced with an underline (_).
      * In addition, the result is cut-off at a length of 255 characters.
-     * 
+     *
      * @return a string representation without special characters
      */
     public String toEscapedString() {
@@ -233,6 +245,10 @@ public class Tag {
 
     public String getType() {
         return type;
+    }
+
+    public boolean getShownInNavigation() {
+        return shownInNavigation;
     }
 
     public List<String> getTags() {
@@ -257,6 +273,7 @@ public class Tag {
         tag.prependType = this.prependType;
         tag.tags = this.tags;
         tag.href = this.href;
+        tag.hideInNav = this.hideInNav;
         return tag;
     }
 
