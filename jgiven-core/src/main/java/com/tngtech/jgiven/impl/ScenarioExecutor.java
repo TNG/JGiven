@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.impl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -24,6 +25,8 @@ public interface ScenarioExecutor {
     void addIntroWord( String word );
 
     void addSection( String sectionTitle );
+
+    void addTag( Class<? extends Annotation> annotationClass, String... values );
 
     void readScenarioState( Object object );
 

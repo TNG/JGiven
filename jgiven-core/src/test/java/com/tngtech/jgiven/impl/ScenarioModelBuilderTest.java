@@ -7,6 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
@@ -156,6 +157,25 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
         assertThat( tags.get( 0 ).getDescription() ).isEqualTo( "Some Description" );
     }
 
+    @IsTag( description = "Some Description", ignoreValue = true )
+    @Retention( RetentionPolicy.RUNTIME )
+    @TagWithDescription
+    @interface TagWithDescriptionAndIgnoreValue {
+        String value();
+    }
+
+    @TagWithDescriptionAndIgnoreValue( value = "some value" )
+    static class AnnotationWithDescriptionAndIgnoreValue {}
+
+    @Test
+    public void testAnnotationWithDescriptionAndIgnoreValue() throws Exception {
+        List<Tag> tags = getScenarioModelBuilder().toTags( AnnotationWithDescriptionAndIgnoreValue.class.getAnnotations()[0] );
+        assertThat( tags ).hasSize( 1 );
+        assertThat( tags.get( 0 ).getValues() ).isEmpty();
+        assertThat( tags.get( 0 ).getDescription() ).isEqualTo( "Some Description" );
+        assertThat( tags.get( 0 ).getTags() ).hasSize( 1 );
+    }
+
     @IsTag
     @Retention( RetentionPolicy.RUNTIME )
     @interface ParentTag {}
@@ -181,6 +201,27 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
         assertThat( tags ).hasSize( 1 );
         assertThat( tags.get( 0 ).getTags() ).containsAll( Arrays.asList(
             "ParentTag", "ParentTagWithValue-SomeValue" ) );
+    }
+
+    @IsTag( value = "default" )
+    @Retention( RetentionPolicy.RUNTIME )
+    @interface DynamicTag {}
+
+    @Test
+    public void testAddTagDynamically() throws Exception {
+        ReportModel reportModel = new ReportModel();
+        ScenarioModelBuilder scenarioModelBuilder = getScenarioModelBuilder();
+        scenarioModelBuilder.setReportModel( reportModel );
+        scenarioModelBuilder.scenarioStarted( "Test" );
+
+        scenarioModelBuilder.tagAdded( DynamicTag.class, "A", "B" );
+        scenarioModelBuilder.tagAdded( DynamicTag.class );
+        assertThat( reportModel.getTagMap() ).hasSize( 3 );
+
+        Iterator<Tag> iterator = reportModel.getTagMap().values().iterator();
+        assertThat( iterator.next().getValues() ).containsExactly( "A" );
+        assertThat( iterator.next().getValues() ).containsExactly( "B" );
+        assertThat( iterator.next().getValues() ).containsExactly( "default" );
     }
 
     @DataProvider

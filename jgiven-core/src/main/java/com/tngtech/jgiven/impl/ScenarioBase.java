@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.impl;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -112,6 +113,16 @@ public class ScenarioBase {
      */
     public void section( String sectionTitle ) {
         executor.addSection( sectionTitle );
+    }
+
+    /**
+     * Dynamically add a tag to the scenario.
+     * @param annotationClass The tag annotation class to use.
+     * @param values List of custom values. This must be supported by the given tag.
+     * @since 0.12.0
+     */
+    public void addTag( Class<? extends Annotation> annotationClass, String... values ) {
+        executor.addTag( annotationClass, values );
     }
 
 }

@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.impl.intercept;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -43,7 +44,8 @@ public class NoOpScenarioListener implements ScenarioListener {
     public void extendedDescriptionUpdated( String extendedDescription ) {}
 
     @Override
-    public void sectionAdded( String sectionTitle ) {
+    public void sectionAdded( String sectionTitle ) {}
 
-    }
+    @Override
+    public void tagAdded( Class<? extends Annotation> annotationClass, String... values ) {}
 }

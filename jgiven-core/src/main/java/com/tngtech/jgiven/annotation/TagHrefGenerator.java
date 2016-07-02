@@ -26,9 +26,10 @@ public interface TagHrefGenerator {
      * @param tagConfiguration the configuration of the tag. The values typically correspond to the {@link IsTag annotation}.
      *                         However, it is also possible to configure annotations to be tags using {@link JGivenConfiguration},
      *                         in which case there is no {@link IsTag} annotation.
-     * @param annotation the actual annotation that was used as a tag
+     * @param annotation the actual annotation that was used as a tag. Note that this can be {@code null} in the case of
+     *                   dynamically added tags.
      * @param value the value of the annotation. If the annotation has no value the default value is passed ({@link IsTag#value()}
-     *              
+     *
      * @return the description of the annotation for the given value
      */
     String generateHref( TagConfiguration tagConfiguration, Annotation annotation, Object value );

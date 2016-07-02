@@ -6,6 +6,7 @@
 * Added a new comment() method to provide further information on specific step method invocations, see [#50](https://github.com/TNG/JGiven/issues/50).
 * Steps can now have multiple attachments [#194](https://github.com/TNG/JGiven/issues/194).
 * Tags can now be hidden from the navigation bar in the HTML report by setting the `showInNavigation` attribute to `false` [#211](https://github.com/TNG/JGiven/issues/211).
+* Added addTag() to ScenarioBase to allow adding tags dynamically, see [#172](https://github.com/TNG/JGiven/issues/172).
 
 ## Breaking Changes in the JSON model
 

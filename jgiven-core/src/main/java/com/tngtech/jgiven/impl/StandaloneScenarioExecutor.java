@@ -533,4 +533,9 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
         listener.sectionAdded( sectionTitle );
     }
 
+    @Override
+    public void addTag( Class<? extends Annotation> annotationClass, String... values ) {
+        listener.tagAdded( annotationClass, values );
+    }
+
 }
