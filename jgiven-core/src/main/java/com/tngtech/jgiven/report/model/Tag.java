@@ -74,7 +74,6 @@ public class Tag {
      * Is either {@code true} or {@code null}
      */
     private Boolean hideInNav;
-    private boolean shownInNavigation;
 
     public Tag( String type ) {
         this.type = type;
@@ -248,7 +247,7 @@ public class Tag {
     }
 
     public boolean getShownInNavigation() {
-        return shownInNavigation;
+        return hideInNav == null;
     }
 
     public List<String> getTags() {
