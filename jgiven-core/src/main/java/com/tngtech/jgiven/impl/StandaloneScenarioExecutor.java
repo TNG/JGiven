@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tngtech.jgiven.CurrentScenario;
 import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.AfterStage;
@@ -80,6 +81,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     public StandaloneScenarioExecutor() {
         injector.injectValueByType( StandaloneScenarioExecutor.class, this );
         injector.injectValueByType( CurrentStep.class, new StepAccessImpl() );
+        injector.injectValueByType( CurrentScenario.class, new ScenarioAccessImpl() );
     }
 
     protected static class StageState {
@@ -104,6 +106,15 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
         public void setExtendedDescription( String extendedDescription ) {
             listener.extendedDescriptionUpdated( extendedDescription );
         }
+    }
+
+    class ScenarioAccessImpl implements CurrentScenario {
+
+        @Override
+        public void addTag( Class<? extends Annotation> annotationClass, String... values ) {
+            listener.tagAdded( annotationClass, values );
+        }
+
     }
 
     class MethodHandler implements StepMethodHandler {
@@ -531,11 +542,6 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     @Override
     public void addSection( String sectionTitle ) {
         listener.sectionAdded( sectionTitle );
-    }
-
-    @Override
-    public void addTag( Class<? extends Annotation> annotationClass, String... values ) {
-        listener.tagAdded( annotationClass, values );
     }
 
 }

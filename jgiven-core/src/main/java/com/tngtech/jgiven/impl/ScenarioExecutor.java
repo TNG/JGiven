@@ -26,8 +26,6 @@ public interface ScenarioExecutor {
 
     void addSection( String sectionTitle );
 
-    void addTag( Class<? extends Annotation> annotationClass, String... values );
-
     void readScenarioState( Object object );
 
     /**
