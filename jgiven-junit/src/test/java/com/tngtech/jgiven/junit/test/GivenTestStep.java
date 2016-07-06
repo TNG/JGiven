@@ -3,11 +3,14 @@ package com.tngtech.jgiven.junit.test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.Format;
+import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.annotation.Table;
@@ -34,6 +37,13 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     public void some_boolean_value( boolean someBooleanValue ) {
 
     }
+
+    @IsTag
+    @Retention( RetentionPolicy.RUNTIME )
+    @interface StepMethodTag {}
+
+    @StepMethodTag
+    public void a_tagged_step_method() {}
 
     public void $d_and_$d( int value1, int value2 ) {
         this.value1 = value1;

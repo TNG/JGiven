@@ -174,6 +174,9 @@ public class ScenarioModelBuilder implements ScenarioListener {
         } else if( method.isAnnotationPresent( StepComment.class ) ) {
             stepCommentAdded( arguments );
         } else {
+            addTags( method.getAnnotations() );
+            addTags( method.getDeclaringClass().getAnnotations() );
+
             addStepMethod( method, arguments, mode, hasNestedSteps );
         }
     }
@@ -388,8 +391,17 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     private void addTags( List<Tag> tags ) {
-        this.reportModel.addTags( tags );
-        this.scenarioModel.addTags( tags );
+        if( tags.isEmpty() ) {
+            return;
+        }
+
+        if( reportModel != null ) {
+            this.reportModel.addTags( tags );
+        }
+
+        if( scenarioModel != null ) {
+            this.scenarioModel.addTags( tags );
+        }
     }
 
     public List<Tag> toTags( Annotation annotation ) {
