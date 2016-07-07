@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.impl.intercept;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -32,4 +33,6 @@ public interface ScenarioListener {
     void extendedDescriptionUpdated( String extendedDescription );
 
     void sectionAdded( String sectionTitle );
+
+    void tagAdded( Class<? extends Annotation> annotationClass, String... values );
 }

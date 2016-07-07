@@ -1,6 +1,17 @@
 package com.tngtech.jgiven.junit;
 
+import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.NAME;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.jgiven.CurrentScenario;
 import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.*;
@@ -12,13 +23,6 @@ import com.tngtech.jgiven.junit.test.BeforeAfterTestStage;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
 import com.tngtech.jgiven.report.model.AttachmentModel;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import java.util.List;
-
-import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.NAME;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( DataProviderRunner.class )
 @JGivenConfiguration( TestConfiguration.class )
@@ -73,8 +77,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         stage.something();
     }
 
-    static class SomeType {
-    }
+    static class SomeType {}
 
     public static class TestStageWithAmbiguousFields {
         @ScenarioState
@@ -83,8 +86,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         @ScenarioState
         SomeType secondType;
 
-        public void something() {
-        }
+        public void something() {}
     }
 
     @Test
@@ -101,8 +103,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         @ScenarioState( resolution = NAME )
         SomeType secondType;
 
-        public void something() {
-        }
+        public void something() {}
     }
 
     @Test( expected = IllegalStateException.class )
@@ -168,8 +169,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     }
 
     @SuppressWarnings( "serial" )
-    static class SomeExceptionInAfterStage extends RuntimeException {
-    }
+    static class SomeExceptionInAfterStage extends RuntimeException {}
 
     static class AssertionInAfterStage extends Stage<AssertionInAfterStage> {
         @AfterStage
@@ -177,8 +177,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
             throw new SomeExceptionInAfterStage();
         }
 
-        public void something() {
-        }
+        public void something() {}
     }
 
     @Test( expected = SomeExceptionInAfterStage.class )
@@ -233,8 +232,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         @ProvidedScenarioState
         String someString = "test";
 
-        public void something() {
-        }
+        public void something() {}
     }
 
     static class SomeStageWithAHiddenMethod {
@@ -254,7 +252,6 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
         stage1.something();
         stage2.someHiddenStep();
-
     }
 
     static class SomeStageWithABeforeMethod {
@@ -266,8 +263,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
             assertThat( someString ).isNotNull();
         }
 
-        public void something() {
-        }
+        public void something() {}
     }
 
     @Test
@@ -277,7 +273,6 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
         stage1.something();
         stage2.something();
-
     }
 
     static class AttachmentStepClass {
@@ -317,14 +312,37 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         assertThat( description ).isEqualTo( "An extended description" );
     }
 
+    @IsTag
+    @Retention( RetentionPolicy.RUNTIME )
+    @interface DynamicTag {}
+
+    static class CurrentScenarioStage {
+        @ScenarioState
+        CurrentScenario currentScenario;
+
+        public void add_tag() {
+            currentScenario.addTag( DynamicTag.class, "value" );
+        }
+    }
+
+    @Test
+    public void tags_can_be_added_using_the_current_scenario() {
+        CurrentScenarioStage steps = addStage( CurrentScenarioStage.class );
+
+        steps.add_tag();
+
+        List<String> tagIds = getScenario().getScenarioModel().getTagIds();
+        assertThat( tagIds ).hasSize( 1 );
+        assertThat( tagIds.get( 0 ) ).isEqualTo( "DynamicTag-value" );
+    }
+
     static abstract class AbstractStage {
         public abstract void abstract_step();
     }
 
     static class ConcreteStage extends AbstractStage {
         @Override
-        public void abstract_step() {
-        }
+        public void abstract_step() {}
     }
 
     @Test
