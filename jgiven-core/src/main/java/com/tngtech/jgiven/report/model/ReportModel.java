@@ -1,6 +1,10 @@
 package com.tngtech.jgiven.report.model;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
@@ -8,10 +12,12 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.annotation.As;
+import com.tngtech.jgiven.annotation.AsProvider;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
+import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
 
 public class ReportModel {
@@ -179,7 +185,10 @@ public class ReportModel {
         }
 
         if( testClass.isAnnotationPresent( As.class ) ) {
-            name = testClass.getAnnotation( As.class ).value();
+            As as = testClass.getAnnotation( As.class );
+
+            AsProvider provider = ReflectionUtil.newInstance( as.provider() );
+            name = provider.as( as, testClass );
         } else {
             name = getTestNameToReadableString( testClass );
         }

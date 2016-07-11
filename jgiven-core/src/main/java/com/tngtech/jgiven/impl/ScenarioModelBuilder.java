@@ -1,5 +1,17 @@
 package com.tngtech.jgiven.impl;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
@@ -21,12 +33,6 @@ import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.*;
 
 public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
@@ -212,7 +218,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
         As as = paramMethod.getAnnotation( As.class );
         if( as != null ) {
-            return as.value();
+            AsProvider provider = ReflectionUtil.newInstance( as.provider() );
+            return provider.as( as, paramMethod );
         }
 
         return nameWithSpaces( paramMethod );
@@ -365,7 +372,10 @@ public class ScenarioModelBuilder implements ScenarioListener {
         if( method.isAnnotationPresent( Description.class ) ) {
             scenarioDescription = method.getAnnotation( Description.class ).value();
         } else if( method.isAnnotationPresent( As.class ) ) {
-            scenarioDescription = method.getAnnotation( As.class ).value();
+            As as = method.getAnnotation( As.class );
+
+            AsProvider provider = ReflectionUtil.newInstance( as.provider() );
+            scenarioDescription = provider.as( as, method );
         }
 
         scenarioStarted( scenarioDescription );
