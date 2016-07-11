@@ -12,13 +12,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.annotation.As;
-import com.tngtech.jgiven.annotation.AsProvider;
 import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
-import com.tngtech.jgiven.config.ConfigurationUtil;
+import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
-import com.tngtech.jgiven.impl.util.WordUtil;
 
 public class ReportModel {
     /**
@@ -184,21 +181,10 @@ public class ReportModel {
             setDescription( testClass.getAnnotation( Description.class ).value() );
         }
 
-        if( testClass.isAnnotationPresent( As.class ) ) {
-            As as = testClass.getAnnotation( As.class );
-
-            AsProvider provider = ReflectionUtil.newInstance( as.provider() );
-            name = provider.as( as, testClass );
-        } else {
-            name = getTestNameToReadableString( testClass );
-        }
-    }
-
-    private String getTestNameToReadableString( Class<?> testClass ) {
-        AbstractJGivenConfiguration configuration = ConfigurationUtil.getConfiguration( testClass );
-        String regEx = configuration.getTestClassSuffixRegEx();
-        String classNameWithoutSuffix = testClass.getSimpleName().replaceAll( regEx + "$", "" );
-        return WordUtil.splitCamelCaseToReadableText( classNameWithoutSuffix );
+        As as = testClass.getAnnotation( As.class );
+        name = ReflectionUtil
+            .newInstance( as == null ? DefaultAsProvider.class : as.provider() )
+            .as( as, testClass );
     }
 
     public String getName() {

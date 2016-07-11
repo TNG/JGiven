@@ -40,9 +40,14 @@ import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 public @interface As {
 
     /**
+     * Dummy value to indicate that no value was set
+     */
+    public static final String NO_VALUE = " - no value - ";
+
+    /**
      * The alternate representation of the step or scenario summary.
      */
-    String value();
+    String value() default NO_VALUE;
 
     /**
      * An optional provider to generate the representation of the stage method, scenario or scenario class.
