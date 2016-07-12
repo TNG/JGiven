@@ -12,6 +12,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.annotation.As;
+import com.tngtech.jgiven.annotation.AsProvider;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
@@ -182,9 +183,10 @@ public class ReportModel {
         }
 
         As as = testClass.getAnnotation( As.class );
-        name = ReflectionUtil
-            .newInstance( as == null ? DefaultAsProvider.class : as.provider() )
-            .as( as, testClass );
+        AsProvider provider = as != null
+                ? ReflectionUtil.newInstance( as.provider() )
+                : new DefaultAsProvider();
+        name = provider.as( as, testClass );
     }
 
     public String getName() {

@@ -11,6 +11,7 @@ import com.tngtech.jgiven.impl.util.WordUtil;
 /**
  * The default provider for a stage method, scenario or scenario class.
  *
+ * @since 0.12.0
  */
 public class DefaultAsProvider implements AsProvider {
 

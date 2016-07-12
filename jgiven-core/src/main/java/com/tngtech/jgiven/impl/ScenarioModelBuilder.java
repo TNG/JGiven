@@ -210,9 +210,10 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
 
         As as = paramMethod.getAnnotation( As.class );
-        return ReflectionUtil
-            .newInstance( as == null ? DefaultAsProvider.class : as.provider() )
-            .as( as, paramMethod );
+        AsProvider provider = as != null
+                ? ReflectionUtil.newInstance( as.provider() )
+                : new DefaultAsProvider();
+        return provider.as( as, paramMethod );
     }
 
     public void setSuccess( boolean success ) {

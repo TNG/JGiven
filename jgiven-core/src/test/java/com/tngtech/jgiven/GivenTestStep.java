@@ -1,6 +1,9 @@
 package com.tngtech.jgiven;
 
+import java.lang.reflect.Method;
+
 import com.tngtech.jgiven.annotation.As;
+import com.tngtech.jgiven.annotation.AsProvider;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.IntroWord;
@@ -89,7 +92,12 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
-    public GivenTestStep a_step_with_a_printf_annotation_$( @Formatf( "%.2f" ) double d) {
+    @As( value = "output", provider = CustomAsProvider.class )
+    public GivenTestStep a_step_with_an_As_annotation_and_a_custom_provider() {
+        return self();
+    }
+
+    public GivenTestStep a_step_with_a_printf_annotation_$( @Formatf( "%.2f" ) double d ) {
         return self();
     }
 
@@ -97,7 +105,7 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
-    public GivenTestStep a_step_with_a_boolean_$_parameter( @Format( value = BooleanFormatter.class, args = { "yes", "no" } ) boolean b) {
+    public GivenTestStep a_step_with_a_boolean_$_parameter( @Format( value = BooleanFormatter.class, args = { "yes", "no" } ) boolean b ) {
         return self();
     }
 
@@ -110,4 +118,19 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     public GivenTestStep an_intro_word_with_an_as_annotation() {
         return self();
     }
+
+    public static class CustomAsProvider implements AsProvider {
+
+        @Override
+        public String as( As annotation, Method method ) {
+            return "Custom AsProvider " + annotation.value() + ": " + method.getName();
+        }
+
+        @Override
+        public String as( As annotation, Class<?> scenarioClass ) {
+            return null;
+        }
+
+    }
+
 }
