@@ -1,6 +1,10 @@
 package com.tngtech.jgiven.report.model;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
@@ -8,11 +12,11 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.annotation.As;
+import com.tngtech.jgiven.annotation.AsProvider;
 import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
-import com.tngtech.jgiven.config.ConfigurationUtil;
+import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
-import com.tngtech.jgiven.impl.util.WordUtil;
+import com.tngtech.jgiven.impl.util.ReflectionUtil;
 
 public class ReportModel {
     /**
@@ -178,18 +182,11 @@ public class ReportModel {
             setDescription( testClass.getAnnotation( Description.class ).value() );
         }
 
-        if( testClass.isAnnotationPresent( As.class ) ) {
-            name = testClass.getAnnotation( As.class ).value();
-        } else {
-            name = getTestNameToReadableString( testClass );
-        }
-    }
-
-    private String getTestNameToReadableString( Class<?> testClass ) {
-        AbstractJGivenConfiguration configuration = ConfigurationUtil.getConfiguration( testClass );
-        String regEx = configuration.getTestClassSuffixRegEx();
-        String classNameWithoutSuffix = testClass.getSimpleName().replaceAll( regEx + "$", "" );
-        return WordUtil.splitCamelCaseToReadableText( classNameWithoutSuffix );
+        As as = testClass.getAnnotation( As.class );
+        AsProvider provider = as != null
+                ? ReflectionUtil.newInstance( as.provider() )
+                : new DefaultAsProvider();
+        name = provider.as( as, testClass );
     }
 
     public String getName() {

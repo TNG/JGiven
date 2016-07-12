@@ -23,7 +23,12 @@ import com.tngtech.jgiven.WhenTestStep;
 import com.tngtech.jgiven.annotation.DoNotIntercept;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.base.ScenarioTestBase;
-import com.tngtech.jgiven.report.model.*;
+import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.StepModel;
+import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.Word;
 
 @RunWith( DataProviderRunner.class )
 public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {
@@ -307,6 +312,16 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
         getScenario().finished();
         StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
         assertThat( step.getCompleteSentence() ).isEqualTo( "Given a step with a bracket after a dollar 42 ]" );
+    }
+
+    @Test
+    public void a_custom_AsProvider_can_be_used() throws Throwable {
+        startScenario( "Scenario with a @As tag" );
+        given().a_step_with_an_As_annotation_and_a_custom_provider();
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getCompleteSentence() )
+            .isEqualTo( "Given Custom AsProvider output: a_step_with_an_As_annotation_and_a_custom_provider" );
     }
 
     @Test

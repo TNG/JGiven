@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.impl.util;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
@@ -63,6 +64,14 @@ public final class WordUtil {
                 ),
             " "
             );
+    }
+
+    public static String camelCaseToCapitalizedReadableText( String camelCase ) {
+        return WordUtil.capitalize( camelCaseToReadableText( camelCase ) );
+    }
+
+    public static String camelCaseToReadableText( String camelCase ) {
+        return CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_UNDERSCORE, camelCase ).replace( '_', ' ' );
     }
 
     public static String fromSnakeCase( String name ) {

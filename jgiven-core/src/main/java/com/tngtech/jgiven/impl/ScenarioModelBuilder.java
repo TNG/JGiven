@@ -1,6 +1,17 @@
 package com.tngtech.jgiven.impl;
 
-import com.google.common.base.CaseFormat;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.Stack;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
@@ -16,17 +27,12 @@ import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.impl.format.ParameterFormattingUtil;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
+import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.*;
 
 public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
@@ -66,7 +72,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         if( description.contains( "_" ) ) {
             readableDescription = description.replace( '_', ' ' );
         } else if( !description.contains( " " ) ) {
-            readableDescription = camelCaseToCapitalizedReadableText( description );
+            readableDescription = WordUtil.camelCaseToCapitalizedReadableText( description );
         }
 
         scenarioCaseModel = new ScenarioCaseModel();
@@ -74,14 +80,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
         scenarioModel = new ScenarioModel();
         scenarioModel.addCase( scenarioCaseModel );
         scenarioModel.setDescription( readableDescription );
-    }
-
-    private static String camelCaseToCapitalizedReadableText( String camelCase ) {
-        return WordUtil.capitalize( camelCaseToReadableText( camelCase ) );
-    }
-
-    private static String camelCaseToReadableText( String camelCase ) {
-        return CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_UNDERSCORE, camelCase ).replace( '_', ' ' );
     }
 
     public void addStepMethod( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps ) {
@@ -210,12 +208,12 @@ public class ScenarioModelBuilder implements ScenarioListener {
         if( description != null ) {
             return description.value();
         }
-        As as = paramMethod.getAnnotation( As.class );
-        if( as != null ) {
-            return as.value();
-        }
 
-        return nameWithSpaces( paramMethod );
+        As as = paramMethod.getAnnotation( As.class );
+        AsProvider provider = as != null
+                ? ReflectionUtil.newInstance( as.provider() )
+                : new DefaultAsProvider();
+        return provider.as( as, paramMethod );
     }
 
     public void setSuccess( boolean success ) {
@@ -243,14 +241,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
             stackTrace.add( element.toString() );
         }
         return stackTrace;
-    }
-
-    private static String nameWithSpaces( Method paramMethod ) {
-        String paraMethodName = paramMethod.getName();
-        if( paramMethod.getName().contains( "_" ) ) {
-            return WordUtil.fromSnakeCase( paraMethodName );
-        }
-        return camelCaseToReadableText( paraMethodName );
     }
 
     @Override
@@ -365,7 +355,10 @@ public class ScenarioModelBuilder implements ScenarioListener {
         if( method.isAnnotationPresent( Description.class ) ) {
             scenarioDescription = method.getAnnotation( Description.class ).value();
         } else if( method.isAnnotationPresent( As.class ) ) {
-            scenarioDescription = method.getAnnotation( As.class ).value();
+            As as = method.getAnnotation( As.class );
+
+            AsProvider provider = ReflectionUtil.newInstance( as.provider() );
+            scenarioDescription = provider.as( as, method );
         }
 
         scenarioStarted( scenarioDescription );

@@ -9,6 +9,7 @@
 * Added a new CurrentScenario interface similar to CurrentStep.
 * The CurrentScenario interface allows adding tags programmatically, see [#172](https://github.com/TNG/JGiven/issues/172).
 * Allow tag annotations on step methods and step classes.
+* Extended the @As annotation with a provider mechanism, see [#189](https://github.com/TNG/JGiven/issues/189).
 
 ## Breaking Changes in the JSON model
 
