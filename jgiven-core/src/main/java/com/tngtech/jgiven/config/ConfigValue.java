@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.confg;
+package com.tngtech.jgiven.config;
 
 /**
  * Represents a configuration value 

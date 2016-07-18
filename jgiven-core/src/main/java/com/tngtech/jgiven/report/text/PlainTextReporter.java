@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 
-import com.tngtech.jgiven.confg.ConfigValue;
+import com.tngtech.jgiven.config.ConfigValue;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;

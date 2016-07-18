@@ -4,7 +4,7 @@ import java.io.*;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
-import com.tngtech.jgiven.confg.ConfigValue;
+import com.tngtech.jgiven.config.ConfigValue;
 
 public class PrintWriterUtil {
     public static PrintWriter getPrintWriter( File file ) {

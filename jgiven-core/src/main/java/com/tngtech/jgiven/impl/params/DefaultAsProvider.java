@@ -1,12 +1,12 @@
 package com.tngtech.jgiven.impl.params;
 
-import java.lang.reflect.Method;
-
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.AsProvider;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
+
+import java.lang.reflect.Method;
 
 /**
  * The default provider for a stage method, scenario or scenario class.
@@ -25,9 +25,16 @@ public class DefaultAsProvider implements AsProvider {
             return annotation.value();
         }
 
-        String methodName = method.getName();
-        if( method.getName().contains( "_" ) ) {
+        return methodNameToReadableText( method.getName() );
+    }
+
+    String methodNameToReadableText( String methodName ) {
+        if( methodName.contains( "_" ) ) {
             return WordUtil.fromSnakeCase( methodName );
+        }
+
+        if (WordUtil.isAllUpperCase(methodName)) {
+            return methodName;
         }
 
         return WordUtil.camelCaseToReadableText( methodName );

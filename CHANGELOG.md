@@ -15,6 +15,10 @@
 
 * Due to the introduction of multiple attachments per step, the JSON model had to be changed in an backwards-incompatible way. Instead of a single field `attachment` that holds a single attachment object, a step has now an `attachments` field that holds an array of attachment objects.
 
+## Fixed Issues
+
+* Fixed an issue that step methods that are all uppercase are formatted in an unexpected way [#221](https://github.com/TNG/JGiven/issues/221)
+
 # v0.11.4
 
 ## Fixed Issues

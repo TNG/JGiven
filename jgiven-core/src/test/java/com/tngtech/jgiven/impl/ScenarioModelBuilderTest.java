@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -343,6 +344,15 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
     }
 
     @Test
+    public void all_uppercase_steps_are_formatted_correctly() throws Throwable {
+        startScenario( "Scenario with all uppercase step" );
+        given().ALLUPPERCASE();
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getCompleteSentence() ).isEqualTo( "Given ALLUPPERCASE" );
+    }
+
+    @Test
     public void the_Description_annotation_on_intro_words_is_evaluated() throws Throwable {
         startScenario( "Scenario with an @As annotation" );
         given().an_intro_word_with_an_as_annotation().something();
@@ -385,7 +395,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, Wh
     }
 
     @Test
-    public void DoNotIntercept_method_are_not_appearin_in_the_report() throws Throwable {
+    public void DoNotIntercept_method_are_not_appearing_in_the_report() throws Throwable {
         DoNotInterceptClass stage = addStage( DoNotInterceptClass.class );
         startScenario( "Test" );
         stage.do_not_intercept();

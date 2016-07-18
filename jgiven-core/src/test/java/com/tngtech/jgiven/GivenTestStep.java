@@ -113,6 +113,10 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
+    public GivenTestStep ALLUPPERCASE() {
+        return self();
+    }
+
     @As( "another description" )
     @IntroWord
     public GivenTestStep an_intro_word_with_an_as_annotation() {

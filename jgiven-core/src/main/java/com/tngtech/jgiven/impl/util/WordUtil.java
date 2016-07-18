@@ -1,9 +1,6 @@
 package com.tngtech.jgiven.impl.util;
 
-import com.google.common.base.CaseFormat;
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
+import com.google.common.base.*;
 import com.google.common.collect.FluentIterable;
 
 public final class WordUtil {
@@ -71,10 +68,19 @@ public final class WordUtil {
     }
 
     public static String camelCaseToReadableText( String camelCase ) {
-        return CaseFormat.LOWER_CAMEL.to( CaseFormat.LOWER_UNDERSCORE, camelCase ).replace( '_', ' ' );
+        return CaseFormat.UPPER_CAMEL.to( CaseFormat.LOWER_UNDERSCORE, camelCase ).replace( '_', ' ' );
     }
 
     public static String fromSnakeCase( String name ) {
         return name.replace( '_', ' ' );
+    }
+
+    public static boolean isAllUpperCase( String name ) {
+        for (int i = 0; i < name.length(); i++) {
+            if (!Ascii.isUpperCase( name.charAt( i ))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -2,7 +2,7 @@ package com.tngtech.jgiven.impl;
 
 import java.io.File;
 
-import com.tngtech.jgiven.confg.ConfigValue;
+import com.tngtech.jgiven.config.ConfigValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
