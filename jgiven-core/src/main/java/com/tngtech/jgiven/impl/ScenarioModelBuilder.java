@@ -252,17 +252,21 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     @Override
     public void stepMethodFinished( long durationInNanos, boolean hasNestedSteps ) {
-        if( currentStep != null ) {
-            currentStep.setDurationInNanos( durationInNanos );
-        }
-        if( hasNestedSteps ) {
-            if( currentStep.getStatus() != StepStatus.FAILED ) {
-                currentStep.setStatus( getStatusFromNestedSteps( currentStep.getNestedSteps() ) );
-            }
-            parentSteps.pop();
+        if( hasNestedSteps && !parentSteps.isEmpty() ) {
+            currentStep = parentSteps.peek();
         }
 
-        if( !parentSteps.empty() ) {
+        if( currentStep != null ) {
+            currentStep.setDurationInNanos( durationInNanos );
+            if( hasNestedSteps ) {
+                if( currentStep.getStatus() != StepStatus.FAILED ) {
+                    currentStep.setStatus( getStatusFromNestedSteps( currentStep.getNestedSteps() ) );
+                }
+                parentSteps.pop();
+            }
+        }
+
+        if( !hasNestedSteps && !parentSteps.isEmpty() ) {
             currentStep = parentSteps.peek();
         }
     }

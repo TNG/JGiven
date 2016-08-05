@@ -215,6 +215,7 @@ public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenT
                     + "   Given something with nested steps that fails (failed)\n"
                     + "           Given something (passed)\n"
                     + "           And something else that fails (failed)\n"
+                    + "           And something else (skipped)\n"
                     + "    When something happens (skipped)\n"
                     + "    Then something has happen (skipped)\n"
                     + "         something else not (skipped)" );
