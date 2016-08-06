@@ -1,3 +1,6 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+import org.gradle.internal.os.OperatingSystem;
+
 dependencies {
     compile project(':jgiven-core')
 }
@@ -7,20 +10,35 @@ def appDir = "${buildDir}/app/"
 def bowerComponentsDir = "${buildDir}/bower_components/"
 
 task bowerUpdate(type: Exec) {
-    executable = 'bower'
-    args = ['install']
+    if(OperatingSystem.current().isWindows()) {
+        executable = 'cmd'
+        args = ['/c', 'bower']
+    } else {
+        executable = 'bower'
+    }
+    args('install')
     inputs.file 'bower.json'
     outputs.dir bowerComponentsDir
 }
 
 task npmInstall(type: Exec) {
-    executable = 'npm'
-    args = ['install']
+    if(OperatingSystem.current().isWindows()) {
+        executable = 'cmd'
+        args = ['/c', 'npm']
+    } else {
+        executable = 'npm'
+    }
+    args('install')
 }
 
 task npmTest(type: Exec, dependsOn: npmInstall) {
-    executable = 'npm'
-    args = ['test']
+    if(OperatingSystem.current().isWindows()) {
+        executable = 'cmd'
+        args = ['/c', 'npm']
+    } else {
+        executable = 'npm'
+    }
+    args('test')
 }
 
 test.finalizedBy(npmTest)
@@ -84,7 +102,7 @@ task copyImageFiles(type: Copy) {
 task copyAppFiles(type: Copy) {
     from 'src/app'
     into appDir
-    filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: [version: version])
+    filter(ReplaceTokens, tokens: [version: version])
 }
 
 copyJsFiles.dependsOn bowerUpdate
