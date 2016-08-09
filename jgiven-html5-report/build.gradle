@@ -9,36 +9,18 @@ dependencies {
 def appDir = "${buildDir}/app/"
 def bowerComponentsDir = "${buildDir}/bower_components/"
 
-task bowerUpdate(type: Exec) {
-    if(OperatingSystem.current().isWindows()) {
-        executable = 'cmd'
-        args = ['/c', 'bower']
-    } else {
-        executable = 'bower'
-    }
-    args('install')
+task bowerUpdate(type: CrossPlatformExec) {
+    buildCommand('bower', 'install')
     inputs.file 'bower.json'
     outputs.dir bowerComponentsDir
 }
 
-task npmInstall(type: Exec) {
-    if(OperatingSystem.current().isWindows()) {
-        executable = 'cmd'
-        args = ['/c', 'npm']
-    } else {
-        executable = 'npm'
-    }
-    args('install')
+task npmInstall(type: CrossPlatformExec) {
+    buildCommand('npm', 'install')
 }
 
-task npmTest(type: Exec, dependsOn: npmInstall) {
-    if(OperatingSystem.current().isWindows()) {
-        executable = 'cmd'
-        args = ['/c', 'npm']
-    } else {
-        executable = 'npm'
-    }
-    args('test')
+task npmTest(type: CrossPlatformExec, dependsOn: npmInstall) {
+    buildCommand('npm', 'test')
 }
 
 test.finalizedBy(npmTest)
@@ -118,3 +100,15 @@ task zipAppDir(type: Zip, dependsOn: [copyJsFiles, copyCssFiles, copyFontFiles, 
 }
 
 jar.dependsOn zipAppDir
+
+class CrossPlatformExec extends Exec {
+    void buildCommand(String command, String... commandArgs) {
+        if(OperatingSystem.current().isWindows()) {
+            executable = 'cmd'
+            args = ['/c', command]
+        } else {
+            executable = command
+        }
+        args(commandArgs.toList());
+    }
+}
