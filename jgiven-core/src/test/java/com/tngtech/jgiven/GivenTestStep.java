@@ -71,7 +71,7 @@ public class GivenTestStep extends Stage<GivenTestStep> {
 
     @NestedSteps
     public GivenTestStep something_with_nested_steps_that_fails() {
-        return given().something().and().something_else_that_fails();
+        return given().something().and().something_else_that_fails().and().something_else();
     }
 
     public GivenTestStep an_array( Object argument ) {

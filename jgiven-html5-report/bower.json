@@ -5,7 +5,7 @@
     "Jan Schäfer <jan.schaefer@tngtech.com>"
   ],
   "description": "An HTML5 Report for JGiven",
-  "main": "src/main/resources/app.js.js",
+  "main": "src/app/lib/app.js",
   "keywords": [
     "jgiven",
     "report"
