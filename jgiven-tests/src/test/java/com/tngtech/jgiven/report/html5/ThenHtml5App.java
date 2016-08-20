@@ -1,8 +1,6 @@
 package com.tngtech.jgiven.report.html5;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.testng.reporters.Files;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,12 +8,15 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.testng.reporters.Files;
 
 public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SELF> {
 
     private WebElement foundTag;
     private WebElement foundLink;
+    private WebElement foundElement;
 
     public SELF the_page_title_is( String pageTitle ) {
         assertThat( webDriver.findElement( By.id( "page-title" ) ).getText() ).isEqualTo( pageTitle );
@@ -84,6 +85,17 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
     public SELF target( String target ) {
         assertThat( foundLink ).isNotNull();
         assertThat( foundLink.getAttribute( "target" ) ).isEqualTo( target );
+        return self();
+    }
+
+    public SELF an_element_with_a_$_class_exists( String multiline ) {
+        foundElement = webDriver.findElement( By.className( multiline ) );
+        assertThat( foundElement ).isNotNull();
+        return self();
+    }
+
+    public SELF has_content( String content ) {
+        assertThat( foundElement.getText() ).isEqualTo( content );
         return self();
     }
 }

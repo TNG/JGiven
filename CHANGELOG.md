@@ -18,6 +18,7 @@
 ## Fixed Issues
 
 * Fixed an issue that step methods that are all uppercase are formatted in an unexpected way [#221](https://github.com/TNG/JGiven/issues/221)
+* Fixed an issue that newlines of formatted arguments have not been formatted in the HTML5 report [#226](https://github.com/TNG/JGiven/issues/226)
 
 # v0.11.4
 

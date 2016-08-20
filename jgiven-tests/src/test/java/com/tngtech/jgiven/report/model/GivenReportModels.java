@@ -118,4 +118,9 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         givenReportModel.scenario_$_has_no_steps( i );
         return self();
     }
+
+    public SELF step_$_of_case_$_has_a_formatted_value_$_as_parameter(int stepNr, int caseNr, String formattedValue) {
+        givenReportModel.step_$_of_case_$_has_a_formatted_value_$_as_parameter(stepNr, caseNr, formattedValue);
+        return self();
+    }
 }

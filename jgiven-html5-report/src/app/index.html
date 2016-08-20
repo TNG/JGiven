@@ -74,8 +74,8 @@
 
       <span
           ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName) && !word.argumentInfo.dataTable"
-          class="{{word.argumentInfo ? 'argument' : ''}} {{ word.value.indexOf('\n') > -1 ? 'multiline' : ''}}"
-      >{{ ::word.argumentInfo.formattedValue || word.value }}</span>
+          class="{{word.argumentInfo ? 'argument' : ''}} {{ getWordValue(word).indexOf('\n') > -1 ? 'multiline' : ''}}"
+      >{{ ::getWordValue(word) }}</span>
       <!-- do not change formatting here, it is important for multiline values -->
       <table class="table-value" ng-if="word.argumentInfo.dataTable">
         <tr bindonce ng-repeat="row in word.argumentInfo.dataTable.data">

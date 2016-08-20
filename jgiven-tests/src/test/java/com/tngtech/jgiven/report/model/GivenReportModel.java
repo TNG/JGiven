@@ -1,16 +1,20 @@
 package com.tngtech.jgiven.report.model;
 
-import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.*;
-import com.tngtech.jgiven.attachment.Attachment;
-import com.tngtech.jgiven.attachment.MediaType;
-import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
+import static java.util.Arrays.asList;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static java.util.Arrays.asList;
+import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.Quoted;
+import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.attachment.Attachment;
+import com.tngtech.jgiven.attachment.MediaType;
+import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
 
@@ -62,12 +66,12 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         }
 
         scenarioCaseModel
-                .addStep( new StepModel( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ) ) );
+            .addStep( new StepModel( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ) ) );
         i = 0;
         for( String arg : scenarioCaseModel.getExplicitArguments() ) {
             String argumentName = "stepArg" + i++;
             scenarioCaseModel.addStep( new StepModel( "something_happens", asList( Word.introWord( "when" ),
-                    Word.argWord( argumentName, arg, (String) null ) ) ) );
+                Word.argWord( argumentName, arg, (String) null ) ) ) );
         }
     }
 
@@ -196,9 +200,9 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
             @Quoted String argName ) {
         lastArgWord = Word.argWord( argName, arg, arg );
         getCase( ncase )
-                .addStep(
-                        new StepModel( name,
-                                Arrays.asList( Word.introWord( "when" ), new Word( name ), lastArgWord ) ) );
+            .addStep(
+                new StepModel( name,
+                    Arrays.asList( Word.introWord( "when" ), new Word( name ), lastArgWord ) ) );
         return self();
     }
 
@@ -234,8 +238,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         }
     }
 
-    public void transpose_set_to( boolean b ) {
-    }
+    public void transpose_set_to( boolean b ) {}
 
     public SELF header_type_set_to( Table.HeaderType headerType ) {
         latestWord.getArgumentInfo().getDataTable().setHeaderType( headerType );
@@ -291,4 +294,11 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
+    public SELF step_$_of_case_$_has_a_formatted_value_$_as_parameter( int stepNr, int caseNr, String formattedValue ) {
+        StepModel step = getStep( stepNr, 1, caseNr );
+        Word word = Word.argWord( "a", "dummy value", formattedValue );
+        step.addWords( word );
+        latestWord = word;
+        return self();
+    }
 }

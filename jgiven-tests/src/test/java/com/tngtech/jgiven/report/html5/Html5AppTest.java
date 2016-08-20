@@ -1,12 +1,14 @@
 package com.tngtech.jgiven.report.html5;
 
+import java.io.IOException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -17,7 +19,13 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.report.model.StepStatus;
-import com.tngtech.jgiven.tags.*;
+import com.tngtech.jgiven.tags.BrowserTest;
+import com.tngtech.jgiven.tags.FeatureAttachments;
+import com.tngtech.jgiven.tags.FeatureHtml5Report;
+import com.tngtech.jgiven.tags.FeatureTags;
+import com.tngtech.jgiven.tags.FeatureTagsWithCustomStyle;
+import com.tngtech.jgiven.tags.Issue;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 @BrowserTest
 @FeatureHtml5Report
@@ -158,18 +166,18 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
         String content1 = "Some Example Attachment\nwith some example content";
         String content2 = "Another Example Attachment\nwith some example content";
         given().a_report_model()
-                .and().step_$_of_scenario_$_has_a_text_attachment_with_content( 1, 1, content1 )
-                .and().step_$_of_scenario_$_has_another_text_attachment_with_content( 1,1, content2 )
-                .and().the_report_exist_as_JSON_file();
+            .and().step_$_of_scenario_$_has_a_text_attachment_with_content( 1, 1, content1 )
+            .and().step_$_of_scenario_$_has_another_text_attachment_with_content( 1, 1, content2 )
+            .and().the_report_exist_as_JSON_file();
 
         whenReport
-                .and().the_HTML_Report_Generator_is_executed();
+            .and().the_HTML_Report_Generator_is_executed();
 
         when().the_page_of_scenario_$_is_opened( 1 );
 
         then().$_attachment_icons_exist( 2 )
-                .and().the_content_of_the_attachment_referenced_by_icon_$_is( 1, content1 )
-                .and().the_content_of_the_attachment_referenced_by_icon_$_is( 2, content2 );
+            .and().the_content_of_the_attachment_referenced_by_icon_$_is( 1, content1 )
+            .and().the_content_of_the_attachment_referenced_by_icon_$_is( 2, content2 );
     }
 
     @Test
@@ -206,6 +214,20 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
         then().the_navigation_menu_has_a_link_with_text( title.toUpperCase() )
             .and().href( href )
             .and().target( "_blank" );
+    }
+
+    @Test
+    @Issue( "#226" )
+    public void newlines_are_detected_in_formatted_values_and_shown_as_multiline_text() throws IOException {
+        String content = "Some \n text \n with \n newlines";
+        given().a_report_model()
+            .and().step_$_of_case_$_has_a_formatted_value_$_as_parameter( 1, 1, content )
+            .and().the_report_exist_as_JSON_file();
+        whenReport.when().the_HTML_Report_Generator_is_executed();
+        when().the_page_of_scenario_$_is_opened( 1 );
+        then().an_element_with_a_$_class_exists( "multiline" )
+            .and().has_content( content );
+
     }
 
 }
