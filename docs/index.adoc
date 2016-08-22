@@ -1,0 +1,29 @@
+= JGiven Documentation
+:description: index page to the JGiven documentation
+:keywords: JGiven, Java, BDD, TDD, Behavior-Driven Testing, Specification by Example
+ifndef::env-site[:toc: left]
+:page-layout: docs
+:page-description: {description}
+:page-keywords: {keywords}
+
+include::installation.adoc[]
+
+include::getting_started.adoc[]
+
+include::report_generation.adoc[]
+
+include::stages.adoc[]
+
+include::lifecycle_methods.adoc[]
+
+include::parameterized_steps.adoc[]
+
+include::parameterized_scenarios.adoc[]
+
+include::tags.adoc[]
+
+include::attachments.adoc[]
+
+include::exception_handling.adoc[]
+
+include::spring.adoc[]
