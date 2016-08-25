@@ -1,7 +1,5 @@
 package com.tngtech.jgiven.examples.webdriver;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.BeforeScenario;
@@ -18,7 +16,7 @@ public class MyStage {
 
     @BeforeScenario
     public void doStuff() {
-        web_Driver = new HtmlUnitDriver( true );
+        web_Driver = new WebDriver();
     }
     //end::rule[]
     //tag::start[]
@@ -27,7 +25,7 @@ public class MyStage {
 
     @BeforeScenario
     public void startBrowser() {
-        webDriver = new HtmlUnitDriver( true );
+        webDriver = new WebDriver();
     }
     //end::start[]
     //tag::middle[]
