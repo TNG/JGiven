@@ -10,6 +10,8 @@ public class PanCakeCook implements Cook {
     public String fryDoughInAPan( Set<String> dough ) {
         if( dough.contains( "egg" ) && dough.contains( "milk" ) && dough.contains( "flour" ) ) {
             return "pancake";
+        } else if ( dough.contains( "egg" ) && dough.contains( "less milk" ) && dough.contains( "flour" ) ){
+            return "dry pancake";
         }
         return "mishmash";
     }

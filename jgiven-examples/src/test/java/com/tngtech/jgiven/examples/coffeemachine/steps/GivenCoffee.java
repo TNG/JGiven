@@ -13,7 +13,7 @@ public class GivenCoffee extends Stage<GivenCoffee> {
     private CoffeeMachine coffeeMachine;
 
     @ProvidedScenarioState
-    private int dollars;
+    private int euros;
 
     @ExtendedDescription( "An empty coffee machine that is already turned on.<br>"
             + "The coffee price is set to 2 EUR." )
@@ -29,7 +29,7 @@ public class GivenCoffee extends Stage<GivenCoffee> {
         return this;
     }
 
-    public GivenCoffee the_coffee_costs_$_dollar( int price ) {
+    public GivenCoffee the_coffee_costs_$_euro( int price ) {
         coffeeMachine.price = price;
         return this;
     }

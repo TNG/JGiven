@@ -5,6 +5,8 @@ ifndef::env-site[:toc: left]
 :page-layout: docs
 :page-description: {description}
 :page-keywords: {keywords}
+:version: 0.11.4
+
 
 include::installation.adoc[]
 
