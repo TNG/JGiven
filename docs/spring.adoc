@@ -1,1 +1,31 @@
 == Spring
+
+
+Spring support is provided by the jgiven-spring dependency for maven:
+
+[source,maven,subs="verbatim,attributes"]
+----
+<dependency>
+   <groupId>com.tngtech.jgiven</groupId>
+   <artifactId>jgiven-spring</artifactId>
+   <version>{version}</version>
+   <scope>test</scope>
+</dependency>
+----
+
+or in gradle with:
+
+[source,gradle,subs="verbatim,attributes"]
+----
+dependencies {
+	...
+    testCompile("com.tngtech.jgiven:jgiven-junit:{version}")
+    testCompile("com.tngtech.jgiven:jgiven-testng:{version}")
+    testCompile("com.tngtech.jgiven:jgiven-spring:{version}")
+	...
+}
+----
+
+
+to be finished… (help by editing the following file: https://github.com/TNG/JGiven/blob/asciidoc/docs/spring.adoc[spring.adoc])
+

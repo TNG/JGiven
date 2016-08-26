@@ -13,7 +13,7 @@ import org.junit.Test;
  * </p>
  */
 public class TagHierarchyExampleTest extends SimpleScenarioTest<TagHierarchyExampleTest.Steps> {
-
+//tag::taginaction[]
     @ExampleSubCategory
     @Test
     public void tags_can_form_a_hierarchy() {
@@ -21,7 +21,7 @@ public class TagHierarchyExampleTest extends SimpleScenarioTest<TagHierarchyExam
         when().the_report_is_generated();
         then().the_tags_appear_in_a_hierarchy();
     }
-
+//end::taginaction[]
     @TagThatIsNotVisibleInNavigation
     @AnotherExampleSubCategory
     @Test
