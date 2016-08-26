@@ -22,4 +22,6 @@ public class WhenCoffee extends Stage<WhenCoffee> {
         return self();
     }
 
+    
+
 }

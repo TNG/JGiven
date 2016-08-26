@@ -11,11 +11,13 @@ buildscript {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.1'
         classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.2'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
     }
 }
 
 apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'com.github.kt3k.coveralls'
+apply plugin: 'org.asciidoctor.convert'
 
 description = 'JGiven - BDD in plain Java'
 
@@ -41,6 +43,10 @@ if (JavaVersion.current().isJava8Compatible()) {
             options.addStringOption('Xdoclint:none', '-quiet')
         }
     }
+}
+
+asciidoctor {
+    sourceDir = file('docs')
 }
 
 subprojects {

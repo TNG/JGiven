@@ -8,6 +8,8 @@ import com.tngtech.jgiven.annotation.IsTag;
 /**
  * Defines a tag that is used as a category
  */
+//tag::noPackage[]
 @IsTag
 @Retention( RetentionPolicy.RUNTIME )
 public @interface ExampleCategory {}
+//end::noPackage[]

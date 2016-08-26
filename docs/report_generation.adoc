@@ -1,0 +1,95 @@
+== Report Generation
+
+=== Plain Text Reports
+
+By default JGiven outputs plain text reports to the console when executed. To disable plain text reports set the following Java system property:
+
+[source,java]
+----
+jgiven.report.text=false
+----
+
+=== JSON Reports
+
+By default JGiven will generate JSON reports into the `jgiven-reports/json` directory. JGiven tries to autodetect when it is executed by the Maven surefire plugin and in that case generates the reports into `target/jgiven-reports/json`. To disable JSON report generation set the following Java system property:
+
+[source,java]
+----
+jgiven.report.enabled=false
+----
+
+Note that in order to generate HTML reports, JSON reports are required.
+
+=== HTML Report
+
+To generate an HTML report you have to run the JGiven report generator with the `html` format option. The reporter is part of the jgiven-core module. For the HTML output you also need the `jgiven-html5-report` dependency. The report generator can be executed on the command line as follows (assuming that the jgiven-core and the jgiven-html5-report JAR and all required dependencies are on the Java CLASSPATH)
+
+
+[source,bash]
+----
+java com.tngtech.jgiven.report.ReportGenerator \
+  --format=html \
+  [--sourceDir=<jsonreports>] \
+  [--targetDir=<targetDir>] \
+----
+
+To see the HTML report in action you can have a look at the http://jgiven.org/jgiven-report/html5/[HTML report of JGiven itself]
+
+==== Maven
+
+For Maven there exists a plugin that can be used as follows:
+
+[source,maven]
+----
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.tngtech.jgiven</groupId>
+      <artifactId>jgiven-maven-plugin</artifactId>
+      <version>{ siteversion }</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>report</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <format>html</format>
+      </configuration>
+    </plugin>
+ </plugins>
+</build>
+----
+
+Now run:
+
+[source,bash]
+----
+$ mvn verify
+----
+
+HTML reports are then generated into the `target/jgiven-reports/html` directory.
+
+==== Gradle
+
+Currently no Gradle plugin exists for JGiven (feel free to contribute one!). However, you can use the JavaExec task instead:
+
+[source,gradle]
+----
+task jgivenReport(type: JavaExec, dependsOn: 'test') {
+    main = 'com.tngtech.jgiven.report.ReportGenerator'
+    args '--targetDir=target/jgiven-reports/html',
+         '--format=html'
+    classpath = configurations.testCompile
+}
+----
+Now run:
+
+[source,bash]
+----
+$ gradle jgivenReport
+----
+
+HTML reports are then generated into the `target/jgiven-reports/html` directory.
+
