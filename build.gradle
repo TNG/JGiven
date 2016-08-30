@@ -61,16 +61,16 @@ subprojects {
     sourceCompatibility = targetCompatibility = 1.6
 
     ext {
-        junitDataproviderVersion = '1.10.2'
+        junitDataproviderVersion = '1.11.0'
         // set default junit version if not set via command line
         junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.12'
         junitParamsVersion = '1.0.5'
-        testngVersion = '6.9.10'
-        assertjVersion = '1.7.1'
-        slf4jVersion = '1.7.13'
-        cglibVersion = '2.2.2'
+        testngVersion = '6.9.12'
+        assertjVersion = '2.5.0'
+        slf4jVersion = '1.7.21'
+        cglibVersion = '3.2.4'
         paranamerVersion = '2.8'
-        jansiVersion = '1.11'
+        jansiVersion = '1.13'
         gsonVersion = '2.7'
         guavaVersion = '19.0'
         springVersion = '3.2.4.RELEASE'
@@ -307,4 +307,3 @@ overallJacocoReport.dependsOn {
 coveralls.jacocoReportPath = 'build/reports/jacoco/overallJacocoReport/overallJacocoReport.xml'
 coveralls.sourceDirs = ["jgiven-core/src/main/java"]
 coveralls.saveAsFile = true
-

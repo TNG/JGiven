@@ -3,7 +3,7 @@ description = "Module to write JGiven tests with TestNG"
 dependencies {
     compile project(':jgiven-core')
     compile project(':jgiven-html5-report')
-    compile(group: 'org.testng', name: 'testng', version:'6.8.7') {
+    compile(group: 'org.testng', name: 'testng', version:'6.9.12') {
        /* This dependency was originally in the Maven provided scope, but the project was not of type war.
        This behavior is not yet supported by Gradle, so this dependency has been converted to a compile dependency.
        Please review and delete this closure when resolved. */
@@ -12,4 +12,3 @@ dependencies {
 
 test.useTestNG()
 test.finalizedBy(jgivenHtml5Report)
-
