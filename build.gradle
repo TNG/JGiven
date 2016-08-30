@@ -13,6 +13,7 @@ buildscript {
 plugins {
     id 'com.github.ben-manes.versions' version '0.13.0'
     id "org.sonarqube" version "2.0.1"
+    id "ru.vyarus.animalsniffer" version "1.2.0"
 }
 
 apply plugin: 'com.github.kt3k.coveralls'
@@ -56,6 +57,7 @@ subprojects {
     apply plugin: 'maven'
     apply plugin: 'signing'
     apply plugin: 'org.asciidoctor.convert'
+    apply plugin: 'ru.vyarus.animalsniffer'
 
     description "${rootProject.description} - Module ${project.name}"
     sourceCompatibility = targetCompatibility = 1.6
@@ -88,6 +90,7 @@ subprojects {
         testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
         testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
         testCompile group: 'net.java.quickcheck', name: 'quickcheck', version: quickcheckVersion
+        signature 'org.codehaus.mojo.signature:java16:1.1@signature'
     }
 
     tasks.withType(JavaCompile) {

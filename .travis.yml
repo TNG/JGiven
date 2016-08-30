@@ -7,10 +7,10 @@ cache:
   - $HOME/.gradle
 install: "./gradlew classes"
 script:
-- "./gradlew test -DjunitVersion=4.9"
-- "./gradlew test -DjunitVersion=4.10"
-- "./gradlew test -DjunitVersion=4.11"
-- "./gradlew test -DjunitVersion=4.12"
+- "./gradlew check -DjunitVersion=4.9"
+- "./gradlew check -DjunitVersion=4.10"
+- "./gradlew check -DjunitVersion=4.11"
+- "./gradlew check -DjunitVersion=4.12"
 jdk:
 - oraclejdk8
 - oraclejdk7
