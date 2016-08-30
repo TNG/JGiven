@@ -14,7 +14,6 @@ script:
 jdk:
 - oraclejdk8
 - oraclejdk7
-- openjdk6
 after_success:
 - test "$TRAVIS_JDK_VERSION" == "oraclejdk7" && test "$TRAVIS_BRANCH" == "master" && test "$TRAVIS_PULL_REQUEST" == "false" && ./gradlew overallJacocoReport coveralls uploadArchives
 env:
