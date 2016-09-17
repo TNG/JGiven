@@ -7,7 +7,7 @@
 <meta name="generator" content="Asciidoctor 1.5.3">
 <meta name="description" content="index page to the JGiven documentation">
 <meta name="keywords" content="JGiven, Java, BDD, TDD, Behavior-Driven Testing, Specification by Example">
-<title>JGiven Documentation</title>
+<title>JGiven User Guide</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -418,10 +418,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 .hide-for-print{display:none!important}
 .show-for-print{display:inherit!important}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>JGiven Documentation</h1>
+<h1>JGiven User Guide</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -511,6 +512,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>0.12.0-SNAPSHOT</p>
+</div>
+<div class="paragraph">
+<p><span class="icon"><i class="fa fa-github"></i></span></p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_installation">Installation</h2>
 <div class="sectionbody">
@@ -526,7 +537,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight"><code class="language-maven" data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0-SNAPSHOT&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -538,7 +549,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-junit:0.11.4'
+   testCompile 'com.tngtech.jgiven:jgiven-junit:0.12.0-SNAPSHOT'
 ...
 }</code></pre>
 </div>
@@ -557,7 +568,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight"><code class="language-maven" data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-testng&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0-SNAPSHOT&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -569,7 +580,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-testng:0.11.4'
+   testCompile 'com.tngtech.jgiven:jgiven-testng:0.12.0-SNAPSHOT'
 ...
 }</code></pre>
 </div>
@@ -588,7 +599,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight"><code class="language-maven" data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-html5-report&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0-SNAPSHOT&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -600,7 +611,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-html5-report:0.11.4'
+   testCompile 'com.tngtech.jgiven:jgiven-html5-report:0.12.0-SNAPSHOT'
 ...
 }</code></pre>
 </div>
@@ -630,9 +641,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.junit.ScenarioTest;
 
-public class JGivenTemplateTest extends
-   ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
-
+public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
 }</code></pre>
 </div>
 </div>
@@ -651,30 +660,31 @@ public class JGivenTemplateTest extends
 
 public class GivenSomeState extends Stage&lt;GivenSomeState&gt; {
     public GivenSomeState some_state() {
-        //code for executing test goes here
-       return self();
+        return self();
     }
- }</code></pre>
+}</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class WhenSomeAction extends Stage&lt;WhenSomeAction&gt; {
+<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.Stage;
+
+public class WhenSomeAction extends Stage&lt;WhenSomeAction&gt; {
     public WhenSomeAction some_action() {
-        //code for executing test goes here
-       return self();
+        return self();
     }
- }</code></pre>
+}</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class ThenSomeOutcome extends Stage&lt;ThenSomeOutcome&gt; {
+<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.Stage;
+
+public class ThenSomeOutcome extends Stage&lt;ThenSomeOutcome&gt; {
     public ThenSomeOutcome some_outcome() {
-        //code for executing test goes here
-       return self();
+        return self();
     }
- }</code></pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -688,13 +698,17 @@ public class GivenSomeState extends Stage&lt;GivenSomeState&gt; {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
-   @Test
-   public void something_should_happen() {
-      given().some_state();
-      when().some_action();
-      then().some_outcome();
-   }
+<pre class="highlight"><code class="language-java" data-lang="java">import org.junit.Test;
+import com.tngtech.jgiven.junit.ScenarioTest;
+
+public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
+
+    @Test
+    public void something_should_happen() {
+        given().some_state();
+        when().some_action();
+        then().some_outcome();
+    }
 }</code></pre>
 </div>
 </div>
@@ -842,13 +856,13 @@ public class GivenSomeState extends Stage&lt;GivenSomeState&gt; {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    public WhenCook the_cook_mangles_everthing_to_a_dough() {
-        assertThat( cook ).isNotNull();
-        assertThat( ingredients ).isNotNull();
+<pre class="highlight"><code class="language-java" data-lang="java">public WhenCook the_cook_mangles_everthing_to_a_dough() {
+    assertThat( cook ).isNotNull();
+    assertThat( ingredients ).isNotNull();
 
-        dough = cook.makeADough( ingredients );
-        return this;
-    }</code></pre>
+    dough = cook.makeADough( ingredients );
+    return this;
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -865,17 +879,14 @@ public class GivenSomeState extends Stage&lt;GivenSomeState&gt; {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @As("the cook drinks 50% of the milk accidently")
-    public WhenCook the_cook_drinks_50_percent_of_the_milk_accidently() {
-        dough.remove("milk");
-        dough.add("less milk");
-        meal = cook.fryDoughInAPan( dough );
-        return this;
-    }</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@As( "$ % are added" )
+public WhenCalculator $_percent_are_added( int percent ) {
+    return self();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The step will appear as <code>the cook drinks 50% of the milk accidently</code> in the report.</p>
+<p>The step will appear as <code>10 % are added</code> in the report, when invoked with <code>10</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -888,10 +899,10 @@ public class GivenSomeState extends Stage&lt;GivenSomeState&gt; {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @Hidden
-    public void prepareRocketSimulator() {
-        rocketSimulator = createRocketSimulator();
-    }</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@Hidden
+public void prepareRocketSimulator() {
+    rocketSimulator = createRocketSimulator();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -908,11 +919,11 @@ public class GivenSomeState extends Stage&lt;GivenSomeState&gt; {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @ExtendedDescription("Actually uses a rocket simulator")
-    public RocketMethods launch_rocket() {
-        rocketLaunched = rocketSimulator.launchRocket();
-        return this;
-    }</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@ExtendedDescription("Actually uses a rocket simulator")
+public RocketMethods launch_rocket() {
+    rocketLaunched = rocketSimulator.launchRocket();
+    return this;
+}</code></pre>
 </div>
 </div>
 </div>
@@ -999,6 +1010,7 @@ public class GivenIngredients extends Stage&lt;GivenIngredients&gt; {
 
     @ProvidedScenarioState
     String meal;
+
     public WhenCook the_cook_fries_the_dough_in_a_pan() {
         assertThat( cook ).isNotNull();
         assertThat( dough ).isNotNull();
@@ -1152,11 +1164,11 @@ public class MyDynamicallyAddedTest extends
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @Test
-    public void subclassing_of_stages_should_work() {
-        given().my_common_step()
-          .and().cant_do_this();
-    }</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@Test
+public void subclassing_of_stages_should_work() {
+    given().my_common_step()
+      .and().cant_do_this();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1182,7 +1194,8 @@ public class MyDynamicallyAddedTest extends
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class GivenSpecialStepsFixed&lt;SELF extends GivenSpecialStepsFixed&lt;SELF&gt;&gt; extends GivenCommonStepsFixed&lt;SELF&gt; {
+<pre class="highlight"><code class="language-java" data-lang="java">public class GivenSpecialStepsFixed&lt;SELF extends GivenSpecialStepsFixed&lt;SELF&gt;&gt;
+        extends GivenCommonStepsFixed&lt;SELF&gt; {
     public SELF my_special_step() {
         return self();
     }
@@ -1302,16 +1315,10 @@ public class MyDynamicallyAddedTest extends
  }
 
 
+public class MyWebDriverUsingStage {
     @ScenarioRule
     protected WebDriverRule webDriverRule = new WebDriverRule();
-
-    @ProvidedScenarioState
-    protected WebDriver web_Driver;
-
-    @BeforeScenario
-    public void doStuff() {
-        web_Driver = new HtmlUnitDriver( true );
-    }</code></pre>
+}</code></pre>
 </div>
 </div>
 </div>
@@ -1327,7 +1334,7 @@ public class MyDynamicallyAddedTest extends
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@BeforeStage
 public void setup() {
-
+  // do something useful to setup the stage
 }</code></pre>
 </div>
 </div>
@@ -1343,7 +1350,6 @@ public void setup() {
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">public class MyStage {
-public class MyStage {
 
     protected CustomerBuilder customerBuilder;
 
@@ -1398,11 +1404,9 @@ given().multiple_arguments( 5, 6 ); // Given multiple arguments 5 6</code></pre>
 <div class="paragraph">
 <p>In the generated report <code>$</code> is replaced with the corresponding formatted parameter. So the generated report will look as follows:</p>
 </div>
-<div class="openblock">
+<div class="listingblock">
 <div class="content">
-<div class="paragraph">
-<p>Given 5 eggs</p>
-</div>
+<pre>Given 5 eggs</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1634,15 +1638,15 @@ public @interface Formatf {
     @DataProvider( {
         "1, 1",
         "0, 2",
-        "1, 0",
+        "1, 0"
     } )
-    public void coffee_is_not_served( int coffees, int euros) {
+    public void coffee_is_not_served( int coffees, int euros ) {
         given().a_coffee_machine()
-        .the_coffee_costs_$_euro( 2 )
-        .there_are_$_coffees_left_in_the_machine( coffees );
+            .and().the_coffee_costs_$_euros( 2 )
+            .and().there_are_$_coffees_left_in_the_machine( coffees );
 
-        when().I_insert_$_one_euro_coins( euros ).
-            and().I_press_the_coffee_button();
+        when().I_insert_$_one_euro_coins( euros )
+            .and().I_press_the_coffee_button();
 
         then().I_should_not_be_served_a_coffee();
     }</code></pre>
@@ -1653,21 +1657,22 @@ public @interface Formatf {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Scenario: coffee is not served
+<pre> Coffee is not served
 
-  Given there are &lt;coffees&gt; coffees left in the machine
-    And the coffee costs 2 dollars
-   When I deposit &lt;dollars&gt; dollars
-    And I press the coffee button
-   Then I should not be served a coffee
+   Given a coffee machine
+     And the coffee costs 2 euros
+     And there are &lt;coffees&gt; coffees left in the machine
+    When I insert &lt;euros&gt; one euro coins
+     And I press the coffee button
+    Then I should not be served a coffee
 
- Cases:
+  Cases:
 
-   | # | &lt;coffees&gt; | &lt;dollars&gt; | Status  |
-   +---+-----------+-----------+---------+
-   | 1 |         1 |         1 | Success |
-   | 2 |         0 |         2 | Success |
-   | 3 |         1 |         0 | Success |</pre>
+   | # | coffees | euros | Status  |
+   +---+---------+-------+---------+
+   | 1 |       1 |     1 | Success |
+   | 2 |       0 |     2 | Success |
+   | 3 |       1 |     0 | Success |</pre>
 </div>
 </div>
 </div>
@@ -2063,7 +2068,7 @@ public SELF an_exception_is_thrown() {
 <pre class="highlight"><code class="language-maven" data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spring&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0-SNAPSHOT&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -2075,9 +2080,9 @@ public SELF an_exception_is_thrown() {
 <div class="content">
 <pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
 	...
-    testCompile("com.tngtech.jgiven:jgiven-junit:0.11.4")
-    testCompile("com.tngtech.jgiven:jgiven-testng:0.11.4")
-    testCompile("com.tngtech.jgiven:jgiven-spring:0.11.4")
+    testCompile("com.tngtech.jgiven:jgiven-junit:0.12.0-SNAPSHOT")
+    testCompile("com.tngtech.jgiven:jgiven-testng:0.12.0-SNAPSHOT")
+    testCompile("com.tngtech.jgiven:jgiven-spring:0.12.0-SNAPSHOT")
 	...
 }</code></pre>
 </div>
@@ -2090,7 +2095,7 @@ public SELF an_exception_is_thrown() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-08-26 14:24:49 CEST
+Last updated 2016-09-17 08:25:53 PST
 </div>
 </div>
 </body>
