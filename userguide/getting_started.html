@@ -436,9 +436,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.junit.ScenarioTest;
 
-public class JGivenTemplateTest extends
-   ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
-
+public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
 }</code></pre>
 </div>
 </div>
@@ -457,30 +455,31 @@ public class JGivenTemplateTest extends
 
 public class GivenSomeState extends Stage&lt;GivenSomeState&gt; {
     public GivenSomeState some_state() {
-        //code for executing test goes here
-       return self();
+        return self();
     }
- }</code></pre>
+}</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class WhenSomeAction extends Stage&lt;WhenSomeAction&gt; {
+<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.Stage;
+
+public class WhenSomeAction extends Stage&lt;WhenSomeAction&gt; {
     public WhenSomeAction some_action() {
-        //code for executing test goes here
-       return self();
+        return self();
     }
- }</code></pre>
+}</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class ThenSomeOutcome extends Stage&lt;ThenSomeOutcome&gt; {
+<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.Stage;
+
+public class ThenSomeOutcome extends Stage&lt;ThenSomeOutcome&gt; {
     public ThenSomeOutcome some_outcome() {
-        //code for executing test goes here
-       return self();
+        return self();
     }
- }</code></pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -494,13 +493,17 @@ public class GivenSomeState extends Stage&lt;GivenSomeState&gt; {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
-   @Test
-   public void something_should_happen() {
-      given().some_state();
-      when().some_action();
-      then().some_outcome();
-   }
+<pre class="highlight"><code class="language-java" data-lang="java">import org.junit.Test;
+import com.tngtech.jgiven.junit.ScenarioTest;
+
+public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
+
+    @Test
+    public void something_should_happen() {
+        given().some_state();
+        when().some_action();
+        then().some_outcome();
+    }
 }</code></pre>
 </div>
 </div>
@@ -521,7 +524,7 @@ public class GivenSomeState extends Stage&lt;GivenSomeState&gt; {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-08-26 14:24:49 CEST
+Last updated 2016-09-17 08:25:53 PST
 </div>
 </div>
 </body>
