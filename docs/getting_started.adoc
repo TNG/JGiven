@@ -54,3 +54,23 @@ The scenario is then executed like any other JUnit test, for example, by using y
 ----
 $ mvn test
 ----
+
+=== Using JUnit Rules directly instead of deriving from ScenarioTest
+Sometimes it is not possible to derive your test class from the `ScenarioTest` class, because you might already have a common base class that you cannot easily modify.
+In that case you can directly use the JUnit Rules of JGiven. Instead of providing your stage classes as type parameters, you inject the stages into the test class with the `@ScenarioStage` annotation.
+
+[source,java]
+----
+include::{sourcedir}/UsingRulesTest.java[tags=noPackage]
+----
+
+Note that your stage classes have to inherit from the `Stage` class in order to have the `given(), when()`, and `then()` methods. 
+You can now also define convenient methods in your test class to get cleaner scenarios if you like:
+
+[source,java]
+----
+public GivenSomeState given() {
+    return someStage.given();
+}
+----
+

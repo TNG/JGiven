@@ -58,10 +58,24 @@ public class ScenarioExecutionRule implements MethodRule {
     }
 
     /**
+     * @since 0.12.0
+     */
+    public ScenarioExecutionRule() {
+        this.scenario = new ScenarioBase();
+    }
+
+    /**
      * @since 0.8.1
      */
     public ScenarioExecutionRule( ScenarioBase scenario ) {
         this.scenario = scenario;
+    }
+
+    /**
+     * Returns the ScenarioBase instance of this rule
+     */
+    public ScenarioBase getScenario() {
+        return scenario;
     }
 
     @Override

@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Added possibility to use JGiven in JUnit by just using two rules. No deriving from ScenarioTest is necessary anymore
 * Allow multiple formatter annotations on arguments, e.g., "@Quoted @YesNo", see [#204](https://github.com/TNG/JGiven/issues/204).
 * Added a new comment() method to provide further information on specific step method invocations, see [#50](https://github.com/TNG/JGiven/issues/50).
 * Steps can now have multiple attachments [#194](https://github.com/TNG/JGiven/issues/194).
