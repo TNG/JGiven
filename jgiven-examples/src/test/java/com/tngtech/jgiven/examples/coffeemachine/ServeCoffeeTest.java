@@ -75,7 +75,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
             .and().I_press_the_coffee_button();
         then().the_message_$_is_shown( message );
     }
-  
+
     @Test
     @FeatureDataTables
     @Issue( "#15" )
@@ -111,13 +111,10 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     } )
     public void buy_a_coffee( boolean onOrOff, int coffees, int dollars, boolean shouldOrShouldNot ) {
 
-        given().a_coffee_machine().
-            and().there_are_$_coffees_left_in_the_machine( coffees ).
-            and().the_machine_is_$onOrOff( onOrOff ).
-            and().the_coffee_costs_$_euro( 2 );
+        given().a_coffee_machine().and().there_are_$_coffees_left_in_the_machine( coffees ).and().the_machine_is_$onOrOff( onOrOff ).and()
+            .the_coffee_costs_$_euros( 2 );
 
-        when().I_insert_$_one_euro_coins( dollars ).
-            and().I_press_the_coffee_button();
+        when().I_insert_$_one_euro_coins( dollars ).and().I_press_the_coffee_button();
 
         then().I_$shouldOrShouldNot_be_served_a_coffee( shouldOrShouldNot );
     }
@@ -130,14 +127,12 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
             .and().there_are_$_coffees_left_in_the_machine( 2 )
             .and().the_machine_is_$onOrOff( onOrOff );
 
-        when().I_insert_$_one_euro_coins( 2 ).
-            and().I_press_the_coffee_button();
+        when().I_insert_$_one_euro_coins( 2 ).and().I_press_the_coffee_button();
 
         if( onOrOff ) {
             then().I_should_be_served_a_coffee();
         } else {
-            then().I_should_not_be_served_a_coffee().
-                and().no_error_is_shown();
+            then().I_should_not_be_served_a_coffee().and().no_error_is_shown();
         }
 
     }
@@ -150,6 +145,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
         then().I_should_be_served_a_coffee()
             .and().steps_following_a_failed_step_should_be_skipped();
     }
+
     @Test
     @DataProvider( {
         "true",
@@ -162,15 +158,15 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
             given().and().there_are_$_coffees_left_in_the_machine( 2 );
         }
 
-        when().I_insert_$_one_euro_coins( 2 ).
-            and().I_press_the_coffee_button();
+        when().I_insert_$_one_euro_coins( 2 ).and().I_press_the_coffee_button();
 
         then().I_should_be_served_a_coffee();
     }
+
     @Test
     public void intro_words_are_not_required() {
         given().a_coffee_machine()
-            .the_coffee_costs_$_euro( 5 )
+            .the_coffee_costs_$_euros( 5 )
             .there_are_$_coffees_left_in_the_machine( 3 );
 
         when().I_press_the_coffee_button();
@@ -178,26 +174,26 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
         then().an_error_should_be_shown()
             .no_coffee_should_be_served();
     }
-    //tag::dataprovider[]
+
+    // tag::dataprovider[]
     @Test
     @DataProvider( {
         "1, 1",
         "0, 2",
-        "1, 0",
+        "1, 0"
     } )
-    public void coffee_is_not_served( int coffees, int euros) {
+    public void coffee_is_not_served( int coffees, int euros ) {
         given().a_coffee_machine()
-        .the_coffee_costs_$_euro( 2 )
-        .there_are_$_coffees_left_in_the_machine( coffees );
-        
-        when().I_insert_$_one_euro_coins( euros ).
-            and().I_press_the_coffee_button();
+            .and().the_coffee_costs_$_euros( 2 )
+            .and().there_are_$_coffees_left_in_the_machine( coffees );
+
+        when().I_insert_$_one_euro_coins( euros )
+            .and().I_press_the_coffee_button();
 
         then().I_should_not_be_served_a_coffee();
     }
-  //end::dataprovider[]
+    // end::dataprovider[]
 
-    
     @Test( timeout = 1000 )
     public void shouldFailWithUnexpectedRuntimeException() throws Exception {
         then().$( "should throw a runtime exception", //$NON-NLS-1$

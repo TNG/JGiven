@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.examples.webdriver;
+package com.tngtech.jgiven.examples.userguide;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;

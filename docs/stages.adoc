@@ -13,7 +13,7 @@ The following code shows a valid step method of the `WhenCook` stage:
 
 [source,java]
 ----
-include::{sourcedir}/pancakes/test/steps/WhenCook.java[tags=cookManglesDough]
+include::{sourcedir}/pancakes/test/steps/WhenCook.java[tags=cookManglesDough,indent=0]
 ----
 JGiven removes the underlines so the step will appear as _the cook mangles everything to a dough_ in the report.
 
@@ -25,9 +25,9 @@ For example, if you define the following step method:
 
 [source,java]
 ----
-include::{sourcedir}/pancakes/test/steps/WhenCook.java[tags=cookDrinksMilk]
+include::{sourcedir}/userguide/WhenCalculator.java[tags=method,indent=0]
 ----
-The step will appear as `the cook drinks 50% of the milk accidently` in the report.
+The step will appear as `10 % are added` in the report, when invoked with `10`.
 
 === Completely Hide Steps
 
@@ -39,7 +39,7 @@ For example:
 
 [source,java]
 ----
-include::{sourcedir}/rocket/RocketMethods.java[tags=hiddenRocket]
+include::{sourcedir}/userguide/RocketMethods.java[tags=hiddenRocket,indent=0]
 ----
 Note that it is useful to write hidden methods in `CamelCase` to make it immediately visible in the scenario that these methods will not appear in the report.
 
@@ -51,7 +51,7 @@ Example:
 
 [source,java]
 ----
-include::{sourcedir}/rocket/RocketMethods.java[tags=rocketDesc]
+include::{sourcedir}/userguide/RocketMethods.java[tags=rocketDesc,indent=0]
 ----
 
 === Intro Words
@@ -182,7 +182,7 @@ If you now want to use the `GivenSpecialSteps` stage, you will get problems when
 
 [source,java]
 ----
-include::{sourcedir}/subclassing/CommonStagesTest.java[tags=onlyMethod]
+include::{sourcedir}/subclassing/CommonStagesTest.java[tags=onlyMethod,indent=0]
 ----
 
 This code will not compile, because `my_common_step()` returns `GivenCommonSteps` and not `GivenSpecialSteps`.

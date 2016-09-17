@@ -29,7 +29,7 @@ public class GivenCoffee extends Stage<GivenCoffee> {
         return this;
     }
 
-    public GivenCoffee the_coffee_costs_$_euro( int price ) {
+    public GivenCoffee the_coffee_costs_$_euros(int price ) {
         coffeeMachine.price = price;
         return this;
     }

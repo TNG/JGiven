@@ -27,19 +27,20 @@ include::{sourcedir}/coffeemachine/ServeCoffeeTest.java[tags=dataprovider]
 The resulting report will then look as follows:
 
 ----
-Scenario: coffee is not served
+ Coffee is not served
 
-  Given there are <coffees> coffees left in the machine
-    And the coffee costs 2 dollars
-   When I deposit <dollars> dollars
-    And I press the coffee button
-   Then I should not be served a coffee
+   Given a coffee machine
+     And the coffee costs 2 euros
+     And there are <coffees> coffees left in the machine
+    When I insert <euros> one euro coins
+     And I press the coffee button
+    Then I should not be served a coffee
 
- Cases:
+  Cases:
 
-   | # | <coffees> | <dollars> | Status  |
-   +---+-----------+-----------+---------+
-   | 1 |         1 |         1 | Success |
-   | 2 |         0 |         2 | Success |
-   | 3 |         1 |         0 | Success |
+   | # | coffees | euros | Status  |
+   +---+---------+-------+---------+
+   | 1 |       1 |     1 | Success |
+   | 2 |       0 |     2 | Success |
+   | 3 |       1 |     0 | Success |
 ----

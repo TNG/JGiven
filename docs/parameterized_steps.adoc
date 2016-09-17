@@ -18,9 +18,10 @@ given().$_eggs( 5 );
 ----
 In the generated report `$` is replaced with the corresponding formatted parameter. So the generated report will look as follows:
 
---
+----
 Given 5 eggs
---
+----
+
 If there are more parameters than `$` characters, the remaining parameters are added to the end of the sentence.
 
 If a `$` should not be treated as a placeholder for a parameter, but printed verbatim, you can write `$$`, which will appear as a single `$` in the report.

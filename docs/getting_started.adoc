@@ -10,7 +10,8 @@ First of all you create a JUnit test class that inherits from `com.tngtech.jgive
 
 [source]
 ----
-include::{sourcedir}/JGivenTemplateTest.java[tags=noPackage]
+include::{sourcedir}/MyShinyJGivenTest.java[tags=header]
+}
 ----
 
 The `ScenarioTest` requires 3 type parameters. Each of these type parameters represents a stage of the Given-When-Then notation. Note that there is also the `SimpleScenarioTest` class that only requires a single type parameter. In that case, all your scenario steps are defined in a single class.

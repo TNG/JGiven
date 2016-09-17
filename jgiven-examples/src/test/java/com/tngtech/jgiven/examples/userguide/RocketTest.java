@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.examples.rocket;
+package com.tngtech.jgiven.examples.userguide;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.examples.rocket;
+package com.tngtech.jgiven.examples.userguide;
 
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.Hidden;

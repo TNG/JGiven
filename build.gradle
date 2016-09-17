@@ -47,6 +47,7 @@ if (JavaVersion.current().isJava8Compatible()) {
 
 asciidoctor {
     sourceDir = file('docs')
+    attributes 'version': version
 }
 
 subprojects {
@@ -186,9 +187,11 @@ subprojects {
         classpath = configurations.testCompile
     }
 
-    asciidoctor.sourceDir = new File('build/reports/jgiven/asciidoc')
-    asciidoctor.outputDir = new File('build/reports/jgiven/htmladoc')
-    asciidoctor.attributes toc: ''
+    asciidoctor {
+        sourceDir = new File('build/reports/jgiven/asciidoc')
+        outputDir = new File('build/reports/jgiven/htmladoc')
+        attributes toc: ''
+    }
 
     task copyAsciiDoc(type: Copy, dependsOn: jgivenAsciiDocReport) {
         from 'src/asciidoc'

@@ -34,7 +34,7 @@ public class JUnitParamsServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCo
         given().a_coffee_machine().
             and().there_are_$_coffees_left_in_the_machine( coffees ).
             and().the_machine_is_$onOrOff(onOrOff).
-            and().the_coffee_costs_$_euro( 2 );
+            and().the_coffee_costs_$_euros( 2 );
 
         when().I_insert_$_one_euro_coins( dollars ).
             and().I_press_the_coffee_button();

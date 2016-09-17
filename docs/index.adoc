@@ -1,12 +1,16 @@
-= JGiven Documentation
+= JGiven User Guide
 :description: index page to the JGiven documentation
 :keywords: JGiven, Java, BDD, TDD, Behavior-Driven Testing, Specification by Example
 ifndef::env-site[:toc: left]
 :page-layout: docs
 :page-description: {description}
 :page-keywords: {keywords}
-:version: 0.11.4
+:version:
+:icons: font
 
+{version}
+
+icon:github[]
 
 include::installation.adoc[]
 

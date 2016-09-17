@@ -1,5 +1,4 @@
-package com.tngtech.jgiven.examples.webdriver;
-
+package com.tngtech.jgiven.examples.userguide;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -9,11 +8,12 @@ import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 
-public class MyStage {
-    //tag::rule[]
+// tag::rule[]
+public class MyWebDriverUsingStage {
     @ScenarioRule
     protected WebDriverRule webDriverRule = new WebDriverRule();
-    
+    // end::rule[]
+
     @ProvidedScenarioState
     protected WebDriver web_Driver;
 
@@ -21,8 +21,8 @@ public class MyStage {
     public void doStuff() {
         web_Driver = new HtmlUnitDriver( true );
     }
-    //end::rule[]
-    //tag::start[]
+
+    // tag::start[]
     @ProvidedScenarioState
     protected WebDriver webDriver;
 
@@ -30,8 +30,9 @@ public class MyStage {
     public void startBrowser() {
         webDriver = new HtmlUnitDriver( true );
     }
-    //end::start[]
-    //tag::middle[]
+
+    // end::start[]
+    // tag::middle[]
     @ProvidedScenarioState
     protected WebDriver webdriver;
 
