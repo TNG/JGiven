@@ -437,13 +437,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    public WhenCook the_cook_mangles_everthing_to_a_dough() {
-        assertThat( cook ).isNotNull();
-        assertThat( ingredients ).isNotNull();
+<pre class="highlight"><code class="language-java" data-lang="java">public WhenCook the_cook_mangles_everthing_to_a_dough() {
+    assertThat( cook ).isNotNull();
+    assertThat( ingredients ).isNotNull();
 
-        dough = cook.makeADough( ingredients );
-        return this;
-    }</code></pre>
+    dough = cook.makeADough( ingredients );
+    return this;
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -460,17 +460,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @As("the cook drinks 50% of the milk accidently")
-    public WhenCook the_cook_drinks_50_percent_of_the_milk_accidently() {
-        dough.remove("milk");
-        dough.add("less milk");
-        meal = cook.fryDoughInAPan( dough );
-        return this;
-    }</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@As( "$ % are added" )
+public WhenCalculator $_percent_are_added( int percent ) {
+    return self();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The step will appear as <code>the cook drinks 50% of the milk accidently</code> in the report.</p>
+<p>The step will appear as <code>10 % are added</code> in the report, when invoked with <code>10</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -483,10 +480,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @Hidden
-    public void prepareRocketSimulator() {
-        rocketSimulator = createRocketSimulator();
-    }</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@Hidden
+public void prepareRocketSimulator() {
+    rocketSimulator = createRocketSimulator();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -503,11 +500,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @ExtendedDescription("Actually uses a rocket simulator")
-    public RocketMethods launch_rocket() {
-        rocketLaunched = rocketSimulator.launchRocket();
-        return this;
-    }</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@ExtendedDescription("Actually uses a rocket simulator")
+public RocketMethods launch_rocket() {
+    rocketLaunched = rocketSimulator.launchRocket();
+    return this;
+}</code></pre>
 </div>
 </div>
 </div>
@@ -594,6 +591,7 @@ public class GivenIngredients extends Stage&lt;GivenIngredients&gt; {
 
     @ProvidedScenarioState
     String meal;
+
     public WhenCook the_cook_fries_the_dough_in_a_pan() {
         assertThat( cook ).isNotNull();
         assertThat( dough ).isNotNull();
@@ -747,11 +745,11 @@ public class MyDynamicallyAddedTest extends
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @Test
-    public void subclassing_of_stages_should_work() {
-        given().my_common_step()
-          .and().cant_do_this();
-    }</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@Test
+public void subclassing_of_stages_should_work() {
+    given().my_common_step()
+      .and().cant_do_this();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -777,7 +775,8 @@ public class MyDynamicallyAddedTest extends
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class GivenSpecialStepsFixed&lt;SELF extends GivenSpecialStepsFixed&lt;SELF&gt;&gt; extends GivenCommonStepsFixed&lt;SELF&gt; {
+<pre class="highlight"><code class="language-java" data-lang="java">public class GivenSpecialStepsFixed&lt;SELF extends GivenSpecialStepsFixed&lt;SELF&gt;&gt;
+        extends GivenCommonStepsFixed&lt;SELF&gt; {
     public SELF my_special_step() {
         return self();
     }
@@ -790,7 +789,7 @@ public class MyDynamicallyAddedTest extends
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-08-26 14:24:49 CEST
+Last updated 2016-09-17 08:25:53 PST
 </div>
 </div>
 </body>
