@@ -531,16 +531,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
  }
 
 
+public class MyWebDriverUsingStage {
     @ScenarioRule
     protected WebDriverRule webDriverRule = new WebDriverRule();
-
-    @ProvidedScenarioState
-    protected WebDriver web_Driver;
-
-    @BeforeScenario
-    public void doStuff() {
-        web_Driver = new HtmlUnitDriver( true );
-    }</code></pre>
+}</code></pre>
 </div>
 </div>
 </div>
@@ -556,7 +550,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@BeforeStage
 public void setup() {
-
+  // do something useful to setup the stage
 }</code></pre>
 </div>
 </div>
@@ -572,7 +566,6 @@ public void setup() {
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">public class MyStage {
-public class MyStage {
 
     protected CustomerBuilder customerBuilder;
 
@@ -605,7 +598,7 @@ public class MyStage {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-08-26 14:24:49 CEST
+Last updated 2016-09-17 08:25:53 PST
 </div>
 </div>
 </body>
