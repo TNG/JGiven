@@ -465,15 +465,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     @DataProvider( {
         "1, 1",
         "0, 2",
-        "1, 0",
+        "1, 0"
     } )
-    public void coffee_is_not_served( int coffees, int euros) {
+    public void coffee_is_not_served( int coffees, int euros ) {
         given().a_coffee_machine()
-        .the_coffee_costs_$_euro( 2 )
-        .there_are_$_coffees_left_in_the_machine( coffees );
+            .and().the_coffee_costs_$_euros( 2 )
+            .and().there_are_$_coffees_left_in_the_machine( coffees );
 
-        when().I_insert_$_one_euro_coins( euros ).
-            and().I_press_the_coffee_button();
+        when().I_insert_$_one_euro_coins( euros )
+            .and().I_press_the_coffee_button();
 
         then().I_should_not_be_served_a_coffee();
     }</code></pre>
@@ -484,21 +484,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Scenario: coffee is not served
+<pre> Coffee is not served
 
-  Given there are &lt;coffees&gt; coffees left in the machine
-    And the coffee costs 2 dollars
-   When I deposit &lt;dollars&gt; dollars
-    And I press the coffee button
-   Then I should not be served a coffee
+   Given a coffee machine
+     And the coffee costs 2 euros
+     And there are &lt;coffees&gt; coffees left in the machine
+    When I insert &lt;euros&gt; one euro coins
+     And I press the coffee button
+    Then I should not be served a coffee
 
- Cases:
+  Cases:
 
-   | # | &lt;coffees&gt; | &lt;dollars&gt; | Status  |
-   +---+-----------+-----------+---------+
-   | 1 |         1 |         1 | Success |
-   | 2 |         0 |         2 | Success |
-   | 3 |         1 |         0 | Success |</pre>
+   | # | coffees | euros | Status  |
+   +---+---------+-------+---------+
+   | 1 |       1 |     1 | Success |
+   | 2 |       0 |     2 | Success |
+   | 3 |       1 |     0 | Success |</pre>
 </div>
 </div>
 </div>
@@ -508,7 +509,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-08-26 14:24:49 CEST
+Last updated 2016-09-17 08:25:53 PST
 </div>
 </div>
 </body>
