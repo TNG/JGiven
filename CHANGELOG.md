@@ -1,3 +1,9 @@
+# v0.12.1
+
+## Fixed Issue
+
+* Fixed an issue in the HTML5 report to correctly show the value instead of an unresolved funtion [#233](https://github.com/TNG/JGiven/issues/233)
+
 # v0.12.0
 
 ## New Features
