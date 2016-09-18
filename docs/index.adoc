@@ -12,8 +12,6 @@ ifndef::env-site[:toc: left]
 
 {version}
 
-icon:github[]
-
 include::installation.adoc[]
 
 include::getting_started.adoc[]
