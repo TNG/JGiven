@@ -522,6 +522,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   }
 
   $scope.nanosToReadableUnit = nanosToReadableUnit;
+  $scope.getWordValue = getWordValue;
 
   $scope.tagIdToString = function tagIdToString (tagId) {
     var tag = tagService.getTagByTagId(tagId);
