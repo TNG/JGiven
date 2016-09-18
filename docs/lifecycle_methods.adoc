@@ -24,7 +24,7 @@ Methods annotated with `@BeforeScenario` are executed before any step of any sta
 
 [source,java]
 ----
-include::{sourcedir}/userguide/MyWebDriverUsingStage.java[tags=start]
+include::{sourcedir}/userguide/MyWebDriverUsingStage.java[tags=start,indent=0]
 ----
 
 ==== @AfterScenario
@@ -33,7 +33,7 @@ Analogous to `@BeforeScenario` there is the `@AfterScenario` annotation to execu
 
 [source,java]
 ----
-include::{sourcedir}/userguide/MyWebDriverUsingStage.java[tags=middle]
+include::{sourcedir}/userguide/MyWebDriverUsingStage.java[tags=middle,indent=0]
 ----
 
 === @ScenarioRule

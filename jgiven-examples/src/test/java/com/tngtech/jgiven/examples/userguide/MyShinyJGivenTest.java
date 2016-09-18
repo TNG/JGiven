@@ -6,7 +6,8 @@ import org.junit.Test;
 //tag::header[]
 import com.tngtech.jgiven.junit.ScenarioTest;
 
-public class MyShinyJGivenTest extends ScenarioTest<GivenSomeState, WhenSomeAction, ThenSomeOutcome> {
+public class MyShinyJGivenTest
+        extends ScenarioTest<GivenSomeState, WhenSomeAction, ThenSomeOutcome> {
 //end::header[]
 
 //tag::method[]

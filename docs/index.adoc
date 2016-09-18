@@ -7,6 +7,8 @@ ifndef::env-site[:toc: left]
 :page-keywords: {keywords}
 :version:
 :icons: font
+:source-highlighter: coderay
+:prewrap!:
 
 {version}
 
