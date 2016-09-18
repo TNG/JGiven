@@ -531,6 +531,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_create_given_when_and_then_classes">Create Given, When, and Then classes</a></li>
 <li><a href="#_write_your_first_scenario">Write your first scenario</a></li>
 <li><a href="#_execute_your_scenario">Execute your scenario</a></li>
+<li><a href="#_using_junit_rules_directly_instead_of_deriving_from_scenariotest">Using JUnit Rules directly instead of deriving from ScenarioTest</a></li>
 </ul>
 </li>
 <li><a href="#_report_generation">Report Generation</a>
@@ -606,7 +607,7 @@ table.CodeRay td.code>pre{padding:0}
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>0.11.4</p>
+<p>0.12.0</p>
 </div>
 </div>
 </div>
@@ -625,7 +626,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -637,7 +638,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-junit:0.11.4'
+   testCompile 'com.tngtech.jgiven:jgiven-junit:0.12.0'
 ...
 }</code></pre>
 </div>
@@ -656,7 +657,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-testng&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -668,7 +669,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-testng:0.11.4'
+   testCompile 'com.tngtech.jgiven:jgiven-testng:0.12.0'
 ...
 }</code></pre>
 </div>
@@ -687,7 +688,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-html5-report&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -699,7 +700,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-html5-report:0.11.4'
+   testCompile 'com.tngtech.jgiven:jgiven-html5-report:0.12.0'
 ...
 }</code></pre>
 </div>
@@ -811,6 +812,52 @@ table.CodeRay td.code>pre{padding:0}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="bash">$ mvn test</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_junit_rules_directly_instead_of_deriving_from_scenariotest">Using JUnit Rules directly instead of deriving from ScenarioTest</h3>
+<div class="paragraph">
+<p>Sometimes it is not possible to derive your test class from the <code>ScenarioTest</code> class, because you might already have a common base class that you cannot easily modify.
+In that case you can directly use the JUnit Rules of JGiven. Instead of providing your stage classes as type parameters, you inject the stages into the test class with the <code>@ScenarioStage</code> annotation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">UsingRulesTest</span> {
+
+    <span class="annotation">@ClassRule</span>
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> ScenarioReportRule writerRule = <span class="keyword">new</span> ScenarioReportRule();
+
+    <span class="annotation">@Rule</span>
+    <span class="directive">public</span> <span class="directive">final</span> ScenarioExecutionRule scenarioRule = <span class="keyword">new</span> ScenarioExecutionRule();
+
+    <span class="annotation">@ScenarioStage</span>
+    GivenSomeState someState;
+
+    <span class="annotation">@ScenarioStage</span>
+    WhenSomeAction someAction;
+
+    <span class="annotation">@ScenarioStage</span>
+    ThenSomeOutcome someOutcome;
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> something_should_happen() {
+        someState.given().some_state();
+        someAction.when().some_action();
+        someOutcome.then().some_outcome();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that your stage classes have to inherit from the <code>Stage</code> class in order to have the <code>given(), when()</code>, and <code>then()</code> methods.
+You can now also define convenient methods in your test class to get cleaner scenarios if you like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> GivenSomeState given() {
+    <span class="keyword">return</span> someStage.given();
+}</code></pre>
 </div>
 </div>
 </div>
@@ -2158,7 +2205,7 @@ MyExpectedException someExpectedException;
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spring&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -2170,9 +2217,9 @@ MyExpectedException someExpectedException;
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
         ...
-    testCompile(&quot;com.tngtech.jgiven:jgiven-junit:0.11.4&quot;)
-    testCompile(&quot;com.tngtech.jgiven:jgiven-testng:0.11.4&quot;)
-    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.11.4&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-junit:0.12.0&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-testng:0.12.0&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.12.0&quot;)
         ...
 }</code></pre>
 </div>
@@ -2185,7 +2232,7 @@ MyExpectedException someExpectedException;
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-18 06:17:58 -07:00
+Last updated 2016-09-18 09:47:41 PDT
 </div>
 </div>
 </body>
