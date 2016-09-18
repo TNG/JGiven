@@ -56,6 +56,10 @@ function undefinedOrEmpty (array) {
   return !array || array.length === 0;
 }
 
+function getWordValue(word) {
+  return word.argumentInfo.formattedValue || word.value
+}
+
 function getTagName (tag) {
   return tag.name ? tag.name : tag.type;
 }
