@@ -57,7 +57,7 @@ function undefinedOrEmpty (array) {
 }
 
 function getWordValue(word) {
-  return word.argumentInfo.formattedValue || word.value
+  return word.argumentInfo ? word.argumentInfo.formattedValue : word.value
 }
 
 function getTagName (tag) {
