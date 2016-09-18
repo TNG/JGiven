@@ -419,6 +419,97 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 .show-for-print{display:inherit!important}}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+<style>
+/* Stylesheet for CodeRay to match GitHub theme | MIT License | http://foundation.zurb.com */
+/*pre.CodeRay {background-color:#f7f7f8;}*/
+.CodeRay .line-numbers{border-right:1px solid #d8d8d8;padding:0 0.5em 0 .25em}
+.CodeRay span.line-numbers{display:inline-block;margin-right:.5em;color:rgba(0,0,0,.3)}
+.CodeRay .line-numbers strong{color:rgba(0,0,0,.4)}
+table.CodeRay{border-collapse:separate;border-spacing:0;margin-bottom:0;border:0;background:none}
+table.CodeRay td{vertical-align: top;line-height:1.45}
+table.CodeRay td.line-numbers{text-align:right}
+table.CodeRay td.line-numbers>pre{padding:0;color:rgba(0,0,0,.3)}
+table.CodeRay td.code{padding:0 0 0 .5em}
+table.CodeRay td.code>pre{padding:0}
+.CodeRay .debug{color:#fff !important;background:#000080 !important}
+.CodeRay .annotation{color:#007}
+.CodeRay .attribute-name{color:#000080}
+.CodeRay .attribute-value{color:#700}
+.CodeRay .binary{color:#509}
+.CodeRay .comment{color:#998;font-style:italic}
+.CodeRay .char{color:#04d}
+.CodeRay .char .content{color:#04d}
+.CodeRay .char .delimiter{color:#039}
+.CodeRay .class{color:#458;font-weight:bold}
+.CodeRay .complex{color:#a08}
+.CodeRay .constant,.CodeRay .predefined-constant{color:#008080}
+.CodeRay .color{color:#099}
+.CodeRay .class-variable{color:#369}
+.CodeRay .decorator{color:#b0b}
+.CodeRay .definition{color:#099}
+.CodeRay .delimiter{color:#000}
+.CodeRay .doc{color:#970}
+.CodeRay .doctype{color:#34b}
+.CodeRay .doc-string{color:#d42}
+.CodeRay .escape{color:#666}
+.CodeRay .entity{color:#800}
+.CodeRay .error{color:#808}
+.CodeRay .exception{color:inherit}
+.CodeRay .filename{color:#099}
+.CodeRay .function{color:#900;font-weight:bold}
+.CodeRay .global-variable{color:#008080}
+.CodeRay .hex{color:#058}
+.CodeRay .integer,.CodeRay .float{color:#099}
+.CodeRay .include{color:#555}
+.CodeRay .inline{color:#000}
+.CodeRay .inline .inline{background:#ccc}
+.CodeRay .inline .inline .inline{background:#bbb}
+.CodeRay .inline .inline-delimiter{color:#d14}
+.CodeRay .inline-delimiter{color:#d14}
+.CodeRay .important{color:#555;font-weight:bold}
+.CodeRay .interpreted{color:#b2b}
+.CodeRay .instance-variable{color:#008080}
+.CodeRay .label{color:#970}
+.CodeRay .local-variable{color:#963}
+.CodeRay .octal{color:#40e}
+.CodeRay .predefined{color:#369}
+.CodeRay .preprocessor{color:#579}
+.CodeRay .pseudo-class{color:#555}
+.CodeRay .directive{font-weight:bold}
+.CodeRay .type{font-weight:bold}
+.CodeRay .predefined-type{color:inherit}
+.CodeRay .reserved,.CodeRay .keyword {color:#000;font-weight:bold}
+.CodeRay .key{color:#808}
+.CodeRay .key .delimiter{color:#606}
+.CodeRay .key .char{color:#80f}
+.CodeRay .value{color:#088}
+.CodeRay .regexp .delimiter{color:#808}
+.CodeRay .regexp .content{color:#808}
+.CodeRay .regexp .modifier{color:#808}
+.CodeRay .regexp .char{color:#d14}
+.CodeRay .regexp .function{color:#404;font-weight:bold}
+.CodeRay .string{color:#d20}
+.CodeRay .string .string .string{background:#ffd0d0}
+.CodeRay .string .content{color:#d14}
+.CodeRay .string .char{color:#d14}
+.CodeRay .string .delimiter{color:#d14}
+.CodeRay .shell{color:#d14}
+.CodeRay .shell .delimiter{color:#d14}
+.CodeRay .symbol{color:#990073}
+.CodeRay .symbol .content{color:#a60}
+.CodeRay .symbol .delimiter{color:#630}
+.CodeRay .tag{color:#008080}
+.CodeRay .tag-special{color:#d70}
+.CodeRay .variable{color:#036}
+.CodeRay .insert{background:#afa}
+.CodeRay .delete{background:#faa}
+.CodeRay .change{color:#aaf;background:#007}
+.CodeRay .head{color:#f8f;background:#505}
+.CodeRay .insert .insert{color:#080}
+.CodeRay .delete .delete{color:#800}
+.CodeRay .change .change{color:#66f}
+.CodeRay .head .head{color:#f4f}
+</style>
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
@@ -515,7 +606,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Version 0.11.4</p>
+<p>0.12.0-SNAPSHOT</p>
+</div>
+<div class="paragraph">
+<p><span class="icon"><i class="fa fa-github"></i></span></p>
 </div>
 </div>
 </div>
@@ -531,10 +625,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_maven_dependency">Maven Dependency</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-maven" data-lang="maven">&lt;dependency&gt;
+<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0-SNAPSHOT&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -544,9 +638,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_gradle_dependency">Gradle Dependency</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-junit:0.11.4'
+   testCompile 'com.tngtech.jgiven:jgiven-junit:0.12.0-SNAPSHOT'
 ...
 }</code></pre>
 </div>
@@ -562,10 +656,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_maven_dependency_2">Maven Dependency</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-maven" data-lang="maven">&lt;dependency&gt;
+<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-testng&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0-SNAPSHOT&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -575,9 +669,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_gradle_dependency_2">Gradle Dependency</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-testng:0.11.4'
+   testCompile 'com.tngtech.jgiven:jgiven-testng:0.12.0-SNAPSHOT'
 ...
 }</code></pre>
 </div>
@@ -593,10 +687,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_maven_dependency_3">Maven Dependency</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-maven" data-lang="maven">&lt;dependency&gt;
+<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-html5-report&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0-SNAPSHOT&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -606,9 +700,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_gradle_dependency_3">Gradle Dependency</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-html5-report:0.11.4'
+   testCompile 'com.tngtech.jgiven:jgiven-html5-report:0.12.0-SNAPSHOT'
 ...
 }</code></pre>
 </div>
@@ -636,9 +730,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.junit.ScenarioTest;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">com.tngtech.jgiven.junit.ScenarioTest</span>;
 
-public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyShinyJGivenTest</span>
+        <span class="directive">extends</span> ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
 }</code></pre>
 </div>
 </div>
@@ -653,33 +748,33 @@ public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeA
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.Stage;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">com.tngtech.jgiven.Stage</span>;
 
-public class GivenSomeState extends Stage&lt;GivenSomeState&gt; {
-    public GivenSomeState some_state() {
-        return self();
+<span class="directive">public</span> <span class="type">class</span> <span class="class">GivenSomeState</span> <span class="directive">extends</span> Stage&lt;GivenSomeState&gt; {
+    <span class="directive">public</span> GivenSomeState some_state() {
+        <span class="keyword">return</span> self();
     }
 }</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.Stage;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">com.tngtech.jgiven.Stage</span>;
 
-public class WhenSomeAction extends Stage&lt;WhenSomeAction&gt; {
-    public WhenSomeAction some_action() {
-        return self();
+<span class="directive">public</span> <span class="type">class</span> <span class="class">WhenSomeAction</span> <span class="directive">extends</span> Stage&lt;WhenSomeAction&gt; {
+    <span class="directive">public</span> WhenSomeAction some_action() {
+        <span class="keyword">return</span> self();
     }
 }</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.Stage;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">com.tngtech.jgiven.Stage</span>;
 
-public class ThenSomeOutcome extends Stage&lt;ThenSomeOutcome&gt; {
-    public ThenSomeOutcome some_outcome() {
-        return self();
+<span class="directive">public</span> <span class="type">class</span> <span class="class">ThenSomeOutcome</span> <span class="directive">extends</span> Stage&lt;ThenSomeOutcome&gt; {
+    <span class="directive">public</span> ThenSomeOutcome some_outcome() {
+        <span class="keyword">return</span> self();
     }
 }</code></pre>
 </div>
@@ -695,13 +790,14 @@ public class ThenSomeOutcome extends Stage&lt;ThenSomeOutcome&gt; {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import org.junit.Test;
-import com.tngtech.jgiven.junit.ScenarioTest;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.Test</span>;
+<span class="keyword">import</span> <span class="include">com.tngtech.jgiven.junit.ScenarioTest</span>;
 
-public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyShinyJGivenTest</span>
+        <span class="directive">extends</span> ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
 
-    @Test
-    public void something_should_happen() {
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> something_should_happen() {
         given().some_state();
         when().some_action();
         then().some_outcome();
@@ -717,7 +813,7 @@ public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeA
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ mvn test</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">$ mvn test</code></pre>
 </div>
 </div>
 </div>
@@ -733,7 +829,7 @@ public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeA
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">jgiven.report.text=false</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">jgiven.report.text=<span class="predefined-constant">false</span></code></pre>
 </div>
 </div>
 </div>
@@ -744,7 +840,7 @@ public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeA
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">jgiven.report.enabled=false</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">jgiven.report.enabled=<span class="predefined-constant">false</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -758,7 +854,7 @@ public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeA
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">java com.tngtech.jgiven.report.ReportGenerator \
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">java com.tngtech.jgiven.report.ReportGenerator \
   --format=html \
   [--sourceDir=&lt;jsonreports&gt;] \
   [--targetDir=&lt;targetDir&gt;] \</code></pre>
@@ -774,7 +870,7 @@ public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeA
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-maven" data-lang="maven">&lt;build&gt;
+<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;build&gt;
   &lt;plugins&gt;
     &lt;plugin&gt;
       &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
@@ -800,7 +896,7 @@ public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeA
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ mvn verify</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">$ mvn verify</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -814,7 +910,7 @@ public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeA
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">task jgivenReport(type: JavaExec, dependsOn: 'test') {
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">task jgivenReport(type: JavaExec, dependsOn: 'test') {
     main = 'com.tngtech.jgiven.report.ReportGenerator'
     args '--targetDir=target/jgiven-reports/html',
          '--format=html'
@@ -827,7 +923,7 @@ public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeA
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ gradle jgivenReport</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">$ gradle jgivenReport</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -853,12 +949,12 @@ public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeA
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public WhenCook the_cook_mangles_everthing_to_a_dough() {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> WhenCook the_cook_mangles_everthing_to_a_dough() {
     assertThat( cook ).isNotNull();
     assertThat( ingredients ).isNotNull();
 
     dough = cook.makeADough( ingredients );
-    return this;
+    <span class="keyword">return</span> <span class="local-variable">this</span>;
 }</code></pre>
 </div>
 </div>
@@ -876,9 +972,9 @@ public class MyShinyJGivenTest extends ScenarioTest&lt;GivenSomeState, WhenSomeA
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@As( "$ % are added" )
-public WhenCalculator $_percent_are_added( int percent ) {
-    return self();
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@As</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">$ % are added</span><span class="delimiter">&quot;</span></span> )
+<span class="directive">public</span> WhenCalculator <span class="error">$</span>_percent_are_added( <span class="type">int</span> percent ) {
+    <span class="keyword">return</span> self();
 }</code></pre>
 </div>
 </div>
@@ -896,8 +992,8 @@ public WhenCalculator $_percent_are_added( int percent ) {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Hidden
-public void prepareRocketSimulator() {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Hidden</span>
+<span class="directive">public</span> <span class="type">void</span> prepareRocketSimulator() {
     rocketSimulator = createRocketSimulator();
 }</code></pre>
 </div>
@@ -916,10 +1012,10 @@ public void prepareRocketSimulator() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ExtendedDescription("Actually uses a rocket simulator")
-public RocketMethods launch_rocket() {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExtendedDescription</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Actually uses a rocket simulator</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> RocketMethods launch_rocket() {
     rocketLaunched = rocketSimulator.launchRocket();
-    return this;
+    <span class="keyword">return</span> <span class="local-variable">this</span>;
 }</code></pre>
 </div>
 </div>
@@ -934,9 +1030,9 @@ public RocketMethods launch_rocket() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@IntroWord
-public SELF however() {
-   return self();
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IntroWord</span>
+<span class="directive">public</span> SELF however() {
+   <span class="keyword">return</span> self();
 }</code></pre>
 </div>
 </div>
@@ -945,10 +1041,10 @@ public SELF however() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@IntroWord
-@As(",")
-public SELF comma() {
-   return self();
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IntroWord</span>
+<span class="annotation">@As</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">,</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> SELF comma() {
+   <span class="keyword">return</span> self();
 }</code></pre>
 </div>
 </div>
@@ -963,30 +1059,30 @@ public SELF comma() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">package com.tngtech.jgiven.examples.pancakes.test.steps;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">package</span> <span class="namespace">com.tngtech.jgiven.examples.pancakes.test.steps</span>;
 
-import java.util.ArrayList;
-import java.util.List;
+<span class="keyword">import</span> <span class="include">java.util.ArrayList</span>;
+<span class="keyword">import</span> <span class="include">java.util.List</span>;
 
-import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+<span class="keyword">import</span> <span class="include">com.tngtech.jgiven.Stage</span>;
+<span class="keyword">import</span> <span class="include">com.tngtech.jgiven.annotation.ProvidedScenarioState</span>;
 
-public class GivenIngredients extends Stage&lt;GivenIngredients&gt; {
+<span class="directive">public</span> <span class="type">class</span> <span class="class">GivenIngredients</span> <span class="directive">extends</span> Stage&lt;GivenIngredients&gt; {
 
-    @ProvidedScenarioState
-    List&lt;String&gt; ingredients = new ArrayList&lt;String&gt;();
+    <span class="annotation">@ProvidedScenarioState</span>
+    <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; ingredients = <span class="keyword">new</span> <span class="predefined-type">ArrayList</span>&lt;<span class="predefined-type">String</span>&gt;();
 
-    public GivenIngredients an_egg() {
-        return the_ingredient( "egg" );
+    <span class="directive">public</span> GivenIngredients an_egg() {
+        <span class="keyword">return</span> the_ingredient( <span class="string"><span class="delimiter">&quot;</span><span class="content">egg</span><span class="delimiter">&quot;</span></span> );
     }
 
-    public GivenIngredients the_ingredient( String ingredient ) {
+    <span class="directive">public</span> GivenIngredients the_ingredient( <span class="predefined-type">String</span> ingredient ) {
         ingredients.add( ingredient );
-        return this;
+        <span class="keyword">return</span> <span class="local-variable">this</span>;
     }
 
-    public GivenIngredients some_milk() {
-        return the_ingredient( "milk" );
+    <span class="directive">public</span> GivenIngredients some_milk() {
+        <span class="keyword">return</span> the_ingredient( <span class="string"><span class="delimiter">&quot;</span><span class="content">milk</span><span class="delimiter">&quot;</span></span> );
     }
 
 }</code></pre>
@@ -994,26 +1090,26 @@ public class GivenIngredients extends Stage&lt;GivenIngredients&gt; {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class WhenCook extends Stage&lt;WhenCook&gt; {
-    @Autowired
-    @ScenarioState
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">WhenCook</span> <span class="directive">extends</span> Stage&lt;WhenCook&gt; {
+    <span class="annotation">@Autowired</span>
+    <span class="annotation">@ScenarioState</span>
     Cook cook;
 
-    @ExpectedScenarioState
-    List&lt;String&gt; ingredients;
+    <span class="annotation">@ExpectedScenarioState</span>
+    <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; ingredients;
 
-    @ProvidedScenarioState
-    Set&lt;String&gt; dough;
+    <span class="annotation">@ProvidedScenarioState</span>
+    <span class="predefined-type">Set</span>&lt;<span class="predefined-type">String</span>&gt; dough;
 
-    @ProvidedScenarioState
-    String meal;
+    <span class="annotation">@ProvidedScenarioState</span>
+    <span class="predefined-type">String</span> meal;
 
-    public WhenCook the_cook_fries_the_dough_in_a_pan() {
+    <span class="directive">public</span> WhenCook the_cook_fries_the_dough_in_a_pan() {
         assertThat( cook ).isNotNull();
         assertThat( dough ).isNotNull();
 
         meal = cook.fryDoughInAPan( dough );
-        return this;
+        <span class="keyword">return</span> <span class="local-variable">this</span>;
     }</code></pre>
 </div>
 </div>
@@ -1053,14 +1149,14 @@ public class GivenIngredients extends Stage&lt;GivenIngredients&gt; {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MyInjectedJGivenTest extends
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">MyInjectedJGivenTest</span> <span class="directive">extends</span>
    ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
 
-   @ScenarioStage
+   <span class="annotation">@ScenarioStage</span>
    GivenAdditionalState additionalState;
 
-   @Test
-   public void something_should_happen() {
+   <span class="annotation">@Test</span>
+   <span class="directive">public</span> <span class="type">void</span> something_should_happen() {
       given().some_state();
 
       additionalState
@@ -1082,7 +1178,7 @@ public class GivenIngredients extends Stage&lt;GivenIngredients&gt; {
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>Given some state
+<pre class="nowrap">Given some state
   And some additional state
  When some action
  Then some outcome</pre>
@@ -1104,14 +1200,14 @@ public class GivenIngredients extends Stage&lt;GivenIngredients&gt; {
 <h5 id="_example_2">Example</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import org.junit.Test;
-import com.tngtech.jgiven.junit.ScenarioTest;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.Test</span>;
+<span class="keyword">import</span> <span class="include">com.tngtech.jgiven.junit.ScenarioTest</span>;
 
-public class MyDynamicallyAddedTest extends
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyDynamicallyAddedTest</span> <span class="directive">extends</span>
    ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
 
-   @Test
-   public void something_should_happen() {
+   <span class="annotation">@Test</span>
+   <span class="directive">public</span> <span class="type">void</span> something_should_happen() {
       GivenAdditionalState additionalState = addStage(GivenAdditionalState.class);
 
       given().some_state();
@@ -1138,9 +1234,9 @@ public class MyDynamicallyAddedTest extends
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class GivenCommonSteps extends Stage&lt;GivenCommonSteps&gt; {
-    public GivenCommonSteps my_common_step() {
-        return this;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">GivenCommonSteps</span> <span class="directive">extends</span> Stage&lt;GivenCommonSteps&gt; {
+    <span class="directive">public</span> GivenCommonSteps my_common_step() {
+        <span class="keyword">return</span> <span class="local-variable">this</span>;
     }</code></pre>
 </div>
 </div>
@@ -1149,9 +1245,9 @@ public class MyDynamicallyAddedTest extends
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class GivenSpecialSteps extends GivenCommonSteps {
-    public GivenSpecialSteps my_special_step() {
-        return this;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">GivenSpecialSteps</span> <span class="directive">extends</span> GivenCommonSteps {
+    <span class="directive">public</span> GivenSpecialSteps my_special_step() {
+        <span class="keyword">return</span> <span class="local-variable">this</span>;
     }
 }</code></pre>
 </div>
@@ -1161,8 +1257,8 @@ public class MyDynamicallyAddedTest extends
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Test
-public void subclassing_of_stages_should_work() {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Test</span>
+<span class="directive">public</span> <span class="type">void</span> subclassing_of_stages_should_work() {
     given().my_common_step()
       .and().cant_do_this();
 }</code></pre>
@@ -1176,9 +1272,9 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class GivenCommonStepsFixed&lt;SELF extends GivenCommonStepsFixed&lt;SELF&gt;&gt; extends Stage&lt;SELF&gt; {
-    public SELF my_common_step() {
-        return self();
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">GivenCommonStepsFixed</span>&lt;SELF <span class="directive">extends</span> GivenCommonStepsFixed&lt;SELF&gt;&gt; <span class="directive">extends</span> Stage&lt;SELF&gt; {
+    <span class="directive">public</span> SELF my_common_step() {
+        <span class="keyword">return</span> self();
     }
 }</code></pre>
 </div>
@@ -1191,10 +1287,10 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class GivenSpecialStepsFixed&lt;SELF extends GivenSpecialStepsFixed&lt;SELF&gt;&gt;
-        extends GivenCommonStepsFixed&lt;SELF&gt; {
-    public SELF my_special_step() {
-        return self();
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">GivenSpecialStepsFixed</span>&lt;SELF <span class="directive">extends</span> GivenSpecialStepsFixed&lt;SELF&gt;&gt;
+        <span class="directive">extends</span> GivenCommonStepsFixed&lt;SELF&gt; {
+    <span class="directive">public</span> SELF my_special_step() {
+        <span class="keyword">return</span> self();
     }
 }</code></pre>
 </div>
@@ -1258,13 +1354,13 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @ProvidedScenarioState
-    protected WebDriver webDriver;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ProvidedScenarioState</span>
+<span class="directive">protected</span> WebDriver webDriver;
 
-    @BeforeScenario
-    public void startBrowser() {
-        webDriver = new HtmlUnitDriver( true );
-    }</code></pre>
+<span class="annotation">@BeforeScenario</span>
+<span class="directive">public</span> <span class="type">void</span> startBrowser() {
+    webDriver = <span class="keyword">new</span> HtmlUnitDriver( <span class="predefined-constant">true</span> );
+}</code></pre>
 </div>
 </div>
 </div>
@@ -1275,13 +1371,13 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @ProvidedScenarioState
-    protected WebDriver webdriver;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ProvidedScenarioState</span>
+<span class="directive">protected</span> WebDriver webdriver;
 
-    @AfterScenario
-    public void closeBrowser() {
-        webdriver.close();
-    }</code></pre>
+<span class="annotation">@AfterScenario</span>
+<span class="directive">public</span> <span class="type">void</span> closeBrowser() {
+    webdriver.close();
+}</code></pre>
 </div>
 </div>
 </div>
@@ -1298,23 +1394,23 @@ public void subclassing_of_stages_should_work() {
 <h4 id="_example_3">Example</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class WebDriverRule {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">WebDriverRule</span> {
 
-    protected WebDriver webDriver;
+    <span class="directive">protected</span> WebDriver webDriver;
 
-    public void before() {
-         webDriver = new HtmlUnitDriver( true );
+    <span class="directive">public</span> <span class="type">void</span> before() {
+         webDriver = <span class="keyword">new</span> HtmlUnitDriver( <span class="predefined-constant">true</span> );
     }
 
-    public void after() {
+    <span class="directive">public</span> <span class="type">void</span> after() {
          webDriver.close();
     }
  }
 
 
-public class MyWebDriverUsingStage {
-    @ScenarioRule
-    protected WebDriverRule webDriverRule = new WebDriverRule();
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyWebDriverUsingStage</span> {
+    <span class="annotation">@ScenarioRule</span>
+    <span class="directive">protected</span> WebDriverRule webDriverRule = <span class="keyword">new</span> WebDriverRule();
 }</code></pre>
 </div>
 </div>
@@ -1329,9 +1425,9 @@ public class MyWebDriverUsingStage {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@BeforeStage
-public void setup() {
-  // do something useful to setup the stage
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@BeforeStage</span>
+<span class="directive">public</span> <span class="type">void</span> setup() {
+  <span class="comment">// do something useful to setup the stage</span>
 }</code></pre>
 </div>
 </div>
@@ -1346,26 +1442,26 @@ public void setup() {
 <h4 id="_example_4">Example</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MyStage {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">MyStage</span> {
 
-    protected CustomerBuilder customerBuilder;
+    <span class="directive">protected</span> CustomerBuilder customerBuilder;
 
-    @ProvidedScenarioState
-    protected Customer customer;
+    <span class="annotation">@ProvidedScenarioState</span>
+    <span class="directive">protected</span> Customer customer;
 
-    public MyStage a_customer() {
-        customerBuilder = new CustomerBuilder();
-        return this;
+    <span class="directive">public</span> MyStage a_customer() {
+        customerBuilder = <span class="keyword">new</span> CustomerBuilder();
+        <span class="keyword">return</span> <span class="local-variable">this</span>;
     }
 
-    public MyStage the_customer_has_name( String name ) {
+    <span class="directive">public</span> MyStage the_customer_has_name( <span class="predefined-type">String</span> name ) {
         customerBuilder.withName( name );
-        return this;
+        <span class="keyword">return</span> <span class="local-variable">this</span>;
     }
 
-    @AfterStage
-    public void buildCustomer() {
-        if (customerBuilder != null) {
+    <span class="annotation">@AfterStage</span>
+    <span class="directive">public</span> <span class="type">void</span> buildCustomer() {
+        <span class="keyword">if</span> (customerBuilder != <span class="predefined-constant">null</span>) {
             customer = customerBuilder.build();
         }
     }
@@ -1384,8 +1480,8 @@ public void setup() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">given().the_ingredient( "flour" ); // Given the ingredient flour
-given().multiple_arguments( 5, 6 ); // Given multiple arguments 5 6</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">given().the_ingredient( <span class="string"><span class="delimiter">&quot;</span><span class="content">flour</span><span class="delimiter">&quot;</span></span> ); <span class="comment">// Given the ingredient flour</span>
+given().multiple_arguments( <span class="integer">5</span>, <span class="integer">6</span> ); <span class="comment">// Given multiple arguments 5 6</span></code></pre>
 </div>
 </div>
 <div class="sect2">
@@ -1395,7 +1491,7 @@ given().multiple_arguments( 5, 6 ); // Given multiple arguments 5 6</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">given().$_eggs( 5 );</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">given().<span class="error">$</span>_eggs( <span class="integer">5</span> );</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1403,7 +1499,7 @@ given().multiple_arguments( 5, 6 ); // Given multiple arguments 5 6</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Given 5 eggs</pre>
+<pre class="nowrap">Given 5 eggs</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1439,8 +1535,8 @@ given().multiple_arguments( 5, 6 ); // Given multiple arguments 5 6</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public SELF the_machine_is_$(
-    @Format( value = BooleanFormatter.class, args = { "on", "off" } ) boolean onOrOff ) {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_machine_is_<span class="error">$</span>(
+    <span class="annotation">@Format</span>( value = BooleanFormatter.class, args = { <span class="string"><span class="delimiter">&quot;</span><span class="content">on</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">off</span><span class="delimiter">&quot;</span></span> } ) <span class="type">boolean</span> onOrOff ) {
     ...
 }</code></pre>
 </div>
@@ -1459,10 +1555,10 @@ given().multiple_arguments( 5, 6 ); // Given multiple arguments 5 6</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Format( value = PrintfFormatter.class, args = "\"%s\"" )
-@Retention( RetentionPolicy.RUNTIME )
-@Target( { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE } )
-public @interface Quoted {}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Format</span>( value = PrintfFormatter.class, args = <span class="string"><span class="delimiter">&quot;</span><span class="char">\&quot;</span><span class="content">%s</span><span class="char">\&quot;</span><span class="delimiter">&quot;</span></span> )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="annotation">@Target</span>( { <span class="predefined-type">ElementType</span>.PARAMETER, <span class="predefined-type">ElementType</span>.ANNOTATION_TYPE } )
+<span class="directive">public</span> <span class="annotation">@interface</span> Quoted {}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1472,7 +1568,7 @@ public @interface Quoted {}</code></pre>
 <h4 id="_example_5">Example</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public SELF the_message_$_is_printed_to_the_console( @Quoted message ) { ... }</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_message_<span class="error">$</span>_is_printed_to_the_console( <span class="annotation">@Quoted</span> message ) { ... }</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1480,7 +1576,7 @@ public @interface Quoted {}</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">then().the_message_$_is_printed_to_the_console( "Hello World" );</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">then().the_message_<span class="error">$</span>_is_printed_to_the_console( <span class="string"><span class="delimiter">&quot;</span><span class="content">Hello World</span><span class="delimiter">&quot;</span></span> );</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1501,11 +1597,11 @@ public @interface Quoted {}</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@AnnotationFormat( value = PrintfAnnotationFormatter.class )
-@Retention( RetentionPolicy.RUNTIME )
-@Target( ElementType.PARAMETER )
-public @interface Formatf {
-    String value() default "%s";
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@AnnotationFormat</span>( value = PrintfAnnotationFormatter.class )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="annotation">@Target</span>( <span class="predefined-type">ElementType</span>.PARAMETER )
+<span class="directive">public</span> <span class="annotation">@interface</span> Formatf {
+    <span class="predefined-type">String</span> value() <span class="keyword">default</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">%s</span><span class="delimiter">&quot;</span></span>;
 }</code></pre>
 </div>
 </div>
@@ -1536,12 +1632,12 @@ public @interface Formatf {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">class CoffeeWithPrice {
-   String name;
-   double price_in_EUR;
-   CoffeeWithPrice(String name, double priceInEur) {
-      this.name = name;
-      this.price_in_EUR = priceInEur;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="type">class</span> <span class="class">CoffeeWithPrice</span> {
+   <span class="predefined-type">String</span> name;
+   <span class="type">double</span> price_in_EUR;
+   CoffeeWithPrice(<span class="predefined-type">String</span> name, <span class="type">double</span> priceInEur) {
+      <span class="local-variable">this</span>.name = name;
+      <span class="local-variable">this</span>.price_in_EUR = priceInEur;
    }
 }</code></pre>
 </div>
@@ -1551,7 +1647,7 @@ public @interface Formatf {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public SELF the_prices_of_the_coffees_are( @Table CoffeeWithPrice... prices ) {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_prices_of_the_coffees_are( <span class="annotation">@Table</span> CoffeeWithPrice... prices ) {
   ...
 }</code></pre>
 </div>
@@ -1561,9 +1657,9 @@ public @interface Formatf {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">given().the_prices_of_the_coffees_are(
-   new CoffeeWithPrice("Espresso", 2.0),
-   new CoffeeWithPrice("Cappuccino", 2.5));</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">given().the_prices_of_the_coffees_are(
+   <span class="keyword">new</span> CoffeeWithPrice(<span class="string"><span class="delimiter">&quot;</span><span class="content">Espresso</span><span class="delimiter">&quot;</span></span>, <span class="float">2.0</span>),
+   <span class="keyword">new</span> CoffeeWithPrice(<span class="string"><span class="delimiter">&quot;</span><span class="content">Cappuccino</span><span class="delimiter">&quot;</span></span>, <span class="float">2.5</span>));</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1576,7 +1672,7 @@ public @interface Formatf {
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>| name       | price in EUR |
+<pre class="nowrap">| name       | price in EUR |
 +------------+--------------+
 | Espresso   | 2.0          |
 | Cappuccino | 2.5          |</pre>
@@ -1631,18 +1727,18 @@ public @interface Formatf {
 <h4 id="_example_7">Example</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @Test
-    @DataProvider( {
-        "1, 1",
-        "0, 2",
-        "1, 0"
+<pre class="CodeRay highlight nowrap"><code data-lang="java">    <span class="annotation">@Test</span>
+    <span class="annotation">@DataProvider</span>( {
+        <span class="string"><span class="delimiter">&quot;</span><span class="content">1, 1</span><span class="delimiter">&quot;</span></span>,
+        <span class="string"><span class="delimiter">&quot;</span><span class="content">0, 2</span><span class="delimiter">&quot;</span></span>,
+        <span class="string"><span class="delimiter">&quot;</span><span class="content">1, 0</span><span class="delimiter">&quot;</span></span>
     } )
-    public void coffee_is_not_served( int coffees, int euros ) {
+    <span class="directive">public</span> <span class="type">void</span> coffee_is_not_served( <span class="type">int</span> coffees, <span class="type">int</span> euros ) {
         given().a_coffee_machine()
-            .and().the_coffee_costs_$_euros( 2 )
-            .and().there_are_$_coffees_left_in_the_machine( coffees );
+            .and().the_coffee_costs_<span class="error">$</span>_euros( <span class="integer">2</span> )
+            .and().there_are_<span class="error">$</span>_coffees_left_in_the_machine( coffees );
 
-        when().I_insert_$_one_euro_coins( euros )
+        when().I_insert_<span class="error">$</span>_one_euro_coins( euros )
             .and().I_press_the_coffee_button();
 
         then().I_should_not_be_served_a_coffee();
@@ -1654,7 +1750,7 @@ public @interface Formatf {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre> Coffee is not served
+<pre class="nowrap"> Coffee is not served
 
    Given a coffee machine
      And the coffee costs 2 euros
@@ -1687,9 +1783,9 @@ public @interface Formatf {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@IsTag
-@Retention( RetentionPolicy.RUNTIME )
-public @interface ExampleCategory {}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> ExampleCategory {}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1702,13 +1798,13 @@ public @interface ExampleCategory {}</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">    @ExampleSubCategory
-    @Test
-    public void tags_can_form_a_hierarchy() {
-        given().tags_annotated_with_tags();
-        when().the_report_is_generated();
-        then().the_tags_appear_in_a_hierarchy();
-    }</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExampleSubCategory</span>
+<span class="annotation">@Test</span>
+<span class="directive">public</span> <span class="type">void</span> tags_can_form_a_hierarchy() {
+    given().tags_annotated_with_tags();
+    when().the_report_is_generated();
+    then().the_tags_appear_in_a_hierarchy();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1724,11 +1820,11 @@ public @interface ExampleCategory {}</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@IsTag( style = "background-color: darkgreen; color: white; font-weight: bold",
-    description = "Tags can be arbitrarily styled with the 'style' attribute of the '@IsTag' annotation. " +
-            "This tag shows how to apply such a custom style" )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface TagsWithCustomStyle {}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( style = <span class="string"><span class="delimiter">&quot;</span><span class="content">background-color: darkgreen; color: white; font-weight: bold</span><span class="delimiter">&quot;</span></span>,
+    description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Tags can be arbitrarily styled with the 'style' attribute of the '@IsTag' annotation. </span><span class="delimiter">&quot;</span></span> +
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">This tag shows how to apply such a custom style</span><span class="delimiter">&quot;</span></span> )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> TagsWithCustomStyle {}</code></pre>
 </div>
 </div>
 </div>
@@ -1739,9 +1835,9 @@ public @interface TagsWithCustomStyle {}</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@IsTag( name = "Feature: Coffee" )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface CoffeeFeature { }</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Feature: Coffee</span><span class="delimiter">&quot;</span></span> )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> CoffeeFeature { }</code></pre>
 </div>
 </div>
 </div>
@@ -1752,10 +1848,10 @@ public @interface CoffeeFeature { }</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@IsTag( prependType = false )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface CategoryWithValue {
-    String value();
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( prependType = <span class="predefined-constant">false</span> )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> CategoryWithValue {
+    <span class="predefined-type">String</span> value();
 }</code></pre>
 </div>
 </div>
@@ -1764,8 +1860,8 @@ public @interface CategoryWithValue {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Test @Story("ACME-123")
-public void scenarios_can_have_tags() {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Test</span> <span class="annotation">@Story</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">ACME-123</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">void</span> scenarios_can_have_tags() {
   ...
 }</code></pre>
 </div>
@@ -1786,10 +1882,10 @@ public void scenarios_can_have_tags() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@IsTag
-@Retention( RetentionPolicy.RUNTIME )
-public @interface Story {
-    String[] value();
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> Story {
+    <span class="predefined-type">String</span><span class="type">[]</span> value();
 }</code></pre>
 </div>
 </div>
@@ -1798,8 +1894,8 @@ public @interface Story {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Test @Story( {"ACME-123", "ACME-456"} )
-public void scenarios_can_have_tags() {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Test</span> <span class="annotation">@Story</span>( {<span class="string"><span class="delimiter">&quot;</span><span class="content">ACME-123</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">ACME-456</span><span class="delimiter">&quot;</span></span>} )
+<span class="directive">public</span> <span class="type">void</span> scenarios_can_have_tags() {
   ...
 }</code></pre>
 </div>
@@ -1818,12 +1914,12 @@ public void scenarios_can_have_tags() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class IssueDescriptionGenerator implements TagDescriptionGenerator {
-    @Override
-    public String generateDescription( TagConfiguration tagConfiguration,
-            Annotation annotation, Object value ) {
-        return String.format(
-           "&lt;a href='https://github.com/TNG/JGiven/issues/%s'&gt;Issue %s&lt;/a&gt;",
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">IssueDescriptionGenerator</span> <span class="directive">implements</span> TagDescriptionGenerator {
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="predefined-type">String</span> generateDescription( TagConfiguration tagConfiguration,
+            <span class="predefined-type">Annotation</span> annotation, <span class="predefined-type">Object</span> value ) {
+        <span class="keyword">return</span> <span class="predefined-type">String</span>.format(
+           <span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;a href='https://github.com/TNG/JGiven/issues/%s'&gt;Issue %s&lt;/a&gt;</span><span class="delimiter">&quot;</span></span>,
             value, value );
     }
 }</code></pre>
@@ -1834,10 +1930,10 @@ public void scenarios_can_have_tags() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@IsTag( descriptionGenerator = IssueDescriptionGenerator.class )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface Issue {
-    String[] value();
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( descriptionGenerator = IssueDescriptionGenerator.class )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> Issue {
+    <span class="predefined-type">String</span><span class="type">[]</span> value();
 }</code></pre>
 </div>
 </div>
@@ -1850,9 +1946,9 @@ public @interface Issue {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@IsTag( name = "Feature", value = "Tag" )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface FeatureTags { }</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Feature</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">Tag</span><span class="delimiter">&quot;</span></span> )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> FeatureTags { }</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1866,10 +1962,10 @@ public @interface FeatureTags { }</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@CoreFeature
-@IsTag
-@Retention( RetentionPolicy.RUNTIME )
-public @interface OneOfMyCoolCoreFeatures {}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@CoreFeature</span>
+<span class="annotation">@IsTag</span>
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> OneOfMyCoolCoreFeatures {}</code></pre>
 </div>
 </div>
 </div>
@@ -1888,7 +1984,7 @@ public @interface OneOfMyCoolCoreFeatures {}</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Attachment attachment = Attachment.fromText("Hello World", MediaType.PLAIN_TEXT);</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Attachment attachment = Attachment.fromText(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello World</span><span class="delimiter">&quot;</span></span>, MediaType.PLAIN_TEXT);</code></pre>
 </div>
 </div>
 <div class="sect3">
@@ -1898,9 +1994,9 @@ public @interface OneOfMyCoolCoreFeatures {}</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Attachment attachment = Attachment
-    .fromText("Hello World", MediaType.PLAIN_TEXT)
-    .withTitle("Some Title");</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Attachment attachment = Attachment
+    .fromText(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello World</span><span class="delimiter">&quot;</span></span>, MediaType.PLAIN_TEXT)
+    .withTitle(<span class="string"><span class="delimiter">&quot;</span><span class="content">Some Title</span><span class="delimiter">&quot;</span></span>);</code></pre>
 </div>
 </div>
 </div>
@@ -1911,8 +2007,8 @@ public @interface OneOfMyCoolCoreFeatures {}</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Attachment attachment = Attachment
-    .fromBase64("SGVsbG8gV29ybGQK", MediaType.application("jgiven"));</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Attachment attachment = Attachment
+    .fromBase64(<span class="string"><span class="delimiter">&quot;</span><span class="content">SGVsbG8gV29ybGQK</span><span class="delimiter">&quot;</span></span>, MediaType.application(<span class="string"><span class="delimiter">&quot;</span><span class="content">jgiven</span><span class="delimiter">&quot;</span></span>));</code></pre>
 </div>
 </div>
 </div>
@@ -1924,7 +2020,7 @@ public @interface OneOfMyCoolCoreFeatures {}</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ExpectedScenarioState
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExpectedScenarioState</span>
 CurrentStep currentStep;</code></pre>
 </div>
 </div>
@@ -1933,10 +2029,10 @@ CurrentStep currentStep;</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public SELF my_step_with_attachment() {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF my_step_with_attachment() {
     Attachment attachment = ...
     currentStep.addAttachment( attachment );
-    return self();
+    <span class="keyword">return</span> self();
 }</code></pre>
 </div>
 </div>
@@ -1948,9 +2044,9 @@ CurrentStep currentStep;</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">String base64 = ( (TakesScreenshot) webDriver ).getScreenshotAs( OutputType.BASE64 );
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="predefined-type">String</span> base64 = ( (TakesScreenshot) webDriver ).getScreenshotAs( OutputType.BASE64 );
 currentStep.addAttachment( Attachment.fromBase64( base64, MediaType.PNG )
-           .withTitle( "Screenshot" ) );</code></pre>
+           .withTitle( <span class="string"><span class="delimiter">&quot;</span><span class="content">Screenshot</span><span class="delimiter">&quot;</span></span> ) );</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1972,9 +2068,9 @@ currentStep.addAttachment( Attachment.fromBase64( base64, MediaType.PNG )
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">// DOES NOT WORK!
-@Test(expected = MyExpectedException.class)
-public void an_expected_exception_should_be_thrown() {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="comment">// DOES NOT WORK!</span>
+<span class="annotation">@Test</span>(expected = MyExpectedException.class)
+<span class="directive">public</span> <span class="type">void</span> an_expected_exception_should_be_thrown() {
     given().some_errornous_precondition();
     when().doing_some_action();
 }</code></pre>
@@ -1985,12 +2081,12 @@ public void an_expected_exception_should_be_thrown() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Rule
-public ExpectedException rule = ExpectedException.none();
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Rule</span>
+<span class="directive">public</span> ExpectedException rule = ExpectedException.none();
 
-@Test
-public void an_expected_exception_should_be_thrown() {
-   // will work, but is not visible in the report
+<span class="annotation">@Test</span>
+<span class="directive">public</span> <span class="type">void</span> an_expected_exception_should_be_thrown() {
+   <span class="comment">// will work, but is not visible in the report</span>
    rule.expect(MyExpectedException.class);
    given().some_errornous_precondition();
    when().doing_some_action();
@@ -2008,8 +2104,8 @@ public void an_expected_exception_should_be_thrown() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Test
-public void an_expected_exception_should_be_thrown() {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Test</span>
+<span class="directive">public</span> <span class="type">void</span> an_expected_exception_should_be_thrown() {
    given().some_errornous_precondition();
    when().doing_some_action();
    then().an_exception_is_thrown();
@@ -2024,16 +2120,16 @@ public void an_expected_exception_should_be_thrown() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ProvidedScenarioState
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ProvidedScenarioState</span>
 MyExpectedException someExpectedException;
 
-public SELF doing_some_action() {
-   try {
+<span class="directive">public</span> SELF doing_some_action() {
+   <span class="keyword">try</span> {
        ...
-   } catch (MyExpectedException e) {
+   } <span class="keyword">catch</span> (MyExpectedException e) {
       someExpectedException = e;
    }
-   return self();
+   <span class="keyword">return</span> self();
 }</code></pre>
 </div>
 </div>
@@ -2042,12 +2138,12 @@ public SELF doing_some_action() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ExpectedScenarioState
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExpectedScenarioState</span>
 MyExpectedException someExpectedException;
 
-public SELF an_exception_is_thrown() {
+<span class="directive">public</span> SELF an_exception_is_thrown() {
     assertThat( someExpectedException ).isNotNull();
-    return self();
+    <span class="keyword">return</span> self();
 }</code></pre>
 </div>
 </div>
@@ -2062,10 +2158,10 @@ public SELF an_exception_is_thrown() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-maven" data-lang="maven">&lt;dependency&gt;
+<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spring&lt;/artifactId&gt;
-   &lt;version&gt;0.11.4&lt;/version&gt;
+   &lt;version&gt;0.12.0-SNAPSHOT&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -2075,12 +2171,12 @@ public SELF an_exception_is_thrown() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
-	...
-    testCompile("com.tngtech.jgiven:jgiven-junit:0.11.4")
-    testCompile("com.tngtech.jgiven:jgiven-testng:0.11.4")
-    testCompile("com.tngtech.jgiven:jgiven-spring:0.11.4")
-	...
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
+        ...
+    testCompile(&quot;com.tngtech.jgiven:jgiven-junit:0.12.0-SNAPSHOT&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-testng:0.12.0-SNAPSHOT&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.12.0-SNAPSHOT&quot;)
+        ...
 }</code></pre>
 </div>
 </div>
@@ -2092,7 +2188,7 @@ public SELF an_exception_is_thrown() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-17 09:55:25 PDT
+Last updated 2016-09-18 06:08:29 -07:00
 </div>
 </div>
 </body>
