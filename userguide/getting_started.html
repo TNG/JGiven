@@ -521,12 +521,58 @@ public class MyShinyJGivenTest
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_using_junit_rules_directly_instead_of_deriving_from_scenariotest">Using JUnit Rules directly instead of deriving from ScenarioTest</h3>
+<div class="paragraph">
+<p>Sometimes it is not possible to derive your test class from the <code>ScenarioTest</code> class, because you might already have a common base class that you cannot easily modify.
+In that case you can directly use the JUnit Rules of JGiven. Instead of providing your stage classes as type parameters, you inject the stages into the test class with the <code>@ScenarioStage</code> annotation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public class UsingRulesTest {
+
+    @ClassRule
+    public static final ScenarioReportRule writerRule = new ScenarioReportRule();
+
+    @Rule
+    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule();
+
+    @ScenarioStage
+    GivenSomeState someState;
+
+    @ScenarioStage
+    WhenSomeAction someAction;
+
+    @ScenarioStage
+    ThenSomeOutcome someOutcome;
+
+    @Test
+    public void something_should_happen() {
+        someState.given().some_state();
+        someAction.when().some_action();
+        someOutcome.then().some_outcome();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that your stage classes have to inherit from the <code>Stage</code> class in order to have the <code>given(), when()</code>, and <code>then()</code> methods.
+You can now also define convenient methods in your test class to get cleaner scenarios if you like:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public GivenSomeState given() {
+    return someStage.given();
+}</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-18 06:17:05 -07:00
+Last updated 2016-09-18 06:14:10 PDT
 </div>
 </div>
 </body>
