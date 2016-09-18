@@ -7,7 +7,7 @@ Let’s say you want to know which scenarios covers the coffee feature. To do so
 
 [source,java]
 ----
-include::{sourcedir}/tags/ExampleCategory.java[tags=noPackage]
+include::{sourcedir}/tags/ExampleCategory.java[tags=noPackage,indent=0]
 ----
 
 Two things are important: 
@@ -18,7 +18,7 @@ To tag a scenario with the new tag, you just annotate the corresponding test met
 
 [source,java]
 ----
-include::{sourcedir}/tags/TagHierarchyExampleTest.java[tags=taginaction]
+include::{sourcedir}/tags/TagHierarchyExampleTest.java[tags=taginaction,indent=0]
 ----
 
 In the report the scenario will then be tagged with tag CoffeeFeature.
@@ -31,7 +31,7 @@ Tags can have descriptions. These descriptions appear in the report on the corre
 
 [source,java]
 ----
-include::{sourcedir}/tags/TagsWithCustomStyle.java[tags=desc]
+include::{sourcedir}/tags/TagsWithCustomStyle.java[tags=desc,indent=0]
 ----
 
 === Overriding the Name
@@ -51,7 +51,7 @@ Sometimes you do not want to always create a new annotation for each tag. Let’
 
 [source,java]
 ----
-include::{sourcedir}/tags/CategoryWithValue.java[tags=noPackage]
+include::{sourcedir}/tags/CategoryWithValue.java[tags=noPackage,indent=0]
 ----
 
 Annotations with different values are treated as different tags in JGiven. So using the above annotation you can now mark scenarios to belong to certain stories:
