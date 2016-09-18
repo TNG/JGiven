@@ -76,7 +76,7 @@ subprojects {
         jansiVersion = '1.13'
         gsonVersion = '2.7'
         guavaVersion = '19.0'
-        springVersion = '3.2.4.RELEASE'
+        springVersion = '4.3.2.RELEASE'
         checkstyleVersion = '2.12.1'
         jacocoVersion = '0.7.2.201409121644'
         quickcheckVersion = '0.6'
