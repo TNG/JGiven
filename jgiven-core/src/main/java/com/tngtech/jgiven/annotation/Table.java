@@ -70,7 +70,7 @@ import com.tngtech.jgiven.impl.util.AnnotationUtil;
  */
 @Documented
 @Retention( RetentionPolicy.RUNTIME )
-@Target( ElementType.PARAMETER )
+@Target( { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE} )
 public @interface Table {
     /**
      * Specifies the header type of the table. Default is {@code HORIZONTAL}.

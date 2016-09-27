@@ -67,6 +67,13 @@ public class GivenTestStep extends Stage<GivenTestStep> {
 
     public void a_step_with_a_table_parameter_and_primitive_array( @Table int... args ) {}
 
+    @Table(columnTitles = { "custom" })
+    @Retention( RetentionPolicy.RUNTIME )
+    @interface CustomTable {}
+
+    public void a_list_of_Strings_with_a_meta_table_annotation(@CustomTable int... values) {}
+
+
     public GivenTestStep some_quoted_string_value( @Quoted String someQuotedStringValue ) {
         return self();
     }

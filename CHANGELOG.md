@@ -1,3 +1,9 @@
+# v0.12.2
+
+## New Features
+
+* Custom annotations can now also be defined for the `@Table` annotation [#234](https://github.com/TNG/JGiven/issues/235)
+
 # v0.12.1
 
 ## Fixed Issue

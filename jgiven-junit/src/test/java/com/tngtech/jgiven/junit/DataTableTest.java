@@ -78,4 +78,16 @@ public class DataTableTest extends ScenarioTest<GivenTestStep, WhenTestStep, The
         assertThat( tableValue.get( 1 ) ).containsExactly( "off" );
     }
 
+    @Test
+    public void table_annotation_works_on_meta_annotations() throws Throwable {
+        given().a_list_of_Strings_with_a_meta_table_annotation( 5, 7 );
+
+        Word lastWord = getScenario().getScenarioCaseModel().getFirstStep().getLastWord();
+        List<List<String>> tableValue = lastWord.getArgumentInfo().getDataTable().getData();
+        assertThat( tableValue ).isNotNull();
+        assertThat( tableValue.get( 0 ) ).containsExactly( "custom");
+        assertThat( tableValue.get( 1 ) ).containsExactly( "5" );
+        assertThat( tableValue.get( 2 ) ).containsExactly( "7" );
+    }
+
 }
