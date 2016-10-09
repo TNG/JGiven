@@ -59,9 +59,18 @@ subprojects {
     apply plugin: 'signing'
     apply plugin: 'org.asciidoctor.convert'
     apply plugin: 'ru.vyarus.animalsniffer'
+    apply plugin: 'maven-publish'
 
     description "${rootProject.description} - Module ${project.name}"
     sourceCompatibility = targetCompatibility = 1.6
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+    }
 
     ext {
         junitDataproviderVersion = '1.11.0'
