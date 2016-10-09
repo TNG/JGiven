@@ -94,7 +94,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
         Tag tag = tags.get( 0 );
         assertThat( tag.getName() ).isEqualTo( "AnotherName" );
         assertThat( tag.getValues() ).isEmpty();
-        assertThat( tag.toIdString() ).isEqualTo( "AnnotationWithName" );
+        assertThat( tag.toIdString() ).isEqualTo( this.getClass().getName() + "$AnnotationWithName" );
     }
 
     @IsTag( ignoreValue = true )
@@ -113,7 +113,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
         Tag tag = tags.get( 0 );
         assertThat( tag.getName() ).isEqualTo( "AnnotationWithIgnoredValue" );
         assertThat( tag.getValues() ).isEmpty();
-        assertThat( tag.toIdString() ).isEqualTo( "AnnotationWithIgnoredValue" );
+        assertThat( tag.toIdString() ).isEqualTo( this.getClass().getName() + "$AnnotationWithIgnoredValue" );
     }
 
     @IsTag
@@ -209,7 +209,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
         List<Tag> tags = getScenarioModelBuilder().toTags( AnnotationWithParentTag.class.getAnnotations()[0] );
         assertThat( tags ).hasSize( 1 );
         assertThat( tags.get( 0 ).getTags() ).containsAll( Arrays.asList(
-            "ParentTag", "ParentTagWithValue-SomeValue" ) );
+                this.getClass().getName() + "$ParentTag", this.getClass().getName() + "$ParentTagWithValue-SomeValue" ) );
     }
 
     @IsTag( value = "default" )

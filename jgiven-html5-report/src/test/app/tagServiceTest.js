@@ -131,7 +131,7 @@ describe("TagService", function () {
     var scenarios = tagService.getScenariosByTag(tagService.getTagByKey('issue-1'));
     expect(scenarios.length).toEqual(1);
     expect(scenarios[0].tags.length).toEqual(testCases[0].scenarios[0].tagIds.length);
-    expect(_.map(scenarios[0].tags, getTagKey)).toEqual(['issue-1', 'issue-2', 'categoryB', 'feature-A', 'feature-B', 'something-someA']);
+    expect(_.map(scenarios[0].tags, getTagKey)).toEqual(['issue-1', 'issue-2', 'categoryB', 'featureA-A', 'featureB-B', 'somethingA-someA']);
   });
 
 });

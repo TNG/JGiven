@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class TagConfiguration {
     private final String annotationType;
+    private final String annotationFullType;
     private boolean ignoreValue;
     private boolean explodeArray = true;
     private boolean prependType;
@@ -33,6 +34,7 @@ public class TagConfiguration {
 
     public TagConfiguration( Class<? extends Annotation> tagAnnotation ) {
         this.annotationType = tagAnnotation.getSimpleName();
+        this.annotationFullType = tagAnnotation.getName();
     }
 
     public static Builder builder( Class<? extends Annotation> tagAnnotation ) {
@@ -216,6 +218,10 @@ public class TagConfiguration {
 
     public String getAnnotationType() {
         return annotationType;
+    }
+
+    public String getAnnotationFullType() {
+        return annotationFullType;
     }
 
     /**

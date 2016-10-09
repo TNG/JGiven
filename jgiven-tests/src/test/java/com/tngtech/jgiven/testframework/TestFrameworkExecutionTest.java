@@ -140,7 +140,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
         given().a_test()
             .and().the_test_has_a_tag_annotation_named( "TestTag" );
         when().the_test_is_executed_with( testFramework );
-        then().the_report_model_contains_a_tag_named( "TestTag" );
+        then().the_report_model_contains_a_tag_named( "com.tngtech.jgiven.tests.TestTag" );
     }
 
     @Test

@@ -439,7 +439,9 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     private List<Tag> toTags( TagConfiguration tagConfig, Optional<Annotation> annotation ) {
-        Tag tag = new Tag( tagConfig.getAnnotationType() );
+        Tag tag = new Tag( tagConfig.getAnnotationFullType() );
+
+        tag.setType( tagConfig.getAnnotationType() );
 
         if( !Strings.isNullOrEmpty( tagConfig.getName() ) ) {
             tag.setName( tagConfig.getName() );

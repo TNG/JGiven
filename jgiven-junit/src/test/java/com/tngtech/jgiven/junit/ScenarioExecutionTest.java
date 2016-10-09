@@ -216,7 +216,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         assertThat( tagIds ).isNotEmpty();
         String tagId = tagIds.get( 0 );
         assertThat( tagId ).isNotNull();
-        assertThat( tagId ).isEqualTo( "ConfiguredTag-Test" );
+        assertThat( tagId ).isEqualTo( ConfiguredTag.class.getName() + "-Test" );
     }
 
     @Test
@@ -333,7 +333,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
         List<String> tagIds = getScenario().getScenarioModel().getTagIds();
         assertThat( tagIds ).hasSize( 1 );
-        assertThat( tagIds.get( 0 ) ).isEqualTo( "DynamicTag-value" );
+        assertThat( tagIds.get( 0 ) ).isEqualTo( this.getClass().getName() + "$DynamicTag-value" );
     }
 
     static abstract class AbstractStage {

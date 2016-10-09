@@ -16,7 +16,7 @@ public abstract class AbstractScenarioForTestingTagInheritance<G, W, T> extends 
         getScenario().finished();
 
         List<String> tagIds = getScenario().getModel().getLastScenarioModel().getTagIds();
-        assertThat( tagIds ).containsAll( Arrays.asList( "TestTag" ) );
+        assertThat( tagIds ).containsAll( Arrays.asList( TestTag.class.getName() ) );
 
     }
 }

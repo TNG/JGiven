@@ -36,7 +36,7 @@ public class TagAnnotationTest extends ScenarioTest<GivenTestStep, WhenTestStep,
 
         getScenario().finished();
 
-        assertThat( getScenario().getModel().getTagMap().keySet() ).contains( "StepMethodTag" );
+        assertThat( getScenario().getModel().getTagMap().keySet() ).contains( "com.tngtech.jgiven.junit.test.GivenTestStep$StepMethodTag" );
     }
 
     @Test
@@ -46,6 +46,6 @@ public class TagAnnotationTest extends ScenarioTest<GivenTestStep, WhenTestStep,
 
         getScenario().finished();
 
-        assertThat( getScenario().getModel().getTagMap().keySet() ).contains( "StageTag" );
+        assertThat( getScenario().getModel().getTagMap().keySet() ).contains( "com.tngtech.jgiven.junit.test.GivenTaggedTestStep$StageTag" );
     }
 }
