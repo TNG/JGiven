@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.examples.coffeemachine;
 
+import com.tngtech.jgiven.examples.tags.FailingOnPurpose;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -138,6 +139,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     }
 
     @Test
+    @FailingOnPurpose
     public void a_failing_scenario_for_demonstration_purposes() {
         given().a_coffee_machine()
             .and().there_are_no_more_coffees_left();
@@ -147,6 +149,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     }
 
     @Test
+    @FailingOnPurpose
     @DataProvider( {
         "true",
         "false"
@@ -194,6 +197,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     }
     // end::dataprovider[]
 
+    @FailingOnPurpose
     @Test( timeout = 1000 )
     public void shouldFailWithUnexpectedRuntimeException() throws Exception {
         then().$( "should throw a runtime exception", //$NON-NLS-1$

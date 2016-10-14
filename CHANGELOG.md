@@ -4,6 +4,10 @@
 
 * Custom annotations can now also be defined for the `@Table` annotation [#234](https://github.com/TNG/JGiven/issues/235)
 
+## Small Improvements
+
+* Assertion errors shown in the HTML report respect line breaks now. [#234](https://github.com/TNG/JGiven/issues/234)
+
 # v0.12.1
 
 ## Fixed Issue

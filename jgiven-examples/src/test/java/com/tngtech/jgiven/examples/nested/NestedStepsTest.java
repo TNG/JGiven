@@ -2,6 +2,7 @@ package com.tngtech.jgiven.examples.nested;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.tngtech.jgiven.examples.tags.FailingOnPurpose;
 import org.junit.Test;
 import org.testng.Assert;
 
@@ -26,6 +27,7 @@ public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedSt
     }
 
     @Test
+    @FailingOnPurpose
     public void a_scenario_with_a_failing_nested_step_on_purpose() {
 
         given().I_fill_out_the_registration_form_with_invalid_values();

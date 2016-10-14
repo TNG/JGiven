@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.examples.parameters;
 
+import com.tngtech.jgiven.examples.tags.FailingOnPurpose;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -74,6 +75,7 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
     }
 
     @Test
+    @FailingOnPurpose
     @ExtendedDescription( "This scenario shows how large case tables are shown in JGiven. As soon as a table has more than 2 entries,"
             + " grouping by values is possible. This scenario also has some failing steps for demonstration purposes."
             + "<p>Btw. this description was created with the <a target='_blank' href='http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/ExtendedDescription.html'>@ExtendedDescription</a> annotation" )
