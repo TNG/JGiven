@@ -8,7 +8,7 @@ import com.tngtech.jgiven.junit.ScenarioTest;
 import com.tngtech.jgiven.testng.ScenarioTestListener;
 
 @Listeners( ScenarioTestListener.class )
-public class TestClassWithOnlyIgnoredTests extends ScenarioTest<GivenTestStage, WhenTestStage, ThenTestStage> {
+public class TestClassWithOnlyIgnoredTests extends ScenarioTestForTesting<GivenTestStage, WhenTestStage, ThenTestStage> {
 
     @Ignore
     @Test

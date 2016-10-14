@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import com.tngtech.jgiven.junit.ScenarioTest;
 
-public class TestWithExceptionsInAfterMethod extends ScenarioTest<GivenTestStage, WhenTestStage, ThenTestStage> {
+public class TestWithExceptionsInAfterMethod extends ScenarioTestForTesting<GivenTestStage, WhenTestStage, ThenTestStage> {
 
     @After
     public void afterException() {

@@ -2,12 +2,13 @@ package com.tngtech.jgiven;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.tngtech.jgiven.impl.Scenario;
 import org.junit.Test;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.report.model.StepModel;
 
-public class FeatureVariablesInMethodNames extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {
+public class FeatureVariablesInMethodNames extends ScenarioTestBaseForTesting<GivenTestStep, WhenTestStep, ThenTestStep> {
 
     @Test
     public void variables_are_read_from_method_names() {

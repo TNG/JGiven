@@ -5,10 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import com.tngtech.jgiven.annotation.ScenarioRule;
-import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.report.model.ReportModel;
 
-public class ScenarioRuleTest extends ScenarioTestBase<BeforeAfterTestStage<?>, WhenTestStep, BeforeAfterTestStage<?>> {
+public class ScenarioRuleTest extends ScenarioTestBaseForTesting<BeforeAfterTestStage<?>, WhenTestStep, BeforeAfterTestStage<?>> {
 
     @Test
     public void testBeforeAndAfterIsCalled() throws Throwable {

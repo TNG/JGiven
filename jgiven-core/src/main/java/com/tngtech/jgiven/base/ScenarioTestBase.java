@@ -2,16 +2,17 @@ package com.tngtech.jgiven.base;
 
 import com.google.common.reflect.TypeToken;
 import com.tngtech.jgiven.impl.Scenario;
+import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.integration.CanWire;
+
+import java.util.concurrent.Callable;
 
 /**
  * Base class for Scenario tests.
  * This class is typically not directly used by end users,
  * but instead test-framework-specific classes for JUnit or TestNG
  */
-public class ScenarioTestBase<GIVEN, WHEN, THEN> {
-
-    private Scenario<GIVEN, WHEN, THEN> scenario = createScenario();
+public abstract class ScenarioTestBase<GIVEN, WHEN, THEN> {
 
     @SuppressWarnings( { "serial", "unchecked" } )
     protected Scenario<GIVEN, WHEN, THEN> createScenario() {
@@ -63,16 +64,10 @@ public class ScenarioTestBase<GIVEN, WHEN, THEN> {
     /**
      * @return the scenario associated with this test
      */
-    public Scenario<GIVEN, WHEN, THEN> getScenario() {
-        return scenario;
+    public abstract Scenario<GIVEN, WHEN, THEN> getScenario();
+
+    public Scenario<GIVEN, WHEN, THEN> createNewScenario() {
+        return createScenario();
     }
 
-    /**
-     * Creates a new scenario for this test.
-     * @return the new scenario
-     */
-    public Scenario<GIVEN, WHEN, THEN> createNewScenario() {
-        this.scenario = createScenario();
-        return getScenario();
-    }
 }

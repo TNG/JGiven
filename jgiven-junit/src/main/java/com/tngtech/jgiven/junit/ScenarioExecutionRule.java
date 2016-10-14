@@ -54,14 +54,14 @@ public class ScenarioExecutionRule implements MethodRule {
      */
     @Deprecated
     public ScenarioExecutionRule( Object testInstance, ScenarioBase scenario ) {
-        this.scenario = scenario;
+        this(scenario);
     }
 
     /**
      * @since 0.12.0
      */
     public ScenarioExecutionRule() {
-        this.scenario = new ScenarioBase();
+        this(new ScenarioBase());
     }
 
     /**

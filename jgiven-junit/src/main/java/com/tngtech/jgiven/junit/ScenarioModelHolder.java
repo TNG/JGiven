@@ -49,7 +49,6 @@ public class ScenarioModelHolder {
             ReportModel reportModel = reportModels.get( testClass );
             reportModels.remove( testClass );
             return reportModel;
-
         }
     }
 }

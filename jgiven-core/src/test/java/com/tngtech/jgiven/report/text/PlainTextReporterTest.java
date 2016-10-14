@@ -6,6 +6,10 @@ import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import com.tngtech.jgiven.BeforeAfterTestStage;
+import com.tngtech.jgiven.ScenarioTestBaseForTesting;
+import com.tngtech.jgiven.impl.Scenario;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -31,7 +35,7 @@ import com.tngtech.jgiven.report.model.StepModel;
  * here.
  */
 @RunWith( DataProviderRunner.class )
-public class PlainTextReporterTest extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {
+public class PlainTextReporterTest extends ScenarioTestBaseForTesting<GivenTestStep, WhenTestStep, ThenTestStep> {
 
     @Rule
     public final ExpectedException expected = ExpectedException.none();

@@ -5,6 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.lang.annotation.Annotation;
 import java.util.Collections;
 
+import com.tngtech.jgiven.GivenTestStep;
+import com.tngtech.jgiven.ScenarioTestBaseForTesting;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.tngtech.jgiven.ThenTestStep;
@@ -21,7 +24,7 @@ import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 
 @JGivenConfiguration( ConfigurationTest.TestConfiguration.class )
-public class ConfigurationTest extends ScenarioTestBase<ConfigurationTest.FooStage, WhenTestStep, ThenTestStep> {
+public class ConfigurationTest extends ScenarioTestBaseForTesting<ConfigurationTest.FooStage, WhenTestStep, ThenTestStep> {
 
     @Test
     public void testFormatterConfiguration() throws Throwable {

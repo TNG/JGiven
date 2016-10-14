@@ -3,10 +3,7 @@ package com.tngtech.jgiven.testng;
 import static java.util.Arrays.asList;
 
 import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -27,9 +24,9 @@ import com.tngtech.jgiven.report.model.ReportModel;
  */
 public class ScenarioTestListener implements ITestListener {
 
-    private volatile ConcurrentMap<String, ReportModel> reportModels;
+    public static final String SCENARIO_ATTRIBUTE = "jgiven::scenario";
 
-    private volatile Map<ITestResult, ScenarioBase> scenarioMap;
+    private volatile ConcurrentMap<String, ReportModel> reportModels;
 
     @Override
     public void onTestStart( ITestResult paramITestResult ) {
@@ -44,7 +41,8 @@ public class ScenarioTestListener implements ITestListener {
             scenario = new ScenarioBase();
         }
 
-        scenarioMap.put( paramITestResult, scenario );
+        ScenarioHolder.get().setScenarioOfCurrentThread( scenario );
+        paramITestResult.setAttribute(SCENARIO_ATTRIBUTE, scenario);
 
         ReportModel reportModel = getReportModel( instance.getClass() );
         scenario.setModel( reportModel );
@@ -55,6 +53,10 @@ public class ScenarioTestListener implements ITestListener {
 
         // inject state from the test itself
         scenario.getExecutor().readScenarioState( instance );
+    }
+
+    private ScenarioBase getScenario(ITestResult paramITestResult ) {
+        return (ScenarioBase) paramITestResult.getAttribute(SCENARIO_ATTRIBUTE);
     }
 
     private ReportModel getReportModel( Class<?> clazz ) {
@@ -78,7 +80,7 @@ public class ScenarioTestListener implements ITestListener {
 
     @Override
     public void onTestFailure( ITestResult paramITestResult ) {
-        ScenarioBase scenario = scenarioMap.get( paramITestResult );
+        ScenarioBase scenario = getScenario( paramITestResult );
         if( scenario != null ) {
             scenario.getExecutor().failed( paramITestResult.getThrowable() );
             testFinished( paramITestResult );
@@ -90,11 +92,13 @@ public class ScenarioTestListener implements ITestListener {
 
     private void testFinished( ITestResult paramITestResult ) {
         try {
-            ScenarioBase scenario = scenarioMap.get( paramITestResult );
+            ScenarioBase scenario = getScenario( paramITestResult );
             scenario.finished();
         } catch( Throwable throwable ) {
             paramITestResult.setThrowable( throwable );
             paramITestResult.setStatus( ITestResult.FAILURE );
+        } finally {
+            ScenarioHolder.get().removeScenarioOfCurrentThread();
         }
     }
 
@@ -104,7 +108,6 @@ public class ScenarioTestListener implements ITestListener {
     @Override
     public void onStart( ITestContext paramITestContext ) {
         reportModels = new ConcurrentHashMap<String, ReportModel>();
-        scenarioMap = Collections.synchronizedMap( new IdentityHashMap<ITestResult, ScenarioBase>() );
     }
 
     @Override

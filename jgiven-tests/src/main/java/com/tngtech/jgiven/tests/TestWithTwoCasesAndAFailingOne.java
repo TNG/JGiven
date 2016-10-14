@@ -8,7 +8,7 @@ import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.junit.ScenarioTest;
 
 @RunWith( DataProviderRunner.class )
-public class TestWithTwoCasesAndAFailingOne extends ScenarioTest<GivenTestStage, WhenTestStage, ThenTestStage> {
+public class TestWithTwoCasesAndAFailingOne extends ScenarioTestForTesting<GivenTestStage, WhenTestStage, ThenTestStage> {
 
     @Test
     @DataProvider( { "true", "false" } )

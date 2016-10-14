@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import com.tngtech.jgiven.ScenarioTestBaseForTesting;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +34,7 @@ import com.tngtech.jgiven.report.model.Tag;
 import com.tngtech.jgiven.report.model.Word;
 
 @RunWith( DataProviderRunner.class )
-public class ScenarioModelBuilderTest extends ScenarioTestBase<GivenTestStep, WhenTestStep, ThenTestStep> {
+public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTestStep, WhenTestStep, ThenTestStep> {
 
     public ScenarioModelBuilder getScenarioModelBuilder() {
         ScenarioModelBuilder scenarioModelBuilder = new ScenarioModelBuilder();

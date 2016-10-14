@@ -1,5 +1,6 @@
 package com.tngtech.jgiven;
 
+import com.tngtech.jgiven.impl.Scenario;
 import org.junit.ClassRule;
 import org.junit.Rule;
 
@@ -17,6 +18,10 @@ public class JGivenScenarioTest<GIVEN, WHEN, THEN> extends ScenarioTestBase<GIVE
     public static final ScenarioReportRule writerRule = new ScenarioReportRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( writerRule, this, getScenario() );
+    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( createScenario() );
 
+    @Override
+    public Scenario<GIVEN, WHEN, THEN> getScenario() {
+        return (Scenario<GIVEN, WHEN, THEN>) scenarioRule.getScenario();
+    }
 }

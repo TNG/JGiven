@@ -10,7 +10,7 @@ import com.tngtech.jgiven.impl.Scenario;
  * This class is typically not directly used by end users,
  * but instead test-framework-specific classes for JUnit or TestNG
  */
-public class SimpleScenarioTestBase<STEPS> extends ScenarioTestBase<STEPS, STEPS, STEPS> {
+public abstract class SimpleScenarioTestBase<STEPS> extends ScenarioTestBase<STEPS, STEPS, STEPS> {
 
     @Override
     @SuppressWarnings( { "serial", "unchecked" } )

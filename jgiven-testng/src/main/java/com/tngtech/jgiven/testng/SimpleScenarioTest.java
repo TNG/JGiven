@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.testng;
 
+import com.tngtech.jgiven.impl.Scenario;
 import org.testng.annotations.Listeners;
 
 import com.tngtech.jgiven.base.SimpleScenarioTestBase;
@@ -11,5 +12,10 @@ import com.tngtech.jgiven.base.SimpleScenarioTestBase;
  */
 @Listeners( ScenarioTestListener.class )
 public class SimpleScenarioTest<STEPS> extends SimpleScenarioTestBase<STEPS> {
+
+    @Override
+    public Scenario<STEPS, STEPS, STEPS> getScenario() {
+        return (Scenario<STEPS, STEPS, STEPS>) ScenarioHolder.get().getScenarioOfCurrentThread();
+    }
 
 }

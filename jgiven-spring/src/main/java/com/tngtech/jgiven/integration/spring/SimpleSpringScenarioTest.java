@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.integration.spring;
 
+import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.springframework.beans.factory.BeanFactory;
@@ -15,13 +16,7 @@ import com.tngtech.jgiven.junit.ScenarioReportRule;
  * 
  * @param <STAGE> the stage class that contains the step definitions
  */
-public class SimpleSpringScenarioTest<STAGE> extends SimpleScenarioTestBase<STAGE> implements BeanFactoryAware {
-
-    @ClassRule
-    public static final ScenarioReportRule writerRule = new ScenarioReportRule();
-
-    @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( getScenario() );
+public class SimpleSpringScenarioTest<STAGE> extends SimpleScenarioTest<STAGE> implements BeanFactoryAware {
 
     public void setBeanFactory( BeanFactory beanFactory ) {
         getScenario().setExecutor( beanFactory.getBean( SpringScenarioExecutor.class ) );

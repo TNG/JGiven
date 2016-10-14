@@ -1,11 +1,15 @@
 package com.tngtech.jgiven.tests;
 
+import com.tngtech.jgiven.testng.ScenarioTestListener;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.tngtech.jgiven.testng.ScenarioTest;
 
-public class FailingCasesTestNgTest extends ScenarioTest<GivenTestStage, WhenTestStage, ThenTestStage> {
+
+@Listeners( ScenarioTestListener.class )
+public class FailingCasesTestNgTest extends ScenarioTestForTesting<GivenTestStage, WhenTestStage, ThenTestStage> {
 
     @DataProvider
     public static Object[][] booleans() {

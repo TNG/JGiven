@@ -8,7 +8,7 @@ import com.tngtech.jgiven.junit.ScenarioTest;
 import com.tngtech.jgiven.testng.ScenarioTestListener;
 
 @Listeners( ScenarioTestListener.class )
-public class TestScenarios extends ScenarioTest<GivenTestStage, WhenTestStage, ThenTestStage> {
+public class TestScenarios extends ScenarioTestForTesting<GivenTestStage, WhenTestStage, ThenTestStage> {
 
     @Test
     @org.testng.annotations.Test

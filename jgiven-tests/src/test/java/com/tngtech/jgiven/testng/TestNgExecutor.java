@@ -2,6 +2,7 @@ package com.tngtech.jgiven.testng;
 
 import java.util.List;
 
+import com.tngtech.jgiven.impl.ScenarioBase;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
@@ -61,15 +62,9 @@ public class TestNgExecutor extends TestExecutor {
             setTestResult( tr );
         }
 
-        @Override
-        public void onStart( ITestContext testContext ) {
-            // TODO Auto-generated method stub
-            super.onStart( testContext );
-        }
-
         private void setTestResult( ITestResult tr ) {
             testResults.add( tr );
-            reportModel = ( (ScenarioTestBase<?, ?, ?>) tr.getInstance() ).getScenario().getModel();
+            reportModel = ((ScenarioBase)tr.getAttribute ("jgiven::scenario")).getModel();
         }
     }
 

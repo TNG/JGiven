@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.junit;
 
+import com.tngtech.jgiven.impl.Scenario;
 import org.junit.ClassRule;
 import org.junit.Rule;
 
@@ -10,6 +11,10 @@ public class SimpleScenarioTest<STEPS> extends SimpleScenarioTestBase<STEPS> {
     public static final ScenarioReportRule writerRule = new ScenarioReportRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( writerRule, this, getScenario() );
+    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( createScenario() );
 
+    @Override
+    public Scenario<STEPS, STEPS, STEPS> getScenario() {
+        return (Scenario<STEPS, STEPS, STEPS>) scenarioRule.getScenario();
+    }
 }

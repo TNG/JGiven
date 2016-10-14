@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.integration.spring;
 
+import com.tngtech.jgiven.junit.ScenarioTest;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.springframework.beans.factory.BeanFactory;
@@ -19,13 +20,7 @@ import com.tngtech.jgiven.junit.ScenarioReportRule;
  * @since 0.8.0
  */
 public class SpringScenarioTest<GIVEN, WHEN, THEN> extends
-        ScenarioTestBase<GIVEN, WHEN, THEN> implements BeanFactoryAware {
-
-    @ClassRule
-    public static final ScenarioReportRule writerRule = new ScenarioReportRule();
-
-    @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( getScenario() );
+        ScenarioTest<GIVEN, WHEN, THEN> implements BeanFactoryAware {
 
     public void setBeanFactory( BeanFactory beanFactory ) {
         getScenario().setExecutor( beanFactory.getBean( SpringScenarioExecutor.class ) );

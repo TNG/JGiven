@@ -1,4 +1,12 @@
-# v0.12.2
+# v0.13.0
+
+## Backwards Incompatible Changes
+
+In order to fix issue #239, a backwards incompatible change had to be done:
+
+* The `ScenarioBase` class is now abstract, because the method `getScenario()` was made abstract. Thus, subclasses have to implement the `getScenario()` method.
+  As, in general, you should have inherited either from `ScenarioTest` or `SimpleScenarioTest` the change should most likely not effect you.
+  If you have directly inherited from `ScenarioBase`, have a look at the `ScenarioTest` class of how to implement the `getScenario()` method.
 
 ## New Features
 
@@ -7,6 +15,10 @@
 ## Small Improvements
 
 * Assertion errors shown in the HTML report respect line breaks now. [#234](https://github.com/TNG/JGiven/issues/234)
+
+## Bug Fixes
+
+* TestNG: executing test methods in parallel is now possible. [#239](https://github.com/TNG/JGiven/issues/239)
 
 # v0.12.1
 
