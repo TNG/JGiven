@@ -1,12 +1,11 @@
 package com.tngtech.jgiven.impl;
 
-import java.io.File;
-
+import com.google.common.base.Optional;
 import com.tngtech.jgiven.config.ConfigValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
+import java.io.File;
 
 /**
  * Helper class to access all system properties to configure JGiven.
@@ -19,7 +18,7 @@ public class Config {
     private static final String FALSE = "false";
     private static final String AUTO = "auto";
     private static final String JGIVEN_REPORT_ENABLED = "jgiven.report.enabled";
-    private static final String JGIVEN_REPORT_DIR = "jgiven.report.dir";
+    public static final String JGIVEN_REPORT_DIR = "jgiven.report.dir";
     private static final String JGIVEN_REPORT_TEXT = "jgiven.report.text";
     private static final String JGIVEN_REPORT_TEXT_COLOR = "jgiven.report.text.color";
     private static final String JGIVEN_FILTER_STACK_TRACE = "jgiven.report.filterStackTrace";
