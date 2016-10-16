@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static net.bytebuddy.matcher.ElementMatchers.any;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.MethodDelegation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -239,12 +242,29 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     @SuppressWarnings( "unchecked" )
     @Override
     public <T> T createStageClass( Class<T> stepsClass ) {
+        methodInterceptor.enableMethodHandling(true);
+        try {
+            return new ByteBuddy()
+                .subclass(stepsClass)
+                .method(any())
+                .intercept(MethodDelegation.to(methodInterceptor))
+                .make()
+                .load(getClass().getClassLoader())
+                .getLoaded()
+                .newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+        /*
         Enhancer e = new Enhancer();
         e.setSuperclass( stepsClass );
         e.setCallback( methodInterceptor );
         T result = (T) e.create();
         methodInterceptor.enableMethodHandling( true );
-        return result;
+        return result;*/
     }
 
     @Override
