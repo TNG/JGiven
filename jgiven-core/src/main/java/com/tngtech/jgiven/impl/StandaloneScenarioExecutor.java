@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 import static net.bytebuddy.matcher.ElementMatchers.any;
+
+import com.google.gson.internal.ConstructorConstructor;
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
 import net.bytebuddy.implementation.MethodDelegation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -245,7 +248,7 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
         methodInterceptor.enableMethodHandling(true);
         try {
             return new ByteBuddy()
-                .subclass(stepsClass)
+                .subclass(stepsClass, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING)
                 .method(any())
                 .intercept(MethodDelegation.to(methodInterceptor))
                 .make()
