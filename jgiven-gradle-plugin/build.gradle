@@ -1,0 +1,37 @@
+plugins {
+    id "java-gradle-plugin"
+    id "com.gradle.plugin-publish" version "0.9.6"
+}
+
+sourceCompatibility = targetCompatibility = 1.7
+
+dependencies {
+    compile project(':jgiven-core')
+    compile project(':jgiven-html5-report')
+
+    testCompile gradleTestKit()
+    testCompile project(':jgiven-junit')
+}
+
+gradlePlugin {
+    plugins {
+        jgivenPlugin {
+            id = "com.tngtech.jgiven.gradle-plugin"
+            implementationClass = "com.tngtech.jgiven.gradle.JGivenPlugin"
+        }
+    }
+}
+
+pluginBundle {
+    website = 'http://jgiven.org/'
+    vcsUrl = 'https://github.com/TNG/JGiven.git'
+    description = 'JGiven Gradle plugin'
+    tags = ['jgiven', 'testing']
+
+    plugins {
+        jgivenPlugin {
+            id = gradlePlugin.plugins.jgivenPlugin.id
+            displayName = 'Gradle JGiven Plugin'
+        }
+    }
+}
