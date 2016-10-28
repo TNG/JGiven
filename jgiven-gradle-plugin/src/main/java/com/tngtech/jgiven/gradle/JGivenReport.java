@@ -1,47 +1,40 @@
 package com.tngtech.jgiven.gradle;
 
 import com.tngtech.jgiven.report.ReportGenerator;
-import org.gradle.api.DefaultTask;
-import org.gradle.api.tasks.CacheableTask;
-import org.gradle.api.tasks.InputDirectory;
-import org.gradle.api.tasks.OutputDirectory;
+import org.gradle.api.reporting.DirectoryReport;
+import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.InputFile;
+import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.PathSensitive;
 import org.gradle.api.tasks.PathSensitivity;
-import org.gradle.api.tasks.SkipWhenEmpty;
-import org.gradle.api.tasks.TaskAction;
 
 import java.io.File;
 
-@CacheableTask
-public class JGivenReport extends DefaultTask {
-    private File results;
-    private File destination;
+public interface JGivenReport extends DirectoryReport {
+    void configure( ReportGenerator generator );
 
-    @InputDirectory
-    @SkipWhenEmpty
+    @Optional
+    @InputFile
     @PathSensitive( PathSensitivity.NONE )
-    public File getResults() {
-        return results;
-    }
+    File getCustomCssFile();
 
-    public void setResults( File results ) {
-        this.results = results;
-    }
+    void setCustomCssFile( File customCssFile );
 
-    @TaskAction
-    public void generate() throws Exception {
-        ReportGenerator generator = new ReportGenerator();
-        generator.setTargetDirectory( getDestination() );
-        generator.setSourceDirectory( getResults() );
-        generator.generate();
-    }
+    @Optional
+    @InputFile
+    @PathSensitive( PathSensitivity.NONE )
+    File getCustomJsFile();
 
-    @OutputDirectory
-    public File getDestination() {
-        return destination;
-    }
+    void setCustomJsFile( File customJsFile );
 
-    public void setDestination( File destination ) {
-        this.destination = destination;
-    }
+    @Input
+    @Optional
+    String getTitle();
+
+    void setTitle( String title );
+
+    @Input
+    boolean isExcludeEmptyScenarios();
+
+    void setExcludeEmptyScenarios( boolean excludeEmptyScenarios );
 }

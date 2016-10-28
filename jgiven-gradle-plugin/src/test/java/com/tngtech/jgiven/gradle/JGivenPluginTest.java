@@ -90,7 +90,56 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
                 .the_task( "jgivenTestReport" ).is_successful();
 
         then()
-                .the_JGiven_reports_are_written_to( "build/reports/jgiven/test" );
+                .the_JGiven_html_reports_are_written_to( "build/reports/jgiven/test/html" );
+
+    }
+
+    @Test
+    public void configure_reports() throws IOException {
+        given()
+                .the_plugin_is_applied()
+                .and().there_are_JGiven_tests()
+                .and().the_jgiven_report_is_configured_by("reports {\n"
+                + "  html {\n"
+                + "    enabled = false\n"
+                + "  }\n"
+                + "  text {\n"
+                + "    enabled = true\n"
+                + "  }\n"
+                + "}\n")
+        ;
+
+        when()
+                .a_build().with()
+                .the_task( "test" ).and()
+                .the_task( "jgivenTestReport" ).is_successful();
+
+        then()
+                .the_JGiven_reports_are_not_written_to( "build/reports/jgiven/test/html" )
+                .and().the_JGiven_text_reports_are_written_to( "build/reports/jgiven/test/text" );
+
+    }
+
+    @Test
+    public void configure_html_report() throws IOException {
+        given()
+                .the_plugin_is_applied()
+                .and().there_are_JGiven_tests()
+                .and().the_jgiven_report_is_configured_by("reports {\n"
+                + "  html {\n"
+                + "    enabled = true\n"
+                + "    title = 'JGiven Gradle Plugin'\n"
+                + "  }\n"
+                + "}\n")
+        ;
+
+        when()
+                .a_build().with()
+                .the_task( "test" ).and()
+                .the_task( "jgivenTestReport" ).is_successful();
+
+        then()
+                .the_JGiven_html_reports_are_written_to( "build/reports/jgiven/test/html" );
 
     }
 
@@ -106,7 +155,7 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
                 .the_task( "jgivenTestReport" ).is_successful();
 
         then()
-                .the_JGiven_reports_are_not_written_to( "build/reports/jgiven/test" );
+                .the_JGiven_reports_are_not_written_to( "build/reports/jgiven/test/html" );
 
     }
 
@@ -140,6 +189,11 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
 
         public Given the_results_dir_is_set_to( String dir ) throws IOException {
             Files.append( "test { jgiven { resultsDir = file('" + dir + "') } }\n", buildFile, Charsets.UTF_8 );
+            return self();
+        }
+
+        public Given the_jgiven_report_is_configured_by( String configuration ) throws IOException {
+            Files.append("jgivenTestReport { " + configuration + " } ", buildFile, Charsets.UTF_8);
             return self();
         }
     }
@@ -196,7 +250,7 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
             return self();
         }
 
-        public Then the_JGiven_reports_are_written_to( String reportDirectory ) {
+        public Then the_JGiven_html_reports_are_written_to( String reportDirectory ) {
             assertDirectoryContainsFilesOfType( reportDirectory, "html" );
             return self();
         }
@@ -214,7 +268,14 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
 
         public Then the_JGiven_reports_are_not_written_to( String destination ) {
             File destinationDir = new File( testProjectDir.getRoot(), destination );
-            assertThat( destinationDir ).doesNotExist();
+            if( destinationDir.exists() ) {
+                assertThat( destinationDir.listFiles() ).isEmpty();
+            }
+            return self();
+        }
+
+        public Then the_JGiven_text_reports_are_written_to( String destination ) {
+            assertDirectoryContainsFilesOfType( destination, "feature" );
             return self();
         }
     }
