@@ -11,7 +11,6 @@ import net.bytebuddy.implementation.bind.annotation.Origin;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import net.bytebuddy.implementation.bind.annotation.SuperCall;
 import net.bytebuddy.implementation.bind.annotation.This;
-import net.sf.cglib.proxy.MethodInterceptor;
 
 /**
  * StepMethodInterceptor that uses ByteBuddy Method interceptor with annotations for intercepting JGiven methods
