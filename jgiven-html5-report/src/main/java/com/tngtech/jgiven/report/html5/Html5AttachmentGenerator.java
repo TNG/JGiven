@@ -53,30 +53,9 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
     private void writeAttachment( AttachmentModel attachment ) {
         String mimeType = attachment.getMediaType();
         MediaType mediaType = MediaType.parse( mimeType );
-        File targetFile = null;
-        if( mediaType.is( MediaType.ANY_TEXT_TYPE ) ) {
-            targetFile = writeTextFile( attachment );
-        } else if( mediaType.is( MediaType.ANY_IMAGE_TYPE ) ) {
-            targetFile = writeImageFile( attachment, mediaType );
-        }
-
-        if( targetFile != null ) {
-            attachment.setValue( htmlSubDir + "/" + targetFile.getName() );
-        } else {
-            attachment.setValue( null );
-        }
+        File targetFile = writeFile( attachment, mediaType );
+        attachment.setValue( htmlSubDir + "/" + targetFile.getName() );
         log.info( "Attachment written to " + targetFile );
-    }
-
-    private File writeImageFile( AttachmentModel attachment, MediaType mediaType ) {
-        String extension = getExtension( mediaType );
-        File targetFile = getTargetFile( attachment.getFileName(), extension );
-        try {
-            Files.write( parseBase64Binary( attachment.getValue() ), targetFile );
-        } catch( IOException e ) {
-            log.error( "Error while trying to write attachment to file " + targetFile, e );
-        }
-        return targetFile;
     }
 
     private String getExtension( MediaType mediaType ) {
@@ -121,13 +100,19 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
         return new File( attachmentsDir, fileNameWithExtension );
     }
 
-    private File writeTextFile( AttachmentModel attachment ) {
-        File targetFile = getTargetFile( attachment.getFileName(), "txt" );
+    private File writeFile( AttachmentModel attachment, MediaType mediaType ) {
+        String extension = getExtension( mediaType );
+        File targetFile = getTargetFile( attachment.getFileName(), extension );
         try {
-            Files.write( attachment.getValue(), targetFile, Charsets.UTF_8 );
+            if( attachment.isBinary() ) {
+                Files.write( parseBase64Binary( attachment.getValue() ), targetFile );
+            } else {
+                Files.write( attachment.getValue(), targetFile, Charsets.UTF_8 );
+            }
         } catch( IOException e ) {
             log.error( "Error while trying to write attachment to file " + targetFile, e );
         }
         return targetFile;
     }
+
 }
