@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -17,7 +17,9 @@ import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
+import com.tngtech.jgiven.report.model.GivenReportModels;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.tags.BrowserTest;
 import com.tngtech.jgiven.tags.FeatureAttachments;
@@ -25,14 +27,16 @@ import com.tngtech.jgiven.tags.FeatureHtml5Report;
 import com.tngtech.jgiven.tags.FeatureTags;
 import com.tngtech.jgiven.tags.FeatureTagsWithCustomStyle;
 import com.tngtech.jgiven.tags.Issue;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 @BrowserTest
 @FeatureHtml5Report
 @As( "HTML App" )
 @Description( "Tests against the generated HTML5 App using WebDriver" )
 @RunWith( DataProviderRunner.class )
-public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHtml5App<?>, ThenHtml5App<?>> {
+public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenHtml5App<?>, ThenHtml5App<?>> {
+
+    @ScenarioStage
+    private GivenJsonReports<?> jsonReports;
 
     @ScenarioStage
     private WhenHtml5ReportGenerator<?> whenReport;
@@ -53,9 +57,9 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
 
     @Test
     public void the_welcome_page_of_the_HTML5_report_can_be_opened() throws Exception {
-        given().a_report_model()
+        given().a_report_model();
+        jsonReports
             .and().the_report_exist_as_JSON_file();
-
         whenReport
             .and().the_HTML_Report_Generator_is_executed();
 
@@ -68,7 +72,8 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
     public void the_statistics_on_the_welcome_page_of_the_HTML5_report_is_correct() throws Exception {
         given().a_report_model()
             .and().the_report_has_$_scenarios( 3 )
-            .and().step_$_of_case_$_has_status( 1, 1, StepStatus.FAILED )
+            .and().step_$_of_case_$_has_status( 1, 1, StepStatus.FAILED );
+        jsonReports
             .and().the_report_exist_as_JSON_file();
 
         whenReport
@@ -91,7 +96,8 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
     public void clicking_on_tag_labels_opens_the_tag_page( boolean prependType, String tagName ) throws Exception {
         given().a_report_model()
             .and().scenario_$_has_tag_$_with_value_$( 1, "testtag", "#42" )
-            .and().the_tag_has_prependType_set_to( prependType )
+            .and().the_tag_has_prependType_set_to( prependType );
+        jsonReports
             .and().the_report_exist_as_JSON_file();
 
         whenReport
@@ -109,9 +115,9 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
         String style = "background-color: black;";
         given().a_report_model()
             .and().the_first_scenario_has_tag( "TagWithCustomStyle" )
-            .and().the_tag_has_style( style )
+            .and().the_tag_has_style( style );
+        jsonReports
             .and().the_report_exist_as_JSON_file();
-
         whenReport
             .and().the_HTML_Report_Generator_is_executed();
 
@@ -132,9 +138,9 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
             .and().the_scenario_has_one_parameter()
             .and().the_scenario_has_$_default_cases( 2 )
             .and().step_$_of_case_$_has_a_text_attachment( 1, 1 )
-            .and().step_$_of_case_$_has_a_text_attachment( 1, 2 )
+            .and().step_$_of_case_$_has_a_text_attachment( 1, 2 );
+        jsonReports
             .and().the_report_exist_as_JSON_file();
-
         whenReport
             .and().the_HTML_Report_Generator_is_executed();
 
@@ -148,9 +154,9 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
     public void attachments_appear_in_the_HTML5_report() throws Exception {
         String content = "Some Example Attachment\nwith some example content";
         given().a_report_model()
-            .and().step_$_of_scenario_$_has_a_text_attachment_with_content( 1, 1, content )
+            .and().step_$_of_scenario_$_has_a_text_attachment_with_content( 1, 1, content );
+        jsonReports
             .and().the_report_exist_as_JSON_file();
-
         whenReport
             .and().the_HTML_Report_Generator_is_executed();
 
@@ -167,7 +173,8 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
         String content2 = "Another Example Attachment\nwith some example content";
         given().a_report_model()
             .and().step_$_of_scenario_$_has_a_text_attachment_with_content( 1, 1, content1 )
-            .and().step_$_of_scenario_$_has_another_text_attachment_with_content( 1, 1, content2 )
+            .and().step_$_of_scenario_$_has_another_text_attachment_with_content( 1, 1, content2 );
+        jsonReports
             .and().the_report_exist_as_JSON_file();
 
         whenReport
@@ -182,7 +189,8 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
 
     @Test
     public void the_configured_title_appears_in_the_generated_HTML_report() throws Exception {
-        given().a_report_model()
+        given().a_report_model();
+        jsonReports
             .and().the_report_exist_as_JSON_file();
 
         whenReport
@@ -199,14 +207,15 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
         "JGiven Documentation, http://jgiven.org/docs",
         "Back, javascript:window.history.back()" } )
     public void navigation_links_of_the_HTML_report_can_be_customized_using_a_custom_JS_file( String title, String href ) throws Exception {
-        given().a_report_model()
-            .and().the_report_exist_as_JSON_file();
-        given().a_custom_JS_file_with_content(
-            "jgivenReport.addNavigationLink( { \n"
-                    + "   href: '" + href + "', \n"
-                    + "   text: '" + title + "', \n"
-                    + "   target: '_blank' \n"
-                    + "});" );
+        given().a_report_model();
+        jsonReports
+            .and().the_report_exist_as_JSON_file()
+            .given().a_custom_JS_file_with_content(
+                "jgivenReport.addNavigationLink( { \n"
+                        + "   href: '" + href + "', \n"
+                        + "   text: '" + title + "', \n"
+                        + "   target: '_blank' \n"
+                        + "});" );
         whenReport.when().the_HTML_Report_Generator_is_executed();
 
         when().and().the_index_page_is_opened();
@@ -221,7 +230,8 @@ public class Html5AppTest extends JGivenScenarioTest<GivenJsonReports<?>, WhenHt
     public void newlines_are_detected_in_formatted_values_and_shown_as_multiline_text() throws IOException {
         String content = "Some \n text \n with \n newlines";
         given().a_report_model()
-            .and().step_$_of_case_$_has_a_formatted_value_$_as_parameter( 1, 1, content )
+            .and().step_$_of_case_$_has_a_formatted_value_$_as_parameter( 1, 1, content );
+        jsonReports
             .and().the_report_exist_as_JSON_file();
         whenReport.when().the_HTML_Report_Generator_is_executed();
         when().the_page_of_scenario_$_is_opened( 1 );

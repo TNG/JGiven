@@ -8,6 +8,8 @@ import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.attachment.Attachment;
+import com.tngtech.jgiven.attachment.MediaType;
 
 public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<SELF> {
     @ExpectedScenarioState
@@ -18,6 +20,9 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
 
     @ScenarioStage
     public GivenReportModel<?> givenReportModel;
+
+    @ProvidedScenarioState
+    private Attachment attachment;
 
     @BeforeStage
     public void useReportModel() {
@@ -95,12 +100,18 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
     }
 
     public SELF step_$_of_case_$_has_a_text_attachment( int stepNr, int caseNr ) {
-        givenReportModel.step_$_of_case_$_has_an_attachment_with_content( stepNr, caseNr, "Test Text" );
+        givenReportModel.step_$_of_case_$_has_an_attachment_with_content_and_media_type( stepNr, caseNr, "Test Text" );
+        return self();
+    }
+
+    public SELF step_$_of_case_$_has_a_text_attachment_with_content_$_and_mediaType( int stepNr, int caseNr, String content,
+            MediaType mediaType ) {
+        givenReportModel.step_$_of_case_$_has_an_attachment_with_content_and_media_type( stepNr, caseNr, content, mediaType );
         return self();
     }
 
     public SELF step_$_of_case_$_has_a_text_attachment_with_content( int stepNr, int caseNr, String content ) {
-        givenReportModel.step_$_of_case_$_has_an_attachment_with_content( stepNr, caseNr, content );
+        givenReportModel.step_$_of_case_$_has_an_attachment_with_content_and_media_type( stepNr, caseNr, content );
         return self();
     }
 
@@ -119,8 +130,18 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         return self();
     }
 
-    public SELF step_$_of_case_$_has_a_formatted_value_$_as_parameter(int stepNr, int caseNr, String formattedValue) {
-        givenReportModel.step_$_of_case_$_has_a_formatted_value_$_as_parameter(stepNr, caseNr, formattedValue);
+    public SELF step_$_of_case_$_has_a_formatted_value_$_as_parameter( int stepNr, int caseNr, String formattedValue ) {
+        givenReportModel.step_$_of_case_$_has_a_formatted_value_$_as_parameter( stepNr, caseNr, formattedValue );
+        return self();
+    }
+
+    public SELF the_attachment_is_added_to_step_$_of_case_$( int stepNr, int caseNr ) {
+        givenReportModel.the_attachment_is_added_to_step_$_of_case_$( stepNr, caseNr );
+        return self();
+    }
+
+    public SELF the_attachments_are_added_to_step_$_of_case_$(int stepNr, int caseNr) {
+        givenReportModel.the_attachments_are_added_to_step_$_of_case_$(stepNr, caseNr);
         return self();
     }
 }

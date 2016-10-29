@@ -32,37 +32,4 @@ public class Html5AttachmentGeneratorTest {
         assertThat( generator.getTargetFile( "foo", "png" ).getName() ).isEqualTo( "foo5.png" );
 
     }
-
-    @Test
-    public void testFileCreation() throws IOException {
-        // given
-        ScenarioModel scenarioModel = new ScenarioModel();
-        ScenarioCaseModel case1 = new ScenarioCaseModel();
-        StepModel step1 = new StepModel();
-        step1.addAttachment( Attachment.fromText( JSON_SAMPLE, MediaType.JSON_UTF_8 ).withFileName( "json" ) );
-        step1.addAttachment( Attachment.fromBinaryBytes( BINARY_SAMPLE, MediaType.PNG ).withFileName( "png" ) );
-        step1.setStatus( StepStatus.PASSED );
-        case1.addStep( step1 );
-        case1.setSuccess( false );
-        scenarioModel.addCase( case1 );
-        ReportModel reportModel = new ReportModel();
-        reportModel.addScenarioModel( scenarioModel );
-        reportModel.setClassName( "report" );
-        File attachmentDir = temporaryFolderRule.newFolder( "attachments" );
-        File reportDir = new File( attachmentDir, "report" );
-        File json = new File( reportDir, "json.json" );
-        json.delete();
-        File png = new File( reportDir, "png.png" );
-        png.delete();
-
-        // when
-        new Html5AttachmentGenerator().generateAttachments( temporaryFolderRule.getRoot(), reportModel );
-
-        // then
-        assertThat( json ).exists();
-        assertThat( json ).hasContent( JSON_SAMPLE );
-        assertThat( png ).exists();
-        assertThat( png ).hasBinaryContent( BINARY_SAMPLE );
-    }
-
 }

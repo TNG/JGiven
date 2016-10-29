@@ -30,4 +30,5 @@ public class ThenHtml5ReportGenerator<SELF extends ThenHtml5ReportGenerator<SELF
 
         assertThat( metaData.title ).isEqualTo( title );
     }
+
 }

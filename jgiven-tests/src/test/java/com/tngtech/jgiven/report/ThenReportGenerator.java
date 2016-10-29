@@ -14,6 +14,8 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.report.model.ReportModel;
 
+import javax.xml.bind.DatatypeConverter;
+
 public class ThenReportGenerator<SELF extends ThenReportGenerator<?>> extends Stage<SELF> {
 
     @ExpectedScenarioState
@@ -21,14 +23,16 @@ public class ThenReportGenerator<SELF extends ThenReportGenerator<?>> extends St
 
     @ExpectedScenarioState
     protected List<ReportModel> reportModels;
+    private File currentFile;
 
     public SELF a_file_with_name_$_exists(@Quoted String name) {
-        assertThat(new File(targetReportDir, name)).exists();
+        a_file_$_exists_in_folder_$(name,"");
         return self();
     }
 
     public SELF a_file_$_exists_in_folder_$(@Quoted String name, @Quoted String folder) {
-        assertThat(new File(new File(targetReportDir, folder), name)).exists();
+        currentFile = new File(new File(targetReportDir, folder), name);
+        assertThat(currentFile).exists();
         return self();
     }
 
@@ -45,4 +49,15 @@ public class ThenReportGenerator<SELF extends ThenReportGenerator<?>> extends St
         assertThat(content).as("file " + fileName + " does not contain " + string).contains(string);
         return self();
     }
+
+    public SELF content(@Quoted String content) {
+        assertThat(currentFile).hasContent(content);
+        return self();
+    }
+
+    public SELF binary_content(@Quoted String base64content) {
+        assertThat(currentFile).hasBinaryContent(DatatypeConverter.parseBase64Binary(base64content));
+        return self();
+    }
+
 }
