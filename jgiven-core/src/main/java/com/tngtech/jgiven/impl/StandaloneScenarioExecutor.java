@@ -51,7 +51,6 @@ import com.tngtech.jgiven.integration.CanWire;
 import com.tngtech.jgiven.report.model.InvocationMode;
 import com.tngtech.jgiven.report.model.NamedArgument;
 
-import net.sf.cglib.proxy.Enhancer;
 
 /**
  * Main class of JGiven for executing scenarios.
@@ -245,9 +244,8 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     @SuppressWarnings( "unchecked" )
     @Override
     public <T> T createStageClass( Class<T> stepsClass ) {
-        methodInterceptor.enableMethodHandling(true);
         try {
-            return new ByteBuddy()
+            T result = new ByteBuddy()
                 .subclass(stepsClass, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING)
                 .method(any())
                 .intercept(MethodDelegation.to(methodInterceptor))
@@ -255,19 +253,11 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
                 .load(getClass().getClassLoader())
                 .getLoaded()
                 .newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            methodInterceptor.enableMethodHandling(true);
+            return result;
+        } catch (Exception e) {
+            throw new RuntimeException("Error while trying to create an instance of class "+stepsClass, e);
         }
-        return null;
-        /*
-        Enhancer e = new Enhancer();
-        e.setSuperclass( stepsClass );
-        e.setCallback( methodInterceptor );
-        T result = (T) e.create();
-        methodInterceptor.enableMethodHandling( true );
-        return result;*/
     }
 
     @Override

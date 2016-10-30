@@ -4,7 +4,6 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: guavaVersion
     compile group: 'com.google.code.gson', name: 'gson', version: gsonVersion
     compile group: 'com.thoughtworks.paranamer', name: 'paranamer', version: paranamerVersion
-    compile group: 'cglib', name: 'cglib-nodep', version: cglibVersion
     compile group: 'net.bytebuddy', name: 'byte-buddy', version: bytebuddyVersion
     compile group: 'org.fusesource.jansi', name: 'jansi', version: jansiVersion
 }
