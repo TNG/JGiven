@@ -11,6 +11,7 @@ In order to fix issue #239, a backwards incompatible change had to be done:
 ## New Features
 
 * Custom annotations can now also be defined for the `@Table` annotation [#234](https://github.com/TNG/JGiven/issues/235)
+* In addition to text and images, all kinds of media types can now be used as attachments [#228](https://github.com/TNG/JGiven/issues/228) (thanks to ahus1)
 
 ## Small Improvements
 

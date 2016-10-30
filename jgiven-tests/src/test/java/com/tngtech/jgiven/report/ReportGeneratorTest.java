@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.report;
 
+import com.tngtech.jgiven.report.model.GivenReportModels;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -16,6 +17,9 @@ public class ReportGeneratorTest extends JGivenScenarioTest<GivenReportModel<?>,
 
     @ScenarioStage
     GivenJsonReports<?> jsonReports;
+
+    @ScenarioStage
+    GivenReportModels<?> reportModels;
 
     @Test
     @DataProvider( {
@@ -42,12 +46,12 @@ public class ReportGeneratorTest extends JGivenScenarioTest<GivenReportModel<?>,
         "false, 2" } )
     public void empty_report_files_are_excluded_when_the_exclude_empty_scenarios_option_is_set( boolean excludeEmptyScenarios,
             int expectedReports ) throws Exception {
-
-        jsonReports.given().a_report_model_with_name( "non empty report model" )
+        reportModels.given().a_report_model_with_name( "non empty report model" )
             .and().the_report_has_$_scenarios( 2 )
             .given().a_report_model_with_name( "empty report model" )
             .and().the_report_has_$_scenarios( 1 )
-            .and().scenario_$_has_no_steps( 1 )
+            .and().scenario_$_has_no_steps( 1 );
+        jsonReports
             .and().the_report_exist_as_JSON_file();
 
         when().the_exclude_empty_scenarios_option_is_set_to( excludeEmptyScenarios )

@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.Quoted;
@@ -26,6 +27,9 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     private Word latestWord;
 
     private Word lastArgWord;
+
+    @ExpectedScenarioState
+    protected List<Attachment> attachments;
 
     @ExtendedDescription( "A report model where the analysers have not been executed on" )
     public SELF an_unanalyzed_report_model_with_one_scenario() {
@@ -251,9 +255,14 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
-    public SELF step_$_of_case_$_has_an_attachment_with_content( int stepNr, int caseNr, String content ) {
+    public SELF step_$_of_case_$_has_an_attachment_with_content_and_media_type( int stepNr, int caseNr, String content ) {
+        return step_$_of_case_$_has_an_attachment_with_content_and_media_type( stepNr, caseNr, content, MediaType.PLAIN_TEXT_UTF_8 );
+    }
+
+    public SELF step_$_of_case_$_has_an_attachment_with_content_and_media_type( int stepNr, int caseNr, String content,
+            MediaType mediaType ) {
         StepModel step = getStep( stepNr, 1, caseNr );
-        step.addAttachment( Attachment.fromText( content, MediaType.PLAIN_TEXT_UTF_8 ) );
+        step.addAttachment( Attachment.fromText( content, mediaType ) );
         return self();
     }
 
@@ -299,6 +308,18 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         Word word = Word.argWord( "a", "dummy value", formattedValue );
         step.addWords( word );
         latestWord = word;
+        return self();
+    }
+
+    public SELF the_attachment_is_added_to_step_$_of_case_$( int stepNr, int caseNr ) {
+        getStep( stepNr, 1, caseNr ).addAttachment( attachments.get( attachments.size() - 1 ) );
+        return self();
+    }
+
+    public SELF the_attachments_are_added_to_step_$_of_case_$(int stepNr, int caseNr) {
+        for (Attachment a : attachments) {
+            getStep(stepNr, 1, caseNr).addAttachment(a);
+        }
         return self();
     }
 }

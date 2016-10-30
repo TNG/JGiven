@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import org.junit.rules.TemporaryFolder;
 
 import com.google.common.base.Charsets;
@@ -16,10 +18,16 @@ import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 import com.tngtech.jgiven.report.model.GivenReportModels;
 import com.tngtech.jgiven.report.model.ReportModel;
 
-public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenReportModels<SELF> {
+public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends Stage<SELF> {
 
     @ScenarioRule
     protected final TemporaryFolder temporaryFolderRule = new TemporaryFolder();
+
+    @ExpectedScenarioState
+    protected List<ReportModel> reportModels = Lists.newArrayList();
+
+    @ExpectedScenarioState
+    protected ReportModel reportModel;
 
     @ProvidedScenarioState
     protected File jsonReportDirectory;
@@ -30,17 +38,11 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends GivenRep
     @ProvidedScenarioState
     protected ReportGenerator.Config config = new ReportGenerator.Config();
 
-    public SELF a_report_model_as_JSON_file() throws IOException {
-        a_report_model();
-        return the_report_exist_as_JSON_file();
-    }
-
-    public SELF $_report_models_as_JSON_files( int n ) throws IOException {
-        $_report_models( n );
-        return the_report_exist_as_JSON_file();
-    }
 
     public SELF the_report_exist_as_JSON_file() throws IOException {
+        if (reportModel != null) {
+            reportModels.add(reportModel);
+        }
         return the_reports_exist_as_JSON_files();
     }
 

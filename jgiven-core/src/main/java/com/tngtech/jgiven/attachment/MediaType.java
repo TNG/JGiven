@@ -260,4 +260,8 @@ public class MediaType {
         return text( subType, UTF_8 );
     }
 
+    @Override
+    public String toString() {
+        return type+"/"+subType;
+    }
 }

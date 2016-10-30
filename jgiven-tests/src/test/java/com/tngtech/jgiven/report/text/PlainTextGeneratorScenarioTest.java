@@ -2,6 +2,8 @@ package com.tngtech.jgiven.report.text;
 
 import java.io.IOException;
 
+import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.report.model.GivenReportModels;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -15,12 +17,16 @@ import com.tngtech.jgiven.tags.FeatureTextReport;
 @RunWith( DataProviderRunner.class )
 @FeatureTextReport
 public class PlainTextGeneratorScenarioTest extends
-        ScenarioTest<GivenJsonReports<?>, WhenReportGenerator<?>, ThenPlainTextReportGenerator<?>> {
+        ScenarioTest<GivenReportModels<?>, WhenReportGenerator<?>, ThenPlainTextReportGenerator<?>> {
+
+    @ScenarioStage
+    GivenJsonReports<?> jsonReports;
 
     @Test
     @DataProvider( { "0", "1", "3" } )
     public void the_plain_text_reporter_generates_one_file_for_each_test_class( int numberOfModels ) throws IOException {
-        given().$_report_models( numberOfModels )
+        given().$_report_models( numberOfModels );
+        jsonReports
             .and().the_reports_exist_as_JSON_files();
 
         when().the_plain_text_reporter_is_executed();

@@ -240,4 +240,5 @@ public class StepModel {
     public boolean hasAttachment() {
         return !getAttachments().isEmpty();
     }
+
 }
