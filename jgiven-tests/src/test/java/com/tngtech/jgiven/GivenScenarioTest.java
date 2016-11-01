@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.tests.PendingDataProviderTests;
 import com.tngtech.jgiven.tests.TestScenarioRepository;
 import com.tngtech.jgiven.tests.TestScenarioRepository.SearchCriteria;
 import com.tngtech.jgiven.tests.TestScenarioRepository.TestScenario;
@@ -121,5 +122,9 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
 
     public void a_TestNG_test_with_two_cases_and_the_first_one_fails() {
         testScenario = TestScenarioRepository.testNgTestWithAFailingCase();
+    }
+
+    public void a_pending_scenario_with_a_data_provider() {
+        testScenario = new TestScenario(PendingDataProviderTests.class);
     }
 }

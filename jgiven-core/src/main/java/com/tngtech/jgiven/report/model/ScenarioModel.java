@@ -38,11 +38,19 @@ public class ScenarioModel {
 
     public ExecutionStatus getExecutionStatus() {
         if( executionStatus == null ) {
-            ExecutionStatusCalculator executionStatusCalculator = new ExecutionStatusCalculator();
-            this.accept( executionStatusCalculator );
-            executionStatus = executionStatusCalculator.executionStatus();
+            executionStatus = calculateExecutionStatus();
         }
         return executionStatus;
+    }
+
+    private ExecutionStatus calculateExecutionStatus() {
+        for (ScenarioCaseModel caseModel: getScenarioCases()) {
+            ExecutionStatus caseStatus = caseModel.getExecutionStatus();
+            if (caseStatus != ExecutionStatus.SUCCESS) {
+                return caseStatus;
+            }
+        }
+        return ExecutionStatus.SUCCESS;
     }
 
     public ScenarioCaseModel getCase( int i ) {
@@ -145,10 +153,6 @@ public class ScenarioModel {
         this.tagIds = tagIds;
     }
 
-    public void setPending() {
-        this.executionStatus = ExecutionStatus.SCENARIO_PENDING;
-    }
-
     public void setExtendedDescription( String extendedDescription ) {
         this.extendedDescription = extendedDescription;
     }
@@ -157,6 +161,12 @@ public class ScenarioModel {
         return extendedDescription;
     }
 
+    @Deprecated
+    public void setPending() {
+        this.executionStatus = ExecutionStatus.SCENARIO_PENDING;
+    }
+
+    @Deprecated
     public boolean isPending() {
         return executionStatus == ExecutionStatus.SCENARIO_PENDING;
     }

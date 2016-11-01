@@ -17,7 +17,18 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.As;
+import com.tngtech.jgiven.annotation.AsProvider;
+import com.tngtech.jgiven.annotation.CaseDescription;
+import com.tngtech.jgiven.annotation.CaseDescriptionProvider;
+import com.tngtech.jgiven.annotation.Description;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
+import com.tngtech.jgiven.annotation.Hidden;
+import com.tngtech.jgiven.annotation.IntroWord;
+import com.tngtech.jgiven.annotation.IsTag;
+import com.tngtech.jgiven.annotation.NotImplementedYet;
+import com.tngtech.jgiven.annotation.Pending;
+import com.tngtech.jgiven.annotation.StepComment;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
@@ -32,7 +43,17 @@ import com.tngtech.jgiven.impl.util.AnnotationUtil;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.model.*;
+import com.tngtech.jgiven.report.model.ExecutionStatus;
+import com.tngtech.jgiven.report.model.InvocationMode;
+import com.tngtech.jgiven.report.model.NamedArgument;
+import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.StepFormatter;
+import com.tngtech.jgiven.report.model.StepModel;
+import com.tngtech.jgiven.report.model.StepStatus;
+import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.Word;
 
 public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
@@ -216,8 +237,13 @@ public class ScenarioModelBuilder implements ScenarioListener {
         return provider.as( as, paramMethod );
     }
 
+    @Deprecated
     public void setSuccess( boolean success ) {
         scenarioCaseModel.setSuccess( success );
+    }
+
+    public void setStatus( ExecutionStatus status ) {
+        scenarioCaseModel.setStatus( status );
     }
 
     public void setException( Throwable throwable ) {
@@ -290,6 +316,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     @Override
     public void scenarioFailed( Throwable e ) {
         setSuccess( false );
+        setStatus(ExecutionStatus.FAILED);
         setException( e );
     }
 
@@ -372,7 +399,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
 
         if( method.isAnnotationPresent( NotImplementedYet.class ) || method.isAnnotationPresent( Pending.class ) ) {
-            scenarioModel.setPending();
+            scenarioCaseModel.setStatus(ExecutionStatus.SCENARIO_PENDING);
         }
 
         if( scenarioCaseModel.getCaseNr() == 1 ) {
@@ -547,7 +574,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
         } catch( Exception e ) {
             throw new JGivenWrongUsageException(
                 "Error while trying to generate the description for annotation " + annotation + " using DescriptionGenerator class "
-                        + tagConfiguration.getDescriptionGenerator() + ": " + e.getMessage(), e );
+                        + tagConfiguration.getDescriptionGenerator() + ": " + e.getMessage(),
+                e );
         }
     }
 
@@ -557,7 +585,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
         } catch( Exception e ) {
             throw new JGivenWrongUsageException(
                 "Error while trying to generate the href for annotation " + annotation + " using HrefGenerator class "
-                        + tagConfiguration.getHrefGenerator() + ": " + e.getMessage(), e );
+                        + tagConfiguration.getHrefGenerator() + ": " + e.getMessage(),
+                e );
         }
     }
 

@@ -21,6 +21,8 @@ In order to fix issue #239, a backwards incompatible change had to be done:
 
 * TestNG: executing test methods in parallel is now possible. [#239](https://github.com/TNG/JGiven/issues/239)
 * Correctly handle nested steps in parametrized scenarios. [#248](https://github.com/TNG/JGiven/issues/248)
+* Correctly report pending status of parametrized scenarios. [#200](https://github.com/TNG/JGiven/issues/200)
+
 
 # v0.12.1
 

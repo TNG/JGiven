@@ -126,9 +126,9 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
     }
 
     @Test
-    @DataProvider( {"1", "2"})
-    public void differences_in_nested_steps_should_be_detected(Integer methodParameter) throws Throwable {
-        given().a_nested_step(methodParameter + 1);
+    @DataProvider( { "1", "2" } )
+    public void differences_in_nested_steps_should_be_detected( Integer methodParameter ) throws Throwable {
+        given().a_nested_step( methodParameter + 1 );
         getScenario().finished();
 
         ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
@@ -138,7 +138,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
             ScenarioCaseModel case0 = scenarioModel.getCase( 0 );
             assertParameter( case0, 0, "nestedStepArg" );
 
-            Word word = case0.getStep( 0 ).getNestedSteps().get(0).getWords().get( 1 );
+            Word word = case0.getStep( 0 ).getNestedSteps().get( 0 ).getWords().get( 1 );
             assertThat( word.getArgumentInfo().getParameterName() ).isEqualTo( "someIntValue" );
         }
 
