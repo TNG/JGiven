@@ -2,10 +2,10 @@ package com.tngtech.jgiven.config;
 
 import java.util.concurrent.ExecutionException;
 
-import com.google.common.base.Throwables;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import com.tngtech.jgiven.relocated.guava.base.Throwables;
+import com.tngtech.jgiven.relocated.guava.cache.CacheBuilder;
+import com.tngtech.jgiven.relocated.guava.cache.CacheLoader;
+import com.tngtech.jgiven.relocated.guava.cache.LoadingCache;
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 

@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.impl;
 
-import com.google.common.base.Optional;
+import com.tngtech.jgiven.relocated.guava.base.Optional;
 import com.tngtech.jgiven.config.ConfigValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

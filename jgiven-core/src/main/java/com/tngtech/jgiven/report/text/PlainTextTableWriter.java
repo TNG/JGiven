@@ -4,11 +4,11 @@ import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Lists;
-import com.google.common.primitives.Doubles;
+import com.tngtech.jgiven.relocated.guava.base.Splitter;
+import com.tngtech.jgiven.relocated.guava.base.Strings;
+import com.tngtech.jgiven.relocated.guava.collect.FluentIterable;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.primitives.Doubles;
 import com.tngtech.jgiven.report.model.DataTable;
 
 public class PlainTextTableWriter extends PlainTextWriter {

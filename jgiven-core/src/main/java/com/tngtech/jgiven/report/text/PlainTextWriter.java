@@ -2,11 +2,11 @@ package com.tngtech.jgiven.report.text;
 
 import java.io.PrintWriter;
 
-import org.fusesource.jansi.Ansi;
-import org.fusesource.jansi.Ansi.Attribute;
-import org.fusesource.jansi.Ansi.Color;
-
+import com.tngtech.jgiven.relocated.jansi.Ansi.*;
+import com.tngtech.jgiven.relocated.jansi.*;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
+
+import static com.tngtech.jgiven.relocated.jansi.Ansi.ansi;
 
 public class PlainTextWriter extends ReportModelVisitor {
     protected final PrintWriter writer;
@@ -17,11 +17,11 @@ public class PlainTextWriter extends ReportModelVisitor {
         this.withColor = withColor;
     }
 
-    void println( Color color, String text ) {
+    void println(Color color, String text ) {
         writer.println( withColor( color, text ) );
     }
 
-    String withColor( Color color, String text ) {
+    String withColor(Color color, String text ) {
         return withColor( color, false, null, text );
     }
 
@@ -43,18 +43,18 @@ public class PlainTextWriter extends ReportModelVisitor {
 
     String bold( String text ) {
         if( withColor ) {
-            return Ansi.ansi().bold().a( text ).boldOff().toString();
+            return ansi().bold().a( text ).boldOff().toString();
         }
         return text;
     }
 
-    String withColor( Color color, Attribute attribute, String text ) {
+    String withColor(Color color, Attribute attribute, String text ) {
         return withColor( color, false, attribute, text );
     }
 
-    String withColor( Color color, boolean bright, Attribute attribute, String text ) {
+    String withColor(Color color, boolean bright, Attribute attribute, String text ) {
         if( withColor ) {
-            Ansi ansi = bright ? Ansi.ansi().fgBright( color ) : Ansi.ansi().fg( color );
+            Ansi ansi = bright ? ansi().fgBright( color ) : ansi().fg( color );
             if( attribute != null ) {
                 ansi = ansi.a( attribute );
             }

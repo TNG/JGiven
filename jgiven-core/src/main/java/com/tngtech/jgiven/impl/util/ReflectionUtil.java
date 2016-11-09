@@ -10,12 +10,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.base.Throwables;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.base.Function;
+import com.tngtech.jgiven.relocated.guava.base.Optional;
+import com.tngtech.jgiven.relocated.guava.base.Predicate;
+import com.tngtech.jgiven.relocated.guava.base.Throwables;
+import com.tngtech.jgiven.relocated.guava.collect.FluentIterable;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
 import com.tngtech.jgiven.exception.JGivenInjectionException;
 import com.tngtech.jgiven.exception.JGivenUserException;

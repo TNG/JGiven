@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.tngtech.jgiven.relocated.guava.base.Objects;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.Sets;
 import com.tngtech.jgiven.report.model.*;
 
 public class CaseDifferenceAnalyzer {

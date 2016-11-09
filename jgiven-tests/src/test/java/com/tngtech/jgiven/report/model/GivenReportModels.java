@@ -2,7 +2,7 @@ package com.tngtech.jgiven.report.model;
 
 import java.util.List;
 
-import com.google.common.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;

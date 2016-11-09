@@ -3,7 +3,7 @@ package com.tngtech.jgiven.format.table;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
+import com.tngtech.jgiven.relocated.guava.collect.ImmutableList;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.config.FormatterConfiguration;
 import com.tngtech.jgiven.format.ObjectFormatter;

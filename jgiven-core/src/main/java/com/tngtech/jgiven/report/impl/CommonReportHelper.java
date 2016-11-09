@@ -5,7 +5,7 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
+import com.tngtech.jgiven.relocated.guava.base.Optional;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 import com.tngtech.jgiven.report.json.ScenarioJsonWriter;

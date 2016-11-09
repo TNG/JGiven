@@ -4,10 +4,10 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.base.Throwables;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.tngtech.jgiven.relocated.guava.base.Throwables;
+import com.tngtech.jgiven.relocated.guava.collect.Iterables;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.Sets;
 import com.tngtech.jgiven.annotation.AnnotationFormat;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Table;

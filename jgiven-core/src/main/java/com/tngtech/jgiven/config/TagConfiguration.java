@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.config;
 
-import com.google.common.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
 import com.tngtech.jgiven.annotation.TagDescriptionGenerator;
 import com.tngtech.jgiven.annotation.TagHrefGenerator;
 import com.tngtech.jgiven.impl.tag.DefaultTagDescriptionGenerator;

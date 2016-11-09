@@ -1,5 +1,6 @@
 rootProject.name = 'jgiven'
 
+include ':jgiven-deps'
 include ':jgiven-core'
 include ':jgiven-maven-plugin'
 include ':jgiven-gradle-plugin'

@@ -5,7 +5,7 @@ sudo: true
 cache:
   directories:
   - $HOME/.gradle
-install: "./gradlew -i -s classes"
+install: "./gradlew -i -s assemble"
 script:
     - "./gradlew -i -s check -DjunitVersion=4.9"
     - "./gradlew -i -s check -DjunitVersion=4.10"

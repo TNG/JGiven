@@ -2,7 +2,7 @@ package com.tngtech.jgiven.impl.util;
 
 import java.io.Closeable;
 
-import com.google.common.base.Throwables;
+import com.tngtech.jgiven.relocated.guava.base.Throwables;
 
 public class ResourceUtil {
     public static void close( Closeable... closeables ) {

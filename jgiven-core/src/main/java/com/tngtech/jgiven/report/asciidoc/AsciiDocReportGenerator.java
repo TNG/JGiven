@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-import com.google.common.io.Files;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.io.Files;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;

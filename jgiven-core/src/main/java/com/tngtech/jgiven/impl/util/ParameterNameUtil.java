@@ -10,10 +10,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-import com.thoughtworks.paranamer.BytecodeReadingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
+import com.tngtech.jgiven.relocated.guava.base.Preconditions;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.paranamer.BytecodeReadingParanamer;
+import com.tngtech.jgiven.relocated.paranamer.Paranamer;
 import com.tngtech.jgiven.report.model.NamedArgument;
 
 public class ParameterNameUtil {

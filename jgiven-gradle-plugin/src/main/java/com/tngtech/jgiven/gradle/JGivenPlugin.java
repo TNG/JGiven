@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.gradle;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.util.concurrent.Callables;
+import com.tngtech.jgiven.relocated.guava.collect.ImmutableMap;
+import com.tngtech.jgiven.relocated.guava.util.concurrent.Callables;
 import com.tngtech.jgiven.gradle.internal.JGivenHtmlReportImpl;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.impl.util.WordUtil;

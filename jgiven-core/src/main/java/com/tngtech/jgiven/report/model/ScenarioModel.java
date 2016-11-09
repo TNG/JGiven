@@ -2,8 +2,8 @@ package com.tngtech.jgiven.report.model;
 
 import java.util.*;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.Sets;
 
 public class ScenarioModel {
     private String className;

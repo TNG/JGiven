@@ -3,7 +3,7 @@ package com.tngtech.jgiven.config;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import com.tngtech.jgiven.relocated.guava.collect.Maps;
 import com.tngtech.jgiven.format.Formatter;
 import com.tngtech.jgiven.impl.format.FormatterCache;
 

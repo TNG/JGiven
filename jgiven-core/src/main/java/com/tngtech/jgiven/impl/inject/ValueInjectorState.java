@@ -2,7 +2,7 @@ package com.tngtech.jgiven.impl.inject;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import com.tngtech.jgiven.relocated.guava.collect.Maps;
 
 /**
  * Holds values based on their type or name.

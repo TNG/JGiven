@@ -3,7 +3,7 @@ package com.tngtech.jgiven.report.text;
 import java.io.File;
 import java.io.PrintWriter;
 
-import com.google.common.io.Files;
+import com.tngtech.jgiven.relocated.guava.io.Files;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.AbstractReportGenerator;

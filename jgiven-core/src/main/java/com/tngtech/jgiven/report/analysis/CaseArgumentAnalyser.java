@@ -1,9 +1,9 @@
 package com.tngtech.jgiven.report.analysis;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Sets;
-import com.google.common.collect.TreeMultiset;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.Multiset;
+import com.tngtech.jgiven.relocated.guava.collect.Sets;
+import com.tngtech.jgiven.relocated.guava.collect.TreeMultiset;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.report.model.*;
 import org.slf4j.Logger;

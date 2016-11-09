@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
-import com.google.gson.Gson;
+import com.tngtech.jgiven.relocated.guava.base.Charsets;
+import com.tngtech.jgiven.relocated.guava.io.Files;
+import com.tngtech.jgiven.relocated.gson.Gson;
 import com.tngtech.jgiven.report.ThenReportGenerator;
 
 public class ThenHtml5ReportGenerator<SELF extends ThenHtml5ReportGenerator<SELF>> extends ThenReportGenerator<SELF> {

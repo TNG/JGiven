@@ -6,11 +6,11 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.tngtech.jgiven.relocated.guava.base.Optional;
+import com.tngtech.jgiven.relocated.guava.base.Splitter;
+import com.tngtech.jgiven.relocated.guava.collect.Iterables;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.Maps;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.AsProvider;
 import com.tngtech.jgiven.annotation.Description;

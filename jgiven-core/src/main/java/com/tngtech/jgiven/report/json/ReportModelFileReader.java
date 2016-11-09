@@ -2,7 +2,7 @@ package com.tngtech.jgiven.report.json;
 
 import java.io.File;
 
-import com.google.common.base.Function;
+import com.tngtech.jgiven.relocated.guava.base.Function;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 
 public class ReportModelFileReader implements Function<File, ReportModelFile> {
