@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.model;
 
-import static com.google.common.collect.Lists.newArrayList;
+import static com.tngtech.jgiven.relocated.guava.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.annotation.Annotation;

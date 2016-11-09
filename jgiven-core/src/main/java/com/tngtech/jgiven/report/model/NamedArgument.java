@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.model;
 
-import com.google.common.base.Objects;
+import com.tngtech.jgiven.relocated.guava.base.Objects;
 
 public class NamedArgument {
     public final String name;

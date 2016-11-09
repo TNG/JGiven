@@ -3,7 +3,7 @@ package com.tngtech.jgiven.report.json;
 import java.io.File;
 import java.util.Iterator;
 
-import com.google.gson.JsonSyntaxException;
+import com.tngtech.jgiven.relocated.gson.JsonSyntaxException;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

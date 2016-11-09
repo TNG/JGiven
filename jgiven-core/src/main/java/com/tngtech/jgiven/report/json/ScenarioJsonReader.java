@@ -3,10 +3,10 @@ package com.tngtech.jgiven.report.json;
 import java.io.File;
 import java.io.Reader;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Function;
-import com.google.common.io.Files;
-import com.google.gson.Gson;
+import com.tngtech.jgiven.relocated.guava.base.Charsets;
+import com.tngtech.jgiven.relocated.guava.base.Function;
+import com.tngtech.jgiven.relocated.guava.io.Files;
+import com.tngtech.jgiven.relocated.gson.Gson;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.model.ReportModel;
 

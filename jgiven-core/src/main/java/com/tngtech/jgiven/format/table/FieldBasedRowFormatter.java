@@ -5,11 +5,11 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
+import com.tngtech.jgiven.relocated.guava.base.Function;
+import com.tngtech.jgiven.relocated.guava.base.Predicate;
+import com.tngtech.jgiven.relocated.guava.collect.FluentIterable;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.Sets;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.config.FormatterConfiguration;
 import com.tngtech.jgiven.format.DefaultFormatter;

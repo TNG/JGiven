@@ -2,8 +2,8 @@ package com.tngtech.jgiven.impl.util;
 
 import java.io.*;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Throwables;
+import com.tngtech.jgiven.relocated.guava.base.Charsets;
+import com.tngtech.jgiven.relocated.guava.base.Throwables;
 import com.tngtech.jgiven.config.ConfigValue;
 
 public class PrintWriterUtil {

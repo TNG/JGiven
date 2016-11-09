@@ -1,10 +1,10 @@
 package com.tngtech.jgiven.report.json;
 
-import java.io.File;
-
-import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.FilePredicates;
+import com.tngtech.jgiven.relocated.guava.io.Files;
 import com.tngtech.jgiven.report.model.ReportModelFile;
+
+import java.io.File;
 
 public class JsonModelTraverser {
 

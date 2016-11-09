@@ -1,12 +1,12 @@
 package com.tngtech.jgiven.impl.util;
 
-import java.io.File;
+import com.tngtech.jgiven.relocated.guava.base.Predicate;
 
-import com.google.common.base.Predicate;
+import java.io.File;
 
 public class FilePredicates {
 
-    public static Predicate<? super File> endsWith( final String suffix ) {
+    public static Predicate<? super File> endsWith(final String suffix ) {
         return new Predicate<File>() {
             @Override
             public boolean apply( File input ) {

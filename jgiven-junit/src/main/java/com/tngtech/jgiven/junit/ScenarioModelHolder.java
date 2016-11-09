@@ -2,7 +2,7 @@ package com.tngtech.jgiven.junit;
 
 import java.util.Map;
 
-import com.google.common.collect.Maps;
+import com.tngtech.jgiven.relocated.guava.collect.Maps;
 import com.tngtech.jgiven.report.model.ReportModel;
 
 /**

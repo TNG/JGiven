@@ -1,14 +1,14 @@
 package com.tngtech.jgiven.report.html5;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.google.common.base.Objects;
-import com.google.common.collect.Maps;
+import com.tngtech.jgiven.impl.util.ObjectUtil;
 import com.tngtech.jgiven.report.model.Tag;
 
 public class TagFile {
-    private Map<String, Tag> tagTypeMap = Maps.newLinkedHashMap();
-    private Map<String, TagInstance> tags = Maps.newLinkedHashMap();
+    private Map<String, Tag> tagTypeMap = new LinkedHashMap<String, Tag>();
+    private Map<String, TagInstance> tags = new LinkedHashMap<String, TagInstance>();
 
     private static class TagInstance {
         String tagType;
@@ -34,13 +34,13 @@ public class TagFile {
 
             // the description might be generated depending on the value, so it must be stored
             // for each tag instance separately
-            if( !Objects.equal( entry.getValue().getDescription(), tagTypeMap.get( tag.getType() ).getDescription() ) ) {
+            if( !ObjectUtil.equals( entry.getValue().getDescription(), tagTypeMap.get( tag.getType() ).getDescription() ) ) {
                 instance.description = entry.getValue().getDescription();
             }
 
             // the href might be generated depending on the value, so it must be stored
             // for each tag instance separately
-            if( !Objects.equal( entry.getValue().getHref(), tagTypeMap.get( tag.getType() ).getHref() ) ) {
+            if( !ObjectUtil.equals( entry.getValue().getHref(), tagTypeMap.get( tag.getType() ).getHref() ) ) {
                 instance.href = entry.getValue().getHref();
             }
             tags.put( entry.getKey(), instance );

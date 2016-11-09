@@ -1,8 +1,8 @@
 package com.tngtech.jgiven.gradle;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
-import com.google.common.io.Resources;
+import com.tngtech.jgiven.relocated.guava.base.Charsets;
+import com.tngtech.jgiven.relocated.guava.io.Files;
+import com.tngtech.jgiven.relocated.guava.io.Resources;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;

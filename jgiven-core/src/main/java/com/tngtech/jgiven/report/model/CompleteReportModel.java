@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.Maps;
 
 /**
  * Represents the complete report model of all report files.

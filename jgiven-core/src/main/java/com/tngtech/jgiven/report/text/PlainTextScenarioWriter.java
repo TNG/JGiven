@@ -3,15 +3,13 @@ package com.tngtech.jgiven.report.text;
 import java.io.PrintWriter;
 import java.util.List;
 
-import org.fusesource.jansi.Ansi.Attribute;
-import org.fusesource.jansi.Ansi.Color;
-
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
+import com.tngtech.jgiven.relocated.guava.base.Function;
+import com.tngtech.jgiven.relocated.guava.base.Joiner;
+import com.tngtech.jgiven.relocated.guava.base.Strings;
+import com.tngtech.jgiven.relocated.guava.collect.Iterables;
 import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
 import com.tngtech.jgiven.impl.util.WordUtil;
+import com.tngtech.jgiven.relocated.jansi.Ansi;
 import com.tngtech.jgiven.report.model.*;
 
 public class PlainTextScenarioWriter extends PlainTextWriter {
@@ -39,7 +37,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
     public void visitEnd( ScenarioCaseModel scenarioCase ) {
         if( !scenarioCase.isSuccess() ) {
             writer.println();
-            writer.print( withColor( Color.RED, Attribute.INTENSITY_BOLD, "FAILED: " + scenarioCase.getErrorMessage() ) );
+            writer.print( withColor( Ansi.Color.RED, Ansi.Attribute.INTENSITY_BOLD, "FAILED: " + scenarioCase.getErrorMessage() ) );
         }
         writer.println();
     }

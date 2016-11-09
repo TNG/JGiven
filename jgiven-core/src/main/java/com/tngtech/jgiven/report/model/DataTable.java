@@ -3,7 +3,7 @@ package com.tngtech.jgiven.report.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
 import com.tngtech.jgiven.annotation.Table.HeaderType;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 

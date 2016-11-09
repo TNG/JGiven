@@ -1,5 +1,8 @@
 package com.tngtech.jgiven.junit;
 
+import com.tngtech.jgiven.relocated.guava.annotations.VisibleForTesting;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.primitives.Primitives;
 import com.tngtech.jgiven.impl.ScenarioBase;
 
 /**

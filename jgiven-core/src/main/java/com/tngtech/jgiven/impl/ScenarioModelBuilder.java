@@ -12,11 +12,11 @@ import java.util.Stack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.base.Optional;
+import com.tngtech.jgiven.relocated.guava.base.Strings;
+import com.tngtech.jgiven.relocated.guava.collect.ImmutableSet;
+import com.tngtech.jgiven.relocated.guava.collect.Iterables;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.AsProvider;
 import com.tngtech.jgiven.annotation.CaseDescription;

@@ -1,9 +1,9 @@
 package com.tngtech.jgiven.attachment;
 
-import com.google.common.io.BaseEncoding;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
-import com.google.common.io.Files;
+import com.tngtech.jgiven.relocated.guava.io.BaseEncoding;
+import com.tngtech.jgiven.relocated.guava.io.ByteStreams;
+import com.tngtech.jgiven.relocated.guava.io.CharStreams;
+import com.tngtech.jgiven.relocated.guava.io.Files;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 

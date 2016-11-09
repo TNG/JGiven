@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.model;
 
-import static com.google.common.collect.Lists.newArrayList;
+import static com.tngtech.jgiven.relocated.guava.collect.Lists.newArrayList;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.common.base.Joiner;
+import com.tngtech.jgiven.relocated.guava.base.Joiner;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;

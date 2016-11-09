@@ -5,8 +5,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.ImmutableList;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
 
 /**
  * Cache to avoid multiple expensive reflection-based look-ups

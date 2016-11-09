@@ -4,7 +4,7 @@ import com.tngtech.jgiven.examples.tags.FailingOnPurpose;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.common.base.Strings;
+import com.tngtech.jgiven.relocated.guava.base.Strings;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;

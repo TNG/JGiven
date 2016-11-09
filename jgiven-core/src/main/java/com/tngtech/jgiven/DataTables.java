@@ -2,7 +2,7 @@ package com.tngtech.jgiven;
 
 import java.util.Arrays;
 
-import com.google.common.collect.Iterables;
+import com.tngtech.jgiven.relocated.guava.collect.Iterables;
 
 /**
  * A utility class to create data tables.

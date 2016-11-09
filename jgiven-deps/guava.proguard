@@ -1,0 +1,67 @@
+-dontoptimize
+-dontobfuscate
+-dontwarn
+
+-keep public class com.google.common.base.** {
+    *;
+}
+
+-keep public class com.google.common.collect.** {
+    *;
+}
+
+-keep public class com.google.common.cache.** {
+    *;
+}
+
+-keep public class com.google.common.reflect.** {
+    *;
+}
+
+-keep public class com.google.common.io.BaseEncoding {
+    *;
+}
+
+-keep public class com.google.common.io.Files {
+    *;
+}
+
+-keep public class com.google.common.io.Resources {
+    *;
+}
+
+-keep public class com.google.common.util.concurrent.Callables {
+    *;
+}
+
+-keep public class com.google.common.annotations.VisibleForTesting {
+    *;
+}
+
+-keep public class com.google.common.net.MediaType {
+    *;
+}
+
+-keep public class com.google.common.primitives.** {
+    *;
+}
+
+-keep public class com.google.gson.** {
+    *;
+}
+
+-keep public class org.springframework.core.annotation.AnnotationUtils {
+    *;
+}
+
+-keep public class net.bytebuddy.** {
+    *;
+}
+
+-keep public class org.fusesource.** {
+    *;
+}
+
+-keep public class com.thoughtworks.paranamer.** {
+    *;
+}

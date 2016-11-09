@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.testng.ITestResult;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
+import com.tngtech.jgiven.relocated.guava.base.Predicate;
+import com.tngtech.jgiven.relocated.guava.collect.FluentIterable;
 import com.tngtech.jgiven.testframework.TestExecutionResult;
 
 public class TestNgExecutionResult extends TestExecutionResult {

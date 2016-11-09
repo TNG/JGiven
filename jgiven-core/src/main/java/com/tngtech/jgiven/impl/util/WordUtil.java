@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.impl.util;
 
-import com.google.common.base.*;
-import com.google.common.collect.FluentIterable;
+import com.tngtech.jgiven.relocated.guava.base.*;
+import com.tngtech.jgiven.relocated.guava.collect.FluentIterable;
 
 public final class WordUtil {
 

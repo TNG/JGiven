@@ -2,10 +2,7 @@
 description = "Module for writing JGiven tests with JUnit"
 
 dependencies {
-    compile project(':jgiven-core')
-    compile project(':jgiven-html5-report')
+    compile project(path: ':jgiven-core', configuration: 'shadow')
     compile(group: 'junit', name: 'junit', version: junitVersion)
     testCompile group: 'pl.pragmatists', name: 'JUnitParams', version: junitParamsVersion
 }
-
-test.finalizedBy(jgivenHtml5Report)

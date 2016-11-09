@@ -1,8 +1,8 @@
 package com.tngtech.jgiven.report.model;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.base.Joiner;
+import com.tngtech.jgiven.relocated.guava.collect.Iterables;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
 import com.tngtech.jgiven.attachment.Attachment;
 
 import java.util.Arrays;

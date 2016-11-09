@@ -1,11 +1,11 @@
 package com.tngtech.jgiven.report.html5;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Sets;
-import com.google.common.io.Files;
-import com.google.common.net.MediaType;
+import com.tngtech.jgiven.relocated.guava.base.Charsets;
+import com.tngtech.jgiven.relocated.guava.collect.HashMultiset;
+import com.tngtech.jgiven.relocated.guava.collect.Multiset;
+import com.tngtech.jgiven.relocated.guava.collect.Sets;
+import com.tngtech.jgiven.relocated.guava.io.Files;
+import com.tngtech.jgiven.relocated.guava.net.MediaType;
 import com.tngtech.jgiven.exception.JGivenInstallationException;
 import com.tngtech.jgiven.report.model.AttachmentModel;
 import com.tngtech.jgiven.report.model.ReportModel;

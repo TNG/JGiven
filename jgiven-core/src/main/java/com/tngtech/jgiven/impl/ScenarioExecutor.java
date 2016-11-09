@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.impl;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.reverse;
+import static com.tngtech.jgiven.relocated.guava.collect.Lists.newArrayList;
+import static com.tngtech.jgiven.relocated.guava.collect.Lists.reverse;
 import static com.tngtech.jgiven.impl.ScenarioExecutor.State.FINISHED;
 import static com.tngtech.jgiven.impl.ScenarioExecutor.State.STARTED;
 
@@ -14,9 +14,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.tngtech.jgiven.relocated.guava.base.Optional;
+import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.tngtech.jgiven.relocated.guava.collect.Maps;
 import com.tngtech.jgiven.CurrentScenario;
 import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.annotation.AfterScenario;

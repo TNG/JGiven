@@ -6,7 +6,7 @@ plugins {
 sourceCompatibility = targetCompatibility = 1.7
 
 dependencies {
-    compile project(':jgiven-core')
+    compile project(path: ':jgiven-core', configuration: 'shadow')
     compile project(':jgiven-html5-report')
 
     testCompile gradleTestKit()

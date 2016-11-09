@@ -3,8 +3,8 @@ package com.tngtech.jgiven.report;
 import java.io.File;
 import java.io.IOException;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
+import com.tngtech.jgiven.relocated.guava.base.Charsets;
+import com.tngtech.jgiven.relocated.guava.io.Files;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import org.assertj.core.api.Assertions;
 import org.junit.ClassRule;
