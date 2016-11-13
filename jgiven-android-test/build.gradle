@@ -17,7 +17,6 @@ android {
     compileSdkVersion 24
     buildToolsVersion '24.0.2'
     defaultConfig {
-        multiDexEnabled = true
         applicationId "com.tngtech.jgiven.android.example"
         minSdkVersion 15
         targetSdkVersion 24
@@ -40,16 +39,10 @@ dependencies {
   compile 'com.android.support:appcompat-v7:24.2.1'
 
     androidTestCompile(project(':jgiven-android')) {
-    exclude group: 'com.android.support'
-    exclude group: 'com.android.support.test'
-    exclude group: 'com.google.android.tools'
+        exclude group: "junit"
+        //why does this cause double junit ActiveSuite issue beats me
+        exclude group: "com.google.android.tools"
   }
-    androidTestCompile(project(':jgiven-core'))
+    compile "com.google.android.tools:dx:1.7"
 
-    compile(project(':jgiven-android')) {
-        exclude group: 'com.android.support'
-        exclude group: 'com.android.support.test'
-        exclude group: 'com.google.android.tools'
-    }
-    compile(project(':jgiven-core'))
 }

@@ -1,12 +1,11 @@
 package com.tngtech.jgiven.android.example;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.integration.android.AndroidJGivenTestRule;
-import com.tngtech.jgiven.integration.android.AndroidScenarioTest;
+import com.tngtech.jgiven.junit.ScenarioTest;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,11 +19,11 @@ import org.junit.runner.RunWith;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest  extends
-        AndroidScenarioTest<ExampleInstrumentedTest.GivenSomeState, ExampleInstrumentedTest.WhenSomeAction, ExampleInstrumentedTest.ThenSomeOutcome> {
+        ScenarioTest<ExampleInstrumentedTest.GivenSomeState, ExampleInstrumentedTest.WhenSomeAction, ExampleInstrumentedTest.ThenSomeOutcome> {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
     @Rule
-    public AndroidJGivenTestRule androidJGivenTestRule =new AndroidJGivenTestRule(scenarioRule,InstrumentationRegistry.getTargetContext().getApplicationContext());
+    public AndroidJGivenTestRule androidJGivenTestRule =new AndroidJGivenTestRule(this);
 
     @Before
     public  void setUp() throws Exception {
@@ -41,21 +40,23 @@ public class ExampleInstrumentedTest  extends
     }
 
     public class GivenSomeState extends Stage<GivenSomeState> {
+
         public GivenSomeState some_state() {
-            return self();
+            return this;
         }
     }
 
 
     public class WhenSomeAction extends Stage<WhenSomeAction> {
         public WhenSomeAction some_action() {
-            return self();
+            return this;
         }
     }
 
     public class ThenSomeOutcome extends Stage<ThenSomeOutcome> {
+
         public ThenSomeOutcome some_outcome() {
-            return self();
+            return this;
         }
     }
 

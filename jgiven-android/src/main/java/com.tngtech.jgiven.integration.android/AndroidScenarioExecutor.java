@@ -33,7 +33,7 @@ Context context;
         try {
             methodInterceptor.enableMethodHandling(true);
             T result = new ByteBuddy()
-                    .subclass(stepsClass, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING)
+                    .subclass(stepsClass, ConstructorStrategy.Default.IMITATE_SUPER_CLASS)
                     .method(any())
                     .intercept(MethodDelegation.to(methodInterceptor))
                     .make()

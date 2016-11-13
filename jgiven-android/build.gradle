@@ -34,10 +34,10 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support.test:rules:0.5'
-    compile project(path: ':jgiven-core')
+    compile ('com.android.support.test:rules:0.5'){
+        exclude group: "junit"
+    }
     compile project(path: ':jgiven-junit')
-    compile group: 'net.bytebuddy', name: 'byte-buddy', version: bytebuddyVersion
     compile group: 'net.bytebuddy', name: 'byte-buddy-android', version: bytebuddyVersion
 
 }
