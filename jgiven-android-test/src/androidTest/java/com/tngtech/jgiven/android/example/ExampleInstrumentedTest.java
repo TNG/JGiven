@@ -42,21 +42,21 @@ public class ExampleInstrumentedTest  extends
     public class GivenSomeState extends Stage<GivenSomeState> {
 
         public GivenSomeState some_state() {
-            return this;
+            return self();
         }
     }
 
 
     public class WhenSomeAction extends Stage<WhenSomeAction> {
         public WhenSomeAction some_action() {
-            return this;
+            return self();
         }
     }
 
     public class ThenSomeOutcome extends Stage<ThenSomeOutcome> {
 
         public ThenSomeOutcome some_outcome() {
-            return this;
+            return self();
         }
     }
 
