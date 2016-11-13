@@ -14,7 +14,6 @@ import java.util.Map;
 
 import static net.bytebuddy.matcher.ElementMatchers.any;
 
-import com.google.gson.internal.ConstructorConstructor;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
 import net.bytebuddy.implementation.MethodDelegation;
@@ -56,7 +55,7 @@ import com.tngtech.jgiven.report.model.NamedArgument;
  * Main class of JGiven for executing scenarios.
  */
 public class StandaloneScenarioExecutor implements ScenarioExecutor {
-    private static final Logger log = LoggerFactory.getLogger( StandaloneScenarioExecutor.class );
+    private static final Logger log = LoggerFactory.getLogger(StandaloneScenarioExecutor.class);
 
     private Object currentTopLevelStage;
     private State state = State.INIT;
@@ -76,8 +75,8 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     private ScenarioListener listener = new NoOpScenarioListener();
     protected final StepMethodHandler methodHandler = new MethodHandler();
     protected final StageTransitionHandler stageTransitionHandler = new StageTransitionHandlerImpl();
-    private final StandaloneStepMethodInterceptor methodInterceptor = new StandaloneStepMethodInterceptor( methodHandler,
-        stageTransitionHandler );
+    protected final StandaloneStepMethodInterceptor methodInterceptor = new StandaloneStepMethodInterceptor(methodHandler,
+            stageTransitionHandler);
 
     private Throwable failedException;
     private boolean failIfPass;
@@ -245,15 +244,15 @@ public class StandaloneScenarioExecutor implements ScenarioExecutor {
     @Override
     public <T> T createStageClass( Class<T> stepsClass ) {
         try {
+            methodInterceptor.enableMethodHandling(true);
             T result = new ByteBuddy()
                 .subclass(stepsClass, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING)
                 .method(any())
                 .intercept(MethodDelegation.to(methodInterceptor))
                 .make()
-                .load(getClass().getClassLoader())
+                .load(stepsClass.getClassLoader())
                 .getLoaded()
                 .newInstance();
-            methodInterceptor.enableMethodHandling(true);
             return result;
         } catch (Exception e) {
             throw new RuntimeException("Error while trying to create an instance of class "+stepsClass, e);

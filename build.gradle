@@ -51,7 +51,28 @@ asciidoctor {
     attributes 'version': version
 }
 
-subprojects {
+subprojects{
+    ext {
+        junitDataproviderVersion = '1.11.0'
+        // set default junit version if not set via command line
+        junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.12'
+        junitParamsVersion = '1.0.5'
+        testngVersion = '6.9.12'
+        assertjVersion = '2.5.0'
+        slf4jVersion = '1.7.21'
+        cglibVersion = '3.2.4'
+        bytebuddyVersion = '1.4.33'
+        paranamerVersion = '2.8'
+        jansiVersion = '1.13'
+        gsonVersion = '2.7'
+        guavaVersion = '19.0'
+        springVersion = '4.3.2.RELEASE'
+        checkstyleVersion = '2.12.1'
+        jacocoVersion = '0.7.2.201409121644'
+        quickcheckVersion = '0.6'
+    }
+}
+configure(subprojects.findAll {!it.name.contains("android")}) {
     apply plugin: 'checkstyle'
     apply plugin: 'eclipse'
     apply plugin: 'idea'

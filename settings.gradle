@@ -18,3 +18,6 @@ if (JavaVersion.current().isJava7Compatible()) {
 if (JavaVersion.current().isJava8Compatible()) {
     include ':jgiven-java8-tests'
 }
+include 'jgiven-android'
+include 'jgiven-android-test'
+

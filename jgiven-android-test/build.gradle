@@ -1,0 +1,55 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.1'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion '24.0.2'
+    defaultConfig {
+        multiDexEnabled = true
+        applicationId "com.tngtech.jgiven.android.example"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    exclude group: 'com.android.support', module: 'support-annotations'
+  })
+  compile 'com.android.support:appcompat-v7:24.2.1'
+
+    androidTestCompile(project(':jgiven-android')) {
+    exclude group: 'com.android.support'
+    exclude group: 'com.android.support.test'
+    exclude group: 'com.google.android.tools'
+  }
+    androidTestCompile(project(':jgiven-core'))
+
+    compile(project(':jgiven-android')) {
+        exclude group: 'com.android.support'
+        exclude group: 'com.android.support.test'
+        exclude group: 'com.google.android.tools'
+    }
+    compile(project(':jgiven-core'))
+}
