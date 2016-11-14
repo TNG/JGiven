@@ -12,6 +12,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+
 /**
  * Instrumentation example, which will execute on an Android device.
  *
@@ -25,38 +30,36 @@ public class ExampleInstrumentedTest  extends
     @Rule
     public AndroidJGivenTestRule androidJGivenTestRule =new AndroidJGivenTestRule(this);
 
-    @Before
-    public  void setUp() throws Exception {
-        mActivityTestRule.launchActivity( null);
 
-    }
 
     @Test
     public void something_should_happen() {
-
         given().some_state();
         when().some_action();
         then().some_outcome();
+        onView(withId(R.id.hellowordtext)).check(matches(isDisplayed()));
+
     }
 
-    public class GivenSomeState extends Stage<GivenSomeState> {
+    public static class GivenSomeState extends Stage<GivenSomeState> {
 
         public GivenSomeState some_state() {
-            return self();
+            return this;
         }
     }
 
 
-    public class WhenSomeAction extends Stage<WhenSomeAction> {
+    public static class WhenSomeAction extends Stage<WhenSomeAction> {
         public WhenSomeAction some_action() {
-            return self();
+            return this;
         }
     }
 
-    public class ThenSomeOutcome extends Stage<ThenSomeOutcome> {
+    public static class ThenSomeOutcome extends Stage<ThenSomeOutcome> {
 
         public ThenSomeOutcome some_outcome() {
-            return self();
+
+            return this;
         }
     }
 

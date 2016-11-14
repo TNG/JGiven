@@ -34,6 +34,7 @@ public class AnsiUtil {
     public static OutputStream wrapOutputStream( final OutputStream stream, boolean ttyDetection ) {
 
         String os = System.getProperty( "os.name" );
+        String vendor= System.getProperty( "java.vendor" );
         if( os.startsWith( "Windows" ) ) {
 
             // On windows we know the console does not interpret ANSI codes..
@@ -47,8 +48,18 @@ public class AnsiUtil {
             // Use the ANSIOutputStream to strip out the ANSI escape sequences.
             return new AnsiOutputStream( stream );
         }
-
-        if( ttyDetection ) {
+        if( vendor.toLowerCase().contains( "android" ) ) {
+            //todo is this ok?
+            return new FilterOutputStream( stream ) {
+                @Override
+                public void close() throws IOException {
+                    write( AnsiOutputStream.REST_CODE );
+                    flush();
+                    super.close();
+                }
+            };
+        }
+        if( !vendor.toLowerCase().contains( "android" )&&ttyDetection ) {
             // We must be on some unix variant..
             try {
                 // If we can detect that stdout is not a tty.. then setup

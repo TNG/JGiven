@@ -14,8 +14,13 @@ import com.tngtech.jgiven.report.text.PlainTextReporter;
 
 public class CommonReportHelper {
     private static final Logger log = LoggerFactory.getLogger( CommonReportHelper.class );
+    private File reportDir;
 
-    public void finishReport( ReportModel model ) {
+    public void setReportDir(File reportDir) {
+        this.reportDir = reportDir;
+    }
+
+    public void finishReport(ReportModel model ) {
         if( !Config.config().isReportEnabled() ) {
             return;
         }
@@ -31,14 +36,20 @@ public class CommonReportHelper {
         }
 
         Optional<File> optionalReportDir = Config.config().getReportDir();
-        if( optionalReportDir.isPresent() ) {
-            File reportDir = optionalReportDir.get();
-            if( !reportDir.exists() && !reportDir.mkdirs() ) {
-                log.error( "Could not create report directory " + reportDir );
-            }
-            File reportFile = new File( reportDir, model.getClassName() + ".json" );
-            log.debug( "Writing scenario report to file " + reportFile.getAbsolutePath() );
-            new ScenarioJsonWriter( model ).write( reportFile );
+        if( reportDir!=null){
+            setupReportWriter(model, reportDir);
         }
+        if(optionalReportDir.isPresent() ) {
+            setupReportWriter(model, optionalReportDir.get());
+        }
+    }
+
+    private void setupReportWriter(ReportModel model, File reportDir) {
+        if( !reportDir.exists() && !reportDir.mkdirs() ) {
+            log.error( "Could not create report directory " + reportDir );
+        }
+        File reportFile = new File( reportDir, model.getClassName() + ".json" );
+        log.debug( "Writing scenario report to file " + reportFile.getAbsolutePath() );
+        new ScenarioJsonWriter( model ).write( reportFile );
     }
 }

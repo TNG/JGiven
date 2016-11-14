@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.1'
+        classpath 'com.android.tools.build:gradle:2.3.0-alpha1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -12,12 +12,12 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
 
@@ -33,11 +33,17 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile ('com.android.support.test:rules:0.5'){
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile('com.android.support.test:rules:0.5') {
         exclude group: "junit"
     }
     compile project(path: ':jgiven-junit')
-    compile group: 'net.bytebuddy', name: 'byte-buddy-android', version: bytebuddyVersion
-
+    compile project(path: ':jgiven-core')
+    //maven jar had junit bundled with it causing multidex issues, also removed unit tests so they are not cluttered
+    compile files('libs/dx-1.7.jar')
+    compile(('net.bytebuddy:byte-buddy-android:1.5.1')) {
+        exclude group: "com.google.android.tools"
+        exclude group: "junit"
+    }
 }
+
