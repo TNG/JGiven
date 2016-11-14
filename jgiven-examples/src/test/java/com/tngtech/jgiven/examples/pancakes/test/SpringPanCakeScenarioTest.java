@@ -1,30 +1,18 @@
 package com.tngtech.jgiven.examples.pancakes.test;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.tngtech.jgiven.examples.pancakes.app.SpringConfig;
 import com.tngtech.jgiven.examples.pancakes.test.steps.GivenIngredients;
 import com.tngtech.jgiven.examples.pancakes.test.steps.ThenMeal;
 import com.tngtech.jgiven.examples.pancakes.test.steps.WhenCook;
-import com.tngtech.jgiven.integration.spring.SpringCanWire;
-import com.tngtech.jgiven.junit.ScenarioTest;
+import com.tngtech.jgiven.integration.spring.SpringScenarioTest;
 
 @RunWith( SpringJUnit4ClassRunner.class )
-@ContextConfiguration( classes = SpringConfig.class )
-public class SpringPanCakeScenarioTest extends ScenarioTest<GivenIngredients, WhenCook, ThenMeal> {
-    @Autowired
-    private AutowireCapableBeanFactory beanFactory;
-
-    @Before
-    public void setupSpring() {
-        wireSteps( new SpringCanWire( beanFactory ) );
-    }
+@ContextConfiguration( classes = TestSpringConfig.class )
+public class SpringPanCakeScenarioTest extends SpringScenarioTest<GivenIngredients, WhenCook, ThenMeal> {
 
     @Test
     public void a_pancake_can_be_fried_out_of_an_egg_milk_and_flour() {

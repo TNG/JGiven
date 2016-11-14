@@ -32,6 +32,11 @@ class SimpleTestSpringSteps  {
         return this;
     }
 
+    public SimpleTestSpringSteps method_with_parameter_is_called(String message) {
+        testBean.sayHello(message);
+        return this;
+    }
+
     public void beans_are_injected() {
         Assertions.assertThat( testBean ).isNotNull();
     }
