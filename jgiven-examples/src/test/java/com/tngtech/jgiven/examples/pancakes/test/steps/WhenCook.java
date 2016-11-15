@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.Set;
 
+import com.tngtech.jgiven.integration.spring.JGivenStage;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tngtech.jgiven.Stage;
@@ -14,6 +15,7 @@ import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.examples.pancakes.app.Cook;
 
 //tag::state[]
+@JGivenStage
 public class WhenCook extends Stage<WhenCook> {
     @Autowired
     @ScenarioState

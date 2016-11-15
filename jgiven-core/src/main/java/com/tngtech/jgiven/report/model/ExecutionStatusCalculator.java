@@ -7,20 +7,6 @@ final class ExecutionStatusCalculator extends ReportModelVisitor {
     private ExecutionStatus status;
 
     @Override
-    public void visit( ScenarioModel scenarioModel ) {
-        if( scenarioModel.isPending() ) {
-            status = ExecutionStatus.SCENARIO_PENDING;
-        }
-    }
-
-    @Override
-    public void visit( ScenarioCaseModel scenarioCase ) {
-        if( !scenarioCase.isSuccess()) {
-            status = ExecutionStatus.FAILED;
-        }
-    }
-
-    @Override
     public void visit( StepModel stepModel ) {
         if( stepModel.isFailed() ) {
             failedCount++;

@@ -1,17 +1,15 @@
 package com.tngtech.jgiven.integration.spring;
 
-import com.tngtech.jgiven.junit.ScenarioTest;
-import org.junit.ClassRule;
-import org.junit.Rule;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 
-import com.tngtech.jgiven.base.ScenarioTestBase;
-import com.tngtech.jgiven.junit.ScenarioExecutionRule;
-import com.tngtech.jgiven.junit.ScenarioReportRule;
+import com.tngtech.jgiven.junit.ScenarioTest;
 
 /**
- * Base class for {@link SpringScenarioExecutor} based JGiven tests
+ * Base class for {@link SpringScenarioExecutor} based JGiven tests.
+ *
+ * Needs to be used with the {@link org.springframework.test.context.junit4.SpringJUnit4ClassRunner}.
+ * As a JUnit-rule based alternative, consider using {@link SpringRuleScenarioTest}.
  *
  * @param <GIVEN>
  * @param <WHEN>

@@ -10,7 +10,9 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.Format;
+import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IsTag;
+import com.tngtech.jgiven.annotation.NestedSteps;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.annotation.Table;
@@ -36,6 +38,11 @@ public class GivenTestStep extends Stage<GivenTestStep> {
 
     public void some_boolean_value( boolean someBooleanValue ) {
 
+    }
+
+    @NestedSteps
+    public void a_nested_step(Integer nestedStepArg) {
+        some_integer_value(nestedStepArg+1);
     }
 
     @IsTag

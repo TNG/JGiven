@@ -7,6 +7,9 @@ import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser.JoinedArgs;
 import com.tngtech.jgiven.report.model.AttachmentModel;
 import com.tngtech.jgiven.report.model.DataTable;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.Word;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -109,5 +112,36 @@ public class CaseArgumentAnalyserUnitTest {
 
         assertThat( analyser.getDifferentArguments( cases ).get( 0 ) ).isEmpty();
 
+    }
+
+    @Test
+    public void nested_steps_are_considered_in_structure_analysis() {
+        ScenarioCaseModel case0 = caseWithNestedStep("foo");
+        ScenarioCaseModel case1 = caseWithNestedStep("bar");
+        assertThat(analyser.stepsAreDifferent(case0, case1)).isTrue();
+    }
+
+    @Test
+    public void arguments_of_nested_steps_are_collected() {
+        Word word = Word.argWord("testName", "testValue", "testValue");
+        ScenarioCaseModel case0 = caseWithNestedStep(word);
+        ScenarioModel model = new ScenarioModel();
+        model.addCase(case0);
+        assertThat(analyser.collectArguments(model).get(0)).contains(word);
+
+    }
+
+    private ScenarioCaseModel caseWithNestedStep(String nestedStepName) {
+        return caseWithNestedStep(new Word(nestedStepName));
+    }
+
+    private ScenarioCaseModel caseWithNestedStep(Word word) {
+        ScenarioCaseModel case0 = new ScenarioCaseModel();
+        StepModel step0 = new StepModel();
+        StepModel nestedStep0 = new StepModel();
+        nestedStep0.addWords(word);
+        step0.addNestedStep(nestedStep0);
+        case0.addStep(step0);
+        return case0;
     }
 }

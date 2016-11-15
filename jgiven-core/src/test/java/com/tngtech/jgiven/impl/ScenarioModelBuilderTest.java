@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.tngtech.jgiven.ScenarioTestBaseForTesting;
+import com.tngtech.jgiven.annotation.As;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -318,6 +319,16 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
     }
 
     @Test
+    public void As_on_overridden_methods_is_correctly_evaluated() throws Throwable {
+        ExtendedGivenTestStep stage = getScenario().addStage(ExtendedGivenTestStep.class);
+        startScenario( "Scenario with a @As tag" );
+        stage.abstract_step();
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getCompleteSentence() ).isEqualTo( "an overridden description" );
+    }
+
+    @Test
     public void a_custom_AsProvider_can_be_used() throws Throwable {
         startScenario( "Scenario with a @As tag" );
         given().a_step_with_an_As_annotation_and_a_custom_provider();
@@ -433,6 +444,15 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
     static class FailingTestStage {
         public void a_failing_test() {
             throw new IllegalArgumentException( "test error" );
+        }
+    }
+
+    static class ExtendedGivenTestStep extends AbstractStage {
+
+        @Override
+        @As( "an overridden description" )
+        public void abstract_step() {
+
         }
     }
 }

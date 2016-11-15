@@ -33,6 +33,15 @@ public class ScenarioCaseModel {
      */
     private List<String> derivedArguments = Lists.newArrayList();
 
+    /**
+     * The status of this case
+     */
+    private ExecutionStatus status;
+
+    /**
+     * @deprecated is replaced by {@link #status}
+     */
+    @Deprecated
     private boolean success = true;
 
     /**
@@ -100,9 +109,12 @@ public class ScenarioCaseModel {
     }
 
     public ExecutionStatus getExecutionStatus() {
-        ExecutionStatusCalculator executionStatusCalculator = new ExecutionStatusCalculator();
-        this.accept( executionStatusCalculator );
-        return executionStatusCalculator.executionStatus();
+        if (status == null) {
+            ExecutionStatusCalculator executionStatusCalculator = new ExecutionStatusCalculator();
+            this.accept(executionStatusCalculator);
+            status = executionStatusCalculator.executionStatus();
+        }
+        return status;
     }
 
     public void addDerivedArguments( String... values ) {
@@ -141,12 +153,18 @@ public class ScenarioCaseModel {
         return errorMessage;
     }
 
+    @Deprecated
     public boolean isSuccess() {
         return success;
     }
 
-    public void setSuccess( boolean success ) {
+    @Deprecated
+    public void setSuccess(boolean success ) {
         this.success = success;
+    }
+
+    public void setStatus(ExecutionStatus status) {
+        this.status = status;
     }
 
     public void setErrorMessage( String errorMessage ) {

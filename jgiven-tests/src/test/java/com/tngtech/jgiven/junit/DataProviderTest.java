@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.junit;
 
+import com.tngtech.jgiven.tags.Issue;
 import org.junit.Test;
 
 import com.tngtech.jgiven.GivenScenarioTest;
@@ -17,6 +18,14 @@ public class DataProviderTest extends JGivenScenarioTest<GivenScenarioTest<?>, W
         given().a_test_with_two_cases_and_the_first_one_fails();
         when().the_test_class_is_executed_with_JUnit();
         then().the_scenario_has_execution_status( ExecutionStatus.FAILED );
+    }
+
+    @Test
+    @Issue("#200")
+    public void pending_works_correctly_with_data_provider() {
+        given().a_pending_scenario_with_a_data_provider();
+        when().the_test_class_is_executed_with_JUnit();
+        then().the_scenario_has_execution_status(ExecutionStatus.SCENARIO_PENDING);
     }
 
 }

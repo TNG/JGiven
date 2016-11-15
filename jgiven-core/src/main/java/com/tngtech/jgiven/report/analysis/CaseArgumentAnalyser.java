@@ -241,24 +241,32 @@ public class CaseArgumentAnalyser {
         return true;
     }
 
-    private boolean stepsAreDifferent( ScenarioCaseModel firstCase, ScenarioCaseModel caseModel ) {
-        if( firstCase.getSteps().size() != caseModel.getSteps().size() ) {
+    boolean stepsAreDifferent( ScenarioCaseModel firstCase, ScenarioCaseModel secondCase ) {
+        return stepsAreDifferent(firstCase.getSteps(), secondCase.getSteps());
+    }
+
+    boolean stepsAreDifferent(List<StepModel> firstSteps, List<StepModel> secondSteps) {
+        if( firstSteps.size() != secondSteps.size() ) {
             return true;
         }
 
-        for( int iStep = 0; iStep < firstCase.getSteps().size(); iStep++ ) {
-            StepModel firstStep = firstCase.getStep( iStep );
-            StepModel stepModel = caseModel.getStep( iStep );
+        for(int iStep = 0; iStep < firstSteps.size(); iStep++ ) {
+            StepModel firstStep = firstSteps.get( iStep );
+            StepModel secondStep = secondSteps.get( iStep );
 
-            if( firstStep.getWords().size() != stepModel.getWords().size() ) {
+            if( firstStep.getWords().size() != secondStep.getWords().size() ) {
                 return true;
             }
 
-            if( attachmentsAreStructurallyDifferent( firstStep.getAttachments(), stepModel.getAttachments() ) ) {
+            if( attachmentsAreStructurallyDifferent( firstStep.getAttachments(), secondStep.getAttachments() ) ) {
                 return true;
             }
 
-            if( wordsAreDifferent( firstStep, stepModel ) ) {
+            if( wordsAreDifferent( firstStep, secondStep ) ) {
+                return true;
+            }
+
+            if (stepsAreDifferent(firstStep.getNestedSteps(), secondStep.getNestedSteps())) {
                 return true;
             }
         }
@@ -380,7 +388,7 @@ public class CaseArgumentAnalyser {
         return result;
     }
 
-    private List<List<Word>> collectArguments( ScenarioModel scenarioModel ) {
+    List<List<Word>> collectArguments( ScenarioModel scenarioModel ) {
         List<List<Word>> argumentWords = Lists.newArrayList();
 
         for( ScenarioCaseModel scenarioCaseModel : scenarioModel.getScenarioCases() ) {
@@ -402,13 +410,19 @@ public class CaseArgumentAnalyser {
 
     private List<Word> findArgumentWords( ScenarioCaseModel scenarioCaseModel ) {
         List<Word> arguments = Lists.newArrayList();
-        for( StepModel step : scenarioCaseModel.getSteps() ) {
+        List<StepModel> steps = scenarioCaseModel.getSteps();
+        findArgumentWords(steps, arguments);
+        return arguments;
+    }
+
+    private void findArgumentWords(List<StepModel> steps, List<Word> arguments) {
+        for( StepModel step : steps) {
             for( Word word : step.getWords() ) {
                 if( word.isArg() ) {
                     arguments.add( word );
                 }
             }
+            findArgumentWords(step.getNestedSteps(), arguments);
         }
-        return arguments;
     }
 }

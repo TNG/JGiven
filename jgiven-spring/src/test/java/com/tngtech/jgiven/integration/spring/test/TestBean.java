@@ -8,4 +8,8 @@ public class TestBean {
     public String computeSomething() {
         return "result";
     }
+
+    public String sayHello(String message) {
+        return "Hello " + message;
+    }
 }
