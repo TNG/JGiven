@@ -32,4 +32,6 @@ public class Html5AttachmentGeneratorTest {
         assertThat( generator.getTargetFile( "foo", "png" ).getName() ).isEqualTo( "foo5.png" );
 
     }
+
+
 }
