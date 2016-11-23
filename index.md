@@ -61,6 +61,17 @@ The source code of the corresponding JGiven tests are in the [jgiven-tests](http
 * Scenarios and steps can be parameterized for writing *data-driven* tests
 * JGiven generates HTML reports that can be read and understand by domain experts and serve as a *living documentation*
 
+### Tools in Action Session on JGiven at Devoxx Belgium 2016
+
+Jan Schäfer gave a Tools in Action session at Devoxx Belgium 2016. It mainly consists of a live demo showing how to refactor an existing JUnit test to use JGiven.
+
+<iframe class="shadow-frame" width="560" height="315" src="https://www.youtube.com/embed/x-6bT_0dTWI" frameborder="0" allowfullscreen></iframe>
+
+### Talk on JGiven at Devoxx France 2016 (in French)
+
+Marie-Laure Thuret (<a href="https://twitter.com/mlthuret">@mlthuret</a>) and Clément Héliou (<a href="https://twitter.com/c_heliou">@c_heliou</a>) did a live coding session with JGiven at Devoxx France 2016.
+
+<iframe class="shadow-frame" width="560" height="315" src="https://www.youtube.com/embed/4oFl4nxoshM" frameborder="0" allowfullscreen></iframe>
 
 ### Talk on JGiven at BigTechday 8
 
@@ -68,8 +79,4 @@ Jan Schäfer gave a talk on JGiven at the BigTechday 8. It explains the rational
 
 <iframe class="shadow-frame" width="560" height="315" src="https://www.youtube.com/embed/gh_yjb3x8Yc" frameborder="0" allowfullscreen></iframe>
 
-### Talk on JGiven at Devoxx France 2016 (in French)
 
-Marie-Laure Thuret (<a href="https://twitter.com/mlthuret">@mlthuret</a>) and Clément Héliou (<a href="https://twitter.com/c_heliou">@c_heliou</a>) did a live coding session with JGiven at Devoxx France 2016.
-
-<iframe class="shadow-frame" width="560" height="315" src="https://www.youtube.com/embed/4oFl4nxoshM" frameborder="0" allowfullscreen></iframe>
