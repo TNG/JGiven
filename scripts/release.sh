@@ -1,1 +1,1 @@
-./gradlew clean test uploadArchives
+./gradlew clean test install uploadArchives
