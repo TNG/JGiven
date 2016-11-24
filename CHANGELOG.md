@@ -10,7 +10,7 @@ In order to fix issue #239, a backwards incompatible change had to be done:
 
 ## New Features
 
-* Custom annotations can now also be defined for the `@Table` annotation [#234](https://github.com/TNG/JGiven/issues/235)
+* Custom annotations can now also be defined for the `@Table` annotation [#235](https://github.com/TNG/JGiven/issues/235)
 * In addition to text and images, all kinds of media types can now be used as attachments [#228](https://github.com/TNG/JGiven/issues/228) (thanks to ahus1)
 
 ## Small Improvements
@@ -22,6 +22,7 @@ In order to fix issue #239, a backwards incompatible change had to be done:
 * TestNG: executing test methods in parallel is now possible. [#239](https://github.com/TNG/JGiven/issues/239)
 * Correctly handle nested steps in parametrized scenarios. [#248](https://github.com/TNG/JGiven/issues/248)
 * Correctly report pending status of parametrized scenarios. [#200](https://github.com/TNG/JGiven/issues/200)
+* Spring: added support for executing Spring tests with the Spring JUnit rules instead of the Spring test runner. [#250](https://github.com/TNG/JGiven/pull/250)
 
 
 # v0.12.1
