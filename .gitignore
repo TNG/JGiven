@@ -13,3 +13,4 @@ artifacts
 /test-output
 phantomjsdriver.log
 .gradle
+local.properties

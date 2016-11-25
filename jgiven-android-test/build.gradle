@@ -1,21 +1,16 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.0-alpha1'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.1'
     defaultConfig {
         applicationId "com.tngtech.jgiven.android.example"
         minSdkVersion 15
@@ -32,16 +27,57 @@ android {
     }
 }
 
+configurations {
+  jgivenReport
+}
+
 dependencies {
+  compile 'com.android.support:appcompat-v7:25.0.0'
+
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
-  compile 'com.android.support:appcompat-v7:25.0.0'
 
-    androidTestCompile(project(':jgiven-android')) {
-        exclude group: "junit"
-        //why does this cause double junit ActiveSuite issue beats me
-//        exclude group: "com.google.android.tools"
+  androidTestCompile(project(':jgiven-android')) {
+      exclude group: "junit"
+      //why does this cause double junit ActiveSuite issue beats me
+      //exclude group: "com.google.android.tools"
   }
 
+  jgivenReport project(':jgiven-html5-report')
+  jgivenReport 'org.slf4j:slf4j-simple:'+slf4jVersion
 }
+
+task cleanJGivenReports(type: Delete) {
+  delete 'build/reports/jgiven/json'
+}
+
+task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
+    file('build/reports/jgiven/json').mkdirs()
+
+    def adb = android.getAdbExe().toString()
+    commandLine adb, 'pull', '/storage/emulated/0/Download/jgiven-reports', 'build/reports/jgiven/json'
+}
+
+task cleanJGivenHtmlReport(type: Delete) {
+  delete 'build/reports/jgiven/html'
+}
+
+task jgivenHtml5Report(type: JavaExec, dependsOn: cleanJGivenHtmlReport) {
+    main = 'com.tngtech.jgiven.report.ReportGenerator'
+    args '--sourceDir=build/reports/jgiven/json',
+         '--targetDir=build/reports/jgiven/html',
+         '--format=html5',
+         '--exclude-empty-scenarios=true'
+        classpath = configurations.jgivenReport
+}
+
+pullJGivenReports.finalizedBy(jgivenHtml5Report)
+
+tasks.whenTaskAdded { task ->
+  if (task.name == 'connectedAndroidTest') {
+    task.finalizedBy 'pullJGivenReports'
+  }
+}
+
+

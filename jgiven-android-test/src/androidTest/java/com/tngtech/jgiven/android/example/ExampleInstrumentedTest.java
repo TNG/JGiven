@@ -28,7 +28,7 @@ public class ExampleInstrumentedTest  extends
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
     @Rule
-    public AndroidJGivenTestRule androidJGivenTestRule =new AndroidJGivenTestRule(this);
+    public AndroidJGivenTestRule androidJGivenTestRule =new AndroidJGivenTestRule(this.getScenario());
 
 
 
