@@ -17,7 +17,7 @@ import com.tngtech.jgiven.impl.ScenarioExecutor;
  *
  * @param <STAGE>
  *
- * @since 0.14.0
+ * @since 0.13.0
  */
 public abstract class InternalSimpleSpringScenarioTest<STAGE> extends SimpleScenarioTestBase<STAGE> implements BeanFactoryAware {
 

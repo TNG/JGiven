@@ -19,7 +19,7 @@ import com.tngtech.jgiven.impl.ScenarioExecutor;
  * @param <WHEN>
  * @param <THEN>
  *
- * @since 0.14.0
+ * @since 0.13.0
  */
 public abstract class InternalSpringScenarioTest<GIVEN, WHEN, THEN> extends ScenarioTestBase<GIVEN, WHEN, THEN> implements BeanFactoryAware {
 
