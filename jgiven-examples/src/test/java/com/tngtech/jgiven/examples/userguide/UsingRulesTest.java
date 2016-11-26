@@ -1,8 +1,8 @@
 package com.tngtech.jgiven.examples.userguide;
 
 import com.tngtech.jgiven.annotation.ScenarioStage;
-import com.tngtech.jgiven.junit.ScenarioExecutionRule;
-import com.tngtech.jgiven.junit.ScenarioReportRule;
+import com.tngtech.jgiven.junit.JGivenMethodRule;
+import com.tngtech.jgiven.junit.JGivenClassRule;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,10 +12,10 @@ import org.junit.Test;
 public class UsingRulesTest {
 
     @ClassRule
-    public static final ScenarioReportRule writerRule = new ScenarioReportRule();
+    public static final JGivenClassRule writerRule = new JGivenClassRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule();
+    public final JGivenMethodRule scenarioRule = new JGivenMethodRule();
 
     @ScenarioStage
     GivenSomeState someState;

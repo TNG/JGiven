@@ -1,12 +1,10 @@
 package com.tngtech.jgiven.integration.android;
 
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
 import android.support.test.InstrumentationRegistry;
 
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.impl.ScenarioBase;
-import com.tngtech.jgiven.junit.ScenarioTest;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -16,7 +14,7 @@ import java.io.File;
 
 public class AndroidJGivenTestRule implements TestRule {
     public AndroidJGivenTestRule(ScenarioBase scenario) {
-        scenario.setExecutor(new AndroidScenarioExecutor(InstrumentationRegistry.getTargetContext()));
+        scenario.setStageCreator(new AndroidStageCreator());
 
         grantPermission("READ_EXTERNAL_STORAGE");
         grantPermission("WRITE_EXTERNAL_STORAGE");

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 
 import com.tngtech.jgiven.integration.CanWire;
 /**
- * @deprecated use SpringScenarioExecutor instead
+ * @deprecated use SpringStageCreator instead
  */
 @Deprecated
 public class SpringCanWire implements CanWire {

@@ -2,7 +2,7 @@ package com.tngtech.jgiven.junit;
 
 import com.tngtech.jgiven.impl.ScenarioBase;
 
-public class StandaloneScenarioRule extends ScenarioExecutionRule {
+public class StandaloneScenarioRule extends JGivenMethodRule {
 
     public StandaloneScenarioRule() {
         super( new ScenarioBase() );
