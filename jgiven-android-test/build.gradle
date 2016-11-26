@@ -48,16 +48,37 @@ dependencies {
   jgivenReport 'org.slf4j:slf4j-simple:'+slf4jVersion
 }
 
+def targetDir = 'build/reports/jgiven/json'
+def adb = android.getAdbExe().toString()
+def reportsDir = '/storage/emulated/0/Download/jgiven-reports'
+
 task cleanJGivenReports(type: Delete) {
-  delete 'build/reports/jgiven/json'
+  delete targetDir
 }
 
 task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
-    file('build/reports/jgiven/json').mkdirs()
+    doFirst {
+        if (!file(targetDir).mkdirs()) {
+            println("Cannot create dir "+targetDir)
+        }
+    }
 
-    def adb = android.getAdbExe().toString()
-    commandLine adb, 'pull', '/storage/emulated/0/Download/jgiven-reports', 'build/reports/jgiven/json'
+    commandLine adb, 'pull', reportsDir, targetDir
+
+    doLast {
+        println("Pulled "+reportsDir+" to "+targetDir);
+    }
 }
+
+task cleanJGivenReportsFromDevice(type: Exec) {
+    commandLine adb, 'shell', 'rm -rf', reportsDir
+
+    doLast {
+        println("Deleted "+reportsDir)
+    }
+}
+
+pullJGivenReports.finalizedBy(cleanJGivenReportsFromDevice)
 
 task cleanJGivenHtmlReport(type: Delete) {
   delete 'build/reports/jgiven/html'

@@ -14,5 +14,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
-        android:id="@+id/hellowordtext"/>
+        android:id="@+id/hellowordtext"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large" />
+
+    <Button
+        android:text="Click Me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/clickMeButton"
+        android:layout_marginTop="18dp"
+        android:layout_below="@+id/hellowordtext"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

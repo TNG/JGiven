@@ -39,6 +39,7 @@ public class CommonReportHelper {
     private void setupReportWriter(ReportModel model, File reportDir) {
         if( !reportDir.exists() && !reportDir.mkdirs() ) {
             log.error( "Could not create report directory " + reportDir );
+            return;
         }
         File reportFile = new File( reportDir, model.getClassName() + ".json" );
         log.debug( "Writing scenario report to file " + reportFile.getAbsolutePath() );

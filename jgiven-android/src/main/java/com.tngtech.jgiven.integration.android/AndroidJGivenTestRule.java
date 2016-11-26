@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.integration.android;
 
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.support.test.InstrumentationRegistry;
 
 import com.tngtech.jgiven.impl.Config;
@@ -17,11 +18,17 @@ public class AndroidJGivenTestRule implements TestRule {
     public AndroidJGivenTestRule(ScenarioBase scenario) {
         scenario.setExecutor(new AndroidScenarioExecutor(InstrumentationRegistry.getTargetContext()));
 
-        InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(
-                "pm grant " + InstrumentationRegistry.getTargetContext().getPackageName()
-                        + " android.permission.WRITE_EXTERNAL_STORAGE");
+        grantPermission("READ_EXTERNAL_STORAGE");
+        grantPermission("WRITE_EXTERNAL_STORAGE");
+
         File reportDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "jgiven-reports").getAbsoluteFile();
         Config.config().setReportDir(reportDir);
+    }
+
+    private void grantPermission(String permission) {
+        InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(
+                "pm grant " + InstrumentationRegistry.getTargetContext().getPackageName()
+                        + " android.permission." + permission);
     }
 
     @Override
