@@ -18,7 +18,7 @@ import com.tngtech.jgiven.junit.JGivenClassRule;
  * @param <WHEN>
  * @param <THEN>
  *
- * @since 0.14.0
+ * @since 0.13.0
  */
 public class SpringRuleScenarioTest<GIVEN, WHEN, THEN> extends InternalSpringScenarioTest<GIVEN, WHEN, THEN> {
 

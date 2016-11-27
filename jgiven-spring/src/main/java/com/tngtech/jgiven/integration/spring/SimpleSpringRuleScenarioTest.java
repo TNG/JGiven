@@ -12,7 +12,7 @@ import org.junit.Rule;
  *
  * @param <STEPS> the stage class that contains the step definitions
  *
- * @since 0.14.0
+ * @since 0.13.0
  */
 public class SimpleSpringRuleScenarioTest<STEPS> extends InternalSimpleSpringScenarioTest<STEPS> {
 

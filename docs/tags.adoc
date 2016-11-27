@@ -1,7 +1,7 @@
 == Tags
 :sourcedir: ../jgiven-examples/src/test/java/com/tngtech/jgiven/examples
 
-Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the link: http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html[`@IsTag`] annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.
+Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html[`@IsTag`] annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.
 
 Let’s say you want to know which scenarios covers the coffee feature. To do so you define a new Java annotation:
 
@@ -10,8 +10,8 @@ Let’s say you want to know which scenarios covers the coffee feature. To do so
 include::{sourcedir}/tags/ExampleCategory.java[tags=noPackage,indent=0]
 ----
 
-Two things are important: 
-. The annotation itself must be annotated with the `@IsTag` annotation to mark it as a JGiven tag. 
+Two things are important:
+. The annotation itself must be annotated with the `@IsTag` annotation to mark it as a JGiven tag.
 . The annotation must have retention policy RUNTIME so that JGiven can recognize it at runtime.
 
 To tag a scenario with the new tag, you just annotate the corresponding test method:
@@ -99,7 +99,7 @@ For each value, one tag will be generated, e.g. `ACME-123` and `ACME-456`. If yo
 
 When the description of a tag depends on its value you cannot simply set the description on the `@IsTag` annotation, because it will be the same for all values.
 
-Let’s assume you have an `@Issue` tag and want to have a link to the corresponding GitHub issue in the description. To do so you can provide your own link: http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/TagDescriptionGenerator.html[`TagDescriptionGenerator`] implementation that generates a description of a tag depending on its actual value:
+Let’s assume you have an `@Issue` tag and want to have a link to the corresponding GitHub issue in the description. To do so you can provide your own http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/TagDescriptionGenerator.html[`TagDescriptionGenerator`] implementation that generates a description of a tag depending on its actual value:
 
 
 [source,java]
@@ -114,7 +114,7 @@ public class IssueDescriptionGenerator implements TagDescriptionGenerator {
     }
 }
 ----
-The new `IssueDescriptionGenerator` must now be configured for the `@Issue` annotation using the link: http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html#descriptionGenerator%28%29[`descriptionGenerator`] attribute of `@IsTag`:
+The new `IssueDescriptionGenerator` must now be configured for the `@Issue` annotation using the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html#descriptionGenerator%28%29[`descriptionGenerator`] attribute of `@IsTag`:
 
 
 [source,java]
