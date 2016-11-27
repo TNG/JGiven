@@ -9,13 +9,13 @@ import org.junit.rules.ExpectedException;
 import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
 
-public class StandaloneScenarioExecutorTest {
+public class ScenarioExecutorTest {
     @Rule
     public final ExpectedException expectedExceptionRule = ExpectedException.none();
 
     @Test
     public void methods_annotated_with_BeforeStage_are_executed_before_the_first_step_is_executed() {
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         BeforeStageStep steps = executor.addStage( BeforeStageStep.class );
         executor.startScenario( "Test" );
         steps.before_stage_was_executed();
@@ -23,7 +23,7 @@ public class StandaloneScenarioExecutorTest {
 
     @Test
     public void methods_annotated_with_AfterStage_are_executed_before_the_first_step_of_the_next_stage_is_executed() {
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         AfterStageStep steps = executor.addStage( AfterStageStep.class );
         NextSteps nextSteps = executor.addStage( NextSteps.class );
         executor.startScenario( "Test" );
@@ -33,7 +33,7 @@ public class StandaloneScenarioExecutorTest {
 
     @Test
     public void methods_annotated_with_NotImplementedYet_are_not_really_executed() {
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         NotImplementedYetTestStep steps = executor.addStage( NotImplementedYetTestStep.class );
         executor.startScenario( "Test" );
         steps.something_not_implemented_yet();
@@ -42,7 +42,7 @@ public class StandaloneScenarioExecutorTest {
 
     @Test
     public void methods_annotated_with_NotImplemented_must_follow_fluent_interface_convention_or_return_null() {
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         NotImplementedYetTestStep steps = executor.addStage( NotImplementedYetTestStep.class );
         executor.startScenario( "Test" );
         assertThat( steps.something_not_implemented_yet_with_wrong_signature() ).isNull();
@@ -50,7 +50,7 @@ public class StandaloneScenarioExecutorTest {
 
     @Test
     public void stepclasses_annotated_with_NotImplementedYet_are_not_really_executed() {
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         NotImplementedYetTestStepClass steps = executor.addStage( NotImplementedYetTestStepClass.class );
         executor.startScenario( "Test" );
         steps.something_not_implemented_yet();
@@ -59,7 +59,7 @@ public class StandaloneScenarioExecutorTest {
 
     @Test
     public void methods_annotated_with_Pending_are_not_really_executed() {
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         PendingTestStep steps = executor.addStage( PendingTestStep.class );
         executor.startScenario( "Test" );
         steps.something_pending();
@@ -68,7 +68,7 @@ public class StandaloneScenarioExecutorTest {
 
     @Test
     public void methods_annotated_with_Pending_must_follow_fluent_interface_convention_or_return_null() {
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         PendingTestStep steps = executor.addStage( PendingTestStep.class );
         executor.startScenario( "Test" );
         assertThat( steps.something_pending_with_wrong_signature() ).isNull();
@@ -76,7 +76,7 @@ public class StandaloneScenarioExecutorTest {
 
     @Test
     public void stepclasses_annotated_with_Pending_are_not_really_executed() {
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         PendingTestStepClass steps = executor.addStage( PendingTestStepClass.class );
         executor.startScenario( "Test" );
         steps.something_pending();
@@ -85,7 +85,7 @@ public class StandaloneScenarioExecutorTest {
 
     @Test
     public void steps_are_injected() {
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         TestClass testClass = new TestClass();
         executor.injectStages( testClass );
 
@@ -95,7 +95,7 @@ public class StandaloneScenarioExecutorTest {
 
     @Test
     public void recursive_steps_are_injected_correctly() {
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         RecursiveTestClass testClass = new RecursiveTestClass();
 
         executor.injectStages( testClass );
@@ -110,7 +110,7 @@ public class StandaloneScenarioExecutorTest {
         expectedExceptionRule.expectMessage( "Could not execute method 'setup' of class 'BeforeStageWithParameters'" );
         expectedExceptionRule.expectMessage( ", because it requires parameters" );
 
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         BeforeStageWithParameters stage = executor.addStage( BeforeStageWithParameters.class );
         executor.startScenario( "Test" );
         stage.something();
@@ -118,7 +118,7 @@ public class StandaloneScenarioExecutorTest {
 
     @Test
     public void DoNotIntercept_methods_are_executed_even_if_previous_steps_fail() {
-        ScenarioExecutor executor = new StandaloneScenarioExecutor();
+        ScenarioExecutor executor = new ScenarioExecutor();
         DoNotInterceptClass stage = executor.addStage( DoNotInterceptClass.class );
         executor.startScenario( "Test" );
         stage.a_failing_step();

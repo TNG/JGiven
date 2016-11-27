@@ -6,6 +6,8 @@ import static com.tngtech.jgiven.report.model.InvocationMode.PENDING;
 import static com.tngtech.jgiven.report.model.InvocationMode.SKIPPED;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 import org.slf4j.Logger;
@@ -17,14 +19,20 @@ import com.tngtech.jgiven.annotation.NestedSteps;
 import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.impl.ScenarioExecutor;
+import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.report.model.InvocationMode;
+import com.tngtech.jgiven.report.model.NamedArgument;
 
-public class StepMethodInterceptor {
-    private static final Logger log = LoggerFactory.getLogger( StepMethodInterceptor.class );
+public class StepInterceptorImpl implements StepInterceptor {
+    private static final Logger log = LoggerFactory.getLogger( StepInterceptorImpl.class );
 
-    private StepMethodHandler scenarioMethodHandler;
+    private static final int INITIAL_MAX_STEP_DEPTH = 1;
+
+    private ScenarioExecutor scenarioExecutor;
 
     private StageTransitionHandler stageTransitionHandler;
+
+    private ScenarioListener listener;
 
     /**
      * Contains the stack of call receivers. This is used to update
@@ -32,7 +40,7 @@ public class StepMethodInterceptor {
      */
     protected final Stack<Object> stageStack = new Stack<Object>();
 
-    private int maxStepDepth = ScenarioExecutor.INITIAL_MAX_STEP_DEPTH;
+    private int maxStepDepth = INITIAL_MAX_STEP_DEPTH;
 
     /**
      * Whether methods should be intercepted or not
@@ -44,19 +52,13 @@ public class StepMethodInterceptor {
      */
     private boolean methodExecutionEnabled = true;
 
-    /**
-     * abstraction to continue intercepted method
-     */
-    public interface Invoker {
-        Object proceed() throws Throwable;
-    };
-
-    public StepMethodInterceptor( StepMethodHandler scenarioMethodHandler, StageTransitionHandler stageTransitionHandler ) {
-        this.scenarioMethodHandler = scenarioMethodHandler;
+    public StepInterceptorImpl(ScenarioExecutor scenarioExecutor, ScenarioListener listener, StageTransitionHandler stageTransitionHandler) {
+        this.scenarioExecutor = scenarioExecutor;
+        this.listener = listener;
         this.stageTransitionHandler = stageTransitionHandler;
     }
 
-    public final Object doIntercept( final Object receiver, Method method, final Object[] parameters, Invoker invoker ) throws Throwable {
+    public final Object intercept( final Object receiver, Method method, final Object[] parameters, Invoker invoker ) throws Throwable {
         if( !shouldInterceptMethod( method ) ) {
             return invoker.proceed();
         }
@@ -71,14 +73,14 @@ public class StepMethodInterceptor {
         try {
             stageTransitionHandler.enterStage( parentStage, receiver );
 
-            return intercept( receiver, method, parameters, invoker, currentStackDepth );
+            return doIntercept( receiver, method, parameters, invoker, currentStackDepth );
         } finally {
             stageStack.pop();
             stageTransitionHandler.leaveStage( parentStage, receiver );
         }
     }
 
-    private Object intercept( Object receiver, Method method, Object[] parameters, Invoker invoker, int currentStackDepth )
+    private Object doIntercept(Object receiver, Method method, Object[] parameters, Invoker invoker, int currentStackDepth )
             throws Throwable {
         long started = System.nanoTime();
 
@@ -92,7 +94,7 @@ public class StepMethodInterceptor {
 
         boolean handleMethod = shouldHandleMethod( method );
         if( handleMethod ) {
-            scenarioMethodHandler.handleMethod( receiver, method, parameters, mode, hasNestedSteps );
+            handleMethod( receiver, method, parameters, mode, hasNestedSteps );
         }
 
         if( mode == SKIPPED || mode == PENDING ) {
@@ -114,7 +116,7 @@ public class StepMethodInterceptor {
                 maxStepDepth--;
             }
             if( handleMethod ) {
-                scenarioMethodHandler.handleMethodFinished( System.nanoTime() - started, hasNestedSteps );
+                handleMethodFinished( System.nanoTime() - started, hasNestedSteps );
             }
         }
     }
@@ -149,7 +151,7 @@ public class StepMethodInterceptor {
     protected Object handleThrowable( Object receiver, Method method, Throwable t, long durationInNanos, boolean handleMethod )
             throws Throwable {
         if( handleMethod ) {
-            scenarioMethodHandler.handleThrowable( t );
+            handleThrowable( t );
             return returnReceiverOrNull( receiver, method );
         }
         throw t;
@@ -191,7 +193,7 @@ public class StepMethodInterceptor {
         return NORMAL;
     }
 
-    public void enableMethodHandling( boolean b ) {
+    public void enableMethodInterception(boolean b ) {
         interceptingEnabled = b;
     }
 
@@ -205,15 +207,28 @@ public class StepMethodInterceptor {
         return previousMethodExecution;
     }
 
-    public StepMethodHandler getScenarioMethodHandler() {
-        return scenarioMethodHandler;
+    private void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode,
+                              boolean hasNestedSteps ) throws Throwable {
+
+        List<NamedArgument> namedArguments = ParameterNameUtil.mapArgumentsWithParameterNames( paramMethod,
+                Arrays.asList( arguments ) );
+        listener.stepMethodInvoked( paramMethod, namedArguments, mode, hasNestedSteps );
     }
 
-    public void setScenarioMethodHandler( StepMethodHandler scenarioMethodHandler ) {
-        this.scenarioMethodHandler = scenarioMethodHandler;
+    private void handleThrowable( Throwable t ) throws Throwable {
+        if( t.getClass().getName().equals( "org.junit.AssumptionViolatedException" ) ) {
+            throw t;
+        }
+
+        listener.stepMethodFailed( t );
+        scenarioExecutor.failed( t );
     }
 
-    public void setStageTransitionHandler( StageTransitionHandler stageTransitionHandler ) {
-        this.stageTransitionHandler = stageTransitionHandler;
+    private void handleMethodFinished( long durationInNanos, boolean hasNestedSteps ) {
+        listener.stepMethodFinished( durationInNanos, hasNestedSteps );
+    }
+
+    public void setScenarioListener(ScenarioListener scenarioListener) {
+        this.listener = scenarioListener;
     }
 }

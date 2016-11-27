@@ -3,64 +3,78 @@ package com.tngtech.jgiven.android.example;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.Quoted;
+import com.tngtech.jgiven.annotation.ScenarioState;
+import com.tngtech.jgiven.attachment.Attachment;
+import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.integration.android.AndroidJGivenTestRule;
-import com.tngtech.jgiven.junit.ScenarioTest;
+import com.tngtech.jgiven.junit.SimpleScenarioTest;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-/**
- * Instrumentation example, which will execute on an Android device.
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest  extends
-        ScenarioTest<ExampleInstrumentedTest.GivenSomeState, ExampleInstrumentedTest.WhenSomeAction, ExampleInstrumentedTest.ThenSomeOutcome> {
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
-    @Rule
-    public AndroidJGivenTestRule androidJGivenTestRule =new AndroidJGivenTestRule(this);
+        SimpleScenarioTest<ExampleInstrumentedTest.Steps> {
 
+    @Rule
+    @ScenarioState
+    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
 
+    @Rule
+    public AndroidJGivenTestRule androidJGivenTestRule = new AndroidJGivenTestRule(this.getScenario());
 
     @Test
-    public void something_should_happen() {
-        given().some_state();
-        when().some_action();
-        then().some_outcome();
-        onView(withId(R.id.hellowordtext)).check(matches(isDisplayed()));
+    public void clicking_ClickMe_changes_the_text() {
+        given().the_initial_main_activity_is_shown()
+           .with().text("Hello World!");
+        when().clicking_the_Click_Me_button();
+        then().text_$_is_shown("JGiven Works!");
 
     }
 
-    public static class GivenSomeState extends Stage<GivenSomeState> {
+    public static class Steps extends Stage<Steps> {
+        @ScenarioState
+        CurrentStep currentStep;
 
-        public GivenSomeState some_state() {
+        @ScenarioState
+        ActivityTestRule<MainActivity> activityTestRule;
+
+        public Steps the_initial_main_activity_is_shown() {
+            // nothing to do, just for reporting
             return this;
         }
-    }
 
-
-    public static class WhenSomeAction extends Stage<WhenSomeAction> {
-        public WhenSomeAction some_action() {
+        public Steps clicking_the_Click_Me_button() {
+            onView(withId(R.id.clickMeButton)).perform(click());
             return this;
         }
-    }
 
-    public static class ThenSomeOutcome extends Stage<ThenSomeOutcome> {
+        public Steps text(@Quoted String s) {
+            return text_$_is_shown(s);
+        }
 
-        public ThenSomeOutcome some_outcome() {
-
+        public Steps text_$_is_shown(@Quoted String s) {
+            onView(withId(R.id.hellowordtext)).check(matches(withText(s)));
+            takeScreenshot();
             return this;
         }
+
+        private void takeScreenshot() {
+            currentStep.addAttachment(
+                    Attachment.fromBinaryBytes(ScreenshotUtil.takeScreenshot(activityTestRule.getActivity()), MediaType.PNG)
+                        .showDirectly()) ;
+        }
+
     }
 
 }

@@ -2,15 +2,20 @@ package com.tngtech.jgiven.junit.injection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
-import com.tngtech.jgiven.junit.ScenarioTest;
+import com.tngtech.jgiven.junit.JGivenMethodRule;
 
-public class StepInjectionTest extends ScenarioTest {
+public class StepInjectionTest {
+
+    @Rule
+    public final JGivenMethodRule scenarioRule = new JGivenMethodRule();
+
     @ScenarioStage
     CustomerSteps customerSteps;
 

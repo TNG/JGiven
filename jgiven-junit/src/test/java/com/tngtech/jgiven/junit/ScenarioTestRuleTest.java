@@ -53,7 +53,7 @@ public class ScenarioTestRuleTest {
     public void testParseMethodName( Statement statement, FrameworkMethod testMethod, Object target,
             NamedArgument[] expected ) {
 
-        List<NamedArgument> result = ScenarioExecutionRule.getNamedArguments( statement, testMethod, target );
+        List<NamedArgument> result = JGivenMethodRule.getNamedArguments( statement, testMethod, target );
         assertThat( result ).containsExactly( expected );
     }
 

@@ -8,10 +8,10 @@ import com.tngtech.jgiven.base.SimpleScenarioTestBase;
 
 public class SimpleScenarioTest<STEPS> extends SimpleScenarioTestBase<STEPS> {
     @ClassRule
-    public static final ScenarioReportRule writerRule = new ScenarioReportRule();
+    public static final JGivenClassRule writerRule = new JGivenClassRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( createScenario() );
+    public final JGivenMethodRule scenarioRule = new JGivenMethodRule( createScenario() );
 
     @Override
     public Scenario<STEPS, STEPS, STEPS> getScenario() {

@@ -1,28 +1,32 @@
 package com.tngtech.jgiven.integration.android;
 
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Context;
+import android.os.Environment;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.rule.UiThreadTestRule;
 
-import com.tngtech.jgiven.impl.ScenarioExecutor;
-import com.tngtech.jgiven.junit.ScenarioExecutionRule;
-import com.tngtech.jgiven.junit.ScenarioTest;
+import com.tngtech.jgiven.impl.Config;
+import com.tngtech.jgiven.impl.ScenarioBase;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-/**
- * Created by originx on 11/12/2016.
- */
+import java.io.File;
 
 public class AndroidJGivenTestRule implements TestRule {
-    public AndroidJGivenTestRule(ScenarioTest scenarioTest) {
-        scenarioTest.getScenario().setExecutor(new AndroidScenarioExecutor(InstrumentationRegistry.getTargetContext()));
-        ScenarioTest.writerRule.getCommonReportHelper().setReportDir(InstrumentationRegistry.getTargetContext().getCacheDir().getAbsoluteFile());
+    public AndroidJGivenTestRule(ScenarioBase scenario) {
+        scenario.setStageCreator(new AndroidStageCreator());
 
+        grantPermission("READ_EXTERNAL_STORAGE");
+        grantPermission("WRITE_EXTERNAL_STORAGE");
+
+        File reportDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "jgiven-reports").getAbsoluteFile();
+        Config.config().setReportDir(reportDir);
+    }
+
+    private void grantPermission(String permission) {
+        InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(
+                "pm grant " + InstrumentationRegistry.getTargetContext().getPackageName()
+                        + " android.permission." + permission);
     }
 
     @Override

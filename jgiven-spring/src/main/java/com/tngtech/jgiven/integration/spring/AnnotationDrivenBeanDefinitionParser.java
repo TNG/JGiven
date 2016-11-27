@@ -33,12 +33,12 @@ public class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParse
             logger.debug( "Registered SpringStepMethodInterceptor with name " + interceptorName );
 
             // create Scenario Executor
-            RootBeanDefinition executorDef = new RootBeanDefinition( SpringScenarioExecutor.class );
+            RootBeanDefinition executorDef = new RootBeanDefinition( SpringStageCreator.class );
             executorDef.setScope( AbstractBeanDefinition.SCOPE_PROTOTYPE );
             executorDef.setSource( eleSource );
             interceptorDef.setRole( BeanDefinition.ROLE_INFRASTRUCTURE );
             String executorName = parserContext.getReaderContext().registerWithGeneratedName( executorDef );
-            logger.debug( "Registered SpringScenarioExecutor with name " + executorName );
+            logger.debug( "Registered SpringStageCreator with name " + executorName );
 
             // create AutoProxyCreator
             RootBeanDefinition autoProxyCreatorDef = new RootBeanDefinition( JGivenStageAutoProxyCreator.class );

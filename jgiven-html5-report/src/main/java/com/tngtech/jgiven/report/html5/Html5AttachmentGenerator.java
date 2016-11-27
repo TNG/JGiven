@@ -55,7 +55,7 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
         MediaType mediaType = MediaType.parse( mimeType );
         File targetFile = writeFile( attachment, mediaType );
         attachment.setValue( htmlSubDir + "/" + targetFile.getName() );
-        log.info( "Attachment written to " + targetFile );
+        log.debug( "Attachment written to " + targetFile );
     }
 
     private String getExtension( MediaType mediaType ) {

@@ -4,11 +4,11 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 
 import com.tngtech.jgiven.impl.Scenario;
-import com.tngtech.jgiven.junit.ScenarioExecutionRule;
-import com.tngtech.jgiven.junit.ScenarioReportRule;
+import com.tngtech.jgiven.junit.JGivenMethodRule;
+import com.tngtech.jgiven.junit.JGivenClassRule;
 
 /**
- * Base class for {@link SpringScenarioExecutor} based JGiven tests
+ * Base class for {@link SpringStageCreator} based JGiven tests
  *
  * Uses JUnit rules (introduced in Spring 4.2) instead of a JUnit runner in
  * order to allow custom JUnit runners.
@@ -23,10 +23,10 @@ import com.tngtech.jgiven.junit.ScenarioReportRule;
 public class SpringRuleScenarioTest<GIVEN, WHEN, THEN> extends InternalSpringScenarioTest<GIVEN, WHEN, THEN> {
 
     @ClassRule
-    public static final ScenarioReportRule writerRule = new ScenarioReportRule();
+    public static final JGivenClassRule writerRule = new JGivenClassRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( createScenario() );
+    public final JGivenMethodRule scenarioRule = new JGivenMethodRule( createScenario() );
 
     @Override
     public Scenario<GIVEN, WHEN, THEN> getScenario() {

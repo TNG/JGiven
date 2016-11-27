@@ -15,7 +15,7 @@ public class StandaloneScenarioRuleTest {
     public StandaloneScenarioRule scenarioRule = new StandaloneScenarioRule();
 
     @ClassRule
-    public static ScenarioReportRule reportRule = new ScenarioReportRule();
+    public static JGivenClassRule reportRule = new JGivenClassRule();
 
     @ScenarioStage
     GivenTestStep givenStage;
