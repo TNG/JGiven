@@ -204,7 +204,7 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
         @ProvidedScenarioState
         private BuildResult result;
         @ProvidedScenarioState
-        List<String> tasks = new ArrayList<>();
+        List<String> tasks = new ArrayList<String>();
 
         public When the_task( @Quoted String task ) {
             tasks.add( task );
