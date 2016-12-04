@@ -5,10 +5,11 @@ import java.lang.reflect.Method;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
-import com.tngtech.jgiven.impl.intercept.StepMethodInterceptor;
+import com.tngtech.jgiven.impl.intercept.StepInterceptor;
+import com.tngtech.jgiven.impl.intercept.StepInterceptor.Invoker;
 
 /**
- * StepMethodInterceptor that uses {@link MethodInterceptor} for intercepting JGiven methods
+ * StepInterceptorImpl that uses {@link MethodInterceptor} for intercepting JGiven methods
  * See below on how to configure this bean.
  *
  * <p>
@@ -21,14 +22,12 @@ import com.tngtech.jgiven.impl.intercept.StepMethodInterceptor;
  * }
  * </pre>
  * <p>
- * <strong>The StepMethodInterceptor is stateful, and thus should use "prototype" scope</strong>
+ * <strong>The StepInterceptorImpl is stateful, and thus should use "prototype" scope</strong>
  * @since 0.8.0
  */
-public class SpringStepMethodInterceptor extends StepMethodInterceptor implements MethodInterceptor {
+public class SpringStepMethodInterceptor implements MethodInterceptor {
 
-    public SpringStepMethodInterceptor() {
-        super( null, null );
-    }
+    private StepInterceptor stepInterceptor;
 
     @Override
     public Object invoke( final MethodInvocation invocation ) throws Throwable {
@@ -42,10 +41,10 @@ public class SpringStepMethodInterceptor extends StepMethodInterceptor implement
                 return invocation.proceed();
             }
         };
-        if( getScenarioMethodHandler() == null ) {
-            return invoker.proceed(); // not running in JGiven context
-        }
-        return doIntercept( receiver, method, parameters, invoker );
+        return stepInterceptor.intercept( receiver, method, parameters, invoker );
     }
 
+    public void setStepInterceptor(StepInterceptor stepInterceptor) {
+        this.stepInterceptor = stepInterceptor;
+    }
 }

@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.0-alpha1'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+          abortOnError false
+      }
+
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile('com.android.support.test:rules:0.5') {
+        exclude group: "junit"
+    }
+    compile project(path: ':jgiven-junit')
+    compile project(path: ':jgiven-core')
+    //maven jar had junit bundled with it causing multidex issues, also removed unit tests so they are not cluttered
+    compile files('libs/dx-1.7.jar')
+    compile(('net.bytebuddy:byte-buddy-android:1.5.1')) {
+        exclude group: "com.google.android.tools"
+        exclude group: "junit"
+    }
+}
+

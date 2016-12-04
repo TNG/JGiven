@@ -23,8 +23,8 @@ public class JGivenSpringConfiguration {
 
     @Bean
     @Scope( "prototype" )
-    public SpringScenarioExecutor springScenarioExecutor() {
-        return new SpringScenarioExecutor();
+    public SpringStageCreator springStageCreator() {
+        return new SpringStageCreator();
     }
 
     /*

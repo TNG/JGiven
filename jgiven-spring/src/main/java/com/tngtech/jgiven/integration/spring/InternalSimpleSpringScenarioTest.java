@@ -31,6 +31,6 @@ public abstract class InternalSimpleSpringScenarioTest<STAGE> extends SimpleScen
     }
 
     public void setBeanFactory(BeanFactory beanFactory) {
-        this.getScenario().setExecutor((ScenarioExecutor)beanFactory.getBean( SpringScenarioExecutor.class ));
+        this.getScenario().setStageCreator(beanFactory.getBean( SpringStageCreator.class ));
     }
 }
