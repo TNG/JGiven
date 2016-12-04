@@ -6,8 +6,8 @@ import org.junit.Rule;
 
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.base.ScenarioTestBase;
-import com.tngtech.jgiven.junit.ScenarioExecutionRule;
-import com.tngtech.jgiven.junit.ScenarioReportRule;
+import com.tngtech.jgiven.junit.JGivenMethodRule;
+import com.tngtech.jgiven.junit.JGivenClassRule;
 
 /**
  * We do not directly inherit from ScenarioTest to avoid interference with JGiven tests we are testing
@@ -15,10 +15,10 @@ import com.tngtech.jgiven.junit.ScenarioReportRule;
 @JGivenConfiguration( JGivenTestConfiguration.class )
 public class JGivenScenarioTest<GIVEN, WHEN, THEN> extends ScenarioTestBase<GIVEN, WHEN, THEN> {
     @ClassRule
-    public static final ScenarioReportRule writerRule = new ScenarioReportRule();
+    public static final JGivenClassRule writerRule = new JGivenClassRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( createScenario() );
+    public final JGivenMethodRule scenarioRule = new JGivenMethodRule( createScenario() );
 
     @Override
     public Scenario<GIVEN, WHEN, THEN> getScenario() {

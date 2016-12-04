@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.ScenarioExecutor;
+import com.tngtech.jgiven.impl.StageCreator;
 
 /**
  * Internal class necessary in order to provide the correct ordering of the {@link org.junit.rules.MethodRule}s. Must be public because of
@@ -33,6 +34,6 @@ public abstract class InternalSpringScenarioTest<GIVEN, WHEN, THEN> extends Scen
     }
 
     public void setBeanFactory(BeanFactory beanFactory) {
-        this.getScenario().setExecutor((ScenarioExecutor)beanFactory.getBean( SpringScenarioExecutor.class ));
+        this.getScenario().getExecutor().setStageCreator((StageCreator) beanFactory.getBean( SpringStageCreator.class ));
     }
 }

@@ -1,8 +1,8 @@
 package com.tngtech.jgiven.integration.spring;
 
 import com.tngtech.jgiven.impl.Scenario;
-import com.tngtech.jgiven.junit.ScenarioExecutionRule;
-import com.tngtech.jgiven.junit.ScenarioReportRule;
+import com.tngtech.jgiven.junit.JGivenMethodRule;
+import com.tngtech.jgiven.junit.JGivenClassRule;
 import org.junit.ClassRule;
 import org.junit.Rule;
 
@@ -17,10 +17,10 @@ import org.junit.Rule;
 public class SimpleSpringRuleScenarioTest<STEPS> extends InternalSimpleSpringScenarioTest<STEPS> {
 
     @ClassRule
-    public static final ScenarioReportRule writerRule = new ScenarioReportRule();
+    public static final JGivenClassRule writerRule = new JGivenClassRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule( createScenario() );
+    public final JGivenMethodRule scenarioRule = new JGivenMethodRule( createScenario() );
 
     @Override
     public Scenario<STEPS, STEPS, STEPS> getScenario() {

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import com.tngtech.jgiven.junit.ScenarioTest;
 
 /**
- * Base class for {@link SpringScenarioExecutor} based JGiven tests.
+ * Base class for {@link SpringStageCreator} based JGiven tests.
  *
  * Needs to be used with the {@link org.springframework.test.context.junit4.SpringJUnit4ClassRunner}.
  * As a JUnit-rule based alternative, consider using {@link SpringRuleScenarioTest}.
@@ -21,6 +21,6 @@ public class SpringScenarioTest<GIVEN, WHEN, THEN> extends
         ScenarioTest<GIVEN, WHEN, THEN> implements BeanFactoryAware {
 
     public void setBeanFactory( BeanFactory beanFactory ) {
-        getScenario().setExecutor( beanFactory.getBean( SpringScenarioExecutor.class ) );
+        getScenario().setStageCreator( beanFactory.getBean( SpringStageCreator.class ) );
     }
 }

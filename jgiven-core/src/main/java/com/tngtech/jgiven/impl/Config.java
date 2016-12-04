@@ -74,4 +74,7 @@ public class Config {
         return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_FILTER_STACK_TRACE, TRUE ) );
     }
 
+    public void setReportDir(File reportDir) {
+        System.setProperty( JGIVEN_REPORT_DIR, reportDir.getAbsolutePath() );
+    }
 }

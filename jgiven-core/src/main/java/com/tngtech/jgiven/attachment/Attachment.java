@@ -1,15 +1,18 @@
 package com.tngtech.jgiven.attachment;
 
-import java.io.*;
-import java.nio.charset.Charset;
-
-import javax.xml.bind.DatatypeConverter;
-
+import com.google.common.io.BaseEncoding;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 /**
  * Represents an attachment of a step. 
@@ -161,7 +164,7 @@ public class Attachment {
         if( !mediaType.isBinary() ) {
             throw new IllegalArgumentException( "MediaType must be binary" );
         }
-        return new Attachment( DatatypeConverter.printBase64Binary( bytes ), mediaType, null );
+        return new Attachment(BaseEncoding.base64().encode( bytes ), mediaType, null );
     }
 
     /**

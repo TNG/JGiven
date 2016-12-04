@@ -18,3 +18,10 @@ if (JavaVersion.current().isJava7Compatible()) {
 if (JavaVersion.current().isJava8Compatible()) {
     include ':jgiven-java8-tests'
 }
+
+// TODO: configure Travis-CI to correctly build Android code
+if (System.env.CI != "true") {
+    include ':jgiven-android'
+    include ':jgiven-android-test'
+}
+

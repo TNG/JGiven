@@ -21,7 +21,7 @@ import com.tngtech.jgiven.report.model.ScenarioModel;
  *
  */
 public class ScenarioBase {
-    protected ScenarioExecutor executor = new StandaloneScenarioExecutor();
+    protected ScenarioExecutor executor = new ScenarioExecutor();
     protected final ScenarioModelBuilder modelBuilder = new ScenarioModelBuilder();
     private boolean initialized = false;
 
@@ -114,4 +114,7 @@ public class ScenarioBase {
         executor.addSection( sectionTitle );
     }
 
+    public void setStageCreator(StageCreator stageCreator) {
+        this.executor.setStageCreator(stageCreator);
+    }
 }

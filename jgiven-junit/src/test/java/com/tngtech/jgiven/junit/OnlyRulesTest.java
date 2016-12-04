@@ -16,10 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class OnlyRulesTest {
 
     @ClassRule
-    public static final ScenarioReportRule writerRule = new ScenarioReportRule();
+    public static final JGivenClassRule writerRule = new JGivenClassRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule();
+    public final JGivenMethodRule scenarioRule = new JGivenMethodRule();
 
     @ScenarioStage
     TestStage stage;
