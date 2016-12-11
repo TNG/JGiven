@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.integration.spring.test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,4 +20,14 @@ public class SpringScenarioTestTest extends SpringScenarioTest<SimpleTestSpringS
         when().methods_on_this_component_are_called();
         then().beans_are_injected();
     }
+
+    @Test
+    public void nested_steps_work_with_Spring() throws Throwable {
+        given().a_nested_step();
+
+        getScenario().finished();
+
+        assertThat( getScenario().getModel().getFirstStepModelOfLastScenario().getNestedSteps() ).hasSize( 2 );
+    }
+
 }

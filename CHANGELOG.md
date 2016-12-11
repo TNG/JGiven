@@ -1,3 +1,17 @@
+# v0.14.0
+
+## Spring Integration: Backwards Incompatible Changes
+
+In order to fix issue #259 the Spring integration was largely rewritten. If you only had used the `@EnableJGiven` and `@JGivenStage` annotations, nothing should change.
+If you had a custom Spring configuration for JGiven you have to change the following:
+
+* The classes `SpringStepMethodInterceptor` and `JGivenStageAutoProxyCreator` do not exist anymore, you have to remove all references
+* As a replacement the new class `JGivenBeanFactoryPostProcessor` exists now. You have to register this bean in your Spring configuration
+
+## Fixed Issues
+
+* Spring Integration: Nested Steps are now supported when using Spring [#259](https://github.com/TNG/JGiven/issues/259)
+
 # v0.13.0
 
 ## Backwards Incompatible Changes
