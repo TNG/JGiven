@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import com.tngtech.jgiven.integration.spring.EnableJGiven;
 
 @Configuration
-// auto configuration for JGiven
 @EnableJGiven
 @ComponentScan(basePackages = "com.tngtech.jgiven.integration.spring.test")
 public class TestSpringConfig {
