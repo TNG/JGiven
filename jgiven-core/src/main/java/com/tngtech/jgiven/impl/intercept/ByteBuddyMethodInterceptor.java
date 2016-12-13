@@ -1,10 +1,10 @@
 package com.tngtech.jgiven.impl.intercept;
 
+import java.lang.reflect.Method;
+import java.util.concurrent.Callable;
+
 import com.tngtech.jgiven.impl.intercept.StepInterceptor.Invoker;
 
-import java.lang.reflect.Method;
-
-import java.util.concurrent.Callable;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.BindingPriority;
 import net.bytebuddy.implementation.bind.annotation.DefaultCall;
@@ -19,17 +19,28 @@ import net.bytebuddy.implementation.bind.annotation.This;
  */
 public class ByteBuddyMethodInterceptor {
 
-    private final StepInterceptor interceptor;
+    private StepInterceptor interceptor;
 
-    public ByteBuddyMethodInterceptor(StepInterceptor interceptor ) {
+    public ByteBuddyMethodInterceptor() {}
+
+    public ByteBuddyMethodInterceptor( StepInterceptor interceptor ) {
+        this.interceptor = interceptor;
+    }
+
+    public void setInterceptor( StepInterceptor interceptor ) {
         this.interceptor = interceptor;
     }
 
     @RuntimeType
-    @BindingPriority(BindingPriority.DEFAULT * 3)
-    public Object interceptSuper( @SuperCall final Callable<?> zuper,@This final Object receiver,@Origin
-        Method method, @AllArguments final Object[] parameters)
-        throws Throwable {
+    @BindingPriority( BindingPriority.DEFAULT * 3 )
+    public Object interceptSuper( @SuperCall final Callable<?> zuper, @This final Object receiver, @Origin Method method,
+            @AllArguments final Object[] parameters )
+            throws Throwable {
+
+        if( handleSetStepInterceptor( method, parameters ) ) {
+            return null;
+        }
+
         Invoker invoker = new Invoker() {
             @Override
             public Object proceed() throws Throwable {
@@ -37,27 +48,46 @@ public class ByteBuddyMethodInterceptor {
             }
 
         };
-        return interceptor.intercept( receiver  , method, parameters, invoker );
+        return interceptor.intercept( receiver, method, parameters, invoker );
     }
 
     @RuntimeType
-    @BindingPriority(BindingPriority.DEFAULT * 2)
-    public Object interceptDefault(@DefaultCall final Callable<?> zuper,@This final Object receiver,@Origin
-        Method method, @AllArguments final Object[] parameters)
-        throws Throwable {
-        Invoker invoker = new Invoker() {
+    @BindingPriority( BindingPriority.DEFAULT * 2 )
+    public Object interceptDefault( @DefaultCall final Callable<?> zuper, @This final Object receiver, @Origin Method method,
+            @AllArguments final Object[] parameters )
+            throws Throwable {
 
+        if( handleSetStepInterceptor( method, parameters ) ) {
+            return null;
+        }
+
+        Invoker invoker = new Invoker() {
             @Override
             public Object proceed() throws Throwable {
                 return zuper.call();
             }
 
         };
-        return interceptor.intercept( receiver  , method, parameters, invoker );
+        return interceptor.intercept( receiver, method, parameters, invoker );
     }
+
+    private boolean handleSetStepInterceptor( Method method, final Object[] parameters ) {
+        if( method.getName().equals( "setStepInterceptor" ) && method.getDeclaringClass().equals( StageInterceptorInternal.class ) ) {
+            setInterceptor( (StepInterceptor) parameters[0] );
+            return true;
+        }
+        return false;
+    }
+
     @RuntimeType
-    public Object intercept( @This final Object receiver,@Origin final Method method, @AllArguments final Object[] parameters) throws Throwable {
+    public Object intercept( @This final Object receiver, @Origin final Method method, @AllArguments final Object[] parameters )
+            throws Throwable {
         // this intercepted method does not have a non-abstract super method
+
+        if( handleSetStepInterceptor( method, parameters ) ) {
+            return null;
+        }
+
         Invoker invoker = new Invoker() {
 
             @Override
@@ -66,8 +96,7 @@ public class ByteBuddyMethodInterceptor {
             }
 
         };
-        return interceptor.intercept( receiver  , method, parameters, invoker );
+        return interceptor.intercept( receiver, method, parameters, invoker );
     }
-
 
 }

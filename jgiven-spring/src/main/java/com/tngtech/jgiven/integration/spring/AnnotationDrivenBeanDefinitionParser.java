@@ -6,7 +6,6 @@ import org.springframework.aop.config.AopNamespaceUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.parsing.BeanComponentDefinition;
 import org.springframework.beans.factory.parsing.CompositeComponentDefinition;
-import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.BeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
@@ -24,31 +23,19 @@ public class AnnotationDrivenBeanDefinitionParser implements BeanDefinitionParse
         if( !parserContext.getRegistry().containsBeanDefinition( BEAN_NAME ) ) {
             Object eleSource = parserContext.extractSource( element );
 
-            // create Interceptor
-            RootBeanDefinition interceptorDef = new RootBeanDefinition( SpringStepMethodInterceptor.class );
-            interceptorDef.setScope( AbstractBeanDefinition.SCOPE_PROTOTYPE );
-            interceptorDef.setSource( eleSource );
-            interceptorDef.setRole( BeanDefinition.ROLE_INFRASTRUCTURE );
-            String interceptorName = parserContext.getReaderContext().registerWithGeneratedName( interceptorDef );
-            logger.debug( "Registered SpringStepMethodInterceptor with name " + interceptorName );
-
-            // create Scenario Executor
-            RootBeanDefinition executorDef = new RootBeanDefinition( SpringStageCreator.class );
-            executorDef.setScope( AbstractBeanDefinition.SCOPE_PROTOTYPE );
-            executorDef.setSource( eleSource );
-            interceptorDef.setRole( BeanDefinition.ROLE_INFRASTRUCTURE );
-            String executorName = parserContext.getReaderContext().registerWithGeneratedName( executorDef );
+            RootBeanDefinition stageCreator = new RootBeanDefinition( SpringStageCreator.class );
+            stageCreator.setSource( eleSource );
+            stageCreator.setRole( BeanDefinition.ROLE_INFRASTRUCTURE );
+            String executorName = parserContext.getReaderContext().registerWithGeneratedName( stageCreator );
             logger.debug( "Registered SpringStageCreator with name " + executorName );
 
-            // create AutoProxyCreator
-            RootBeanDefinition autoProxyCreatorDef = new RootBeanDefinition( JGivenStageAutoProxyCreator.class );
-            autoProxyCreatorDef.setRole( BeanDefinition.ROLE_INFRASTRUCTURE );
-            parserContext.getRegistry().registerBeanDefinition( BEAN_NAME, autoProxyCreatorDef );
+            RootBeanDefinition beanFactoryPostProcessor = new RootBeanDefinition( JGivenBeanFactoryPostProcessor.class );
+            beanFactoryPostProcessor.setRole( BeanDefinition.ROLE_INFRASTRUCTURE );
+            parserContext.getRegistry().registerBeanDefinition( BEAN_NAME, beanFactoryPostProcessor );
 
             CompositeComponentDefinition componentDefinition = new CompositeComponentDefinition( element.getTagName(), eleSource );
-            componentDefinition.addNestedComponent( new BeanComponentDefinition( interceptorDef, interceptorName ) );
-            componentDefinition.addNestedComponent( new BeanComponentDefinition( executorDef, executorName ) );
-            componentDefinition.addNestedComponent( new BeanComponentDefinition( autoProxyCreatorDef, BEAN_NAME ) );
+            componentDefinition.addNestedComponent( new BeanComponentDefinition( stageCreator, executorName ) );
+            componentDefinition.addNestedComponent( new BeanComponentDefinition( beanFactoryPostProcessor, BEAN_NAME ) );
             parserContext.registerComponent( componentDefinition );
         }
         return null;

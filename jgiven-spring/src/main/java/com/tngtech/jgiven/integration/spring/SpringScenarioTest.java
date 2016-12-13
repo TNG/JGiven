@@ -20,6 +20,7 @@ import com.tngtech.jgiven.junit.ScenarioTest;
 public class SpringScenarioTest<GIVEN, WHEN, THEN> extends
         ScenarioTest<GIVEN, WHEN, THEN> implements BeanFactoryAware {
 
+    @Override
     public void setBeanFactory( BeanFactory beanFactory ) {
         getScenario().setStageCreator( beanFactory.getBean( SpringStageCreator.class ) );
     }

@@ -2,14 +2,13 @@ package com.tngtech.jgiven.integration.spring;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.Advisor;
-import org.springframework.aop.framework.Advised;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ClassUtils;
 
 import com.tngtech.jgiven.impl.ByteBuddyStageCreator;
+import com.tngtech.jgiven.impl.intercept.StageInterceptorInternal;
 import com.tngtech.jgiven.impl.intercept.StepInterceptor;
 
 /**
@@ -36,25 +35,23 @@ public class SpringStageCreator extends ByteBuddyStageCreator {
     private ApplicationContext applicationContext;
 
     @Override
-    public <T> T createStage(Class<T> stepsClass, StepInterceptor stepInterceptor ) {
+    public <T> T createStage( Class<T> stageClass, StepInterceptor stepInterceptor ) {
         try {
-            T bean = applicationContext.getBean( stepsClass );
-            Advised advised = (Advised) bean;
-            Advisor[] advisors = advised.getAdvisors();
-            for( Advisor advisor : advisors ) {
-                if( advisor.getAdvice() instanceof SpringStepMethodInterceptor ) {
-                    SpringStepMethodInterceptor interceptor = (SpringStepMethodInterceptor) advisor.getAdvice();
-                    interceptor.setStepInterceptor(stepInterceptor);
-                }
-            }
+            T bean = applicationContext.getBean( stageClass );
+            ( (StageInterceptorInternal) bean ).setStepInterceptor( stepInterceptor );
             return bean;
         } catch( NoSuchBeanDefinitionException nbe ) {
-            return super.createStage( stepsClass, stepInterceptor );
+            return super.createStage( stageClass, stepInterceptor );
         } catch( ClassCastException cce ) {
-            log.warn( "Class " + ClassUtils.getShortName( stepsClass )
-                    + " is not advised with SpringStepMethodInterceptor. Falling back to cglib based proxy, strange things may happen." );
-            return super.createStage( stepsClass, stepInterceptor );
+            log.warn( "Class " + ClassUtils.getShortName( stageClass )
+                    + " is not annotated with @JGivenStage. Falling back to default JGiven proxy. Spring features will not be supported for this stage instance.",
+                cce );
+            return super.createStage( stageClass, stepInterceptor );
+        } catch( Exception e ) {
+            log.error( "Error while trying to get the Spring bean for stage class "+stageClass, e );
+            return null;
         }
+
     }
 
 }
