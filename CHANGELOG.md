@@ -1,12 +1,35 @@
 # v0.14.0
 
-## Spring Integration: Backwards Incompatible Changes
+## Removal of Library Dependencies
+
+JGiven does not directly depend on any libraries anymore, except for `slf4j`. All other dependencies like `Guava`,
+
+## Switch from cglib to ByteBuddy
+
+The internal JGiven interception mechanism was changed to use ByteBuddy instead of cglib. The main reason for this change is support for Android (see below).
+From a users perspective, JGiven should behave as before.
+
+## Backwards Incompatible Changes
+
+### Spring Integration
 
 In order to fix issue #259 the Spring integration was largely rewritten. If you only had used the `@EnableJGiven` and `@JGivenStage` annotations, nothing should change.
 If you had a custom Spring configuration for JGiven you have to change the following:
 
 * The classes `SpringStepMethodInterceptor` and `JGivenStageAutoProxyCreator` do not exist anymore, you have to remove all references
 * As a replacement the new class `JGivenBeanFactoryPostProcessor` exists now. You have to register this bean in your Spring configuration
+
+## New Features
+
+### Experimental Android Support
+
+There is a new experimental module called `jgiven-android`, which enables JGiven support for tests executed on the device or simulator.
+This makes it possible to combine JGiven with Espresso tests and even integrate screenshots in the JGiven report.
+For details of how to setup and use the Android support have a look at the `jgiven-android-test` project.
+
+Also see [#258](https://github.com/TNG/JGiven/pull/258)
+
+Special thanks to [orginx](https://github.com/originx)
 
 ## Fixed Issues
 
