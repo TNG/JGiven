@@ -607,7 +607,7 @@ table.CodeRay td.code>pre{padding:0}
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>0.12.1</p>
+<p>0.13.0</p>
 </div>
 </div>
 </div>
@@ -626,7 +626,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit&lt;/artifactId&gt;
-   &lt;version&gt;0.12.1&lt;/version&gt;
+   &lt;version&gt;0.13.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -638,7 +638,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-junit:0.12.1'
+   testCompile 'com.tngtech.jgiven:jgiven-junit:0.13.0'
 ...
 }</code></pre>
 </div>
@@ -657,7 +657,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-testng&lt;/artifactId&gt;
-   &lt;version&gt;0.12.1&lt;/version&gt;
+   &lt;version&gt;0.13.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -669,7 +669,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-testng:0.12.1'
+   testCompile 'com.tngtech.jgiven:jgiven-testng:0.13.0'
 ...
 }</code></pre>
 </div>
@@ -688,7 +688,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-html5-report&lt;/artifactId&gt;
-   &lt;version&gt;0.12.1&lt;/version&gt;
+   &lt;version&gt;0.13.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -700,7 +700,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-html5-report:0.12.1'
+   testCompile 'com.tngtech.jgiven:jgiven-html5-report:0.13.0'
 ...
 }</code></pre>
 </div>
@@ -956,7 +956,8 @@ You can now also define convenient methods in your test class to get cleaner sce
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">task jgivenReport(type: JavaExec, dependsOn: 'test') {
     main = 'com.tngtech.jgiven.report.ReportGenerator'
-    args '--targetDir=target/jgiven-reports/html',
+    args '--targetDir=build/jgiven-reports/html',
+         '--sourceDir=jgiven-reports',
          '--format=html'
     classpath = configurations.testCompile
 }</code></pre>
@@ -1134,7 +1135,8 @@ You can now also define convenient methods in your test class to get cleaner sce
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">WhenCook</span> <span class="directive">extends</span> Stage&lt;WhenCook&gt; {
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@JGivenStage</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">WhenCook</span> <span class="directive">extends</span> Stage&lt;WhenCook&gt; {
     <span class="annotation">@Autowired</span>
     <span class="annotation">@ScenarioState</span>
     Cook cook;
@@ -1820,7 +1822,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 <h2 id="_tags">Tags</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the link: <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html"><code>@IsTag</code></a> annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.</p>
+<p>Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html"><code>@IsTag</code></a> annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.</p>
 </div>
 <div class="paragraph">
 <p>Let’s say you want to know which scenarios covers the coffee feature. To do so you define a new Java annotation:</p>
@@ -1954,7 +1956,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 <p>When the description of a tag depends on its value you cannot simply set the description on the <code>@IsTag</code> annotation, because it will be the same for all values.</p>
 </div>
 <div class="paragraph">
-<p>Let’s assume you have an <code>@Issue</code> tag and want to have a link to the corresponding GitHub issue in the description. To do so you can provide your own link: <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/TagDescriptionGenerator.html"><code>TagDescriptionGenerator</code></a> implementation that generates a description of a tag depending on its actual value:</p>
+<p>Let’s assume you have an <code>@Issue</code> tag and want to have a link to the corresponding GitHub issue in the description. To do so you can provide your own <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/TagDescriptionGenerator.html"><code>TagDescriptionGenerator</code></a> implementation that generates a description of a tag depending on its actual value:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1970,7 +1972,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="paragraph">
-<p>The new <code>IssueDescriptionGenerator</code> must now be configured for the <code>@Issue</code> annotation using the link: <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html#descriptionGenerator%28%29"><code>descriptionGenerator</code></a> attribute of <code>@IsTag</code>:</p>
+<p>The new <code>IssueDescriptionGenerator</code> must now be configured for the <code>@Issue</code> annotation using the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html#descriptionGenerator%28%29"><code>descriptionGenerator</code></a> attribute of <code>@IsTag</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2205,7 +2207,7 @@ MyExpectedException someExpectedException;
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spring&lt;/artifactId&gt;
-   &lt;version&gt;0.12.1&lt;/version&gt;
+   &lt;version&gt;0.13.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -2217,9 +2219,9 @@ MyExpectedException someExpectedException;
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
         ...
-    testCompile(&quot;com.tngtech.jgiven:jgiven-junit:0.12.1&quot;)
-    testCompile(&quot;com.tngtech.jgiven:jgiven-testng:0.12.1&quot;)
-    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.12.1&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-junit:0.13.0&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-testng:0.13.0&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.13.0&quot;)
         ...
 }</code></pre>
 </div>
@@ -2232,7 +2234,7 @@ MyExpectedException someExpectedException;
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-18 11:34:51 PDT
+Last updated 2016-09-27 22:01:18 CEST
 </div>
 </div>
 </body>
