@@ -578,7 +578,8 @@ public class GivenIngredients extends Stage&lt;GivenIngredients&gt; {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class WhenCook extends Stage&lt;WhenCook&gt; {
+<pre class="highlight"><code class="language-java" data-lang="java">@JGivenStage
+public class WhenCook extends Stage&lt;WhenCook&gt; {
     @Autowired
     @ScenarioState
     Cook cook;
@@ -789,7 +790,7 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-18 11:34:51 PDT
+Last updated 2016-09-27 22:01:18 CEST
 </div>
 </div>
 </body>
