@@ -514,7 +514,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-gradle" data-lang="gradle">task jgivenReport(type: JavaExec, dependsOn: 'test') {
     main = 'com.tngtech.jgiven.report.ReportGenerator'
-    args '--targetDir=target/jgiven-reports/html',
+    args '--targetDir=build/jgiven-reports/html',
+         '--sourceDir=jgiven-reports',
          '--format=html'
     classpath = configurations.testCompile
 }</code></pre>
@@ -538,7 +539,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-18 11:34:51 PDT
+Last updated 2016-12-14 17:21:31 CET
 </div>
 </div>
 </body>
