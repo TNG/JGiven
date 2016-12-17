@@ -113,7 +113,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         assertThat( model.getTagIds() ).hasSize( 1 );
 
         String tagId = model.getTagIds().get( 0 );
-        assertThat( tagId ).isEqualTo( "TestTag-foo, bar, baz" );
+        assertThat( tagId ).isEqualTo( this.getClass().getName() + "$TestTag-foo, bar, baz" );
 
         Tag tag = reportModel.getTagWithId( tagId );
         assertThat( tag ).isNotNull();

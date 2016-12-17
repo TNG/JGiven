@@ -24,23 +24,23 @@ public class TagFile {
             Tag tag = entry.getValue().copy();
             tag.setValue( (String) null );
 
-            if( !tagTypeMap.containsKey( tag.getType() ) ) {
-                tagTypeMap.put( tag.getType(), tag );
+            if( !tagTypeMap.containsKey( tag.getFullType() ) ) {
+                tagTypeMap.put( tag.getFullType(), tag );
             }
 
             TagInstance instance = new TagInstance();
-            instance.tagType = tag.getType();
+            instance.tagType = tag.getFullType();
             instance.value = entry.getValue().getValueString();
 
             // the description might be generated depending on the value, so it must be stored
             // for each tag instance separately
-            if( !ObjectUtil.equals( entry.getValue().getDescription(), tagTypeMap.get( tag.getType() ).getDescription() ) ) {
+            if( !ObjectUtil.equals( entry.getValue().getDescription(), tagTypeMap.get( tag.getFullType() ).getDescription() ) ) {
                 instance.description = entry.getValue().getDescription();
             }
 
             // the href might be generated depending on the value, so it must be stored
             // for each tag instance separately
-            if( !ObjectUtil.equals( entry.getValue().getHref(), tagTypeMap.get( tag.getType() ).getHref() ) ) {
+            if( !ObjectUtil.equals( entry.getValue().getHref(), tagTypeMap.get( tag.getFullType() ).getHref() ) ) {
                 instance.href = entry.getValue().getHref();
             }
             tags.put( entry.getKey(), instance );

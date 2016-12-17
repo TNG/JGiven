@@ -221,6 +221,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF scenario_$_has_tag_$_with_value_$( int i, String name, String value ) {
         latestTag = new Tag( name, value ).setPrependType( true );
+        latestTag.setType( name );
         reportModel.getScenarios().get( i - 1 ).addTag( latestTag );
         reportModel.addTag( latestTag );
         return self();

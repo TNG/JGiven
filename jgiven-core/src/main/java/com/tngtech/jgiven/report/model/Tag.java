@@ -12,9 +12,14 @@ import java.util.List;
  */
 public class Tag {
     /**
-     * The type of the annotation of the tag
+     * The full type of the annotation of the tag
      */
-    private final String type;
+    private final String fullType;
+
+    /**
+     * The simple type of the annotation of the tag
+     */
+    private String type;
 
     /**
      * An optional name of the tag. If not set, the type is the name
@@ -75,17 +80,17 @@ public class Tag {
      */
     private Boolean hideInNav;
 
-    public Tag( String type ) {
-        this.type = type;
+    public Tag( String fullType ) {
+        this.fullType = fullType;
     }
 
-    public Tag( String type, Object value ) {
-        this( type );
+    public Tag( String fullType, Object value ) {
+        this( fullType );
         this.value = value;
     }
 
-    public Tag( String type, String name, Object value ) {
-        this( type, value );
+    public Tag( String fullType, String name, Object value ) {
+        this( fullType, value );
         this.name = name;
     }
 
@@ -135,6 +140,14 @@ public class Tag {
 
     public String getStyle() {
         return style;
+    }
+
+    public void setType( String type ) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getHref() {
@@ -194,14 +207,14 @@ public class Tag {
 
     public String toIdString() {
         if( value != null ) {
-            return type + "-" + getValueString();
+            return fullType + "-" + getValueString();
         }
-        return type;
+        return fullType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getType(), getName(), value );
+        return Objects.hashCode( getFullType(), getName(), value );
     }
 
     @Override
@@ -216,7 +229,7 @@ public class Tag {
             return false;
         }
         Tag other = (Tag) obj;
-        return Objects.equal( getType(), other.getType() )
+        return Objects.equal( getFullType(), other.getFullType() )
                 && Objects.equal( getName(), other.getName() )
                 && Objects.equal( value, other.value );
     }
@@ -242,8 +255,8 @@ public class Tag {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public String getFullType() {
+        return fullType;
     }
 
     public boolean getShownInNavigation() {
@@ -264,7 +277,8 @@ public class Tag {
     }
 
     public Tag copy() {
-        Tag tag = new Tag( type, name, value );
+        Tag tag = new Tag( fullType, name, value );
+        tag.type = this.type;
         tag.cssClass = this.cssClass;
         tag.color = this.color;
         tag.style = this.style;
