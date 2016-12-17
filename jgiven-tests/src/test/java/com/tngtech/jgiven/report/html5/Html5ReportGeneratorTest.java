@@ -2,6 +2,7 @@ package com.tngtech.jgiven.report.html5;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
 
 import javax.xml.bind.DatatypeConverter;
 
@@ -83,7 +84,7 @@ public class Html5ReportGeneratorTest extends
 
         when().the_HTML_Report_Generator_is_executed();
 
-        String folder = "data/attachments/Test".replaceAll("/", File.separator);
+        String folder = "data/attachments/Test".replaceAll("/", Matcher.quoteReplacement(File.separator));
         then().a_file_$_exists_in_folder_$("jsonfile.json", folder)
                 .with().content(JSON_SAMPLE)
                 .and().a_file_$_exists_in_folder_$("pngfile.png", folder)
