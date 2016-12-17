@@ -950,17 +950,31 @@ You can now also define convenient methods in your test class to get cleaner sce
 <div class="sect3">
 <h4 id="_gradle">Gradle</h4>
 <div class="paragraph">
-<p>Currently no Gradle plugin exists for JGiven (feel free to contribute one!). However, you can use the JavaExec task instead:</p>
+<p>Add the following plugins section to your <code>build.gradle</code> file or extend the one you have already accordingly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="gradle">task jgivenReport(type: JavaExec, dependsOn: 'test') {
-    main = 'com.tngtech.jgiven.report.ReportGenerator'
-    args '--targetDir=build/jgiven-reports/html',
-         '--sourceDir=jgiven-reports',
-         '--format=html'
-    classpath = configurations.testCompile
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">plugins {
+    id &quot;com.tngtech.jgiven.gradle-plugin&quot; version &quot;{ siteversion }&quot;
 }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively you can configure the plugin as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath &quot;com.tngtech.jgiven:jgiven-gradle-plugin:{ siteversion }&quot;
+    }
+}
+
+apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -968,11 +982,15 @@ You can now also define convenient methods in your test class to get cleaner sce
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="bash">$ gradle jgivenReport</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="bash">$ gradle test jgivenTestReport</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>HTML reports are then generated into the <code>target/jgiven-reports/html</code> directory.</p>
+<p>HTML reports are then generated into the <code>build/reports/jgiven/test/html/</code> directory.</p>
+</div>
+<div class="paragraph">
+<p>For additional information about the Gradle plugin refer to
+<a href="https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin" class="bare">https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin</a></p>
 </div>
 </div>
 </div>
@@ -2234,7 +2252,7 @@ MyExpectedException someExpectedException;
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-27 22:01:18 CEST
+Last updated 2016-12-16 20:35:31 CET
 </div>
 </div>
 </body>
