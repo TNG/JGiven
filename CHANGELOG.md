@@ -21,6 +21,8 @@ If you had a custom Spring configuration for JGiven you have to change the follo
 
 ## New Features
 
+* Tags with the same name, but different packages are now correctly distinguished [#242](https://github.com/TNG/JGiven/pull/242) (thanks to ahus1)
+
 ### Experimental Android Support
 
 There is a new experimental module called `jgiven-android`, which enables JGiven support for tests executed on the device or simulator.
