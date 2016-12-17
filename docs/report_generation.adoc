@@ -46,7 +46,7 @@ For Maven there exists a plugin that can be used as follows:
     <plugin>
       <groupId>com.tngtech.jgiven</groupId>
       <artifactId>jgiven-maven-plugin</artifactId>
-      <version>{ siteversion }</version>
+      <version>{version}</version>
       <executions>
         <execution>
           <goals>
@@ -73,23 +73,40 @@ HTML reports are then generated into the `target/jgiven-reports/html` directory.
 
 ==== Gradle
 
-Currently no Gradle plugin exists for JGiven (feel free to contribute one!). However, you can use the JavaExec task instead:
+Add the following plugins section to your `build.gradle` file or extend the one you have already accordingly:
 
 [source,gradle]
 ----
-task jgivenReport(type: JavaExec, dependsOn: 'test') {
-    main = 'com.tngtech.jgiven.report.ReportGenerator'
-    args '--targetDir=build/jgiven-reports/html',
-         '--sourceDir=jgiven-reports',
-         '--format=html'
-    classpath = configurations.testCompile
+plugins {
+    id "com.tngtech.jgiven.gradle-plugin" version "{version}"
 }
 ----
+
+Alternatively you can configure the plugin as follows:
+
+[source,gradle]
+----
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.tngtech.jgiven:jgiven-gradle-plugin:{version}"
+    }
+}
+
+apply plugin: "com.tngtech.jgiven.gradle-plugin"
+----
+
 Now run:
 
 [source,bash]
 ----
-$ gradle jgivenReport
+$ gradle test jgivenTestReport
 ----
 
-HTML reports are then generated into the `target/jgiven-reports/html` directory.
+HTML reports are then generated into the `build/reports/jgiven/test/html/` directory.
+
+For additional information about the Gradle plugin refer to 
+https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin
