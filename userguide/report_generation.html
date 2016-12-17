@@ -508,17 +508,31 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="_gradle">Gradle</h4>
 <div class="paragraph">
-<p>Currently no Gradle plugin exists for JGiven (feel free to contribute one!). However, you can use the JavaExec task instead:</p>
+<p>Add the following plugins section to your <code>build.gradle</code> file or extend the one you have already accordingly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">task jgivenReport(type: JavaExec, dependsOn: 'test') {
-    main = 'com.tngtech.jgiven.report.ReportGenerator'
-    args '--targetDir=build/jgiven-reports/html',
-         '--sourceDir=jgiven-reports',
-         '--format=html'
-    classpath = configurations.testCompile
+<pre class="highlight"><code class="language-gradle" data-lang="gradle">plugins {
+    id "com.tngtech.jgiven.gradle-plugin" version "{ siteversion }"
 }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively you can configure the plugin as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-gradle" data-lang="gradle">buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.tngtech.jgiven:jgiven-gradle-plugin:{ siteversion }"
+    }
+}
+
+apply plugin: "com.tngtech.jgiven.gradle-plugin"</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -526,11 +540,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ gradle jgivenReport</code></pre>
+<pre class="highlight"><code class="language-bash" data-lang="bash">$ gradle test jgivenTestReport</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>HTML reports are then generated into the <code>target/jgiven-reports/html</code> directory.</p>
+<p>HTML reports are then generated into the <code>build/reports/jgiven/test/html/</code> directory.</p>
+</div>
+<div class="paragraph">
+<p>For additional information about the Gradle plugin refer to
+<a href="https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin" class="bare">https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin</a></p>
 </div>
 </div>
 </div>
@@ -539,7 +557,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-14 17:21:31 CET
+Last updated 2016-12-17 10:05:58 CET
 </div>
 </div>
 </body>
