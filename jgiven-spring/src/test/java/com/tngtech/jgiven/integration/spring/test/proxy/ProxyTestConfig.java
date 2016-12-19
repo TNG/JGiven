@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Import;
 @EnableJGiven
 @ComponentScan( basePackages = "com.tngtech.jgiven.integration.spring.test.proxy" )
 @Import(TestAspect.class)
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(proxyTargetClass=true)
 public class ProxyTestConfig {
 }

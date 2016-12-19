@@ -18,7 +18,6 @@ public class SpringProxyTest extends SpringRuleScenarioTest<GivenTestStageWithAs
     private ApplicationContext applicationContext;
 
     @Test
-    @Ignore("Reproduces Issue #254, ignored until fixed")
     public void with_spring_proxies_autowired_should_also_work() throws Exception {
         given().should_say_hello();
 
