@@ -21,6 +21,7 @@ plugins {
 
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'org.asciidoctor.convert'
+apply plugin: 'project-report'
 
 description = 'JGiven - BDD in plain Java'
 
@@ -308,6 +309,13 @@ configure(subprojects.findAll {!it.name.contains("android")}) {
 
     javadoc.onlyIf {
         JavaVersion.current().isJava8Compatible()
+    }
+
+    idea {
+        module {
+            downloadSources = true
+            downloadJavadoc = true
+        }
     }
 }
 
