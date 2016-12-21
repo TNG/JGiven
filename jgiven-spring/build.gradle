@@ -5,8 +5,11 @@ dependencies {
     compileOnly(group: 'org.springframework', name: 'spring-context', version: springVersion)
     compileOnly(group: 'org.springframework', name: 'spring-test', version: springVersion)
     compile project(':jgiven-junit')
+    testCompile(group: 'org.springframework', name: 'spring-tx', version: springVersion)
     testCompile(group: 'org.springframework', name: 'spring-context', version: springVersion)
     testCompile(group: 'org.springframework', name: 'spring-test', version: springVersion)
+    testCompile(group: 'org.springframework', name: 'spring-jdbc', version: springVersion)
+    testCompile(group: 'org.hsqldb', name: 'hsqldb', version: '2.3.2')
     testCompile(group: 'org.aspectj', name: 'aspectjrt', version: '1.6.9')
     testCompile(group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.6')
 }
