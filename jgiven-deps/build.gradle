@@ -73,6 +73,16 @@ artifacts {
 
 idea {
     module {
-        scopes.PROVIDED.plus += [ configurations.shadow ]
+        scopes.COMPILE.plus += [configurations.shadow]
+
+        iml {
+            whenMerged { module ->
+                def dep = new org.gradle.plugins.ide.idea.model.ModuleLibrary(
+                        [new org.gradle.plugins.ide.idea.model.Path('file://$MODULE_DIR$/build/libs/jgiven-deps.jar')],
+                        [], [], [], 'COMPILE')
+                dep.exported = true
+                module.dependencies.add(dep)
+            }
+        }
     }
 }
