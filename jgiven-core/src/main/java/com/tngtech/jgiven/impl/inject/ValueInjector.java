@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.impl.inject;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +8,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState.Resolution;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
+import com.tngtech.jgiven.exception.JGivenMissingRequiredScenarioStateException;
 import com.tngtech.jgiven.impl.util.FieldCache;
 
 /**
@@ -42,41 +43,45 @@ public class ValueInjector {
 
         Map<Object, Field> resolvedFields = Maps.newHashMap();
 
-        for( Field field : getScenarioFields( object ) ) {
-            field.setAccessible( true );
-            Resolution resolution = getResolution( field );
+        for( ScenarioStateField field : getScenarioFields( object ) ) {
+            field.getField().setAccessible( true );
+            Resolution resolution = field.getResolution();
             Object key = null;
             if( resolution == Resolution.NAME ) {
-                key = field.getName();
+                key = field.getField().getName();
             } else {
-                key = field.getType();
+                key = field.getField().getType();
             }
             if( resolvedFields.containsKey( key ) ) {
                 Field existingField = resolvedFields.get( key );
                 throw new AmbiguousResolutionException( "Ambiguous fields with same " + resolution + " detected. Field 1: " +
-                        existingField + ", field 2: " + field );
+                        existingField + ", field 2: " + field.getField() );
             }
-            resolvedFields.put( key, field );
+            resolvedFields.put( key, field.getField() );
         }
 
         validatedClasses.put( object.getClass(), Boolean.TRUE );
     }
 
-    private List<Field> getScenarioFields( Object object ) {
-        return FieldCache.get( object.getClass() ).getFieldsWithAnnotation( ScenarioState.class, ProvidedScenarioState.class,
-            ExpectedScenarioState.class );
+    private List<ScenarioStateField> getScenarioFields( Object object ) {
+        @SuppressWarnings( "unchecked" )
+        List<Field> scenarioFields = FieldCache
+            .get( object.getClass() )
+            .getFieldsWithAnnotation( ScenarioState.class, ProvidedScenarioState.class, ExpectedScenarioState.class );
+
+        return Lists.transform( scenarioFields, ScenarioStateField.fromField );
     }
 
     @SuppressWarnings( "unchecked" )
     public void readValues( Object object ) {
         validateFields( object );
-        for( Field field : getScenarioFields( object ) ) {
+        for( ScenarioStateField field : getScenarioFields( object ) ) {
             try {
-                Object value = field.get( object );
+                Object value = field.getField().get( object );
                 updateValue( field, value );
-                log.debug( "Reading value {} from field {}", value, field );
+                log.debug( "Reading value {} from field {}", value, field.getField() );
             } catch( IllegalAccessException e ) {
-                throw new RuntimeException( "Error while reading field " + field, e );
+                throw new RuntimeException( "Error while reading field " + field.getField(), e );
             }
         }
     }
@@ -84,15 +89,19 @@ public class ValueInjector {
     @SuppressWarnings( "unchecked" )
     public void updateValues( Object object ) {
         validateFields( object );
-        for( Field field : getScenarioFields( object ) ) {
-            try {
-                Object value = getValue( field );
-                if( value != null ) {
-                    field.set( object, value );
-                    log.debug( "Setting field {} to value {}", field, value );
+        for( ScenarioStateField field : getScenarioFields( object ) ) {
+            Object value = getValue( field );
+
+            if( value != null ) {
+                try {
+                    field.getField().set( object, value );
+                } catch( IllegalAccessException e ) {
+                    throw new RuntimeException( "Error while updating field " + field.getField(), e );
                 }
-            } catch( IllegalAccessException e ) {
-                throw new RuntimeException( "Error while updating field " + field, e );
+
+                log.debug( "Setting field {} to value {}", field.getField(), value );
+            } else if( field.isRequired() ) {
+                throw new JGivenMissingRequiredScenarioStateException( field.getField() );
             }
         }
     }
@@ -105,55 +114,20 @@ public class ValueInjector {
         state.updateValueByName( name, value );
     }
 
-    private void updateValue( Field field, Object value ) {
-        Resolution resolution = getResolution( field );
-        Class<?> type = field.getType();
-        if( resolution == Resolution.NAME ) {
-            String name = field.getName();
-            state.updateValueByName( name, value );
+    private void updateValue( ScenarioStateField field, Object value ) {
+        if( field.getResolution() == Resolution.NAME ) {
+            state.updateValueByName( field.getField().getName(), value );
         } else {
-            state.updateValueByType( type, value );
+            state.updateValueByType( field.getField().getType(), value );
         }
     }
 
-    private Object getValue( Field field ) {
-        Resolution resolution = getResolution( field );
-        Class<?> type = field.getType();
-        if( resolution == Resolution.NAME ) {
-            String name = field.getName();
-            return state.getValueByName( name );
+    private Object getValue( ScenarioStateField field ) {
+        if( field.getResolution() == Resolution.NAME ) {
+            return state.getValueByName( field.getField().getName() );
         }
-        return state.getValueByType( type );
-    }
 
-    private Resolution getResolution( Field field ) {
-        Resolution resolution = getDeclaredResolution( field );
-        if( resolution == Resolution.AUTO ) {
-            return typeIsTooGeneric( field.getType() ) ? Resolution.NAME : Resolution.TYPE;
-        }
-        return resolution;
-    }
-
-    private Resolution getDeclaredResolution( Field field ) {
-        for( Annotation annotation : field.getAnnotations() ) {
-            if( annotation instanceof ScenarioState ) {
-                return ( (ScenarioState) annotation ).resolution();
-            }
-            if( annotation instanceof ProvidedScenarioState ) {
-                return ( (ProvidedScenarioState) annotation ).resolution();
-            }
-            if( annotation instanceof ExpectedScenarioState ) {
-                return ( (ExpectedScenarioState) annotation ).resolution();
-            }
-        }
-        throw new IllegalArgumentException( "Field " + field + " has no valid annotation" );
-    }
-
-    private boolean typeIsTooGeneric( Class<?> type ) {
-        return type.isPrimitive()
-                || type.getName().startsWith( "java.lang" )
-                || type.getName().startsWith( "java.io" )
-                || type.getName().startsWith( "java.util" );
+        return state.getValueByType( field.getField().getType() );
     }
 
 }

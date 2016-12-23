@@ -18,4 +18,12 @@ import com.tngtech.jgiven.annotation.ScenarioState.Resolution;
 @Target( ElementType.FIELD )
 public @interface ExpectedScenarioState {
     Resolution resolution() default Resolution.AUTO;
+
+    /**
+     * Marks this state as required for the stage. If in this case the state isn't provided, a
+     * {@code JGivenMissingRequiredScenarioStateException} will be thrown.
+     *
+     * @since 0.14.0
+     */
+    boolean required() default false;
 }
