@@ -1,4 +1,4 @@
-== Stages and State Injection
+== Stages and State Sharing
 :sourcedir: ../jgiven-examples/src/test/java/com/tngtech/jgiven/examples
 
 
@@ -81,12 +81,18 @@ public SELF comma() {
 }
 ----
 
-=== State Injection
+=== State Sharing
 
-Stages share state by using injection. This works by annotating the fields with a special annotation `@ScenarioState`. The values of these fields are shared between all stages that have the same field.
-
+Very often it is necessary to share state between steps.
+As long as the steps are implemented in the same Stage class you can just use the fields of the Stage class.
+But what can you do if your steps are defined in different Stage classes?
+In this case you just define the same field in both Stage classes.
+Once in the Stage class that _provides_ the value of the field and once in the Stage class that _needs_ the value
+of the field.
+Both fields also have to be annotated with the special annotation `@ScenarioState` to tell JGiven that
+this field will be used for state sharing between stages.
+The values of these fields are shared between all stages that have the same field.
 For example, to be able to access the value of the ingredients field of the GivenIngredients stage in the `WhenCook` stage one has to annotate that field accordingly:
-
 
 
 [source,java]
@@ -102,17 +108,27 @@ include::{sourcedir}/pancakes/test/steps/GivenIngredients.java[]
 include::{sourcedir}/pancakes/test/steps/WhenCook.java[tags=state]
 ----
 
-Instead of the `@ScenarioState` annotation one can also use `@ExpectedScenarioState` and `@ProvidedScenarioState` to indicate whether the state is expected by the stage or provided by the stage. These function in exactly the same way as `@ScenarioState` but are more descriptive about what the code is doing.
+Instead of the `@ScenarioState` annotation one can also use `@ExpectedScenarioState` and `@ProvidedScenarioState` to indicate whether the state is expected by the stage or provided by the stage.
+These function in exactly the same way as `@ScenarioState` but are more descriptive about what the code is doing.
 
-=== Type vs. Name Resolution
+==== Type vs. Name Resolution
 
-Scenario state fields are by default resolved by its type. That is, you can only have one field of the same type as a scenario field. Exceptions are types from the packages `java.lang.\*` and `java.util.*` which are resolved by the name of the field.
-
-==== Change The Resolution Strategy
+Scenario state fields are by default resolved by its type.
+That is, you can only have one field of the same type as a scenario field.
+Exceptions are types from the packages `java.lang.\*` and `java.util.*` which are resolved by the name of the field.
 
 To change the resolution strategy you can use the `resolution` parameter of the `@ScenarioState` annotations. For example, to use name instead of type resolution you can write
 
 `@ScenarioState(resolution = Resolution.NAME)`.
+
+==== Value Validation
+By default, JGiven will not validate whether the value of a field of a stage that expects a value,
+was actually provided by a previous stage.
+The reason for this is that typically not all fields are always required for all steps.
+There might be scenarios where only a part of the fields are really necessary for the steps of the scenario.
+However, sometimes you know that a certain field value is needed for *all* steps of a stage.
+In this case you can set the `required` attribute of the `@ScenarioState` or `@ExpectedScenarioState` annotation to `true`.
+JGiven will then validate that a previous stage had provided the value and will throw an exception otherwise.
 
 === Having More Than 3 Stages
 
