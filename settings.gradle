@@ -9,7 +9,7 @@ include ':jgiven-spring'
 include ':jgiven-html5-report'
 
 def release = System.env.RELEASE == "true"
-def android = System.env.ANDROUD == "true"
+def android = System.env.ANDROID == "true"
 
 // At least Java 7 is required for the tests as Selenium requires it
 // Still the other projects should be built and tested with Java 6
