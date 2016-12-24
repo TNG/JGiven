@@ -517,89 +517,94 @@ table.CodeRay td.code>pre{padding:0}
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_installation">Installation</a>
+<li><a href="#_installation">1. Installation</a>
 <ul class="sectlevel2">
-<li><a href="#_junit">JUnit</a></li>
-<li><a href="#_testng">TestNG</a></li>
-<li><a href="#_html5_report">HTML5 Report</a></li>
-<li><a href="#_java_compiler_note">Java Compiler Note</a></li>
+<li><a href="#_junit">1.1. JUnit</a></li>
+<li><a href="#_testng">1.2. TestNG</a></li>
+<li><a href="#_html5_report">1.3. HTML5 Report</a></li>
+<li><a href="#_java_compiler_note">1.4. Java Compiler Note</a></li>
 </ul>
 </li>
-<li><a href="#_getting_started">Getting Started</a>
+<li><a href="#_getting_started">2. Getting Started</a>
 <ul class="sectlevel2">
-<li><a href="#_create_a_junit_test_class">Create a JUnit test class</a></li>
-<li><a href="#_create_given_when_and_then_classes">Create Given, When, and Then classes</a></li>
-<li><a href="#_write_your_first_scenario">Write your first scenario</a></li>
-<li><a href="#_execute_your_scenario">Execute your scenario</a></li>
-<li><a href="#_using_junit_rules_directly_instead_of_deriving_from_scenariotest">Using JUnit Rules directly instead of deriving from ScenarioTest</a></li>
+<li><a href="#_create_a_junit_test_class">2.1. Create a JUnit test class</a></li>
+<li><a href="#_create_given_when_and_then_classes">2.2. Create Given, When, and Then classes</a></li>
+<li><a href="#_write_your_first_scenario">2.3. Write your first scenario</a></li>
+<li><a href="#_execute_your_scenario">2.4. Execute your scenario</a></li>
+<li><a href="#_using_junit_rules_directly_instead_of_deriving_from_scenariotest">2.5. Using JUnit Rules directly instead of deriving from ScenarioTest</a></li>
 </ul>
 </li>
-<li><a href="#_report_generation">Report Generation</a>
+<li><a href="#_report_generation">3. Report Generation</a>
 <ul class="sectlevel2">
-<li><a href="#_plain_text_reports">Plain Text Reports</a></li>
-<li><a href="#_json_reports">JSON Reports</a></li>
-<li><a href="#_html_report">HTML Report</a></li>
+<li><a href="#_plain_text_reports">3.1. Plain Text Reports</a></li>
+<li><a href="#_json_reports">3.2. JSON Reports</a></li>
+<li><a href="#_html_report">3.3. HTML Report</a></li>
 </ul>
 </li>
-<li><a href="#_stages_and_state_injection">Stages and State Injection</a>
+<li><a href="#_stages_and_state_sharing">4. Stages and State Sharing</a>
 <ul class="sectlevel2">
-<li><a href="#_step_methods">Step Methods</a></li>
-<li><a href="#_overriding_the_default_reporting">Overriding the Default Reporting</a></li>
-<li><a href="#_completely_hide_steps">Completely Hide Steps</a></li>
-<li><a href="#_extended_descriptions">Extended Descriptions</a></li>
-<li><a href="#_intro_words">Intro Words</a></li>
-<li><a href="#_state_injection">State Injection</a></li>
-<li><a href="#_type_vs_name_resolution">Type vs. Name Resolution</a></li>
-<li><a href="#_having_more_than_3_stages">Having More Than 3 Stages</a></li>
-<li><a href="#_subclassing_of_stages">Subclassing of Stages</a></li>
+<li><a href="#_step_methods">4.1. Step Methods</a></li>
+<li><a href="#_overriding_the_default_reporting">4.2. Overriding the Default Reporting</a></li>
+<li><a href="#_completely_hide_steps">4.3. Completely Hide Steps</a></li>
+<li><a href="#_extended_descriptions">4.4. Extended Descriptions</a></li>
+<li><a href="#_intro_words">4.5. Intro Words</a></li>
+<li><a href="#_state_sharing">4.6. State Sharing</a></li>
+<li><a href="#_having_more_than_3_stages">4.7. Having More Than 3 Stages</a></li>
+<li><a href="#_subclassing_of_stages">4.8. Subclassing of Stages</a></li>
 </ul>
 </li>
-<li><a href="#_life_cycle_methods">Life-Cycle Methods</a>
+<li><a href="#_life_cycle_methods">5. Life-Cycle Methods</a>
 <ul class="sectlevel2">
-<li><a href="#_scenario_life_cycle">Scenario Life-Cycle</a></li>
-<li><a href="#__beforescenario_afterscenario">@BeforeScenario / @AfterScenario</a></li>
-<li><a href="#__scenariorule">@ScenarioRule</a></li>
-<li><a href="#__beforestage_afterstage">@BeforeStage / @AfterStage</a></li>
+<li><a href="#_scenario_life_cycle">5.1. Scenario Life-Cycle</a></li>
+<li><a href="#__beforescenario_afterscenario">5.2. @BeforeScenario / @AfterScenario</a></li>
+<li><a href="#__scenariorule">5.3. @ScenarioRule</a></li>
+<li><a href="#__beforestage_afterstage">5.4. @BeforeStage / @AfterStage</a></li>
 </ul>
 </li>
-<li><a href="#_parameterized_steps">Parameterized Steps</a>
+<li><a href="#_parameterized_steps">6. Parameterized Steps</a>
 <ul class="sectlevel2">
-<li><a href="#_parameters_within_a_sentence">Parameters within a sentence</a></li>
-<li><a href="#_parameter_formatting">Parameter Formatting</a></li>
-<li><a href="#_the_format_annotation">The @Format annotation</a></li>
-<li><a href="#_custom_formatting_annotations">Custom formatting annotations</a></li>
-<li><a href="#_tables_as_parameters">Tables as Parameters</a></li>
+<li><a href="#_parameters_within_a_sentence">6.1. Parameters within a sentence</a></li>
+<li><a href="#_parameter_formatting">6.2. Parameter Formatting</a></li>
+<li><a href="#_the_format_annotation">6.3. The @Format annotation</a></li>
+<li><a href="#_custom_formatting_annotations">6.4. Custom formatting annotations</a></li>
+<li><a href="#_tables_as_parameters">6.5. Tables as Parameters</a></li>
 </ul>
 </li>
-<li><a href="#_parameterized_scenarios">Parameterized Scenarios</a>
+<li><a href="#_parameterized_scenarios">7. Parameterized Scenarios</a>
 <ul class="sectlevel2">
-<li><a href="#_junit_2">JUnit</a></li>
-<li><a href="#_junit_dataprovider_runner">JUnit Dataprovider Runner</a></li>
+<li><a href="#_junit_2">7.1. JUnit</a></li>
+<li><a href="#_junit_dataprovider_runner">7.2. JUnit Dataprovider Runner</a></li>
 </ul>
 </li>
-<li><a href="#_tags">Tags</a>
+<li><a href="#_tags">8. Tags</a>
 <ul class="sectlevel2">
-<li><a href="#_descriptions">Descriptions</a></li>
-<li><a href="#_overriding_the_name">Overriding the Name</a></li>
-<li><a href="#_values">Values</a></li>
-<li><a href="#_overriding_the_value">Overriding the Value</a></li>
-<li><a href="#_hierarchical_tags">Hierarchical Tags</a></li>
+<li><a href="#_descriptions">8.1. Descriptions</a></li>
+<li><a href="#_overriding_the_name">8.2. Overriding the Name</a></li>
+<li><a href="#_values">8.3. Values</a></li>
+<li><a href="#_overriding_the_value">8.4. Overriding the Value</a></li>
+<li><a href="#_hierarchical_tags">8.5. Hierarchical Tags</a></li>
 </ul>
 </li>
-<li><a href="#_attachments">Attachments</a>
+<li><a href="#_attachments">9. Attachments</a>
 <ul class="sectlevel2">
-<li><a href="#_creating_attachments">Creating Attachments</a></li>
-<li><a href="#_adding_attachments_to_steps">Adding Attachments to Steps</a></li>
-<li><a href="#_example_taking_screenshots_with_selenium_webdriver">Example: Taking Screenshots with Selenium WebDriver</a></li>
+<li><a href="#_creating_attachments">9.1. Creating Attachments</a></li>
+<li><a href="#_adding_attachments_to_steps">9.2. Adding Attachments to Steps</a></li>
+<li><a href="#_example_taking_screenshots_with_selenium_webdriver">9.3. Example: Taking Screenshots with Selenium WebDriver</a></li>
 </ul>
 </li>
-<li><a href="#_exception_handling">Exception Handling</a>
+<li><a href="#_exception_handling">10. Exception Handling</a>
 <ul class="sectlevel2">
-<li><a href="#_expecting_exceptions">Expecting Exceptions</a></li>
-<li><a href="#_a_better_approach">A better approach</a></li>
+<li><a href="#_expecting_exceptions">10.1. Expecting Exceptions</a></li>
+<li><a href="#_a_better_approach">10.2. A better approach</a></li>
 </ul>
 </li>
-<li><a href="#_spring">Spring</a></li>
+<li><a href="#_spring">11. Spring</a></li>
+<li><a href="#_android">12. Android</a>
+<ul class="sectlevel2">
+<li><a href="#_testing_on_an_device_or_emulator_experimental">12.1. Testing on an Device or Emulator (EXPERIMENTAL)</a></li>
+<li><a href="#_example_project">12.2. Example Project</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -607,38 +612,38 @@ table.CodeRay td.code>pre{padding:0}
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>0.13.0</p>
+<p>0.14.0-RC1</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_installation">Installation</h2>
+<h2 id="_installation"><a class="anchor" href="#_installation"></a>1. Installation</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_junit">JUnit</h3>
+<h3 id="_junit"><a class="anchor" href="#_junit"></a>1.1. JUnit</h3>
 <div class="paragraph">
 <p>If you are using JUnit, you must depend on the <code>jgiven-junit</code> artifact. Note that <code>jgiven-junit</code> does not directly depend on JUnit, thus you also must have a dependency to JUnit itself. JGiven requires at least JUnit v4.9, while the recommended version is v4.11.</p>
 </div>
 <div class="sect3">
-<h4 id="_maven_dependency">Maven Dependency</h4>
+<h4 id="_maven_dependency"><a class="anchor" href="#_maven_dependency"></a>1.1.1. Maven Dependency</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit&lt;/artifactId&gt;
-   &lt;version&gt;0.13.0&lt;/version&gt;
+   &lt;version&gt;0.14.0-RC1&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_gradle_dependency">Gradle Dependency</h4>
+<h4 id="_gradle_dependency"><a class="anchor" href="#_gradle_dependency"></a>1.1.2. Gradle Dependency</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-junit:0.13.0'
+   testCompile 'com.tngtech.jgiven:jgiven-junit:0.14.0-RC1'
 ...
 }</code></pre>
 </div>
@@ -646,30 +651,30 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_testng">TestNG</h3>
+<h3 id="_testng"><a class="anchor" href="#_testng"></a>1.2. TestNG</h3>
 <div class="paragraph">
 <p>If you are using TestNG, you must depend on the <code>jgiven-testng</code> artifact. Note that <code>jgiven-testng</code> does not directly depend on TestNG, thus you also must have a dependency to TestNG itself.</p>
 </div>
 <div class="sect3">
-<h4 id="_maven_dependency_2">Maven Dependency</h4>
+<h4 id="_maven_dependency_2"><a class="anchor" href="#_maven_dependency_2"></a>1.2.1. Maven Dependency</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-testng&lt;/artifactId&gt;
-   &lt;version&gt;0.13.0&lt;/version&gt;
+   &lt;version&gt;0.14.0-RC1&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_gradle_dependency_2">Gradle Dependency</h4>
+<h4 id="_gradle_dependency_2"><a class="anchor" href="#_gradle_dependency_2"></a>1.2.2. Gradle Dependency</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-testng:0.13.0'
+   testCompile 'com.tngtech.jgiven:jgiven-testng:0.14.0-RC1'
 ...
 }</code></pre>
 </div>
@@ -677,30 +682,30 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_html5_report">HTML5 Report</h3>
+<h3 id="_html5_report"><a class="anchor" href="#_html5_report"></a>1.3. HTML5 Report</h3>
 <div class="paragraph">
 <p>In order to generate an HTML report, you have to add the following dependency in addition to the above dependency.</p>
 </div>
 <div class="sect3">
-<h4 id="_maven_dependency_3">Maven Dependency</h4>
+<h4 id="_maven_dependency_3"><a class="anchor" href="#_maven_dependency_3"></a>1.3.1. Maven Dependency</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-html5-report&lt;/artifactId&gt;
-   &lt;version&gt;0.13.0&lt;/version&gt;
+   &lt;version&gt;0.14.0-RC1&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_gradle_dependency_3">Gradle Dependency</h4>
+<h4 id="_gradle_dependency_3"><a class="anchor" href="#_gradle_dependency_3"></a>1.3.2. Gradle Dependency</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
 ...
-   testCompile 'com.tngtech.jgiven:jgiven-html5-report:0.13.0'
+   testCompile 'com.tngtech.jgiven:jgiven-html5-report:0.14.0-RC1'
 ...
 }</code></pre>
 </div>
@@ -708,7 +713,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_java_compiler_note">Java Compiler Note</h3>
+<h3 id="_java_compiler_note"><a class="anchor" href="#_java_compiler_note"></a>1.4. Java Compiler Note</h3>
 <div class="paragraph">
 <p>Note that you should compile your test classes with all debugging information (javac -g). Otherwise JGiven cannot obtain the parameter names of step methods and will generate names of the form argX instead.</p>
 </div>
@@ -716,13 +721,13 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect1">
-<h2 id="_getting_started">Getting Started</h2>
+<h2 id="_getting_started"><a class="anchor" href="#_getting_started"></a>2. Getting Started</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>JGiven can be used together with JUnit or TestNG, here we assume you are using JUnit.</p>
 </div>
 <div class="sect2">
-<h3 id="_create_a_junit_test_class">Create a JUnit test class</h3>
+<h3 id="_create_a_junit_test_class"><a class="anchor" href="#_create_a_junit_test_class"></a>2.1. Create a JUnit test class</h3>
 <div class="paragraph">
 <p>First of all you create a JUnit test class that inherits from <code>com.tngtech.jgiven.junit.ScenarioTest</code>:</p>
 </div>
@@ -740,7 +745,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_create_given_when_and_then_classes">Create Given, When, and Then classes</h3>
+<h3 id="_create_given_when_and_then_classes"><a class="anchor" href="#_create_given_when_and_then_classes"></a>2.2. Create Given, When, and Then classes</h3>
 <div class="paragraph">
 <p>To make your class compile, create the following three classes:</p>
 </div>
@@ -782,7 +787,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_write_your_first_scenario">Write your first scenario</h3>
+<h3 id="_write_your_first_scenario"><a class="anchor" href="#_write_your_first_scenario"></a>2.3. Write your first scenario</h3>
 <div class="paragraph">
 <p>Now you can write your first scenario</p>
 </div>
@@ -805,7 +810,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_execute_your_scenario">Execute your scenario</h3>
+<h3 id="_execute_your_scenario"><a class="anchor" href="#_execute_your_scenario"></a>2.4. Execute your scenario</h3>
 <div class="paragraph">
 <p>The scenario is then executed like any other JUnit test, for example, by using your IDE or Maven:</p>
 </div>
@@ -816,7 +821,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div class="sect2">
-<h3 id="_using_junit_rules_directly_instead_of_deriving_from_scenariotest">Using JUnit Rules directly instead of deriving from ScenarioTest</h3>
+<h3 id="_using_junit_rules_directly_instead_of_deriving_from_scenariotest"><a class="anchor" href="#_using_junit_rules_directly_instead_of_deriving_from_scenariotest"></a>2.5. Using JUnit Rules directly instead of deriving from ScenarioTest</h3>
 <div class="paragraph">
 <p>Sometimes it is not possible to derive your test class from the <code>ScenarioTest</code> class, because you might already have a common base class that you cannot easily modify.
 In that case you can directly use the JUnit Rules of JGiven. Instead of providing your stage classes as type parameters, you inject the stages into the test class with the <code>@ScenarioStage</code> annotation.</p>
@@ -826,10 +831,10 @@ In that case you can directly use the JUnit Rules of JGiven. Instead of providin
 <pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">UsingRulesTest</span> {
 
     <span class="annotation">@ClassRule</span>
-    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> ScenarioReportRule writerRule = <span class="keyword">new</span> ScenarioReportRule();
+    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> JGivenClassRule writerRule = <span class="keyword">new</span> JGivenClassRule();
 
     <span class="annotation">@Rule</span>
-    <span class="directive">public</span> <span class="directive">final</span> ScenarioExecutionRule scenarioRule = <span class="keyword">new</span> ScenarioExecutionRule();
+    <span class="directive">public</span> <span class="directive">final</span> JGivenMethodRule scenarioRule = <span class="keyword">new</span> JGivenMethodRule();
 
     <span class="annotation">@ScenarioStage</span>
     GivenSomeState someState;
@@ -864,10 +869,10 @@ You can now also define convenient methods in your test class to get cleaner sce
 </div>
 </div>
 <div class="sect1">
-<h2 id="_report_generation">Report Generation</h2>
+<h2 id="_report_generation"><a class="anchor" href="#_report_generation"></a>3. Report Generation</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_plain_text_reports">Plain Text Reports</h3>
+<h3 id="_plain_text_reports"><a class="anchor" href="#_plain_text_reports"></a>3.1. Plain Text Reports</h3>
 <div class="paragraph">
 <p>By default JGiven outputs plain text reports to the console when executed. To disable plain text reports set the following Java system property:</p>
 </div>
@@ -878,7 +883,7 @@ You can now also define convenient methods in your test class to get cleaner sce
 </div>
 </div>
 <div class="sect2">
-<h3 id="_json_reports">JSON Reports</h3>
+<h3 id="_json_reports"><a class="anchor" href="#_json_reports"></a>3.2. JSON Reports</h3>
 <div class="paragraph">
 <p>By default JGiven will generate JSON reports into the <code>jgiven-reports/json</code> directory. JGiven tries to autodetect when it is executed by the Maven surefire plugin and in that case generates the reports into <code>target/jgiven-reports/json</code>. To disable JSON report generation set the following Java system property:</p>
 </div>
@@ -892,7 +897,7 @@ You can now also define convenient methods in your test class to get cleaner sce
 </div>
 </div>
 <div class="sect2">
-<h3 id="_html_report">HTML Report</h3>
+<h3 id="_html_report"><a class="anchor" href="#_html_report"></a>3.3. HTML Report</h3>
 <div class="paragraph">
 <p>To generate an HTML report you have to run the JGiven report generator with the <code>html</code> format option. The reporter is part of the jgiven-core module. For the HTML output you also need the <code>jgiven-html5-report</code> dependency. The report generator can be executed on the command line as follows (assuming that the jgiven-core and the jgiven-html5-report JAR and all required dependencies are on the Java CLASSPATH)</p>
 </div>
@@ -908,7 +913,7 @@ You can now also define convenient methods in your test class to get cleaner sce
 <p>To see the HTML report in action you can have a look at the <a href="http://jgiven.org/jgiven-report/html5/">HTML report of JGiven itself</a></p>
 </div>
 <div class="sect3">
-<h4 id="_maven">Maven</h4>
+<h4 id="_maven"><a class="anchor" href="#_maven"></a>3.3.1. Maven</h4>
 <div class="paragraph">
 <p>For Maven there exists a plugin that can be used as follows:</p>
 </div>
@@ -948,7 +953,7 @@ You can now also define convenient methods in your test class to get cleaner sce
 </div>
 </div>
 <div class="sect3">
-<h4 id="_gradle">Gradle</h4>
+<h4 id="_gradle"><a class="anchor" href="#_gradle"></a>3.3.2. Gradle</h4>
 <div class="paragraph">
 <p>Add the following plugins section to your <code>build.gradle</code> file or extend the one you have already accordingly:</p>
 </div>
@@ -997,13 +1002,13 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_stages_and_state_injection">Stages and State Injection</h2>
+<h2 id="_stages_and_state_sharing"><a class="anchor" href="#_stages_and_state_sharing"></a>4. Stages and State Sharing</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>A JGiven scenario consists of multiple stages. Typically there is a stage for each phase of a scenario: a given stage, a when stage and a then stage, however, it is also possible to just use one stage or use arbitrary many stages. A stage is implemented by a stage class that contains methods representing the steps that can be used in the scenario. The big advantage of this modular concept is that stages can be easily reused by different scenarios.</p>
 </div>
 <div class="sect2">
-<h3 id="_step_methods">Step Methods</h3>
+<h3 id="_step_methods"><a class="anchor" href="#_step_methods"></a>4.1. Step Methods</h3>
 <div class="paragraph">
 <p>A stage class contains multiple step methods that can be called in a scenario and that will appear in the report. Every non-private, non-final, non-static method of a stage class can be used as a step method. There are no further requirements. In particular, no annotations are needed. Step methods should return the this reference so that chaining of calls is possible. In addition, a step method should be written in snake_case so that JGiven knows the correct casing of each word of the step.</p>
 </div>
@@ -1026,7 +1031,7 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_overriding_the_default_reporting">Overriding the Default Reporting</h3>
+<h3 id="_overriding_the_default_reporting"><a class="anchor" href="#_overriding_the_default_reporting"></a>4.2. Overriding the Default Reporting</h3>
 <div class="paragraph">
 <p>Sometimes it is necessary to override the default way of the step reporting. For example, if you want to use special characters that are not allowed in Java methods names, such as <code>(</code>, <code>+</code>, or <code>%</code>. You can then use the <code>@As</code> annotation to specify what JGiven should put into the report.</p>
 </div>
@@ -1046,7 +1051,7 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_completely_hide_steps">Completely Hide Steps</h3>
+<h3 id="_completely_hide_steps"><a class="anchor" href="#_completely_hide_steps"></a>4.3. Completely Hide Steps</h3>
 <div class="paragraph">
 <p>Steps can be completely hidden from the report by using the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Hidden.html"><code>@Hidden</code></a> annotation. This is sometimes useful if you need a technical method call within a scenario, which should not appear in the report.</p>
 </div>
@@ -1066,7 +1071,7 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_extended_descriptions">Extended Descriptions</h3>
+<h3 id="_extended_descriptions"><a class="anchor" href="#_extended_descriptions"></a>4.4. Extended Descriptions</h3>
 <div class="paragraph">
 <p>Steps can get an extended description with the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/ExtendedDescription.html"><code>@ExtendedDescription</code></a> annotation. You can use this to give additional information about the step to the reader of the report. In the HTML report this information is shown in a tooltip.</p>
 </div>
@@ -1084,7 +1089,7 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_intro_words">Intro Words</h3>
+<h3 id="_intro_words"><a class="anchor" href="#_intro_words"></a>4.5. Intro Words</h3>
 <div class="paragraph">
 <p>If the predefined introductionary words in the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/Stage.html"><code>Stage</code></a> class are not enough for you and you want to define additional ones you can use the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IntroWord.html"><code>@IntroWord</code></a> annotation on a step method.</p>
 </div>
@@ -1113,12 +1118,18 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_state_injection">State Injection</h3>
+<h3 id="_state_sharing"><a class="anchor" href="#_state_sharing"></a>4.6. State Sharing</h3>
 <div class="paragraph">
-<p>Stages share state by using injection. This works by annotating the fields with a special annotation <code>@ScenarioState</code>. The values of these fields are shared between all stages that have the same field.</p>
-</div>
-<div class="paragraph">
-<p>For example, to be able to access the value of the ingredients field of the GivenIngredients stage in the <code>WhenCook</code> stage one has to annotate that field accordingly:</p>
+<p>Very often it is necessary to share state between steps.
+As long as the steps are implemented in the same Stage class you can just use the fields of the Stage class.
+But what can you do if your steps are defined in different Stage classes?
+In this case you just define the same field in both Stage classes.
+Once in the Stage class that <em>provides</em> the value of the field and once in the Stage class that <em>needs</em> the value
+of the field.
+Both fields also have to be annotated with the special annotation <code>@ScenarioState</code> to tell JGiven that
+this field will be used for state sharing between stages.
+The values of these fields are shared between all stages that have the same field.
+For example, to be able to access the value of the ingredients field of the GivenIngredients stage in the <code>WhenCook</code> stage one has to annotate that field accordingly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1178,16 +1189,16 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Instead of the <code>@ScenarioState</code> annotation one can also use <code>@ExpectedScenarioState</code> and <code>@ProvidedScenarioState</code> to indicate whether the state is expected by the stage or provided by the stage. These function in exactly the same way as <code>@ScenarioState</code> but are more descriptive about what the code is doing.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_type_vs_name_resolution">Type vs. Name Resolution</h3>
-<div class="paragraph">
-<p>Scenario state fields are by default resolved by its type. That is, you can only have one field of the same type as a scenario field. Exceptions are types from the packages <code>java.lang.*</code> and <code>java.util.*</code> which are resolved by the name of the field.</p>
+<p>Instead of the <code>@ScenarioState</code> annotation one can also use <code>@ExpectedScenarioState</code> and <code>@ProvidedScenarioState</code> to indicate whether the state is expected by the stage or provided by the stage.
+These function in exactly the same way as <code>@ScenarioState</code> but are more descriptive about what the code is doing.</p>
 </div>
 <div class="sect3">
-<h4 id="_change_the_resolution_strategy">Change The Resolution Strategy</h4>
+<h4 id="_type_vs_name_resolution"><a class="anchor" href="#_type_vs_name_resolution"></a>4.6.1. Type vs. Name Resolution</h4>
+<div class="paragraph">
+<p>Scenario state fields are by default resolved by its type.
+That is, you can only have one field of the same type as a scenario field.
+Exceptions are types from the packages <code>java.lang.*</code> and <code>java.util.*</code> which are resolved by the name of the field.</p>
+</div>
 <div class="paragraph">
 <p>To change the resolution strategy you can use the <code>resolution</code> parameter of the <code>@ScenarioState</code> annotations. For example, to use name instead of type resolution you can write</p>
 </div>
@@ -1195,19 +1206,31 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 <p><code>@ScenarioState(resolution = Resolution.NAME)</code>.</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_value_validation"><a class="anchor" href="#_value_validation"></a>4.6.2. Value Validation</h4>
+<div class="paragraph">
+<p>By default, JGiven will not validate whether the value of a field of a stage that expects a value,
+was actually provided by a previous stage.
+The reason for this is that typically not all fields are always required for all steps.
+There might be scenarios where only a part of the fields are really necessary for the steps of the scenario.
+However, sometimes you know that a certain field value is needed for <strong>all</strong> steps of a stage.
+In this case you can set the <code>required</code> attribute of the <code>@ScenarioState</code> or <code>@ExpectedScenarioState</code> annotation to <code>true</code>.
+JGiven will then validate that a previous stage had provided the value and will throw an exception otherwise.</p>
+</div>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_having_more_than_3_stages">Having More Than 3 Stages</h3>
+<h3 id="_having_more_than_3_stages"><a class="anchor" href="#_having_more_than_3_stages"></a>4.7. Having More Than 3 Stages</h3>
 <div class="paragraph">
 <p>In many cases three stages are typically enough to write a scenario. However, sometimes more than three are required. JGiven provides two mechanism for that: stage injection and dynamic adding of stages.</p>
 </div>
 <div class="sect3">
-<h4 id="_stage_injection">Stage Injection</h4>
+<h4 id="_stage_injection"><a class="anchor" href="#_stage_injection"></a>4.7.1. Stage Injection</h4>
 <div class="paragraph">
 <p>Additional stages can be injected into a test class by declaring a field with the additional stage and annotate it with <code>@ScenarioStage</code>.</p>
 </div>
 <div class="sect4">
-<h5 id="_example">Example</h5>
+<h5 id="_example"><a class="anchor" href="#_example"></a>Example</h5>
 <div class="paragraph">
 <p>In the following example we inject an additional stage <code>GivenAdditionalState</code> into the test class and use it in the test.</p>
 </div>
@@ -1256,12 +1279,12 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_dynamic_adding_of_stages">Dynamic Adding of Stages</h4>
+<h4 id="_dynamic_adding_of_stages"><a class="anchor" href="#_dynamic_adding_of_stages"></a>4.7.2. Dynamic Adding of Stages</h4>
 <div class="paragraph">
 <p>The disadvantage of injecting a stage into a test class is that this stage will be used for all tests of that class. This might result in an overhead if the stage contains <code>@BeforeScenario</code> or <code>@AfterScenario</code> methods, because these methods will also be executed in the injected stages. If an additional stage is only required for a single test method you should instead dynamically add that stage to the scenario by using the <code>addStage</code> method.</p>
 </div>
 <div class="sect4">
-<h5 id="_example_2">Example</h5>
+<h5 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.Test</span>;
@@ -1289,7 +1312,7 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_subclassing_of_stages">Subclassing of Stages</h3>
+<h3 id="_subclassing_of_stages"><a class="anchor" href="#_subclassing_of_stages"></a>4.8. Subclassing of Stages</h3>
 <div class="paragraph">
 <p>In practice, it often makes sense to have a hierarchy of stage classes. Your top stage class can implement common steps that you require very often, while subclasses implement more specialized steps.</p>
 </div>
@@ -1363,10 +1386,10 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_life_cycle_methods">Life-Cycle Methods</h2>
+<h2 id="_life_cycle_methods"><a class="anchor" href="#_life_cycle_methods"></a>5. Life-Cycle Methods</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_scenario_life_cycle">Scenario Life-Cycle</h3>
+<h3 id="_scenario_life_cycle"><a class="anchor" href="#_scenario_life_cycle"></a>5.1. Scenario Life-Cycle</h3>
 <div class="paragraph">
 <p>The life-cycle of a scenario is as follows.</p>
 </div>
@@ -1410,9 +1433,9 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__beforescenario_afterscenario">@BeforeScenario / @AfterScenario</h3>
+<h3 id="__beforescenario_afterscenario"><a class="anchor" href="#__beforescenario_afterscenario"></a>5.2. @BeforeScenario / @AfterScenario</h3>
 <div class="sect3">
-<h4 id="__beforescenario">@BeforeScenario</h4>
+<h4 id="__beforescenario"><a class="anchor" href="#__beforescenario"></a>5.2.1. @BeforeScenario</h4>
 <div class="paragraph">
 <p>Methods annotated with <code>@BeforeScenario</code> are executed before any step of any stage of a scenario. This is useful for some general scenario setup. As an example you could initialize a WebDriver instance for Selenium tests or setup a database connection. Note that such methods are executed before injection of values. Thus the code cannot depend on scenario state fields.</p>
 </div>
@@ -1429,7 +1452,7 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="__afterscenario">@AfterScenario</h4>
+<h4 id="__afterscenario"><a class="anchor" href="#__afterscenario"></a>5.2.2. @AfterScenario</h4>
 <div class="paragraph">
 <p>Analogous to <code>@BeforeScenario</code> there is the <code>@AfterScenario</code> annotation to execute a methods when a scenario has finished.</p>
 </div>
@@ -1447,7 +1470,7 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__scenariorule">@ScenarioRule</h3>
+<h3 id="__scenariorule"><a class="anchor" href="#__scenariorule"></a>5.3. @ScenarioRule</h3>
 <div class="paragraph">
 <p><code>@BeforeScenario</code> and <code>@AfterScenario</code> methods are often used to setup and tear down some resource. If you want to reuse such a resource in another stage, you would have to copy these methods into that stage. To avoid that, JGiven offers a concept similar to JUnit rules. The idea is to have a separate class that only contains the before and after methods. This class can then be reused in multiple stages.</p>
 </div>
@@ -1455,7 +1478,7 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 <p>A rule class can be any class that provides the methods <code>before()</code> and <code>after()</code>. This is compatible with JUnit’s <code>ExternalResource</code> class, which means that you can use classes like <code>TemporaryFolder</code> from JUnit directly in JGiven.</p>
 </div>
 <div class="sect3">
-<h4 id="_example_3">Example</h4>
+<h4 id="_example_3"><a class="anchor" href="#_example_3"></a>5.3.1. Example</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">WebDriverRule</span> {
@@ -1481,9 +1504,9 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="__beforestage_afterstage">@BeforeStage / @AfterStage</h3>
+<h3 id="__beforestage_afterstage"><a class="anchor" href="#__beforestage_afterstage"></a>5.4. @BeforeStage / @AfterStage</h3>
 <div class="sect3">
-<h4 id="__beforestage">@BeforeStage</h4>
+<h4 id="__beforestage"><a class="anchor" href="#__beforestage"></a>5.4.1. @BeforeStage</h4>
 <div class="paragraph">
 <p>Methods annotated with <code>@BeforeStage</code> are executed after injection, but before the first step method is called. This is useful for setup code that is required by all or most steps of a stage.</p>
 </div>
@@ -1497,13 +1520,13 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="__afterstage">@AfterStage</h4>
+<h4 id="__afterstage"><a class="anchor" href="#__afterstage"></a>5.4.2. @AfterStage</h4>
 <div class="paragraph">
 <p>Analogous to <code>@BeforeStage</code> methods, methods can be annotated with <code>@AfterStage</code>. These methods are executed after all steps of a stage have been executed, but before extracting the values of scenario state fields. Thus you can prepare state for following stages in an <code>@AfterStage</code> method. A typical use case for this is to apply the builder pattern to build a certain object using step methods and build the final object in an <code>@AfterStage</code> method.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_example_4">Example</h4>
+<h4 id="_example_4"><a class="anchor" href="#_example_4"></a>5.4.3. Example</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">MyStage</span> {
@@ -1537,7 +1560,7 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_parameterized_steps">Parameterized Steps</h2>
+<h2 id="_parameterized_steps"><a class="anchor" href="#_parameterized_steps"></a>6. Parameterized Steps</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Step methods can have parameters. Parameters are formatted in reports by using the String.valueOf method, applied to the arguments. The formatted arguments are added to the end of the step description.</p>
@@ -1549,7 +1572,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_parameters_within_a_sentence">Parameters within a sentence</h3>
+<h3 id="_parameters_within_a_sentence"><a class="anchor" href="#_parameters_within_a_sentence"></a>6.1. Parameters within a sentence</h3>
 <div class="paragraph">
 <p>To place parameters within a sentence instead the end of the sentence you can use the $ character.</p>
 </div>
@@ -1574,7 +1597,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_parameter_formatting">Parameter Formatting</h3>
+<h3 id="_parameter_formatting"><a class="anchor" href="#_parameter_formatting"></a>6.2. Parameter Formatting</h3>
 <div class="paragraph">
 <p>Sometimes the <code>toString()</code> representation of a parameter object does not fit well into the report. In these cases you have three possibilities:</p>
 </div>
@@ -1593,7 +1616,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_the_format_annotation">The @Format annotation</h3>
+<h3 id="_the_format_annotation"><a class="anchor" href="#_the_format_annotation"></a>6.3. The @Format annotation</h3>
 <div class="paragraph">
 <p>The default formatting of a parameter can be overridden by using the <code>@Format</code> annotation. It takes as a parameter a class that implements the <code>ArgumentFormatter</code> interface. In addition, an optional array of arguments can be given to configure the customer formatter. For example, the built-in <code>BooleanFormatter</code> can be used to format <code>boolean</code> values:</p>
 </div>
@@ -1610,7 +1633,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_custom_formatting_annotations">Custom formatting annotations</h3>
+<h3 id="_custom_formatting_annotations"><a class="anchor" href="#_custom_formatting_annotations"></a>6.4. Custom formatting annotations</h3>
 <div class="paragraph">
 <p>As using the <code>@Format</code> annotation is often cumbersome, especially if the same formatter is used in multiple places, one can define and use custom formatting annotations instead.</p>
 </div>
@@ -1629,7 +1652,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 <p>As you can see, the annotation itself is annotated with the <code>@Format</code> annotation as described above, which will be applied to all parameters that are annotated with <code>@Quoted</code>.</p>
 </div>
 <div class="sect3">
-<h4 id="_example_5">Example</h4>
+<h4 id="_example_5"><a class="anchor" href="#_example_5"></a>6.4.1. Example</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_message_<span class="error">$</span>_is_printed_to_the_console( <span class="annotation">@Quoted</span> message ) { ... }</code></pre>
@@ -1655,7 +1678,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect3">
-<h4 id="_the_annotationformat_annotation">The @AnnotationFormat annotation</h4>
+<h4 id="_the_annotationformat_annotation"><a class="anchor" href="#_the_annotationformat_annotation"></a>6.4.2. The @AnnotationFormat annotation</h4>
 <div class="paragraph">
 <p>Another pre-defined annotation is the <code>@Formatf</code> annotation which uses the <code>@AnnotationFormat</code> annotation to specify the formatter. Formatters of this kind implement the <code>AnnotationArgumentFormatter</code> interface. This allows for very flexible formatters that can take the concrete arguments of the annotation into account.</p>
 </div>
@@ -1672,7 +1695,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tables_as_parameters">Tables as Parameters</h3>
+<h3 id="_tables_as_parameters"><a class="anchor" href="#_tables_as_parameters"></a>6.5. Tables as Parameters</h3>
 <div class="paragraph">
 <p>Sometimes information can be represented very concisely by using tables. JGiven supports this with the <code>@Table</code> annotation for step parameters. Such parameters are then formatted as tables in the report. The types of such parameters can be:</p>
 </div>
@@ -1690,7 +1713,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </ol>
 </div>
 <div class="sect3">
-<h4 id="_example_6">Example</h4>
+<h4 id="_example_6"><a class="anchor" href="#_example_6"></a>6.5.1. Example</h4>
 <div class="paragraph">
 <p>Given the following POJO:</p>
 </div>
@@ -1752,7 +1775,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect1">
-<h2 id="_parameterized_scenarios">Parameterized Scenarios</h2>
+<h2 id="_parameterized_scenarios"><a class="anchor" href="#_parameterized_scenarios"></a>7. Parameterized Scenarios</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>JGiven scenarios can be parameterized. This is very useful for writing data-driven scenarios, where the scenarios itself are the same, but are executed with different example values.</p>
@@ -1761,7 +1784,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 <p>Parameterization of Scenarios works with TestNG and JUnit, we only show it for JUnit. For TestNG it works analogous.</p>
 </div>
 <div class="sect2">
-<h3 id="_junit_2">JUnit</h3>
+<h3 id="_junit_2"><a class="anchor" href="#_junit_2"></a>7.1. JUnit</h3>
 <div class="paragraph">
 <p>JGiven supports several different ways to parameterize a JUnit test:</p>
 </div>
@@ -1783,12 +1806,12 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_junit_dataprovider_runner">JUnit Dataprovider Runner</h3>
+<h3 id="_junit_dataprovider_runner"><a class="anchor" href="#_junit_dataprovider_runner"></a>7.2. JUnit Dataprovider Runner</h3>
 <div class="paragraph">
 <p><a href="https://github.com/TNG/junit-dataprovider">JUnit Dataprovider</a> provides a JUnit test runner that enables the execution of paramterized test methods. It is similar to the way parameterized tests work in <a href="http://testng.org/">TestNG</a>.</p>
 </div>
 <div class="sect3">
-<h4 id="_example_7">Example</h4>
+<h4 id="_example_7"><a class="anchor" href="#_example_7"></a>7.2.1. Example</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="java">    <span class="annotation">@Test</span>
@@ -1837,7 +1860,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect1">
-<h2 id="_tags">Tags</h2>
+<h2 id="_tags"><a class="anchor" href="#_tags"></a>8. Tags</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html"><code>@IsTag</code></a> annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.</p>
@@ -1878,7 +1901,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 <p>You can also annotate the whole test class, in which case all scenarios of that class will get the tag.</p>
 </div>
 <div class="sect2">
-<h3 id="_descriptions">Descriptions</h3>
+<h3 id="_descriptions"><a class="anchor" href="#_descriptions"></a>8.1. Descriptions</h3>
 <div class="paragraph">
 <p>Tags can have descriptions. These descriptions appear in the report on the corresponding page for the tag. For example:</p>
 </div>
@@ -1893,7 +1916,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_overriding_the_name">Overriding the Name</h3>
+<h3 id="_overriding_the_name"><a class="anchor" href="#_overriding_the_name"></a>8.2. Overriding the Name</h3>
 <div class="paragraph">
 <p>It is possible to override the name of a tag by using the <code>name</code> attribute of the <code>IsTag</code> annotation. This allows you to have a different name for the tag than the actual type of the annotation. For example, if you want to have a tag <code>Feature: Coffee</code> you can define the <code>CoffeeFeature</code> annotation as follows:</p>
 </div>
@@ -1906,7 +1929,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_values">Values</h3>
+<h3 id="_values"><a class="anchor" href="#_values"></a>8.3. Values</h3>
 <div class="paragraph">
 <p>Sometimes you do not want to always create a new annotation for each tag. Let’s say you organize your work in stories and for each story you want to know which scenarios have been written for that story. Instead of having a separate annotation for each story you can define a <code>Story</code> annotation with a <code>value()</code> method:</p>
 </div>
@@ -1940,7 +1963,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 <p>Annotations with the same type but different values are grouped in the report. E.g. multiple <code>@Story</code> tags with different values will be grouped under <code>Story</code>.</p>
 </div>
 <div class="sect3">
-<h4 id="_array_values">Array Values</h4>
+<h4 id="_array_values"><a class="anchor" href="#_array_values"></a>8.3.1. Array Values</h4>
 <div class="paragraph">
 <p>The value of a tag annotation can also be an array:</p>
 </div>
@@ -1969,7 +1992,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect3">
-<h4 id="_value_dependent_description">Value Dependent Description</h4>
+<h4 id="_value_dependent_description"><a class="anchor" href="#_value_dependent_description"></a>8.3.2. Value Dependent Description</h4>
 <div class="paragraph">
 <p>When the description of a tag depends on its value you cannot simply set the description on the <code>@IsTag</code> annotation, because it will be the same for all values.</p>
 </div>
@@ -2004,7 +2027,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_overriding_the_value">Overriding the Value</h3>
+<h3 id="_overriding_the_value"><a class="anchor" href="#_overriding_the_value"></a>8.4. Overriding the Value</h3>
 <div class="paragraph">
 <p>If you want to group several annotations with different types under a common name. You can combine the <code>name</code> attribute with the <code>value</code> attribute as follows:</p>
 </div>
@@ -2020,7 +2043,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_hierarchical_tags">Hierarchical Tags</h3>
+<h3 id="_hierarchical_tags"><a class="anchor" href="#_hierarchical_tags"></a>8.5. Hierarchical Tags</h3>
 <div class="paragraph">
 <p>If your number of tags grow you typically want to organize your tags somehow. This is easily possible in JGiven by forming tag hierarchies. A tag hierarchy is defined by just annotating a tag annotation with other tags. Each of these tags will then become a parent tag in the hierarchy. For example, if you want to organize your features into ‘Core Features’ and ‘Secondary Features’ you can do so by first defining two tags <code>@CoreFeature</code> and <code>@SecondaryFeature</code> for each of these categories as you would define a normal JGiven tag. If you now want to define a feature tag as a Core Feature you just annotated that tag accordingly:</p>
 </div>
@@ -2036,13 +2059,13 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect1">
-<h2 id="_attachments">Attachments</h2>
+<h2 id="_attachments"><a class="anchor" href="#_attachments"></a>9. Attachments</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Steps can have attachments. This is useful, for example, to save sceenshots during tests or to refer to larger files that should not be printed inline in the report.</p>
 </div>
 <div class="sect2">
-<h3 id="_creating_attachments">Creating Attachments</h3>
+<h3 id="_creating_attachments"><a class="anchor" href="#_creating_attachments"></a>9.1. Creating Attachments</h3>
 <div class="paragraph">
 <p>There are several ways to create an attachment by using static factory methods of the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/attachment/Attachment.html"><code>Attachment</code></a> class. For example, you can create textual attachments from a given <code>String</code> by using the <code>fromText</code> method.</p>
 </div>
@@ -2052,7 +2075,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect3">
-<h4 id="_titles">Titles</h4>
+<h4 id="_titles"><a class="anchor" href="#_titles"></a>9.1.1. Titles</h4>
 <div class="paragraph">
 <p>Attachments can have an optional title which can be used by reports, for example, to show a tooltip. The title is set with the <code>withTitle</code> method:</p>
 </div>
@@ -2065,7 +2088,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect3">
-<h4 id="_binary_attachments">Binary Attachments</h4>
+<h4 id="_binary_attachments"><a class="anchor" href="#_binary_attachments"></a>9.1.2. Binary Attachments</h4>
 <div class="paragraph">
 <p>Binary attachments are internally stored by JGiven as Base64-encoded strings. If the binary content is already present as a Base64-encoded string one can just use that to create a binary attachment:</p>
 </div>
@@ -2078,7 +2101,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_adding_attachments_to_steps">Adding Attachments to Steps</h3>
+<h3 id="_adding_attachments_to_steps"><a class="anchor" href="#_adding_attachments_to_steps"></a>9.2. Adding Attachments to Steps</h3>
 <div class="paragraph">
 <p>To add an attachment to a step you have to first inject the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/CurrentStep.html"><code>CurrentStep</code></a> class into your stage class by using <code>@ExpectedScenarioState</code>.</p>
 </div>
@@ -2102,7 +2125,7 @@ CurrentStep currentStep;</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_example_taking_screenshots_with_selenium_webdriver">Example: Taking Screenshots with Selenium WebDriver</h3>
+<h3 id="_example_taking_screenshots_with_selenium_webdriver"><a class="anchor" href="#_example_taking_screenshots_with_selenium_webdriver"></a>9.3. Example: Taking Screenshots with Selenium WebDriver</h3>
 <div class="paragraph">
 <p>If you are using Selenium WebDriver and want to add screenshots to a JGiven step you can do so as follows:</p>
 </div>
@@ -2120,13 +2143,13 @@ currentStep.addAttachment( Attachment.fromBase64( base64, MediaType.PNG )
 </div>
 </div>
 <div class="sect1">
-<h2 id="_exception_handling">Exception Handling</h2>
+<h2 id="_exception_handling"><a class="anchor" href="#_exception_handling"></a>10. Exception Handling</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>When writing JGiven scenarios you should know how JGiven handles exceptions. In general, JGiven captures all exceptions that are thrown in step methods. This is done, so that the steps following the errornous step can still be executed by JGiven to show them in the report as skipped steps. After the whole scenario has been executed, JGiven will rethrow the exception that has been previously thrown, so that the overall test actually fails. This behavior is in general no problem as long as you do not really expect exceptions to happen.</p>
 </div>
 <div class="sect2">
-<h3 id="_expecting_exceptions">Expecting Exceptions</h3>
+<h3 id="_expecting_exceptions"><a class="anchor" href="#_expecting_exceptions"></a>10.1. Expecting Exceptions</h3>
 <div class="paragraph">
 <p>Let’s assume you want to verify that in the step method <code>doing_some_action</code> a certain exception is thrown and you write the following scenario using JUnit:</p>
 </div>
@@ -2162,7 +2185,7 @@ currentStep.addAttachment( Attachment.fromBase64( base64, MediaType.PNG )
 </div>
 </div>
 <div class="sect2">
-<h3 id="_a_better_approach">A better approach</h3>
+<h3 id="_a_better_approach"><a class="anchor" href="#_a_better_approach"></a>10.2. A better approach</h3>
 <div class="paragraph">
 <p>The above example has still the big disadvantage that it will not visible in the report that an exception is actually expected. More helpful would be the following scenario:</p>
 </div>
@@ -2215,7 +2238,7 @@ MyExpectedException someExpectedException;
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring">Spring</h2>
+<h2 id="_spring"><a class="anchor" href="#_spring"></a>11. Spring</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Spring support is provided by the jgiven-spring dependency for maven:</p>
@@ -2225,7 +2248,7 @@ MyExpectedException someExpectedException;
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spring&lt;/artifactId&gt;
-   &lt;version&gt;0.13.0&lt;/version&gt;
+   &lt;version&gt;0.14.0-RC1&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -2237,9 +2260,9 @@ MyExpectedException someExpectedException;
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
         ...
-    testCompile(&quot;com.tngtech.jgiven:jgiven-junit:0.13.0&quot;)
-    testCompile(&quot;com.tngtech.jgiven:jgiven-testng:0.13.0&quot;)
-    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.13.0&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-junit:0.14.0-RC1&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-testng:0.14.0-RC1&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.14.0-RC1&quot;)
         ...
 }</code></pre>
 </div>
@@ -2249,10 +2272,203 @@ MyExpectedException someExpectedException;
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_android"><a class="anchor" href="#_android"></a>12. Android</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>JGiven can be used to test Android applications.
+For unit-tests, which are not running on an Android device or emulator, you can just use <code>jgiven-junit</code>.
+You don&#8217;t have to do any special test setup to get that working.</p>
+</div>
+<div class="sect2">
+<h3 id="_testing_on_an_device_or_emulator_experimental"><a class="anchor" href="#_testing_on_an_device_or_emulator_experimental"></a>12.1. Testing on an Device or Emulator (EXPERIMENTAL)</h3>
+<div class="paragraph">
+<p>If you want to execute your tests on an Android device or emulator, for example when you want to use the <em>Espresso</em>
+test framework, then you need some additional setup.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+This feature exists since version 0.14.0-RC1 and is still in an experimental status. This means that it is not tested very well yet and that
+the implementation might be changed in a backwards-incompatible way in future versions of JGiven.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_jgiven_android_dependency"><a class="anchor" href="#_jgiven_android_dependency"></a>12.1.1. JGiven Android Dependency</h4>
+<div class="paragraph">
+<p>First of all you need an additional project dependency to the <code>jgiven-android</code> module:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
+   &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
+   &lt;artifactId&gt;jgiven-android&lt;/artifactId&gt;
+   &lt;version&gt;0.14.0-RC1&lt;/version&gt;
+   &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or in Gradle with:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
+    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:0.14.0-RC1&quot;)
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_enable_additional_permissions"><a class="anchor" href="#_enable_additional_permissions"></a>12.1.2. Enable additional Permissions</h4>
+<div class="paragraph">
+<p>JGiven writes JSON files during the execution of the tests to the external storage of the device or emulator.
+Thus you have to enable the permission <code>WRITE_EXTERNAL_STORAGE</code> when executing the tests.
+You can do that by creating a file <code>src/debug/AndroidManifest.xml</code> than enables that permission:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="XML"><span class="preprocessor">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="tag">&lt;manifest</span> <span class="attribute-name">xmlns:android</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://schemas.android.com/apk/res/android</span><span class="delimiter">&quot;</span></span>
+    <span class="attribute-name">package</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">the.package.of.my.app</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;uses-permission</span> <span class="attribute-name">android:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">android.permission.WRITE_EXTERNAL_STORAGE</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
+
+<span class="tag">&lt;/manifest&gt;</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_androidjgiventestrule"><a class="anchor" href="#_androidjgiventestrule"></a>12.1.3. AndroidJGivenTestRule</h4>
+<div class="paragraph">
+<p>In your test classes you have to add the following additional JUnit rule:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="Java"><span class="annotation">@Rule</span>
+<span class="directive">public</span> AndroidJGivenTestRule androidJGivenTestRule = <span class="keyword">new</span> AndroidJGivenTestRule(<span class="local-variable">this</span>.getScenario());</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In addition it is useful to expose the <code>ActivityTestRule</code> to Stages by
+using the <code>@ScenarioState</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="Java"><span class="annotation">@Rule</span>
+<span class="annotation">@ScenarioState</span>
+<span class="directive">public</span> ActivityTestRule&lt;MainActivity&gt; activityTestRule = <span class="keyword">new</span> ActivityTestRule&lt;&gt;(MainActivity.class);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pull_jgiven_json_files_from_device"><a class="anchor" href="#_pull_jgiven_json_files_from_device"></a>12.1.4. Pull JGiven JSON files from device</h4>
+<div class="paragraph">
+<p>When the test execution has finished, you need to pull the JGiven JSON files from the device to the local drive.
+You can do that using the <code>adb</code> tool. The following Gradle task does the job:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">def targetDir = 'build/reports/jgiven/json'
+def adb = android.getAdbExe().toString()
+def reportsDir = '/storage/emulated/0/Download/jgiven-reports'
+
+task cleanJGivenReports(type: Delete) {
+  delete targetDir
+}
+
+task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
+    doFirst {
+        if (!file(targetDir).mkdirs()) {
+            println(&quot;Cannot create dir &quot;+targetDir)
+        }
+    }
+
+    commandLine adb, 'pull', reportsDir, targetDir
+
+    doLast {
+        println(&quot;Pulled &quot;+reportsDir+&quot; to &quot;+targetDir);
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_generate_html_report"><a class="anchor" href="#_generate_html_report"></a>12.1.5. Generate HTML Report</h4>
+<div class="paragraph">
+<p>Given the local JSON files, you can generate the HTML report as described in <a href="#_report_generation">Report Generation</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_taking_screen_shots_in_espresso_tests"><a class="anchor" href="#_taking_screen_shots_in_espresso_tests"></a>12.1.6. Taking Screen Shots in Espresso Tests</h4>
+<div class="paragraph">
+<p>It is very useful to take screen shots during your tests and add them to the JGiven documentation.
+When using the <em>Espresso</em> framework, you can use the following piece of code to take
+a screenshot of an activity and turn it into a <code>byte</code> array:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="Java"><span class="directive">public</span> <span class="type">class</span> <span class="class">ScreenshotUtil</span> {
+    <span class="directive">public</span> <span class="directive">static</span> <span class="type">byte</span><span class="type">[]</span> takeScreenshot(Activity activity) {
+        <span class="predefined-type">View</span> view = activity.getWindow().getDecorView().getRootView();
+        view.setDrawingCacheEnabled(<span class="predefined-constant">true</span>);
+        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(<span class="predefined-constant">false</span>);
+        <span class="predefined-type">ByteArrayOutputStream</span> baos = <span class="keyword">new</span> <span class="predefined-type">ByteArrayOutputStream</span>();
+        bitmap.compress(Bitmap.CompressFormat.PNG, <span class="integer">100</span>, baos);
+        <span class="keyword">return</span> baos.toByteArray();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This byte array can then be added to a step of a JGiven report as usual:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="Java"><span class="directive">public</span> <span class="type">class</span> <span class="class">MyStage</span> {
+    <span class="annotation">@ScenarioState</span>
+    CurrentStep currentStep;
+
+    <span class="annotation">@ScenarioState</span>
+    ActivityTestRule&lt;MainActivity&gt; activityTestRule;
+
+    <span class="directive">public</span> Steps clicking_the_Click_Me_button() {
+        onView(withId(R.id.clickMeButton)).perform(click());
+        takeScreenshot();
+        <span class="keyword">return</span> <span class="local-variable">this</span>;
+    }
+
+    <span class="annotation">@Hidden</span>
+    <span class="directive">public</span> <span class="type">void</span> takeScreenshot() {
+        currentStep.addAttachment(
+            Attachment.fromBinaryBytes(
+                ScreenshotUtil.takeScreenshot( activityTestRule.getActivity()),
+                MediaType.PNG).showDirectly()) ;
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_project"><a class="anchor" href="#_example_project"></a>12.2. Example Project</h3>
+<div class="paragraph">
+<p>You can find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/android" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/android</a></p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-17 10:07:26 CET
+Last updated 2016-12-24 16:47:56 CET
 </div>
 </div>
 </body>
