@@ -30,7 +30,6 @@ public class WhenHtml5App<SELF extends WhenHtml5App<?>> extends Html5AppStage<SE
     private SELF url_$_is_opened( String s ) throws MalformedURLException {
         File file = new File( targetReportDir, "index.html" );
         String url = file.toURI().toURL().toString() + s;
-        System.out.println( url );
         webDriver.get( url );
         return self();
     }

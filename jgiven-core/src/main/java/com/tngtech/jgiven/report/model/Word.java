@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.model;
 
-import com.tngtech.jgiven.relocated.guava.base.Objects;
+import com.google.common.base.Objects;
 
 /**
  * Represents a part of a step.

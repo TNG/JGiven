@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.tngtech.jgiven.relocated.guava.collect.Lists;
+import com.google.common.collect.Lists;
 
 public class ScenarioCaseModel {
     /**
