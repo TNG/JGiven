@@ -8,19 +8,25 @@ include ':jgiven-testng'
 include ':jgiven-spring'
 include ':jgiven-html5-report'
 
+def release = System.env.RELEASE == "true"
+def android = System.env.ANDROUD == "true"
+
 // At least Java 7 is required for the tests as Selenium requires it
 // Still the other projects should be built and tested with Java 6
-if (JavaVersion.current().isJava7Compatible()) {
+if (JavaVersion.current().isJava7Compatible() && !release) {
     include ':jgiven-tests'
     include ':jgiven-examples'
 }
 
-if (JavaVersion.current().isJava8Compatible()) {
+if (JavaVersion.current().isJava8Compatible() && !release) {
     include ':jgiven-java8-tests'
 }
 
-if (System.env.ANDROID == "true") {
+if (android || release) {
     include ':jgiven-android'
+}
+
+if (android && !release) {
     include ':jgiven-android-test'
 }
 
