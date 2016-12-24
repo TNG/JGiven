@@ -52,6 +52,16 @@ You can do that by creating a file `src/debug/AndroidManifest.xml` than enables 
 </manifest>
 ----
 
+==== AndroidJGivenTestRule
+
+In you test classes you have to add the following additional rule:
+
+[source, Java]
+----
+@Rule
+public AndroidJGivenTestRule androidJGivenTestRule = new AndroidJGivenTestRule(this.getScenario());
+----
+
 ==== Pull JGiven JSON files from device
 
 When the test execution has finished, you need to pull the JGiven JSON files from the device to the local drive.
