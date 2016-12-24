@@ -1,0 +1,102 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.0-beta1'
+    }
+}
+
+apply plugin: 'com.android.application'
+
+repositories {
+    mavenCentral()
+}
+
+ android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.1'
+    defaultConfig {
+        applicationId "com.tngtech.jgiven.android.example"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+configurations {
+  jgivenReport
+}
+
+dependencies {
+  compile 'com.android.support:appcompat-v7:25.0.0'
+
+  androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+  androidTestCompile 'com.android.support.test:runner:0.5'
+  androidTestCompile 'com.tngtech.jgiven:jgiven-android:0.14.0-RC1'
+
+  jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:0.14.0-RC1'
+  jgivenReport 'org.slf4j:slf4j-simple:1.7.21'
+}
+
+def targetDir = 'build/reports/jgiven/json'
+def adb = android.getAdbExe().toString()
+def reportsDir = '/storage/emulated/0/Download/jgiven-reports'
+
+task cleanJGivenReports(type: Delete) {
+  delete targetDir
+}
+
+task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
+    doFirst {
+        if (!file(targetDir).mkdirs()) {
+            println("Cannot create dir "+targetDir)
+        }
+    }
+
+    commandLine adb, 'pull', reportsDir, targetDir
+
+    doLast {
+        println("Pulled "+reportsDir+" to "+targetDir);
+    }
+}
+
+task cleanJGivenReportsFromDevice(type: Exec) {
+    commandLine adb, 'shell', 'rm -rf', reportsDir
+
+    doLast {
+        println("Deleted "+reportsDir)
+    }
+}
+
+pullJGivenReports.finalizedBy(cleanJGivenReportsFromDevice)
+
+task cleanJGivenHtmlReport(type: Delete) {
+  delete 'build/reports/jgiven/html'
+}
+
+task jgivenHtml5Report(type: JavaExec, dependsOn: cleanJGivenHtmlReport) {
+    main = 'com.tngtech.jgiven.report.ReportGenerator'
+    args '--sourceDir=build/reports/jgiven/json',
+         '--targetDir=build/reports/jgiven/html',
+         '--format=html5',
+         '--exclude-empty-scenarios=true'
+        classpath = configurations.jgivenReport
+}
+
+pullJGivenReports.finalizedBy(jgivenHtml5Report)
+
+tasks.whenTaskAdded { task ->
+  if (task.name == 'connectedAndroidTest') {
+    task.finalizedBy 'pullJGivenReports'
+  }
+}
+
