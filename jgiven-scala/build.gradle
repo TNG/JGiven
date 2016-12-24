@@ -1,8 +1,0 @@
-description = "Module for writing JGiven tests with Scala"
-
-dependencies {
-    compile project(':jgiven-core')
-    testCompile group: 'junit', name: 'junit', version: junitVersion
-}
-
-test.finalizedBy(jgivenHtml5Report)
