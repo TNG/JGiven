@@ -9,7 +9,7 @@ You don't have to do any special test setup to get that working.
 If you want to execute your tests on an Android device or emulator, for example when you want to use the _Espresso_
 test framework, then you need some additional setup.
 
-CAUTION: This feature is still in an experimental status. This means that it is not tested very well yet and that
+CAUTION: This feature exists since version 0.14.0-RC1 and is still in an experimental status. This means that it is not tested very well yet and that
 the implementation might be changed in a backwards-incompatible way in future versions of JGiven.
 
 
