@@ -1,0 +1,91 @@
+== Android
+
+JGiven can be used to test Android applications.
+For unit-tests, which are not running on an Android device or emulator, you can just use `jgiven-junit`.
+You don't have to do any special test setup to get that working.
+
+=== Testing on an Device or Emulator (EXPERIMENTAL)
+
+If you want to execute your tests on an Android device or emulator, for example when you want to use the _Espresso_
+test framework, then you need some additional setup.
+
+CAUTION: This feature is still in an experimental status. This means that it is not tested very well yet and that
+the implementation might be changed in a backwards-incompatible way in future versions of JGiven.
+
+
+==== JGiven Android Dependency
+First of all you need an additional project dependency to the `jgiven-android` module:
+
+[source,maven,subs="verbatim,attributes"]
+----
+<dependency>
+   <groupId>com.tngtech.jgiven</groupId>
+   <artifactId>jgiven-android</artifactId>
+   <version>{version}</version>
+   <scope>test</scope>
+</dependency>
+----
+
+or in Gradle with:
+
+[source,gradle,subs="verbatim,attributes"]
+----
+dependencies {
+    androidTestCompile("com.tngtech.jgiven:jgiven-android:{version}")
+}
+----
+
+==== Enable additional Permissions
+
+JGiven writes JSON files during the execution of the tests to the external storage of the device or emulator.
+Thus you have to enable the permission `WRITE_EXTERNAL_STORAGE` when executing the tests.
+You can do that by creating a file `src/debug/AndroidManifest.xml` than enables that permission:
+
+[source,XML]
+----
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="the.package.of.my.app">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+</manifest>
+----
+
+==== Pull JGiven JSON files from device
+
+When the test execution has finished, you need to pull the JGiven JSON files from the device to the local drive.
+You can do that using the `adb` tool. The following Gradle task does the job:
+
+[source,gradle]
+----
+def targetDir = 'build/reports/jgiven/json'
+def adb = android.getAdbExe().toString()
+def reportsDir = '/storage/emulated/0/Download/jgiven-reports'
+
+task cleanJGivenReports(type: Delete) {
+  delete targetDir
+}
+
+task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
+    doFirst {
+        if (!file(targetDir).mkdirs()) {
+            println("Cannot create dir "+targetDir)
+        }
+    }
+
+    commandLine adb, 'pull', reportsDir, targetDir
+
+    doLast {
+        println("Pulled "+reportsDir+" to "+targetDir);
+    }
+}
+----
+
+==== Generate HTML Report
+
+Given the local JSON files, you can generate the HTML report as described in <<_report_generation>>
+
+=== Example Project
+
+You can find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/android

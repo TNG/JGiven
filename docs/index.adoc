@@ -9,6 +9,8 @@ ifndef::env-site[:toc: left]
 :icons: font
 :source-highlighter: coderay
 :prewrap!:
+:sectanchors:
+:sectnums:
 
 {version}
 
@@ -33,3 +35,5 @@ include::attachments.adoc[]
 include::exception_handling.adoc[]
 
 include::spring.adoc[]
+
+include::android.adoc[]
