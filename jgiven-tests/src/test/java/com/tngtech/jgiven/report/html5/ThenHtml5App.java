@@ -10,7 +10,11 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.reporters.Files;
+
+import com.tngtech.jgiven.annotation.BeforeStage;
 
 public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SELF> {
 
@@ -18,28 +22,38 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
     private WebElement foundLink;
     private WebElement foundElement;
 
-    public SELF the_page_title_is( String pageTitle ) {
-        assertThat( webDriver.findElement( By.id( "page-title" ) ).getText() ).isEqualTo( pageTitle );
+    @FindBy( id = "page-title" )
+    WebElement pageTitle;
+
+    @FindBy( id = "statistics" )
+    WebElement statistics;
+
+    @FindBy( className = "fa-paperclip" )
+    List<WebElement> attachmentIcons;
+
+    @BeforeStage
+    public void setup() {
+        PageFactory.initElements( webDriver, this );
+    }
+
+    public SELF the_page_title_is( String title ) {
+        assertThat( pageTitle.getText() ).isEqualTo( title );
         return self();
     }
 
     public SELF the_page_statistics_line_contains_text( String text ) throws IOException {
-        assertThat( webDriver.findElement( By.id( "statistics" ) ).getText() ).contains( text );
+        assertThat( statistics.getText() ).contains( text );
         return self();
     }
 
     public SELF $_attachment_icons_exist( int nrIcons ) {
-        assertThat( findAttachmentIcon() ).hasSize( nrIcons );
+        assertThat( attachmentIcons ).hasSize( nrIcons );
         return self();
     }
 
     public SELF an_attachment_icon_exists() {
-        assertThat( findAttachmentIcon() ).isNotEmpty();
+        assertThat( attachmentIcons ).isNotEmpty();
         return self();
-    }
-
-    private List<WebElement> findAttachmentIcon() {
-        return webDriver.findElements( By.className( "fa-paperclip" ) );
     }
 
     public SELF the_content_of_the_attachment_referenced_by_the_icon_is( String content ) throws IOException, URISyntaxException {
@@ -47,7 +61,7 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
     }
 
     public SELF the_content_of_the_attachment_referenced_by_icon_$_is( int iconNr, String content ) throws IOException, URISyntaxException {
-        String href = findAttachmentIcon().get( iconNr - 1 ).findElement( By.xpath( ".." ) ).getAttribute( "href" );
+        String href = attachmentIcons.get( iconNr - 1 ).findElement( By.xpath( ".." ) ).getAttribute( "href" );
         String foundContent = Files.readFile( new File( new URL( href ).toURI() ) ).trim();
         assertThat( content ).isEqualTo( foundContent );
         return self();
