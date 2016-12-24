@@ -62,6 +62,16 @@ In your test classes you have to add the following additional JUnit rule:
 public AndroidJGivenTestRule androidJGivenTestRule = new AndroidJGivenTestRule(this.getScenario());
 ----
 
+In addition it is useful to expose the `ActivityTestRule` to Stages by
+using the `@ScenarioState` annotation:
+
+[source, Java]
+----
+@Rule
+@ScenarioState
+public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
+----
+
 ==== Pull JGiven JSON files from device
 
 When the test execution has finished, you need to pull the JGiven JSON files from the device to the local drive.
@@ -95,6 +105,54 @@ task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
 ==== Generate HTML Report
 
 Given the local JSON files, you can generate the HTML report as described in <<_report_generation>>
+
+==== Taking Screen Shots in Espresso Tests
+
+It is very useful to take screen shots during your tests and add them to the JGiven documentation.
+When using the _Espresso_ framework, you can use the following piece of code to take
+a screenshot of an activity and turn it into a `byte` array:
+
+[source, Java]
+----
+public class ScreenshotUtil {
+    public static byte[] takeScreenshot(Activity activity) {
+        View view = activity.getWindow().getDecorView().getRootView();
+        view.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
+    }
+}
+----
+
+This byte array can then be added to a step of a JGiven report as usual:
+
+[source, Java]
+----
+public class MyStage {
+    @ScenarioState
+    CurrentStep currentStep;
+
+    @ScenarioState
+    ActivityTestRule<MainActivity> activityTestRule;
+
+    public Steps clicking_the_Click_Me_button() {
+        onView(withId(R.id.clickMeButton)).perform(click());
+        takeScreenshot();
+        return this;
+    }
+
+    @Hidden
+    public void takeScreenshot() {
+        currentStep.addAttachment(
+            Attachment.fromBinaryBytes(
+                ScreenshotUtil.takeScreenshot( activityTestRule.getActivity()),
+                MediaType.PNG).showDirectly()) ;
+    }
+}
+----
 
 === Example Project
 
