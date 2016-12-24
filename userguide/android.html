@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.3">
-<title>Report Generation</title>
+<title>Android</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -422,134 +422,194 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_report_generation">Report Generation</h2>
+<h2 id="_android">Android</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_plain_text_reports">Plain Text Reports</h3>
 <div class="paragraph">
-<p>By default JGiven outputs plain text reports to the console when executed. To disable plain text reports set the following Java system property:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">jgiven.report.text=false</code></pre>
-</div>
-</div>
+<p>JGiven can be used to test Android applications.
+For unit-tests, which are not running on an Android device or emulator, you can just use <code>jgiven-junit</code>.
+You don&#8217;t have to do any special test setup to get that working.</p>
 </div>
 <div class="sect2">
-<h3 id="_json_reports">JSON Reports</h3>
+<h3 id="_testing_on_an_device_or_emulator_experimental">Testing on an Device or Emulator (EXPERIMENTAL)</h3>
 <div class="paragraph">
-<p>By default JGiven will generate JSON reports into the <code>jgiven-reports/json</code> directory. JGiven tries to autodetect when it is executed by the Maven surefire plugin and in that case generates the reports into <code>target/jgiven-reports/json</code>. To disable JSON report generation set the following Java system property:</p>
+<p>If you want to execute your tests on an Android device or emulator, for example when you want to use the <em>Espresso</em>
+test framework, then you need some additional setup.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">jgiven.report.enabled=false</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Note that in order to generate HTML reports, JSON reports are required.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_html_report">HTML Report</h3>
-<div class="paragraph">
-<p>To generate an HTML report you have to run the JGiven report generator with the <code>html</code> format option. The reporter is part of the jgiven-core module. For the HTML output you also need the <code>jgiven-html5-report</code> dependency. The report generator can be executed on the command line as follows (assuming that the jgiven-core and the jgiven-html5-report JAR and all required dependencies are on the Java CLASSPATH)</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">java com.tngtech.jgiven.report.ReportGenerator \
-  --format=html \
-  [--sourceDir=&lt;jsonreports&gt;] \
-  [--targetDir=&lt;targetDir&gt;] \</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To see the HTML report in action you can have a look at the <a href="http://jgiven.org/jgiven-report/html5/">HTML report of JGiven itself</a></p>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+This feature exists since version 0.14.0-RC1 and is still in an experimental status. This means that it is not tested very well yet and that
+the implementation might be changed in a backwards-incompatible way in future versions of JGiven.
+</td>
+</tr>
+</table>
 </div>
 <div class="sect3">
-<h4 id="_maven">Maven</h4>
+<h4 id="_jgiven_android_dependency">JGiven Android Dependency</h4>
 <div class="paragraph">
-<p>For Maven there exists a plugin that can be used as follows:</p>
+<p>First of all you need an additional project dependency to the <code>jgiven-android</code> module:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-maven" data-lang="maven">&lt;build&gt;
-  &lt;plugins&gt;
-    &lt;plugin&gt;
-      &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
-      &lt;artifactId&gt;jgiven-maven-plugin&lt;/artifactId&gt;
-      &lt;version&gt;{version}&lt;/version&gt;
-      &lt;executions&gt;
-        &lt;execution&gt;
-          &lt;goals&gt;
-            &lt;goal&gt;report&lt;/goal&gt;
-          &lt;/goals&gt;
-        &lt;/execution&gt;
-      &lt;/executions&gt;
-      &lt;configuration&gt;
-        &lt;format&gt;html&lt;/format&gt;
-      &lt;/configuration&gt;
-    &lt;/plugin&gt;
- &lt;/plugins&gt;
-&lt;/build&gt;</code></pre>
+<pre class="highlight"><code class="language-maven" data-lang="maven">&lt;dependency&gt;
+   &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
+   &lt;artifactId&gt;jgiven-android&lt;/artifactId&gt;
+   &lt;version&gt;0.14.0-RC1&lt;/version&gt;
+   &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Now run:</p>
+<p>or in Gradle with:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ mvn verify</code></pre>
+<pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
+    androidTestCompile("com.tngtech.jgiven:jgiven-android:0.14.0-RC1")
+}</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>HTML reports are then generated into the <code>target/jgiven-reports/html</code> directory.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_gradle">Gradle</h4>
+<h4 id="_enable_additional_permissions">Enable additional Permissions</h4>
 <div class="paragraph">
-<p>Add the following plugins section to your <code>build.gradle</code> file or extend the one you have already accordingly:</p>
+<p>JGiven writes JSON files during the execution of the tests to the external storage of the device or emulator.
+Thus you have to enable the permission <code>WRITE_EXTERNAL_STORAGE</code> when executing the tests.
+You can do that by creating a file <code>src/debug/AndroidManifest.xml</code> than enables that permission:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">plugins {
-    id "com.tngtech.jgiven.gradle-plugin" version "{version}"
+<pre class="highlight"><code class="language-XML" data-lang="XML">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="the.package.of.my.app"&gt;
+
+    &lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /&gt;
+
+&lt;/manifest&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_androidjgiventestrule">AndroidJGivenTestRule</h4>
+<div class="paragraph">
+<p>In your test classes you have to add the following additional JUnit rule:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">@Rule
+public AndroidJGivenTestRule androidJGivenTestRule = new AndroidJGivenTestRule(this.getScenario());</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In addition it is useful to expose the <code>ActivityTestRule</code> to Stages by
+using the <code>@ScenarioState</code> annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">@Rule
+@ScenarioState
+public ActivityTestRule&lt;MainActivity&gt; activityTestRule = new ActivityTestRule&lt;&gt;(MainActivity.class);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pull_jgiven_json_files_from_device">Pull JGiven JSON files from device</h4>
+<div class="paragraph">
+<p>When the test execution has finished, you need to pull the JGiven JSON files from the device to the local drive.
+You can do that using the <code>adb</code> tool. The following Gradle task does the job:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-gradle" data-lang="gradle">def targetDir = 'build/reports/jgiven/json'
+def adb = android.getAdbExe().toString()
+def reportsDir = '/storage/emulated/0/Download/jgiven-reports'
+
+task cleanJGivenReports(type: Delete) {
+  delete targetDir
+}
+
+task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
+    doFirst {
+        if (!file(targetDir).mkdirs()) {
+            println("Cannot create dir "+targetDir)
+        }
+    }
+
+    commandLine adb, 'pull', reportsDir, targetDir
+
+    doLast {
+        println("Pulled "+reportsDir+" to "+targetDir);
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_generate_html_report">Generate HTML Report</h4>
+<div class="paragraph">
+<p>Given the local JSON files, you can generate the HTML report as described in <a href="#_report_generation">[_report_generation]</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_taking_screen_shots_in_espresso_tests">Taking Screen Shots in Espresso Tests</h4>
+<div class="paragraph">
+<p>It is very useful to take screen shots during your tests and add them to the JGiven documentation.
+When using the <em>Espresso</em> framework, you can use the following piece of code to take
+a screenshot of an activity and turn it into a <code>byte</code> array:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-Java" data-lang="Java">public class ScreenshotUtil {
+    public static byte[] takeScreenshot(Activity activity) {
+        View view = activity.getWindow().getDecorView().getRootView();
+        view.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
+    }
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Alternatively you can configure the plugin as follows:</p>
+<p>This byte array can then be added to a step of a JGiven report as usual:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">buildscript {
-    repositories {
-        mavenCentral()
+<pre class="highlight"><code class="language-Java" data-lang="Java">public class MyStage {
+    @ScenarioState
+    CurrentStep currentStep;
+
+    @ScenarioState
+    ActivityTestRule&lt;MainActivity&gt; activityTestRule;
+
+    public Steps clicking_the_Click_Me_button() {
+        onView(withId(R.id.clickMeButton)).perform(click());
+        takeScreenshot();
+        return this;
     }
 
-    dependencies {
-        classpath "com.tngtech.jgiven:jgiven-gradle-plugin:{version}"
+    @Hidden
+    public void takeScreenshot() {
+        currentStep.addAttachment(
+            Attachment.fromBinaryBytes(
+                ScreenshotUtil.takeScreenshot( activityTestRule.getActivity()),
+                MediaType.PNG).showDirectly()) ;
     }
-}
-
-apply plugin: "com.tngtech.jgiven.gradle-plugin"</code></pre>
+}</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_project">Example Project</h3>
 <div class="paragraph">
-<p>Now run:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-bash" data-lang="bash">$ gradle test jgivenTestReport</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>HTML reports are then generated into the <code>build/reports/jgiven/test/html/</code> directory.</p>
-</div>
-<div class="paragraph">
-<p>For additional information about the Gradle plugin refer to
-<a href="https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin" class="bare">https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin</a></p>
-</div>
+<p>You can find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/android" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/android</a></p>
 </div>
 </div>
 </div>
@@ -557,7 +617,7 @@ apply plugin: "com.tngtech.jgiven.gradle-plugin"</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-24 17:00:59 CET
+Last updated 2016-12-24 17:22:55 CET
 </div>
 </div>
 </body>

@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.3">
-<title>Stages and State Injection</title>
+<title>Stages and State Sharing</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -422,7 +422,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_stages_and_state_injection">Stages and State Injection</h2>
+<h2 id="_stages_and_state_sharing">Stages and State Sharing</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>A JGiven scenario consists of multiple stages. Typically there is a stage for each phase of a scenario: a given stage, a when stage and a then stage, however, it is also possible to just use one stage or use arbitrary many stages. A stage is implemented by a stage class that contains methods representing the steps that can be used in the scenario. The big advantage of this modular concept is that stages can be easily reused by different scenarios.</p>
@@ -538,12 +538,18 @@ public SELF comma() {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_state_injection">State Injection</h3>
+<h3 id="_state_sharing">State Sharing</h3>
 <div class="paragraph">
-<p>Stages share state by using injection. This works by annotating the fields with a special annotation <code>@ScenarioState</code>. The values of these fields are shared between all stages that have the same field.</p>
-</div>
-<div class="paragraph">
-<p>For example, to be able to access the value of the ingredients field of the GivenIngredients stage in the <code>WhenCook</code> stage one has to annotate that field accordingly:</p>
+<p>Very often it is necessary to share state between steps.
+As long as the steps are implemented in the same Stage class you can just use the fields of the Stage class.
+But what can you do if your steps are defined in different Stage classes?
+In this case you just define the same field in both Stage classes.
+Once in the Stage class that <em>provides</em> the value of the field and once in the Stage class that <em>needs</em> the value
+of the field.
+Both fields also have to be annotated with the special annotation <code>@ScenarioState</code> to tell JGiven that
+this field will be used for state sharing between stages.
+The values of these fields are shared between all stages that have the same field.
+For example, to be able to access the value of the ingredients field of the GivenIngredients stage in the <code>WhenCook</code> stage one has to annotate that field accordingly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -603,21 +609,33 @@ public class WhenCook extends Stage&lt;WhenCook&gt; {
 </div>
 </div>
 <div class="paragraph">
-<p>Instead of the <code>@ScenarioState</code> annotation one can also use <code>@ExpectedScenarioState</code> and <code>@ProvidedScenarioState</code> to indicate whether the state is expected by the stage or provided by the stage. These function in exactly the same way as <code>@ScenarioState</code> but are more descriptive about what the code is doing.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_type_vs_name_resolution">Type vs. Name Resolution</h3>
-<div class="paragraph">
-<p>Scenario state fields are by default resolved by its type. That is, you can only have one field of the same type as a scenario field. Exceptions are types from the packages <code>java.lang.*</code> and <code>java.util.*</code> which are resolved by the name of the field.</p>
+<p>Instead of the <code>@ScenarioState</code> annotation one can also use <code>@ExpectedScenarioState</code> and <code>@ProvidedScenarioState</code> to indicate whether the state is expected by the stage or provided by the stage.
+These function in exactly the same way as <code>@ScenarioState</code> but are more descriptive about what the code is doing.</p>
 </div>
 <div class="sect3">
-<h4 id="_change_the_resolution_strategy">Change The Resolution Strategy</h4>
+<h4 id="_type_vs_name_resolution">Type vs. Name Resolution</h4>
+<div class="paragraph">
+<p>Scenario state fields are by default resolved by its type.
+That is, you can only have one field of the same type as a scenario field.
+Exceptions are types from the packages <code>java.lang.*</code> and <code>java.util.*</code> which are resolved by the name of the field.</p>
+</div>
 <div class="paragraph">
 <p>To change the resolution strategy you can use the <code>resolution</code> parameter of the <code>@ScenarioState</code> annotations. For example, to use name instead of type resolution you can write</p>
 </div>
 <div class="paragraph">
 <p><code>@ScenarioState(resolution = Resolution.NAME)</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_value_validation">Value Validation</h4>
+<div class="paragraph">
+<p>By default, JGiven will not validate whether the value of a field of a stage that expects a value,
+was actually provided by a previous stage.
+The reason for this is that typically not all fields are always required for all steps.
+There might be scenarios where only a part of the fields are really necessary for the steps of the scenario.
+However, sometimes you know that a certain field value is needed for <strong>all</strong> steps of a stage.
+In this case you can set the <code>required</code> attribute of the <code>@ScenarioState</code> or <code>@ExpectedScenarioState</code> annotation to <code>true</code>.
+JGiven will then validate that a previous stage had provided the value and will throw an exception otherwise.</p>
 </div>
 </div>
 </div>
@@ -790,7 +808,7 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-17 10:07:26 CET
+Last updated 2016-12-24 12:24:05 CET
 </div>
 </div>
 </body>
