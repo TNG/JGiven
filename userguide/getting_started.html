@@ -532,10 +532,10 @@ In that case you can directly use the JUnit Rules of JGiven. Instead of providin
 <pre class="highlight"><code class="language-java" data-lang="java">public class UsingRulesTest {
 
     @ClassRule
-    public static final ScenarioReportRule writerRule = new ScenarioReportRule();
+    public static final JGivenClassRule writerRule = new JGivenClassRule();
 
     @Rule
-    public final ScenarioExecutionRule scenarioRule = new ScenarioExecutionRule();
+    public final JGivenMethodRule scenarioRule = new JGivenMethodRule();
 
     @ScenarioStage
     GivenSomeState someState;
@@ -572,7 +572,7 @@ You can now also define convenient methods in your test class to get cleaner sce
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-17 10:07:26 CET
+Last updated 2016-12-17 10:11:33 CET
 </div>
 </div>
 </body>
