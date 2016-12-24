@@ -54,7 +54,7 @@ You can do that by creating a file `src/debug/AndroidManifest.xml` than enables 
 
 ==== AndroidJGivenTestRule
 
-In you test classes you have to add the following additional rule:
+In your test classes you have to add the following additional JUnit rule:
 
 [source, Java]
 ----
