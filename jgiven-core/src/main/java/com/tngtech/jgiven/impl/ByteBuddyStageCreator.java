@@ -1,15 +1,15 @@
 package com.tngtech.jgiven.impl;
 
-import static com.tngtech.jgiven.relocated.bytebuddy.matcher.ElementMatchers.any;
+import static net.bytebuddy.matcher.ElementMatchers.any;
 
 import com.tngtech.jgiven.impl.intercept.ByteBuddyMethodInterceptor;
 import com.tngtech.jgiven.impl.intercept.StageInterceptorInternal;
 import com.tngtech.jgiven.impl.intercept.StepInterceptor;
 
-import com.tngtech.jgiven.relocated.bytebuddy.ByteBuddy;
-import com.tngtech.jgiven.relocated.bytebuddy.dynamic.loading.ClassLoadingStrategy;
-import com.tngtech.jgiven.relocated.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
-import com.tngtech.jgiven.relocated.bytebuddy.implementation.MethodDelegation;
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
+import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
+import net.bytebuddy.implementation.MethodDelegation;
 
 public class ByteBuddyStageCreator implements StageCreator {
 

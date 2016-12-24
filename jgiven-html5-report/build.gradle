@@ -2,7 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.internal.os.OperatingSystem;
 
 dependencies {
-    compile project(path: ':jgiven-core', configuration: 'shadow')
+    compile project(':jgiven-core')
 }
 
 

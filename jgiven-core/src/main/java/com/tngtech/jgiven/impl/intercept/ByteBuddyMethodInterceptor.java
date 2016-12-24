@@ -5,13 +5,13 @@ import java.util.concurrent.Callable;
 
 import com.tngtech.jgiven.impl.intercept.StepInterceptor.Invoker;
 
-import com.tngtech.jgiven.relocated.bytebuddy.implementation.bind.annotation.AllArguments;
-import com.tngtech.jgiven.relocated.bytebuddy.implementation.bind.annotation.BindingPriority;
-import com.tngtech.jgiven.relocated.bytebuddy.implementation.bind.annotation.DefaultCall;
-import com.tngtech.jgiven.relocated.bytebuddy.implementation.bind.annotation.Origin;
-import com.tngtech.jgiven.relocated.bytebuddy.implementation.bind.annotation.RuntimeType;
-import com.tngtech.jgiven.relocated.bytebuddy.implementation.bind.annotation.SuperCall;
-import com.tngtech.jgiven.relocated.bytebuddy.implementation.bind.annotation.This;
+import net.bytebuddy.implementation.bind.annotation.AllArguments;
+import net.bytebuddy.implementation.bind.annotation.BindingPriority;
+import net.bytebuddy.implementation.bind.annotation.DefaultCall;
+import net.bytebuddy.implementation.bind.annotation.Origin;
+import net.bytebuddy.implementation.bind.annotation.RuntimeType;
+import net.bytebuddy.implementation.bind.annotation.SuperCall;
+import net.bytebuddy.implementation.bind.annotation.This;
 
 /**
  * StepInterceptorImpl that uses ByteBuddy Method interceptor with annotations for intercepting JGiven methods

@@ -16,15 +16,15 @@
  */
 package com.tngtech.jgiven.impl.util;
 
-import static com.tngtech.jgiven.relocated.jansi.internal.CLibrary.STDOUT_FILENO;
-import static com.tngtech.jgiven.relocated.jansi.internal.CLibrary.isatty;
+import static org.fusesource.jansi.internal.CLibrary.STDOUT_FILENO;
+import static org.fusesource.jansi.internal.CLibrary.isatty;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import com.tngtech.jgiven.relocated.jansi.AnsiOutputStream;
-import com.tngtech.jgiven.relocated.jansi.WindowsAnsiOutputStream;
+import org.fusesource.jansi.AnsiOutputStream;
+import org.fusesource.jansi.WindowsAnsiOutputStream;
 
 /**
  * This is actually a modified copy of AnsiConsole from the jansi project.

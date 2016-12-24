@@ -1,9 +1,5 @@
 # v0.14.0
 
-## Removal of Library Dependencies
-
-JGiven does not directly depend on any libraries anymore, except for `slf4j`. All other dependencies like `Guava`,
-
 ## Switch from cglib to ByteBuddy
 
 The internal JGiven interception mechanism was changed to use ByteBuddy instead of cglib. The main reason for this change is support for Android (see below).
