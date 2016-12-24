@@ -18,4 +18,12 @@ public @interface ScenarioState {
     public enum Resolution {
         TYPE, NAME, AUTO;
     }
+
+    /**
+     * Marks this state as required for the stage. If in this case the state isn't provided, a
+     * {@code JGivenMissingRequiredScenarioStateException} will be thrown.
+     *
+     * @since 0.14.0
+     */
+    boolean required() default false;
 }
