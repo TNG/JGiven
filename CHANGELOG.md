@@ -34,6 +34,12 @@ Special thanks to [orginx](https://github.com/originx)
 
 * Spring Integration: Nested Steps are now supported when using Spring [#259](https://github.com/TNG/JGiven/issues/259)
 
+# v0.13.1
+
+## Bug Fixes
+
+* Maven Plugin: The default values of the Maven plugin now work again [#276](https://github.com/TNG/JGiven/issues/276)
+
 # v0.13.0
 
 ## Backwards Incompatible Changes
