@@ -6,54 +6,54 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import com.tngtech.jgiven.report.ReportGenerator;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
-/**
- * @goal report
- * @phase verify
- */
+@Mojo( name="report", defaultPhase = LifecyclePhase.VERIFY )
 public class JGivenReportMojo extends AbstractMojo {
 
     /**
      * Directory where the reports are generated to
-     * @parameter expression="${project.build.directory}/jgiven-reports/html"
      */
+    @Parameter( defaultValue = "${project.build.directory}/jgiven-reports/html")
     private File outputDirectory;
 
     /**
      * Directory to read the JSON report files from
-     * @parameter expression="${project.build.directory}/jgiven-reports/json"
      */
+    @Parameter( defaultValue = "${project.build.directory}/jgiven-reports/json")
     private File sourceDirectory;
 
     /**
      * Custom CSS file to customize the HTML report
-     * @parameter expression="src/test/resources/jgiven/custom.css"
      */
+    @Parameter( defaultValue = "src/test/resources/jgiven/custom.css")
     private File customCssFile;
 
     /**
      * Custom JS file to customize the HTML report
-     * @parameter expression="src/test/resources/jgiven/custom.js"
      */
+    @Parameter( defaultValue = "src/test/resources/jgiven/custom.js")
     private File customJsFile;
 
     /**
      * The format of the generated report. Can be html or text
-     * @parameter expression="html"
      */
+    @Parameter( defaultValue = "html")
     private String format;
 
     /**
      * The title of the generated report.
-     * @parameter expression="JGiven Report"
      */
+    @Parameter( defaultValue = "JGiven Report")
     private String title;
 
     /**
      * Whether or not to exclude empty scenarios, i.e. scenarios without any steps,
      * from the report
-     * @parameter expression="false"
      */
+    @Parameter( defaultValue = "false")
     boolean excludeEmptyScenarios;
 
     @Override
