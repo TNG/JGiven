@@ -1,5 +1,5 @@
 == Spring
-:javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/{version}/com/tngtech/jgiven/integration/spring/
+:javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/{version}/com/tngtech/jgiven/integration/spring
 
 === Install Dependency
 Spring support is provided by the `jgiven-spring` dependency.

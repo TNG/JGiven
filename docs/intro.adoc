@@ -18,8 +18,8 @@ If your test-runner of choice is JUnit then you use this module.
 ==== JGiven TestNG
 Provides an integration into TestNG
 
-==== JGiven HTML Report
-Allows you to generate an HTML report from the JSON files
+==== JGiven HTML5 Report
+Allows you to generate an HTML5 report from the JSON files
 that JGiven generates during the test execution.
 
 ==== JGiven Spring

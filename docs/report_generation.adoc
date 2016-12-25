@@ -22,7 +22,12 @@ Note that in order to generate HTML reports, JSON reports are required.
 
 === HTML Report
 
-To generate an HTML report you have to run the JGiven report generator with the `html` format option. The reporter is part of the jgiven-core module. For the HTML output you also need the `jgiven-html5-report` dependency. The report generator can be executed on the command line as follows (assuming that the jgiven-core and the jgiven-html5-report JAR and all required dependencies are on the Java CLASSPATH)
+To generate an HTML report you have to run the JGiven report generator
+with the `html` format option.
+The reporter is part of the `jgiven-html5-report` module.
+The report generator can be executed on the command line as
+follows (assuming that the `jgiven-core` and the `jgiven-html5-report` JAR
+and all required dependencies are on the Java CLASSPATH)
 
 
 [source,bash]
@@ -33,7 +38,8 @@ java com.tngtech.jgiven.report.ReportGenerator \
   [--targetDir=<targetDir>] \
 ----
 
-To see the HTML report in action you can have a look at the http://jgiven.org/jgiven-report/html5/[HTML report of JGiven itself]
+To see the HTML report in action you can have a look at the
+http://jgiven.org/jgiven-report/html5/[HTML report of JGiven itself]
 
 ==== Maven
 
@@ -73,6 +79,7 @@ HTML reports are then generated into the `target/jgiven-reports/html` directory.
 
 ==== Gradle
 
+There also exists a plugin for Gradle to make you life easier.
 Add the following plugins section to your `build.gradle` file or extend the one you have already accordingly:
 
 [source,gradle,subs="verbatim,attributes"]
@@ -108,5 +115,14 @@ $ gradle test jgivenTestReport
 
 HTML reports are then generated into the `build/reports/jgiven/test/html/` directory.
 
-For additional information about the Gradle plugin refer to 
+If you want that the HTML report is always generated after the tests
+have been executed, you can configure the `test` task in your Gradle
+configuration file as follows:
+
+[source,gradle]
+----
+test.finalizedBy jgivenTestReport
+----
+
+For additional information about the Gradle plugin refer to
 https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin
