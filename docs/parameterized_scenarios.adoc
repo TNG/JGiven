@@ -10,8 +10,8 @@ Parameterization of Scenarios works with TestNG and JUnit, we only show it for J
 JGiven supports several different ways to parameterize a JUnit test:
 
 . JUnit’s built-in Parametrized Runner
-. https://github.com/TNG/junit-dataprovider[JUnit Dataprovider]
-. https://code.google.com/p/junitparams/[JUnitParms]
+. https://github.com/TNG/junit-dataprovider[JUnit DataProvider]
+. https://github.com/Pragmatists/JUnitParams[JUnitParams]
 
 We use the JUnit Dataprovider in the following.
 
