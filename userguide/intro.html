@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.3">
-<title>Life-Cycle Methods</title>
+<title>Introduction</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -422,174 +422,57 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_life_cycle_methods">Life-Cycle Methods</h2>
+<h2 id="_introduction">Introduction</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_scenario_life_cycle">Scenario Life-Cycle</h3>
 <div class="paragraph">
-<p>The life-cycle of a scenario is as follows.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>An instance for each stage class is created</p>
-</li>
-<li>
-<p>The <code>before()</code> methods of all scenario rules of all stages are called</p>
-</li>
-<li>
-<p>The <code>@BeforeScenario</code>-annotated methods of all stages are called</p>
-</li>
-<li>
-<p>For each stage:</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Values are injected into all scenario state fields</p>
-</li>
-<li>
-<p>The <code>@BeforeStage</code>-annotated methods of the stage are called</p>
-</li>
-<li>
-<p>The steps of the stage are executed</p>
-</li>
-<li>
-<p>The <code>@AfterStage</code>-annotated methods of the stage are called 4.5. The values of all scenario state fields are extracted.</p>
-</li>
-</ol>
-</div>
-</li>
-<li>
-<p>The <code>@AfterScenario</code>-annotated methods of all stages are called.</p>
-</li>
-<li>
-<p>The <code>after()</code> methods of all scenario rules of all stages are called.</p>
-</li>
-</ol>
-</div>
+<p>JGiven is a light-weight Java library that helps you to design a high-level, domain-specific language for writing BDD scenarios.
+In the spirit of Unix tools, it tries to do one thing and do it well, instead of trying to solve all problems.
+Thus, you still use your favorite assertion library and mocking library for
+writing your test implementations, but you use JGiven to write a readable abstraction layer on top of it.</p>
 </div>
 <div class="sect2">
-<h3 id="__beforescenario_afterscenario">@BeforeScenario / @AfterScenario</h3>
-<div class="sect3">
-<h4 id="__beforescenario">@BeforeScenario</h4>
+<h3 id="_module_overview">Module Overview</h3>
 <div class="paragraph">
-<p>Methods annotated with <code>@BeforeScenario</code> are executed before any step of any stage of a scenario. This is useful for some general scenario setup. As an example you could initialize a WebDriver instance for Selenium tests or setup a database connection. Note that such methods are executed before injection of values. Thus the code cannot depend on scenario state fields.</p>
+<p>JGiven consists of a couple of modules.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ProvidedScenarioState
-protected WebDriver webDriver;
-
-@BeforeScenario
-public void startBrowser() {
-    webDriver = new HtmlUnitDriver( true );
-}</code></pre>
-</div>
+<div class="sect3">
+<h4 id="_jgiven_core">JGiven Core</h4>
+<div class="paragraph">
+<p>The JGiven Core module contains the core implementation of JGiven and is always required.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="__afterscenario">@AfterScenario</h4>
+<h4 id="_jgiven_junit">JGiven JUnit</h4>
 <div class="paragraph">
-<p>Analogous to <code>@BeforeScenario</code> there is the <code>@AfterScenario</code> annotation to execute a methods when a scenario has finished.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ProvidedScenarioState
-protected WebDriver webdriver;
-
-@AfterScenario
-public void closeBrowser() {
-    webdriver.close();
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="__scenariorule">@ScenarioRule</h3>
-<div class="paragraph">
-<p><code>@BeforeScenario</code> and <code>@AfterScenario</code> methods are often used to setup and tear down some resource. If you want to reuse such a resource in another stage, you would have to copy these methods into that stage. To avoid that, JGiven offers a concept similar to JUnit rules. The idea is to have a separate class that only contains the before and after methods. This class can then be reused in multiple stages.</p>
-</div>
-<div class="paragraph">
-<p>A rule class can be any class that provides the methods <code>before()</code> and <code>after()</code>. This is compatible with JUnit’s <code>ExternalResource</code> class, which means that you can use classes like <code>TemporaryFolder</code> from JUnit directly in JGiven.</p>
-</div>
-<div class="sect3">
-<h4 id="_example">Example</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class WebDriverRule {
-
-    protected WebDriver webDriver;
-
-    public void before() {
-         webDriver = new HtmlUnitDriver( true );
-    }
-
-    public void after() {
-         webDriver.close();
-    }
- }
-
-
-public class MyWebDriverUsingStage {
-    @ScenarioRule
-    protected WebDriverRule webDriverRule = new WebDriverRule();
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="__beforestage_afterstage">@BeforeStage / @AfterStage</h3>
-<div class="sect3">
-<h4 id="__beforestage">@BeforeStage</h4>
-<div class="paragraph">
-<p>Methods annotated with <code>@BeforeStage</code> are executed after injection, but before the first step method is called. This is useful for setup code that is required by all or most steps of a stage.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@BeforeStage
-public void setup() {
-  // do something useful to setup the stage
-}</code></pre>
-</div>
+<p>This module provides an integration into JUnit 4.x.
+If your test-runner of choice is JUnit then you use this module.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="__afterstage">@AfterStage</h4>
+<h4 id="_jgiven_testng">JGiven TestNG</h4>
 <div class="paragraph">
-<p>Analogous to <code>@BeforeStage</code> methods, methods can be annotated with <code>@AfterStage</code>. These methods are executed after all steps of a stage have been executed, but before extracting the values of scenario state fields. Thus you can prepare state for following stages in an <code>@AfterStage</code> method. A typical use case for this is to apply the builder pattern to build a certain object using step methods and build the final object in an <code>@AfterStage</code> method.</p>
+<p>Provides an integration into TestNG</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_example_2">Example</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MyStage {
-
-    protected CustomerBuilder customerBuilder;
-
-    @ProvidedScenarioState
-    protected Customer customer;
-
-    public MyStage a_customer() {
-        customerBuilder = new CustomerBuilder();
-        return this;
-    }
-
-    public MyStage the_customer_has_name( String name ) {
-        customerBuilder.withName( name );
-        return this;
-    }
-
-    @AfterStage
-    public void buildCustomer() {
-        if (customerBuilder != null) {
-            customer = customerBuilder.build();
-        }
-    }
- }</code></pre>
+<h4 id="_jgiven_html_report">JGiven HTML Report</h4>
+<div class="paragraph">
+<p>Allows you to generate an HTML report from the JSON files
+that JGiven generates during the test execution.</p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_jgiven_spring">JGiven Spring</h4>
+<div class="paragraph">
+<p>Provides an integration into the Spring framework, which basically means that
+stages classes can be treated as Spring beans.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_jgiven_android">JGiven Android</h4>
+<div class="paragraph">
+<p>Provides support for executing JGiven tests on an Android device or emulator.
+This is currently in an experimental status.</p>
 </div>
 </div>
 </div>
@@ -598,7 +481,7 @@ public void setup() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-24 17:24:34 CET
+Last updated 2016-12-25 12:18:45 CET
 </div>
 </div>
 </body>
