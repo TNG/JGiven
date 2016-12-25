@@ -27,7 +27,7 @@ dependencies {
 
 JGiven writes JSON files during the execution of the tests to the external storage of the device or emulator.
 Thus you have to enable the permission `WRITE_EXTERNAL_STORAGE` when executing the tests.
-You can do that by creating a file `src/debug/AndroidManifest.xml` than enables that permission:
+You can do that by creating a file `src/debug/AndroidManifest.xml` that enables that permission:
 
 [source,XML]
 ----
@@ -50,7 +50,7 @@ In your test classes you have to add the following additional JUnit rule:
 public AndroidJGivenTestRule androidJGivenTestRule = new AndroidJGivenTestRule(this.getScenario());
 ----
 
-In addition it is useful to expose the `ActivityTestRule` to Stages by
+In addition, it is useful to expose the `ActivityTestRule` to Stages by
 using the `@ScenarioState` annotation:
 
 [source, Java]
