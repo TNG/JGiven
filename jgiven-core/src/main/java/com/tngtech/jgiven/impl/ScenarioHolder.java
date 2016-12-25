@@ -1,6 +1,4 @@
-package com.tngtech.jgiven.testng;
-
-import com.tngtech.jgiven.impl.ScenarioBase;
+package com.tngtech.jgiven.impl;
 
 public class ScenarioHolder {
     private final ThreadLocal<ScenarioBase> scenario = new ThreadLocal<ScenarioBase>();

@@ -182,11 +182,18 @@ configure(subprojects) {
 
 }
 
+configure(subprojects.findAll {!it.name.contains("jgiven-junit5")}) {
+    apply plugin: 'ru.vyarus.animalsniffer'
+
+    dependencies {
+        signature 'org.codehaus.mojo.signature:java16:1.1@signature'
+    }
+}
+
 configure(subprojects.findAll {!it.name.contains("android")}) {
     apply plugin: 'checkstyle'
     apply plugin: 'java'
     apply plugin: 'org.asciidoctor.convert'
-    apply plugin: 'ru.vyarus.animalsniffer'
 
     dependencies {
         compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
@@ -197,7 +204,6 @@ configure(subprojects.findAll {!it.name.contains("android")}) {
         testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
         testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
         testCompile group: 'net.java.quickcheck', name: 'quickcheck', version: quickcheckVersion
-        signature 'org.codehaus.mojo.signature:java16:1.1@signature'
     }
 
     sourceCompatibility = targetCompatibility = 1.6

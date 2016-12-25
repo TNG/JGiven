@@ -2,7 +2,7 @@ package com.tngtech.jgiven.tests;
 
 import com.tngtech.jgiven.impl.Scenario;
 import com.tngtech.jgiven.junit.ScenarioTest;
-import com.tngtech.jgiven.testng.ScenarioHolder;
+import com.tngtech.jgiven.impl.ScenarioHolder;
 
 public class ScenarioTestForTesting<GIVEN, WHEN, THEN> extends ScenarioTest<GIVEN,WHEN,THEN> {
     @Override

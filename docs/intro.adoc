@@ -29,3 +29,7 @@ stages classes can be treated as Spring beans.
 ==== JGiven Android
 Provides support for executing JGiven tests on an Android device or emulator.
 This is currently in an experimental status.
+
+==== JGiven JUnit 5
+This module provides an integration into JUnit 5.x.
+This is currently in an experimental status.

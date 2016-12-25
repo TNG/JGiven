@@ -208,16 +208,20 @@ public class ReflectionUtil {
         return new Function<Field, Object>() {
             @Override
             public Object apply( Field field ) {
-                makeAccessible( field, "" );
-                try {
-                    return field.get( target );
-                } catch( IllegalAccessException e ) {
-                    log.warn(
-                        format( "Not able to access field '%s'." + errorDescription, toReadableString( field ) ), e );
-                    return null;
-                }
+                return getFieldValueOrNull(field, target, errorDescription);
             }
         };
+    }
+
+    public static Object getFieldValueOrNull(Field field, Object target, String errorDescription) {
+        makeAccessible( field, "" );
+        try {
+            return field.get( target );
+        } catch( IllegalAccessException e ) {
+            log.warn(
+                format( "Not able to access field '%s'." + errorDescription, toReadableString( field ) ), e );
+            return null;
+        }
     }
 
     public static List<Field> getAllNonStaticFields( Class<?> clazz ) {

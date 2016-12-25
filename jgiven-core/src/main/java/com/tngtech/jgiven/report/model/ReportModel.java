@@ -161,7 +161,6 @@ public class ReportModel {
     }
 
     public synchronized void addScenarioModelOrMergeWithExistingOne( ScenarioModel scenarioModel ) {
-        scenarioModel.setClassName( getClassName() );
         Optional<ScenarioModel> existingScenarioModel = findScenarioModel( scenarioModel.getDescription() );
 
         if( existingScenarioModel.isPresent() ) {
@@ -191,5 +190,9 @@ public class ReportModel {
 
     public String getName() {
         return name;
+    }
+
+    public void setName( String name ) {
+        this.name = name;
     }
 }
