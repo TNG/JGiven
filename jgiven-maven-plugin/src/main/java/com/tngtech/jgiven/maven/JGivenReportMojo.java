@@ -15,44 +15,44 @@ public class JGivenReportMojo extends AbstractMojo {
 
     /**
      * Directory where the reports are generated to
-     * @parameter expression="${project.build.directory}/jgiven-reports/html"
+     * @parameter default-value="${project.build.directory}/jgiven-reports/html"
      */
     private File outputDirectory;
 
     /**
      * Directory to read the JSON report files from
-     * @parameter expression="${project.build.directory}/jgiven-reports/json"
+     * @parameter default-value="${project.build.directory}/jgiven-reports/json"
      */
     private File sourceDirectory;
 
     /**
      * Custom CSS file to customize the HTML report
-     * @parameter expression="src/test/resources/jgiven/custom.css"
+     * @parameter default-value="src/test/resources/jgiven/custom.css"
      */
     private File customCssFile;
 
     /**
      * Custom JS file to customize the HTML report
-     * @parameter expression="src/test/resources/jgiven/custom.js"
+     * @parameter default-value="src/test/resources/jgiven/custom.js"
      */
     private File customJsFile;
 
     /**
      * The format of the generated report. Can be html or text
-     * @parameter expression="html"
+     * @parameter default-value="html"
      */
     private String format;
 
     /**
      * The title of the generated report.
-     * @parameter expression="JGiven Report"
+     * @parameter default-value="JGiven Report"
      */
     private String title;
 
     /**
      * Whether or not to exclude empty scenarios, i.e. scenarios without any steps,
      * from the report
-     * @parameter expression="false"
+     * @parameter default-value="false"
      */
     boolean excludeEmptyScenarios;
 
