@@ -424,10 +424,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_installation">Installation</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>JGiven is installed as any other Java library by putting its JAR file(s) into the classpath.
+Normally you will do that by using one of your favorite build tools like Maven or Gradle.</p>
+</div>
+<div class="paragraph">
+<p>Depending on whether you are using JUnit or TestNG for executing tests, you have
+to use different dependencies.</p>
+</div>
 <div class="sect2">
 <h3 id="_junit">JUnit</h3>
 <div class="paragraph">
-<p>If you are using JUnit, you must depend on the <code>jgiven-junit</code> artifact. Note that <code>jgiven-junit</code> does not directly depend on JUnit, thus you also must have a dependency to JUnit itself. JGiven requires at least JUnit v4.9, while the recommended version is v4.11.</p>
+<p>If you are using JUnit, you must depend on the <code>jgiven-junit</code> artifact.
+Note that <code>jgiven-junit</code> does not directly depend on JUnit,
+thus you also must have a dependency to JUnit itself.
+JGiven requires at least JUnit 4.9, while the recommended version is 4.12.</p>
 </div>
 <div class="sect3">
 <h4 id="_maven_dependency">Maven Dependency</h4>
@@ -447,9 +458,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
-...
    testCompile 'com.tngtech.jgiven:jgiven-junit:0.14.0-RC1'
-...
 }</code></pre>
 </div>
 </div>
@@ -458,7 +467,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_testng">TestNG</h3>
 <div class="paragraph">
-<p>If you are using TestNG, you must depend on the <code>jgiven-testng</code> artifact. Note that <code>jgiven-testng</code> does not directly depend on TestNG, thus you also must have a dependency to TestNG itself.</p>
+<p>If you are using TestNG, you must depend on the <code>jgiven-testng</code> artifact.
+Note that <code>jgiven-testng</code> does not directly depend on TestNG,
+thus you also must have a dependency to TestNG itself.</p>
 </div>
 <div class="sect3">
 <h4 id="_maven_dependency_2">Maven Dependency</h4>
@@ -478,40 +489,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
-...
    testCompile 'com.tngtech.jgiven:jgiven-testng:0.14.0-RC1'
-...
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_html5_report">HTML5 Report</h3>
-<div class="paragraph">
-<p>In order to generate an HTML report, you have to add the following dependency in addition to the above dependency.</p>
-</div>
-<div class="sect3">
-<h4 id="_maven_dependency_3">Maven Dependency</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-maven" data-lang="maven">&lt;dependency&gt;
-   &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
-   &lt;artifactId&gt;jgiven-html5-report&lt;/artifactId&gt;
-   &lt;version&gt;0.14.0-RC1&lt;/version&gt;
-   &lt;scope&gt;test&lt;/scope&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_gradle_dependency_3">Gradle Dependency</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
-...
-   testCompile 'com.tngtech.jgiven:jgiven-html5-report:0.14.0-RC1'
-...
 }</code></pre>
 </div>
 </div>
@@ -528,7 +506,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-17 10:11:33 CET
+Last updated 2016-12-25 15:02:42 CET
 </div>
 </div>
 </body>
