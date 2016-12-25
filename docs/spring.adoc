@@ -32,7 +32,7 @@ existence of JGiven.
 
 ==== Annotation-Based
 If you are using the annotation-based configuration of Spring you can annotate your Spring
-configuration with the link:{javascripturl}/EnableJGiven.html[`@EnableJGiven`] annotation.
+configuration with the link:{javadocurl}/EnableJGiven.html[`@EnableJGiven`] annotation.
 This is all you have to do to configure Spring for JGiven.
 
 ===== Example
@@ -86,7 +86,7 @@ can copy the content of these classes (one method) into one of your test base cl
 
 In order to treat JGiven stages as Spring beans, e.g. if you want to inject
  other Spring beans into your stages, you have to annotate
-the stage class with the link:{javascripturl}/JGivenStage.html[`@JGivenStage`] annotation.
+the stage class with the link:{javadocurl}/JGivenStage.html[`@JGivenStage`] annotation.
 
 ==== Example
 
