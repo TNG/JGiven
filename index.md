@@ -13,6 +13,14 @@ JGiven is a developer-friendly and pragmatic BDD tool for Java. Developers write
 {% assign post = site.posts[0] %}
 <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> - <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
 
+{% assign post = site.posts[1] %}
+<span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> - <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+
+{% assign post = site.posts[2] %}
+<span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span> - <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+
+<a href="{{ site.baseurl }}/news">More news...</a>
+
 ### Example
 
 {% highlight java %}
@@ -48,7 +56,7 @@ Further examples can be found in the [jgiven-examples](https://github.com/TNG/JG
 
 Besides the plain text report, an HTML report can be generated. An example of such a report is [JGiven's own report]({{site.baseurl}}/jgiven-report/html5):
 <p>
-<a href="{{site.baseurl}}/jgiven-report/html5"><img id="jgivenreport" alt="JGiven HTML5 report of JGiven" width="560" src="img/html5report.png" /></a>
+<a href="{{site.baseurl}}/jgiven-report/html5"><img class="shadow-frame" id="jgivenreport" alt="JGiven HTML5 report of JGiven" width="560" src="img/html5report.png" /></a>
 </p>
 The source code of the corresponding JGiven tests are in the [jgiven-tests](https://github.com/TNG/JGiven/tree/master/jgiven-tests) module of the JGiven project.
 
