@@ -22,6 +22,10 @@ if (JavaVersion.current().isJava8Compatible() && !release) {
     include ':jgiven-java8-tests'
 }
 
+if (JavaVersion.current().isJava8Compatible()) {
+    include ':jgiven-junit5'
+}
+
 if (android || release) {
     include ':jgiven-android'
 }

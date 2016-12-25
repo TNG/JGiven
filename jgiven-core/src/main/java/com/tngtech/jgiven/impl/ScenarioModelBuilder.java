@@ -324,6 +324,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     public void scenarioStarted( Class<?> testClass, Method method, List<NamedArgument> namedArguments ) {
         readConfiguration( testClass );
         readAnnotations( testClass, method );
+        scenarioModel.setClassName(testClass.getName());
         setParameterNames( getNames( namedArguments ) );
 
         // must come at last

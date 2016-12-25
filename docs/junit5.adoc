@@ -1,0 +1,86 @@
+== JUnit 5 (EXPERIMENTAL)
+:javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/{version}/com/tngtech/jgiven/junit5
+
+CAUTION: JUnit 5 support is currently in an experimental state.
+This means that the API is not completely stable yet and that not all
+JGiven and JUnit 5 features are completely supported yet.
+
+=== Known Issues
+
+* Nested tests are all reported under the outer parent test class
+* Dynamic tests are not reported at all. As dynamic tests in JUnit 5 do not provide life-cycle
+  hooks, it is unclear at the moment, whether JGiven will ever support them.
+
+=== Install Dependency
+JUnit 5 support is provided by the `jgiven-junit5` dependency.
+
+==== Maven
+
+[source,maven,subs="verbatim,attributes"]
+----
+<dependency>
+   <groupId>com.tngtech.jgiven</groupId>
+   <artifactId>jgiven-junit5</artifactId>
+   <version>{version}</version>
+   <scope>test</scope>
+</dependency>
+----
+
+==== Gradle
+
+[source,gradle,subs="verbatim,attributes"]
+----
+dependencies {
+    testCompile("com.tngtech.jgiven:jgiven-junit5:{version}")
+}
+----
+
+=== Use JGiven with JUnit 5
+
+JGiven support for JUnit 5 is provided by the link:{javadocurl}/JGivenExtension.html[`JGivenExtension`]
+JUnit 5 extension. You just annotate your JUnit 5 test class with `@ExtendWith( JGivenExtension.class )`
+and JGiven is enabled.
+
+If you just use the extension directly, you have to inject your stage classes by using
+the `@ScenarioStage` annotation.
+
+[source,java]
+----
+@ExtendWith( JGivenExtension.class )
+public class JUnit5Test {
+
+   @ScenarioStage
+   MyStage myStage;
+
+   @Test
+   public void my_scenario() {
+      myStage
+        .given().some_context()
+        .when().some_action()
+        .then().some_outcome();
+
+   }
+}
+----
+
+Alternatively, you can use one of the test base classes link:{javadocurl}/ScenarioTest.html[`ScenarioTest`] or
+link:{javadocurl}/SimpleScenarioTest.html[`SimpleScenarioTest`] that provide additional convenience methods
+and allows you to specify stage classes by using type parameters:
+
+[source,java]
+----
+public class JGiven5ScenarioTest
+    extends ScenarioTest<GivenStage, WhenStage, ThenStage> {
+
+    @Test
+    public void JGiven_works_with_JUnit5() {
+        given().some_state();
+        when().some_action();
+        then().some_outcome();
+    }
+}
+----
+
+=== Example Project
+
+You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/junit5

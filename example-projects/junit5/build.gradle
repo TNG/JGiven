@@ -1,0 +1,51 @@
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M3'
+    }
+}
+
+plugins {
+    id "com.tngtech.jgiven.gradle-plugin" version "0.13.0"
+}
+
+apply plugin: 'org.junit.platform.gradle.plugin'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.compilerArgs += '-parameters'
+    options.encoding = 'UTF-8'
+}
+
+ext {
+    junit5Version = '5.0.0-M3'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+         url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+dependencies {
+    testCompile 'com.tngtech.jgiven:jgiven-junit5:latest.integration'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:' + junit5Version
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:' + junit5Version
+}
+
+junitPlatform {
+    enableStandardTestTask true
+    platformVersion = "1.0.0-M3"
+}
+
+test.finalizedBy jgivenTestReport

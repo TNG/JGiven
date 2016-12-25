@@ -23,12 +23,15 @@ public class ConfigurationUtil {
 
     public static AbstractJGivenConfiguration getConfiguration( Class<? extends Object> testClass ) {
         JGivenConfiguration annotation = testClass.getAnnotation( JGivenConfiguration.class );
+        Class<?> configuration;
         if( annotation == null ) {
-            return new DefaultConfiguration();
+            configuration = DefaultConfiguration.class;
+        } else {
+            configuration = annotation.value();
         }
 
         try {
-            return configurations.get( annotation.value() );
+            return configurations.get( configuration );
         } catch( ExecutionException e ) {
             throw Throwables.propagate( e.getCause() );
         }

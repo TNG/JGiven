@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.testng;
 
 import com.tngtech.jgiven.impl.Scenario;
+import com.tngtech.jgiven.impl.ScenarioHolder;
 import org.testng.annotations.Listeners;
 
 import com.tngtech.jgiven.base.SimpleScenarioTestBase;
