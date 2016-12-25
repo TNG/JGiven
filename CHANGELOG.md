@@ -1,3 +1,9 @@
+# v0.13.1
+
+## Bug Fixes
+
+* Maven Plugin: The default values of the Maven plugin now work again [#276](https://github.com/TNG/JGiven/issues/276)
+
 # v0.13.0
 
 ## Backwards Incompatible Changes
