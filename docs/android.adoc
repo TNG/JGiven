@@ -16,18 +16,6 @@ the implementation might be changed in a backwards-incompatible way in future ve
 ==== JGiven Android Dependency
 First of all you need an additional project dependency to the `jgiven-android` module:
 
-[source,maven,subs="verbatim,attributes"]
-----
-<dependency>
-   <groupId>com.tngtech.jgiven</groupId>
-   <artifactId>jgiven-android</artifactId>
-   <version>{version}</version>
-   <scope>test</scope>
-</dependency>
-----
-
-or in Gradle with:
-
 [source,gradle,subs="verbatim,attributes"]
 ----
 dependencies {
