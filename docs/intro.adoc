@@ -1,0 +1,31 @@
+== Introduction
+
+JGiven is a light-weight Java library that helps you to design a high-level, domain-specific language for writing BDD scenarios.
+In the spirit of Unix tools, it tries to do one thing and do it well, instead of trying to solve all problems.
+Thus, you still use your favorite assertion library and mocking library for
+writing your test implementations, but you use JGiven to write a readable abstraction layer on top of it.
+
+=== Module Overview
+JGiven consists of a couple of modules.
+
+==== JGiven Core
+The JGiven Core module contains the core implementation of JGiven and is always required.
+
+==== JGiven JUnit
+This module provides an integration into JUnit 4.x.
+If your test-runner of choice is JUnit then you use this module.
+
+==== JGiven TestNG
+Provides an integration into TestNG
+
+==== JGiven HTML Report
+Allows you to generate an HTML report from the JSON files
+that JGiven generates during the test execution.
+
+==== JGiven Spring
+Provides an integration into the Spring framework, which basically means that
+stages classes can be treated as Spring beans.
+
+==== JGiven Android
+Provides support for executing JGiven tests on an Android device or emulator.
+This is currently in an experimental status.

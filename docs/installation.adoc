@@ -1,8 +1,16 @@
 == Installation
 
+JGiven is installed as any other Java library by putting its JAR file(s) into the classpath.
+Normally you will do that by using one of your favorite build tools like Maven or Gradle.
+
+Depending on whether you are using JUnit or TestNG for executing tests, you have
+to use different dependencies.
 
 === JUnit
-If you are using JUnit, you must depend on the `jgiven-junit` artifact. Note that `jgiven-junit` does not directly depend on JUnit, thus you also must have a dependency to JUnit itself. JGiven requires at least JUnit v4.9, while the recommended version is v4.11.
+If you are using JUnit, you must depend on the `jgiven-junit` artifact.
+Note that `jgiven-junit` does not directly depend on JUnit,
+thus you also must have a dependency to JUnit itself.
+JGiven requires at least JUnit 4.9, while the recommended version is 4.12.
 
 ==== Maven Dependency
 [source,maven,subs="verbatim,attributes"]
@@ -19,14 +27,14 @@ If you are using JUnit, you must depend on the `jgiven-junit` artifact. Note tha
 [source,gradle,subs="verbatim,attributes"]
 ----
 dependencies {
-...
    testCompile 'com.tngtech.jgiven:jgiven-junit:{version}'
-...
 }
 ----
 
 === TestNG
-If you are using TestNG, you must depend on the `jgiven-testng` artifact. Note that `jgiven-testng` does not directly depend on TestNG, thus you also must have a dependency to TestNG itself.
+If you are using TestNG, you must depend on the `jgiven-testng` artifact.
+Note that `jgiven-testng` does not directly depend on TestNG,
+thus you also must have a dependency to TestNG itself.
 
 ==== Maven Dependency
 [source,maven,subs="verbatim,attributes"]
@@ -42,33 +50,10 @@ If you are using TestNG, you must depend on the `jgiven-testng` artifact. Note t
 [source,gradle,subs="verbatim,attributes"]
 ----
 dependencies {
-...
    testCompile 'com.tngtech.jgiven:jgiven-testng:{version}'
-...
 }
 ----
-=== HTML5 Report
-In order to generate an HTML report, you have to add the following dependency in addition to the above dependency.
 
-==== Maven Dependency
-[source,maven,subs="verbatim,attributes"]
-----
-<dependency>
-   <groupId>com.tngtech.jgiven</groupId>
-   <artifactId>jgiven-html5-report</artifactId>
-   <version>{version}</version>
-   <scope>test</scope>
-</dependency>
-----
-==== Gradle Dependency
-[source,gradle,subs="verbatim,attributes"]
-----
-dependencies {
-...
-   testCompile 'com.tngtech.jgiven:jgiven-html5-report:{version}'
-...
-}
-----
 === Java Compiler Note
 
 Note that you should compile your test classes with all debugging information (javac -g). Otherwise JGiven cannot obtain the parameter names of step methods and will generate names of the form argX instead.

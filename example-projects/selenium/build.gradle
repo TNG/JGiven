@@ -1,0 +1,25 @@
+plugins {
+    id "com.tngtech.jgiven.gradle-plugin" version "0.13.0"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/groups/public/"
+    }
+}
+
+dependencies {
+    testCompile 'com.tngtech.jgiven:jgiven-junit:latest.integration'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.seleniumhq.selenium:selenium-java:2.47.1'
+    testCompile 'com.codeborne:phantomjsdriver:1.3.0'
+    testCompile 'org.assertj:assertj-core:3.6.1'
+
+}
+
+test.finalizedBy jgivenTestReport

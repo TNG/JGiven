@@ -1,0 +1,23 @@
+== Web Testing with Selenium
+
+JGiven is a completely use-case agnostic testing library.
+So it is no surprise that you can also write Selenium-Tests with JGiven.
+In fact, JGiven can be considered as a perfect addition on top of Selenium:
+In Selenium you define the low-level interaction with the browser and HTML pages.
+In JGiven you define a high-level, domain specific language to specify your scenarios.
+
+There is no additional integration module needed in order to use JGiven with Selenium
+
+=== Page Objects vs Stages
+
+It is possible to treat Selenium page objects directly as JGiven stages.
+This sometimes makes sense for simple cases, but from a code design perspective,
+it is better to separate these different concerns into multiple classes.
+The page object should be solely responsible for the low-level
+interaction with a HTML page.
+The stage class contains the high-level steps of the scenario and
+handles the state of the scenario.
+
+=== Example Project
+
+You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/selenium

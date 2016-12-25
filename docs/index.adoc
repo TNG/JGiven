@@ -12,7 +12,9 @@ ifndef::env-site[:toc: left]
 :sectanchors:
 :sectnums:
 
-{version}
+Version {version}
+
+include::intro.adoc[]
 
 include::installation.adoc[]
 
@@ -35,5 +37,7 @@ include::attachments.adoc[]
 include::exception_handling.adoc[]
 
 include::spring.adoc[]
+
+include::selenium.adoc[]
 
 include::android.adoc[]

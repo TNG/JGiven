@@ -7,10 +7,13 @@ target
 .idea
 jgiven-reports
 *.iml
-/.gradle
+*.ipr
+*.iws
 artifacts
 .*.swp
 /test-output
 phantomjsdriver.log
 .gradle
 local.properties
+out
+

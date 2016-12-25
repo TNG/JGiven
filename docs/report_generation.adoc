@@ -39,7 +39,7 @@ To see the HTML report in action you can have a look at the http://jgiven.org/jg
 
 For Maven there exists a plugin that can be used as follows:
 
-[source,maven]
+[source,maven,subs="verbatim,attributes"]
 ----
 <build>
   <plugins>
@@ -75,7 +75,7 @@ HTML reports are then generated into the `target/jgiven-reports/html` directory.
 
 Add the following plugins section to your `build.gradle` file or extend the one you have already accordingly:
 
-[source,gradle]
+[source,gradle,subs="verbatim,attributes"]
 ----
 plugins {
     id "com.tngtech.jgiven.gradle-plugin" version "{version}"
@@ -84,7 +84,7 @@ plugins {
 
 Alternatively you can configure the plugin as follows:
 
-[source,gradle]
+[source,gradle,subs="verbatim,attributes"]
 ----
 buildscript {
     repositories {

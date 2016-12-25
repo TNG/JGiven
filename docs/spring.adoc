@@ -1,7 +1,10 @@
 == Spring
+:javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/{version}/com/tngtech/jgiven/integration/spring/
 
+=== Install Dependency
+Spring support is provided by the `jgiven-spring` dependency.
 
-Spring support is provided by the jgiven-spring dependency for maven:
+==== Maven
 
 [source,maven,subs="verbatim,attributes"]
 ----
@@ -13,19 +16,90 @@ Spring support is provided by the jgiven-spring dependency for maven:
 </dependency>
 ----
 
-or in gradle with:
+==== Gradle
 
 [source,gradle,subs="verbatim,attributes"]
 ----
 dependencies {
-	...
-    testCompile("com.tngtech.jgiven:jgiven-junit:{version}")
-    testCompile("com.tngtech.jgiven:jgiven-testng:{version}")
     testCompile("com.tngtech.jgiven:jgiven-spring:{version}")
-	...
 }
 ----
 
+=== Configure Spring
 
-to be finished… (help by editing the following file: https://github.com/TNG/JGiven/blob/asciidoc/docs/spring.adoc[spring.adoc])
+In order to enable the JGiven Spring integration you have to tell Spring about the
+existence of JGiven.
 
+==== Annotation-Based
+If you are using the annotation-based configuration of Spring you can annotate your Spring
+configuration with the link:{javascripturl}/EnableJGiven.html[`@EnableJGiven`] annotation.
+This is all you have to do to configure Spring for JGiven.
+
+===== Example
+
+[source,java]
+----
+@EnableJGiven
+@Configuration
+public class MySpringConfig {
+   ...
+}
+----
+
+==== XML-Based
+You can also configure JGiven with XML by adding the `jgiven:annotation-driven` tag to your
+Spring XML config.
+
+===== Example
+[source, XML]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jgiven="http://jgiven.org/jgiven-spring"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                        http://jgiven.org/jgiven-spring http://jgiven.org/schemas/jgiven-spring.xsd">
+
+  <jgiven:annotation-driven/>
+
+</beans>
+----
+
+=== Use JGiven in JUnit-based Spring Tests
+
+To now use JGiven in JUnit-based Spring Tests you should inherit from one of the provided tests classes:
+
+   - `SpringScenarioTest`
+   - `SpringRuleScenarioTest`
+   - `SimpleSpringScenarioTest`
+   - `SimpleSpringRuleScenarioTest`
+
+The test classes with `SpringRule` tests already include the Spring JUnit rules, thus you need to add these
+rules to your test class and you also don't have to specify the Spring JUnit runner.
+
+If you cannot or don't want to inherit from these classes, you
+can copy the content of these classes (one method) into one of your test base classes.
+
+=== Stages as Spring Beans
+
+In order to treat JGiven stages as Spring beans, e.g. if you want to inject
+ other Spring beans into your stages, you have to annotate
+the stage class with the link:{javascripturl}/JGivenStage.html[`@JGivenStage`] annotation.
+
+==== Example
+
+[source, java]
+----
+@JGivenStage
+public class MyStage {
+
+   @Autowired
+   MyService myService;
+}
+----
+
+=== Example Project
+
+You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/spring-boot

@@ -156,4 +156,4 @@ public class MyStage {
 
 === Example Project
 
-You can find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/android
+You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/android
