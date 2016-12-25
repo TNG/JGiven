@@ -668,9 +668,9 @@ If your test-runner of choice is JUnit then you use this module.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_jgiven_html_report"><a class="anchor" href="#_jgiven_html_report"></a>1.1.4. JGiven HTML Report</h4>
+<h4 id="_jgiven_html5_report"><a class="anchor" href="#_jgiven_html5_report"></a>1.1.4. JGiven HTML5 Report</h4>
 <div class="paragraph">
-<p>Allows you to generate an HTML report from the JSON files
+<p>Allows you to generate an HTML5 report from the JSON files
 that JGiven generates during the test execution.</p>
 </div>
 </div>
@@ -696,7 +696,10 @@ This is currently in an experimental status.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>JGiven is installed as any other Java library by putting its JAR file(s) into the classpath.
-Normally you will do that by using one of your favorite build tools like Maven or Gradle.</p>
+Normally you will do that by using one of your favorite build and dependency management
+tools like Maven, Gradle, or Apache Ant + Ivy.
+Alternatively you can download the JAR files directly from
+<a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.tngtech.jgiven%22">Maven Central</a>.</p>
 </div>
 <div class="paragraph">
 <p>Depending on whether you are using JUnit or TestNG for executing tests, you have
@@ -952,7 +955,12 @@ You can now also define convenient methods in your test class to get cleaner sce
 <div class="sect2">
 <h3 id="_html_report"><a class="anchor" href="#_html_report"></a>4.3. HTML Report</h3>
 <div class="paragraph">
-<p>To generate an HTML report you have to run the JGiven report generator with the <code>html</code> format option. The reporter is part of the jgiven-core module. For the HTML output you also need the <code>jgiven-html5-report</code> dependency. The report generator can be executed on the command line as follows (assuming that the jgiven-core and the jgiven-html5-report JAR and all required dependencies are on the Java CLASSPATH)</p>
+<p>To generate an HTML report you have to run the JGiven report generator
+with the <code>html</code> format option.
+The reporter is part of the <code>jgiven-html5-report</code> module.
+The report generator can be executed on the command line as
+follows (assuming that the <code>jgiven-core</code> and the <code>jgiven-html5-report</code> JAR
+and all required dependencies are on the Java CLASSPATH)</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -963,7 +971,8 @@ You can now also define convenient methods in your test class to get cleaner sce
 </div>
 </div>
 <div class="paragraph">
-<p>To see the HTML report in action you can have a look at the <a href="http://jgiven.org/jgiven-report/html5/">HTML report of JGiven itself</a></p>
+<p>To see the HTML report in action you can have a look at the
+<a href="http://jgiven.org/jgiven-report/html5/">HTML report of JGiven itself</a></p>
 </div>
 <div class="sect3">
 <h4 id="_maven"><a class="anchor" href="#_maven"></a>4.3.1. Maven</h4>
@@ -1008,7 +1017,8 @@ You can now also define convenient methods in your test class to get cleaner sce
 <div class="sect3">
 <h4 id="_gradle"><a class="anchor" href="#_gradle"></a>4.3.2. Gradle</h4>
 <div class="paragraph">
-<p>Add the following plugins section to your <code>build.gradle</code> file or extend the one you have already accordingly:</p>
+<p>There also exists a plugin for Gradle to make you life easier.
+Add the following plugins section to your <code>build.gradle</code> file or extend the one you have already accordingly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1045,6 +1055,16 @@ apply plugin: &quot;com.tngtech.jgiven.gradle-plugin&quot;</code></pre>
 </div>
 <div class="paragraph">
 <p>HTML reports are then generated into the <code>build/reports/jgiven/test/html/</code> directory.</p>
+</div>
+<div class="paragraph">
+<p>If you want that the HTML report is always generated after the tests
+have been executed, you can configure the <code>test</code> task in your Gradle
+configuration file as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">test.finalizedBy jgivenTestReport</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>For additional information about the Gradle plugin refer to
@@ -2332,7 +2352,7 @@ existence of JGiven.</p>
 <h4 id="_annotation_based"><a class="anchor" href="#_annotation_based"></a>12.2.1. Annotation-Based</h4>
 <div class="paragraph">
 <p>If you are using the annotation-based configuration of Spring you can annotate your Spring
-configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.14.0-RC1/com/tngtech/jgiven/integration/spring//EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
+configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.14.0-RC1/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
 This is all you have to do to configure Spring for JGiven.</p>
 </div>
 <div class="sect4">
@@ -2410,7 +2430,7 @@ can copy the content of these classes (one method) into one of your test base cl
 <div class="paragraph">
 <p>In order to treat JGiven stages as Spring beans, e.g. if you want to inject
  other Spring beans into your stages, you have to annotate
-the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.14.0-RC1/com/tngtech/jgiven/integration/spring//JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
+the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.14.0-RC1/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
 </div>
 <div class="sect3">
 <h4 id="_example_10"><a class="anchor" href="#_example_10"></a>12.4.1. Example</h4>
@@ -2663,7 +2683,7 @@ a screenshot of an activity and turn it into a <code>byte</code> array:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-25 15:40:03 CET
+Last updated 2016-12-25 15:44:47 CET
 </div>
 </div>
 </body>
