@@ -452,7 +452,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_html_report">HTML Report</h3>
 <div class="paragraph">
-<p>To generate an HTML report you have to run the JGiven report generator with the <code>html</code> format option. The reporter is part of the jgiven-core module. For the HTML output you also need the <code>jgiven-html5-report</code> dependency. The report generator can be executed on the command line as follows (assuming that the jgiven-core and the jgiven-html5-report JAR and all required dependencies are on the Java CLASSPATH)</p>
+<p>To generate an HTML report you have to run the JGiven report generator
+with the <code>html</code> format option.
+The reporter is part of the <code>jgiven-html5-report</code> module.
+The report generator can be executed on the command line as
+follows (assuming that the <code>jgiven-core</code> and the <code>jgiven-html5-report</code> JAR
+and all required dependencies are on the Java CLASSPATH)</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -463,7 +468,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="paragraph">
-<p>To see the HTML report in action you can have a look at the <a href="http://jgiven.org/jgiven-report/html5/">HTML report of JGiven itself</a></p>
+<p>To see the HTML report in action you can have a look at the
+<a href="http://jgiven.org/jgiven-report/html5/">HTML report of JGiven itself</a></p>
 </div>
 <div class="sect3">
 <h4 id="_maven">Maven</h4>
@@ -508,7 +514,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="_gradle">Gradle</h4>
 <div class="paragraph">
-<p>Add the following plugins section to your <code>build.gradle</code> file or extend the one you have already accordingly:</p>
+<p>There also exists a plugin for Gradle to make you life easier.
+Add the following plugins section to your <code>build.gradle</code> file or extend the one you have already accordingly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -547,6 +554,16 @@ apply plugin: "com.tngtech.jgiven.gradle-plugin"</code></pre>
 <p>HTML reports are then generated into the <code>build/reports/jgiven/test/html/</code> directory.</p>
 </div>
 <div class="paragraph">
+<p>If you want that the HTML report is always generated after the tests
+have been executed, you can configure the <code>test</code> task in your Gradle
+configuration file as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-gradle" data-lang="gradle">test.finalizedBy jgivenTestReport</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>For additional information about the Gradle plugin refer to
 <a href="https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin" class="bare">https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin</a></p>
 </div>
@@ -557,7 +574,7 @@ apply plugin: "com.tngtech.jgiven.gradle-plugin"</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-25 15:40:03 CET
+Last updated 2016-12-25 15:56:54 CET
 </div>
 </div>
 </body>
