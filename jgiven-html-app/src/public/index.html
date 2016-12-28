@@ -57,7 +57,7 @@
 <script type="text/ng-template" id="step_template.html">
   <span aria-haspopup="{{ ::(step.extendedDescription || step.comment) ? 'true' : 'false'"
         class="{{ ::(step.extendedDescription || step.comment) ? 'has-tip' : '' }}"
-        tooltip-html-unsafe="{{ ::step.extendedDescription }}{{ ::(step.extendedDescription && step.comment) ? '<br />' : '' }}{{ ::step.comment }}"
+        tooltip-html-unsafe="{{ ::replaceStepExtendedDescription(step)  }}{{ ::(step.extendedDescription && step.comment) ? '<br />' : '' }}{{ ::step.comment }}"
         tooltip-popup-delay="250">
     <span
         class="word {{ ::scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{ ::word.isDifferent ? 'diff' : ''}}"

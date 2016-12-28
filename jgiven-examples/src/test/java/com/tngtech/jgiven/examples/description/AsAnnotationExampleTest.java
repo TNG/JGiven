@@ -1,14 +1,17 @@
 package com.tngtech.jgiven.examples.description;
 
-import org.junit.Test;
-
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.IntroWord;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith( JUnitParamsRunner.class )
 @Description( "Demonstrates the usage of the @As annotation" )
 public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExampleTest.AsAnnotationStage> {
 
@@ -27,6 +30,15 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
             .and().something();
     }
 
+    @Test
+    @As( "Scenario that shows the usage of @At with argument enumeration")
+    @Parameters({
+            "false, 0"
+    })
+    public void steps_can_use_at_annotation_to_reference_arguments_by_enumeration(boolean bool, int i) {
+        given().some_boolean_$_and_int_$_value( bool, i );
+    }
+
     public static class AsAnnotationStage extends Stage<AsAnnotationStage> {
 
         @IntroWord
@@ -37,6 +49,11 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
 
         @As( "something else" )
         public AsAnnotationStage something() {
+            return this;
+        }
+
+        @As( "the reference to the first argument : $1 and the second argument : $2 ")
+        public AsAnnotationStage some_boolean_$_and_int_$_value( boolean bool, int i) {
             return this;
         }
 
