@@ -31,7 +31,7 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
     }
 
     @Test
-    @As( "Scenario that shows the usage of @At with argument enumeration")
+    @As( "Scenario that shows the usage of @As with argument enumeration")
     @Parameters({
             "false, 0"
     })
