@@ -45,7 +45,7 @@ public class Paso<SELF extends Paso<?>> extends StageBase<SELF> {
     }
 
     @StepComment
-    public SELF comantario( String kommentar ) {
+    public SELF comentario( String comentario ) {
         return self();
     }
 }
