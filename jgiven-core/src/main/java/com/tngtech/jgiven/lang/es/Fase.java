@@ -7,7 +7,7 @@ import com.tngtech.jgiven.base.StageBase;
 /**
  * Una versión en español de la clase {@link com.tngtech.jgiven.Stage}.
  */
-public class Paso<SELF extends Paso<?>> extends StageBase<SELF> {
+public class Fase<SELF extends Fase<?>> extends StageBase<SELF> {
 
     @IntroWord
     public SELF dado() {
