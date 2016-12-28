@@ -144,3 +144,65 @@ export function deselectAll (options) {
     option.selected = false;
   });
 }
+
+function getArgumentList(wordList) {
+  function isArgument(word) { return !!word.argumentInfo; }
+  return _.chain(wordList)
+          .filter(isArgument)
+          .map(function (word) { return word.value; })
+          .value();
+}
+
+// can be removed if lodash-version is >= 3.10.1
+_.takeWhile = function (arr, predicate) {
+    var predicateHoldsForAll = true;
+    return _.filter(arr, function (e) {
+        var predicateResult = predicate(e);
+        predicateHoldsForAll = !predicateResult ? false : predicateHoldsForAll;
+        return predicateResult && predicateHoldsForAll;
+    });
+};
+
+function parseNextInt(arr) {
+    var numbers = _.takeWhile(arr, function (c) { return !isNaN(c) && c !== " "; }).join("");
+    var parsedInt = parseInt(numbers);
+    var result  = { integer : isNaN(parsedInt) ? undefined : parsedInt
+                  , length  : numbers.length } ;
+    return result;
+}
+
+function replaceArguments(string, argumentList) {
+    var separator = "$";
+    var result    = [];
+    var placeHolderCount = 0;
+
+    for(var i = 0; i < string.length; ++i) {
+        var c           = string.charAt(i);
+        var lookahead   = string.charAt(i+1);
+        var isSeparator = c          === separator;
+        var escaped     = (lookahead === separator) && isSeparator;
+        var argument    = undefined;
+        var argumentLen = 0;
+
+        if (isSeparator && !escaped) {
+            var argIndex = parseNextInt(_.drop(string, i+1));
+            if (argIndex.integer === undefined) {
+                argument = argumentList[placeHolderCount++];
+            } else {
+                argument = argumentList[argIndex.integer-1];
+                argumentLen = argIndex.length;
+            }
+        } else if (escaped) {
+            argument = separator;
+            argumentLen = 1;
+        }
+
+        if (argument !== undefined) {
+            result.push(argument);
+            i += argumentLen;
+        } else {
+            result.push(c);
+        }
+    }
+    return result.join("");
+}

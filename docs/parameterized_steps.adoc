@@ -26,6 +26,38 @@ If there are more parameters than `$` characters, the remaining parameters are a
 
 If a `$` should not be treated as a placeholder for a parameter, but printed verbatim, you can write `$$`, which will appear as a single `$` in the report.
 
+=== Custom Annotations
+
+The `@As` annotation can be used to override the shown sentence. To reference arguments use `$` or enumerate them `$1, $2, ...` to have a direct reference.
+
+[source,java]
+----
+@As ( "the $2 cooked rice bowls and the $1 fresh eggs" )
+public SELF $_eggs_and_$_rice_bowls( int eggs, int riceBowls ) { ... }
+----
+
+The call to `given()._$_eggs_and__$_rice_bowls(5, 2)` will be shown as:
+
+----
+Given the 2 cooked rice bowls and the 5 fresh eggs
+----
+
+=== Extended Description
+
+An extended description is shown if you hover above the step as tooltip, but hidden by default.
+
+[source,java]
+----
+@ExtendedDescription ( "The $2 rice bowls were very delicious" )
+public SELF $_eggs_and_$_rice_bowls( int eggs, int riceBowls ) { ... }
+----
+
+The call to `given()._$_eggs_and__$_rice_bowls(5, 2)` will be shown as:
+
+----
+Given 5 eggs and 2 rice bowls
+----
+
 === Parameter Formatting
 
 Sometimes the `toString()` representation of a parameter object does not fit well into the report. In these cases you have three possibilities:
