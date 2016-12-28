@@ -6,7 +6,6 @@ import org.junit.Rule;
 
 import com.tngtech.jgiven.junit.JGivenMethodRule;
 import com.tngtech.jgiven.junit.JGivenClassRule;
-import com.tngtech.jgiven.lang.de.SzenarioTestBasis;
 import com.tngtech.jgiven.lang.es.EscenarioTestBase;
 
 public class EscenarioTest<DADO, CUANDO, ENTONCES> extends EscenarioTestBase<DADO, CUANDO, ENTONCES> {
