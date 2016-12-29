@@ -37,7 +37,7 @@ echo Building, Testing, and Uploading Archives...
 echo Creating Tag
 git tag -a -m $VERSION_PREFIXED $VERSION_PREFIXED
 
-echo "Promoting the release"
-./gradlew closeAndPromoteRepository
+#echo "Promoting the release"
+#./gradlew closeAndPromoteRepository
 
 echo DONE
