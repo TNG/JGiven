@@ -1,8 +1,8 @@
-package com.tngtech.jgiven.junit.de;
+package com.tngtech.jgiven.junit.lang.de;
 
 import org.junit.Test;
 
-import com.tngtech.jgiven.junit.de.DeSzenarioTest.DeutscheTestStufe;
+import com.tngtech.jgiven.junit.lang.de.DeSzenarioTest.DeutscheTestStufe;
 import com.tngtech.jgiven.lang.de.Stufe;
 import com.tngtech.jgiven.tags.FeatureGerman;
 

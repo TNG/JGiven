@@ -1,8 +1,8 @@
-package com.tngtech.jgiven.junit.es;
+package com.tngtech.jgiven.junit.lang.es;
 
 import org.junit.Test;
 
-import com.tngtech.jgiven.junit.es.EsEscenarioTest.FaseEspannolTest;
+import com.tngtech.jgiven.junit.lang.es.EsEscenarioTest.FaseEspannolTest;
 import com.tngtech.jgiven.lang.es.Fase;
 import com.tngtech.jgiven.tags.FeatureSpanish;
 
