@@ -8,6 +8,10 @@ import com.tngtech.jgiven.junit.JGivenMethodRule;
 import com.tngtech.jgiven.junit.JGivenClassRule;
 import com.tngtech.jgiven.lang.de.SzenarioTestBasis;
 
+/**
+ * @deprecated please use {@link com.tngtech.jgiven.junit.lang.de.SzenarioTest} instead
+ */
+@Deprecated
 public class SzenarioTest<GEGEBEN, WENN, DANN> extends SzenarioTestBasis<GEGEBEN, WENN, DANN> {
     @ClassRule
     public static final JGivenClassRule writerRule = new JGivenClassRule();
