@@ -7,7 +7,6 @@ buildscript {
     dependencies {
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3'
         classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
-        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3"
     }
 }
 
@@ -21,7 +20,6 @@ plugins {
 apply plugin: 'com.github.kt3k.coveralls'
 apply plugin: 'org.asciidoctor.convert'
 apply plugin: 'project-report'
-apply plugin: 'io.codearte.nexus-staging'
 
 description = 'JGiven - BDD in plain Java'
 
@@ -54,10 +52,6 @@ asciidoctor {
     attributes 'version': version
 }
 
-nexusStaging {
-    stagingProfileId = stagingProfileId // stagingProfileId must be defined externally
-}
-
 subprojects{
     ext {
         junitDataproviderVersion = '1.11.0'
@@ -79,7 +73,140 @@ subprojects{
     }
 }
 
+configure(subprojects.findAll {!it.name.contains("android")}) {
+    apply plugin: 'java'
+    apply plugin: 'ru.vyarus.animalsniffer'
+    apply plugin: 'org.asciidoctor.convert'
+    apply plugin: 'maven'
+    apply plugin: 'signing'
+    apply plugin: 'maven-publish'
+
+    sourceCompatibility = targetCompatibility = 1.6
+
+    dependencies {
+        compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
+
+        testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion
+        testCompile group: 'org.slf4j', name: 'slf4j-simple', version: slf4jVersion
+        testCompile group: 'junit', name: 'junit', version: junitVersion
+        testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
+        testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
+        testCompile group: 'net.java.quickcheck', name: 'quickcheck', version: quickcheckVersion
+        signature 'org.codehaus.mojo.signature:java16:1.1@signature'
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+    }
+
+    test {
+        systemProperty 'jgiven.report.dir', 'build/reports/jgiven/json'
+        systemProperty 'jgiven.report.text', 'false'
+        systemProperty 'org.slf4j.simpleLogger.defaultLogLevel', 'warn'
+        jacoco {
+            destinationFile = file("${rootProject.projectDir}/build/jacoco/jacocoTest.exec")
+            classDumpFile = file("${rootProject.projectDir}/build/jacoco/classpathdumps")
+        }
+        testLogging {
+            showStandardStreams = true
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        // needed for DeSzenarioTest.java as it has Umlauts in the code
+        options.encoding = 'UTF-8'
+    }
+
+
+    tasks.withType(Jar) {
+        def now = new Date()
+        manifest = project.manifest().attributes(
+                'Built-By': "Gradle ${gradle.gradleVersion}",
+                'Build-Date': now.format('yyyy-MM-dd HH:mm:ss.S'), // TODO destroys incremental build feature, but maybe date without time is ok as well?
+                'Copyright': "2013-" + now.format('yyyy') + " TNG Technology Consulting GmbH",
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor': 'TNG Technology Consulting GmbH',
+                'License': 'Apache License v2.0, January 2004',
+                'Specification-Title': project.name,
+                'Specification-Version': project.version,
+                'Specification-Vendor': 'TNG Technology Consulting GmbH',
+        )
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+
+    javadoc {
+        exclude '**/impl/**'
+    }
+
+    javadoc.onlyIf {
+        JavaVersion.current().isJava8Compatible()
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives jar
+        archives javadocJar
+
+        archives sourcesJar
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = true // coveralls plugin depends on xml format report
+        }
+    }
+
+    task jgivenHtml5Report(type: JavaExec) {
+        main = 'com.tngtech.jgiven.report.ReportGenerator'
+        args '--sourceDir=build/reports/jgiven/json',
+                '--targetDir=build/reports/jgiven/html5',
+                '--format=html5',
+                '--exclude-empty-scenarios=true',
+                '--customcss=build/resources/test/jgiven/custom.css'
+
+        classpath = configurations.testCompile
+    }
+
+    task jgivenAsciiDocReport(type: JavaExec) {
+        main = 'com.tngtech.jgiven.report.ReportGenerator'
+        args '--sourceDir=build/reports/jgiven/json',
+                '--targetDir=build/reports/jgiven/asciidoc',
+                '--format=asciidoc'
+
+        classpath = configurations.testCompile
+    }
+
+    asciidoctor {
+        sourceDir = new File('build/reports/jgiven/asciidoc')
+        outputDir = new File('build/reports/jgiven/htmladoc')
+        attributes toc: ''
+    }
+
+    task copyAsciiDoc(type: Copy, dependsOn: jgivenAsciiDocReport) {
+        from 'src/asciidoc'
+        into 'build/reports/jgiven/asciidoc'
+    }
+
+    copyAsciiDoc.finalizedBy(asciidoctor)
+
+}
+
 configure(subprojects) {
+    apply plugin: 'checkstyle'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
     apply plugin: 'maven'
@@ -87,6 +214,20 @@ configure(subprojects) {
     apply plugin: 'maven-publish'
 
     description "${rootProject.description} - Module ${project.name}"
+
+    sonarqube {
+        properties {
+            property "sonar.jacoco.reportPath", "${rootProject.projectDir}/build/jacoco/jacocoTest.exec"
+        }
+    }
+
+    checkstyle {
+        configFile = file("${rootProject.projectDir}/develop/checkstyle-rules.xml")
+        showViolations = false
+        ignoreFailures = true
+    }
+
+    // -- build and publish artifacts -------------------------------------------------------------------------------------
 
     signing {
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
@@ -148,10 +289,10 @@ configure(subprojects) {
                     whenConfigured { pom ->
                         def junitDep = pom.dependencies.find { dep -> dep.groupId == 'junit' && dep.artifactId == 'junit' }
                         if (junitDep != null) {
-                            junitDep.with {
-                                version = '[4.9,4.12]'
-                                scope = 'provided'
-                            }
+                             junitDep.with {
+                                 version = '[4.9,4.12]'
+                                 scope = 'provided'
+                             }
                         }
                         pom.dependencies.removeAll(pom.dependencies.findAll { dep -> dep.scope in ['test'] })
                     }
@@ -185,151 +326,6 @@ configure(subprojects) {
             downloadJavadoc = true
         }
     }
-
-}
-
-configure(subprojects.findAll {!it.name.contains("jgiven-junit5")}) {
-    apply plugin: 'ru.vyarus.animalsniffer'
-
-    dependencies {
-        signature 'org.codehaus.mojo.signature:java16:1.1@signature'
-    }
-}
-
-configure(subprojects.findAll {!it.name.contains("android")}) {
-    apply plugin: 'checkstyle'
-    apply plugin: 'java'
-    apply plugin: 'org.asciidoctor.convert'
-
-    dependencies {
-        compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
-
-        testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion
-        testCompile group: 'org.slf4j', name: 'slf4j-simple', version: slf4jVersion
-        testCompile group: 'junit', name: 'junit', version: junitVersion
-        testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
-        testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
-        testCompile group: 'net.java.quickcheck', name: 'quickcheck', version: quickcheckVersion
-    }
-
-    sourceCompatibility = targetCompatibility = 1.6
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-            }
-        }
-    }
-
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-    }
-
-    tasks.withType(Jar) {
-        def now = new Date()
-        manifest = project.manifest().attributes(
-                'Built-By': "Gradle ${gradle.gradleVersion}",
-                'Build-Date': now.format('yyyy-MM-dd HH:mm:ss.S'), // TODO destroys incremental build feature, but maybe date without time is ok as well?
-                'Copyright': "2013-" + now.format('yyyy') + " TNG Technology Consulting GmbH",
-                'Implementation-Title': project.name,
-                'Implementation-Version': project.version,
-                'Implementation-Vendor': 'TNG Technology Consulting GmbH',
-                'License': 'Apache License v2.0, January 2004',
-                'Specification-Title': project.name,
-                'Specification-Version': project.version,
-                'Specification-Vendor': 'TNG Technology Consulting GmbH',
-        )
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-    }
-
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    artifacts {
-        archives jar
-        archives javadocJar
-        archives sourcesJar
-    }
-
-    sonarqube {
-        properties {
-            property "sonar.jacoco.reportPath", "${rootProject.projectDir}/build/jacoco/jacocoTest.exec"
-        }
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.enabled = true // coveralls plugin depends on xml format report
-        }
-    }
-
-    test {
-        systemProperty 'jgiven.report.dir', 'build/reports/jgiven/json'
-        systemProperty 'jgiven.report.text', 'false'
-        systemProperty 'org.slf4j.simpleLogger.defaultLogLevel', 'warn'
-        jacoco {
-            destinationFile = file("${rootProject.projectDir}/build/jacoco/jacocoTest.exec")
-            classDumpFile = file("${rootProject.projectDir}/build/jacoco/classpathdumps")
-        }
-        testLogging {
-            showStandardStreams = true
-        }
-    }
-
-    javadoc {
-        exclude '**/impl/**'
-    }
-
-    javadoc.onlyIf {
-        JavaVersion.current().isJava8Compatible()
-    }
-
-    checkstyle {
-        configFile = file("${rootProject.projectDir}/develop/checkstyle-rules.xml")
-        showViolations = false
-        ignoreFailures = true
-    }
-
-    task jgivenHtml5Report(type: JavaExec) {
-        main = 'com.tngtech.jgiven.report.ReportGenerator'
-        args '--sourceDir=build/reports/jgiven/json',
-                '--targetDir=build/reports/jgiven/html5',
-                '--format=html5',
-                '--exclude-empty-scenarios=true',
-                '--customcss=build/resources/test/jgiven/custom.css'
-
-        classpath = configurations.testCompile
-    }
-
-    task jgivenAsciiDocReport(type: JavaExec) {
-        main = 'com.tngtech.jgiven.report.ReportGenerator'
-        args '--sourceDir=build/reports/jgiven/json',
-                '--targetDir=build/reports/jgiven/asciidoc',
-                '--format=asciidoc'
-
-        classpath = configurations.testCompile
-    }
-
-    asciidoctor {
-        sourceDir = new File('build/reports/jgiven/asciidoc')
-        outputDir = new File('build/reports/jgiven/htmladoc')
-        attributes toc: ''
-    }
-
-    task copyAsciiDoc(type: Copy, dependsOn: jgivenAsciiDocReport) {
-        from 'src/asciidoc'
-        into 'build/reports/jgiven/asciidoc'
-    }
-
-    copyAsciiDoc.finalizedBy(asciidoctor)
-
 }
 
 task overallJacocoReport(type: JacocoReport) {
