@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+import com.tngtech.jgiven.exception.JGivenMissingRequiredScenarioStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -228,7 +229,13 @@ public class ScenarioExecutor {
     }
 
     private <T> void updateScenarioState( T t ) {
-        injector.updateValues( t );
+        try {
+            injector.updateValues(t);
+        } catch (JGivenMissingRequiredScenarioStateException e) {
+            if (!suppressExceptions) {
+                throw e;
+            }
+        }
     }
 
     private boolean afterStageMethodsCalled( Object stage ) {

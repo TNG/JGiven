@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 
 /**
  * This exception is thrown if a scenario state has been marked as required,
- * but the state hasn't been provided.
+ * but the state has not been provided.
  */
 public class JGivenMissingRequiredScenarioStateException extends RuntimeException {
 

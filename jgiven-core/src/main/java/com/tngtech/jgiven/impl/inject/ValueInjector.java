@@ -87,6 +87,11 @@ public class ValueInjector {
         }
     }
 
+    /**
+     *
+     * @throws JGivenMissingRequiredScenarioStateException in case a field requires
+     *         a value and the value is not present
+     */
     @SuppressWarnings( "unchecked" )
     public void updateValues( Object object ) {
         validateFields( object );

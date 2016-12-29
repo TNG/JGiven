@@ -19,7 +19,6 @@ import com.tngtech.jgiven.report.model.StepStatus;
 public class PendingTest extends SimpleScenarioTest<PendingTest.PendingTestSteps> {
 
     @Test
-    @Ignore("Currently fails because the required attribute is set")
     @Pending
     public void required_does_not_fail_for_pending_scenarios() throws Throwable {
         when().some_action();
