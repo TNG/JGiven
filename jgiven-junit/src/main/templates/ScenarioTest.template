@@ -1,0 +1,26 @@
+package com.tngtech.jgiven.junit.lang.${pkg};
+
+import com.tngtech.jgiven.impl.Scenario;
+import org.junit.ClassRule;
+import org.junit.Rule;
+
+import com.tngtech.jgiven.junit.JGivenMethodRule;
+import com.tngtech.jgiven.junit.JGivenClassRule;
+import com.tngtech.jgiven.lang.${pkg}.${scenario_test_base_class};
+
+/**
+ * ${scenario_test_javadoc}
+ */
+public class ${scenario_test_class}<${given_type}, ${when_type}, ${then_type}>
+             extends ${scenario_test_base_class}<${given_type}, ${when_type}, ${then_type}> {
+	@ClassRule
+	public static final JGivenClassRule writerRule = new JGivenClassRule();
+
+	@Rule
+	public final JGivenMethodRule scenarioRule = new JGivenMethodRule(createScenario());
+
+	@Override
+	public Scenario<${given_type}, ${when_type}, ${then_type}> getScenario() {
+		return (Scenario<${given_type}, ${when_type}, ${then_type}>) scenarioRule.getScenario();
+	}
+}

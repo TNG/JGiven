@@ -1,0 +1,23 @@
+package com.tngtech.jgiven.lang.${pkg};
+
+import com.tngtech.jgiven.base.ScenarioTestBase;
+
+/**
+ * ${scenario_test_base_javadoc}
+ */
+public abstract class ${scenario_test_base_class}<${given_type}, ${when_type}, ${then_type}>
+        extends ScenarioTestBase<${given_type}, ${when_type}, ${then_type}> {
+
+    public ${given_type} ${given_method}() {
+        return getScenario().given( "${given_text}" );
+    }
+
+    public ${when_type} ${when_method}() {
+        return getScenario().when( "${when_text}" );
+    }
+
+    public ${then_type} ${then_method}() {
+        return getScenario().then( "${then_text}" );
+    }
+
+}

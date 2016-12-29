@@ -1,0 +1,24 @@
+package com.tngtech.jgiven.lang.${pkg};
+
+import com.tngtech.jgiven.annotation.IntroWord;
+import com.tngtech.jgiven.annotation.StepComment;
+import com.tngtech.jgiven.base.StageBase;
+
+/**
+ * $stage_javadoc
+ */
+public class ${stage_class}<SELF extends ${stage_class}<?>> extends StageBase<SELF> {
+    <% introWords.split(",").each {
+        iw ->
+           println """
+    @IntroWord
+    public SELF ${iw}() {
+        return self();
+    }"""
+        }
+    %>
+    @StepComment
+    public SELF ${comment}( String comment ) {
+        return self();
+    }
+}

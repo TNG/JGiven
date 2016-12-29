@@ -8,3 +8,31 @@ dependencies {
     compile group: 'org.fusesource.jansi', name: 'jansi', version: jansiVersion
 }
 
+def generatedSourceDir = "generatedSrc/java"
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/main/java", generatedSourceDir]
+        }
+    }
+}
+
+files { file("src/main/translations").listFiles() }.collect {
+    def pkg=it.getName().split("\\.")[0]
+
+    def props = new Properties()
+    it.withInputStream { props.load(it) }
+    props.pkg=pkg
+    def taskName = pkg+'Translation'
+
+    tasks.create(name: taskName, type: Copy) {
+        from 'src/main/templates'
+        into generatedSourceDir + "/com/tngtech/jgiven/lang/" + pkg
+        rename("Stage.template",props.stage_class+".java")
+        rename("ScenarioTestBase.template",props.scenario_test_base_class+".java")
+        expand(props)
+        filteringCharset = 'UTF-8'
+    }
+    compileJava.dependsOn += taskName
+}
