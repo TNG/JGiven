@@ -623,6 +623,14 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_example_project_3">14.2. Example Project</a></li>
 </ul>
 </li>
+<li><a href="#_junit_5_experimental">15. JUnit 5 (EXPERIMENTAL)</a>
+<ul class="sectlevel2">
+<li><a href="#_known_issues">15.1. Known Issues</a></li>
+<li><a href="#_install_dependency_2">15.2. Install Dependency</a></li>
+<li><a href="#_use_jgiven_with_junit_5">15.3. Use JGiven with JUnit 5</a></li>
+<li><a href="#_example_project_4">15.4. Example Project</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -630,7 +638,7 @@ table.CodeRay td.code>pre{padding:0}
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Version 0.14.0-RC1</p>
+<p>Version 0.14.0-RC2</p>
 </div>
 </div>
 </div>
@@ -688,6 +696,13 @@ stages classes can be treated as Spring beans.</p>
 This is currently in an experimental status.</p>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_jgiven_junit_5"><a class="anchor" href="#_jgiven_junit_5"></a>1.1.7. JGiven JUnit 5</h4>
+<div class="paragraph">
+<p>This module provides an integration into JUnit 5.x.
+This is currently in an experimental status.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -720,7 +735,7 @@ JGiven requires at least JUnit 4.9, while the recommended version is 4.12.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit&lt;/artifactId&gt;
-   &lt;version&gt;0.14.0-RC1&lt;/version&gt;
+   &lt;version&gt;0.14.0-RC2&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -731,7 +746,7 @@ JGiven requires at least JUnit 4.9, while the recommended version is 4.12.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-   testCompile 'com.tngtech.jgiven:jgiven-junit:0.14.0-RC1'
+   testCompile 'com.tngtech.jgiven:jgiven-junit:0.14.0-RC2'
 }</code></pre>
 </div>
 </div>
@@ -751,7 +766,7 @@ thus you also must have a dependency to TestNG itself.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-testng&lt;/artifactId&gt;
-   &lt;version&gt;0.14.0-RC1&lt;/version&gt;
+   &lt;version&gt;0.14.0-RC2&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -762,7 +777,7 @@ thus you also must have a dependency to TestNG itself.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-   testCompile 'com.tngtech.jgiven:jgiven-testng:0.14.0-RC1'
+   testCompile 'com.tngtech.jgiven:jgiven-testng:0.14.0-RC2'
 }</code></pre>
 </div>
 </div>
@@ -986,7 +1001,7 @@ and all required dependencies are on the Java CLASSPATH)</p>
     &lt;plugin&gt;
       &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
       &lt;artifactId&gt;jgiven-maven-plugin&lt;/artifactId&gt;
-      &lt;version&gt;0.14.0-RC1&lt;/version&gt;
+      &lt;version&gt;0.14.0-RC2&lt;/version&gt;
       &lt;executions&gt;
         &lt;execution&gt;
           &lt;goals&gt;
@@ -1023,7 +1038,7 @@ Add the following plugins section to your <code>build.gradle</code> file or exte
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">plugins {
-    id &quot;com.tngtech.jgiven.gradle-plugin&quot; version &quot;0.14.0-RC1&quot;
+    id &quot;com.tngtech.jgiven.gradle-plugin&quot; version &quot;0.14.0-RC2&quot;
 }</code></pre>
 </div>
 </div>
@@ -1038,7 +1053,7 @@ Add the following plugins section to your <code>build.gradle</code> file or exte
     }
 
     dependencies {
-        classpath &quot;com.tngtech.jgiven:jgiven-gradle-plugin:0.14.0-RC1&quot;
+        classpath &quot;com.tngtech.jgiven:jgiven-gradle-plugin:0.14.0-RC2&quot;
     }
 }
 
@@ -1867,10 +1882,10 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 <p>JUnit’s built-in Parametrized Runner</p>
 </li>
 <li>
-<p><a href="https://github.com/TNG/junit-dataprovider">JUnit Dataprovider</a></p>
+<p><a href="https://github.com/TNG/junit-dataprovider">JUnit DataProvider</a></p>
 </li>
 <li>
-<p><a href="https://code.google.com/p/junitparams/">JUnitParms</a></p>
+<p><a href="https://github.com/Pragmatists/JUnitParams">JUnitParams</a></p>
 </li>
 </ol>
 </div>
@@ -2325,7 +2340,7 @@ MyExpectedException someExpectedException;
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spring&lt;/artifactId&gt;
-   &lt;version&gt;0.14.0-RC1&lt;/version&gt;
+   &lt;version&gt;0.14.0-RC2&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -2336,7 +2351,7 @@ MyExpectedException someExpectedException;
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.14.0-RC1&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.14.0-RC2&quot;)
 }</code></pre>
 </div>
 </div>
@@ -2352,7 +2367,7 @@ existence of JGiven.</p>
 <h4 id="_annotation_based"><a class="anchor" href="#_annotation_based"></a>12.2.1. Annotation-Based</h4>
 <div class="paragraph">
 <p>If you are using the annotation-based configuration of Spring you can annotate your Spring
-configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.14.0-RC1/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
+configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.14.0-RC2/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
 This is all you have to do to configure Spring for JGiven.</p>
 </div>
 <div class="sect4">
@@ -2430,7 +2445,7 @@ can copy the content of these classes (one method) into one of your test base cl
 <div class="paragraph">
 <p>In order to treat JGiven stages as Spring beans, e.g. if you want to inject
  other Spring beans into your stages, you have to annotate
-the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.14.0-RC1/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
+the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.14.0-RC2/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
 </div>
 <div class="sect3">
 <h4 id="_example_10"><a class="anchor" href="#_example_10"></a>12.4.1. Example</h4>
@@ -2521,21 +2536,8 @@ the implementation might be changed in a backwards-incompatible way in future ve
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
-   &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
-   &lt;artifactId&gt;jgiven-android&lt;/artifactId&gt;
-   &lt;version&gt;0.14.0-RC1&lt;/version&gt;
-   &lt;scope&gt;test&lt;/scope&gt;
-&lt;/dependency&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>or in Gradle with:</p>
-</div>
-<div class="listingblock">
-<div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:0.14.0-RC1&quot;)
+    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:0.14.0-RC2&quot;)
 }</code></pre>
 </div>
 </div>
@@ -2545,7 +2547,7 @@ the implementation might be changed in a backwards-incompatible way in future ve
 <div class="paragraph">
 <p>JGiven writes JSON files during the execution of the tests to the external storage of the device or emulator.
 Thus you have to enable the permission <code>WRITE_EXTERNAL_STORAGE</code> when executing the tests.
-You can do that by creating a file <code>src/debug/AndroidManifest.xml</code> than enables that permission:</p>
+You can do that by creating a file <code>src/debug/AndroidManifest.xml</code> that enables that permission:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2571,7 +2573,7 @@ You can do that by creating a file <code>src/debug/AndroidManifest.xml</code> th
 </div>
 </div>
 <div class="paragraph">
-<p>In addition it is useful to expose the <code>ActivityTestRule</code> to Stages by
+<p>In addition, it is useful to expose the <code>ActivityTestRule</code> to Stages by
 using the <code>@ScenarioState</code> annotation:</p>
 </div>
 <div class="listingblock">
@@ -2680,10 +2682,128 @@ a screenshot of an activity and turn it into a <code>byte</code> array:</p>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_junit_5_experimental"><a class="anchor" href="#_junit_5_experimental"></a>15. JUnit 5 (EXPERIMENTAL)</h2>
+<div class="sectionbody">
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+JUnit 5 support is currently in an experimental state.
+This means that the API is not completely stable yet and that not all
+JGiven and JUnit 5 features are completely supported yet.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_known_issues"><a class="anchor" href="#_known_issues"></a>15.1. Known Issues</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Nested tests are all reported under the outer parent test class</p>
+</li>
+<li>
+<p>Dynamic tests are not reported at all. As dynamic tests in JUnit 5 do not provide life-cycle
+hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_install_dependency_2"><a class="anchor" href="#_install_dependency_2"></a>15.2. Install Dependency</h3>
+<div class="paragraph">
+<p>JUnit 5 support is provided by the <code>jgiven-junit5</code> dependency.</p>
+</div>
+<div class="sect3">
+<h4 id="_maven_3"><a class="anchor" href="#_maven_3"></a>15.2.1. Maven</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
+   &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
+   &lt;artifactId&gt;jgiven-junit5&lt;/artifactId&gt;
+   &lt;version&gt;0.14.0-RC2&lt;/version&gt;
+   &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_gradle_3"><a class="anchor" href="#_gradle_3"></a>15.2.2. Gradle</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
+    testCompile(&quot;com.tngtech.jgiven:jgiven-junit5:0.14.0-RC2&quot;)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_use_jgiven_with_junit_5"><a class="anchor" href="#_use_jgiven_with_junit_5"></a>15.3. Use JGiven with JUnit 5</h3>
+<div class="paragraph">
+<p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.14.0-RC2/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
+JUnit 5 extension. You just annotate your JUnit 5 test class with <code>@ExtendWith( JGivenExtension.class )</code>
+and JGiven is enabled.</p>
+</div>
+<div class="paragraph">
+<p>If you just use the extension directly, you have to inject your stage classes by using
+the <code>@ScenarioStage</code> annotation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExtendWith</span>( JGivenExtension.class )
+<span class="directive">public</span> <span class="type">class</span> <span class="class">JUnit5Test</span> {
+
+   <span class="annotation">@ScenarioStage</span>
+   MyStage myStage;
+
+   <span class="annotation">@Test</span>
+   <span class="directive">public</span> <span class="type">void</span> my_scenario() {
+      myStage
+        .given().some_context()
+        .when().some_action()
+        .then().some_outcome();
+
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can use one of the test base classes <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.14.0-RC2/com/tngtech/jgiven/junit5/ScenarioTest.html"><code>ScenarioTest</code></a> or
+<a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.14.0-RC2/com/tngtech/jgiven/junit5/SimpleScenarioTest.html"><code>SimpleScenarioTest</code></a> that provide additional convenience methods
+and allows you to specify stage classes by using type parameters:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">JGiven5ScenarioTest</span>
+    <span class="directive">extends</span> ScenarioTest&lt;GivenStage, WhenStage, ThenStage&gt; {
+
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> JGiven_works_with_JUnit5() {
+        given().some_state();
+        when().some_action();
+        then().some_outcome();
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_project_4"><a class="anchor" href="#_example_project_4"></a>15.4. Example Project</h3>
+<div class="paragraph">
+<p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/junit5" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/junit5</a></p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-25 15:44:47 CET
+Last updated 2016-12-29 11:14:41 CET
 </div>
 </div>
 </body>
