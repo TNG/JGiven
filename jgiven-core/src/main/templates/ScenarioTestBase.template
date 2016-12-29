@@ -8,16 +8,30 @@ import com.tngtech.jgiven.base.ScenarioTestBase;
 public abstract class ${scenario_test_base_class}<${given_type}, ${when_type}, ${then_type}>
         extends ScenarioTestBase<${given_type}, ${when_type}, ${then_type}> {
 
-    public ${given_type} ${given_method}() {
-        return getScenario().given( "${given_text}" );
-    }
+    <% given_words.split(",").each {
+        w ->
+           println """
+    public ${given_type} ${w}() {
+        return getScenario().given( "${w}" );
+    }"""
+        }
+    %>
 
-    public ${when_type} ${when_method}() {
-        return getScenario().when( "${when_text}" );
-    }
-
-    public ${then_type} ${then_method}() {
-        return getScenario().then( "${then_text}" );
-    }
-
+    <% when_words.split(",").each {
+        w ->
+           println """
+    public ${when_type} ${w}() {
+        return getScenario().when( "${w}" );
+    }"""
+        }
+    %>
+    
+    <% then_words.split(",").each {
+        w ->
+           println """
+    public ${then_type} ${w}() {
+        return getScenario().then( "${w}" );
+    }"""
+        }
+    %>
 }
