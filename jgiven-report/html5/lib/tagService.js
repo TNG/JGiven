@@ -143,7 +143,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
       var node = createNode(tagToString(tag));
 
       node.url = function () {
-        return '#tag/' + window.encodeURIComponent(getTagName(tag)) +
+        return '#tagid/' + window.encodeURIComponent(getTagId(tag)) +
           (tag.value ? '/' + window.encodeURIComponent(tag.value) : '');
       };
 
