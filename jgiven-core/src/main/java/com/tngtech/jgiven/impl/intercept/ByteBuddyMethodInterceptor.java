@@ -19,6 +19,10 @@ import net.bytebuddy.implementation.bind.annotation.This;
  */
 public class ByteBuddyMethodInterceptor {
 
+    /**
+     * The interceptor to delegate method calls.
+     * Can be {@code null} in some cases until the scenario has started
+     */
     private StepInterceptor interceptor;
 
     public ByteBuddyMethodInterceptor() {}
@@ -41,6 +45,10 @@ public class ByteBuddyMethodInterceptor {
             return null;
         }
 
+        if (interceptor == null) {
+            return zuper.call();
+        }
+
         Invoker invoker = new Invoker() {
             @Override
             public Object proceed() throws Throwable {
@@ -61,6 +69,10 @@ public class ByteBuddyMethodInterceptor {
             return null;
         }
 
+        if (interceptor == null) {
+            return zuper.call();
+        }
+
         Invoker invoker = new Invoker() {
             @Override
             public Object proceed() throws Throwable {
@@ -71,20 +83,16 @@ public class ByteBuddyMethodInterceptor {
         return interceptor.intercept( receiver, method, parameters, invoker );
     }
 
-    private boolean handleSetStepInterceptor( Method method, final Object[] parameters ) {
-        if( method.getName().equals( "setStepInterceptor" ) && method.getDeclaringClass().equals( StageInterceptorInternal.class ) ) {
-            setInterceptor( (StepInterceptor) parameters[0] );
-            return true;
-        }
-        return false;
-    }
-
     @RuntimeType
     public Object intercept( @This final Object receiver, @Origin final Method method, @AllArguments final Object[] parameters )
             throws Throwable {
         // this intercepted method does not have a non-abstract super method
 
         if( handleSetStepInterceptor( method, parameters ) ) {
+            return null;
+        }
+
+        if (interceptor == null) {
             return null;
         }
 
@@ -97,6 +105,14 @@ public class ByteBuddyMethodInterceptor {
 
         };
         return interceptor.intercept( receiver, method, parameters, invoker );
+    }
+
+    private boolean handleSetStepInterceptor( Method method, final Object[] parameters ) {
+        if( method.getName().equals( "setStepInterceptor" ) && method.getDeclaringClass().equals( StageInterceptorInternal.class ) ) {
+            setInterceptor( (StepInterceptor) parameters[0] );
+            return true;
+        }
+        return false;
     }
 
 }
