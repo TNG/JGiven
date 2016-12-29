@@ -64,8 +64,12 @@ function getTagName (tag) {
   return tag.name ? tag.name : tag.type;
 }
 
+function getTagId (tag) {
+  return tag.fullType ? tag.fullType : tag.type;
+}
+
 function getTagKey (tag) {
-  return getTagName(tag) + (tag.value ? '-' + tag.value : '');
+  return getTagId(tag) + (tag.value ? '-' + tag.value : '');
 }
 
 function tagToString (tag) {
