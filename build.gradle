@@ -54,6 +54,10 @@ asciidoctor {
     attributes 'version': version
 }
 
+nexusStaging {
+    stagingProfileId = stagingProfileId // stagingProfileId must be defined externally
+}
+
 subprojects{
     ext {
         junitDataproviderVersion = '1.11.0'
