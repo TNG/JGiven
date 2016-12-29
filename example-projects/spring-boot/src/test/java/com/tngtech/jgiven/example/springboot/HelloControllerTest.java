@@ -1,8 +1,10 @@
 package com.tngtech.jgiven.example.springboot;
 
+import com.tngtech.jgiven.integration.spring.SimpleSpringRuleScenarioTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -12,11 +14,10 @@ import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.integration.spring.SimpleSpringScenarioTest;
 
-@RunWith( SpringJUnit4ClassRunner.class )
-@SpringApplicationConfiguration( classes = { MockServletContext.class, HelloTestContext.class } )
+@SpringBootTest( classes = { MockServletContext.class, HelloTestContext.class } )
 @WebAppConfiguration
 @JGivenConfiguration( HelloJGivenConfiguration.class )
-public class HelloControllerTest extends SimpleSpringScenarioTest<HelloStage> {
+public class HelloControllerTest extends SimpleSpringRuleScenarioTest<HelloStage> {
 
     @Test
     public void the_root_path_returns_greetings_from_JGiven() throws Exception {
