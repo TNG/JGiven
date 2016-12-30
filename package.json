@@ -1,0 +1,66 @@
+{
+  "name": "given-html-app",
+  "version": "0.0.1",
+  "description": "The HTML App of JGiven",
+  "main": "index.html",
+  "scripts": {
+    "start": "webpack-dev-server --progress --colors",
+    "test": "karma start --debug --single-run --browsers PhantomJS",
+    "test-watch": "karma start --debug",
+    "build": "mkdir -p dist && webpack --progress --colors && cp index.html dist"
+  },
+  "files": [
+    "package.json",
+    "lib",
+    "css",
+    "dist/index.html",
+    "dist/bundle.js",
+    "dist/*.ttf"
+  ],
+  "devDependencies": {
+    "css-loader": "^0.25.0",
+    "file-loader": "^0.9.0",
+    "jasmine-core": "~2.3.4",
+    "karma": "~0.13.3",
+    "karma-chrome-launcher": "~0.2.0",
+    "karma-jasmine": "~0.3.6",
+    "karma-phantomjs-launcher": "~0.2.0",
+    "node-sass": "^3.10.1",
+    "phantomjs": "^2.1.7+deprecated",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "keywords": [
+    "jgiven",
+    "BDD",
+    "Java"
+  ],
+  "author": "Jan Schäfer <jan.schaefer@tngtech.com>",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/TNG/jgiven-html-app",
+    "type": "git"
+  },
+  "dependencies": {
+    "angular": "1.5.8",
+    "angular-bindonce": "^0.3.1",
+    "angular-chart.js": "^1.0.3",
+    "angular-foundation": "^0.8.0",
+    "angular-local-storage": "^0.5.0",
+    "angular-mocks": "^1.5.8",
+    "angular-sanitize": "^1.5.8",
+    "babel-core": "^6.17.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "chart.js": "^2.3.0",
+    "font-awesome": "^4.6.3",
+    "foundation-sites": "^5.5.3",
+    "jquery": "^3.1.1",
+    "lodash": "^4.16.4",
+    "modernizr": "^3.3.1",
+    "pako": "^1.0.3"
+  }
+}
