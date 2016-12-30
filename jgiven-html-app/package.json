@@ -5,6 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "webpack-dev-server --progress --colors",
+    "debug": "webpack-dev-server -d --progress --colors",
     "test": "karma start --debug --single-run --browsers PhantomJS",
     "test-watch": "karma start --debug",
     "build": "mkdir -p dist && webpack --progress --colors && cp index.html dist"
@@ -26,7 +27,7 @@
     "karma-jasmine": "~0.3.6",
     "karma-phantomjs-launcher": "~0.2.0",
     "node-sass": "^3.10.1",
-    "phantomjs": "^2.1.7+deprecated",
+    "phantomjs-prebuilt": "^2.1.7",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
@@ -61,6 +62,7 @@
     "jquery": "^3.1.1",
     "lodash": "^4.16.4",
     "modernizr": "^3.3.1",
-    "pako": "^1.0.3"
+    "pako": "^1.0.3",
+    "yarn": "^0.18.1"
   }
 }
