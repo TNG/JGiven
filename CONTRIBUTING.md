@@ -3,7 +3,7 @@
 Contributions are very welcome. There are different ways you can contribute:
 
 1. Improve the documentation
-    * The JGiven documentation lives in the [gh-pages](https://github.com/TNG/JGiven/tree/gh-pages) branch.
+    * The JGiven documentation is written in AsciiDoc and is located in the `docs` folder.
 1. Fix/implement known issues
     * Issues with the label [help wanted](https://github.com/TNG/JGiven/labels/help%20wanted) would be the ideal candidate for that.
 1. Come up with new ideas for improving JGiven
@@ -20,11 +20,10 @@ If you want to contribute code or documentation please follow the following work
 
 ## System Requirements
 
-* JDK 1.7 (`JAVA_HOME` and `PATH` should be set accordingly)
-    - Note that JGiven is built and compatible with Java 1.6, however, because of some test libraries, Java 1.7 is required for executing the tests in the `jgiven-tests` project
+* JDK 8 (`JAVA_HOME` and `PATH` should be set accordingly)
+    - Note that JGiven is built and compatible with Java 1.6, however, because of some test libraries, Java 8 is required for executing the tests in the `jgiven-tests` project
 * Gradle (is automatically downloaded by the `gradlew` script)
-* Bower (required for the HTML5 report generator, can be installed with `sudo npm install -g bower`)
-* PhantomJS (required for the Selenium tests of the HTML5 report, can be installed under Ubuntu with `sudo apt-get install phantomjs`)
+* PhantomJS (required for the Selenium tests of the HTML5 report, can be installed under Ubuntu, for example, with `sudo apt-get install phantomjs` or with `npm install -g phantomjs-prebuilt`)
 
 ## Building and Testing JGiven
 

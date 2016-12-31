@@ -6,6 +6,7 @@ include ':jgiven-gradle-plugin'
 include ':jgiven-junit'
 include ':jgiven-testng'
 include ':jgiven-spring'
+include ':jgiven-html-app'
 include ':jgiven-html5-report'
 
 def release = System.env.RELEASE == "true"

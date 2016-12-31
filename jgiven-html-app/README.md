@@ -5,4 +5,5 @@ Uses the power of AngularJS, Foundation, and Font Awesome
 
 ## Build
 
-`yarn build`
+1. `yarn install`
+2. `yarn build`

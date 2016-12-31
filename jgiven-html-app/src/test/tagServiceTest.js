@@ -1,6 +1,8 @@
-describe("TagService", function () {
-  beforeEach(module('jgivenReportApp'));
+import _ from 'lodash/core'
+import { getTagKey } from '../js/util.js'
+import TagService from '../js/service/tagService.js'
 
+describe("TagService", function () {
   function createDataServiceMock(tagFile, testCases) {
     return {
       getTagFile: function () {
@@ -84,17 +86,11 @@ describe("TagService", function () {
     }]
   }];
 
-  beforeEach(function () {
-    module(function ($provide) {
-      $provide.value('dataService', createDataServiceMock(tagFile, testCases));
-    });
+  var tagService;
 
-
+  beforeEach(function() {
+    tagService = TagService(createDataServiceMock(tagFile, testCases));
   });
-
-  beforeEach(inject(function (_tagService_) {
-    tagService = _tagService_;
-  }));
 
   it("calculates root tags correctly", function () {
 

@@ -1,8 +1,9 @@
 /**
  * Provides functions to access the generated scenario data
  */
+import { sortByDescription } from '../util.js'
 
-jgivenReportApp.factory('dataService', [function () {
+export default function DataService () {
   'use strict';
 
   var tagFile = jgivenReport.tagFile;
@@ -56,5 +57,4 @@ jgivenReportApp.factory('dataService', [function () {
     getFailedScenarios: getFailedScenarios,
 
   };
-}]);
-
+}

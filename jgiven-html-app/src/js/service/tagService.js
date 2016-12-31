@@ -1,8 +1,10 @@
 /**
  * Responsible for handling tag-related operations
  */
+import { getTagKey, tagToString, getTagName, undefinedOrEmpty, getScenarioId } from '../util.js'
 
-jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
+export default function TagService (dataService) {
+
   'use strict';
 
   /**
@@ -143,7 +145,7 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
       var node = createNode(tagToString(tag));
 
       node.url = function () {
-        return '#tagid/' + window.encodeURIComponent(getTagId(tag)) +
+        return '#tag/' + window.encodeURIComponent(getTagName(tag)) +
           (tag.value ? '/' + window.encodeURIComponent(tag.value) : '');
       };
 
@@ -254,5 +256,5 @@ jgivenReportApp.factory('tagService', ['dataService', function (dataService) {
     getRootTags: getRootTags,
     getTagNameNode: getTagNameNode
   };
-}])
-;
+}
+

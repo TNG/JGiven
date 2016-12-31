@@ -1,9 +1,9 @@
 /**
  * Provides functions for sorting, grouping and filtering
  */
-import { tagToString, ownProperties, getTagName, deselectAll } from './util.js'
+import { tagToString, ownProperties, getTagName, deselectAll } from '../util.js'
 
-jgivenReportApp.factory('optionService', ['dataService', function (dataService) {
+export default function OptionService(dataService) {
   'use strict';
 
   function groupTagsByType (tagList) {
@@ -388,5 +388,4 @@ jgivenReportApp.factory('optionService', ['dataService', function (dataService) 
 
   };
 
-}])
-;
+}

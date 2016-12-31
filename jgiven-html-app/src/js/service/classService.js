@@ -1,11 +1,9 @@
 /**
  * Responsible for handling class and package-related operations, e.g. finding scenarios for a certain class or package
  */
-import { splitClassName} from './util.js'
-//var util = require('./util.js');
-//var splitClassName = util.splitClassName;
+import { splitClassName } from '../util.js'
 
-jgivenReportApp.factory('classService', ['dataService', function (dataService) {
+export default function ClassService(dataService) {
   'use strict';
 
   /**
@@ -154,4 +152,4 @@ jgivenReportApp.factory('classService', ['dataService', function (dataService) {
     }
   };
 
-}]);
+}

@@ -1,8 +1,14 @@
 /**
  * Main controller
  */
-
-
+import { getTagKey,
+         nanosToReadableUnit,
+         getWordValue,
+         tagToString,
+         sortByDescription,
+         getTagName,
+         splitClassName,
+         deselectAll } from '../util.js'
 
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $document, $timeout, $sanitize, $location, $window, localStorageService,
                                                          dataService, tagService, classService, searchService, optionService) {
@@ -86,12 +92,6 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
         var tagNameNode = tagService.getTagNameNode(part[2]);
         $scope.updateCurrentPageToTagNameNode(tagNameNode, selectedOptions);
       }
-    } else if (part[1] === 'tagid') {
-      var tag = tagService.getTagByKey(getTagKey({
-          fullType: part[2],
-          value: part[3]
-      }));
-      $scope.updateCurrentPageToTag(tag, selectedOptions);
     } else if (part[1] === 'class') {
       $scope.updateCurrentPageToClassName(part[2], selectedOptions);
     } else if (part[1] === 'package') {
@@ -546,7 +546,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     if (tag.href) {
       return tag.href;
     }
-    return '#tagid/' + getTagId(tag) +
+    return '#tag/' + getTagName(tag) +
       (tag.value ? '/' + $window.encodeURIComponent(tag.value) : '');
   };
 
@@ -633,8 +633,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     return words;
   };
 
+  function isRootPath($location) {
+    return $location.path() === '/' || $location.path() === '' || $location.path() === '/all'
+  }
+
   $scope.showFailed = function () {
-    if ($location.path() === '/' || $location.path() === '') {
+    if (isRootPath($location)) {
       $location.path('/failed');
     } else {
       $location.search('status', 'fail');
@@ -642,7 +646,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.showPending = function () {
-    if ($location.path() === '/' || $location.path() === '') {
+    if (isRootPath($location)) {
       $location.path('/pending');
     } else {
       $location.search('status', 'pending');
@@ -650,10 +654,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.showSuccessful = function () {
+    $scope.updatingLocation = true;
     if ($location.path() === '/' || $location.path() === '') {
       $location.path('/all');
     }
     $location.search('status', 'success');
+    $scope.updatingLocation = false;
 
   };
 

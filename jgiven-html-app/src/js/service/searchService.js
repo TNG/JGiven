@@ -3,9 +3,9 @@
  */
 import { sortByDescription,
          getTagName
-       } from './util.js'
+       } from '../util.js'
 
-jgivenReportApp.factory('searchService', ['dataService', function (dataService) {
+export default function SearchService(dataService) {
   'use strict';
 
   function findScenarios(searchString) {
@@ -81,4 +81,4 @@ jgivenReportApp.factory('searchService', ['dataService', function (dataService) 
   return {
     findScenarios: findScenarios
   };
-}]);
+}
