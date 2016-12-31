@@ -1,6 +1,6 @@
 language: java
 before_install:
-- npm install -g bower
+- npm install -g yarn
 sudo: true
 cache:
   directories:
