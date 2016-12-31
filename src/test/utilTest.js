@@ -1,3 +1,5 @@
+import { nanosToReadableUnit, splitClassName } from '../js/util.js'
+
 describe("Util", function () {
 
   describe("nanosToReadableUnit", function () {

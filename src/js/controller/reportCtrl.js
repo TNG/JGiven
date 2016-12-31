@@ -8,7 +8,7 @@ import { getTagKey,
          sortByDescription,
          getTagName,
          splitClassName,
-         deselectAll } from './util.js'
+         deselectAll } from '../util.js'
 
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $document, $timeout, $sanitize, $location, $window, localStorageService,
                                                          dataService, tagService, classService, searchService, optionService) {
