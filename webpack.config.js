@@ -2,7 +2,6 @@ var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var ENV = process.env.npm_lifecycle_event;
 var isTest = ENV === 'test' || ENV === 'test-watch';
@@ -41,10 +40,6 @@ module.exports = function webPackConfig() {
                 test: /\.scss$/,
                 loader: ExtractTextPlugin.extract('style', 'css!sass')
             },
-            {
-                test: /\.html$/,
-                loader: 'raw'
-            },
             { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader?mimetype=image/svg+xml'},
             { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader?mimetype=application/font-woff'},
             { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader?mimetype=application/font-woff'},
@@ -77,8 +72,9 @@ module.exports = function webPackConfig() {
         // https://github.com/ampedandwired/html-webpack-plugin
         config.plugins.push(
             new HtmlWebpackPlugin({
-                template: './src/public/index.html',
-                inject: false
+                template: __dirname + '/src/public/index.html',
+                inject: false,
+                version: require("./package.json").version
             }),
 
             new ExtractTextPlugin('[name].css', {disable: !isRelease}),
@@ -100,10 +96,6 @@ module.exports = function webPackConfig() {
   //          new webpack.optimize.DedupePlugin(),
 
            // new webpack.optimize.UglifyJsPlugin(),
-
-            new CopyWebpackPlugin([{
-                from: __dirname + '/src/public'
-            }])
         )
     }
 
@@ -111,7 +103,6 @@ module.exports = function webPackConfig() {
         contentBase: './src/public',
         stats: 'minimal'
     };
-
 
     return config;
 }();

@@ -1,6 +1,6 @@
 'use strict';
 
-var pako = require('pako');
+var pako = require('pako')
 
 /**
  * Global variable that is used by the generated JSONP files.
