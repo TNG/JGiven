@@ -15,37 +15,58 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'build/bower_components/**/dist/jquery.js',
-      'build/bower_components/angular/angular.js',
-      'build/bower_components/angular-sanitize/angular-sanitize.js',
-      'build/bower_components/angular-mocks/angular-mocks.js',
-      'build/bower_components/**/mm-foundation-tpls.js',
-      'build/bower_components/**/foundation.js',
-      'build/bower_components/**/Chart.js',
-      'build/bower_components/**/angular-chart.js',
-      'build/bower_components/**/angular-local-storage.js',
-      'build/bower_components/**/lodash.js',
-      'build/bower_components/angular-bindonce/bindonce.min.js',
-      'src/app/**/*.js',
-      'src/test/app/**/*.js'
+      'src/test/*.js'
     ],
-
-
-    // list of files to exclude
-    exclude: [
-      'build/bower_components/ngInfiniteScroll/test/**'
-    ],
-
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {},
+    preprocessors: {
+      'src/test/*.js': ['webpack']
+    },
+
+    webpack: {
+      module : {
+        preLoaders: [],
+        loaders: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel',
+            query: {
+              presets: ['es2015']
+            }
+          }
+        ]
+      }
+    },
+
+    webpackMiddleware: {
+      // webpack-dev-middleware configuration
+      // i.e.
+      noInfo: true,
+      // and use stats to turn off verbose output
+      stats: {
+        // options i.e.
+        chunks: false
+      }
+    },
+
+    babelPreprocessor: {
+      options: {
+        presets: ['es2015'],
+        sourceMap: 'inline'
+      }
+    },
+
+    // list of files to exclude
+    exclude: [
+    ],
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['mocha'],
 
 
     // web server port
@@ -73,5 +94,6 @@ module.exports = function (config) {
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false
+
   })
 }

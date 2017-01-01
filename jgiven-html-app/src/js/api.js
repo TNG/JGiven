@@ -1,10 +1,12 @@
 'use strict';
 
+var pako = require('pako')
+
 /**
  * Global variable that is used by the generated JSONP files.
  * This variable can also be used by the custom Javascript file.
  */
-var jgivenReport = {
+window.jgivenReport = {
   scenarios: [],
   customNavigationLinks: [],
 
@@ -41,4 +43,3 @@ var jgivenReport = {
     this.metaData.title = title;
   }
 };
-

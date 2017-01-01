@@ -15,7 +15,7 @@ var ONE_HOUR_IN_MS = 3600000;
 var ONE_MINUTE_IN_MS = 60000;
 var ONE_SECOND_IN_MS = 1000;
 
-function nanosToReadableUnit (nanos) {
+export function nanosToReadableUnit (nanos) {
   var msNum = nanos / 1000000;
 
   if (msNum < ONE_SECOND_IN_MS) {
@@ -52,27 +52,27 @@ function nanosToReadableUnit (nanos) {
 }
 
 
-function undefinedOrEmpty (array) {
+export function undefinedOrEmpty (array) {
   return !array || array.length === 0;
 }
 
-function getWordValue(word) {
+export function getWordValue(word) {
   return word.argumentInfo ? word.argumentInfo.formattedValue : word.value
 }
 
-function getTagName (tag) {
+export function getTagName (tag) {
   return tag.name ? tag.name : tag.type;
 }
 
-function getTagId (tag) {
+export function getTagId (tag) {
   return tag.fullType ? tag.fullType : tag.type;
 }
 
-function getTagKey (tag) {
+export function getTagKey (tag) {
   return getTagId(tag) + (tag.value ? '-' + tag.value : '');
 }
 
-function tagToString (tag) {
+export function tagToString (tag) {
   var res = '';
 
   if (!tag.value || tag.prependType) {
@@ -89,7 +89,7 @@ function tagToString (tag) {
   return res;
 }
 
-function splitClassName (fullQualifiedClassName) {
+export function splitClassName (fullQualifiedClassName) {
   var index = fullQualifiedClassName.lastIndexOf('.');
   var className = fullQualifiedClassName.substr(index + 1);
   var packageName = fullQualifiedClassName.substr(0, index);
@@ -99,11 +99,11 @@ function splitClassName (fullQualifiedClassName) {
   };
 }
 
-function getScenarioId (scenario) {
+export function getScenarioId (scenario) {
   return scenario.className + "." + scenario.testMethodName;
 }
 
-function sortByDescription (scenarios) {
+export function sortByDescription (scenarios) {
   var sortedScenarios = _.forEach(_.sortBy(scenarios, function (x) {
     return x.description.toLowerCase();
   }), function (x) {
@@ -118,7 +118,7 @@ function sortByDescription (scenarios) {
   return sortedScenarios;
 }
 
-function getReadableExecutionStatus (status) {
+export function getReadableExecutionStatus (status) {
   switch (status) {
     case 'SUCCESS':
       return 'Successful';
@@ -129,7 +129,7 @@ function getReadableExecutionStatus (status) {
   }
 }
 
-function ownProperties (obj) {
+export function ownProperties (obj) {
   var result = [];
   for (var p in obj) {
     if (obj.hasOwnProperty(p)) {
@@ -139,9 +139,8 @@ function ownProperties (obj) {
   return result;
 }
 
-function deselectAll (options) {
+export function deselectAll (options) {
   _.forEach(options, function (option) {
     option.selected = false;
   });
 }
-

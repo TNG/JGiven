@@ -1,0 +1,43 @@
+import org.gradle.internal.os.OperatingSystem;
+
+def distDir = "${buildDir}/dist"
+
+task yarnInstall(type: CrossPlatformExec) {
+    buildCommand('yarn', 'install')
+}
+
+task yarnBuild(type: CrossPlatformExec, dependsOn: yarnInstall) {
+    inputs.files(fileTree(".") {
+        include "src/**"
+        include "package.json"
+    })
+    outputs.files(file(distDir))
+
+    buildCommand('yarn', 'build')
+}
+
+task yarnTest(type: CrossPlatformExec, dependsOn: yarnBuild) {
+    buildCommand('yarn', 'test')
+}
+
+test.finalizedBy(yarnTest)
+
+task zipAppDir(type: Zip, dependsOn: yarnBuild) {
+    from distDir
+    archiveName = 'app.zip'
+    destinationDir = new File(buildDir, 'resources/main/com/tngtech/jgiven/report/html5')
+}
+
+jar.dependsOn zipAppDir
+
+class CrossPlatformExec extends Exec {
+    void buildCommand(String command, String... commandArgs) {
+        if(OperatingSystem.current().isWindows()) {
+            executable = 'cmd'
+            args = ['/c', command]
+        } else {
+            executable = command
+        }
+        args(commandArgs.toList());
+    }
+}

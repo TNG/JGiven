@@ -18,6 +18,18 @@ sourceSets {
     }
 }
 
+def buildNumber = getCheckedOutGitCommitHash()
+
+println 'BUILD SHA1: ' + buildNumber
+
+processResources {
+    include "**/jgiven-version.properties"
+    expand(
+        'version': project.version,
+        'buildNumber': buildNumber
+    )
+}
+
 files { file("src/main/translations").listFiles() }.collect {
     def pkg=it.getName().split("\\.")[0]
 
@@ -35,4 +47,25 @@ files { file("src/main/translations").listFiles() }.collect {
         filteringCharset = 'UTF-8'
     }
     compileJava.dependsOn += taskName
+}
+
+/**
+ * Copied from https://gist.github.com/JonasGroeger/7620911
+ * Author: Jonas Groeger
+ */
+def getCheckedOutGitCommitHash() {
+    def gitFolder = "${rootProject.projectDir}/.git/"
+    def takeFromHash = 12
+    /*
+     * '.git/HEAD' contains either
+     *      in case of detached head: the currently checked out commit hash
+     *      otherwise: a reference to a file containing the current commit hash
+     */
+    def head = new File(gitFolder + "HEAD").text.split(":") // .git/HEAD
+    def isCommit = head.length == 1 // e5a7c79edabbf7dd39888442df081b1c9d8e88fd
+
+    if(isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
+
+    def refHead = new File(gitFolder + head[1].trim()) // .git/refs/heads/master
+    refHead.text.trim().take takeFromHash
 }

@@ -1,3 +1,4 @@
+@media print {
 
 .tab-bar, .top-bar, .breadcrumbs, #sidebar, .caret-column, .page-icon-bar, .duration, .case-count, .statistics-chart, .scenario-link-icon {
     display: none !important;
@@ -62,4 +63,6 @@ a {
 
 @page {
     margin-top: 1.5cm;
+}
+
 }
