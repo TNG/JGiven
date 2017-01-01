@@ -64,8 +64,12 @@ export function getTagName (tag) {
   return tag.name ? tag.name : tag.type;
 }
 
+export function getTagId (tag) {
+  return tag.fullType ? tag.fullType : tag.type;
+}
+
 export function getTagKey (tag) {
-  return getTagName(tag) + (tag.value ? '-' + tag.value : '');
+  return getTagId(tag) + (tag.value ? '-' + tag.value : '');
 }
 
 export function tagToString (tag) {
