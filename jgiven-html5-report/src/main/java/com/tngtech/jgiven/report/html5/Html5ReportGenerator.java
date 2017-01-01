@@ -5,6 +5,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
+import com.tngtech.jgiven.exception.JGivenInstallationException;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.model.*;
@@ -57,6 +58,12 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
             if( !file.canRead() ) {
                 log.info( "Cannot read " + file + ", skipping" );
             } else {
+                targetDirectory.mkdirs();
+                if (!targetDirectory.canWrite()) {
+                    String message = "Could not create directory "+targetDirectory;
+                    log.error(message);
+                    throw new JGivenInstallationException(message);
+                }
                 Files.copy( file, new File( targetDirectory, targetName ) );
             }
         }
