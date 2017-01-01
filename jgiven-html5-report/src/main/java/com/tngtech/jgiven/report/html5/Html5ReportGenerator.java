@@ -7,6 +7,7 @@ import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.tngtech.jgiven.exception.JGivenInstallationException;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
+import com.tngtech.jgiven.impl.util.Version;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.model.*;
 import org.slf4j.Logger;
@@ -177,6 +178,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
 
     static class MetaData {
         Date created = new Date();
+        String version = Version.VERSION.toString();
         String title = "JGiven Report";
         List<String> data = Lists.newArrayList();
     }
