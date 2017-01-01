@@ -2,6 +2,7 @@
  * Main controller
  */
 import { getTagKey,
+         getTagId,
          nanosToReadableUnit,
          getWordValue,
          tagToString,
@@ -92,6 +93,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
         var tagNameNode = tagService.getTagNameNode(part[2]);
         $scope.updateCurrentPageToTagNameNode(tagNameNode, selectedOptions);
       }
+    } else if (part[1] === 'tagid') {
+      var tag = tagService.getTagByKey(getTagKey({
+                fullType: part[2],
+                value: part[3]
+      }));
+      $scope.updateCurrentPageToTag(tag, selectedOptions);
     } else if (part[1] === 'class') {
       $scope.updateCurrentPageToClassName(part[2], selectedOptions);
     } else if (part[1] === 'package') {
@@ -546,7 +553,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
     if (tag.href) {
       return tag.href;
     }
-    return '#tag/' + getTagName(tag) +
+    return '#tagid/' + getTagId(tag) +
       (tag.value ? '/' + $window.encodeURIComponent(tag.value) : '');
   };
 
