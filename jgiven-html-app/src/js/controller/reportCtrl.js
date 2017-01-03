@@ -10,7 +10,7 @@ import { getTagKey,
          getTagName,
          splitClassName,
          deselectAll,
-         getArgumentList,
+         getArgumentInfos,
          replaceArguments } from '../util.js'
 
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $document, $timeout, $sanitize, $location, $window, localStorageService,
@@ -684,10 +684,10 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.replaceStepExtendedDescription = function (step) {
-    var description  = step.extendedDescription;
-    var words        = step.words;
-    var argumentList = getArgumentList(words);
-    return replaceArguments(description, argumentList);
+    var description        = step.extendedDescription;
+    var words              = step.words;
+    [enumArray, nameArray] = getArgumentInfos(words);
+    return replaceArguments(description, enumArray, nameArray);
   };
 
   $scope.init();

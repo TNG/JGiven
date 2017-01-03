@@ -145,12 +145,24 @@ export function deselectAll (options) {
   });
 }
 
-export function getArgumentList(wordList) {
+// returns a tuple of an Array where index         -> value
+//                and an Array where argument name -> value
+export function getArgumentInfos(wordArray) {
+  var enumArray = [];
+  var nameArray = [];
+
   function isArgument(word) { return !!word.argumentInfo; }
-  return _.chain(wordList)
-          .filter(isArgument)
-          .map(function (word) { return word.value; })
-          .value();
+  function updateContainer(nameArr, enumArr, word) {
+    map[word.argumentInfo.argumentName] = word.value;
+    arr.push(word.value);
+  }
+
+  _.chain(wordArray)
+   .filter(isArgument)
+   .forEach(_.curry(updateContainer)(nameArray, enumArray))
+   .value();
+
+  return [enumArray, nameArray];
 }
 
 export function parseNextInt(arr) {
@@ -161,8 +173,9 @@ export function parseNextInt(arr) {
     return result;
 }
 
-export function replaceArguments(string, argumentList) {
+export function replaceArguments(string, enumArray, nameArray) {
     var separator = "$";
+    var stopChars = [" ", ",", ";", ":","\"","%","!","[","]","(",")","-","_"];
     var result    = [];
     var placeHolderCount = 0;
 
@@ -175,11 +188,25 @@ export function replaceArguments(string, argumentList) {
         var argumentLen = 0;
 
         if (isSeparator && !escaped) {
-            var argIndex = parseNextInt(_.drop(string, i+1));
-            if (argIndex.integer === undefined) {
-                argument = argumentList[placeHolderCount++];
-            } else {
-                argument = argumentList[argIndex.integer-1];
+            var substring = _.drop(string, i+1);
+            var argName  = _.takeWhile(substring, function (c) {
+                            var index = _.indexOf(stopChars, c);
+                            return index === -1;
+                          }).join("");
+            var argIndex = parseNextInt(substring);
+
+            // named placeholder '$[argumentname]'
+            if (nameArray[argName] !== undefined) {
+                argument = nameArray[argName];
+                argumentLen = argName.length;
+            }
+            // normal placeholder '$'
+            else if (argIndex.integer === undefined) {
+                argument = enumArray[placeHolderCount++];
+            }
+            // enumerated placeholder '$1, $2..'
+            else {
+                argument = enumArray[argIndex.integer-1];
                 argumentLen = argIndex.length;
             }
         } else if (escaped) {
@@ -187,6 +214,7 @@ export function replaceArguments(string, argumentList) {
             argumentLen = 1;
         }
 
+        // an argument found
         if (argument !== undefined) {
             result.push(argument);
             i += argumentLen;

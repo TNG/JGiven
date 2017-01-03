@@ -40,6 +40,14 @@ public class ExtendedDescriptionsTest extends SimpleScenarioTest<ExtendedDescrip
         // TODO screenshot test & implement frontend "click on table"
     }
 
+    @Test
+    @Parameters({
+            "false, 0"
+    })
+    public void steps_can_reference_arguments_by_name_in_extended_descriptions( boolean bool, int i ) {
+        given().another_bool_$_and_int_$_value( bool, i );
+    }
+
     public static class Annotations extends Stage<Annotations> {
 
         @ExtendedDescription( "This is a boolean value" )
@@ -56,5 +64,11 @@ public class ExtendedDescriptionsTest extends SimpleScenarioTest<ExtendedDescrip
         public Annotations some_bool_$_and_int_$_value ( boolean bool, int i ){
             return this;
         }
+
+        @ExtendedDescription( "Referencing arguments per name - int : $i, bool : $bool" )
+        public Annotations another_bool_$_and_int_$_value ( boolean bool, int i ){
+            return this;
+        }
+
     }
 }

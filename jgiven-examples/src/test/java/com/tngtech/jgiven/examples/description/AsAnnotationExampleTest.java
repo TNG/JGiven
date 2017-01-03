@@ -39,6 +39,15 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
         given().some_boolean_$_and_int_$_value( bool, i );
     }
 
+    @Test
+    @As( "Scenario that shows the usage of @As with argument names")
+    @Parameters({
+            "true, 1"
+    })
+    public void steps_can_use_at_annotation_to_reference_arguments_by_name(boolean bool, int i) {
+        given().argument_names_can_be_references( bool, i );
+    }
+
     public static class AsAnnotationStage extends Stage<AsAnnotationStage> {
 
         @IntroWord
@@ -54,6 +63,11 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
 
         @As( "the reference to the first argument : $1 and the second argument : $2 ")
         public AsAnnotationStage some_boolean_$_and_int_$_value( boolean bool, int i) {
+            return this;
+        }
+
+        @As( "the reference to the first argument : $bool and the second argument : $2 ")
+        public AsAnnotationStage argument_names_can_be_references( boolean bool, int i) {
             return this;
         }
 
