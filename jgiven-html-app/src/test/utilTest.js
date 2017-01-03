@@ -1,4 +1,6 @@
-import { nanosToReadableUnit, splitClassName } from '../js/util.js'
+import { nanosToReadableUnit, splitClassName, parseNextInt, replaceArguments } from '../js/util.js'
+
+let _ = require('lodash');
 
 describe("Util", function () {
 
@@ -104,7 +106,6 @@ describe("Util", function () {
             expect(res6.length).toEqual(2);
        });
   });
-
 
   describe("replaceArguments", function(){
       it("works for empty argument arrays", function() {

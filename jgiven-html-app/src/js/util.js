@@ -145,7 +145,7 @@ export function deselectAll (options) {
   });
 }
 
-function getArgumentList(wordList) {
+export function getArgumentList(wordList) {
   function isArgument(word) { return !!word.argumentInfo; }
   return _.chain(wordList)
           .filter(isArgument)
@@ -153,17 +153,7 @@ function getArgumentList(wordList) {
           .value();
 }
 
-// can be removed if lodash-version is >= 3.10.1
-_.takeWhile = function (arr, predicate) {
-    var predicateHoldsForAll = true;
-    return _.filter(arr, function (e) {
-        var predicateResult = predicate(e);
-        predicateHoldsForAll = !predicateResult ? false : predicateHoldsForAll;
-        return predicateResult && predicateHoldsForAll;
-    });
-};
-
-function parseNextInt(arr) {
+export function parseNextInt(arr) {
     var numbers = _.takeWhile(arr, function (c) { return !isNaN(c) && c !== " "; }).join("");
     var parsedInt = parseInt(numbers);
     var result  = { integer : isNaN(parsedInt) ? undefined : parsedInt
@@ -171,7 +161,7 @@ function parseNextInt(arr) {
     return result;
 }
 
-function replaceArguments(string, argumentList) {
+export function replaceArguments(string, argumentList) {
     var separator = "$";
     var result    = [];
     var placeHolderCount = 0;
