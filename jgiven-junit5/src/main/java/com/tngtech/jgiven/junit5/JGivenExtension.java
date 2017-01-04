@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import com.tngtech.jgiven.config.ConfigurationUtil;
-import com.tngtech.jgiven.impl.Config;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -22,6 +21,8 @@ import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.config.ConfigurationUtil;
+import com.tngtech.jgiven.impl.ReportModelHolder;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
@@ -43,6 +44,7 @@ import com.tngtech.jgiven.report.model.ReportModel;
  *
  * @see ScenarioTest
  * @see SimpleScenarioTest
+ * @since 0.14.0
  */
 public class JGivenExtension implements
         TestInstancePostProcessor,
@@ -64,26 +66,42 @@ public class JGivenExtension implements
         }
         context.getStore( NAMESPACE ).put( REPORT_MODEL, reportModel );
 
-        ConfigurationUtil.getConfiguration(context.getTestClass().get())
-                .configureTag(Tag.class)
-                .description("JUnit 5 Tag")
-                .color("orange");
+        ConfigurationUtil.getConfiguration( context.getTestClass().get() )
+            .configureTag( Tag.class )
+            .description( "JUnit 5 Tag" )
+            .color( "orange" );
     }
 
     @Override
     public void afterAll( ContainerExtensionContext context ) throws Exception {
+        ReportModelHolder.get().removeReportModelOfCurrentThread();
         new CommonReportHelper().finishReport( (ReportModel) context.getStore( NAMESPACE ).get( REPORT_MODEL ) );
     }
 
     @Override
     public void beforeEach( TestExtensionContext context ) throws Exception {
+        ReportModel reportModel = (ReportModel) context.getStore( NAMESPACE ).get( REPORT_MODEL );
+        ReportModelHolder.get().setReportModelOfCurrentThread( reportModel );
+
+        if( isTestFactory( context ) ) {
+            return;
+        }
+
         List<NamedArgument> args = new ArrayList<NamedArgument>();
         getScenario().startScenario( context.getTestClass().get(), context.getTestMethod().get(), args );
+    }
 
+    private boolean isTestFactory( TestExtensionContext context ) {
+        return context.getTestMethod().get().getAnnotation( TestFactory.class ) != null;
     }
 
     @Override
     public void afterEach( TestExtensionContext context ) throws Exception {
+        ReportModelHolder.get().removeReportModelOfCurrentThread();
+
+        if( isTestFactory( context ) ) {
+            return;
+        }
 
         ScenarioBase scenario = getScenario();
         try {

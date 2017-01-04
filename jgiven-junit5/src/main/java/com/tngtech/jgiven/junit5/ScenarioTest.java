@@ -17,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
  *
  * @see JGivenExtension
  * @see SimpleScenarioTest
+ * @since 0.14.0
+ *
  */
 @ExtendWith( JGivenExtension.class )
 public class ScenarioTest<GIVEN, WHEN, THEN> extends ScenarioTestBase<GIVEN, WHEN, THEN> {

@@ -117,4 +117,76 @@ public class ScenarioBase {
     public void setStageCreator(StageCreator stageCreator) {
         this.executor.setStageCreator(stageCreator);
     }
+
+    public void addIntroWord( String word ) {
+        executor.addIntroWord( word );
+    }
+
+    /**
+     * Alias for {@link #addStage}
+     */
+    public <T> T stage(Class<T> stageClass) {
+        return addStage(stageClass);
+    }
+
+    /**
+     * Alias for {@link #addIntroWord(String)}
+     * @see #addIntroWord(String)
+     */
+    public ScenarioBase intro(String introWord) {
+        addIntroWord(introWord);
+        return this;
+    }
+
+    /**
+     * Convenience method for adding the 'given' intro word
+     * and adding a stage class. Equivalent to
+     *
+     * <pre>
+     *     addIntroWord("given");
+     *     return addStage(stageClass);
+     * </pre>
+     *
+     * @see #addIntroWord(String)
+     * @see #addStage(Class)
+     */
+    public <T> T given(Class<T> stageClass) {
+        addIntroWord("given");
+        return addStage(stageClass);
+    }
+
+    /**
+     * Convenience method for adding the 'when' intro word
+     * and adding a stage class. Equivalent to
+     *
+     * <pre>
+     *     addIntroWord("when");
+     *     return addStage(stageClass);
+     * </pre>
+     *
+     * @see #addIntroWord(String)
+     * @see #addStage(Class)
+     */
+    public <T> T when(Class<T> stageClass) {
+        addIntroWord("when");
+        return addStage(stageClass);
+    }
+
+    /**
+     * Convenience method for adding the 'then' intro word
+     * and adding a stage class. Equivalent to
+     *
+     * <pre>
+     *     addIntroWord("then");
+     *     return addStage(stageClass);
+     * </pre>
+     *
+     * @see #addIntroWord(String)
+     * @see #addStage(Class)
+     */
+    public <T> T then(Class<T> stageClass) {
+        addIntroWord("then");
+        return addStage(stageClass);
+    }
+
 }

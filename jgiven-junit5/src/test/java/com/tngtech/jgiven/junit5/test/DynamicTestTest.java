@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static com.tngtech.jgiven.junit5.DynamicJGivenTest.dynamicJGivenTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
@@ -23,8 +24,19 @@ public class DynamicTestTest {
     @TestFactory
     Collection<org.junit.jupiter.api.DynamicTest> dynamicTestsFromCollection() {
         return Arrays.asList(
-                dynamicTest("1st dynamic test", () -> assertTrue(true)),
-                dynamicTest("2nd dynamic test", () -> assertEquals(4, 2 * 2))
+                dynamicJGivenTest("1st dynamic test", (s) -> {
+                    s.given(GivenStage.class)
+                            .some_state();
+                    s.when(WhenStage.class)
+                            .some_action();
+
+                }),
+                dynamicJGivenTest("2nd dynamic test", (scenario) -> {
+                    scenario.given(GivenStage.class)
+                            .some_state()
+                            .when().some_action()
+                            .then().some_outcome();
+                })
         );
     }
 
