@@ -2,6 +2,7 @@
  * Utility functions
  */
 
+let _ = require('lodash');
 
 String.prototype.capitalize = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
@@ -148,13 +149,14 @@ export function deselectAll (options) {
 // returns a tuple of an Array where index         -> value
 //                and an Array where argument name -> value
 export function getArgumentInfos(wordArray) {
+
   var enumArray = [];
   var nameArray = [];
 
   function isArgument(word) { return !!word.argumentInfo; }
   function updateContainer(nameArr, enumArr, word) {
-    map[word.argumentInfo.argumentName] = word.value;
-    arr.push(word.value);
+    nameArr[word.argumentInfo.argumentName] = word.value;
+    enumArr.push(word.value);
   }
 
   _.chain(wordArray)
@@ -173,9 +175,14 @@ export function parseNextInt(arr) {
     return result;
 }
 
+export function parseNextArgumentName(string) {
+    var stopChars = [" ", ",", ";", ":","\"","%","!","[","]","(",")","-","_"];
+    var isNonStopChar = function (c) { return  _.indexOf(stopChars, c) === -1; };
+    return _.takeWhile(string, isNonStopChar).join("");
+}
+
 export function replaceArguments(string, enumArray, nameArray) {
     var separator = "$";
-    var stopChars = [" ", ",", ";", ":","\"","%","!","[","]","(",")","-","_"];
     var result    = [];
     var placeHolderCount = 0;
 
@@ -189,10 +196,7 @@ export function replaceArguments(string, enumArray, nameArray) {
 
         if (isSeparator && !escaped) {
             var substring = _.drop(string, i+1);
-            var argName  = _.takeWhile(substring, function (c) {
-                            var index = _.indexOf(stopChars, c);
-                            return index === -1;
-                          }).join("");
+            var argName  = parseNextArgumentName(substring);
             var argIndex = parseNextInt(substring);
 
             // named placeholder '$[argumentname]'

@@ -42,40 +42,6 @@ describe("Util", function () {
           expect(t.packageName).toEqual("");
       });
   });
-  /*
-  describe("getArgumentInfo", function() {
-       it("can parse a simple wordarray", function() {
-          var words = [{
-                         "value": "Given",
-                         "isIntroWord": true
-                       },
-                       {
-                         "value": "argument names can be referenced"
-                       },
-                       {
-                         "value": "false",
-                         "argumentInfo": {
-                           "argumentName": "bool",
-                           "formattedValue": "false"
-                         }
-                       },
-                       {
-                         "value": "0",
-                         "argumentInfo": {
-                           "argumentName": "i",
-                           "formattedValue": "0"
-                         }
-                       }];
-          [nameArray, enumArray] = getArgumentInfos(words);
-          expect(nameArray["bool"]).toEqual("false");
-          expect(nameArray["i"]).toEqual("0");
-          expect(nameArray["foo"]).toEqual(undefined);
-
-          expect(enumArray[0]).toEqual("false");
-          expect(enumArray[1]).toEqual("1");
-          expect(enumArray.length).toEqual(2);
-       });
-  }); */
  
   describe("parseNextInt", function() {
        it("works for digits", function() {
@@ -203,6 +169,20 @@ describe("Util", function () {
           expect(replaceArguments("$15 $10", enumArray, nameArray)).toEqual("15 10");
           expect(replaceArguments("$98, $1, $2, $54" , enumArray, nameArray)).toEqual("98, 1, 2, 54");
           expect(replaceArguments("$100 minus $43 equals $57", enumArray, nameArray)).toEqual("100 minus 43 equals 57");
+      });
+
+      it("works for custom case", function() {
+         var enumArray = [];
+         enumArray.push("false");
+         enumArray.push("0");
+
+         var nameArray = [];
+         nameArray["bool"] = "false";
+         nameArray["i"] = "0";
+
+         var res = replaceArguments("Referencing arguments per name - int : $i, bool : $bool", enumArray, nameArray);
+         expect(res).toEqual("Referencing arguments per name - int : 0, bool : false");
+
       });
 
       it("works for named placeholder", function() {
