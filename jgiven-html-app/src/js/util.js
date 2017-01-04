@@ -2,7 +2,16 @@
  * Utility functions
  */
 
-let _ = require('lodash');
+// let _ = require('lodash');
+
+import forEach from "lodash/fp/forEach";
+import curry from "lodash/fp/curry";
+import filter from "lodash/fp/filter";
+import flow from "lodash/fp/flow";
+
+// this is somehow needed, because functions from "lodash/fp/..." behave
+// very differently than from the "_" object
+import _ from 'lodash';
 
 String.prototype.capitalize = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
@@ -159,10 +168,10 @@ export function getArgumentInfos(wordArray) {
     enumArr.push(word.value);
   }
 
-  _.chain(wordArray)
-   .filter(isArgument)
-   .forEach(_.curry(updateContainer)(nameArray, enumArray))
-   .value();
+  flow(
+    filter(isArgument),
+    forEach(curry(updateContainer)(nameArray, enumArray))
+  )(wordArray);
 
   return [enumArray, nameArray];
 }
@@ -183,20 +192,20 @@ export function parseNextArgumentName(string) {
 
 export function replaceArguments(string, enumArray, nameArray) {
     var separator = "$";
-    var result    = [];
+    var result = [];
     var placeHolderCount = 0;
 
     for(var i = 0; i < string.length; ++i) {
-        var c           = string.charAt(i);
-        var lookahead   = string.charAt(i+1);
-        var isSeparator = c          === separator;
-        var escaped     = (lookahead === separator) && isSeparator;
-        var argument    = undefined;
+        var c = string.charAt(i);
+        var lookahead = string.charAt(i+1);
+        var isSeparator = c === separator;
+        var escaped = (lookahead === separator) && isSeparator;
+        var argument = undefined;
         var argumentLen = 0;
 
         if (isSeparator && !escaped) {
             var substring = _.drop(string, i+1);
-            var argName  = parseNextArgumentName(substring);
+            var argName = parseNextArgumentName(substring);
             var argIndex = parseNextInt(substring);
 
             // named placeholder '$[argumentname]'
