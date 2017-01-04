@@ -5,12 +5,12 @@ import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import com.tngtech.jgiven.tags.Issue;
-import junitparams.JUnitParamsRunner;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith( JUnitParamsRunner.class )
+@RunWith( DataProviderRunner.class )
 @Issue("#236")
 @Description( "Example for different possibilities to annotate test cases with extended descriptions" )
 public class ExtendedDescriptionsTest extends SimpleScenarioTest<ExtendedDescriptionsTest.Annotations> {

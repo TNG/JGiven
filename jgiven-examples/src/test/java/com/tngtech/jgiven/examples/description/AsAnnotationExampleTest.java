@@ -1,17 +1,17 @@
 package com.tngtech.jgiven.examples.description;
 
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.IntroWord;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
-import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith( JUnitParamsRunner.class )
+@RunWith( DataProviderRunner.class )
 @Description( "Demonstrates the usage of the @As annotation" )
 public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExampleTest.AsAnnotationStage> {
 
