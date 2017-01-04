@@ -28,11 +28,11 @@ If a `$` should not be treated as a placeholder for a parameter, but printed ver
 
 === Custom Annotations
 
-The `@As` annotation can be used to override the shown sentence. To reference arguments use `$`, enumerate them `$1, $2, ...`, or use `$[argumentname]` to have a direct reference.
+The `@As` annotation can be used to override the shown sentence. To reference arguments use `$` or enumerate them `$1, $2, ...` to have a direct reference.
 
 [source,java]
 ----
-@As ( "the $2 cooked rice bowls and the $eggs fresh eggs" )
+@As ( "the $2 cooked rice bowls and the $1 fresh eggs" )
 public SELF $_eggs_and_$_rice_bowls( int eggs, int riceBowls ) { ... }
 ----
 
