@@ -683,10 +683,14 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
 
   };
 
-  $scope.replaceStepExtendedDescription = function (step) {
+  $scope.replaceStepExtendedDescription = function replaceStepExtendedDescription (step) {
+    var enumArray = [];
+    var nameArray = [];
+
     var description        = step.extendedDescription;
     var words              = step.words;
     [enumArray, nameArray] = getArgumentInfos(words);
+
     return replaceArguments(description, enumArray, nameArray);
   };
 
