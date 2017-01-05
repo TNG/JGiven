@@ -81,6 +81,43 @@ public class JGiven5ScenarioTest
 }
 ----
 
+=== Dynamic Tests
+JUnit 5 introduces so-called _dynamic tests_.
+Dynamic tests are created completely differently than normal JUnit 5 tests, by using _factory methods_.
+A factory method is a method annotated with `@TestFactory` returning a sequence of `DynamicTest` instances.
+Normally you create instances of `DynamicTest` by using the `DynamicTest.dynamicTest` method.
+This method takes two parameters: a display name in form of a String and a lambda expression that contains
+the actual test implementation.
+
+==== Dynamic JGiven Tests
+To write dynamic JGiven tests, all you have to do is to use the method `DynamicJGivenTest.dynamicJGivenTest`
+to create instances of `DynamicTest`.
+The difference to the JUnit 5 method is that the lambda expression of the JGiven method takes a `ScenarioBase` parameter.
+You use this parameter to add stages to the scenario.
+
+[source,java]
+----
+@ExtendWith(JGivenExtension.class)
+public class DynamicTestTest {
+
+    @TestFactory
+    Collection<DynamicTest> dynamicTests() {
+        return Arrays.asList(
+            dynamicJGivenTest("1st dynamic test", (scenario) -> {
+                scenario.given(GivenStage.class)
+                        .some_state();
+                scenario.when(WhenStage.class)
+                        .some_action();
+            })
+        );
+    }
+}
+----
+
+CAUTION: Dynamic JGiven Tests is currently a highly experimental feature and will most likely
+be changed in backwards-incompatible ways in future versions of JGiven. Use with caution.
+Feedback is welcome!
+
 === Example Project
 
 You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/junit5
