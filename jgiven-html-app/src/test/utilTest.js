@@ -1,7 +1,5 @@
 import { nanosToReadableUnit, splitClassName, parseNextInt, replaceArguments, getArgumentInfos } from '../js/util.js'
 
-let _ = require('lodash');
-
 describe("Util", function () {
 
   describe("nanosToReadableUnit", function () {
@@ -42,7 +40,83 @@ describe("Util", function () {
           expect(t.packageName).toEqual("");
       });
   });
- 
+
+  describe("getArgumentInfos", function() {
+      it("works for words which are arguments", function() {
+          function argumentName(str) { return { "argumentName" : str }; }
+
+          var words1 = [ { "value" : 1, "argumentInfo": argumentName("i") } ];
+          var words2 = [ { "value" : 2, "argumentInfo": argumentName("i") }
+                       , { "value" : "str", "argumentInfo" : argumentName("string") }
+                       , { "value" : -10, "argumentInfo" : argumentName("neg_integer") }
+                       , { "value" : "", "argumentInfo" : argumentName("empty") }
+                       ];
+          var enumRes1 = [], nameRes1 = [], enumRes2 = [], nameRes2 = [];
+
+          var [enumRes1, nameRes1] = getArgumentInfos(words1);
+          expect(enumRes1.length).toEqual(1);
+          expect(nameRes1["i"]).toEqual(1);
+
+
+          var [enumRes2, nameRes2] = getArgumentInfos(words2);
+          expect(enumRes2.length).toEqual(4);
+          expect(enumRes2[0]).toEqual(2);
+          expect(enumRes2[1]).toEqual("str");
+          expect(enumRes2[2]).toEqual(-10);
+          expect(enumRes2[3]).toEqual("");
+
+          expect(nameRes2["i"]).toEqual(2);
+          expect(nameRes2["string"]).toEqual("str");
+          expect(nameRes2["neg_integer"]).toEqual(-10);
+          expect(nameRes2["empty"]).toEqual("");
+      });
+
+      it("works for words which are not arguments", function() {
+          var words1 = [ { "value" : 1 } ];
+          var words2 = [ { "value" : 1 }
+                       , { "value" : "str" }
+                       , { "value" : -10 }
+                       , { "value" : "" }
+                       ];
+          var enumRes1 = [], nameRes1 = [], enumRes2 = [], nameRes2 = [];
+          var [enumRes1, nameRes1] = getArgumentInfos(words1);
+          expect(enumRes1.length).toEqual(0);
+
+          var [enumRes2, nameRes2] = getArgumentInfos(words2);
+          expect(enumRes1.length).toEqual(0);
+      });
+
+      it("works for mixed words and arguments", function() {
+          function argumentName(str) { return { "argumentName" : str }; }
+
+          var words1 = [ { "value" : 1, "argumentInfo": argumentName("i") }
+                       , { "value" : " " }
+                       ];
+          var words2 = [ { "value" : "Given"}
+                       , { "value" : 2, "argumentInfo": argumentName("i") }
+                       , { "value" : "then do something..." }
+                       , { "value" : -10, "argumentInfo" : argumentName("neg_integer") }
+                       , { "value" : "and after that it returns"}
+                       , { "value" : "nothing", "argumentInfo" : argumentName("empty") }
+                       ];
+          var enumRes1 = [], nameRes1 = [], enumRes2 = [], nameRes2 = [];
+
+          [enumRes1, nameRes1] = getArgumentInfos(words1);
+          expect(enumRes1[0]).toEqual(1);
+          expect(nameRes1["i"]).toEqual(1);
+
+          [enumRes2, nameRes2] = getArgumentInfos(words2);
+          expect(enumRes2.length).toEqual(3);
+          expect(enumRes2[0]).toEqual(2);
+          expect(enumRes2[1]).toEqual(-10);
+          expect(enumRes2[2]).toEqual("nothing");
+
+          expect(nameRes2["i"]).toEqual(2);
+          expect(nameRes2["neg_integer"]).toEqual(-10);
+          expect(nameRes2["empty"]).toEqual("nothing");
+      });
+  });
+
   describe("parseNextInt", function() {
        it("works for digits", function() {
             var res1 = parseNextInt("0");
@@ -182,7 +256,6 @@ describe("Util", function () {
 
          var res = replaceArguments("Referencing arguments per name - int : $i, bool : $bool", enumArray, nameArray);
          expect(res).toEqual("Referencing arguments per name - int : 0, bool : false");
-
       });
 
       it("works for named placeholder", function() {

@@ -2,16 +2,7 @@
  * Utility functions
  */
 
-// let _ = require('lodash');
-
-import forEach from "lodash/fp/forEach";
-import curry from "lodash/fp/curry";
-import filter from "lodash/fp/filter";
-import flow from "lodash/fp/flow";
-
-// this is somehow needed, because functions from "lodash/fp/..." behave
-// very differently than from the "_" object
-import _ from 'lodash';
+import { forEach, flow, curry, filter, indexOf, sortBy, takeWhile, drop, partial } from "lodash";
 
 String.prototype.capitalize = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
@@ -114,7 +105,7 @@ export function getScenarioId (scenario) {
 }
 
 export function sortByDescription (scenarios) {
-  var sortedScenarios = _.forEach(_.sortBy(scenarios, function (x) {
+  var sortedScenarios = forEach(sortBy(scenarios, function (x) {
     return x.description.toLowerCase();
   }), function (x) {
     x.expanded = false;
@@ -150,7 +141,7 @@ export function ownProperties (obj) {
 }
 
 export function deselectAll (options) {
-  _.forEach(options, function (option) {
+  forEach(options, function (option) {
     option.selected = false;
   });
 }
@@ -169,15 +160,15 @@ export function getArgumentInfos(wordArray) {
   }
 
   flow(
-    filter(isArgument),
-    forEach(curry(updateContainer)(nameArray, enumArray))
+    partial(filter, _, isArgument),
+    partial(forEach, _, curry(updateContainer)(nameArray, enumArray))
   )(wordArray);
 
   return [enumArray, nameArray];
 }
 
 export function parseNextInt(arr) {
-    var numbers = _.takeWhile(arr, function (c) { return !isNaN(c) && c !== " "; }).join("");
+    var numbers = takeWhile(arr, function (c) { return !isNaN(c) && c !== " "; }).join("");
     var parsedInt = parseInt(numbers);
     var result  = { integer : isNaN(parsedInt) ? undefined : parsedInt
                   , length  : numbers.length } ;
@@ -186,8 +177,8 @@ export function parseNextInt(arr) {
 
 export function parseNextArgumentName(string) {
     var stopChars = [" ", ",", ";", ":","\"","%","!","[","]","(",")","-","_"];
-    var isNonStopChar = function (c) { return  _.indexOf(stopChars, c) === -1; };
-    return _.takeWhile(string, isNonStopChar).join("");
+    var isNonStopChar = function (c) { return indexOf(stopChars, c) === -1; };
+    return takeWhile(string, isNonStopChar).join("");
 }
 
 export function replaceArguments(string, enumArray, nameArray) {
@@ -204,10 +195,9 @@ export function replaceArguments(string, enumArray, nameArray) {
         var argumentLen = 0;
 
         if (isSeparator && !escaped) {
-            var substring = _.drop(string, i+1);
+            var substring = drop(string, i+1);
             var argName = parseNextArgumentName(substring);
             var argIndex = parseNextInt(substring);
-
             // named placeholder '$[argumentname]'
             if (nameArray[argName] !== undefined) {
                 argument = nameArray[argName];
