@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "Version 0.14.0 Released"
+date:  2017-01-06 12:11:16
+categories: news
+---
+
+Released Version 0.14.0 of JGiven. For details see the [release notes](https://github.com/TNG/JGiven/releases/tag/v0.14.0).
+
+[jgiven-gh]: https://github.com/TNG/JGiven
+[jgiven]:    http://jgiven.org
