@@ -1,3 +1,5 @@
+# v0.15.0
+
 # v0.14.0
 
 ## Switch from cglib to ByteBuddy
@@ -21,6 +23,10 @@ If you had a custom Spring configuration for JGiven you have to change the follo
 * Tags with the same name, but different packages are now correctly distinguished [#242](https://github.com/TNG/JGiven/pull/242) (thanks to ahus1)
 * Scenario states can be marked as required to make scenarios fail quickly and with a clear message if the state hasn't been provided [#255](https://github.com/TNG/JGiven/issues/255) (thanks to Airblader)
 * Added prefined Spanish JGiven classes for writing JGiven Scenarios in Spanish [#284](https://github.com/TNG/JGiven/pull/284) (thanks to elenagarcia5)
+
+### Experimental JUnit 5 Support
+
+JGiven can now be used together with JUnit 5, by using the `JGivenExtension`. Refer to the user guide for additional details. [#277](https://github.com/TNG/JGiven/pull/277)
 
 ### Experimental Android Support
 
