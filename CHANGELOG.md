@@ -20,6 +20,10 @@ If you had a custom Spring configuration for JGiven you have to change the follo
 * Tags with the same name, but different packages are now correctly distinguished [#242](https://github.com/TNG/JGiven/pull/242) (thanks to ahus1)
 * Scenario states can be marked as required to make scenarios fail quickly and with a clear message if the state hasn't been provided [#255](https://github.com/TNG/JGiven/issues/255)
 
+### Experimental JUnit 5 Support
+
+JGiven can now be used together with JUnit 5, by using the `JGivenExtension`. Refer to the user guide for additional details. [#277](https://github.com/TNG/JGiven/pull/277)
+
 ### Experimental Android Support
 
 There is a new experimental module called `jgiven-android`, which enables JGiven support for tests executed on the device or simulator.
