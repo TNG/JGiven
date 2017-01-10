@@ -66,5 +66,5 @@ String base64 = ( (TakesScreenshot) webDriver ).getScreenshotAs( OutputType.BASE
 currentStep.addAttachment( Attachment.fromBase64( base64, MediaType.PNG )
            .withTitle( "Screenshot" ) );
 ----
-For a full example, see the https://github.com/TNG/JGiven/blob/master/jgiven-tests/src/test/java/com/tngtech/jgiven/report/html5/Html5ReportStage.java[Html5ReportStage] class that is used by the JGiven tests.
+For a full example, see the https://github.com/TNG/JGiven/blob/master/jgiven-tests/src/test/java/com/tngtech/jgiven/report/html5/Html5AppStage.java[Html5AppStage] class that is used by the JGiven tests.
 
