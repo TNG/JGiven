@@ -11,8 +11,8 @@ ifndef::env-site[:toc: left]
 :prewrap!:
 :sectanchors:
 :sectnums:
-
-Version {version}
+:author: Jan Schäfer
+:revnumber: {version}
 
 include::intro.adoc[]
 
