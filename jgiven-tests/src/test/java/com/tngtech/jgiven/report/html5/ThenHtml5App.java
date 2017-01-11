@@ -1,6 +1,11 @@
 package com.tngtech.jgiven.report.html5;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.tngtech.jgiven.annotation.BeforeStage;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.testng.reporters.Files;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,13 +13,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.testng.reporters.Files;
-
-import com.tngtech.jgiven.annotation.BeforeStage;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SELF> {
 
@@ -110,6 +109,11 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
 
     public SELF has_content( String content ) {
         assertThat( foundElement.getText() ).isEqualTo( content );
+        return self();
+    }
+
+    public SELF attribute_$_has_value_$( String attribute, String content){
+        assertThat( foundElement.getAttribute( attribute ) ).isEqualTo( content );
         return self();
     }
 }

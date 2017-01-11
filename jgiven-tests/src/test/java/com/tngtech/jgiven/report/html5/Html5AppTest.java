@@ -1,7 +1,17 @@
 package com.tngtech.jgiven.report.html5;
 
-import java.io.IOException;
-
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.jgiven.JGivenScenarioTest;
+import com.tngtech.jgiven.annotation.As;
+import com.tngtech.jgiven.annotation.Description;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.report.json.GivenJsonReports;
+import com.tngtech.jgiven.report.model.GivenReportModels;
+import com.tngtech.jgiven.report.model.StepStatus;
+import com.tngtech.jgiven.tags.*;
+import com.tngtech.jgiven.annotation.Pending;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -10,23 +20,9 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.jgiven.JGivenScenarioTest;
-import com.tngtech.jgiven.annotation.As;
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.ScenarioStage;
-import com.tngtech.jgiven.annotation.ScenarioState;
-import com.tngtech.jgiven.report.json.GivenJsonReports;
-import com.tngtech.jgiven.report.model.GivenReportModels;
-import com.tngtech.jgiven.report.model.StepStatus;
-import com.tngtech.jgiven.tags.BrowserTest;
-import com.tngtech.jgiven.tags.FeatureAttachments;
-import com.tngtech.jgiven.tags.FeatureHtml5Report;
-import com.tngtech.jgiven.tags.FeatureTags;
-import com.tngtech.jgiven.tags.FeatureTagsWithCustomStyle;
-import com.tngtech.jgiven.tags.Issue;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @BrowserTest
 @FeatureHtml5Report
@@ -240,4 +236,30 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
 
     }
 
+    @Test
+    @Issue( "236" )
+    @Pending
+    public void extended_description_can_substitue_arguments() throws IOException {
+        String description = "This references the first argument: $"
+                + "this the second one: $2"
+                + "and this the third and named one: $third_arg";
+
+        Map<String, String> argumentMap = new HashMap<>();
+        argumentMap.put( "first_arg", "1" );
+        argumentMap.put( "second_arg", "2" );
+        argumentMap.put( "third_arg", "3" );
+
+        String expectedDescription = "This references the first argument: 1"
+                + "this the second one: 2"
+                + "and this the third and named one: 3";
+
+        given().a_report_model()
+                .and().step_$_of_scenario_$_has_extended_description_with_arguments( 1, 1, description, argumentMap );
+        jsonReports
+                .and().the_report_exist_as_JSON_file();
+        whenReport.when().the_HTML_Report_Generator_is_executed();
+        when().the_page_of_scenario_$_is_opened( 1 );
+        then().an_element_with_a_$_class_exists( "has-tip" )
+                .and().attribute_$_has_value_$( "tooltip-html-unsafe", expectedDescription );
+    }
 }

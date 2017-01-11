@@ -1,21 +1,17 @@
 package com.tngtech.jgiven.report.model;
 
-import static java.util.Arrays.asList;
+import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.attachment.Attachment;
+import com.tngtech.jgiven.attachment.MediaType;
+import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.annotation.ExtendedDescription;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.Quoted;
-import com.tngtech.jgiven.annotation.Table;
-import com.tngtech.jgiven.attachment.Attachment;
-import com.tngtech.jgiven.attachment.MediaType;
-import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
+import static java.util.Arrays.asList;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
 
@@ -320,6 +316,16 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     public SELF the_attachments_are_added_to_step_$_of_case_$(int stepNr, int caseNr) {
         for (Attachment a : attachments) {
             getStep(stepNr, 1, caseNr).addAttachment(a);
+        }
+        return self();
+    }
+
+    public SELF step_$_of_scenario_$_has_extended_description_with_arguments(int stepNr, int scenarioNr, String description, Map<String, String> argumentMap){
+        StepModel stepModel = getStep( stepNr, scenarioNr );
+        stepModel.setExtendedDescription( description );
+        for (Map.Entry<String, String> entry : argumentMap.entrySet()){
+            Word word = Word.argWord( entry.getKey(), entry.getValue(), entry.getValue() );
+            stepModel.addWords( word );
         }
         return self();
     }
