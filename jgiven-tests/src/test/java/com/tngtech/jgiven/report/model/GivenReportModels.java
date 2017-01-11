@@ -1,7 +1,5 @@
 package com.tngtech.jgiven.report.model;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
@@ -10,6 +8,9 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
+
+import java.util.List;
+import java.util.Map;
 
 public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<SELF> {
     @ExpectedScenarioState
@@ -142,6 +143,11 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
 
     public SELF the_attachments_are_added_to_step_$_of_case_$(int stepNr, int caseNr) {
         givenReportModel.the_attachments_are_added_to_step_$_of_case_$(stepNr, caseNr);
+        return self();
+    }
+
+    public SELF step_$_of_scenario_$_has_extended_description_with_arguments(int stepNr, int scenarioNr, String description, Map<String, String> argumentMap){
+        givenReportModel.step_$_of_scenario_$_has_extended_description_with_arguments(stepNr, scenarioNr, description, argumentMap);
         return self();
     }
 }

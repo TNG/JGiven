@@ -2,6 +2,7 @@
  * Responsible for handling tag-related operations
  */
 import { getTagKey, tagToString, getTagId, getTagName, undefinedOrEmpty, getScenarioId } from '../util.js'
+import { forEach, sortBy, filter, values } from "lodash";
 
 export default function TagService (dataService) {
 
@@ -35,12 +36,12 @@ export default function TagService (dataService) {
    */
   function getTagScenarioMap (scenarios) {
     var tagScenarioMap = {};
-    _.forEach(scenarios, function (testCase) {
-      _.forEach(testCase.scenarios, function (scenario) {
+    forEach(scenarios, function (testCase) {
+      forEach(testCase.scenarios, function (scenario) {
 
         scenario.tags = [];
 
-        _.forEach(scenario.tagIds, function (tagId) {
+        forEach(scenario.tagIds, function (tagId) {
 
           var tag = addEntry(tagId).tag;
           scenario.tags.push(tag);
@@ -61,7 +62,7 @@ export default function TagService (dataService) {
               tagEntry.scenarios.push(scenario);
             }
 
-            _.forEach(tagEntry.tag.tags, function (tagId) {
+            forEach(tagEntry.tag.tags, function (tagId) {
               addEntry(tagId);
             });
 
@@ -86,7 +87,7 @@ export default function TagService (dataService) {
    * navigation and returns the list of root nodes
    */
   function calculateRootTags () {
-    _.forEach(_.values(tagScenarioMap), function (tagEntry) {
+    forEach(values(tagScenarioMap), function (tagEntry) {
       if (tagEntry.tag.hideInNav) return;
 
       var tagNode = getTagNode(tagEntry);
@@ -99,22 +100,22 @@ export default function TagService (dataService) {
       nameNode.addTagNode(tagNode);
     });
 
-    var nameNodesWithMultipleEntries = _.filter(_.values(tagNameMap), function (nameNode) {
+    var nameNodesWithMultipleEntries = filter(values(tagNameMap), function (nameNode) {
       return nameNode.subTags().length > 1;
     });
 
-    _.forEach(nameNodesWithMultipleEntries, function (nameNode) {
-      _.forEach(nameNode.subTags(), function (subTag) {
+    forEach(nameNodesWithMultipleEntries, function (nameNode) {
+      forEach(nameNode.subTags(), function (subTag) {
         subTag.nameNode = nameNode;
       });
     });
 
-    var nodesWithoutParents = _.filter(_.values(tagNodeMap), function (tagNode) {
+    var nodesWithoutParents = filter(values(tagNodeMap), function (tagNode) {
       return undefinedOrEmpty(tagNode.tag().tags) && !tagNode.nameNode;
     });
 
 
-    return _.sortBy(nameNodesWithMultipleEntries.concat(nodesWithoutParents),
+    return sortBy(nameNodesWithMultipleEntries.concat(nodesWithoutParents),
       function (tagNode) {
         return tagNode.nodeName();
       });
@@ -128,7 +129,7 @@ export default function TagService (dataService) {
         tagNode = createTagNode(tagEntry);
         tagNodeMap[key] = tagNode;
         if (tag.tags && tag.tags.length > 0) {
-          _.forEach(tag.tags, function (parentTagId) {
+          forEach(tag.tags, function (parentTagId) {
             var parentTag = getTagByTagId(parentTagId);
             var parentTagEntry = tagScenarioMap[getTagKey(parentTag)];
             var parentTagNode = getTagNode(parentTagEntry);
@@ -175,13 +176,13 @@ export default function TagService (dataService) {
       node.scenarios = function () {
         var scenarioMap = {};
 
-        _.forEach(node.subTags(), function (subTag) {
-          _.forEach(subTag.scenarios(), function (scenario) {
+        forEach(node.subTags(), function (subTag) {
+          forEach(subTag.scenarios(), function (scenario) {
             scenarioMap[getScenarioId(scenario)] = scenario;
           });
         });
 
-        return _.values(scenarioMap);
+        return values(scenarioMap);
       };
 
       return node;

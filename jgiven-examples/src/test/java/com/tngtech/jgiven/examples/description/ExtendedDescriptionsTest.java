@@ -1,12 +1,12 @@
 package com.tngtech.jgiven.examples.description;
 
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import com.tngtech.jgiven.tags.Issue;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -31,7 +31,7 @@ public class ExtendedDescriptionsTest extends SimpleScenarioTest<ExtendedDescrip
     }
 
     @Test
-    @Parameters ({
+    @DataProvider({
             "false, 0",
             "true, 1"
     })
@@ -41,7 +41,7 @@ public class ExtendedDescriptionsTest extends SimpleScenarioTest<ExtendedDescrip
     }
 
     @Test
-    @Parameters({
+    @DataProvider({
             "false, 0"
     })
     public void steps_can_reference_arguments_by_name_in_extended_descriptions( boolean bool, int i ) {

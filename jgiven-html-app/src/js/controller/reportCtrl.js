@@ -684,6 +684,7 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
   $scope.replaceStepExtendedDescription = function replaceStepExtendedDescription (step) {
+    if (step.extendedDescription === undefined) { return ""; }
     var enumArray = [];
     var nameArray = [];
 
