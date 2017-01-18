@@ -2,7 +2,7 @@
  * Utility functions
  */
 
-import { forEach, flow, curry, filter, indexOf, sortBy, takeWhile, drop, partial } from "lodash";
+import { forEach, filter, indexOf, sortBy, takeWhile, drop, partial } from "lodash";
 
 String.prototype.capitalize = function () {
   return this.charAt(0).toUpperCase() + this.slice(1);
@@ -159,10 +159,9 @@ export function getArgumentInfos(wordArray) {
     enumArr.push(word.value);
   }
 
-  flow(
-    partial(filter, _, isArgument),
-    partial(forEach, _, curry(updateContainer)(nameArray, enumArray))
-  )(wordArray);
+  forEach(wordArray, function (word) {
+    if(isArgument(word)) updateContainer(nameArray, enumArray, word);
+  });
 
   return [enumArray, nameArray];
 }
@@ -176,7 +175,7 @@ export function parseNextInt(arr) {
 }
 
 export function parseNextArgumentName(string) {
-    var stopChars = [" ", ",", ";", ":","\"","%","!","[","]","(",")","-","_"];
+    var stopChars = [" ", ",", ";", ":","\"","%","!","[","]","(",")","-"];
     var isNonStopChar = function (c) { return indexOf(stopChars, c) === -1; };
     return takeWhile(string, isNonStopChar).join("");
 }

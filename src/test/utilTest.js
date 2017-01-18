@@ -269,6 +269,6 @@ describe("Util", function () {
           expect(replaceArguments("$2, $, $int", enumArray, nameArray)).toEqual("10, false, 10");
           expect(replaceArguments("$2, $, $4", enumArray, nameArray)).toEqual("10, false, $4");
           expect(replaceArguments("$2, $unknown, $", enumArray, nameArray)).toEqual("10, falseunknown, 10");
-      })
+      });
   });
 });
