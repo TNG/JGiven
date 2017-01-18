@@ -22,6 +22,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @BrowserTest
@@ -238,27 +239,27 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
 
     @Test
     @Issue( "236" )
-    @Pending
     public void extended_description_can_substitue_arguments() throws IOException {
-        String description = "This references the first argument: $"
-                + "this the second one: $2"
-                + "and this the third and named one: $third_arg";
+        String description = "This references the second argument: $2"
+                + " this the first one: $"
+                + " and this the third named one: $third_arg";
 
-        Map<String, String> argumentMap = new HashMap<>();
+        Map<String, String> argumentMap = new LinkedHashMap<>();
         argumentMap.put( "first_arg", "1" );
         argumentMap.put( "second_arg", "2" );
         argumentMap.put( "third_arg", "3" );
 
-        String expectedDescription = "This references the first argument: 1"
-                + "this the second one: 2"
-                + "and this the third and named one: 3";
+        String expectedDescription = "This references the second argument: 2"
+                + " this the first one: 1"
+                + " and this the third named one: 3";
 
         given().a_report_model()
                 .and().step_$_of_scenario_$_has_extended_description_with_arguments( 1, 1, description, argumentMap );
         jsonReports
                 .and().the_report_exist_as_JSON_file();
         whenReport.when().the_HTML_Report_Generator_is_executed();
-        when().the_page_of_scenario_$_is_opened( 1 );
+        when().the_page_of_scenario_$_is_opened( 1 )
+              .and().show_angular_foundation_tooltip_with_$_ms_delay_for_element_$_with_attribute_$_and_value_$(251, "span", "class", "has-tip" );
         then().an_element_with_a_$_class_exists( "has-tip" )
                 .and().attribute_$_has_value_$( "tooltip-html-unsafe", expectedDescription );
     }
