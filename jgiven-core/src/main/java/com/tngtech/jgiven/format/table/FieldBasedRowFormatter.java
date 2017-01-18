@@ -3,15 +3,21 @@ package com.tngtech.jgiven.format.table;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.annotation.TableFieldFormat;
+import com.tngtech.jgiven.annotation.TableFieldsFormats;
 import com.tngtech.jgiven.config.FormatterConfiguration;
+import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
@@ -20,7 +26,8 @@ import com.tngtech.jgiven.impl.util.ReflectionUtil;
  * Default implementation of the {@link RowFormatter} that uses
  * the fields of an object as columns of the table
  *
- * see {@link com.tngtech.jgiven.annotation.Table} for details
+ * @See {@link com.tngtech.jgiven.annotation.Table} for details<br>
+ * {@link TableFieldsFormats} annotation<br>
  */
 public class FieldBasedRowFormatter extends RowFormatter {
 
@@ -30,6 +37,7 @@ public class FieldBasedRowFormatter extends RowFormatter {
     private final Annotation[] annotations;
     private List<Field> fields;
     boolean[] nonNullColumns;
+    private Map<String, Format> formatsByFieldName;
 
     public FieldBasedRowFormatter( Class<?> type, String parameterName, Table tableAnnotation,
             Annotation[] annotations ) {
@@ -39,6 +47,7 @@ public class FieldBasedRowFormatter extends RowFormatter {
         this.annotations = annotations;
         this.fields = getFields( tableAnnotation, type );
         this.nonNullColumns = new boolean[fields.size()];
+        this.formatsByFieldName = retrieveFieldsFormats();
     }
 
     @Override
@@ -47,16 +56,55 @@ public class FieldBasedRowFormatter extends RowFormatter {
     }
 
     @Override
-    public List<String> formatRow( Object object ) {
-        List<Object> allFieldValues = ReflectionUtil.getAllFieldValues( object, fields, "" );
-        for( int i = 0; i < allFieldValues.size(); i++ ) {
-            if( allFieldValues.get( i ) != null ) {
+    public List<String> formatRow(Object object) {
+        ArgumentFormatter formatter;
+
+        List<Object> allFieldValues = ReflectionUtil.getAllFieldValues(object,
+                fields, "");
+
+        List<String> res = Lists.newArrayList();
+
+        for (int i = 0; i < allFieldValues.size(); i++) {
+            Object v = allFieldValues.get(i);
+            Field field = fields.get(i);
+            Format format = formatsByFieldName.get(field.getName());
+
+            if (v != null) {
                 nonNullColumns[i] = true;
             }
+
+            if (format == null) {
+            	formatter = DefaultFormatter.INSTANCE;
+                res.add(formatter.format(v));
+            } else {
+                Class<? extends ArgumentFormatter<?>> clazz = format.value();
+                formatter = ReflectionUtil.newInstance(clazz);
+                res.add(formatter.format(v, format.args()));
+            }
         }
-        return toStringList( allFieldValues );
+
+        return res;
     }
 
+    private Map<String, Format> retrieveFieldsFormats() {
+        Map<String, Format> inter = Maps.newHashMap();
+        for (Annotation annotation : annotations) {
+            if (annotation.annotationType()
+                    .isAssignableFrom(TableFieldsFormats.class)) {
+                TableFieldsFormats ffs = (TableFieldsFormats) annotation;
+                TableFieldFormat[] ffTab = ffs.value();
+                for (TableFieldFormat ff : ffTab) {
+                    String fieldName = ff.value();
+                    Format format = ff.format();
+                    inter.put(fieldName, format);
+                }
+                break;
+            }
+        }
+
+        return inter;
+    }
+    
     private static List<Field> getFields( Table tableAnnotation, Class<?> type ) {
         final Set<String> includeFields = Sets.newHashSet( tableAnnotation.includeFields() );
         final Set<String> excludeFields = Sets.newHashSet( tableAnnotation.excludeFields() );
@@ -84,16 +132,6 @@ public class FieldBasedRowFormatter extends RowFormatter {
                 return input.replace( '_', ' ' );
             }
         } ).toList();
-    }
-
-    private static List<String> toStringList( List<Object> values ) {
-        List<String> list = Lists.newArrayList();
-
-        for( Object v : values ) {
-            list.add( DefaultFormatter.INSTANCE.format( v ) );
-        }
-
-        return list;
     }
 
     @Override

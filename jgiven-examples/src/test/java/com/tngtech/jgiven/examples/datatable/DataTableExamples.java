@@ -8,11 +8,26 @@ import java.util.List;
 import org.junit.Test;
 
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.annotation.TableFieldFormat;
+import com.tngtech.jgiven.annotation.TableFieldsFormats;
+import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 
 public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.DataTableStage> {
 
+	public static class ToUpperCaseFormatter implements ArgumentFormatter<String> {
+		@Override
+		public String format(String value, String... args) {
+			if (value == null) {
+				return null;
+			}
+			
+			return value.toUpperCase();
+		}
+	}
+	
     static class DataTableStage extends Stage<DataTableStage> {
 
         public DataTableStage a_list_of_lists_is_used_as_parameter(
@@ -30,6 +45,11 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
             return self();
         }
 
+        public DataTableStage a_list_of_POJOs_is_used_as_parameters_and_some_fields_are_formatted(
+                @Table @TableFieldsFormats({@TableFieldFormat(value="name", format=@Format(ToUpperCaseFormatter.class))}) TestCustomer... testCustomer ) {
+            return self();
+        }
+        
         public DataTableStage a_list_of_POJOs_is_used_as_parameters_with_header_type_VERTICAL(
                 @Table( header = VERTICAL ) TestCustomer... testCustomer ) {
             return self();
@@ -95,6 +115,14 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
             );
     }
 
+    @Test
+    public void a_list_of_POJOs_can_be_represented_as_formatted_data_tables() {
+        given().a_list_of_POJOs_is_used_as_parameters_and_some_fields_are_formatted(
+            new TestCustomer( "John Doe", "john@doe.com" ),
+            new TestCustomer( "Jane Roe", "jane@roe.com" )
+            );
+    }
+    
     @Test
     public void a_list_of_POJOs_can_be_represented_as_a_data_table_with_a_vertical_header() {
         given().a_list_of_POJOs_is_used_as_parameters_with_header_type_VERTICAL(
