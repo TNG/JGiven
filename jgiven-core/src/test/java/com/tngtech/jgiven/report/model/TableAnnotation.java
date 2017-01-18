@@ -2,6 +2,7 @@ package com.tngtech.jgiven.report.model;
 
 import java.lang.annotation.Annotation;
 
+import com.tngtech.jgiven.annotation.NamedFormat;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.format.table.DefaultRowFormatterFactory;
 import com.tngtech.jgiven.format.table.DefaultTableFormatter;
@@ -24,6 +25,8 @@ public class TableAnnotation implements Table {
     Class<DefaultTableFormatter.Factory> formatter = DefaultTableFormatter.Factory.class;
     Class<? extends RowFormatterFactory> rowFormatter = DefaultRowFormatterFactory.class;
     ObjectFormatting objectFormatting = ObjectFormatting.FIELDS;
+    NamedFormat[] fieldsFormats = new NamedFormat[] {};
+    private Class<? extends Annotation> fieldsFormatSetAnnotation = Annotation.class;
 
     @Override
     public HeaderType header() {
@@ -93,5 +96,15 @@ public class TableAnnotation implements Table {
     @Override
     public Class<? extends Annotation> annotationType() {
         return null;
+    }
+
+    @Override
+    public NamedFormat[] fieldsFormat() {
+        return fieldsFormats;
+    }
+
+    @Override
+    public Class<? extends Annotation> fieldsFormatSetAnnotation() {
+        return fieldsFormatSetAnnotation;
     }
 }

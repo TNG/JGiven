@@ -1,5 +1,9 @@
 # v0.15.0
 
+## New Features
+
+* Formatting POJOs has been greatly improved, by allowing to specify custom formatters for fields [#297](https://github.com/TNG/JGiven/pull/297) (thanks to dgrandemange)
+
 # v0.14.1
 
 ## Fixed Issues

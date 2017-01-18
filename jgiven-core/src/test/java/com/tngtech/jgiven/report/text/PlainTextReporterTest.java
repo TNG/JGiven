@@ -6,10 +6,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import com.tngtech.jgiven.BeforeAfterTestStage;
-import com.tngtech.jgiven.ScenarioTestBaseForTesting;
-import com.tngtech.jgiven.impl.Scenario;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -19,14 +15,18 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.GivenTestStep;
+import com.tngtech.jgiven.ScenarioTestBaseForTesting;
 import com.tngtech.jgiven.ThenTestStep;
 import com.tngtech.jgiven.WhenTestStep;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Formatf;
+import com.tngtech.jgiven.annotation.NamedFormat;
+import com.tngtech.jgiven.annotation.POJOFormat;
 import com.tngtech.jgiven.annotation.Quoted;
-import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.annotation.POJOFormat.BracketsEnum;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.BooleanFormatter;
+import com.tngtech.jgiven.format.PrintfFormatter;
 import com.tngtech.jgiven.report.model.StepModel;
 
 /**
@@ -256,6 +256,26 @@ public class PlainTextReporterTest extends ScenarioTestBaseForTesting<GivenTestS
     @Retention( RetentionPolicy.RUNTIME )
     @interface YesNo {}
 
+    static class TestCustomer {
+        String name;
+
+        /**
+         * Field level format annotation chain
+         */
+        @Formatf( value = "(quoted at POJO field level) %s" )
+        @Quoted
+        String email;
+
+        public TestCustomer( String name, String email ) {
+            this.name = name;
+            this.email = email;
+        }
+    }
+
+    @Formatf( value = "(quoted by custom format annotation) %s" )
+    @Quoted
+    static @interface CustomFormatAnnotationChain {}
+
     static class FormattedSteps {
 
         public void yesno_$_formatted( @YesNo boolean b ) {}
@@ -265,6 +285,17 @@ public class PlainTextReporterTest extends ScenarioTestBaseForTesting<GivenTestS
         public void argument_$_multiple_formatters( @Formatf( "(%s)" ) @Quoted @YesNo boolean b ) {}
 
         public void argument_$_multiple_wrong_formatters( @YesNo @Formatf( "(%s)" ) @Quoted boolean b ) {}
+
+        public void pojo_formatter_with_default_field_level_formats_$_test(
+                @POJOFormat( fieldSeparator = "|", includeNullColumns = true, prefixWithFieldName = false,
+                    brackets = BracketsEnum.NONE ) TestCustomer c ) {}
+
+        public void pojo_formatter_with_specific_field_formats_$_test(
+                @POJOFormat( fieldSeparator = ", ", includeNullColumns = false, prefixWithFieldName = true, fieldFormats = {
+                    @NamedFormat( name = "name", format = @Format( value = PrintfFormatter.class, args = "***%s***" ) ),
+                    @NamedFormat( name = "email", formatAnnotation = CustomFormatAnnotationChain.class )
+                } ) TestCustomer c ) {}
+
     }
 
     @Test
@@ -333,6 +364,33 @@ public class PlainTextReporterTest extends ScenarioTestBaseForTesting<GivenTestS
 
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string ).contains( "something [This is a comment.]" );
+    }
+
+    @Test
+    public void pojo_format_is_working() throws Throwable {
+        getScenario().startScenario( "test" );
+
+        FormattedSteps stage = getScenario().addStage( FormattedSteps.class );
+        String string;
+
+        stage.pojo_formatter_with_default_field_level_formats_$_test( new TestCustomer( "John Doe", "john@doe.com" ) );
+        string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string )
+            .contains( "pojo formatter with default field level formats John Doe|(quoted at POJO field level) \"john@doe.com\" test" );
+
+        stage.pojo_formatter_with_default_field_level_formats_$_test( new TestCustomer( "John Doe", null ) );
+        string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string ).contains( "pojo formatter with default field level formats John Doe|null test" );
+
+        stage.pojo_formatter_with_specific_field_formats_$_test( new TestCustomer( "John Doe", "john@doe.com" ) );
+        string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string )
+            .contains(
+                "pojo formatter with specific field formats [name=***John Doe***, email=(quoted by custom format annotation) \"john@doe.com\"] test" );
+
+        stage.pojo_formatter_with_specific_field_formats_$_test( new TestCustomer( "John Doe", null ) );
+        string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string ).contains( "pojo formatter with specific field formats [name=***John Doe***] test" );
     }
 
 }
