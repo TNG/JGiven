@@ -1,3 +1,9 @@
+# v0.14.1
+
+## Fixed Issues
+
+* HTML Report: long exception messages of failed Scenarios are now wrapped [#292](https://github.com/TNG/JGiven/issues/292)
+
 # v0.14.0
 
 ## Switch from cglib to ByteBuddy
