@@ -259,7 +259,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
                 .and().the_report_exist_as_JSON_file();
         whenReport.when().the_HTML_Report_Generator_is_executed();
         when().the_page_of_scenario_$_is_opened( 1 )
-              .and().show_angular_foundation_tooltip_with_$_ms_delay_for_element_$_with_attribute_$_and_value_$(251, "span", "class", "has-tip" );
+              .and().show_tooltip_of_extended_description();
         then().an_element_with_a_$_class_exists( "has-tip" )
                 .and().attribute_$_has_value_$( "tooltip-html-unsafe", expectedDescription );
     }

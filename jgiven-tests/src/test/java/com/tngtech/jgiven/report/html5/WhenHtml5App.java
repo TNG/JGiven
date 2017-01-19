@@ -71,11 +71,11 @@ public class WhenHtml5App<SELF extends WhenHtml5App<?>> extends Html5AppStage<SE
 
     }
 
-    public SELF show_angular_foundation_tooltip_with_$_ms_delay_for_element_$_with_attribute_$_and_value_$( long ms, String element, String attribute, String value){
+    public SELF show_tooltip_of_extended_description(){
         Actions builder = new Actions(webDriver);
-        WebElement webElement = webDriver.findElements( By.xpath( "//" + element + "[@"+ attribute +"='" + value + "']" )).get( 0 );
+        WebElement webElement = webDriver.findElement( By.xpath( "//span[@class='has-tip']" ));
         builder.moveToElement( webElement ).clickAndHold().build().perform();
-        WebDriverWait wait = new WebDriverWait( webDriver, ms );
+        WebDriverWait wait = new WebDriverWait( webDriver, 251);
         wait.until( ExpectedConditions.presenceOfElementLocated( By.xpath( "//span[@is-open]" )));
         // https://github.com/pineconellc/angular-foundation/blob/master/src/tooltip/tooltip.js - Line 98: var template
         return self();
