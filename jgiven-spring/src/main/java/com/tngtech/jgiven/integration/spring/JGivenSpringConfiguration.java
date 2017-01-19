@@ -18,7 +18,7 @@ public class JGivenSpringConfiguration {
     }
 
     @Bean
-    public JGivenBeanFactoryPostProcessor jGivenPostBeanProcessor() {
+    public static JGivenBeanFactoryPostProcessor jGivenPostBeanProcessor() {
         return new JGivenBeanFactoryPostProcessor();
     }
 

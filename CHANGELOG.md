@@ -3,6 +3,7 @@
 ## Fixed Issues
 
 * HTML Report: long exception messages of failed Scenarios are now wrapped [#292](https://github.com/TNG/JGiven/issues/292)
+* Caching the classes generated with ByteBuddy introduced with v0.14.0 to decrease the memory consumption and performance of creating stage classes
 
 # v0.14.0
 

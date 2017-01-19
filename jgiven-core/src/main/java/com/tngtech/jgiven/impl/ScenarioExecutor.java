@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-import com.tngtech.jgiven.exception.JGivenMissingRequiredScenarioStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,31 +29,30 @@ import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.exception.FailIfPassedException;
+import com.tngtech.jgiven.exception.JGivenMissingRequiredScenarioStateException;
 import com.tngtech.jgiven.exception.JGivenUserException;
 import com.tngtech.jgiven.impl.inject.ValueInjector;
-import com.tngtech.jgiven.impl.intercept.StepInterceptorImpl;
 import com.tngtech.jgiven.impl.intercept.NoOpScenarioListener;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.intercept.StageTransitionHandler;
+import com.tngtech.jgiven.impl.intercept.StepInterceptorImpl;
 import com.tngtech.jgiven.impl.util.FieldCache;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
 import com.tngtech.jgiven.integration.CanWire;
 import com.tngtech.jgiven.report.model.NamedArgument;
 
-
 /**
  * Main class of JGiven for executing scenarios.
  */
 public class ScenarioExecutor {
-    private static final Logger log = LoggerFactory.getLogger(ScenarioExecutor.class);
+    private static final Logger log = LoggerFactory.getLogger( ScenarioExecutor.class );
 
     public enum State {
         INIT,
         STARTED,
         FINISHED
     }
-
 
     private Object currentTopLevelStage;
     private State state = State.INIT;
@@ -71,10 +69,11 @@ public class ScenarioExecutor {
     private final List<Object> scenarioRules = Lists.newArrayList();
 
     private final ValueInjector injector = new ValueInjector();
-    private StageCreator stageCreator = new ByteBuddyStageCreator();
+    private StageCreator stageCreator = new ByteBuddyStageCreator(
+        new CachingStageClassCreator( new ByteBuddyStageClassCreator() ) );
     private ScenarioListener listener = new NoOpScenarioListener();
     protected final StageTransitionHandler stageTransitionHandler = new StageTransitionHandlerImpl();
-    protected final StepInterceptorImpl methodInterceptor = new StepInterceptorImpl( this, listener, stageTransitionHandler);
+    protected final StepInterceptorImpl methodInterceptor = new StepInterceptorImpl( this, listener, stageTransitionHandler );
 
     private Throwable failedException;
     private boolean failIfPass;
@@ -203,7 +202,7 @@ public class ScenarioExecutor {
         }
 
         T result = stageCreator.createStage( stageClass, methodInterceptor );
-        methodInterceptor.enableMethodInterception(true);
+        methodInterceptor.enableMethodInterception( true );
 
         stages.put( stageClass, new StageState( result ) );
         gatherRules( result );
@@ -230,9 +229,9 @@ public class ScenarioExecutor {
 
     private <T> void updateScenarioState( T t ) {
         try {
-            injector.updateValues(t);
-        } catch (JGivenMissingRequiredScenarioStateException e) {
-            if (!suppressExceptions) {
+            injector.updateValues( t );
+        } catch( JGivenMissingRequiredScenarioStateException e ) {
+            if( !suppressExceptions ) {
                 throw e;
             }
         }
@@ -490,7 +489,8 @@ public class ScenarioExecutor {
     }
 
     public void setListener( ScenarioListener listener ) {
-        this.listener = listener;methodInterceptor.setScenarioListener( listener );
+        this.listener = listener;
+        methodInterceptor.setScenarioListener( listener );
     }
 
     public void failIfPass() {

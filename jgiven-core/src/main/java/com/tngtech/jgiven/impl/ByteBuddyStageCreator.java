@@ -1,24 +1,29 @@
 package com.tngtech.jgiven.impl;
 
-import static net.bytebuddy.matcher.ElementMatchers.any;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import com.tngtech.jgiven.impl.intercept.ByteBuddyMethodInterceptor;
 import com.tngtech.jgiven.impl.intercept.StageInterceptorInternal;
 import com.tngtech.jgiven.impl.intercept.StepInterceptor;
-
-import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
-import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
-import net.bytebuddy.implementation.MethodDelegation;
+import com.tngtech.jgiven.impl.util.ReflectionUtil;
 
 public class ByteBuddyStageCreator implements StageCreator {
+
+    private final StageClassCreator stageClassCreator;
+
+    public ByteBuddyStageCreator(StageClassCreator stageClassCreator) {
+        this.stageClassCreator = stageClassCreator;
+    }
 
     @SuppressWarnings( "unchecked" )
     @Override
     public <T> T createStage( Class<T> stageClass, StepInterceptor stepInterceptor ) {
         try {
-            T result = createStageClass( stageClass, stepInterceptor )
-                .newInstance();
+            Class<? extends T> stageSubClass = stageClassCreator.createStageClass(stageClass);
+            T result = stageSubClass.newInstance();
+            setStepInterceptor( result, stepInterceptor);
             return result;
         } catch( Error e ) {
             throw e;
@@ -27,26 +32,8 @@ public class ByteBuddyStageCreator implements StageCreator {
         }
     }
 
-    public <T> Class<? extends T> createStageClass( Class<T> stageClass, StepInterceptor stepInterceptor ) {
-        return new ByteBuddy()
-            .subclass( stageClass, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING )
-            .implement( StageInterceptorInternal.class )
-            .method( any() )
-            .intercept( MethodDelegation.to( new ByteBuddyMethodInterceptor( stepInterceptor ) ) )
-            .make()
-            .load( getClassLoader( stageClass ),
-                getClassLoadingStrategy( stageClass ) )
-            .getLoaded();
-    }
-
-    protected ClassLoadingStrategy getClassLoadingStrategy( Class<?> stageClass ) {
-        return getClassLoader( stageClass ) == null
-                ? ClassLoadingStrategy.Default.WRAPPER
-                : ClassLoadingStrategy.Default.INJECTION;
-    }
-
-    protected ClassLoader getClassLoader( Class<?> stageClass ) {
-        return Thread.currentThread().getContextClassLoader();
+    protected <T> void setStepInterceptor(T result, StepInterceptor stepInterceptor) {
+        ((StageInterceptorInternal) result).__jgiven_setStepInterceptor(stepInterceptor);
     }
 
 }
