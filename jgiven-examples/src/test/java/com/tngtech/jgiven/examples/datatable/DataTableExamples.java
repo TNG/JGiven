@@ -3,6 +3,8 @@ package com.tngtech.jgiven.examples.datatable;
 import static com.tngtech.jgiven.annotation.Table.HeaderType.VERTICAL;
 import static java.util.Arrays.asList;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import org.junit.Test;
@@ -27,7 +29,14 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
 			return value.toUpperCase();
 		}
 	}
-	
+
+	@TableFieldsFormats({
+		@TableFieldFormat(value="name", format=@Format(ToUpperCaseFormatter.class))
+	})
+	@Retention(RetentionPolicy.RUNTIME)
+	public static @interface TestCustomerTableFieldsFormats {
+	}
+
     static class DataTableStage extends Stage<DataTableStage> {
 
         public DataTableStage a_list_of_lists_is_used_as_parameter(
@@ -46,7 +55,7 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
         }
 
         public DataTableStage a_list_of_POJOs_is_used_as_parameters_and_some_fields_are_formatted(
-                @Table @TableFieldsFormats({@TableFieldFormat(value="name", format=@Format(ToUpperCaseFormatter.class))}) TestCustomer... testCustomer ) {
+                @Table @TestCustomerTableFieldsFormats TestCustomer... testCustomer ) {
             return self();
         }
         
@@ -87,7 +96,7 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
             this.email = email;
         }
     }
-
+	
     @Test
     public void a_list_of_list_can_be_used_as_table_parameter() {
         given().a_list_of_lists_is_used_as_parameter(

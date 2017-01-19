@@ -89,13 +89,23 @@ public class FieldBasedRowFormatter extends RowFormatter {
     private Map<String, Format> retrieveFieldsFormats() {
         Map<String, Format> inter = Maps.newHashMap();
         for (Annotation annotation : annotations) {
-            if (annotation.annotationType()
-                    .isAssignableFrom(TableFieldsFormats.class)) {
-                TableFieldsFormats ffs = (TableFieldsFormats) annotation;
-                TableFieldFormat[] ffTab = ffs.value();
-                for (TableFieldFormat ff : ffTab) {
-                    String fieldName = ff.value();
-                    Format format = ff.format();
+            TableFieldsFormats tffs = null;
+
+            Class<? extends Annotation> annotationType = annotation
+                    .annotationType();
+            if (annotationType.isAssignableFrom(TableFieldsFormats.class)) {
+                tffs = (TableFieldsFormats) annotation;
+            } else if (annotationType
+                    .isAnnotationPresent(TableFieldsFormats.class)) {
+                tffs = (TableFieldsFormats) annotationType
+                        .getAnnotation(TableFieldsFormats.class);
+            }
+
+            if (tffs != null) {
+                TableFieldFormat[] tffTab = tffs.value();
+                for (TableFieldFormat tff : tffTab) {
+                    String fieldName = tff.value();
+                    Format format = tff.format();
                     inter.put(fieldName, format);
                 }
                 break;
@@ -104,7 +114,7 @@ public class FieldBasedRowFormatter extends RowFormatter {
 
         return inter;
     }
-    
+
     private static List<Field> getFields( Table tableAnnotation, Class<?> type ) {
         final Set<String> includeFields = Sets.newHashSet( tableAnnotation.includeFields() );
         final Set<String> excludeFields = Sets.newHashSet( tableAnnotation.excludeFields() );

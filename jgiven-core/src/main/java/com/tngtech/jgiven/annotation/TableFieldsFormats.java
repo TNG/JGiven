@@ -74,7 +74,7 @@ import java.util.Date;
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.PARAMETER })
+@Target({ ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
 public @interface TableFieldsFormats {
 	/**
 	 * @return array of {@link TableFieldFormat}
