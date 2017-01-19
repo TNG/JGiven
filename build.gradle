@@ -73,9 +73,17 @@ subprojects{
     }
 }
 
+configure(subprojects.findAll {!it.name.contains("jgiven-junit5")}) {
+    apply plugin: 'ru.vyarus.animalsniffer'
+
+    dependencies {
+       signature 'org.codehaus.mojo.signature:java16:1.1@signature'
+    }
+}
+
+
 configure(subprojects.findAll {!it.name.contains("android")}) {
     apply plugin: 'java'
-    apply plugin: 'ru.vyarus.animalsniffer'
     apply plugin: 'org.asciidoctor.convert'
     apply plugin: 'maven'
     apply plugin: 'signing'
@@ -92,7 +100,6 @@ configure(subprojects.findAll {!it.name.contains("android")}) {
         testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
         testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
         testCompile group: 'net.java.quickcheck', name: 'quickcheck', version: quickcheckVersion
-        signature 'org.codehaus.mojo.signature:java16:1.1@signature'
     }
 
     publishing {
