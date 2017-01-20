@@ -41,10 +41,6 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
         return thenStage;
     }
 
-    public void addIntroWord( String word ) {
-        executor.addIntroWord( word );
-    }
-
     /**
      * Creates a scenario with 3 different steps classes.
      *
