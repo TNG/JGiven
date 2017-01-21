@@ -2,44 +2,48 @@ package com.tngtech.jgiven.format;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+
+import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 
 /**
- * General formatter to format date values.
+ * General formatter to format {@link Date} values.
  * 
- * @author dgrandemange
- *
+ * <p>
+ * This formatter simply delegates to a {@link SimpleDateFormat}.<br>
+ * </p>
+ * 
  */
 public class DateFormatter implements ArgumentFormatter<Date> {
 
-	public static final String DEFAULT_FORMAT = "dd/MM/yyyy HH:mm:ss";
+    /**
+     * A {@link SimpleDateFormat} pattern is expected as first argument.<br>
+     * An optional second argument can be set to specify a locale as an ISO 639 language code.<br>
+     */
+    @Override
+    public String format( Date date, String... args ) {
+        if( date == null ) {
+            return "";
+        }
 
-	/**
-	 * When an argument is set, a valid date format is expected<br>
-	 * When no argument is provided, date is formatted with the
-	 * {@link DEFAULT_FORMAT}
-	 */
-	@Override
-	public String format(Date date, String... args) {
-		if (date == null) {
-			return null;
-		}
+        if( args.length == 0 ) {
+            throw new JGivenWrongUsageException( String.format( "A SimpleDateFormat pattern is expected as first argument" ) );
+        }
 
-		String format;
+        String pattern = args[0];
+        Locale locale = Locale.getDefault();
+        if( args.length > 1 ) {
+            locale = new Locale( args[1] );
+        }
 
-		if (args.length > 0) {
-			format = args[0];
-		} else {
-			format = DEFAULT_FORMAT;
-		}
+        SimpleDateFormat sdf;
+        try {
+            sdf = new SimpleDateFormat( pattern, locale );
+        } catch( IllegalArgumentException e ) {
+            throw new JGivenWrongUsageException( String.format( "A valid SimpleDateFormat pattern is expected (was '%s')", pattern ) );
+        }
 
-		SimpleDateFormat sdf;
-		try {
-			sdf = new SimpleDateFormat(format);
-		} catch (IllegalArgumentException e) {
-			sdf = new SimpleDateFormat(DEFAULT_FORMAT);
-		}
-
-		return sdf.format(date);
-	}
+        return sdf.format( date );
+    }
 
 }

@@ -7,15 +7,19 @@ import java.lang.annotation.Target;
 import java.util.Date;
 
 /**
- * Allow to specify specific formats ({@link TableFieldFormat}) for part or all
- * of fields of a {@link Table} annotated parameter of a step method.<br>
+ * Allow to define a set of identifiable formats ({@link NamedFormat}).<br>
+ * 
+ * One usage of such set is to define formats for (part or all) fields of a
+ * bean. In this case, every {@link NamedFormat#name()} in this set should match
+ * a field of this bean.<br>
+ * 
+ * This set may then be used to define formats for fields of a {@link Table} annotated parameter of a step method.<br>
  * <p>
  * <h3>Example</h3>
  * <h4>Some POJO</h4>
  * 
  * <pre>
- * {
- * 	&#64;code
+ * {@code
  * 	class CoffeeWithPrice {
  * 		String name;
  * 		double price_in_EUR;
@@ -27,14 +31,20 @@ import java.util.Date;
  * 			this.lastPriceDate = lastPriceDate;
  * 		}
  * 	}
- * }
  * </pre>
  * 
  * <h4>The Step Method</h4>
  * 
  * <pre>
  * {@code
- *     public SELF the_prices_of_the_coffees_are( @Table @TableFieldsFormats({ @TableFieldFormat(value = "lastPriceDate", format = @Format(value = DateFormatter.class, args = "dd/MM/yyyy")) }) CoffeeWithPrice... prices ) {
+ * 
+ *     @NamedFormatSet( { 
+ *          @NamedFormat( name = "lastPriceDate", format = @Format(value = DateFormatter.class, args = "dd/MM/yyyy") )
+ *     } )
+ *     @Retention( RetentionPolicy.RUNTIME )
+ *     public static @interface CoffeeWithPriceFieldFormatSet {}
+ *     
+ *     public SELF the_prices_of_the_coffees_are( @Table(fieldsFormatSetAnnotation=CoffeeWithPriceFieldFormatSet.class) CoffeeWithPrice... prices ) {
  *         ...
  *     }
  * }
@@ -70,14 +80,12 @@ import java.util.Date;
  * }
  * </pre>
  * 
- * @author dgrandemange
- *
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
-public @interface TableFieldsFormats {
-	/**
-	 * @return array of {@link TableFieldFormat}
-	 */
-	TableFieldFormat[] value();
+@Retention( RetentionPolicy.RUNTIME )
+@Target( { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE } )
+public @interface NamedFormatSet {
+    /**
+     * Array of {@link NamedFormat}
+     */
+    NamedFormat[] value() default {};
 }
