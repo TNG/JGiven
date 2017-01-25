@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -107,14 +106,32 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
         return new File( attachmentsDir, fileNameWithExtension );
     }
 
+    private File getThumbnailFileFor( File originalImage ) {
+        String orgName = originalImage.getName();
+        String newName = "";
+
+        int dotIndex = orgName.lastIndexOf( "." );
+
+        if (dotIndex == -1) {
+            newName = orgName + "-thumb";
+        } else {
+            String extension = orgName.subSequence( dotIndex + 1, orgName.length() ).toString();
+            newName = orgName.substring( 0, dotIndex ) + "-thumb." + extension;
+        }
+        return new File( attachmentsDir, newName);
+
+    }
+
     private File writeFile( AttachmentModel attachment, MediaType mediaType ) {
         String extension = getExtension( mediaType );
         File targetFile = getTargetFile( attachment.getFileName(), extension );
         try {
-            if( attachment.isBinary() ) {
-                File thumbFile = getTargetFile( "attachment-thumb", extension );
-                String thumbnail = compressToThumbnail( attachment.getValue(), extension );
-                Files.write( parseBase64Binary( thumbnail ), thumbFile );
+            if( attachment.isBinary()) {
+                if ( mediaType.is( MediaType.ANY_IMAGE_TYPE )) {
+                    File thumbFile = getThumbnailFileFor( targetFile );
+                    byte[] thumbnail = compressToThumbnail( attachment.getValue(), extension );
+                    Files.write( thumbnail , thumbFile );
+                }
                 Files.write( parseBase64Binary( attachment.getValue() ), targetFile );
             } else {
                 Files.write( attachment.getValue(), targetFile, Charsets.UTF_8 );
@@ -125,41 +142,42 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
         return targetFile;
     }
 
-    private String compressToThumbnail( String base64content, String extension ) {
+    private byte[] compressToThumbnail( String base64content, String extension ) {
         byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(base64content);
         double scaleFactor = 0.02;
-        String base64thumb = "";
+        byte[] base64thumb = { };
         try {
             BufferedImage before = ImageIO.read( new ByteArrayInputStream( imageBytes ) );
-            int width = (int) Math.round( before.getWidth() * scaleFactor );
-            int height = (int) Math.round( before.getHeight() * scaleFactor );
-            BufferedImage after = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
-
-            AffineTransform at = new AffineTransform(  );
-            at.scale( scaleFactor, scaleFactor );
-            AffineTransformOp scaleOp = new AffineTransformOp( at, AffineTransformOp.TYPE_BILINEAR );
-
-            after = scaleOp.filter( before, after );
-            base64thumb = bufferedImageToBase64( after, extension  );
+            BufferedImage after  = scaleBy(scaleFactor, before);
+            base64thumb = bufferedImageToBase64( after, extension );
         } catch( IOException e ) {
             log.error( "Error while decoding the attachment to BufferedImage ", e);
         }
         return base64thumb;
     }
 
-    private String bufferedImageToBase64(BufferedImage bi, String extension){
+    private BufferedImage scaleBy(double factor, BufferedImage before) {
+        int width = (int) Math.round( before.getWidth() * factor );
+        int height = (int) Math.round( before.getHeight() * factor );
+        BufferedImage after = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
+
+        AffineTransform at = new AffineTransform(  );
+        at.scale( factor, factor );
+        AffineTransformOp scaleOp = new AffineTransformOp( at, AffineTransformOp.TYPE_BILINEAR );
+
+        return scaleOp.filter( before, after );
+    }
+
+    private byte[] bufferedImageToBase64(BufferedImage bi, String extension){
         ByteArrayOutputStream baos = new ByteArrayOutputStream(  );
-        String imageString = "";
+        byte[] imageArray = { };
         try {
             ImageIO.write( bi, extension, baos );
-            imageString = DatatypeConverter.printBase64Binary( baos.toByteArray() );
+            imageArray = baos.toByteArray();
             baos.close();
         } catch( IOException e ) {
             log.error( "Error while decoding the compressed BufferedImage to base64 ", e);
         }
-        return imageString;
+        return imageArray;
     }
-
-
-
 }
