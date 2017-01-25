@@ -226,3 +226,16 @@ export function replaceArguments(string, enumArray, nameArray) {
     }
     return result.join("");
 }
+
+export function insertThumbnailPath(path) {
+    var splitted = path.split(".");
+    var extension = splitted.pop();
+    var subpath   = splitted.join(".");
+    var numbers = subpath.match(/\d+$/);
+    if (numbers == null) {
+        return subpath + "-thumb" + "." + extension;
+    } else {
+        var number = numbers[0];
+        return subpath.slice(0, subpath.length - number.length) + "-thumb" + number + "." + extension;
+    }
+}
