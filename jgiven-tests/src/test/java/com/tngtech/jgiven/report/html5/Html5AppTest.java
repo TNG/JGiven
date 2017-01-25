@@ -17,6 +17,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
@@ -262,5 +264,21 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
               .and().show_tooltip_of_extended_description();
         then().an_element_with_a_$_class_exists( "has-tip" )
                 .and().attribute_$_has_value_$( "tooltip-html-unsafe", expectedDescription );
+    }
+
+    @Test
+    @Issue( "274" )
+    public void a_thumbnail_is_shown_for_image_attachments() throws IOException {
+
+        String screenshot = ( (TakesScreenshot) webDriver ).getScreenshotAs( OutputType.BASE64 );
+
+        given().a_report_model()
+                .and().step_$_of_scenario_$_has_an_image_attachment_$( 1, 1, screenshot );
+        jsonReports
+                .and().the_report_exist_as_JSON_file();
+        whenReport.when().the_HTML_Report_Generator_is_executed();
+        when().the_page_of_scenario_$_is_opened( 1 );
+        then().an_element_with_a_$_class_exists( "jgiven-html-thumbnail" )
+                .and().the_image_is_loaded();
     }
 }

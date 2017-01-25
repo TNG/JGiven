@@ -329,4 +329,10 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         }
         return self();
     }
+
+    public SELF step_$_of_scenario_$_has_an_image_attachment(int stepNr, int scenarioNr, String base64img){
+        StepModel stepModel = getStep( stepNr, scenarioNr );
+        stepModel.addAttachment( Attachment.fromBase64( base64img, MediaType.PNG ).withTitle( "Screenshot" ) );
+        return self();
+    }
 }

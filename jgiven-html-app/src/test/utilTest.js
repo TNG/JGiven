@@ -1,4 +1,4 @@
-import { nanosToReadableUnit, splitClassName, parseNextInt, replaceArguments, getArgumentInfos } from '../js/util.js'
+import { nanosToReadableUnit, splitClassName, parseNextInt, replaceArguments, getArgumentInfos, insertThumbnailPath } from '../js/util.js'
 
 describe("Util", function () {
 
@@ -269,6 +269,37 @@ describe("Util", function () {
           expect(replaceArguments("$2, $, $int", enumArray, nameArray)).toEqual("10, false, 10");
           expect(replaceArguments("$2, $, $4", enumArray, nameArray)).toEqual("10, false, $4");
           expect(replaceArguments("$2, $unknown, $", enumArray, nameArray)).toEqual("10, falseunknown, 10");
+      });
+  });
+
+  describe("substituteThumbnailPath", function() {
+      it("works for paths with no numbers", function() {
+           var path0 = "/simple/data/path.png";
+           expect(insertThumbnailPath(path0)).toEqual("/simple/data/path-thumb.png")
+      });
+
+      it("works for paths with single number", function() {
+           var path0 = "/simple/data/path0.png";
+           expect(insertThumbnailPath(path0)).toEqual("/simple/data/path-thumb0.png");
+
+           var path1 = "/simple/data/path1.png";
+           expect(insertThumbnailPath(path1)).toEqual("/simple/data/path-thumb1.png")
+      });
+
+      it("works for paths with multi digit numbers", function() {
+           var path0 = "/simple/data/path01.png";
+           expect(insertThumbnailPath(path0)).toEqual("/simple/data/path-thumb01.png");
+
+           var path1 = "/simple/data/path1091.png";
+           expect(insertThumbnailPath(path1)).toEqual("/simple/data/path-thumb1091.png");
+      });
+
+      it("works for paths with multiple dots", function() {
+           var path0 = "/simple/data.custom/current.something/path1.png";
+           expect(insertThumbnailPath(path0)).toEqual("/simple/data.custom/current.something/path-thumb1.png");
+
+           var path1 = "/simple/data.custom/current.something/path10192.png";
+           expect(insertThumbnailPath(path1)).toEqual("/simple/data.custom/current.something/path-thumb10192.png");
       });
   });
 });

@@ -11,7 +11,8 @@ import { getTagKey,
          splitClassName,
          deselectAll,
          getArgumentInfos,
-         replaceArguments } from '../util.js'
+         replaceArguments,
+         insertThumbnailPath } from '../util.js'
 
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $document, $timeout, $sanitize, $location, $window, localStorageService,
                                                          dataService, tagService, classService, searchService, optionService) {
@@ -694,6 +695,10 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
 
     return replaceArguments(description, enumArray, nameArray);
   };
+
+   $scope.toThumbnailPath = function toThumbnailPath (path) {
+    return insertThumbnailPath(path);
+   }
 
   $scope.init();
 

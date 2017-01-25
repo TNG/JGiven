@@ -2,12 +2,10 @@ package com.tngtech.jgiven.report.model;
 
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.BeforeStage;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
+import com.tngtech.jgiven.format.PrintfFormatter;
 
 import java.util.List;
 import java.util.Map;
@@ -150,4 +148,11 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         givenReportModel.step_$_of_scenario_$_has_extended_description_with_arguments(stepNr, scenarioNr, description, argumentMap);
         return self();
     }
+
+    public SELF step_$_of_scenario_$_has_an_image_attachment_$(int stepNr, int scenarioNr, @Format( value = PrintfFormatter.class, args = { "base64 data: %.10s..." } ) String base64image){
+        givenReportModel.step_$_of_scenario_$_has_an_image_attachment(stepNr, scenarioNr, base64image);
+        return self();
+    }
+
+
 }
