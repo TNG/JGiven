@@ -23,6 +23,7 @@ import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.NamedFormat;
 import com.tngtech.jgiven.annotation.POJOFormat;
 import com.tngtech.jgiven.annotation.Quoted;
+import com.tngtech.jgiven.annotation.POJOFormat.BracketsEnum;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.BooleanFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
@@ -286,7 +287,8 @@ public class PlainTextReporterTest extends ScenarioTestBaseForTesting<GivenTestS
         public void argument_$_multiple_wrong_formatters( @YesNo @Formatf( "(%s)" ) @Quoted boolean b ) {}
 
         public void pojo_formatter_with_default_field_level_formats_$_test(
-                @POJOFormat( fieldSeparator = "|", includeNullColumns = true, prefixWithFieldName = false ) TestCustomer c ) {}
+                @POJOFormat( fieldSeparator = "|", includeNullColumns = true, prefixWithFieldName = false,
+                    brackets = BracketsEnum.NONE ) TestCustomer c ) {}
 
         public void pojo_formatter_with_specific_field_formats_$_test(
                 @POJOFormat( fieldSeparator = ", ", includeNullColumns = false, prefixWithFieldName = true, fieldsFormat = {
@@ -384,11 +386,11 @@ public class PlainTextReporterTest extends ScenarioTestBaseForTesting<GivenTestS
         string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string )
             .contains(
-                "pojo formatter with specific field formats name=***John Doe***, email=(quoted by custom format annotation) \"john@doe.com\" test" );
+                "pojo formatter with specific field formats [name=***John Doe***, email=(quoted by custom format annotation) \"john@doe.com\"] test" );
 
         stage.pojo_formatter_with_specific_field_formats_$_test( new TestCustomer( "John Doe", null ) );
         string = PlainTextReporter.toString( getScenario().getScenarioModel() );
-        assertThat( string ).contains( "pojo formatter with specific field formats name=***John Doe*** test" );
+        assertThat( string ).contains( "pojo formatter with specific field formats [name=***John Doe***] test" );
     }
 
 }

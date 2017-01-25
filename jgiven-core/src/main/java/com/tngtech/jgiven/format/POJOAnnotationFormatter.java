@@ -15,6 +15,7 @@ import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.NamedFormat;
 import com.tngtech.jgiven.annotation.NamedFormatSet;
 import com.tngtech.jgiven.annotation.POJOFormat;
+import com.tngtech.jgiven.annotation.POJOFormat.BracketsEnum;
 import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.impl.format.ParameterFormattingUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
@@ -36,6 +37,8 @@ public class POJOAnnotationFormatter
         Map<String, ObjectFormatter<?>> formattersByFieldName = retrieveFieldsFormatters( annotation, fields );
 
         StringBuffer sb = new StringBuffer();
+        BracketsEnum brackets = annotation.brackets();
+        sb.append( brackets.getOpening() );
         String sep = "";
         List<String> values = formatRow( obj, fields, formattersByFieldName, nonNullColumns );
         List<String> headers = getFieldNames( fields );
@@ -50,6 +53,7 @@ public class POJOAnnotationFormatter
                 sep = annotation.fieldSeparator();
             }
         }
+        sb.append( brackets.getClosing() );
         return sb.toString();
     }
 

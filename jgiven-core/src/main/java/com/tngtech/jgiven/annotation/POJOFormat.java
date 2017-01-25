@@ -10,13 +10,56 @@ import java.lang.annotation.Target;
 import com.tngtech.jgiven.format.POJOAnnotationFormatter;
 
 /**
- * A special format annotation to format complex types.
+ * A special format annotation to format POJO beans
  */
 @Documented
 @AnnotationFormat( value = POJOAnnotationFormatter.class )
 @Retention( RetentionPolicy.RUNTIME )
 @Target( { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE } )
 public @interface POJOFormat {
+
+    /**
+     * Enumeration of opening/closing brackets pair :
+     * <ul>
+     * <li>{@link #NONE} : no brackets</li>
+     * <li>{@link #PARENTHESES} : <code>(...)</code></li>
+     * <li>{@link #SQUARE} : <code>[...]</code></li>
+     * <li>{@link #BRACES} : <code>{...}</code></li>
+     * <li>{@link #POINTY} : <code><...></code></li>
+     * <li>{@link #CHEVRONS} : <code>«...»</code></li>
+     * <li>{@link #DOUBLE_QUOTE} : <code>"..."</code></li>
+     * <li>{@link #SINGLE_QUOTE} : <code>'...'</code></li>
+     * </ul>
+     */
+    static public enum BracketsEnum {
+        NONE( "", "" ),
+        PARENTHESES( "(", ")" ),
+        SQUARE( "[", "]" ),
+        BRACES( "{", "}" ),
+        POINTY( "<", ">" ),
+        CHEVRONS( "«", "»" ),
+        DOUBLE_QUOTE( "\"", "\"" ),
+        SINGLE_QUOTE( "'", "'" ),
+        ;
+
+        private String opening;
+        private String closing;
+
+        BracketsEnum( String opening, String closing ) {
+            this.opening = opening;
+            this.closing = closing;
+        }
+
+        public String getOpening() {
+            return opening;
+        }
+
+        public String getClosing() {
+            return closing;
+        }
+
+    }
+
     /**
      * Specifies which fields should be excluded in the report.
      * <p>
@@ -50,6 +93,18 @@ public @interface POJOFormat {
      * Specify a field separator
      */
     String fieldSeparator() default ",";
+
+    /**
+     * Specify the opening/closing brackets pair to set POJO string representation apart of its parent (step) string representation.
+     * 
+     * <p>
+     * Default brackets pair is {@link BracketsEnum#SQUARE}.<br>
+     * When no brackets is needed, consider specify {@link BracketsEnum#NONE}
+     * </p>
+     * 
+     * @See {@link BracketsEnum}
+     */
+    BracketsEnum brackets() default BracketsEnum.SQUARE;
 
     /**
      * Specify a custom {@link NamedFormatSet} annotation
