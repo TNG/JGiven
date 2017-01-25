@@ -26,7 +26,7 @@ public @interface POJOFormat {
      * <li>{@link #SQUARE} : <code>[...]</code></li>
      * <li>{@link #BRACES} : <code>{...}</code></li>
      * <li>{@link #POINTY} : <code><...></code></li>
-     * <li>{@link #CHEVRONS} : <code>«...»</code></li>
+     * <li>{@link #CHEVRONS} : <code><<...>></code></li>
      * <li>{@link #DOUBLE_QUOTE} : <code>"..."</code></li>
      * <li>{@link #SINGLE_QUOTE} : <code>'...'</code></li>
      * </ul>
@@ -37,7 +37,7 @@ public @interface POJOFormat {
         SQUARE( "[", "]" ),
         BRACES( "{", "}" ),
         POINTY( "<", ">" ),
-        CHEVRONS( "«", "»" ),
+        CHEVRONS( "<<", ">>" ),
         DOUBLE_QUOTE( "\"", "\"" ),
         SINGLE_QUOTE( "'", "'" ),
         ;
