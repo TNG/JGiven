@@ -1,4 +1,4 @@
-import { nanosToReadableUnit, splitClassName, parseNextInt, replaceArguments, getArgumentInfos, insertThumbnailPath } from '../js/util.js'
+import { nanosToReadableUnit, splitClassName, parseNextInt, replaceArguments, getArgumentInfos, getThumbnailPath, isImageType } from '../js/util.js'
 
 describe("Util", function () {
 
@@ -273,33 +273,54 @@ describe("Util", function () {
   });
 
   describe("substituteThumbnailPath", function() {
-      it("works for paths with no numbers", function() {
+      it("works for paths with no unusual dots", function() {
            var path0 = "/simple/data/path.png";
-           expect(insertThumbnailPath(path0)).toEqual("/simple/data/path-thumb.png")
-      });
+           expect(getThumbnailPath(path0)).toEqual("/simple/data/path-thumb.png")
 
-      it("works for paths with single number", function() {
-           var path0 = "/simple/data/path0.png";
-           expect(insertThumbnailPath(path0)).toEqual("/simple/data/path-thumb0.png");
+           var path1 = "/simple/data/path0.png";
+           expect(getThumbnailPath(path1)).toEqual("/simple/data/path0-thumb.png");
 
-           var path1 = "/simple/data/path1.png";
-           expect(insertThumbnailPath(path1)).toEqual("/simple/data/path-thumb1.png")
-      });
+           var path2 = "/simple/data/path1.png";
+           expect(getThumbnailPath(path2)).toEqual("/simple/data/path1-thumb.png")
 
-      it("works for paths with multi digit numbers", function() {
-           var path0 = "/simple/data/path01.png";
-           expect(insertThumbnailPath(path0)).toEqual("/simple/data/path-thumb01.png");
+           var path3 = "/simple/data/path01.png";
+           expect(getThumbnailPath(path3)).toEqual("/simple/data/path01-thumb.png");
 
-           var path1 = "/simple/data/path1091.png";
-           expect(insertThumbnailPath(path1)).toEqual("/simple/data/path-thumb1091.png");
+           var path4 = "/simple/data/path1091.png";
+           expect(getThumbnailPath(path4)).toEqual("/simple/data/path1091-thumb.png");
       });
 
       it("works for paths with multiple dots", function() {
            var path0 = "/simple/data.custom/current.something/path1.png";
-           expect(insertThumbnailPath(path0)).toEqual("/simple/data.custom/current.something/path-thumb1.png");
+           expect(getThumbnailPath(path0)).toEqual("/simple/data.custom/current.something/path1-thumb.png");
 
            var path1 = "/simple/data.custom/current.something/path10192.png";
-           expect(insertThumbnailPath(path1)).toEqual("/simple/data.custom/current.something/path-thumb10192.png");
+           expect(getThumbnailPath(path1)).toEqual("/simple/data.custom/current.something/path10192-thumb.png");
       });
+  });
+
+  describe("isImageType", function() {
+      it("works for images mimetypes", function(){
+           var mime0 = "image/jpeg";
+           var mime1 = "image/png";
+           var mime2 = "image/gif";
+
+           expect(isImageType(mime0)).toEqual(true);
+           expect(isImageType(mime1)).toEqual(true);
+           expect(isImageType(mime2)).toEqual(true);
+
+      });
+
+      it("works for non-image mimetypes", function(){
+           var mime0 = "text/html";
+           var mime1 = "magnus-internal/imagemap";
+           var mime2 = "audio/basic";
+
+           expect(isImageType(mime0)).toEqual(false);
+           expect(isImageType(mime1)).toEqual(false);
+           expect(isImageType(mime2)).toEqual(false);
+
+      });
+
   });
 });

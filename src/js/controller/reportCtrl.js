@@ -12,7 +12,8 @@ import { getTagKey,
          deselectAll,
          getArgumentInfos,
          replaceArguments,
-         insertThumbnailPath } from '../util.js'
+         getThumbnailPath,
+         isImageType} from '../util.js'
 
 jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $document, $timeout, $sanitize, $location, $window, localStorageService,
                                                          dataService, tagService, classService, searchService, optionService) {
@@ -697,7 +698,12 @@ jgivenReportApp.controller('JGivenReportCtrl', function ($scope, $rootScope, $do
   };
 
    $scope.toThumbnailPath = function toThumbnailPath (path) {
-    return insertThumbnailPath(path);
+    return getThumbnailPath(path);
+   }
+
+   $scope.isImage = function isImage(attachment) {
+    var mimeType = attachment.mediaType;
+    return isImageType(mimeType);
    }
 
   $scope.init();
