@@ -1,17 +1,10 @@
 package com.tngtech.jgiven.junit;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import com.tngtech.jgiven.annotation.CaseDescription;
 import com.tngtech.jgiven.annotation.Format;
+import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.format.BooleanFormatter;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
@@ -21,6 +14,12 @@ import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.Word;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( DataProviderRunner.class )
 public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, ThenTestStep> {
@@ -167,7 +166,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
     @Test
     @DataProvider( { "the first case, true", "the second case, false" } )
-    @CaseDescription( "$0" )
+    @OrdinalCaseDescription( "$1" )
     public void parameters_can_be_treated_as_case_description( String description, boolean b ) throws Throwable {
 
         given().something();

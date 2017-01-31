@@ -1,24 +1,21 @@
 package com.tngtech.jgiven.impl.params;
 
+import com.tngtech.jgiven.annotation.CaseDescriptionProvider;
+import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.tngtech.jgiven.annotation.CaseDescription;
-import com.tngtech.jgiven.annotation.CaseDescriptionProvider;
-
 /**
  * Default case description provider that uses the value pattern
- *
- * @deprecated As since v0.16.0 this is deprecated to remove the ambiguity of the argument enumeration
- *             an start from $1. Please use {@link com.tngtech.jgiven.impl.params.DefaultOrdinalCaseDescriptionProvider} instead.
  */
-@Deprecated public class DefaultCaseDescriptionProvider implements CaseDescriptionProvider {
+public class DefaultOrdinalCaseDescriptionProvider implements CaseDescriptionProvider {
     private static final Pattern pattern = Pattern.compile( "\\$(\\d+|\\$)?" );
 
     @Override
     public String description( String value, List<String> parameterNames, List<?> parameterValues ) {
-        if( value.equals( CaseDescription.NO_VALUE ) ) {
+        if( value.equals( OrdinalCaseDescription.NO_VALUE ) ) {
             return defaultDescription( parameterNames, parameterValues );
         }
 
@@ -38,7 +35,7 @@ import com.tngtech.jgiven.annotation.CaseDescriptionProvider;
                     replacement = "\\$";
                 } else {
                     int i = Integer.parseInt( group );
-                    replacement = Matcher.quoteReplacement( String.valueOf( parameterValues.get( i ) ) );
+                    replacement = Matcher.quoteReplacement( String.valueOf( parameterValues.get( i - 1 ) ) );
                 }
             }
 

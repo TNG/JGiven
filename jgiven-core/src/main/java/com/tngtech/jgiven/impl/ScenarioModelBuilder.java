@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import com.tngtech.jgiven.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,18 +18,6 @@ import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.annotation.As;
-import com.tngtech.jgiven.annotation.AsProvider;
-import com.tngtech.jgiven.annotation.CaseDescription;
-import com.tngtech.jgiven.annotation.CaseDescriptionProvider;
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.annotation.ExtendedDescription;
-import com.tngtech.jgiven.annotation.Hidden;
-import com.tngtech.jgiven.annotation.IntroWord;
-import com.tngtech.jgiven.annotation.IsTag;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
-import com.tngtech.jgiven.annotation.Pending;
-import com.tngtech.jgiven.annotation.StepComment;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
@@ -340,11 +329,11 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     private void setCaseDescription( Class<?> testClass, Method method, List<NamedArgument> namedArguments ) {
 
-        CaseDescription annotation = null;
-        if( method.isAnnotationPresent( CaseDescription.class ) ) {
-            annotation = method.getAnnotation( CaseDescription.class );
-        } else if( testClass.isAnnotationPresent( CaseDescription.class ) ) {
-            annotation = testClass.getAnnotation( CaseDescription.class );
+        OrdinalCaseDescription annotation = null;
+        if( method.isAnnotationPresent( OrdinalCaseDescription.class ) ) {
+            annotation = method.getAnnotation( OrdinalCaseDescription.class );
+        } else if( testClass.isAnnotationPresent( OrdinalCaseDescription.class ) ) {
+            annotation = testClass.getAnnotation( OrdinalCaseDescription.class );
         }
 
         if( annotation != null ) {
