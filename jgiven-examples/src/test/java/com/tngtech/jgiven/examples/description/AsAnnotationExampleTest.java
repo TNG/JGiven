@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.examples.description;
 
+import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.As;
@@ -32,7 +33,7 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
 
     @Test
     @As( "Scenario that shows the usage of @As with argument enumeration")
-    @Parameters({
+    @DataProvider({
             "false, 0"
     })
     public void steps_can_use_at_annotation_to_reference_arguments_by_enumeration(boolean bool, int i) {
@@ -41,7 +42,7 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
 
     @Test
     @As( "Scenario that shows the usage of @As with argument names")
-    @Parameters({
+    @DataProvider({
             "true, 1"
     })
     public void steps_can_use_at_annotation_to_reference_arguments_by_name(boolean bool, int i) {
