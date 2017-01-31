@@ -13,9 +13,9 @@ import java.lang.annotation.*;
  * Sometimes, however, it is useful to provide an explicit description the provides more semantic background for each case.
  * This annotation can be used to define custom descriptions.
  *
- * The enumeration of arguments starts from $1.
+ * The enumeration of arguments starts from index 1.
  *
- * @since 0.16.0
+ * @since v0.16.0
  *
  */
 @Documented

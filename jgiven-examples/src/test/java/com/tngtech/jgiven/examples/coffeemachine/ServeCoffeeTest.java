@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.examples.coffeemachine;
 
+import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
 import com.tngtech.jgiven.examples.tags.FailingOnPurpose;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -210,9 +211,24 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
             } );
     }
 
+    // tag::casedescription[]
+    @Test
+    @DataProvider( {
+            "On the first run, quite ok",
+            "And on the second run, well-done"
+    } )
+    @OrdinalCaseDescription( "$1" )
+    public void coffe_making_gets_better( String description, String result ){
+        given().a_coffee_machine();
+        when().I_make_coffee();
+        then().the_result_is(result);
+    }
+    // end::casedescription[]
+
     @Test
     @FailingOnPurpose
     public void long_error_messages_should_wrapped() {
         given().an_exception_with_a_very_long_message();
     }
+
 }

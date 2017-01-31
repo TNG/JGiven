@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.report;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -106,7 +107,12 @@ public class AbstractReportModelHandler {
 
             @Override
             public List<String> placeHolders() {
-                return scenarioModel.getDerivedParameters();
+                List<String> placeHoldersList = new ArrayList<String>( scenarioModel.getDerivedParameters() );
+                List<ScenarioCaseModel> scenarioCases = scenarioModel.getScenarioCases();
+                if ( !scenarioCases.isEmpty() && scenarioCases.get(0).hasDescription() ){
+                    placeHoldersList.add( 0, "Description" );
+                }
+                return placeHoldersList;
             }
 
             @Override
@@ -138,7 +144,11 @@ public class AbstractReportModelHandler {
 
                 @Override
                 public List<String> arguments() {
-                    return caseModel.getDerivedArguments();
+                    List<String> arguments = new ArrayList<String>(caseModel.getDerivedArguments());
+                    if ( caseModel.hasDescription() ) {
+                        arguments.add(0, caseModel.getDescription());
+                    }
+                    return arguments;
                 }
             }
         }
