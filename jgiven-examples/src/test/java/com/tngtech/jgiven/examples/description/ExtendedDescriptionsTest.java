@@ -37,7 +37,6 @@ public class ExtendedDescriptionsTest extends SimpleScenarioTest<ExtendedDescrip
     })
     public void scenarios_with_multiple_argument_parameters_can_be_shown_via_click_on_table( boolean bool, int i ) {
         given().some_bool_$_and_int_$_value( bool, i );
-        // TODO screenshot test & implement frontend "click on table"
     }
 
     @Test

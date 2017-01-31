@@ -13,6 +13,7 @@ public class ThenCoffee extends Stage<ThenCoffee> {
 
     @ExpectedScenarioState
     private boolean coffeeServed;
+    private int     coffeCount;
 
     @ExpectedScenarioState
     private CoffeeMachine coffeeMachine;
@@ -60,6 +61,15 @@ public class ThenCoffee extends Stage<ThenCoffee> {
 
     public ThenCoffee no_error_is_shown() {
         assertThat( coffeeMachine.message ).isNull();
+        return self();
+    }
+
+    public ThenCoffee the_result_is(String result) {
+        if (coffeCount == 1) {
+            assertThat( result == "quite ok" );
+        } else {
+            assertThat( result == "well-done" );
+        }
         return self();
     }
 
