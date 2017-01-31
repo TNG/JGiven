@@ -1,15 +1,14 @@
 package com.tngtech.jgiven.junit;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.tngtech.jgiven.annotation.CaseDescriptionProvider;
+import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
+import org.junit.Test;
 
 import java.util.List;
 
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import com.tngtech.jgiven.annotation.CaseDescription;
-import com.tngtech.jgiven.annotation.CaseDescriptionProvider;
-
-@CaseDescription( provider = CaseDescriptionTest.TestCaseDescriptionProvider.class )
+@OrdinalCaseDescription( provider = CaseDescriptionTest.TestCaseDescriptionProvider.class )
 public class CaseDescriptionTest extends SimpleScenarioTest<StepsAreReportedTest.TestSteps> {
 
     @Test

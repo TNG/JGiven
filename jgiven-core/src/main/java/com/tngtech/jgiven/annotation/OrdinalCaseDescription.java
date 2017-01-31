@@ -1,8 +1,9 @@
 package com.tngtech.jgiven.annotation;
 
-import java.lang.annotation.*;
-
 import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
+import com.tngtech.jgiven.impl.params.DefaultOrdinalCaseDescriptionProvider;
+
+import java.lang.annotation.*;
 
 /**
  * Use to define a description provider for scenario cases.
@@ -11,35 +12,35 @@ import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
  * by just listing the parameter names with their corresponding values.
  * Sometimes, however, it is useful to provide an explicit description the provides more semantic background for each case.
  * This annotation can be used to define custom descriptions.
- * 
- * @since 0.9.2
  *
- * @deprecated Since v0.16.0 this annotation is deprecated because it starts the argument enumeration from 0 and not from 1,
- *             like {@link com.tngtech.jgiven.annotation.As}. Please use {@link com.tngtech.jgiven.annotation.OrdinalCaseDescription}
+ * The enumeration of arguments starts from $1.
+ *
+ * @since 0.16.0
+ *
  */
 @Documented
 @Inherited
 @Retention( RetentionPolicy.RUNTIME )
 @Target( { ElementType.METHOD, ElementType.TYPE } )
-@Deprecated public @interface CaseDescription {
+public @interface OrdinalCaseDescription {
     /**
      * Dummy value to indicate that no value was set
      */
     public static final String NO_VALUE = " - no value - ";
 
     /**
-     * The description of the test case. 
+     * The description of the test case.
      * <p>
-     * Placeholders of the form {@code $i} can be used that will be filled with the values of the ith parameter, starting from 0.
+     * Placeholders of the form {@code $i} can be used that will be filled with the values of the ith parameter, starting from 1.
      * <p>
-     * For example, a value {@code "Hi $0"} will be translated to {@code "Hi JGiven"} if "JGiven" is the value of the first parameter of the test method.
+     * For example, a value {@code "Hi $1"} will be translated to {@code "Hi JGiven"} if "JGiven" is the value of the first parameter of the test method.
      */
     String value() default NO_VALUE;
 
     /**
-     * A custom implementation of the {@link com.tngtech.jgiven.annotation.CaseDescriptionProvider} to provide a case description.
+     * A custom implementation of the {@link CaseDescriptionProvider} to provide a case description.
      */
-    Class<? extends CaseDescriptionProvider> provider() default DefaultCaseDescriptionProvider.class;
+    Class<? extends CaseDescriptionProvider> provider() default DefaultOrdinalCaseDescriptionProvider.class;
 
     /**
      * Whether or not the arguments should be formatted to string using JGiven formatter.
