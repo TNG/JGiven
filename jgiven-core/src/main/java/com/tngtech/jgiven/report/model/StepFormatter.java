@@ -218,7 +218,7 @@ public class StepFormatter {
                     && ( formatters.get( i ) instanceof TableFormatting ) ) {
                 DataTable dataTable = ( (TableFormatting) formatters.get( i ) ).formatTable( value );
                 remainingArguments.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ),
-                    dataTable ) );
+                        dataTable ) );
             } else {
                 remainingArguments.add( Word.argWord( arguments.get( i ).name, toDefaultStringFormat( value ), formattedValue ) );
             }
@@ -235,10 +235,14 @@ public class StepFormatter {
             index = argIndex - 1;
         }
 
+        boolean intMatcherFailed = index == argCount;
+        if ( intMatcherFailed ) {
+            index = getArgumentIndexByName( word.toString(), argCount );
+        }
+
         if( index >= arguments.size() ) {
             throw new JGivenWrongUsageException( "The step definition has more placeholders than arguments" );
         }
-
         Object value = arguments.get( index ).value;
         String defaultFormattedValue = toDefaultStringFormat( value );
 
@@ -260,5 +264,15 @@ public class StepFormatter {
 
     private static String toDefaultStringFormat( Object value ) {
         return new DefaultFormatter<Object>().format( value );
+    }
+
+    private int getArgumentIndexByName( String name, int defaultIndex ) {
+        for( int i = 0; i < arguments.size();
+             ++i ) {
+            if( name.equals( arguments.get( i ).name ) ) {
+                return i;
+            }
+        }
+        return defaultIndex;
     }
 }
