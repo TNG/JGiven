@@ -1,5 +1,9 @@
 # v0.15.0
 
+## New Features
+
+* Thumbnail preview for image attachments added [#274](https://github.com/TNG/JGiven/pull/299)
+
 # v0.14.0
 
 ## Switch from cglib to ByteBuddy
