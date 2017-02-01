@@ -13,13 +13,13 @@ public class ThenCoffee extends Stage<ThenCoffee> {
 
     @ExpectedScenarioState
     private boolean coffeeServed;
-    private int     coffeCount;
+    private int coffeCount;
 
     @ExpectedScenarioState
     private CoffeeMachine coffeeMachine;
 
     public void I_$shouldOrShouldNot_be_served_a_coffee(
-        @Format(value = BooleanFormatter.class, args = {"should", "should not"}) boolean shouldOrShouldNot) {
+            @Format( value = BooleanFormatter.class, args = { "should", "should not" } ) boolean shouldOrShouldNot ) {
         I_should_be_served_a_coffee( shouldOrShouldNot );
     }
 
@@ -64,8 +64,8 @@ public class ThenCoffee extends Stage<ThenCoffee> {
         return self();
     }
 
-    public ThenCoffee the_result_is(String result) {
-        if (coffeCount == 1) {
+    public ThenCoffee the_result_is( String result ) {
+        if( coffeCount == 1 ) {
             assertThat( result == "quite ok" );
         } else {
             assertThat( result == "well-done" );

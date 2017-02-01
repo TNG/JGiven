@@ -19,8 +19,8 @@ public class JUnitParamsTest extends ScenarioTest<GivenTestStep, WhenTestStep, T
 
     @Test
     @Parameters( {
-        "-2, false, 0",
-        "22, true, 1" } )
+            "-2, false, 0",
+            "22, true, 1" } )
     public void JUnitParamsRunner_can_be_used( int intArg, boolean booleanArg, int caseNr ) {
         given().some_integer_value( intArg );
         when().multiply_with_two();
@@ -33,8 +33,8 @@ public class JUnitParamsTest extends ScenarioTest<GivenTestStep, WhenTestStep, T
 
     @Test
     @Parameters( {
-        "-2, false, 0",
-        "22, true, 1" } )
+            "-2, false, 0",
+            "22, true, 1" } )
     @OrdinalCaseDescription( "Hi there $3" )
     public void case_names_are_used_as_description( int intArg, boolean booleanArg, int caseNr ) {
         given().something();

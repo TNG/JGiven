@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith( DataProviderRunner.class )
-@Issue("#236")
+@Issue( "#236" )
 @Description( "Example for different possibilities to annotate test cases with extended descriptions" )
 public class ExtendedDescriptionsTest extends SimpleScenarioTest<ExtendedDescriptionsTest.Annotations> {
 
@@ -31,18 +31,18 @@ public class ExtendedDescriptionsTest extends SimpleScenarioTest<ExtendedDescrip
     }
 
     @Test
-    @DataProvider({
+    @DataProvider( {
             "false, 0",
             "true, 1"
-    })
+    } )
     public void scenarios_with_multiple_argument_parameters_can_be_shown_via_click_on_table( boolean bool, int i ) {
         given().some_bool_$_and_int_$_value( bool, i );
     }
 
     @Test
-    @DataProvider({
+    @DataProvider( {
             "false, 0"
-    })
+    } )
     public void steps_can_reference_arguments_by_name_in_extended_descriptions( boolean bool, int i ) {
         given().another_bool_$_and_int_$_value( bool, i );
     }
@@ -50,22 +50,22 @@ public class ExtendedDescriptionsTest extends SimpleScenarioTest<ExtendedDescrip
     public static class Annotations extends Stage<Annotations> {
 
         @ExtendedDescription( "This is a boolean value" )
-        public Annotations some_boolean_value ( boolean bool ){
+        public Annotations some_boolean_value( boolean bool ) {
             return this;
         }
 
         @ExtendedDescription( "We can reference the first argument with $$ or $$1 : $" )
-        public Annotations some_int_value ( int i ){
+        public Annotations some_int_value( int i ) {
             return this;
         }
 
         @ExtendedDescription( "Different number of arguments can be referenced in different order - int : $2, bool : $1" )
-        public Annotations some_bool_$_and_int_$_value ( boolean bool, int i ){
+        public Annotations some_bool_$_and_int_$_value( boolean bool, int i ) {
             return this;
         }
 
         @ExtendedDescription( "Referencing arguments per name - int : $i, bool : $bool" )
-        public Annotations another_bool_$_and_int_$_value ( boolean bool, int i ){
+        public Annotations another_bool_$_and_int_$_value( boolean bool, int i ) {
             return this;
         }
 
