@@ -11,7 +11,7 @@ import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
  * by just listing the parameter names with their corresponding values.
  * Sometimes, however, it is useful to provide an explicit description the provides more semantic background for each case.
  * This annotation can be used to define custom descriptions.
- * 
+ *
  * @since 0.9.2
  *
  * @deprecated Since v0.16.0 this annotation is deprecated because it starts the argument enumeration from 0 and not from 1,

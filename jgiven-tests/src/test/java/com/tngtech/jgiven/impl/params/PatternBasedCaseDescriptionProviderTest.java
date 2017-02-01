@@ -24,13 +24,14 @@ public class PatternBasedCaseDescriptionProviderTest extends SimpleScenarioTest<
     @DataProvider
     public static Object[][] testData() {
         return new Object[][] {
-            { "Empty value", "", Lists.<String>emptyList(), Lists.emptyList(), "" },
-            { "No value", OrdinalCaseDescription.NO_VALUE, Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "a = 1, b = 2" },
-            { "Placeholder with index", "$1", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "1" },
-            { "Placeholder without index", "$", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "1" },
-            { "Escaped placeholder", "$$", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "$" },
-            { "Multiple placeholders with switch order", "$2 + $1", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "2 + 1" },
-            { "Placeholders with additional text", "a = $1 and b = $2", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "a = 1 and b = 2" },
+                { "Empty value", "", Lists.<String>emptyList(), Lists.emptyList(), "" },
+                { "No value", OrdinalCaseDescription.NO_VALUE, Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "a = 1, b = 2" },
+                { "Placeholder with index", "$1", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "1" },
+                { "Placeholder without index", "$", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "1" },
+                { "Escaped placeholder", "$$", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "$" },
+                { "Multiple placeholders with switch order", "$2 + $1", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "2 + 1" },
+                { "Placeholders with additional text", "a = $1 and b = $2", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ),
+                        "a = 1 and b = 2" },
         };
     }
 
@@ -41,8 +42,8 @@ public class PatternBasedCaseDescriptionProviderTest extends SimpleScenarioTest<
             List<Object> parameterValues, String expectedValue ) {
 
         given().an_OrdinalCaseDescription_annotation_with_value( value )
-            .and().the_parameter_names_are( parameterNames )
-            .and().the_parameter_values_are( parameterValues );
+                .and().the_parameter_names_are( parameterNames )
+                .and().the_parameter_values_are( parameterValues );
 
         then().the_case_description_will_be( expectedValue );
 

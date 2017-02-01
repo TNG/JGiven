@@ -29,12 +29,12 @@ public class GivenCoffee extends Stage<GivenCoffee> {
         return this;
     }
 
-    public GivenCoffee the_coffee_costs_$_euros(int price ) {
+    public GivenCoffee the_coffee_costs_$_euros( int price ) {
         coffeeMachine.price = price;
         return this;
     }
 
-    public GivenCoffee the_machine_is_$onOrOff(@Format(value = BooleanFormatter.class, args = {"on", "off"}) boolean onOrOff) {
+    public GivenCoffee the_machine_is_$onOrOff( @Format( value = BooleanFormatter.class, args = { "on", "off" } ) boolean onOrOff ) {
         coffeeMachine.on = onOrOff;
         return this;
     }
@@ -50,7 +50,7 @@ public class GivenCoffee extends Stage<GivenCoffee> {
 
     public GivenCoffee an_empty_coffee_machine() {
         return a_coffee_machine()
-            .and().there_are_no_more_coffees_left();
+                .and().there_are_no_more_coffees_left();
     }
 
 }

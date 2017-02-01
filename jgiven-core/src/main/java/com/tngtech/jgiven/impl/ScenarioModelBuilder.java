@@ -48,8 +48,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
 
     private static final Set<String> STACK_TRACE_FILTER = ImmutableSet
-        .of( "sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept", "$$EnhancerByCGLIB$$",
-            "java.lang.reflect", "net.sf.cglib.proxy", "com.sun.proxy" );
+            .of( "sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept", "$$EnhancerByCGLIB$$",
+                    "java.lang.reflect", "net.sf.cglib.proxy", "com.sun.proxy" );
     private static final boolean FILTER_STACK_TRACE = Config.config().filterStackTrace();
 
     private ScenarioModel scenarioModel;
@@ -121,7 +121,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
         ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil( configuration );
         List<ObjectFormatter<?>> formatters = parameterFormattingUtil.getFormatter( paramMethod.getParameterTypes(), getNames( arguments ),
-            paramMethod.getParameterAnnotations() );
+                paramMethod.getParameterAnnotations() );
         stepModel.setWords( new StepFormatter( stepModel.getName(), nonHiddenArguments, formatters ).buildFormattedWords() );
 
         if( introWord != null ) {
@@ -305,7 +305,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     @Override
     public void scenarioFailed( Throwable e ) {
         setSuccess( false );
-        setStatus(ExecutionStatus.FAILED);
+        setStatus( ExecutionStatus.FAILED );
         setException( e );
     }
 
@@ -313,7 +313,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     public void scenarioStarted( Class<?> testClass, Method method, List<NamedArgument> namedArguments ) {
         readConfiguration( testClass );
         readAnnotations( testClass, method );
-        scenarioModel.setClassName(testClass.getName());
+        scenarioModel.setClassName( testClass.getName() );
         setParameterNames( getNames( namedArguments ) );
 
         // must come at last
@@ -321,7 +321,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
         ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil( configuration );
         List<ObjectFormatter<?>> formatter = parameterFormattingUtil.getFormatter( method.getParameterTypes(), getNames( namedArguments ),
-            method.getParameterAnnotations() );
+                method.getParameterAnnotations() );
 
         setArguments( parameterFormattingUtil.toStringList( formatter, getValues( namedArguments ) ) );
         setCaseDescription( testClass, method, namedArguments );
@@ -389,7 +389,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
 
         if( method.isAnnotationPresent( NotImplementedYet.class ) || method.isAnnotationPresent( Pending.class ) ) {
-            scenarioCaseModel.setStatus(ExecutionStatus.SCENARIO_PENDING);
+            scenarioCaseModel.setStatus( ExecutionStatus.SCENARIO_PENDING );
         }
 
         if( scenarioCaseModel.getCaseNr() == 1 ) {
@@ -509,21 +509,21 @@ public class ScenarioModelBuilder implements ScenarioListener {
         String name = Strings.isNullOrEmpty( isTag.name() ) ? isTag.type() : isTag.name();
 
         return TagConfiguration.builder( annotationType )
-            .defaultValue( isTag.value() )
-            .description( isTag.description() )
-            .explodeArray( isTag.explodeArray() )
-            .ignoreValue( isTag.ignoreValue() )
-            .prependType( isTag.prependType() )
-            .name( name )
-            .descriptionGenerator( isTag.descriptionGenerator() )
-            .cssClass( isTag.cssClass() )
-            .color( isTag.color() )
-            .style( isTag.style() )
-            .tags( getTagNames( isTag, annotationType ) )
-            .href( isTag.href() )
-            .hrefGenerator( isTag.hrefGenerator() )
-            .showInNavigation( isTag.showInNavigation() )
-            .build();
+                .defaultValue( isTag.value() )
+                .description( isTag.description() )
+                .explodeArray( isTag.explodeArray() )
+                .ignoreValue( isTag.ignoreValue() )
+                .prependType( isTag.prependType() )
+                .name( name )
+                .descriptionGenerator( isTag.descriptionGenerator() )
+                .cssClass( isTag.cssClass() )
+                .color( isTag.color() )
+                .style( isTag.style() )
+                .tags( getTagNames( isTag, annotationType ) )
+                .href( isTag.href() )
+                .hrefGenerator( isTag.hrefGenerator() )
+                .showInNavigation( isTag.showInNavigation() )
+                .build();
     }
 
     private List<String> getTagNames( IsTag isTag, Class<? extends Annotation> annotationType ) {
@@ -565,9 +565,9 @@ public class ScenarioModelBuilder implements ScenarioListener {
             return tagConfiguration.getDescriptionGenerator().newInstance().generateDescription( tagConfiguration, annotation, value );
         } catch( Exception e ) {
             throw new JGivenWrongUsageException(
-                "Error while trying to generate the description for annotation " + annotation + " using DescriptionGenerator class "
-                        + tagConfiguration.getDescriptionGenerator() + ": " + e.getMessage(),
-                e );
+                    "Error while trying to generate the description for annotation " + annotation + " using DescriptionGenerator class "
+                            + tagConfiguration.getDescriptionGenerator() + ": " + e.getMessage(),
+                    e );
         }
     }
 
@@ -576,9 +576,9 @@ public class ScenarioModelBuilder implements ScenarioListener {
             return tagConfiguration.getHrefGenerator().newInstance().generateHref( tagConfiguration, annotation, value );
         } catch( Exception e ) {
             throw new JGivenWrongUsageException(
-                "Error while trying to generate the href for annotation " + annotation + " using HrefGenerator class "
-                        + tagConfiguration.getHrefGenerator() + ": " + e.getMessage(),
-                e );
+                    "Error while trying to generate the href for annotation " + annotation + " using HrefGenerator class "
+                            + tagConfiguration.getHrefGenerator() + ": " + e.getMessage(),
+                    e );
         }
     }
 

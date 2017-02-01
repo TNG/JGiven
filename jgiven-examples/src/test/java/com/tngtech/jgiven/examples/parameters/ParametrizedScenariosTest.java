@@ -16,8 +16,8 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
 
     @Test
     @DataProvider( {
-        "true",
-        "false"
+            "true",
+            "false"
     } )
     public void multiple_cases_are_reported_if_a_data_table_cannot_be_generated( boolean value ) {
         if( value ) {
@@ -29,8 +29,8 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
 
     @Test
     @DataProvider( {
-        "This is the first case, true",
-        "This is another case, false"
+            "This is the first case, true",
+            "This is another case, false"
     } )
     @OrdinalCaseDescription( "$1" )
     public void cases_can_have_custom_descriptions( String description, boolean value ) {
@@ -43,8 +43,8 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
 
     @Test
     @DataProvider( {
-        "This is the first case, true",
-        "This is another case, false"
+            "This is the first case, true",
+            "This is another case, false"
     } )
     @OrdinalCaseDescription( "$1" )
     public void custom_descriptions_of_cases_appear_as_a_separate_column_in_the_data_table( String description, boolean value ) {
@@ -53,8 +53,8 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
 
     @Test
     @DataProvider( {
-        "1",
-        "2"
+            "1",
+            "2"
     } )
     @OrdinalCaseDescription( "$1" )
     public void parameter_values_with_very_long_text_are_truncated_in_the_report( int caseNr ) {
@@ -81,6 +81,6 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
     @UseDataProvider( "manyValues" )
     public void a_scenario_with_many_cases( String grouping, String value ) {
         given().some_group_value( grouping )
-            .and().another_value( value );
+                .and().another_value( value );
     }
 }

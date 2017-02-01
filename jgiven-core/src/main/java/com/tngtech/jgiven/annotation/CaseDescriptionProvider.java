@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Provides the description of a scenario case.
- * 
+ *
  * @since 0.9.2
  */
 public interface CaseDescriptionProvider {

@@ -11,10 +11,10 @@ public class WhenCoffee extends Stage<WhenCoffee> {
 
     @ProvidedScenarioState
     private boolean coffeeServed;
-    private int     coffeCount;
+    private int coffeCount;
 
-    public WhenCoffee I_insert_$_one_euro_coins(int euros) {
-        coffeeMachine.insertOneEuroCoin(euros);
+    public WhenCoffee I_insert_$_one_euro_coins( int euros ) {
+        coffeeMachine.insertOneEuroCoin( euros );
         return self();
     }
 
@@ -23,11 +23,9 @@ public class WhenCoffee extends Stage<WhenCoffee> {
         return self();
     }
 
-    public WhenCoffee I_make_coffee(){
+    public WhenCoffee I_make_coffee() {
         coffeCount += 1;
         return self();
     }
-
-    
 
 }
