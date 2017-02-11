@@ -24,7 +24,7 @@ apply plugin: 'project-report'
 description = 'JGiven - BDD in plain Java'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2'
+    gradleVersion = '3.3'
 }
 
 allprojects {
