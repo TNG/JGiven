@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.util.ClassUtils;
 
 import com.tngtech.jgiven.impl.ByteBuddyStageClassCreator;
-import com.tngtech.jgiven.impl.ByteBuddyStageCreator;
+import com.tngtech.jgiven.impl.DefaultStageCreator;
 import com.tngtech.jgiven.impl.CachingStageClassCreator;
 import com.tngtech.jgiven.impl.intercept.StepInterceptor;
 
@@ -28,7 +28,7 @@ import com.tngtech.jgiven.impl.intercept.StepInterceptor;
  * <strong>The SpringStageCreator is stateful, and thus should use "prototype" scope</strong>
  * @since 0.8.0
  */
-public class SpringStageCreator extends ByteBuddyStageCreator {
+public class SpringStageCreator extends DefaultStageCreator {
 
     private static final Logger log = LoggerFactory.getLogger( SpringStageCreator.class );
 

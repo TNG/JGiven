@@ -1,19 +1,13 @@
 package com.tngtech.jgiven.impl;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import com.tngtech.jgiven.impl.intercept.ByteBuddyMethodInterceptor;
 import com.tngtech.jgiven.impl.intercept.StageInterceptorInternal;
 import com.tngtech.jgiven.impl.intercept.StepInterceptor;
-import com.tngtech.jgiven.impl.util.ReflectionUtil;
 
-public class ByteBuddyStageCreator implements StageCreator {
+public class DefaultStageCreator implements StageCreator {
 
     private final StageClassCreator stageClassCreator;
 
-    public ByteBuddyStageCreator(StageClassCreator stageClassCreator) {
+    public DefaultStageCreator(StageClassCreator stageClassCreator) {
         this.stageClassCreator = stageClassCreator;
     }
 

@@ -117,4 +117,8 @@ public class ScenarioBase {
     public void setStageCreator(StageCreator stageCreator) {
         this.executor.setStageCreator(stageCreator);
     }
+
+    public void setStageClassCreator(StageClassCreator stageClassCreator) {
+        this.executor.setStageClassCreator(stageClassCreator);
+    }
 }

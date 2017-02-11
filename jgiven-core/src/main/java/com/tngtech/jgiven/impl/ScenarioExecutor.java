@@ -69,8 +69,7 @@ public class ScenarioExecutor {
     private final List<Object> scenarioRules = Lists.newArrayList();
 
     private final ValueInjector injector = new ValueInjector();
-    private StageCreator stageCreator = new ByteBuddyStageCreator(
-        new CachingStageClassCreator( new ByteBuddyStageClassCreator() ) );
+    private StageCreator stageCreator = createStageCreator( new ByteBuddyStageClassCreator() );
     private ScenarioListener listener = new NoOpScenarioListener();
     protected final StageTransitionHandler stageTransitionHandler = new StageTransitionHandlerImpl();
     protected final StepInterceptorImpl methodInterceptor = new StepInterceptorImpl( this, listener, stageTransitionHandler );
@@ -504,5 +503,14 @@ public class ScenarioExecutor {
     public void setStageCreator(StageCreator stageCreator) {
         this.stageCreator = stageCreator;
     }
+
+    public void setStageClassCreator(StageClassCreator stageClassCreator) {
+        this.stageCreator = createStageCreator( stageClassCreator);
+    }
+
+    private StageCreator createStageCreator(StageClassCreator stageClassCreator) {
+        return new DefaultStageCreator(new CachingStageClassCreator(stageClassCreator));
+    }
+
 
 }
