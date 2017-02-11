@@ -9,8 +9,10 @@ import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
+import org.gradle.api.file.FileCollection;
 import org.gradle.api.internal.ConventionMapping;
 import org.gradle.api.internal.IConventionAware;
+import org.gradle.api.internal.tasks.TaskOutputFilePropertySpec;
 import org.gradle.api.plugins.ReportingBasePlugin;
 import org.gradle.api.reporting.Report;
 import org.gradle.api.reporting.ReportingExtension;
@@ -50,17 +52,10 @@ public class JGivenPlugin implements Plugin<Project> {
             }
         } );
 
-        test.getOutputs().namedFiles( new Callable<Map<?, ?>>() {
-            @Override
-            public Map<String, File> call() throws Exception {
-                ImmutableMap.Builder<String, File> builder = ImmutableMap.builder();
-                File resultsDir = extension.getResultsDir();
-                if( resultsDir != null ) {
-                    builder.put( "jgiven.resultsDir", resultsDir );
-                }
-                return builder.build();
-            }
-        } );
+        File resultsDir = extension.getResultsDir();
+        if( resultsDir != null ) {
+            test.getOutputs().dir(resultsDir).withPropertyName("jgiven.resultsDir");
+        }
 
         test.prependParallelSafeAction( new Action<Task>() {
             @Override

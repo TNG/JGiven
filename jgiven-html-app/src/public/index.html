@@ -544,7 +544,7 @@
                         </table>
                         <div ng-if="!scenario.casesAsTable">
                           <div ng-if="!case.success" data-alert class="alert-box alert">
-                            <pre class="toggle" ng-click="case.stackTrace.expanded = !case.stackTrace.expanded"><i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i> FAILED: {{::case.errorMessage}}<span ng-if="case.stackTrace.expanded">{{ ::('\n'+case.stackTrace.join('\n')) }}</span></pre>
+                            <pre class="toggle exception" ng-click="case.stackTrace.expanded = !case.stackTrace.expanded"><i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i> FAILED: {{::case.errorMessage}}<span ng-if="case.stackTrace.expanded">{{ ::('\n'+case.stackTrace.join('\n')) }}</span></pre>
                           </div>
                         </div>
 
