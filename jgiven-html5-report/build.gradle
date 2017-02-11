@@ -15,7 +15,7 @@ task bowerUpdate(type: CrossPlatformExec) {
     outputs.dir bowerComponentsDir
 }
 
-task npmInstall(type: CrossPlatformExec) {
+task npmInstall(type: CrossPlatformExec, dependsOn: bowerUpdate) {
     buildCommand('npm', 'install')
 }
 
