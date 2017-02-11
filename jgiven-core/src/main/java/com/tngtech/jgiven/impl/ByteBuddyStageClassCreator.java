@@ -62,7 +62,7 @@ public class ByteBuddyStageClassCreator implements StageClassCreator {
     }
 
     protected ClassLoader getClassLoader( Class<?> stageClass ) {
-        return Thread.currentThread().getContextClassLoader();
+        return stageClass.getClassLoader();
     }
 
 }
