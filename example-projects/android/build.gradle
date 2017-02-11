@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0-beta1'
+        classpath 'com.android.tools.build:gradle:2.3.0-beta4'
     }
 }
 
@@ -11,6 +11,9 @@ apply plugin: 'com.android.application'
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://oss.sonatype.org/content/repositories/staging/"
+    }
 }
 
  android {
@@ -41,9 +44,9 @@ dependencies {
 
   androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
   androidTestCompile 'com.android.support.test:runner:0.5'
-  androidTestCompile 'com.tngtech.jgiven:jgiven-android:0.14.0-RC1'
+  androidTestCompile 'com.tngtech.jgiven:jgiven-android:0.14.1'
 
-  jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:0.14.0-RC1'
+  jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:0.14.1'
   jgivenReport 'org.slf4j:slf4j-simple:1.7.21'
 }
 
