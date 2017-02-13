@@ -1,20 +1,16 @@
 package com.tngtech.jgiven.report;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.junit.rules.TemporaryFolder;
-
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.report.ReportGenerator.Format;
-import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
-import com.tngtech.jgiven.report.json.ReportModelReader;
 import com.tngtech.jgiven.report.model.CompleteReportModel;
-import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
+import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
+import java.io.IOException;
 
 public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends Stage<SELF> {
     @ScenarioRule
@@ -24,13 +20,10 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     protected File jsonReportDirectory;
 
     @ExpectedScenarioState
-    protected ReportGenerator.Config config;
+    protected ReportGenerator reportGenerator;
 
     @ProvidedScenarioState
     protected File targetReportDir;
-
-    @ProvidedScenarioState
-    protected ReportGenerator reportGenerator;
 
     @ProvidedScenarioState
     protected CompleteReportModel completeReportModel;
@@ -40,50 +33,52 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
         targetReportDir = temporaryFolderRule.newFolder( "targetReportDir" );
     }
 
-    public void the_asciidoc_reporter_is_executed() throws IOException {
-        new AsciiDocReportGenerator().generate( getCompleteReportModel(), targetReportDir, config );
+    public void the_asciidoc_reporter_is_executed() {
+        createReportGenerator();
+        reportGenerator.addFlag( "--format=asciidoc" );
+        reportGenerator.generate();
     }
 
     protected CompleteReportModel getCompleteReportModel() {
-        return new ReportModelReader( config ).readDirectory( jsonReportDirectory );
+        return reportGenerator.createInternalReport( Format.HTML5 ).readReportModel();
     }
 
-    private void createReportGenerator() {
-        reportGenerator = new ReportGenerator();
-        reportGenerator.setConfig( config );
-        reportGenerator.setSourceDirectory( jsonReportDirectory );
-        reportGenerator.setTargetDirectory( targetReportDir );
+    protected void createReportGenerator() {
+        reportGenerator.addFlag( "--sourceDir=" + jsonReportDirectory );
+        reportGenerator.addFlag( "--targetDir=" + targetReportDir );
     }
 
-    public void the_report_generator_is_executed() throws Exception {
+    public void the_report_generator_is_executed() {
         createReportGenerator();
         reportGenerator.generate();
     }
 
     public SELF the_plain_text_reporter_is_executed() {
-        new PlainTextReportGenerator().generate( getCompleteReportModel(), targetReportDir, config );
-        return self();
-    }
-
-    public SELF the_report_generator_is_executed_with_format( Format format ) throws Exception {
         createReportGenerator();
-        reportGenerator.setFormat( format );
+        reportGenerator.addFlag( "--format=text" );
         reportGenerator.generate();
         return self();
     }
 
-    public SELF the_HTML5_report_has_been_generated() throws Exception {
+    public SELF the_report_generator_is_executed_with_format( Format format ) {
+        createReportGenerator();
+        reportGenerator.addFlag( "--format=" + format );
+        reportGenerator.generate();
+        return self();
+    }
+
+    public SELF the_HTML5_report_has_been_generated() {
         return the_report_generator_is_executed_with_format( Format.HTML5 );
     }
 
     public SELF the_exclude_empty_scenarios_option_is_set_to( boolean excludeEmptyScenarios ) {
-        config.setExcludeEmptyScenarios( excludeEmptyScenarios );
+        reportGenerator.addFlag( "--exclude-empty-scenarios=" + excludeEmptyScenarios );
         return self();
     }
 
     public SELF reading_the_report_model() {
         createReportGenerator();
-        completeReportModel = reportGenerator.readReportModel();
+        completeReportModel = getCompleteReportModel();
         return self();
     }
 }

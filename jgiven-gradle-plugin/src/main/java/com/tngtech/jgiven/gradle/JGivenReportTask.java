@@ -49,7 +49,7 @@ public class JGivenReportTask extends DefaultTask implements Reporting<JGivenRep
         for( JGivenReport report : getReports().getEnabled() ) {
             ReportGenerator generator = new ReportGenerator();
             report.configure( generator );
-            generator.setSourceDirectory( getResults() );
+            generator.addFlag( "--sourceDir=" + getResults() );
             generator.generate();
         }
     }

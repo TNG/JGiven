@@ -7,7 +7,7 @@ import org.gradle.api.reporting.internal.TaskGeneratedSingleDirectoryReport;
 
 import java.io.File;
 
-public abstract class AbstractJGivenReportImpl  extends TaskGeneratedSingleDirectoryReport implements JGivenReport {
+public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirectoryReport implements JGivenReport {
     private File customCssFile;
     private File customJsFile;
     private String title;
@@ -18,13 +18,13 @@ public abstract class AbstractJGivenReportImpl  extends TaskGeneratedSingleDirec
     }
 
     @Override public void configure( ReportGenerator generator ) {
-        generator.setTargetDirectory( getDestination() );
-        generator.setFormat( getFormat() );
-        generator.getConfig().setCustomCssFile( getCustomCssFile() );
-        generator.getConfig().setCustomJsFile( getCustomJsFile() );
-        generator.getConfig().setExcludeEmptyScenarios( isExcludeEmptyScenarios() );
-        if (getTitle() != null) {
-            generator.getConfig().setTitle( getTitle() );
+        generator.addFlag( "--targetDir=" + getDestination() );
+        generator.addFlag( "--format=" + getFormat() );
+        generator.addFlag( "--customcss=" + getCustomCssFile() );
+        generator.addFlag( "--customjs=" + getCustomJsFile() );
+        generator.addFlag( "--exclude-empty-scenarios=" + isExcludeEmptyScenarios() );
+        if( getTitle() != null ) {
+            generator.addFlag( "--title=" + getTitle() );
         }
     }
 

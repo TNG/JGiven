@@ -8,15 +8,14 @@ import org.junit.Test;
 public class ReportGeneratorArgumentTest {
     @Test
     public void testArgumentParsing() {
+
         ReportGenerator generator = new ReportGenerator();
-        ReportGenerator.parseArgs( generator,
-            new String[] {
-                "--dir=source/dir",
-                "--todir=target/dir",
-                "--customcss=my/custom/file.css" }
-            );
-        Assertions.assertThat( generator.getSourceDirectory() ).isEqualTo( new File( "source/dir" ) );
-        Assertions.assertThat( generator.getTargetDirectory() ).isEqualTo( new File( "target/dir" ) );
-        Assertions.assertThat( generator.getCustomCssFile() ).isEqualTo( new File( "my/custom/file.css" ) );
+        generator.addFlag( "--sourceDir=source/dir" );
+        generator.addFlag( "--targetDir=target/dir" );
+
+        AbstractReport report = generator.createInternalReport( ReportGenerator.Format.TEXT );
+
+        Assertions.assertThat( report.getSourceDir() ).isEqualTo( new File( "source/dir" ) );
+        Assertions.assertThat( report.getTargetDir() ).isEqualTo( new File( "target/dir" ) );
     }
 }

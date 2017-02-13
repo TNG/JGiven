@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.tngtech.jgiven.exception.JGivenInstallationException;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.impl.util.Version;
-import com.tngtech.jgiven.report.AbstractReportGenerator;
+import com.tngtech.jgiven.report.AbstractReport;
 import com.tngtech.jgiven.report.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +18,12 @@ import java.io.*;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class Html5ReportGenerator extends AbstractReportGenerator {
+public class Html5ReportGenerator extends AbstractReport {
     private static final Logger log = LoggerFactory.getLogger( Html5ReportGenerator.class );
     private static final int MAX_BATCH_SIZE = 100;
 
@@ -33,22 +34,42 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
     private ByteArrayOutputStream byteStream;
     private PrintStream contentStream;
 
-    @Override
+    private File customJs;
+    private File customCss;
+
+    public void addFlags() {
+        addFlags( "--customjs=", "--customcss=" );
+    }
+
+    public void parseFlags( Map<String, String> flagMap ) {
+        if( flagMap.containsKey( "--customjs=" ) ) {
+            customJs = new File( flagMap.get( "--customjs=" ) );
+        }
+        if( flagMap.containsKey( "--customcss=" ) ) {
+            customCss = new File( flagMap.get( "--customcss=" ) );
+        }
+    }
+
+    public void printAddedUsage() {
+        System.err.print( "  --customjs=<pathtofile>       (optional)\n"
+                + "  --customcss=<pathtofile>      (optional)\n" );
+    }
+
     public void generate() {
-        log.info( "Generating HTML5 report to {}", new File( this.targetDirectory, "index.html" ).getAbsoluteFile() );
-        this.dataDirectory = new File( this.targetDirectory, "data" );
-        this.metaData.title = config.getTitle();
+        log.info( "Generating HTML5 report to {}", new File( getTargetDir(), "index.html" ).getAbsoluteFile() );
+        this.dataDirectory = new File( getTargetDir(), "data" );
+        this.metaData.title = getTitle();
         if( !this.dataDirectory.exists() && !this.dataDirectory.mkdirs() ) {
             log.error( "Could not create target directory " + this.dataDirectory );
             return;
         }
         try {
-            unzipApp( this.targetDirectory );
+            unzipApp( getTargetDir() );
             createDataFiles();
             generateMetaData();
             generateTagFile();
-            copyCustomFile( config.getCustomCssFile(), new File( this.targetDirectory, "css" ), "custom.css" );
-            copyCustomFile( config.getCustomJsFile(), new File( this.targetDirectory, "js" ), "custom.js" );
+            copyCustomFile( customCss, new File( getTargetDir(), "css" ), "custom.css" );
+            copyCustomFile( customJs, new File( getTargetDir(), "js" ), "custom.js" );
         } catch( IOException e ) {
             throw Throwables.propagate( e );
         }
@@ -60,10 +81,10 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
                 log.info( "Cannot read " + file + ", skipping" );
             } else {
                 targetDirectory.mkdirs();
-                if (!targetDirectory.canWrite()) {
-                    String message = "Could not create directory "+targetDirectory;
-                    log.error(message);
-                    throw new JGivenInstallationException(message);
+                if( !targetDirectory.canWrite() ) {
+                    String message = "Could not create directory " + targetDirectory;
+                    log.error( message );
+                    throw new JGivenInstallationException( message );
                 }
                 Files.copy( file, new File( targetDirectory, targetName ) );
             }

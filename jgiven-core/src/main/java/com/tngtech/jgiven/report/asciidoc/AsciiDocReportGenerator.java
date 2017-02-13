@@ -3,13 +3,14 @@ package com.tngtech.jgiven.report.asciidoc;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.AbstractReportGenerator;
+import com.tngtech.jgiven.report.AbstractReport;
 import com.tngtech.jgiven.report.AbstractReportModelHandler;
 import com.tngtech.jgiven.report.AbstractReportModelHandler.ScenarioDataTable;
 import com.tngtech.jgiven.report.ReportModelHandler;
@@ -17,11 +18,20 @@ import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 
-public class AsciiDocReportGenerator extends AbstractReportGenerator {
+public class AsciiDocReportGenerator extends AbstractReport {
 
     private List<String> allFiles = Lists.newArrayList();
 
-    @Override
+    public void addFlags() {
+    }
+
+    public void parseFlags( Map<String, String> flagMap ) {
+
+    }
+
+    public void printAddedUsage() {
+    }
+
     public void generate() {
         for( ReportModelFile reportModelFile : completeReportModel.getAllReportModels() ) {
             writeReportModelToFile( reportModelFile.model, reportModelFile.file );
@@ -33,8 +43,10 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         String targetFileName = Files.getNameWithoutExtension( file.getName() ) + ".asciidoc";
 
         allFiles.add( targetFileName );
-
-        File targetFile = new File( targetDirectory, targetFileName );
+        if( !getTargetDir().exists() ) {
+            getTargetDir().mkdirs();
+        }
+        File targetFile = new File( getTargetDir(), targetFileName );
         PrintWriter printWriter = PrintWriterUtil.getPrintWriter( targetFile );
 
         try {
@@ -45,7 +57,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     public void generateIndexFile() {
-        PrintWriter printWriter = PrintWriterUtil.getPrintWriter( new File( targetDirectory, "index.asciidoc" ) );
+        PrintWriter printWriter = PrintWriterUtil.getPrintWriter( new File( getTargetDir(), "index.asciidoc" ) );
         try {
             printWriter.println( "= JGiven Documentation =\n" );
             printWriter.println( ":toc: left\n" );
@@ -56,7 +68,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             ResourceUtil.close( printWriter );
         }
 
-        printWriter = PrintWriterUtil.getPrintWriter( new File( targetDirectory, "allClasses.asciidoc" ) );
+        printWriter = PrintWriterUtil.getPrintWriter( new File( getTargetDir(), "allClasses.asciidoc" ) );
         try {
             for( String fileName : allFiles ) {
                 printWriter.println( "include::" + fileName + "[]\n" );
