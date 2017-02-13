@@ -510,6 +510,11 @@ table.steps tr.steps:hover .nested-step .step-expand-icon {
     font-shadow: 1px 1px 1px gray;
 }
 
+pre.exception {
+   overflow: auto;
+   white-space:normal;
+}
+
 .attachment-index {
     vertical-align: top;
     font-size: 0.5rem;
