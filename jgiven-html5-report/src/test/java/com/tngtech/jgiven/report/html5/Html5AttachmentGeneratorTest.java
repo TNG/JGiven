@@ -33,5 +33,4 @@ public class Html5AttachmentGeneratorTest {
 
     }
 
-
 }

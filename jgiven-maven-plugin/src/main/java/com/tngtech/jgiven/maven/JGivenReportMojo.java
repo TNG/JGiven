@@ -56,6 +56,12 @@ public class JGivenReportMojo extends AbstractMojo {
     @Parameter( defaultValue = "false" )
     boolean excludeEmptyScenarios;
 
+    /**
+     * Whether to show thumbnails for image attachments, otherwise a clip-icon is shown
+     */
+    @Parameter( defaultValue = "true" )
+    boolean thumbnailsAreShown;
+
     @Override
     public void execute() throws MojoExecutionException {
         try {
@@ -80,6 +86,7 @@ public class JGivenReportMojo extends AbstractMojo {
             generator.addFlag( "--customjs=" + customJsFile );
             generator.addFlag( "--title=" + title );
             generator.addFlag( "--exclude-empty-scenarios=" + excludeEmptyScenarios );
+            generator.addFlag( "--show-thumbnails=" + thumbnailsAreShown );
             generator.generate();
             getLog().info( "-------------------------------------------------------------------" );
             getLog().info( "Generated JGiven HTML reports to directory " + outputDirectory );

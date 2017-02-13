@@ -12,6 +12,7 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
     private File customJsFile;
     private String title;
     private boolean excludeEmptyScenarios;
+    private boolean thumbnailsAreShown = true;
 
     public AbstractJGivenReportImpl( String name, Task task, String relativeEntryPath ) {
         super( name, task, relativeEntryPath );
@@ -23,6 +24,7 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
         generator.addFlag( "--customcss=" + getCustomCssFile() );
         generator.addFlag( "--customjs=" + getCustomJsFile() );
         generator.addFlag( "--exclude-empty-scenarios=" + isExcludeEmptyScenarios() );
+        generator.addFlag( "--show-thumbnails=" + thumbnailsAreShown() );
         if( getTitle() != null ) {
             generator.addFlag( "--title=" + getTitle() );
         }
@@ -61,5 +63,14 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
     @Override public void setExcludeEmptyScenarios( boolean excludeEmptyScenarios ) {
         this.excludeEmptyScenarios = excludeEmptyScenarios;
     }
+
+    @Override public boolean thumbnailsAreShown() {
+        return thumbnailsAreShown;
+    }
+
+    @Override public void setThumbnailsAreShown( boolean thumbnailsAreShown ) {
+        this.thumbnailsAreShown = thumbnailsAreShown;
+    }
+
 }
 

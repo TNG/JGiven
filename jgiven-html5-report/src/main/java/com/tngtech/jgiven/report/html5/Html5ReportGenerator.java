@@ -36,9 +36,10 @@ public class Html5ReportGenerator extends AbstractReport {
 
     private File customJs;
     private File customCss;
+    private boolean showThumbnails = true;
 
     public void addFlags() {
-        addFlags( "--customjs=", "--customcss=" );
+        addFlags( "--customjs=", "--customcss=", "--show-thumbnails=" );
     }
 
     public void parseFlags( Map<String, String> flagMap ) {
@@ -48,11 +49,15 @@ public class Html5ReportGenerator extends AbstractReport {
         if( flagMap.containsKey( "--customcss=" ) ) {
             customCss = new File( flagMap.get( "--customcss=" ) );
         }
+        if( flagMap.containsKey( "--show-thumbnails=" ) ) {
+            showThumbnails = Boolean.parseBoolean( flagMap.get( "--show-thumbnails=" ) );
+        }
     }
 
     public void printAddedUsage() {
         System.err.print( "  --customjs=<pathtofile>       (optional)\n"
-                + "  --customcss=<pathtofile>      (optional)\n" );
+                + "  --customcss=<pathtofile>      (optional)\n"
+                + "  --show-thumbnails=            (optional, default: true)" );
     }
 
     public void generate() {
@@ -202,11 +207,14 @@ public class Html5ReportGenerator extends AbstractReport {
         String version = Version.VERSION.toString();
         String title = "JGiven Report";
         List<String> data = Lists.newArrayList();
+        Boolean showThumbnails = true;
     }
 
     private void generateMetaData() throws IOException {
         File metaDataFile = new File( dataDirectory, "metaData.js" );
         log.debug( "Generating " + metaDataFile + "..." );
+
+        metaData.showThumbnails = showThumbnails;
 
         String content = "jgivenReport.setMetaData(" + new Gson().toJson( metaData ) + " );";
 

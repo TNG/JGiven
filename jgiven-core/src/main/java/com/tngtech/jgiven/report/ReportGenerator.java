@@ -112,6 +112,13 @@ public class ReportGenerator {
         flagList.add( flag );
     }
 
+    /**
+     * Interface to reset flags for non-command line use
+     */
+    public void resetFlags() {
+        flagList = new ArrayList<String>();
+    }
+
     public static void main( String... args ) throws Exception {
         new ReportGenerator().generate( Arrays.asList( args ) );
     }

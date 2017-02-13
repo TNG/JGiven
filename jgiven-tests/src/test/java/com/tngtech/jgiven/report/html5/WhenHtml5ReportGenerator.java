@@ -17,4 +17,9 @@ public class WhenHtml5ReportGenerator<SELF extends WhenHtml5ReportGenerator<SELF
         reportGenerator.addFlag( "--title=" + title );
         return the_HTML_Report_Generator_is_executed();
     }
+
+    public SELF showing_thumbnails_is_set_to( boolean option ) {
+        reportGenerator.addFlag( "--show-thumbnails=" + option );
+        return self();
+    }
 }

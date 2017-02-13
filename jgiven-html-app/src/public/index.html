@@ -97,12 +97,12 @@
                     tooltip-html-unsafe="{{ attachment.title }}"
                     tooltip-popup-delay="250">
                 <a target="_blank" href="data/{{ attachment.value }}">
-                  <span ng-if="isImage(attachment)">
+                  <span ng-if="isImage(attachment) && metaData.showThumbnails">
                     <img class="jgiven-html-thumbnail" src="data/{{ ::toThumbnailPath(attachment.value) }}" alt="{{ attachment.title }}">
                     <span class="attachment-index"
                           ng-if="scenario.scenarioCases.length > 1 && scenario.casesAsTable">{{ scenarioCase.caseNr }}</span>
                   </span>
-                  <span ng-if="!isImage(attachment)">
+                  <span ng-if="!isImage(attachment) || !metaData.showThumbnails">
                     <i class="fa fa-paperclip"><span class="attachment-index"
                                                      ng-if="scenario.scenarioCases.length > 1 && scenario.casesAsTable">{{ scenarioCase.caseNr }}</span></i>
                   </span>
