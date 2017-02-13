@@ -209,4 +209,10 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
                 }
             } );
     }
+
+    @Test
+    @FailingOnPurpose
+    public void long_error_messages_should_wrapped() {
+        given().an_exception_with_a_very_long_message();
+    }
 }

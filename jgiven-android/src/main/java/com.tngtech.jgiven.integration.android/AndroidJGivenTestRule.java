@@ -14,7 +14,7 @@ import java.io.File;
 
 public class AndroidJGivenTestRule implements TestRule {
     public AndroidJGivenTestRule(ScenarioBase scenario) {
-        scenario.setStageCreator(new AndroidStageCreator());
+        scenario.setStageClassCreator(new AndroidStageClassCreator());
 
         grantPermission("READ_EXTERNAL_STORAGE");
         grantPermission("WRITE_EXTERNAL_STORAGE");

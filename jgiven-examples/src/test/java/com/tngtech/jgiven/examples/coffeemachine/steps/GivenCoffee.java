@@ -53,4 +53,8 @@ public class GivenCoffee extends Stage<GivenCoffee> {
             .and().there_are_no_more_coffees_left();
     }
 
+    public GivenCoffee an_exception_with_a_very_long_message() {
+        throw new RuntimeException("This is a very long exception message that should be wrapped at some point " +
+                "in the report and it is even longer than that");
+    }
 }
