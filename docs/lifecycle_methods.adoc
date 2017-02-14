@@ -12,7 +12,8 @@ The life-cycle of a scenario is as follows.
 .. Values are injected into all scenario state fields 
 .. The `@BeforeStage`-annotated methods of the stage are called 
 .. The steps of the stage are executed 
-.. The `@AfterStage`-annotated methods of the stage are called 4.5. The values of all scenario state fields are extracted.
+.. The `@AfterStage`-annotated methods of the stage are called
+.. The values of all scenario state fields are extracted.
 . The `@AfterScenario`-annotated methods of all stages are called.
 . The `after()` methods of all scenario rules of all stages are called.
 
