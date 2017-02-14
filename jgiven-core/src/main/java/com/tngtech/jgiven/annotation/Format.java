@@ -12,7 +12,7 @@ import com.tngtech.jgiven.format.PrintfFormatter;
  */
 @Documented
 @Retention( RetentionPolicy.RUNTIME )
-@Target( { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE } )
+@Target( { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE, ElementType.FIELD } )
 public @interface Format {
     Class<? extends ArgumentFormatter<?>> value() default PrintfFormatter.class;
 

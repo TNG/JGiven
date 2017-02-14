@@ -3,42 +3,46 @@ package com.tngtech.jgiven.format.table;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.tngtech.jgiven.annotation.NamedFormat;
+import com.tngtech.jgiven.annotation.NamedFormatSet;
 import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.config.FormatterConfiguration;
 import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.ObjectFormatter;
+import com.tngtech.jgiven.impl.format.ParameterFormattingUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 
 /**
- * Default implementation of the {@link RowFormatter} that uses
- * the fields of an object as columns of the table
+ * Default implementation of the {@link RowFormatter} that uses the fields of an
+ * object as columns of the table
  *
- * see {@link com.tngtech.jgiven.annotation.Table} for details
+ * @See {@link com.tngtech.jgiven.annotation.Table} for details<br>
+ *      {@link NamedFormatSet} annotation<br>
  */
 public class FieldBasedRowFormatter extends RowFormatter {
 
-    private final Class<?> type;
+    private ParameterFormattingUtil pfu = new ParameterFormattingUtil( new DefaultConfiguration() );
     private final Table tableAnnotation;
-    private final String parameterName;
-    private final Annotation[] annotations;
     private List<Field> fields;
     boolean[] nonNullColumns;
+    Map<String, ObjectFormatter<?>> formattersByFieldName;
 
     public FieldBasedRowFormatter( Class<?> type, String parameterName, Table tableAnnotation,
             Annotation[] annotations ) {
-        this.type = type;
         this.tableAnnotation = tableAnnotation;
-        this.parameterName = parameterName;
-        this.annotations = annotations;
         this.fields = getFields( tableAnnotation, type );
         this.nonNullColumns = new boolean[fields.size()];
+        this.formattersByFieldName = retrieveFieldsFormatters( tableAnnotation, fields );
     }
 
     @Override
@@ -46,15 +50,81 @@ public class FieldBasedRowFormatter extends RowFormatter {
         return getFieldNames( fields );
     }
 
+    @SuppressWarnings( "unchecked" )
     @Override
     public List<String> formatRow( Object object ) {
         List<Object> allFieldValues = ReflectionUtil.getAllFieldValues( object, fields, "" );
+
+        List<String> res = Lists.newArrayList();
+
         for( int i = 0; i < allFieldValues.size(); i++ ) {
-            if( allFieldValues.get( i ) != null ) {
+            Object v = allFieldValues.get( i );
+            Field field = fields.get( i );
+
+            if( v != null ) {
                 nonNullColumns[i] = true;
             }
+
+            @SuppressWarnings( "rawtypes" )
+            ObjectFormatter formatter = formattersByFieldName.get( field.getName() );
+            if( formatter != null ) {
+                res.add( formatter.format( v ) );
+            } else {
+                formatter = DefaultFormatter.INSTANCE;
+                res.add( formatter.format( v ) );
+            }
         }
-        return toStringList( allFieldValues );
+
+        return res;
+
+    }
+
+    private Map<String, ObjectFormatter<?>> retrieveFieldsFormatters( Table annotation, List<Field> fields ) {
+        Map<String, ObjectFormatter<?>> inter = Maps.newHashMap();
+
+        // First, look for any format defined at field level
+        for( int i = 0; i < fields.size(); i++ ) {
+            Field field = fields.get( i );
+
+            ObjectFormatter<?> formatter = pfu.getFormatting( field.getType(), field.getName(), field.getAnnotations() );
+
+            // Finally, bind format to the field when found
+            if( formatter != null ) {
+                inter.put( field.getName(), formatter );
+            }
+        }
+
+        // Then, override with any formats specified through the Table
+        // annotation
+        NamedFormat[] nftab;
+
+        // Array of NamedFormat has precedence over NamedFormatSet
+        nftab = annotation.fieldsFormat();
+        if( nftab.length == 0 ) {
+            // Fall back on a custom NamedFormatSet annotation
+            Class<? extends Annotation> aclazz = annotation.fieldsFormatSetAnnotation();
+            if( aclazz.isAnnotationPresent( NamedFormatSet.class ) ) {
+                NamedFormatSet nfset = aclazz.getAnnotation( NamedFormatSet.class );
+                nftab = nfset.value();
+            }
+        }
+
+        for( NamedFormat nf : nftab ) {
+            ObjectFormatter<?> formatter;
+
+            // Custom format annotation has precedence here
+            Class<? extends Annotation> cfa = nf.customFormatAnnotation();
+            if( cfa.equals( Annotation.class ) ) {
+                // Custom format annotation not set, fallback on any format
+                formatter = pfu.getFormatting( Object.class, nf.name(), new Annotation[] { nf.format() } );
+            } else {
+                formatter = pfu.getFormatting( Object.class, nf.name(), cfa.getAnnotations() );
+            }
+
+            inter.put( nf.name(), formatter );
+        }
+
+        return inter;
     }
 
     private static List<Field> getFields( Table tableAnnotation, Class<?> type ) {
@@ -86,16 +156,6 @@ public class FieldBasedRowFormatter extends RowFormatter {
         } ).toList();
     }
 
-    private static List<String> toStringList( List<Object> values ) {
-        List<String> list = Lists.newArrayList();
-
-        for( Object v : values ) {
-            list.add( DefaultFormatter.INSTANCE.format( v ) );
-        }
-
-        return list;
-    }
-
     @Override
     public List<List<String>> postProcess( List<List<String>> list ) {
         if( !tableAnnotation.includeNullColumns() ) {
@@ -119,7 +179,8 @@ public class FieldBasedRowFormatter extends RowFormatter {
     }
 
     /**
-     * Factory for creating instances of {@link com.tngtech.jgiven.format.table.FieldBasedRowFormatter}
+     * Factory for creating instances of
+     * {@link com.tngtech.jgiven.format.table.FieldBasedRowFormatter}
      *
      * @see com.tngtech.jgiven.format.table.FieldBasedRowFormatter
      * @see com.tngtech.jgiven.format.table.RowFormatterFactory
@@ -130,8 +191,7 @@ public class FieldBasedRowFormatter extends RowFormatter {
     public static class Factory implements RowFormatterFactory {
         @Override
         public RowFormatter create( Class<?> parameterType, String parameterName, Table tableAnnotation,
-                Annotation[] annotations,
-                FormatterConfiguration configuration, ObjectFormatter<?> objectFormatter ) {
+                Annotation[] annotations, FormatterConfiguration configuration, ObjectFormatter<?> objectFormatter ) {
             return new FieldBasedRowFormatter( parameterType, parameterName, tableAnnotation, annotations );
         }
     }
