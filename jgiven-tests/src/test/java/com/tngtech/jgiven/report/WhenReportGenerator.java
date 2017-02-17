@@ -6,9 +6,15 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.report.ReportGenerator.Format;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
+import com.tngtech.jgiven.report.html5.Html5ReportConfig;
 import com.tngtech.jgiven.report.model.CompleteReportModel;
+import com.tngtech.jgiven.report.text.PlainTextReportConfig;
+import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 import org.junit.rules.TemporaryFolder;
 
+import javax.xml.soap.Text;
 import java.io.File;
 import java.io.IOException;
 
@@ -20,7 +26,13 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
     protected File jsonReportDirectory;
 
     @ExpectedScenarioState
-    protected ReportGenerator reportGenerator;
+    protected AsciiDocReportConfig asciiDocReportConfig;
+
+    @ExpectedScenarioState
+    protected PlainTextReportConfig plainTextReportConfig;
+
+    @ExpectedScenarioState
+    protected Html5ReportConfig html5ReportConfig;
 
     @ProvidedScenarioState
     protected File targetReportDir;
@@ -33,51 +45,63 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
         targetReportDir = temporaryFolderRule.newFolder( "targetReportDir" );
     }
 
-    public void the_asciidoc_reporter_is_executed() {
-        createReportGenerator();
-        reportGenerator.addFlag( "--format=asciidoc" );
-        reportGenerator.generate();
-    }
-
     protected CompleteReportModel getCompleteReportModel() {
-        return reportGenerator.createInternalReport( Format.HTML5 ).readReportModel();
+        return asciiDocReportConfig.getReportModel();
     }
 
-    protected void createReportGenerator() {
-        reportGenerator.addFlag( "--sourceDir=" + jsonReportDirectory );
-        reportGenerator.addFlag( "--targetDir=" + targetReportDir );
+    protected void setupReportConfig() {
+        asciiDocReportConfig.setSourceDir( jsonReportDirectory );
+        asciiDocReportConfig.setTargetDir( targetReportDir );
+
+        plainTextReportConfig.setSourceDir( jsonReportDirectory );
+        plainTextReportConfig.setTargetDir( targetReportDir );
+
+        html5ReportConfig.setSourceDir( jsonReportDirectory );
+        html5ReportConfig.setTargetDir( targetReportDir );
     }
 
     public void the_report_generator_is_executed() {
-        createReportGenerator();
-        reportGenerator.generate();
+        the_report_generator_is_executed_with_format( Format.HTML5 );
+    }
+
+    public SELF the_asciidoc_reporter_is_executed() {
+        return the_report_generator_is_executed_with_format( Format.ASCIIDOC );
     }
 
     public SELF the_plain_text_reporter_is_executed() {
-        createReportGenerator();
-        reportGenerator.addFlag( "--format=text" );
-        reportGenerator.generate();
-        return self();
+        return the_report_generator_is_executed_with_format( Format.TEXT );
     }
 
-    public SELF the_report_generator_is_executed_with_format( Format format ) {
-        createReportGenerator();
-        reportGenerator.addFlag( "--format=" + format );
-        reportGenerator.generate();
-        return self();
-    }
-
-    public SELF the_HTML5_report_has_been_generated() {
+    public SELF the_HTML5_reporter_is_executed() {
         return the_report_generator_is_executed_with_format( Format.HTML5 );
     }
 
+    public SELF the_report_generator_is_executed_with_format( Format format ) {
+        setupReportConfig();
+        switch( format ) {
+            case ASCIIDOC:
+                new AsciiDocReportGenerator().generateWithConfig( asciiDocReportConfig );
+                break;
+            case TEXT:
+                new PlainTextReportGenerator().generateWithConfig( plainTextReportConfig );
+                break;
+            case HTML:
+            case HTML5:
+            default:
+                ReportGenerator.generateHtml5Report().generateWithConfig( html5ReportConfig );
+        }
+        return self();
+    }
+
     public SELF the_exclude_empty_scenarios_option_is_set_to( boolean excludeEmptyScenarios ) {
-        reportGenerator.addFlag( "--exclude-empty-scenarios=" + excludeEmptyScenarios );
+        asciiDocReportConfig.setExcludeEmptyScenarios( excludeEmptyScenarios );
+        plainTextReportConfig.setExcludeEmptyScenarios( excludeEmptyScenarios );
+        html5ReportConfig.setExcludeEmptyScenarios( excludeEmptyScenarios );
         return self();
     }
 
     public SELF reading_the_report_model() {
-        createReportGenerator();
+        setupReportConfig();
         completeReportModel = getCompleteReportModel();
         return self();
     }

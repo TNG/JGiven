@@ -7,6 +7,8 @@ import java.util.Arrays;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
 import org.assertj.core.api.Assertions;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -24,11 +26,14 @@ public class ReportGeneratorTest {
 
         Files.write( "no json", new File( folder, "wrong.json" ), Charsets.UTF_8 );
 
-        ReportGenerator generator = new ReportGenerator();
-        generator.addFlag( "--targetDir=" + tmpFolder.getRoot() );
-        generator.addFlag( "--sourceDir=" + tmpFolder.getRoot() );
-        generator.addFlag( "--format=text" );
+        AsciiDocReportGenerator asciiReport = new AsciiDocReportGenerator();
 
-        generator.generate();
+        AsciiDocReportConfig config = new AsciiDocReportConfig();
+        config.setSourceDir( tmpFolder.getRoot() );
+        config.setTargetDir( tmpFolder.getRoot() );
+
+        asciiReport.setConfig( config );
+        asciiReport.loadReportModel();
+        asciiReport.generate();
     }
 }

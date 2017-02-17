@@ -240,8 +240,8 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
     }
 
     @Test
-    @Issue( "236" )
-    public void extended_description_can_substitue_arguments() throws IOException {
+    @Issue( "#236" )
+    public void extended_description_can_substitute_arguments() throws IOException {
         String description = "This references the second argument: $2"
                 + " this the first one: $"
                 + " and this the third named one: $third_arg";
@@ -267,7 +267,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
     }
 
     @Test
-    @Issue( "274" )
+    @Issue( "#274" )
     public void a_thumbnail_is_shown_for_image_attachments() throws IOException {
 
         String screenshot = ( (TakesScreenshot) webDriver ).getScreenshotAs( OutputType.BASE64 );
@@ -283,7 +283,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
     }
 
     @Test
-    @Issue( "274" )
+    @Issue( "#274" )
     @DataProvider( {
             "true",
             "false" } )

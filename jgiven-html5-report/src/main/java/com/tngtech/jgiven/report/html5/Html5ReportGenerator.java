@@ -8,23 +8,27 @@ import com.google.gson.Gson;
 import com.tngtech.jgiven.exception.JGivenInstallationException;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.impl.util.Version;
-import com.tngtech.jgiven.report.AbstractReport;
+import com.tngtech.jgiven.report.AbstractReportConfig;
+import com.tngtech.jgiven.report.AbstractReportGenerator;
+import com.tngtech.jgiven.report.ReportGenerator;
+import com.tngtech.jgiven.report.config.CommandLineOptionBuilder;
+import com.tngtech.jgiven.report.config.ConfigOption;
+import com.tngtech.jgiven.report.config.ConfigOptionBuilder;
+import com.tngtech.jgiven.report.config.converter.ToBoolean;
+import com.tngtech.jgiven.report.config.converter.ToFile;
 import com.tngtech.jgiven.report.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public class Html5ReportGenerator extends AbstractReport {
-    private static final Logger log = LoggerFactory.getLogger( Html5ReportGenerator.class );
+public class Html5ReportGenerator extends AbstractReportGenerator {
+    private static final Logger log = LoggerFactory.getLogger( ReportGenerator.class );
     private static final int MAX_BATCH_SIZE = 100;
 
     private PrintStream fileStream;
@@ -33,48 +37,57 @@ public class Html5ReportGenerator extends AbstractReport {
     private File dataDirectory;
     private ByteArrayOutputStream byteStream;
     private PrintStream contentStream;
+    private Html5ReportConfig specializedConfig;
 
-    private File customJs;
-    private File customCss;
-    private boolean showThumbnails = true;
+    public void additionalConfigOptions( List<ConfigOption> configOptions ) {
+        ConfigOption customCss = new ConfigOptionBuilder( "customcss" )
+                .setCommandLineOptionWithArgument(
+                        new CommandLineOptionBuilder( "--customcss" ).setArgumentDelimiter( "=" ).setVisualPlaceholder( "path" ).build(),
+                        new ToFile() )
+                .setOptional()
+                .setDescription( "path to file" )
+                .build();
 
-    public void addFlags() {
-        addFlags( "--customjs=", "--customcss=", "--show-thumbnails=" );
+        ConfigOption customJs = new ConfigOptionBuilder( "customjs" )
+                .setCommandLineOptionWithArgument(
+                        new CommandLineOptionBuilder( "--customjs" ).setArgumentDelimiter( "=" ).setVisualPlaceholder( "path" ).build(),
+                        new ToFile() )
+                .setOptional()
+                .setDescription( "path to file" )
+                .build();
+
+        ConfigOption showThumbnails = new ConfigOptionBuilder( "showThumbnails" )
+                .setCommandLineOptionWithArgument(
+                        new CommandLineOptionBuilder( "--show-thumbnails" ).setArgumentDelimiter( "=" ).setVisualPlaceholder( "boolean" )
+                                .build(),
+                        new ToBoolean() )
+                .setDefaultWith( true )
+                .setDescription( "(default: true)" )
+                .build();
+
+        configOptions.addAll( Arrays.asList( customCss, customJs, showThumbnails ) );
     }
 
-    public void parseFlags( Map<String, String> flagMap ) {
-        if( flagMap.containsKey( "--customjs=" ) ) {
-            customJs = new File( flagMap.get( "--customjs=" ) );
-        }
-        if( flagMap.containsKey( "--customcss=" ) ) {
-            customCss = new File( flagMap.get( "--customcss=" ) );
-        }
-        if( flagMap.containsKey( "--show-thumbnails=" ) ) {
-            showThumbnails = Boolean.parseBoolean( flagMap.get( "--show-thumbnails=" ) );
-        }
-    }
-
-    public void printAddedUsage() {
-        System.err.print( "  --customjs=<pathtofile>       (optional)\n"
-                + "  --customcss=<pathtofile>      (optional)\n"
-                + "  --show-thumbnails=            (optional, default: true)" );
+    public AbstractReportConfig createReportConfig( Map<String, Object> configMap ) {
+        return new Html5ReportConfig( configMap );
     }
 
     public void generate() {
-        log.info( "Generating HTML5 report to {}", new File( getTargetDir(), "index.html" ).getAbsoluteFile() );
-        this.dataDirectory = new File( getTargetDir(), "data" );
-        this.metaData.title = getTitle();
+        specializedConfig = (Html5ReportConfig) config;
+        log.info( "Generating HTML5 report to {}", new File( specializedConfig.getTargetDir(), "index.html" ).getAbsoluteFile() );
+        this.dataDirectory = new File( specializedConfig.getTargetDir(), "data" );
+        this.metaData.title = specializedConfig.getTitle();
         if( !this.dataDirectory.exists() && !this.dataDirectory.mkdirs() ) {
             log.error( "Could not create target directory " + this.dataDirectory );
             return;
         }
         try {
-            unzipApp( getTargetDir() );
+            unzipApp( config.getTargetDir() );
             createDataFiles();
             generateMetaData();
             generateTagFile();
-            copyCustomFile( customCss, new File( getTargetDir(), "css" ), "custom.css" );
-            copyCustomFile( customJs, new File( getTargetDir(), "js" ), "custom.js" );
+            copyCustomFile( specializedConfig.getCustomCss(), new File( specializedConfig.getTargetDir(), "css" ), "custom.css" );
+            copyCustomFile( specializedConfig.getCustomJs(), new File( specializedConfig.getTargetDir(), "js" ), "custom.js" );
         } catch( IOException e ) {
             throw Throwables.propagate( e );
         }
@@ -214,7 +227,7 @@ public class Html5ReportGenerator extends AbstractReport {
         File metaDataFile = new File( dataDirectory, "metaData.js" );
         log.debug( "Generating " + metaDataFile + "..." );
 
-        metaData.showThumbnails = showThumbnails;
+        metaData.showThumbnails = specializedConfig.getShowThumbnails();
 
         String content = "jgivenReport.setMetaData(" + new Gson().toJson( metaData ) + " );";
 

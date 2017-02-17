@@ -6,6 +6,11 @@ import java.util.List;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.report.AbstractReportConfig;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
+import com.tngtech.jgiven.report.html5.Html5ReportConfig;
+import com.tngtech.jgiven.report.text.PlainTextReportConfig;
+import org.apache.tools.ant.taskdefs.Javadoc;
 import org.junit.rules.TemporaryFolder;
 
 import com.google.common.base.Charsets;
@@ -35,7 +40,13 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends Stage<SE
     protected List<File> jsonReportFiles = Lists.newArrayList();
 
     @ProvidedScenarioState
-    protected ReportGenerator reportGenerator = new ReportGenerator();
+    protected AsciiDocReportConfig asciiDocReportConfig = new AsciiDocReportConfig();
+
+    @ProvidedScenarioState
+    protected PlainTextReportConfig plainTextReportConfig = new PlainTextReportConfig();
+
+    @ProvidedScenarioState
+    protected Html5ReportConfig html5ReportConfig = new Html5ReportConfig();
 
     public SELF the_report_exist_as_JSON_file() throws IOException {
         if( reportModel != null ) {
@@ -59,13 +70,13 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends Stage<SE
 
     public SELF a_custom_CSS_file() throws IOException {
         File cssFile = temporaryFolderRule.newFile( "custom.css" );
-        reportGenerator.addFlag( "--customcss=" + cssFile.getPath() );
+        html5ReportConfig.setCustomCss( cssFile );
         return self();
     }
 
     public SELF a_custom_JS_file_with_content( String content ) throws IOException {
         File jsFile = temporaryFolderRule.newFile( "custom.js" );
-        reportGenerator.addFlag( "--customjs=" + jsFile.getPath() );
+        html5ReportConfig.setCustomJs( jsFile );
         Files.append( content, jsFile, Charsets.UTF_8 );
         return self();
     }

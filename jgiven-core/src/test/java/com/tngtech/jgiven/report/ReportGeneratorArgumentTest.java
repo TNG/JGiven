@@ -2,20 +2,21 @@ package com.tngtech.jgiven.report;
 
 import java.io.File;
 
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class ReportGeneratorArgumentTest {
+
     @Test
     public void testArgumentParsing() {
 
-        ReportGenerator generator = new ReportGenerator();
-        generator.addFlag( "--sourceDir=source/dir" );
-        generator.addFlag( "--targetDir=target/dir" );
+        AsciiDocReportGenerator asciiReport = new AsciiDocReportGenerator();
 
-        AbstractReport report = generator.createInternalReport( ReportGenerator.Format.TEXT );
+        asciiReport.parseToConfig( "--sourceDir=source/dir", "--targetDir=target/dir" );
 
-        Assertions.assertThat( report.getSourceDir() ).isEqualTo( new File( "source/dir" ) );
-        Assertions.assertThat( report.getTargetDir() ).isEqualTo( new File( "target/dir" ) );
+        Assertions.assertThat( asciiReport.config.getSourceDir() ).isEqualTo( new File( "source/dir" ) );
+        Assertions.assertThat( asciiReport.config.getTargetDir() ).isEqualTo( new File( "target/dir" ) );
     }
 }

@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.report.json;
 
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
-import com.tngtech.jgiven.report.AbstractReport;
+import com.tngtech.jgiven.report.AbstractReportConfig;
 import com.tngtech.jgiven.report.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,17 +10,17 @@ import java.util.Iterator;
 
 public class ReportModelReader implements ReportModelFileHandler {
     private static final Logger log = LoggerFactory.getLogger( ReportModelReader.class );
-    private final AbstractReport report;
+    private final AbstractReportConfig config;
 
     private CompleteReportModel completeModelReport = new CompleteReportModel();
 
-    public ReportModelReader( AbstractReport report ) {
-        this.report = report;
+    public ReportModelReader( AbstractReportConfig config ) {
+        this.config = config;
     }
 
     public CompleteReportModel readDirectory() {
         try {
-            new JsonModelTraverser().traverseModels( report.getSourceDir(), this );
+            new JsonModelTraverser().traverseModels( config.getSourceDir(), this );
         } catch( ScenarioJsonReader.JsonReaderException e ) {
             throw new JGivenWrongUsageException( "Error while reading file\n " + e.file + ":\n " + e.getCause().getMessage() + ".\n\n" +
                     "There are three reasons why this could happen: \n" +
@@ -41,7 +41,7 @@ public class ReportModelReader implements ReportModelFileHandler {
             return;
         }
 
-        if( report.getExcludeEmptyScenarios() ) {
+        if( config.getExcludeEmptyScenarios() ) {
             log.info( "Removing empty scenarios..." );
             removeEmptyScenarios( modelFile.model );
             if( !modelFile.model.getScenarios().isEmpty() ) {

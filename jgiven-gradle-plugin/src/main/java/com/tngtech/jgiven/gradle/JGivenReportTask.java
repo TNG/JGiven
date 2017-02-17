@@ -1,6 +1,8 @@
 package com.tngtech.jgiven.gradle;
 
 import com.tngtech.jgiven.gradle.internal.JGivenReportsContainerImpl;
+import com.tngtech.jgiven.report.AbstractReportConfig;
+import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.ReportGenerator;
 import groovy.lang.Closure;
 import org.gradle.api.Action;
@@ -47,9 +49,9 @@ public class JGivenReportTask extends DefaultTask implements Reporting<JGivenRep
     @TaskAction
     public void generate() throws Exception {
         for( JGivenReport report : getReports().getEnabled() ) {
-            ReportGenerator generator = new ReportGenerator();
-            report.configure( generator );
-            generator.addFlag( "--sourceDir=" + getResults() );
+            AbstractReportGenerator generator = report.createGenerator();
+            generator.config.setSourceDir( getResults() );
+            generator.loadReportModel();
             generator.generate();
         }
     }

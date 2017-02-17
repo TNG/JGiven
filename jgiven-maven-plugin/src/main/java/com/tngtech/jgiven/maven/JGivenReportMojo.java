@@ -2,6 +2,14 @@ package com.tngtech.jgiven.maven;
 
 import java.io.File;
 
+import com.tngtech.jgiven.report.AbstractReportConfig;
+import com.tngtech.jgiven.report.AbstractReportGenerator;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
+import com.tngtech.jgiven.report.text.PlainTextReportConfig;
+import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
+import com.tngtech.jgiven.report.html5.Html5ReportConfig;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
@@ -77,17 +85,36 @@ public class JGivenReportMojo extends AbstractMojo {
                 getLog().info( "JGiven HTML report custom JS file: " + customJsFile );
             }
             getLog().info( "Generating HTML reports to " + outputDirectory + "..." );
-            ReportGenerator generator = new ReportGenerator();
 
-            generator.addFlag( "--targetDir=" + outputDirectory );
-            generator.addFlag( "--sourceDir=" + sourceDirectory );
-            generator.addFlag( "--format=" + format );
-            generator.addFlag( "--customcss=" + customCssFile );
-            generator.addFlag( "--customjs=" + customJsFile );
-            generator.addFlag( "--title=" + title );
-            generator.addFlag( "--exclude-empty-scenarios=" + excludeEmptyScenarios );
-            generator.addFlag( "--show-thumbnails=" + thumbnailsAreShown );
-            generator.generate();
+            ReportGenerator.Format parsedFormat = ReportGenerator.Format.fromStringOrNull( format );
+            AbstractReportConfig config;
+            AbstractReportGenerator generator;
+
+            switch( parsedFormat ) {
+                case ASCIIDOC:
+                    config = new AsciiDocReportConfig();
+                    generator = new AsciiDocReportGenerator();
+                    break;
+                case TEXT:
+                    config = new PlainTextReportConfig();
+                    generator = new PlainTextReportGenerator();
+                    break;
+                case HTML:
+                case HTML5:
+                default:
+                    Html5ReportConfig customConf = new Html5ReportConfig();
+                    customConf.setShowThumbnails( thumbnailsAreShown );
+                    customConf.setCustomCss( customCssFile );
+                    customConf.setCustomJs( customJsFile );
+                    config = customConf;
+                    generator = ReportGenerator.generateHtml5Report();
+                    break;
+            }
+            config.setTitle( title );
+            config.setSourceDir( sourceDirectory );
+            config.setTargetDir( outputDirectory );
+            config.setExcludeEmptyScenarios( excludeEmptyScenarios );
+            generator.generateWithConfig( config );
             getLog().info( "-------------------------------------------------------------------" );
             getLog().info( "Generated JGiven HTML reports to directory " + outputDirectory );
             getLog().info( "-------------------------------------------------------------------" );
