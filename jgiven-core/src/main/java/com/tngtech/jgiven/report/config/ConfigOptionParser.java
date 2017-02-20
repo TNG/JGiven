@@ -10,12 +10,26 @@ import java.util.*;
 public class ConfigOptionParser {
     private static final Logger log = LoggerFactory.getLogger( ConfigOptionParser.class );
 
+    /**
+     * A format flag has to be defined for every report because it is used to determine which report to start
+     */
     private static ConfigOption format = new ConfigOptionBuilder( "format" )
             .setCommandLineOptionWithArgument(
                     new CommandLineOptionBuilder( "--format" ).setArgumentDelimiter( "=" ).setVisualPlaceholder( "format" ).build(),
                     new ToFormat() )
-            .setDescription( "the format of the report. Either html, ascii or text (default: html5)" )
+            .setDescription( "the format of the report. Either html5, ascii or text (default: html5)" )
             .setDefaultWith( ReportGenerator.Format.HTML5 ) // this may be a sane choice
+            .build();
+
+    /**
+     * A help flag is predefined for every report and checked in the
+     */
+    private static ConfigOption help = new ConfigOptionBuilder( "help" )
+            .setCommandLineOptionWithoutArgument(
+                    new CommandLineOptionBuilder( "--help" ).setShortPrefix( "-h" ).build(),
+                    true )
+            .setDescription( "print this help message" )
+            .setOptional()
             .build();
 
     private Map<String, Object> parsedOptions = new HashMap<String, Object>();
@@ -49,6 +63,7 @@ public class ConfigOptionParser {
 
         // default arguments
         configList.add( 0, format );
+        configList.add( 1, help );
         for( ConfigOption co : configList ) {
             if( co.hasDefault() ) {
                 parsedOptions.put( co.getLongName(), co.getValue() );
@@ -73,6 +88,11 @@ public class ConfigOptionParser {
         // TODO properties
         // TODO environment
 
+        // help
+        if( this.hasValue( help ) ) {
+            printUsageAndExit( configList );
+        }
+
         return parsedOptions;
     }
 
@@ -92,7 +112,7 @@ public class ConfigOptionParser {
                 String[] formatArgs = arg.split( co.getCommandLineOption().getDelimiter() );
 
                 if( formatArgs.length < 2 ) {
-                    System.err.print( "Anticipated argument after " + co.getCommandLineOption().showFlagInfo() + ", terminating." );
+                    System.err.println( "Anticipated argument after " + co.getCommandLineOption().showFlagInfo() + ", terminating." );
                     printUsageAndExit( configList );
                 }
 
@@ -100,7 +120,7 @@ public class ConfigOptionParser {
 
                 if( value == null ) {
                     System.err
-                            .print( "Parse error for flag " + co.getCommandLineOption().showFlagInfo() + " got " + formatArgs[1] );
+                            .println( "Parse error for flag " + co.getCommandLineOption().showFlagInfo() + " got " + formatArgs[1] );
                     printUsageAndExit( configList );
                 }
 
@@ -121,9 +141,14 @@ public class ConfigOptionParser {
      */
     public static ReportGenerator.Format getFormat( String... args ) {
         ConfigOptionParser configParser = new ConfigOptionParser();
-        configParser.generate( new ArrayList<ConfigOption>(), args );
+        List<ConfigOption> configOptions = Arrays.asList( format );
+
+        for( String arg : args ) {
+            configParser.commandLineLookup( arg, format, configOptions );
+        }
+
         if( !configParser.hasValue( format ) ) {
-            configParser.printUsageAndExit( new ArrayList<ConfigOption>( Arrays.asList( format ) ) );
+            configParser.printUsageAndExit( configOptions );
         }
         return (ReportGenerator.Format) configParser.getValue( format );
     }

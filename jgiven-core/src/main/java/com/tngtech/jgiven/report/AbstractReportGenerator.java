@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractReportGenerator {
     private static final Logger log = LoggerFactory.getLogger( AbstractReportGenerator.class );
     private ConfigOptionParser configParser = new ConfigOptionParser();
-    private List<ConfigOption> configOptions = new ArrayList<ConfigOption>();
+    protected List<ConfigOption> configOptions = new ArrayList<ConfigOption>();
 
     protected CompleteReportModel completeReportModel;
     public AbstractReportConfig config;
@@ -60,15 +60,15 @@ public abstract class AbstractReportGenerator {
 
     protected void generateFromCommandLine( String... args ) {
         parseToConfig( args );
-        generateWithoutParsing();
+        generateReport();
     }
 
     public void generateWithConfig( AbstractReportConfig config ) {
         setConfig( config );
-        generateWithoutParsing();
+        generateReport();
     }
 
-    public void generateWithoutParsing() {
+    public void generateReport() {
         loadReportModel();
         try {
             generate();
@@ -114,15 +114,7 @@ public abstract class AbstractReportGenerator {
                 .setDefaultWith( false )
                 .build();
 
-        ConfigOption help = new ConfigOptionBuilder( "help" )
-                .setCommandLineOptionWithoutArgument(
-                        new CommandLineOptionBuilder( "--help" ).setShortPrefix( "-h" ).build(),
-                        true )
-                .setDescription( "print this help message" )
-                .setOptional()
-                .build();
-
-        addConfigOptions( sourceDir, targetDir, title, excludeEmptyScenarios, help );
+        addConfigOptions( sourceDir, targetDir, title, excludeEmptyScenarios);
         additionalConfigOptions( configOptions );
     }
 

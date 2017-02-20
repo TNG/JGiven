@@ -58,7 +58,7 @@ nexusStaging {
     stagingProfileId = stagingProfileId // stagingProfileId must be defined externally
 }
 
-subprojects{
+subprojects {
     ext {
         junitDataproviderVersion = '1.11.0'
         // set default junit version if not set via command line
@@ -79,15 +79,15 @@ subprojects{
     }
 }
 
-configure(subprojects.findAll {!it.name.contains("jgiven-junit5")}) {
+configure(subprojects.findAll { !it.name.contains("jgiven-junit5") }) {
     apply plugin: 'ru.vyarus.animalsniffer'
 
     dependencies {
-       signature 'org.codehaus.mojo.signature:java16:1.1@signature'
+        signature 'org.codehaus.mojo.signature:java16:1.1@signature'
     }
 }
 
-configure(subprojects.findAll {!it.name.contains("android")}) {
+configure(subprojects.findAll { !it.name.contains("android") }) {
     apply plugin: 'java'
     apply plugin: 'org.asciidoctor.convert'
     apply plugin: 'maven'
@@ -302,10 +302,10 @@ configure(subprojects) {
                     whenConfigured { pom ->
                         def junitDep = pom.dependencies.find { dep -> dep.groupId == 'junit' && dep.artifactId == 'junit' }
                         if (junitDep != null) {
-                             junitDep.with {
-                                 version = '[4.9,4.12]'
-                                 scope = 'provided'
-                             }
+                            junitDep.with {
+                                version = '[4.9,4.12]'
+                                scope = 'provided'
+                            }
                         }
                         pom.dependencies.removeAll(pom.dependencies.findAll { dep -> dep.scope in ['test'] })
                     }
