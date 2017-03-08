@@ -236,7 +236,7 @@ public class StepFormatter {
         }
 
         boolean intMatcherFailed = index == argCount;
-        if ( intMatcherFailed ) {
+        if( intMatcherFailed ) {
             index = getArgumentIndexByName( word.toString(), argCount );
         }
 
