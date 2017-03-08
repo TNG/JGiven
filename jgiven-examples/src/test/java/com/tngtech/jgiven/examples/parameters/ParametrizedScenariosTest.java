@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
 import com.tngtech.jgiven.examples.tags.FailingOnPurpose;
@@ -56,8 +57,8 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
             "1",
             "2"
     } )
-    @OrdinalCaseDescription( "$1" )
-    public void parameter_values_with_very_long_text_are_truncated_in_the_report( int caseNr ) {
+    @OrdinalCaseDescription ( "$1" )
+    public void parameter_values_with_very_long_text_are_truncated_in_the_html_report( int caseNr ) {
         given().a_very_long_parameter_value( "" + caseNr + Strings.repeat( "x", 4000 ) );
     }
 

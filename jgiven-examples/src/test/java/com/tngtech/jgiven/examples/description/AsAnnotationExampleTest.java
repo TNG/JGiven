@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.examples.description;
 
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.Description;

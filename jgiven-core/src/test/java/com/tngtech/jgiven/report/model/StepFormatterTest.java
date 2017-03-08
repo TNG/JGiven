@@ -29,38 +29,38 @@ public class StepFormatterTest {
 
     @DataProvider
     public static Object[][] testCases() {
+        // @formatter:off
         return new Object[][] {
-                { "a", asList(), "a" },
-                { "a b", asList(), "a b" },
-                { " a ", asList(), " a " },
-                { "", asList( "a" ), "a" },
-                { "foo", asList( "a" ), "foo a" },
-                { "", asList( "a", "b" ), "a b" },
-                { "$", asList( "a" ), "a" },
-                { "$foo", asList( "a" ), "a" },
-                { "foo $", asList( "a" ), "foo a" },
-                { "$ foo", asList( "a" ), "a foo" },
-                { "foo $ foo", asList( "a" ), "foo a foo" },
-                { "$ $", asList( "a", "b" ), "a b" },
-                { "$foo bar$", asList( "a", "b" ), "a bar b" },
-                { "foo$bar$baz x", asList( "a", "b" ), "foo a b x" },
-                { "$d foo", asList( 5 ), "5 foo" },
-                { "$1 foo $1", asList( "a" ), "a foo a" },
-                { "$2 $1", asList( "a", "b" ), "b a" },
-                { "$]", asList( "a" ), "a ]" },
-                { "foo $]", asList( "a" ), "foo a ]" },
+                { "a",             asList(),                 asList(),           "a" },
+                { "a b",           asList(),                 asList(),           "a b" },
+                { " a ",           asList(),                 asList(),           " a " },
+                { "",              asList( "strA" ),         asList( "a" ),      "a" },
+                { "foo",           asList( "strA" ),         asList( "a" ),      "foo a" },
+                { "",              asList( "strA", "strB" ), asList( "a", "b" ), "a b" },
+                { "$",             asList( "strA" ),         asList( "a" ),      "a" },
+                { "$foo",          asList( "strA" ),         asList( "a" ),      "a" },
+                { "foo $",         asList( "strA" ),         asList( "a" ),      "foo a" },
+                { "$ foo",         asList( "strA" ),         asList( "a" ),      "a foo" },
+                { "foo $ foo",     asList( "strA" ),         asList( "a" ),      "foo a foo" },
+                { "$ $",           asList( "strA", "strB" ), asList( "a", "b" ), "a b" },
+                { "$foo bar$",     asList( "strA", "strB" ), asList( "a", "b" ), "a bar b" },
+                { "foo$bar$baz x", asList( "strA", "strB" ), asList( "a", "b" ), "foo a b x" },
+                { "$d foo",        asList( "int5" ),         asList( 5 ),        "5 foo" },
+                { "$1 foo $1",     asList( "strA" ),         asList( "a" ),      "a foo a" },
+                { "$2 $1",         asList( "strA", "strB" ), asList("a", "b"),   "b a" },
+                { "$]",            asList( "strA"),          asList( "a" ),      "a ]" },
+                { "foo $]",        asList( "strA" ),         asList( "a" ),      "foo a ]" },
         };
+        // @formatter:on
+
     }
 
     @Test
     @UseDataProvider( "testCases" )
-    public void formatter_should_handle_dollars_correctly( String source, List<Object> arguments, String expectedResult ) {
-        testFormatter( source, arguments, null, null, expectedResult );
-    }
+    public void formatter_should_handle_dollars_correctly( String value, List<String> parameterNames, List<Object> parameterValues,
+            String expectedValue ) {
+        testFormatter( value, parameterNames, parameterValues, null, null, expectedValue );
 
-    @Test( expected = JGivenWrongUsageException.class )
-    public void missing_arguments_lead_to_exception() {
-        testFormatter( "$foo bar$", asList( "a" ), null, null, "" );
     }
 
     static class EmptyFormatter implements ArgumentFormatter<String> {
@@ -81,36 +81,38 @@ public class StepFormatterTest {
     @DataProvider
     public static Object[][] formatterTestCases() {
         return new Object[][] {
-                { "$", asList( true ), new NotFormatter(), "", "" },
-                { "$", asList( false ), new NotFormatter(), "", "not" },
-                { "$not", asList( false ), new NotFormatter(), "", "not" },
-                { "$", asList( true ), null, "", "true" },
-                { "$$ foo", asList( true ), null, "", "\\$ foo true" },
-                { "$", asList( 5d ), new PrintfFormatter(), "%.2f", "5[.,]00" },
-                { "$", asList( new Object[] { null } ), new EmptyFormatter(), "", "<null>" },
-                { "$", asList( "" ), new EmptyFormatter(), "", "<empty>" },
+                { "$", asList( "bool" ), asList( true ), new NotFormatter(), "", "" },
+                { "$", asList( "bool" ), asList( false ), new NotFormatter(), "", "not" },
+                { "$not", asList( "bool" ), asList( false ), new NotFormatter(), "", "not" },
+                { "$", asList( "bool" ), asList( true ), null, "", "true" },
+                { "$$ foo", asList( "bool" ), asList( true ), null, "", "\\$ foo true" },
+                { "$", asList( "int5" ), asList( 5d ), new PrintfFormatter(), "%.2f", "5[.,]00" },
+                { "$", asList( "obj" ), asList( new Object[] { null } ), new EmptyFormatter(), "", "<null>" },
+                { "$", asList( "str" ), asList( "" ), new EmptyFormatter(), "", "<empty>" },
         };
     }
 
     @Test
     @UseDataProvider( "formatterTestCases" )
     @SuppressWarnings( { "unchecked", "rawtypes" } )
-    public void testFormatter( String source, List<? extends Object> arguments, ArgumentFormatter<?> formatter, String formatterArg,
+    public void testFormatter( String value, List<String> parameterNames, List<? extends Object> parameterValues,
+            ArgumentFormatter<?> formatter,
+            String formatterArg,
             String expectedResult ) {
         List<ObjectFormatter<?>> asList = newArrayList();
         if( formatter != null ) {
             asList.add( new ArgumentFormatting( formatter, formatterArg ) );
         } else {
-            for( int i = 0; i < arguments.size(); i++ ) {
+            for( int i = 0; i < parameterNames.size(); i++ ) {
                 asList.add( null );
             }
         }
         List<NamedArgument> namedArguments = newArrayList();
-        for( Object o : arguments ) {
-            namedArguments.add( new NamedArgument( "foo", o ) );
+        for( int i = 0; i < parameterNames.size(); i++ ) {
+            namedArguments.add( new NamedArgument( parameterNames.get( i ), parameterValues.get( i ) ) );
         }
 
-        List<Word> formattedWords = new StepFormatter( source, namedArguments, asList )
+        List<Word> formattedWords = new StepFormatter( value, namedArguments, asList )
                 .buildFormattedWords();
         List<String> formattedValues = toFormattedValues( formattedWords );
         String actualResult = Joiner.on( ' ' ).join( formattedValues );
@@ -127,40 +129,31 @@ public class StepFormatterTest {
 
     @DataProvider
     public static Object[][] namedArgumentTestCases() {
-
-        NamedArgument arg1 = new NamedArgument( "int", 1 );
-        NamedArgument arg2 = new NamedArgument( "str", "some string" );
-        NamedArgument arg3 = new NamedArgument( "bool", true );
-        List<NamedArgument> arguments = new ArrayList<NamedArgument>( Arrays.asList( arg1, arg2, arg3 ) );
-
+        List<String> nameList = Arrays.asList( "int", "str", "bool" );
+        List<? extends Object> valueList = Arrays.asList( 1, "some string", true );
         return new Object[][] {
                 {
-                        "$int $str $bool", arguments, "1 some string true"
+                        "$int $str $bool", nameList, valueList, "1 some string true"
                 },
                 {
-                        "$str $int $bool ", arguments, "some string 1 true"
+                        "$str $int $bool", nameList, valueList, "some string 1 true"
                 },
                 {
-                        "$str $1 $bool ", arguments, "some string 1 true"
+                        "$3 $2 $int", nameList, valueList, "true some string 1"
                 },
                 {
-                        "$int $3 $str ", arguments, "1 true some string"
+                        "$bool $ $", nameList, valueList, "true 1 some string"
+                },
+                {
+                        "$bool $2 $ $ $3", nameList, valueList, "true some string 1 some string true"
                 }
         };
     }
 
     @Test
     @UseDataProvider( "namedArgumentTestCases" )
-    public void namedArgumentTest( String description, List<NamedArgument> argumentList, String expectedResult ) {
-        List<ObjectFormatter<?>> formatterList = new ArrayList<ObjectFormatter<?>>();
-        int i = 0;
-        for( ; i < argumentList.size(); ++i ) {
-            formatterList.add( null );
-        }
-        List<Word> formattedWords = new StepFormatter( description, argumentList, formatterList )
-                .buildFormattedWords();
-        List<String> formattedValues = toFormattedValues( formattedWords );
-        String actualResult = Joiner.on( ' ' ).join( formattedValues );
-        assertThat( actualResult ).matches( expectedResult );
+    public void namedArgumentTest( String value, List<String> parameterNames, List<? extends Object> parameterValues,
+            String expectedValue ) {
+        testFormatter( value, parameterNames, parameterValues, null, null, expectedValue );
     }
 }
