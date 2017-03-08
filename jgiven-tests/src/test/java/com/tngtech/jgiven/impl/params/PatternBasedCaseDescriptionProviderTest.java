@@ -32,6 +32,25 @@ public class PatternBasedCaseDescriptionProviderTest extends SimpleScenarioTest<
                 { "Multiple placeholders with switch order", "$2 + $1", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "2 + 1" },
                 { "Placeholders with additional text", "a = $1 and b = $2", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ),
                         "a = 1 and b = 2" },
+                { "Placeholders references by argument names in order", "int = $int and str = $str and bool = $bool",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "int = 1 and str = some string and bool = true" },
+                { "Placeholders references by argument names in mixed order", "str = $str and int = $int and bool = $bool",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "str = some string and int = 1 and bool = true" },
+                { "Placeholders references by argument names and enumeration", "str = $str and int = $1 and bool = $bool",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "str = some string and int = 1 and bool = true" },
+                { "Placeholders references by argument names and enumerations ", "bool = $3 and str = $2 and int = $int",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "bool = true and str = some string and int = 1" },
+                { "Placeholder without index mixed with names", "bool = $bool and int = $ and str = $",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "bool = true and int = 1 and str = some string"},
+                { "Placeholder without index mixed with names and index", "bool = $bool and str = $2 and int = $ and str = $ and bool = $3",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "bool = true and str = some string and int = 1 and str = some string and bool = true"},
+
         };
     }
 
