@@ -1,25 +1,22 @@
-package com.tngtech.jgiven.impl.params;
+package com.tngtech.jgiven.report.model;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.As;
-import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
-import com.tngtech.jgiven.junit.SimpleScenarioTest;
-import com.tngtech.jgiven.tags.FeatureCaseDescriptions;
-import org.assertj.core.util.Lists;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
+import com.tngtech.jgiven.impl.params.DefaultOrdinalCaseDescriptionProvider;
+import org.assertj.core.util.Lists;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-@FeatureCaseDescriptions
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+
 @RunWith( DataProviderRunner.class )
-public class PatternBasedCaseDescriptionProviderTest extends SimpleScenarioTest<PatternBasedCaseDescriptionProviderTest.TestSteps> {
+public class OrdinalCaseDescriptionTest {
 
     @DataProvider
     public static Object[][] testData() {
@@ -46,54 +43,25 @@ public class PatternBasedCaseDescriptionProviderTest extends SimpleScenarioTest<
                         "bool = true and str = some string and int = 1" },
                 { "Placeholder without index mixed with names", "bool = $bool and int = $ and str = $",
                         Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
-                        "bool = true and int = 1 and str = some string"},
+                        "bool = true and int = 1 and str = some string" },
                 { "Placeholder without index mixed with names and index", "bool = $bool and str = $2 and int = $ and str = $ and bool = $3",
                         Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
-                        "bool = true and str = some string and int = 1 and str = some string and bool = true"},
-
+                        "bool = true and str = some string and int = 1 and str = some string and bool = true" },
+                { "Placeholder with unknown argument names get erased", "bool = $bool and not known = $unknown and unknown = $10",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "bool = true and not known = 1 and unknown = some string" },
+                { "Non-Java-Identifier char does trigger a space after a placeholder", "$]",
+                        Arrays.asList( "int" ), Arrays.asList( 1 ), "1 ]" },
         };
     }
 
-    @UseDataProvider( "testData" )
     @Test
-    @OrdinalCaseDescription( value = "$1" )
-    public void the_description_pattern_is_evaluated_correctly( String description, String value, List<String> parameterNames,
-            List<Object> parameterValues, String expectedValue ) {
-
-        given().an_OrdinalCaseDescription_annotation_with_value( value )
-                .and().the_parameter_names_are( parameterNames )
-                .and().the_parameter_values_are( parameterValues );
-
-        then().the_case_description_will_be( expectedValue );
+    @UseDataProvider( "testData" )
+    public void case_description_should_handle_everything_correctly( String description, String value, List<String> parameterNames,
+            List<Object> parameterValues,
+            String expectedValue ) {
+        DefaultOrdinalCaseDescriptionProvider provider = new DefaultOrdinalCaseDescriptionProvider();
+        assertThat( provider.description( value, parameterNames, parameterValues ) ).isEqualTo( expectedValue );
 
     }
-
-    public static class TestSteps extends Stage<TestSteps> {
-
-        private String value;
-        private List<Object> values;
-        private List<String> parameterNames;
-
-        @As( "An @OrdinalCaseDescription annotation with value" )
-        public TestSteps an_OrdinalCaseDescription_annotation_with_value( String pattern ) {
-            this.value = pattern;
-            return self();
-        }
-
-        public void the_parameter_values_are( List<Object> values ) {
-            this.values = values;
-        }
-
-        public TestSteps the_parameter_names_are( List<String> parameterNames ) {
-            this.parameterNames = parameterNames;
-            return self();
-        }
-
-        public void the_case_description_will_be( String expectedValue ) {
-            DefaultOrdinalCaseDescriptionProvider provider = new DefaultOrdinalCaseDescriptionProvider();
-            assertThat( provider.description( value, parameterNames, values ) ).isEqualTo( expectedValue );
-        }
-
-    }
-
 }

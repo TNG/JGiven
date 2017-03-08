@@ -17,51 +17,83 @@ public class DefaultOrdinalCaseDescriptionProvider implements CaseDescriptionPro
         if( caseDescription.equals( OrdinalCaseDescription.NO_VALUE ) ) {
             return defaultDescription( parameterNames, parameterValues );
         }
-        int singleDollarCounter = 0;
+        boolean enforceNextWhitespace = false;
+        int singlePlaceholderCounter = 0;
         StringBuilder resultingDescription = new StringBuilder();
         for( int i = 0; i < caseDescription.length(); i++ ) {
 
             boolean dollarMatch = caseDescription.charAt( i ) == '$';
             boolean nextCharExists = ( i + 1 ) < caseDescription.length();
             boolean escapedDollarMatch = nextCharExists && caseDescription.charAt( i + 1 ) == '$';
-            boolean namedArgumentMatch = nextCharExists && parameterNames.contains( nextName( caseDescription.substring( i + 1 ) ) );
+            String argumentName = nextCharExists ? nextName( caseDescription.substring( i + 1 ) ) : "";
+            boolean namedArgumentExists = argumentName.length() > 0;
+            boolean namedArgumentMatch = namedArgumentExists && parameterNames.contains( argumentName );
             boolean enumArgumentMatch =
                     nextCharExists && parameterValues.size() > nextIndex( caseDescription.substring( i + 1 ), parameterValues.size() );
-            boolean singleDollarCountIndexExists = singleDollarCounter < parameterValues.size();
+            boolean singleDollarCountIndexExists = singlePlaceholderCounter < parameterValues.size();
 
             if( dollarMatch ) {
+                // e.g $$
                 if( escapedDollarMatch ) {
                     resultingDescription.append( '$' );
                     i += 1;
 
+                    // e.g $argument
                 } else if( namedArgumentMatch ) {
-                    String argumentName = nextName( caseDescription.substring( i + 1 ) );
                     int argumentIndex = parameterNames.indexOf( argumentName );
                     resultingDescription.append( parameterValues.get( argumentIndex ) );
                     i += argumentName.length();
 
+                    // e.g $1
                 } else if( enumArgumentMatch ) {
                     int argumentIndex = nextIndex( caseDescription.substring( i + 1 ), parameterValues.size() );
                     resultingDescription.append( parameterValues.get( argumentIndex ) );
                     i += Integer.toString( argumentIndex ).length();
 
-                } else if( singleDollarCountIndexExists ) {
-                    int argumentIndex = singleDollarCounter;
+                    // e.g $argumentNotKnown - gets replaced with running counter
+                } else if( singleDollarCountIndexExists && namedArgumentExists ) {
+                    int argumentIndex = singlePlaceholderCounter;
                     resultingDescription.append( parameterValues.get( argumentIndex ) );
-                    singleDollarCounter += 1;
+                    singlePlaceholderCounter += 1;
+                    i += argumentName.length();
 
+                    // e.g $
+                } else if( singleDollarCountIndexExists ) {
+                    int argumentIndex = singlePlaceholderCounter;
+                    resultingDescription.append( parameterValues.get( argumentIndex ) );
+                    singlePlaceholderCounter += 1;
+
+                    // e.g ($notKnown || $) && counter > argument.size
                 } else {
                     resultingDescription.append( '$' );
+                    resultingDescription.append( argumentName );
+                    i += argumentName.length();
                 }
+
+                // unfortunately, to ensure a uniform usability with StepFormatter we have to separate arguments
+                // and non-arguments with a whitespace
+                enforceNextWhitespace = true;
+
+                // if no placeholder was detected, check enforceNextWhitespace rule and append the next character
             } else {
+                if (enforceNextWhitespace && caseDescription.charAt( i ) != ' '){
+                    resultingDescription.append( ' ' );
+                }
+                enforceNextWhitespace = false;
                 resultingDescription.append( caseDescription.charAt( i ) );
             }
-
         }
 
         return resultingDescription.toString();
     }
 
+    /**
+     * Greedy search for the next String from the start in the {@param description}
+     * until a non JavaIdentifierPart or $ is found
+     *
+     * @param description the searchable {@link String}
+     * @return a {@link String} consisting only of JavaIdentifiableParts
+     */
     private static String nextName( String description ) {
         StringBuilder result = new StringBuilder();
         for( int i = 0; i < description.length(); i++ ) {
