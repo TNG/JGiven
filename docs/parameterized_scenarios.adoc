@@ -56,16 +56,16 @@ include::{sourcedir}/coffeemachine/ServeCoffeeTest.java[tags=casedescription]
 The resulting report will then look as follows:
 
 ----
-  Coffe making gets better
+ Coffe making gets better
 
-    Given a coffee machine
-     When I make coffe
-     Then the result is <result>
+   Given a coffee machine
+    When I make coffee for the <runNr> time
+    Then the result is <result>
 
   Cases:
 
-| # |           Description |    result | Status
-+---+-----------------------+-----------+-------
-| 1 |      On the first run |  quite ok | SUCCESS
-| 2 | And on the second run | well-done | SUCCESS
+   | # | Description           | runNr | result    | Status  |
+   +---+-----------------------+-------+-----------+---------+
+   | 1 | On the first run      |     1 | quite ok  | Success |
+   | 2 | And on the second run |     2 | well-done | Success |
 ----

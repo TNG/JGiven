@@ -214,13 +214,13 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     // tag::casedescription[]
     @Test
     @DataProvider( {
-            "On the first run, quite ok",
-            "And on the second run, well-done"
+            "On the first run, 1, quite ok",
+            "And on the second run, 2, well-done"
     } )
     @OrdinalCaseDescription( "$1" )
-    public void coffe_making_gets_better( String description, String result ) {
+    public void coffe_making_gets_better( String description, int runNr, String result ) {
         given().a_coffee_machine();
-        when().I_make_coffee();
+        when().I_make_coffee_for_the_$_time( runNr );
         then().the_result_is( result );
     }
     // end::casedescription[]
@@ -230,5 +230,4 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
     public void long_error_messages_should_wrapped() {
         given().an_exception_with_a_very_long_message();
     }
-
 }

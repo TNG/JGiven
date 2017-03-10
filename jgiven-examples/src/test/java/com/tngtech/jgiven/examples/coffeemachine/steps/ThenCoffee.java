@@ -65,11 +65,10 @@ public class ThenCoffee extends Stage<ThenCoffee> {
     }
 
     public ThenCoffee the_result_is( String result ) {
-        if( coffeCount == 1 ) {
-            assertThat( result == "quite ok" );
+        if( coffeeMachine.coffeCount == 1 ) {
+            assertThat( result ).isEqualTo( "quite ok" );
         } else {
-            assertThat( result == "well-done" );
-        }
+            assertThat( result ).isEqualTo( "well-done" );
         return self();
     }
 

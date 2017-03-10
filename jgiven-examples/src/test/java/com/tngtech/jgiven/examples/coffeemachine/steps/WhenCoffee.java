@@ -23,9 +23,7 @@ public class WhenCoffee extends Stage<WhenCoffee> {
         return self();
     }
 
-    public WhenCoffee I_make_coffee() {
-        coffeCount += 1;
-        return self();
+    public WhenCoffee I_make_coffee_for_the_$_time(int nr) {
+        coffeeMachine.coffeCount = nr;
     }
-
 }

@@ -28,11 +28,27 @@ If a `$` should not be treated as a placeholder for a parameter, but printed ver
 
 === Custom Annotations
 
-The `@As` annotation can be used to override the shown sentence. To reference arguments use `$` or enumerate them `$1, $2, ...` to have a direct reference.
+The `@As` annotation can be used to override the shown sentence. To reference arguments you can use the three different interoperable options which apply to every description in JGiven. For more examples look up https://github.com/TNG/JGiven/blob/master/jgiven-core/src/test/java/com/tngtech/jgiven/report/model/StepFormatterTest.java[JGiven StepFormatter Tests]
+
+Use `$` to access the arguments in natural order.
 
 [source,java]
 ----
-@As ( "the $2 cooked rice bowls and the $1 fresh eggs" )
+@As ( "the $ fresh eggs and the $ cooked rice bowls" )
+public SELF $_eggs_and_$_rice_bowls( int eggs, int riceBowls ) { ... }
+----
+
+Or enumerate them `$1, $2, ...` to have a direct reference:
+[source,java]
+----
+@As ( "the $1 fresh eggs and the $2 cooked rice bowls" )
+public SELF $_eggs_and_$_rice_bowls( int eggs, int riceBowls ) { ... }
+----
+
+Or reference them via the argument names:
+[source,java]
+----
+@As ( "the $eggs fresh eggs and the $riceBowls cooked rice bowls" )
 public SELF $_eggs_and_$_rice_bowls( int eggs, int riceBowls ) { ... }
 ----
 
@@ -41,6 +57,8 @@ The call to `given()._$_eggs_and__$_rice_bowls(5, 2)` will be shown as:
 ----
 Given the 2 cooked rice bowls and the 5 fresh eggs
 ----
+
+
 
 === Extended Description
 
@@ -52,7 +70,7 @@ An extended description is shown if you hover above the step as tooltip, but hid
 public SELF $_eggs_and_$_rice_bowls( int eggs, int riceBowls ) { ... }
 ----
 
-The call to `given()._$_eggs_and__$_rice_bowls(5, 2)` will be shown as:
+The call to `given()._$_eggs_and__$_rice_bowls(5, 2)` will still be shown as:
 
 ----
 Given 5 eggs and 2 rice bowls
