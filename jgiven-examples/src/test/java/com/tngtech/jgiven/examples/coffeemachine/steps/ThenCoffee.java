@@ -13,7 +13,6 @@ public class ThenCoffee extends Stage<ThenCoffee> {
 
     @ExpectedScenarioState
     private boolean coffeeServed;
-    private int coffeCount;
 
     @ExpectedScenarioState
     private CoffeeMachine coffeeMachine;
@@ -69,6 +68,7 @@ public class ThenCoffee extends Stage<ThenCoffee> {
             assertThat( result ).isEqualTo( "quite ok" );
         } else {
             assertThat( result ).isEqualTo( "well-done" );
+        }
         return self();
     }
 
