@@ -2,12 +2,13 @@ package com.tngtech.jgiven.report.config;
 
 import com.tngtech.jgiven.report.config.converter.StringConverter;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * Defines a configuration for the report which can be from the command line, property or the environment
  * Instantiated with {@link ConfigOptionBuilder}
- * For use in {@link com.tngtech.jgiven.report.AbstractReportGenerator#addConfigOptions(ConfigOption...)} and the generated object map in {@link com.tngtech.jgiven.report.AbstractReportConfig#AbstractReportConfig(Map)}
+ * For use in {@link com.tngtech.jgiven.report.AbstractReportConfig#additionalConfigOptions(List)} and the generated object map in {@link com.tngtech.jgiven.report.AbstractReportConfig#AbstractReportConfig(String...)}
  */
 public class ConfigOption {
 

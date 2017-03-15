@@ -39,37 +39,8 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
     private PrintStream contentStream;
     private Html5ReportConfig specializedConfig;
 
-    public void additionalConfigOptions( List<ConfigOption> configOptions ) {
-        ConfigOption customCss = new ConfigOptionBuilder( "customcss" )
-                .setCommandLineOptionWithArgument(
-                        new CommandLineOptionBuilder( "--customcss" ).setArgumentDelimiter( "=" ).setVisualPlaceholder( "path" ).build(),
-                        new ToFile() )
-                .setOptional()
-                .setDescription( "path to file" )
-                .build();
-
-        ConfigOption customJs = new ConfigOptionBuilder( "customjs" )
-                .setCommandLineOptionWithArgument(
-                        new CommandLineOptionBuilder( "--customjs" ).setArgumentDelimiter( "=" ).setVisualPlaceholder( "path" ).build(),
-                        new ToFile() )
-                .setOptional()
-                .setDescription( "path to file" )
-                .build();
-
-        ConfigOption showThumbnails = new ConfigOptionBuilder( "showThumbnails" )
-                .setCommandLineOptionWithArgument(
-                        new CommandLineOptionBuilder( "--show-thumbnails" ).setArgumentDelimiter( "=" ).setVisualPlaceholder( "boolean" )
-                                .build(),
-                        new ToBoolean() )
-                .setDefaultWith( true )
-                .setDescription( "(default: true)" )
-                .build();
-
-        configOptions.addAll( Arrays.asList( customCss, customJs, showThumbnails ) );
-    }
-
-    public AbstractReportConfig createReportConfig( Map<String, Object> configMap ) {
-        return new Html5ReportConfig( configMap );
+    public AbstractReportConfig createReportConfig( String... args ) {
+        return new Html5ReportConfig( args );
     }
 
     public void generate() {

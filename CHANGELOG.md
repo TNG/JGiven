@@ -3,7 +3,10 @@
 ## New Features
 
 * Thumbnail preview for image attachments added [#274](https://github.com/TNG/JGiven/pull/299)
-* Reworked AbstractReport interface for easier customizability of new reports and better separation of custom flags [#274](https://github.com/TNG/JGiven/pull/299)
+* AbstractReport interface is now easier to customize and add new reports and have better separation of custom flags [#274](https://github.com/TNG/JGiven/pull/299)
+    * ConfigOptionParser derives from the definition of ConfigOption how to parse and store them
+    * The default report is now html5
+    * Typos in flags are detected and offer a suggestion
 
 # v0.14.1
 

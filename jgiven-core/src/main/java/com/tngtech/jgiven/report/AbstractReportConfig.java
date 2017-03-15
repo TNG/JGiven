@@ -1,11 +1,13 @@
 package com.tngtech.jgiven.report;
 
+import com.tngtech.jgiven.report.config.*;
+import com.tngtech.jgiven.report.config.converter.*;
 import com.tngtech.jgiven.report.json.ReportModelReader;
 import com.tngtech.jgiven.report.model.CompleteReportModel;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
-import java.util.Map;
+import java.util.*;
 import java.io.File;
 
 /**
@@ -16,13 +18,15 @@ import java.io.File;
 public abstract class AbstractReportConfig {
 
     private static final Logger log = LoggerFactory.getLogger( AbstractReportConfig.class );
+    private List<ConfigOption> configOptions = createConfigOptions();
 
     private String title;
     private File sourceDir;
     private File targetDir;
     private Boolean excludeEmptyScenarios;
 
-    public AbstractReportConfig( Map<String, Object> configMap ) {
+    public AbstractReportConfig( String... args ) {
+        Map<String, Object> configMap = new ConfigOptionParser().generate( configOptions, args );
         setTitle( (String) configMap.get( "title" ) );
         setSourceDir( (File) configMap.get( "sourceDir" ) );
         setTargetDir( (File) configMap.get( "targetDir" ) );
@@ -35,6 +39,49 @@ public abstract class AbstractReportConfig {
         setSourceDir( new File( "." ) );
         setTargetDir( new File( "." ) );
         setExcludeEmptyScenarios( false );
+    }
+
+    private List<ConfigOption> createConfigOptions() {
+        List<ConfigOption> configOptions = new ArrayList<ConfigOption>();
+
+        ConfigOption sourceDir = new ConfigOptionBuilder( "sourceDir" )
+                .setCommandLineOptionWithArgument(
+                        new CommandLineOptionBuilder( "--sourceDir" ).setArgumentDelimiter( "=" ).setShortPrefix( "--dir" )
+                                .setVisualPlaceholder( "path" ).build(),
+                        new ToFile() )
+                .setDescription( "the source directory where the JGiven JSON files are located (default: .)" )
+                .setDefaultWith( new File( "." ) )
+                .build();
+
+        ConfigOption targetDir = new ConfigOptionBuilder( "targetDir" )
+                .setCommandLineOptionWithArgument(
+                        new CommandLineOptionBuilder( "--targetDir" ).setArgumentDelimiter( "=" ).setShortPrefix( "--todir" )
+                                .setVisualPlaceholder( "path" ).build(),
+                        new ToFile() )
+                .setDescription( "the directory to generate the report to (default: .)" )
+                .setDefaultWith( new File( "." ) )
+                .build();
+
+        ConfigOption title = new ConfigOptionBuilder( "title" )
+                .setCommandLineOptionWithArgument(
+                        new CommandLineOptionBuilder( "--title" ).setArgumentDelimiter( "=" ).setVisualPlaceholder( "string" ).build(),
+                        new ToString() )
+                .setDescription( "the title of the report (default: JGiven Report)" )
+                .setDefaultWith( "JGiven Report" )
+                .build();
+
+        ConfigOption excludeEmptyScenarios = new ConfigOptionBuilder( "excludeEmptyScenarios" )
+                .setCommandLineOptionWithArgument(
+                        new CommandLineOptionBuilder( "--exclude-empty-scenarios" ).setArgumentDelimiter( "=" )
+                                .setVisualPlaceholder( "boolean" ).build(),
+                        new ToBoolean() )
+                .setDescription( "(default: false)" )
+                .setDefaultWith( false )
+                .build();
+
+        configOptions.addAll( Arrays.asList( sourceDir, targetDir, title, excludeEmptyScenarios ) );
+        additionalConfigOptions( configOptions );
+        return configOptions;
     }
 
     public String getTitle() {
@@ -73,6 +120,10 @@ public abstract class AbstractReportConfig {
         return new ReportModelReader( this ).readDirectory();
     }
 
+    public void printUsageAndExit() {
+        new ConfigOptionParser().printUsageAndExit( configOptions );
+    }
+
     /**
      *
      * Every flag should be defined except the optional ones without a default (like --help)
@@ -80,4 +131,12 @@ public abstract class AbstractReportConfig {
      * @param configMap the config map with a mapping of Strings to castable objects
      */
     public abstract void useConfigMap( Map<String, Object> configMap );
+
+    /**
+     *
+     * This is used to create new {@link ConfigOption} for the {@link AbstractReportConfig} by appending them to the list
+     *
+     * @param configOptions config options list, add new options here
+     */
+    public abstract void additionalConfigOptions( List<ConfigOption> configOptions );
 }

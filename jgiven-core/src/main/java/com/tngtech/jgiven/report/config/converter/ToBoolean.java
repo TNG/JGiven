@@ -5,6 +5,14 @@ package com.tngtech.jgiven.report.config.converter;
  */
 public class ToBoolean implements StringConverter{
     public Object apply (String input) {
-        return Boolean.parseBoolean( input );
+        if (input != null){
+            if (input.equalsIgnoreCase( "true" )){
+                return true;
+            }
+            if (input.equalsIgnoreCase( "false" )){
+                return false;
+            }
+        }
+        return null;
     }
 }

@@ -27,12 +27,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     private List<String> allFiles = Lists.newArrayList();
 
-    public void additionalConfigOptions( List<ConfigOption> configOptions ) {
-
-    }
-
-    public AbstractReportConfig createReportConfig( Map<String, Object> configMap ) {
-        return new AsciiDocReportConfig( configMap );
+    public AbstractReportConfig createReportConfig( String... args ) {
+        return new AsciiDocReportConfig( args );
     }
 
     public void generate() {

@@ -16,12 +16,8 @@ import com.tngtech.jgiven.report.model.ReportModelFile;
 
 public class PlainTextReportGenerator extends AbstractReportGenerator {
 
-    public void additionalConfigOptions( List<ConfigOption> configOptions ) {
-
-    }
-
-    public AbstractReportConfig createReportConfig( Map<String, Object> configMap ) {
-        return new PlainTextReportConfig(configMap);
+    public AbstractReportConfig createReportConfig( String... args ) {
+        return new PlainTextReportConfig(args);
     }
 
     public void generate() {

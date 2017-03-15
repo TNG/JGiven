@@ -14,7 +14,7 @@ public class ReportGeneratorArgumentTest {
 
         AsciiDocReportGenerator asciiReport = new AsciiDocReportGenerator();
 
-        asciiReport.parseToConfig( "--sourceDir=source/dir", "--targetDir=target/dir" );
+        asciiReport.setConfig( asciiReport.createReportConfig( "--sourceDir=source/dir", "--targetDir=target/dir" ) );
 
         Assertions.assertThat( asciiReport.config.getSourceDir() ).isEqualTo( new File( "source/dir" ) );
         Assertions.assertThat( asciiReport.config.getTargetDir() ).isEqualTo( new File( "target/dir" ) );
