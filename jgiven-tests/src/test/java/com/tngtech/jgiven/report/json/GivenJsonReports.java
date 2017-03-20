@@ -6,11 +6,9 @@ import java.util.List;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.report.AbstractReportConfig;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
 import com.tngtech.jgiven.report.html5.Html5ReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportConfig;
-import org.apache.tools.ant.taskdefs.Javadoc;
 import org.junit.rules.TemporaryFolder;
 
 import com.google.common.base.Charsets;
@@ -18,7 +16,6 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioRule;
-import com.tngtech.jgiven.report.ReportGenerator;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 import com.tngtech.jgiven.report.model.ReportModel;
 
