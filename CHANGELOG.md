@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Thumbnail preview for image attachments added [#274](https://github.com/TNG/JGiven/pull/299)
 * Formatting POJOs has been greatly improved, by allowing to specify custom formatters for fields [#297](https://github.com/TNG/JGiven/pull/297) (thanks to dgrandemange)
 * @ExtendedDescription supports parameter place holders now [#283](https://github.com/TNG/JGiven/pull/283)
 * The HTML App has been extracted into a separate project and has been refactored internally. The functionality should not have been changed. [#287](https://github.com/TNG/JGiven/pull/287)

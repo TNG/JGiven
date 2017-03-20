@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.gradle;
 
+import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.ReportGenerator;
 import org.gradle.api.reporting.DirectoryReport;
 import org.gradle.api.tasks.Input;
@@ -11,7 +12,7 @@ import org.gradle.api.tasks.PathSensitivity;
 import java.io.File;
 
 public interface JGivenReport extends DirectoryReport {
-    void configure( ReportGenerator generator );
+    AbstractReportGenerator createGenerator();
 
     @Optional
     @InputFile
@@ -37,4 +38,10 @@ public interface JGivenReport extends DirectoryReport {
     boolean isExcludeEmptyScenarios();
 
     void setExcludeEmptyScenarios( boolean excludeEmptyScenarios );
+
+    @Input
+    @Optional
+    boolean thumbnailsAreShown();
+
+    void setThumbnailsAreShown( boolean showThumbnails );
 }

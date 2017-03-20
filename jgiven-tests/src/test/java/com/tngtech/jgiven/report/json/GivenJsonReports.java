@@ -6,6 +6,11 @@ import java.util.List;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.report.AbstractReportConfig;
+import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
+import com.tngtech.jgiven.report.html5.Html5ReportConfig;
+import com.tngtech.jgiven.report.text.PlainTextReportConfig;
+import org.apache.tools.ant.taskdefs.Javadoc;
 import org.junit.rules.TemporaryFolder;
 
 import com.google.common.base.Charsets;
@@ -15,7 +20,6 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.report.ReportGenerator;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
-import com.tngtech.jgiven.report.model.GivenReportModels;
 import com.tngtech.jgiven.report.model.ReportModel;
 
 public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends Stage<SELF> {
@@ -36,12 +40,17 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends Stage<SE
     protected List<File> jsonReportFiles = Lists.newArrayList();
 
     @ProvidedScenarioState
-    protected ReportGenerator.Config config = new ReportGenerator.Config();
+    protected AsciiDocReportConfig asciiDocReportConfig = new AsciiDocReportConfig();
 
+    @ProvidedScenarioState
+    protected PlainTextReportConfig plainTextReportConfig = new PlainTextReportConfig();
+
+    @ProvidedScenarioState
+    protected Html5ReportConfig html5ReportConfig = new Html5ReportConfig();
 
     public SELF the_report_exist_as_JSON_file() throws IOException {
-        if (reportModel != null) {
-            reportModels.add(reportModel);
+        if( reportModel != null ) {
+            reportModels.add( reportModel );
         }
         return the_reports_exist_as_JSON_files();
     }
@@ -60,13 +69,15 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends Stage<SE
     }
 
     public SELF a_custom_CSS_file() throws IOException {
-        config.setCustomCssFile( temporaryFolderRule.newFile( "custom.css" ) );
+        File cssFile = temporaryFolderRule.newFile( "custom.css" );
+        html5ReportConfig.setCustomCss( cssFile );
         return self();
     }
 
     public SELF a_custom_JS_file_with_content( String content ) throws IOException {
-        config.setCustomJsFile( temporaryFolderRule.newFile( "custom.js" ) );
-        Files.append( content, config.getCustomJsFile(), Charsets.UTF_8 );
+        File jsFile = temporaryFolderRule.newFile( "custom.js" );
+        html5ReportConfig.setCustomJs( jsFile );
+        Files.append( content, jsFile, Charsets.UTF_8 );
         return self();
     }
 }

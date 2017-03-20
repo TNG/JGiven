@@ -924,3 +924,7 @@ a.show-tree-link:hover {
 [ng\:cloak], [ng-cloak], .ng-cloak {
     display: none !important
 }
+
+.jgiven-html-thumbnail {
+   border:1px solid lightgray;
+}

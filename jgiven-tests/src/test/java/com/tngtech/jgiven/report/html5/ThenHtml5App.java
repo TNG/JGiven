@@ -60,7 +60,7 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
     }
 
     public SELF the_content_of_the_attachment_referenced_by_icon_$_is( int iconNr, String content ) throws IOException, URISyntaxException {
-        String href = attachmentIcons.get( iconNr - 1 ).findElement( By.xpath( ".." ) ).getAttribute( "href" );
+        String href = attachmentIcons.get( iconNr - 1 ).findElement( By.xpath( "../.." ) ).getAttribute( "href" );
         String foundContent = Files.readFile( new File( new URL( href ).toURI() ) ).trim();
         assertThat( content ).isEqualTo( foundContent );
         return self();
@@ -114,6 +114,11 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
 
     public SELF attribute_$_has_value_$( String attribute, String content){
         assertThat( foundElement.getAttribute( attribute ) ).isEqualTo( content );
+        return self();
+    }
+
+    public SELF the_image_is_loaded(){
+        assertThat( foundElement.getAttribute( "naturalHeight") ).isNotEqualTo( "0" );
         return self();
     }
 }

@@ -4,7 +4,7 @@ dependencies {
     compile group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-tools-api', version: '3.5'
     compile group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version: '3.5'
     compile project(':jgiven-core')
-    runtime project(':jgiven-html5-report')
+    compile project(':jgiven-html5-report')
 }
 
 task copyClasses(type: Copy, dependsOn: classes) {
