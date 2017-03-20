@@ -3,10 +3,10 @@
 ## New Features
 
 * Thumbnail preview for image attachments added [#274](https://github.com/TNG/JGiven/pull/299)
-* AbstractReport interface is now easier to customize and add new reports and have better separation of custom flags [#274](https://github.com/TNG/JGiven/pull/299)
-    * ConfigOptionParser derives from the definition of ConfigOption how to parse and store them
-    * The default report is now html5
-    * Typos in flags are detected and offer a suggestion
+* Formatting POJOs has been greatly improved, by allowing to specify custom formatters for fields [#297](https://github.com/TNG/JGiven/pull/297) (thanks to dgrandemange)
+* @ExtendedDescription supports parameter place holders now [#283](https://github.com/TNG/JGiven/pull/283)
+* The HTML App has been extracted into a separate project and has been refactored internally. The functionality should not have been changed. [#287](https://github.com/TNG/JGiven/pull/287)
+* Upgraded to ByteBuddy 1.6.x to fix backwards-incompatibility issues when JGiven is used with Mockito 2.7.19 [#309](https://github.com/TNG/JGiven/issues/309)
 
 # v0.14.1
 
