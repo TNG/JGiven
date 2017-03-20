@@ -1,17 +1,17 @@
 package com.tngtech.jgiven.examples.description;
 
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 import com.tngtech.jgiven.annotation.IntroWord;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@RunWith( JUnitParamsRunner.class )
+@RunWith( DataProviderRunner.class )
 @Description( "Demonstrates the usage of the @As annotation" )
 public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExampleTest.AsAnnotationStage> {
 
@@ -31,8 +31,8 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
     }
 
     @Test
-    @As( "Scenario that shows the usage of @As with argument enumeration" )
-    @Parameters( {
+    @As( "Scenario that shows the usage of @As with argument enumeration")
+    @DataProvider({
             "false, 0"
     } )
     public void steps_can_use_at_annotation_to_reference_arguments_by_enumeration( boolean bool, int i ) {
@@ -40,8 +40,8 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
     }
 
     @Test
-    @As( "Scenario that shows the usage of @As with argument names" )
-    @Parameters( {
+    @As( "Scenario that shows the usage of @As with argument names")
+    @DataProvider({
             "true, 1"
     } )
     public void steps_can_use_at_annotation_to_reference_arguments_by_name( boolean bool, int i ) {

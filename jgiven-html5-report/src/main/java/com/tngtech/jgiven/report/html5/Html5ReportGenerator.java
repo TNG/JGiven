@@ -8,22 +8,27 @@ import com.google.gson.Gson;
 import com.tngtech.jgiven.exception.JGivenInstallationException;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.impl.util.Version;
+import com.tngtech.jgiven.report.AbstractReportConfig;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
+import com.tngtech.jgiven.report.ReportGenerator;
+import com.tngtech.jgiven.report.config.CommandLineOptionBuilder;
+import com.tngtech.jgiven.report.config.ConfigOption;
+import com.tngtech.jgiven.report.config.ConfigOptionBuilder;
+import com.tngtech.jgiven.report.config.converter.ToBoolean;
+import com.tngtech.jgiven.report.config.converter.ToFile;
 import com.tngtech.jgiven.report.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class Html5ReportGenerator extends AbstractReportGenerator {
-    private static final Logger log = LoggerFactory.getLogger( Html5ReportGenerator.class );
+    private static final Logger log = LoggerFactory.getLogger( ReportGenerator.class );
     private static final int MAX_BATCH_SIZE = 100;
 
     private PrintStream fileStream;
@@ -32,23 +37,28 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
     private File dataDirectory;
     private ByteArrayOutputStream byteStream;
     private PrintStream contentStream;
+    private Html5ReportConfig specializedConfig;
 
-    @Override
+    public AbstractReportConfig createReportConfig( String... args ) {
+        return new Html5ReportConfig( args );
+    }
+
     public void generate() {
-        log.info( "Generating HTML5 report to {}", new File( this.targetDirectory, "index.html" ).getAbsoluteFile() );
-        this.dataDirectory = new File( this.targetDirectory, "data" );
-        this.metaData.title = config.getTitle();
+        specializedConfig = (Html5ReportConfig) config;
+        log.info( "Generating HTML5 report to {}", new File( specializedConfig.getTargetDir(), "index.html" ).getAbsoluteFile() );
+        this.dataDirectory = new File( specializedConfig.getTargetDir(), "data" );
+        this.metaData.title = specializedConfig.getTitle();
         if( !this.dataDirectory.exists() && !this.dataDirectory.mkdirs() ) {
             log.error( "Could not create target directory " + this.dataDirectory );
             return;
         }
         try {
-            unzipApp( this.targetDirectory );
+            unzipApp( config.getTargetDir() );
             createDataFiles();
             generateMetaData();
             generateTagFile();
-            copyCustomFile( config.getCustomCssFile(), new File( this.targetDirectory, "css" ), "custom.css" );
-            copyCustomFile( config.getCustomJsFile(), new File( this.targetDirectory, "js" ), "custom.js" );
+            copyCustomFile( specializedConfig.getCustomCss(), new File( specializedConfig.getTargetDir(), "css" ), "custom.css" );
+            copyCustomFile( specializedConfig.getCustomJs(), new File( specializedConfig.getTargetDir(), "js" ), "custom.js" );
         } catch( IOException e ) {
             throw Throwables.propagate( e );
         }
@@ -60,10 +70,10 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
                 log.info( "Cannot read " + file + ", skipping" );
             } else {
                 targetDirectory.mkdirs();
-                if (!targetDirectory.canWrite()) {
-                    String message = "Could not create directory "+targetDirectory;
-                    log.error(message);
-                    throw new JGivenInstallationException(message);
+                if( !targetDirectory.canWrite() ) {
+                    String message = "Could not create directory " + targetDirectory;
+                    log.error( message );
+                    throw new JGivenInstallationException( message );
                 }
                 Files.copy( file, new File( targetDirectory, targetName ) );
             }
@@ -181,11 +191,14 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
         String version = Version.VERSION.toString();
         String title = "JGiven Report";
         List<String> data = Lists.newArrayList();
+        Boolean showThumbnails = true;
     }
 
     private void generateMetaData() throws IOException {
         File metaDataFile = new File( dataDirectory, "metaData.js" );
         log.debug( "Generating " + metaDataFile + "..." );
+
+        metaData.showThumbnails = specializedConfig.getShowThumbnails();
 
         String content = "jgivenReport.setMetaData(" + new Gson().toJson( metaData ) + " );";
 

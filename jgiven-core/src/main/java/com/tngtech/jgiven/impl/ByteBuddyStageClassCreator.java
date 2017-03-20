@@ -40,15 +40,19 @@ public class ByteBuddyStageClassCreator implements StageClassCreator {
             .subclass( stageClass, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING )
             .implement( StageInterceptorInternal.class )
             .defineField( INTERCEPTOR_FIELD_NAME, StepInterceptor.class )
-            .method( named(SETTER_NAME) ).intercept(
-                MethodDelegation.to( new StepInterceptorSetter() )
-                    .appendParameterBinder( FieldProxy.Binder.install(
-                        StepInterceptorGetterSetter.class ) ) )
+            .method( named(SETTER_NAME) )
+                .intercept(
+                    MethodDelegation.withDefaultConfiguration()
+                        .withBinders( FieldProxy.Binder.install(
+                                StepInterceptorGetterSetter.class ))
+                .to(new StepInterceptorSetter() ))
             .method( not( named( SETTER_NAME )
                     .or(ElementMatchers.isDeclaredBy(Object.class))))
-            .intercept( MethodDelegation.to( new ByteBuddyMethodInterceptor() )
-                .appendParameterBinder( FieldProxy.Binder.install(
-                    StepInterceptorGetterSetter.class ) ) )
+            .intercept(
+                    MethodDelegation.withDefaultConfiguration()
+                    .withBinders(FieldProxy.Binder.install(
+                            StepInterceptorGetterSetter.class ))
+                .to( new ByteBuddyMethodInterceptor() ))
             .make()
             .load( getClassLoader( stageClass ),
                 getClassLoadingStrategy( stageClass ) )

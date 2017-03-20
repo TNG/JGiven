@@ -6,15 +6,12 @@ import java.util.regex.Matcher;
 
 import javax.xml.bind.DatatypeConverter;
 
+import com.tngtech.jgiven.annotation.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.JGivenScenarioTest;
-import com.tngtech.jgiven.annotation.As;
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.annotation.ExtendedDescription;
-import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.report.model.GivenAttachments;
@@ -22,6 +19,9 @@ import com.tngtech.jgiven.report.model.GivenReportModels;
 import com.tngtech.jgiven.tags.FeatureAttachments;
 import com.tngtech.jgiven.tags.FeatureHtml5Report;
 import com.tngtech.jgiven.tags.FeatureTags;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 
 @FeatureHtml5Report
 @As( "HTML Report Generator" )
@@ -71,12 +71,13 @@ public class Html5ReportGeneratorTest extends
     @Test
     @FeatureAttachments
     public void attachments_with_different_media_types_can_be_created() throws IOException {
+
         given().a_report_model();
         attachments
                 .and().an_attachment_with_content_$_and_mediaType(JSON_SAMPLE, MediaType.JSON_UTF_8)
                 .and().file_name("jsonfile")
-                .and().an_attachment_with_binary_content_$_and_mediaType(BINARY_SAMPLE, MediaType.PNG)
-                .and().file_name("pngfile");
+                .and().an_attachment_with_binary_content_$_and_mediaType(BINARY_SAMPLE, MediaType.application( "octet-stream" ))
+                .and().file_name("binary");
         given()
                 .and().the_attachments_are_added_to_step_$_of_case_$(1,1);
         jsonReports
@@ -87,7 +88,7 @@ public class Html5ReportGeneratorTest extends
         String folder = "data/attachments/Test".replaceAll("/", Matcher.quoteReplacement(File.separator));
         then().a_file_$_exists_in_folder_$("jsonfile.json", folder)
                 .with().content(JSON_SAMPLE)
-                .and().a_file_$_exists_in_folder_$("pngfile.png", folder)
+                .and().a_file_$_exists_in_folder_$("binary.octet-stream", folder)
                 .with().binary_content(BINARY_SAMPLE);
     }
 
