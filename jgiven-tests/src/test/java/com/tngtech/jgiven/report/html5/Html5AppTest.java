@@ -2,16 +2,13 @@ package com.tngtech.jgiven.report.html5;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.JGivenScenarioTest;
-import com.tngtech.jgiven.annotation.As;
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.report.model.GivenReportModels;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.tags.*;
-import com.tngtech.jgiven.annotation.Pending;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,10 +19,8 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
+import java.util.*;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @BrowserTest
 @FeatureHtml5Report
@@ -239,31 +234,66 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
 
     }
 
+
+    @DataProvider
+    public static Object[][] parserTestData() {
+        return new Object[][] {
+                { "Placeholder with index", "$1", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "1" },
+                { "Placeholder without index", "$", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "1" },
+                { "Escaped placeholder", "$$", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "$" },
+                { "Multiple placeholders with switch order", "$2 + $1", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "2 + 1" },
+                { "Placeholders with additional text", "a = $1 and b = $2", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ),
+                        "a = 1 and b = 2" },
+                { "Placeholders references by argument names in order", "int = $int and str = $str and bool = $bool",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "int = 1 and str = some string and bool = true" },
+                { "Placeholders references by argument names in mixed order", "str = $str and int = $int and bool = $bool",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "str = some string and int = 1 and bool = true" },
+                { "Placeholders references by argument names and enumeration", "str = $str and int = $1 and bool = $bool",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "str = some string and int = 1 and bool = true" },
+                { "Placeholders references by argument names and enumerations ", "bool = $3 and str = $2 and int = $int",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "bool = true and str = some string and int = 1" },
+                { "Placeholder without index mixed with names", "bool = $bool and int = $ and str = $",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "bool = true and int = 1 and str = some string" },
+                { "Placeholder without index mixed with names and index", "bool = $bool and str = $2 and int = $ and str = $ and bool = $3",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "bool = true and str = some string and int = 1 and str = some string and bool = true" },
+                { "Placeholder with unknown argument names get erased", "bool = $bool and not known = $unknown and unknown = $10",
+                        Arrays.asList( "int", "str", "bool" ), Arrays.asList( 1, "some string", true ),
+                        "bool = true and not known = 1 and unknown = some string" },
+                { "Non-Java-Identifier char does trigger a space after a placeholder", "$]",
+                        Collections.singletonList( "int" ), Collections.singletonList( 1 ), "1 ]" },
+        };
+    }
+
     @Test
     @Issue( "#236" )
-    public void extended_description_can_substitute_arguments() throws IOException {
-        String description = "This references the second argument: $2"
-                + " this the first one: $"
-                + " and this the third named one: $third_arg";
+    @UseDataProvider( "parserTestData" )
+    @CaseDescription( value = "$0" )
+    public void extended_description_should_handle_every_case_correctly( String description, String value, List<String> parameterNames,
+            List<Object> parameterValues,
+            String expectedValue ) throws IOException {
 
         Map<String, String> argumentMap = new LinkedHashMap<>();
-        argumentMap.put( "first_arg", "1" );
-        argumentMap.put( "second_arg", "2" );
-        argumentMap.put( "third_arg", "3" );
-
-        String expectedDescription = "This references the second argument: 2"
-                + " this the first one: 1"
-                + " and this the third named one: 3";
+        for( int i = 0; i < parameterNames.size(); ++i ) {
+            String argName = parameterNames.get( i );
+            String argValue = String.valueOf( parameterValues.get( i ) );
+            argumentMap.put( argName, argValue );
+        }
 
         given().a_report_model()
-                .and().step_$_of_scenario_$_has_extended_description_with_arguments( 1, 1, description, argumentMap );
+                .and().step_$_of_scenario_$_has_extended_description_with_arguments( 1, 1, value, argumentMap );
         jsonReports
                 .and().the_report_exist_as_JSON_file();
         whenReport.when().the_HTML_Report_Generator_is_executed();
         when().the_page_of_scenario_$_is_opened( 1 )
                 .and().show_tooltip_of_extended_description();
         then().an_element_with_a_$_class_exists( "has-tip" )
-                .and().attribute_$_has_value_$( "tooltip-html-unsafe", expectedDescription );
+                .and().attribute_$_has_value_$( "tooltip-html-unsafe", expectedValue );
     }
 
     @Test

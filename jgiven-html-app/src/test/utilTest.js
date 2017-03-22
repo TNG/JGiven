@@ -181,7 +181,146 @@ describe("Util", function () {
        });
   });
 
-  describe("replaceArguments", function(){
+  describe("replaceArguments works for the same tests as the AS description", function(){
+      // the only difference is that the unused arguments are not appended
+
+      it("Placeholder with index", function() {
+          var value = "$1";
+          var nameArray = [];
+          var enumArray = [1, 2];
+          nameArray["a"] = enumArray[0];
+          nameArray["b"] = enumArray[1];
+          var expectedValue = "1";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+
+      it("Placeholder without index", function() {
+          var value = "$"
+          var nameArray = [];
+          var enumArray = [1, 2];
+          nameArray["a"] = enumArray[0];
+          nameArray["b"] = enumArray[1];
+          var expectedValue = "1";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+      it("Escaped placeholder", function() {
+          var value = "$$"
+          var nameArray = [];
+          var enumArray = [1, 2];
+          nameArray["a"] = enumArray[0];
+          nameArray["b"] = enumArray[1];
+          var expectedValue = "$";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+      it("Multiple placeholders with switch order", function() {
+          var value = "$2 + $1"
+          var nameArray = [];
+          var enumArray = [1, 2];
+          nameArray["a"] = enumArray[0];
+          nameArray["b"] = enumArray[1];
+          var expectedValue = "2 + 1";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+      it("Placeholders with additional text", function() {
+          var value = "a = $1 and b = $2"
+          var nameArray = [];
+          var enumArray = [1, 2];
+          nameArray["a"] = enumArray[0];
+          nameArray["b"] = enumArray[1];
+          var expectedValue = "a = 1 and b = 2";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+      it("Placeholders references by argument names in order", function() {
+          var value = "int = $int and str = $str and bool = $bool"
+          var nameArray = [];
+          var enumArray = [1, "some string", true];
+          nameArray["int"] = enumArray[0];
+          nameArray["str"] = enumArray[1];
+          nameArray["bool"] = enumArray[2];
+          var expectedValue = "int = 1 and str = some string and bool = true";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+      it("Placeholders references by argument names in mixed order", function() {
+          var value = "str = $str and int = $int and bool = $bool"
+          var nameArray = [];
+          var enumArray = [1, "some string", true];
+          nameArray["int"] = enumArray[0];
+          nameArray["str"] = enumArray[1];
+          nameArray["bool"] = enumArray[2];
+          var expectedValue = "str = some string and int = 1 and bool = true";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+      it("Placeholders references by argument names and enumeration", function() {
+          var value = "str = $str and int = $1 and bool = $bool"
+          var nameArray = [];
+          var enumArray = [1, "some string", true];
+          nameArray["int"] = enumArray[0];
+          nameArray["str"] = enumArray[1];
+          nameArray["bool"] = enumArray[2];
+          var expectedValue = "str = some string and int = 1 and bool = true";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+      it("Placeholders references by argument names and enumerations", function() {
+          var value = "bool = $3 and str = $2 and int = $int"
+          var nameArray = [];
+          var enumArray = [1, "some string", true];
+          nameArray["int"] = enumArray[0];
+          nameArray["str"] = enumArray[1];
+          nameArray["bool"] = enumArray[2];
+          var expectedValue = "bool = true and str = some string and int = 1";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+      it("Placeholder without index mixed with names", function() {
+          var value = "bool = $bool and int = $ and str = $"
+          var nameArray = [];
+          var enumArray = [1, "some string", true];
+          nameArray["int"] = enumArray[0];
+          nameArray["str"] = enumArray[1];
+          nameArray["bool"] = enumArray[2];
+          var expectedValue = "bool = true and int = 1 and str = some string";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+      it("Placeholder without index mixed with names and index", function() {
+          var value = "bool = $bool and str = $2 and int = $ and str = $ and bool = $3"
+          var nameArray = [];
+          var enumArray = [1, "some string", true];
+          nameArray["int"] = enumArray[0];
+          nameArray["str"] = enumArray[1];
+          nameArray["bool"] = enumArray[2];
+          var expectedValue = "bool = true and str = some string and int = 1 and str = some string and bool = true";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+      it("Placeholder with unknown argument names get erased", function() {
+          var value = "bool = $bool and not known = $unknown and unknown = $10"
+          var nameArray = [];
+          var enumArray = [1, "some string", true];
+          nameArray["int"] = enumArray[0];
+          nameArray["str"] = enumArray[1];
+          nameArray["bool"] = enumArray[2];
+          var expectedValue = "bool = true and not known = 1 and unknown = some string";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
+      it("Non-Java-Identifier char does trigger a space after a placeholder", function() {
+          var value = "$]"
+          var nameArray = [];
+          var enumArray = [1];
+          nameArray["int"] = enumArray[0];
+          var expectedValue = "1 ]";
+          expect(replaceArguments(value, enumArray, nameArray)).toEqual(expectedValue);
+      });
+
       it("works for empty argument arrays", function() {
           var enumArray = [];
           var nameArray = [];
@@ -194,82 +333,6 @@ describe("Util", function () {
           expect(replaceArguments("$1 $2", enumArray, nameArray)).toEqual("$1 $2");
       });
 
-      it("works for an enum array with length 1", function() {
-          var enumArray = [1];
-          var nameArray = [];
-          expect(replaceArguments("", enumArray, nameArray)).toEqual("");
-          expect(replaceArguments("abc", enumArray, nameArray)).toEqual("abc");
-          expect(replaceArguments("a b c", enumArray, nameArray)).toEqual("a b c");
-          expect(replaceArguments("$", enumArray, nameArray)).toEqual("1");
-          expect(replaceArguments("$$", enumArray, nameArray)).toEqual("$");
-          expect(replaceArguments("$1", enumArray, nameArray)).toEqual("1");
-          expect(replaceArguments("$1 $2", enumArray, nameArray)).toEqual("1 $2");
-          expect(replaceArguments("$2 $1", enumArray, nameArray)).toEqual("$2 1");
-          expect(replaceArguments("$2 $", enumArray, nameArray)).toEqual("$2 1");
-
-      });
-
-      it("works for an enum array with length 6", function() {
-          var enumArray = [1,2,3,4,5,6];
-          var nameArray = [];
-          expect(replaceArguments("$ $ $ $ $ $", enumArray, nameArray)).toEqual("1 2 3 4 5 6");
-          expect(replaceArguments("$ $ $ $", enumArray, nameArray)).toEqual("1 2 3 4");
-          expect(replaceArguments("$ $1 $ $3", enumArray, nameArray)).toEqual("1 1 2 3");
-          expect(replaceArguments("$3 $4 $1 $2", enumArray, nameArray)).toEqual("3 4 1 2");
-      });
-
-      it("works for arrays with different types", function() {
-          var enumArray = ["string", true, 2];
-          var nameArray = [];
-          expect(replaceArguments("$ $ $", enumArray, nameArray)).toEqual("string true 2");
-          expect(replaceArguments("$3 $1 $2", enumArray, nameArray)).toEqual("2 string true");
-          expect(replaceArguments("$1 sample $ text $", enumArray, nameArray)).toEqual("string sample string text true");
-          expect(replaceArguments("$2 sample $$", enumArray, nameArray)).toEqual("true sample $");
-      });
-
-      it("works for more than 9 arguments", function() {
-          var enumArray = [1,2,3,4,5,6,7,8,9,10
-              ,11,12,13,14,15,16,17,18,19,20
-              ,21,22,23,24,25,26,27,28,29,30
-              ,31,32,33,34,35,36,37,38,39,40
-              ,41,42,43,44,45,46,47,48,49,50
-              ,51,52,53,54,55,56,57,58,59,60
-              ,61,62,63,64,65,66,67,68,69,70
-              ,71,72,73,74,75,76,77,78,79,80
-              ,81,82,83,84,85,86,87,88,89,90
-              ,91,92,93,94,95,96,97,98,99,100];
-          var nameArray = [];
-          expect(replaceArguments("#99 $99", enumArray, nameArray)).toEqual("#99 99");
-          expect(replaceArguments("$15 $10", enumArray, nameArray)).toEqual("15 10");
-          expect(replaceArguments("$98, $1, $2, $54" , enumArray, nameArray)).toEqual("98, 1, 2, 54");
-          expect(replaceArguments("$100 minus $43 equals $57", enumArray, nameArray)).toEqual("100 minus 43 equals 57");
-      });
-
-      it("works for custom case", function() {
-         var enumArray = [];
-         enumArray.push("false");
-         enumArray.push("0");
-
-         var nameArray = [];
-         nameArray["bool"] = "false";
-         nameArray["i"] = "0";
-
-         var res = replaceArguments("Referencing arguments per name - int : $i, bool : $bool", enumArray, nameArray);
-         expect(res).toEqual("Referencing arguments per name - int : 0, bool : false");
-      });
-
-      it("works for named placeholder", function() {
-          var enumArray = [false, 10, "string"];
-          var nameArray = [];
-          nameArray["bool"] = false;
-          nameArray["int"]  = 10;
-          nameArray["str"]  = "string";
-          expect(replaceArguments("$bool, $str, $int", enumArray, nameArray)).toEqual("false, string, 10");
-          expect(replaceArguments("$bool, $, $int", enumArray, nameArray)).toEqual("false, false, 10");
-          expect(replaceArguments("$2, $, $int", enumArray, nameArray)).toEqual("10, false, 10");
-          expect(replaceArguments("$2, $, $4", enumArray, nameArray)).toEqual("10, false, $4");
-          expect(replaceArguments("$2, $unknown, $", enumArray, nameArray)).toEqual("10, falseunknown, 10");
-      });
   });
 
   describe("substituteThumbnailPath", function() {
