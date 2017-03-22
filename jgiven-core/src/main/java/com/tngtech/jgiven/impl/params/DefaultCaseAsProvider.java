@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.impl.params;
 
-import com.tngtech.jgiven.annotation.CaseDescriptionProvider;
-import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
+import com.tngtech.jgiven.annotation.CaseAsProvider;
+import com.tngtech.jgiven.annotation.CaseAs;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -10,11 +10,11 @@ import java.util.regex.Pattern;
 /**
  * Default case description provider that uses the value pattern
  */
-public class DefaultOrdinalCaseDescriptionProvider implements CaseDescriptionProvider {
+public class DefaultCaseAsProvider implements CaseAsProvider {
 
     @Override
-    public String description( String caseDescription, List<String> parameterNames, List<?> parameterValues ) {
-        if( caseDescription.equals( OrdinalCaseDescription.NO_VALUE ) ) {
+    public String as( String caseDescription, List<String> parameterNames, List<?> parameterValues ) {
+        if( caseDescription.equals( CaseAs.NO_VALUE ) ) {
             return defaultDescription( parameterNames, parameterValues );
         }
         boolean enforceNextWhitespace = false;

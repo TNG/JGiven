@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.junit;
 
-import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
+import com.tngtech.jgiven.annotation.CaseAs;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
@@ -35,7 +35,7 @@ public class JUnitParamsTest extends ScenarioTest<GivenTestStep, WhenTestStep, T
     @Parameters( {
             "-2, false, 0",
             "22, true, 1" } )
-    @OrdinalCaseDescription( "Hi there $3" )
+    @CaseAs( "Hi there $3" )
     public void case_names_are_used_as_description( int intArg, boolean booleanArg, int caseNr ) {
         given().something();
 

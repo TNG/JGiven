@@ -45,9 +45,9 @@ The resulting report will then look as follows:
    | 3 |       1 |     0 | Success |
 ----
 
-=== Ordinal Case Description
+=== Case As Description
 
-If your test has multiple cases, you can use the `@OrdinalCaseDescription` to provide additional information to the description for each case.
+If your test has multiple cases, you can use the `@CaseAs` to provide additional information to the description for each case.
 
 [source,java]
 ----

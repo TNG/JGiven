@@ -273,7 +273,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
     @Test
     @Issue( "#236" )
     @UseDataProvider( "parserTestData" )
-    @CaseDescription( value = "$0" )
+    @CaseAs( value = "$0" )
     public void extended_description_should_handle_every_case_correctly( String description, String value, List<String> parameterNames,
             List<Object> parameterValues,
             String expectedValue ) throws IOException {

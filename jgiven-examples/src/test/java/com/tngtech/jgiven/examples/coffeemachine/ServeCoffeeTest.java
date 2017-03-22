@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.examples.coffeemachine;
 
-import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
+import com.tngtech.jgiven.annotation.CaseAs;
 import com.tngtech.jgiven.examples.tags.FailingOnPurpose;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -217,7 +217,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
             "On the first run, 1, quite ok",
             "And on the second run, 2, well-done"
     } )
-    @OrdinalCaseDescription( "$1" )
+    @CaseAs( "$1" )
     public void coffe_making_gets_better( String description, int runNr, String result ) {
         given().a_coffee_machine();
         when().I_make_coffee_for_the_$_time( runNr );

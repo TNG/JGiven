@@ -1,14 +1,14 @@
 package com.tngtech.jgiven.junit;
 
-import com.tngtech.jgiven.annotation.CaseDescriptionProvider;
-import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
+import com.tngtech.jgiven.annotation.CaseAsProvider;
+import com.tngtech.jgiven.annotation.CaseAs;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@OrdinalCaseDescription( provider = CaseDescriptionTest.TestCaseDescriptionProvider.class )
+@CaseAs( provider = CaseDescriptionTest.TestCaseDescriptionProvider.class )
 public class CaseDescriptionTest extends SimpleScenarioTest<StepsAreReportedTest.TestSteps> {
 
     @Test
@@ -19,12 +19,12 @@ public class CaseDescriptionTest extends SimpleScenarioTest<StepsAreReportedTest
         assertThat( description ).isEqualTo( "Case Description 0" );
     }
 
-    public static class TestCaseDescriptionProvider implements CaseDescriptionProvider {
+    public static class TestCaseDescriptionProvider implements CaseAsProvider {
 
         static int count = 0;
 
         @Override
-        public String description( String value, List<String> parameterNames, List<?> parameterValues ) {
+        public String as( String value, List<String> parameterNames, List<?> parameterValues ) {
             return "Case Description " + ( count++ );
         }
     }

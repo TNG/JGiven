@@ -4,9 +4,8 @@ import com.google.common.base.Strings;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
-import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
+import com.tngtech.jgiven.annotation.CaseAs;
 import com.tngtech.jgiven.examples.tags.FailingOnPurpose;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import org.junit.Test;
@@ -33,7 +32,7 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
             "This is the first case, true",
             "This is another case, false"
     } )
-    @OrdinalCaseDescription( "$1" )
+    @CaseAs( "$1" )
     public void cases_can_have_custom_descriptions( String description, boolean value ) {
         if( value ) {
             given().the_power_light_$_on( true );
@@ -47,7 +46,7 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
             "This is the first case, true",
             "This is another case, false"
     } )
-    @OrdinalCaseDescription( "$1" )
+    @CaseAs( "$1" )
     public void custom_descriptions_of_cases_appear_as_a_separate_column_in_the_data_table( String description, boolean value ) {
         given().the_power_light_$_on( value );
     }
@@ -57,7 +56,7 @@ public class ParametrizedScenariosTest extends SimpleScenarioTest<ParameterForma
             "1",
             "2"
     } )
-    @OrdinalCaseDescription ( "$1" )
+    @CaseAs( "$1" )
     public void parameter_values_with_very_long_text_are_truncated_in_the_html_report( int caseNr ) {
         given().a_very_long_parameter_value( "" + caseNr + Strings.repeat( "x", 4000 ) );
     }

@@ -5,12 +5,9 @@ import java.util.List;
 /**
  * Provides the description of a scenario case.
  *
- * @since 0.9.2
- *
- * @deprecated since 0.15.0 please use {@link CaseAsProvider}
+ * @since 0.15.0
  */
-@Deprecated
-public interface CaseDescriptionProvider {
+public interface CaseAsProvider {
 
     /**
      * Provides the description of a single scenario case depending on the test parameters and optional additional arguments
@@ -20,6 +17,6 @@ public interface CaseDescriptionProvider {
      *                        either a list of formatted strings, or a list of the original values passed to the test method
      * @return a description of the case
      */
-    String description( String value, List<String> parameterNames, List<?> parameterValues );
+    String as( String value, List<String> parameterNames, List<?> parameterValues );
 
 }

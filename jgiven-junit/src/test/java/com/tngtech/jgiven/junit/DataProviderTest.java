@@ -4,7 +4,7 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.annotation.Format;
-import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
+import com.tngtech.jgiven.annotation.CaseAs;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.format.BooleanFormatter;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
@@ -166,7 +166,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
     @Test
     @DataProvider( { "the first case, true", "the second case, false" } )
-    @OrdinalCaseDescription( "$1" )
+    @CaseAs( "$1" )
     public void parameters_can_be_treated_as_case_description( String description, boolean b ) throws Throwable {
 
         given().something();

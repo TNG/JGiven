@@ -14,8 +14,8 @@ import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
  *
  * @since 0.9.2
  *
- * @deprecated Since v0.16.0 this annotation is deprecated because it starts the argument enumeration from 0 and not from 1,
- *             like {@link com.tngtech.jgiven.annotation.As}. Please use {@link com.tngtech.jgiven.annotation.OrdinalCaseDescription}
+ * @deprecated Since v0.15.0 this annotation is deprecated because it starts the argument enumeration from 0 and not from 1,
+ *             like {@link com.tngtech.jgiven.annotation.As}. Please use {@link CaseAs}
  */
 @Documented
 @Inherited

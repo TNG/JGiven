@@ -16,7 +16,7 @@ import static net.java.quickcheck.generator.PrimitiveGenerators.strings;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( value = DataProviderRunner.class )
-public class DefaultOrdinalCaseDescriptionProviderTest extends TestCase {
+public class DefaultCaseAsProviderTest extends TestCase {
 
     @Rule
     public SeedInfo seed = new SeedInfo();
@@ -30,8 +30,8 @@ public class DefaultOrdinalCaseDescriptionProviderTest extends TestCase {
     @Test
     public void test( String someString ) throws Exception {
         seed.restore( -5294091015527388791L );
-        DefaultOrdinalCaseDescriptionProvider provider = new DefaultOrdinalCaseDescriptionProvider();
-        String description = provider.description( "$1", Lists.newArrayList( "someName" ), Lists.newArrayList( someString ) );
+        DefaultCaseAsProvider provider = new DefaultCaseAsProvider();
+        String description = provider.as( "$1", Lists.newArrayList( "someName" ), Lists.newArrayList( someString ) );
         assertThat( description ).isEqualTo( someString );
     }
 }

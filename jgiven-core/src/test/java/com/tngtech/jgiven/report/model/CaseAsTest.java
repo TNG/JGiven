@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
-import com.tngtech.jgiven.annotation.OrdinalCaseDescription;
-import com.tngtech.jgiven.impl.params.DefaultOrdinalCaseDescriptionProvider;
+import com.tngtech.jgiven.annotation.CaseAs;
+import com.tngtech.jgiven.impl.params.DefaultCaseAsProvider;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,13 +16,13 @@ import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 
 @RunWith( DataProviderRunner.class )
-public class OrdinalCaseDescriptionTest {
+public class CaseAsTest {
 
     @DataProvider
     public static Object[][] testData() {
         return new Object[][] {
                 { "Empty value", "", Lists.<String>emptyList(), Lists.emptyList(), "" },
-                { "No value", OrdinalCaseDescription.NO_VALUE, Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "a = 1, b = 2" },
+                { "No value", CaseAs.NO_VALUE, Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "a = 1, b = 2" },
                 { "Placeholder with index", "$1", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "1" },
                 { "Placeholder without index", "$", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "1" },
                 { "Escaped placeholder", "$$", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "$" },
@@ -60,8 +60,8 @@ public class OrdinalCaseDescriptionTest {
     public void case_description_should_handle_everything_correctly( String description, String value, List<String> parameterNames,
             List<Object> parameterValues,
             String expectedValue ) {
-        DefaultOrdinalCaseDescriptionProvider provider = new DefaultOrdinalCaseDescriptionProvider();
-        assertThat( provider.description( value, parameterNames, parameterValues ) ).isEqualTo( expectedValue );
+        DefaultCaseAsProvider provider = new DefaultCaseAsProvider();
+        assertThat( provider.as( value, parameterNames, parameterValues ) ).isEqualTo( expectedValue );
 
     }
 }

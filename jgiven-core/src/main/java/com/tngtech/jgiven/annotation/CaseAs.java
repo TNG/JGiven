@@ -1,7 +1,6 @@
 package com.tngtech.jgiven.annotation;
 
-import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
-import com.tngtech.jgiven.impl.params.DefaultOrdinalCaseDescriptionProvider;
+import com.tngtech.jgiven.impl.params.DefaultCaseAsProvider;
 
 import java.lang.annotation.*;
 
@@ -22,7 +21,7 @@ import java.lang.annotation.*;
 @Inherited
 @Retention( RetentionPolicy.RUNTIME )
 @Target( { ElementType.METHOD, ElementType.TYPE } )
-public @interface OrdinalCaseDescription {
+public @interface CaseAs {
     /**
      * Dummy value to indicate that no value was set
      */
@@ -38,9 +37,9 @@ public @interface OrdinalCaseDescription {
     String value() default NO_VALUE;
 
     /**
-     * A custom implementation of the {@link CaseDescriptionProvider} to provide a case description.
+     * A custom implementation of the {@link CaseAsProvider} to provide a case description.
      */
-    Class<? extends CaseDescriptionProvider> provider() default DefaultOrdinalCaseDescriptionProvider.class;
+    Class<? extends CaseAsProvider> provider() default DefaultCaseAsProvider.class;
 
     /**
      * Whether or not the arguments should be formatted to string using JGiven formatter.

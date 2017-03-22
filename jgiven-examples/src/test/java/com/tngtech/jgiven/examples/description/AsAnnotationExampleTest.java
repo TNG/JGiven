@@ -31,8 +31,8 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
     }
 
     @Test
-    @As( "Scenario that shows the usage of @As with argument enumeration")
-    @DataProvider({
+    @As( "Scenario that shows the usage of @As with argument enumeration" )
+    @DataProvider( {
             "false, 0"
     } )
     public void steps_can_use_at_annotation_to_reference_arguments_by_enumeration( boolean bool, int i ) {
@@ -40,8 +40,8 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
     }
 
     @Test
-    @As( "Scenario that shows the usage of @As with argument names")
-    @DataProvider({
+    @As( "Scenario that shows the usage of @As with argument names" )
+    @DataProvider( {
             "true, 1"
     } )
     public void steps_can_use_at_annotation_to_reference_arguments_by_name( boolean bool, int i ) {

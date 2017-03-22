@@ -11,7 +11,7 @@ import com.tngtech.jgiven.annotation.CaseDescriptionProvider;
  * Default case description provider that uses the value pattern
  *
  * @deprecated As since v0.16.0 this is deprecated to remove the ambiguity of the argument enumeration
- *             an start from $1. Please use {@link com.tngtech.jgiven.impl.params.DefaultOrdinalCaseDescriptionProvider} instead.
+ *             an start from $1. Please use {@link DefaultCaseAsProvider} instead.
  */
 @Deprecated public class DefaultCaseDescriptionProvider implements CaseDescriptionProvider {
     private static final Pattern pattern = Pattern.compile( "\\$(\\d+|\\$)?" );

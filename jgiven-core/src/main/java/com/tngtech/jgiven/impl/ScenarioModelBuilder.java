@@ -329,15 +329,15 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     private void setCaseDescription( Class<?> testClass, Method method, List<NamedArgument> namedArguments ) {
 
-        OrdinalCaseDescription annotation = null;
-        if( method.isAnnotationPresent( OrdinalCaseDescription.class ) ) {
-            annotation = method.getAnnotation( OrdinalCaseDescription.class );
-        } else if( testClass.isAnnotationPresent( OrdinalCaseDescription.class ) ) {
-            annotation = testClass.getAnnotation( OrdinalCaseDescription.class );
+        CaseAs annotation = null;
+        if( method.isAnnotationPresent( CaseAs.class ) ) {
+            annotation = method.getAnnotation( CaseAs.class );
+        } else if( testClass.isAnnotationPresent( CaseAs.class ) ) {
+            annotation = testClass.getAnnotation( CaseAs.class );
         }
 
         if( annotation != null ) {
-            CaseDescriptionProvider caseDescriptionProvider = ReflectionUtil.newInstance( annotation.provider() );
+            CaseAsProvider caseDescriptionProvider = ReflectionUtil.newInstance( annotation.provider() );
             String value = annotation.value();
             List<?> values;
             if( annotation.formatValues() ) {
@@ -345,7 +345,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
             } else {
                 values = getValues( namedArguments );
             }
-            String caseDescription = caseDescriptionProvider.description( value, scenarioModel.getExplicitParameters(), values );
+            String caseDescription = caseDescriptionProvider.as( value, scenarioModel.getExplicitParameters(), values );
             scenarioCaseModel.setDescription( caseDescription );
         }
     }
