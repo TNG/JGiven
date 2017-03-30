@@ -3,7 +3,6 @@
 ## New Features
 
 * Thumbnail preview for image attachments added [#299](https://github.com/TNG/JGiven/pull/299)
-* ConfigOptions/-Builder is introduced to create new Reports more easily with automatic parsing from command line (easily extendable to environment and properties), suggestions on typos, etc. [#299](https://github.com/TNG/JGiven/pull/299)
 * The ReportGenerator now uses the HTML5 report as default, doesn't silently misinterprets wrong arguments and flags and offers suggestions  [#299](https://github.com/TNG/JGiven/pull/299)
 * Formatting POJOs has been greatly improved, by allowing to specify custom formatters for fields [#297](https://github.com/TNG/JGiven/pull/297) (thanks to dgrandemange)
 * @ExtendedDescription supports parameter place holders now [#283](https://github.com/TNG/JGiven/pull/283)
