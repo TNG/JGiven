@@ -6,6 +6,7 @@ public class CoffeeMachine {
 
     public int price = DEFAULT_COFFEE_PRICE;
     public boolean on;
+    public int coffeCount;
     public int dollars;
     public int coffees;
     public String message;

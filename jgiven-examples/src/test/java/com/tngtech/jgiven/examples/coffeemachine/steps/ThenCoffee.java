@@ -18,7 +18,7 @@ public class ThenCoffee extends Stage<ThenCoffee> {
     private CoffeeMachine coffeeMachine;
 
     public void I_$shouldOrShouldNot_be_served_a_coffee(
-        @Format(value = BooleanFormatter.class, args = {"should", "should not"}) boolean shouldOrShouldNot) {
+            @Format( value = BooleanFormatter.class, args = { "should", "should not" } ) boolean shouldOrShouldNot ) {
         I_should_be_served_a_coffee( shouldOrShouldNot );
     }
 
@@ -60,6 +60,15 @@ public class ThenCoffee extends Stage<ThenCoffee> {
 
     public ThenCoffee no_error_is_shown() {
         assertThat( coffeeMachine.message ).isNull();
+        return self();
+    }
+
+    public ThenCoffee the_result_is( String result ) {
+        if( coffeeMachine.coffeCount == 1 ) {
+            assertThat( result ).isEqualTo( "quite ok" );
+        } else {
+            assertThat( result ).isEqualTo( "well-done" );
+        }
         return self();
     }
 

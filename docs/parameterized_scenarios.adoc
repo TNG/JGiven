@@ -44,3 +44,28 @@ The resulting report will then look as follows:
    | 2 |       0 |     2 | Success |
    | 3 |       1 |     0 | Success |
 ----
+
+=== Case As Description
+
+If your test has multiple cases, you can use the `@CaseAs` to provide additional information to the description for each case.
+
+[source,java]
+----
+include::{sourcedir}/coffeemachine/ServeCoffeeTest.java[tags=casedescription]
+----
+The resulting report will then look as follows:
+
+----
+ Coffe making gets better
+
+   Given a coffee machine
+    When I make coffee for the <runNr> time
+    Then the result is <result>
+
+  Cases:
+
+   | # | Description           | runNr | result    | Status  |
+   +---+-----------------------+-------+-----------+---------+
+   | 1 | On the first run      |     1 | quite ok  | Success |
+   | 2 | And on the second run |     2 | well-done | Success |
+----

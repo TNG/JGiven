@@ -1,17 +1,10 @@
 package com.tngtech.jgiven.junit;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import com.tngtech.jgiven.annotation.CaseDescription;
 import com.tngtech.jgiven.annotation.Format;
+import com.tngtech.jgiven.annotation.CaseAs;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.format.BooleanFormatter;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
@@ -21,6 +14,12 @@ import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.Word;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( DataProviderRunner.class )
 public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, ThenTestStep> {
@@ -28,15 +27,15 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
     @DataProvider
     public static Object[][] dataProvider() {
         return new Object[][] {
-            { -2, false, 0 },
-            { 22, true, 1 } };
+                { -2, false, 0 },
+                { 22, true, 1 } };
     }
 
     @Test
     @UseDataProvider( "dataProvider" )
     public void DataProviderRunner_can_be_used( int intArg, boolean booleanArg, int caseNr ) {
         given().some_integer_value( intArg )
-            .and().some_boolean_value( booleanArg );
+                .and().some_boolean_value( booleanArg );
         when().multiply_with_two();
         then().the_value_is_$not_greater_than_zero( booleanArg );
 
@@ -57,9 +56,9 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
     @DataProvider
     public static Object[][] trickyData() {
         return new Object[][] {
-            { 0, 0, 0 },
-            { 0, 1, 0 },
-            { 0, 0, 1 },
+                { 0, 0, 0 },
+                { 0, 1, 0 },
+                { 0, 0, 1 },
         };
     }
 
@@ -67,8 +66,8 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
     @UseDataProvider( "trickyData" )
     public void DataProviderRunner_with_tricky_data( int firstArg, int secondArg, int thirdArg ) {
         given().some_integer_value( firstArg )
-            .and().another_integer_value( secondArg )
-            .and().a_third_integer_value( thirdArg );
+                .and().another_integer_value( secondArg )
+                .and().a_third_integer_value( thirdArg );
 
         when().multiply_with_two();
 
@@ -93,7 +92,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
     @DataProvider( { "1", "2", "3" } )
     public void derived_parameters_work( Integer arg ) {
         given().some_integer_value( arg )
-            .and().another_integer_value( arg * 10 );
+                .and().another_integer_value( arg * 10 );
 
         when().multiply_with_two();
 
@@ -111,7 +110,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
     @DataProvider( { "1", "2" } )
     public void arguments_with_the_same_name_but_different_values_are_handled_correctly( Integer arg ) throws Throwable {
         given().some_integer_value( arg + 1 )
-            .and().some_integer_value( arg + 2 );
+                .and().some_integer_value( arg + 2 );
 
         getScenario().finished();
 
@@ -167,7 +166,7 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
     @Test
     @DataProvider( { "the first case, true", "the second case, false" } )
-    @CaseDescription( "$0" )
+    @CaseAs( "$1" )
     public void parameters_can_be_treated_as_case_description( String description, boolean b ) throws Throwable {
 
         given().something();
@@ -196,12 +195,12 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
     @Test
     @DataProvider( {
-        "foo",
-        "bar"
+            "foo",
+            "bar"
     } )
     public void two_identically_formatted_arguments_should_be_unified_in_one_parameter( @Quoted String arg ) throws Throwable {
         given().some_quoted_string_value( arg )
-            .and().another_quoted_string_value( arg );
+                .and().another_quoted_string_value( arg );
 
         getScenario().finished();
         ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
@@ -215,12 +214,12 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
     @Test
     @DataProvider( {
-        "foo",
-        "bar"
+            "foo",
+            "bar"
     } )
     public void two_differently_formatted_arguments_but_with_the_same_value_should_become_two_parameters( String param ) throws Throwable {
         given().some_quoted_string_value( param )
-            .and().some_string_value( param );
+                .and().some_string_value( param );
 
         getScenario().finished();
         ScenarioModel scenarioModel = getScenario().getModel().getLastScenarioModel();
@@ -233,8 +232,8 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
     @Test
     @DataProvider( {
-        "foo",
-        "bar"
+            "foo",
+            "bar"
     } )
     public void different_data_tables_lead_to_different_cases( String param ) throws Throwable {
         GivenTestStep.TableClass table = new GivenTestStep.TableClass();
@@ -252,8 +251,8 @@ public class DataProviderTest extends ScenarioTest<GivenTestStep, WhenTestStep, 
 
     @Test
     @DataProvider( {
-        "foo",
-        "bar"
+            "foo",
+            "bar"
     } )
     public void equal_data_tables_are_handled_correctly( String param ) throws Throwable {
         GivenTestStep.TableClass table = new GivenTestStep.TableClass();

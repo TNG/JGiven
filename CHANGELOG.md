@@ -2,11 +2,17 @@
 
 ## New Features
 
-* Thumbnail preview for image attachments added [#274](https://github.com/TNG/JGiven/pull/299)
+* Thumbnail preview for image attachments added [#299](https://github.com/TNG/JGiven/pull/299)
+* The ReportGenerator now uses the HTML5 report as default, doesn't silently misinterprets wrong arguments and flags and offers suggestions  [#299](https://github.com/TNG/JGiven/pull/299)
 * Formatting POJOs has been greatly improved, by allowing to specify custom formatters for fields [#297](https://github.com/TNG/JGiven/pull/297) (thanks to dgrandemange)
 * @ExtendedDescription supports parameter place holders now [#283](https://github.com/TNG/JGiven/pull/283)
 * The HTML App has been extracted into a separate project and has been refactored internally. The functionality should not have been changed. [#287](https://github.com/TNG/JGiven/pull/287)
+
+## Fixed Issues
 * Upgraded to ByteBuddy 1.6.x to fix backwards-incompatibility issues when JGiven is used with Mockito 2.7.19 [#309](https://github.com/TNG/JGiven/issues/309)
+* Introduced CaseAs annotation to replace the CaseDescription annotation [#301](https://github.com/TNG/JGiven/pull/301)
+* Removed ambiguity between parsing of As, CaseAs and ExtendedDescription. Argument enumeration starts from 1, internal count of how often placeholders are used, see docs to As for every feature. All argument reference types are interoperable [#301](https://github.com/TNG/JGiven/pull/301)
+
 
 # v0.14.1
 
