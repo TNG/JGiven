@@ -10,7 +10,7 @@
 
 ## Fixed Issues
 * Upgraded to ByteBuddy 1.6.x to fix backwards-incompatibility issues when JGiven is used with Mockito 2.7.19 [#309](https://github.com/TNG/JGiven/issues/309)
-* Refactored CaseDescription to CaseAs [#301](https://github.com/TNG/JGiven/pull/301)
+* Introduced CaseAs annotation to replace the CaseDescription annotation [#301](https://github.com/TNG/JGiven/pull/301)
 * Removed ambiguity between parsing of As, CaseAs and ExtendedDescription. Argument enumeration starts from 1, internal count of how often placeholders are used, see docs to As for every feature. All argument reference types are interoperable [#301](https://github.com/TNG/JGiven/pull/301)
 
 
