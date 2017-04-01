@@ -23,16 +23,19 @@ public class DefaultCaseAsProvider implements CaseAsProvider {
         for( int i = 0; i < caseDescription.length(); i++ ) {
 
             boolean dollarMatch = caseDescription.charAt( i ) == '$';
-            boolean nextCharExists = ( i + 1 ) < caseDescription.length();
-            boolean escapedDollarMatch = nextCharExists && caseDescription.charAt( i + 1 ) == '$';
-            String argumentName = nextCharExists ? nextName( caseDescription.substring( i + 1 ) ) : "";
-            boolean namedArgumentExists = argumentName.length() > 0;
-            boolean namedArgumentMatch = namedArgumentExists && parameterNames.contains( argumentName );
-            boolean enumArgumentMatch =
-                    nextCharExists && parameterValues.size() > nextIndex( caseDescription.substring( i + 1 ), parameterValues.size() );
-            boolean singleDollarCountIndexExists = singlePlaceholderCounter < parameterValues.size();
 
             if( dollarMatch ) {
+                boolean nextCharExists = ( i + 1 ) < caseDescription.length();
+                boolean escapedDollarMatch = nextCharExists && caseDescription.charAt( i + 1 ) == '$';
+
+                String argumentName = nextCharExists ? nextName( caseDescription.substring( i + 1 ) ) : "";
+
+                boolean namedArgumentExists = argumentName.length() > 0;
+                boolean namedArgumentMatch = namedArgumentExists && parameterNames.contains( argumentName );
+                boolean enumArgumentMatch =
+                        nextCharExists && parameterValues.size() > nextIndex( caseDescription.substring( i + 1 ), parameterValues.size() );
+                boolean singleDollarCountIndexExists = singlePlaceholderCounter < parameterValues.size();
+
                 // e.g $$
                 if( escapedDollarMatch ) {
                     resultingDescription.append( '$' );
