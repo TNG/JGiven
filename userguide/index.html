@@ -7,6 +7,7 @@
 <meta name="generator" content="Asciidoctor 1.5.3">
 <meta name="description" content="index page to the JGiven documentation">
 <meta name="keywords" content="JGiven, Java, BDD, TDD, Behavior-Driven Testing, Specification by Example">
+<meta name="author" content="Jan Schäfer">
 <title>JGiven User Guide</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -514,6 +515,10 @@ table.CodeRay td.code>pre{padding:0}
 <body class="article toc2 toc-left">
 <div id="header">
 <h1>JGiven User Guide</h1>
+<div class="details">
+<span id="author" class="author">Jan Schäfer</span><br>
+<span id="revnumber">version 0.15.0</span>
+</div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
@@ -568,16 +573,20 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_parameterized_steps">7. Parameterized Steps</a>
 <ul class="sectlevel2">
 <li><a href="#_parameters_within_a_sentence">7.1. Parameters within a sentence</a></li>
-<li><a href="#_parameter_formatting">7.2. Parameter Formatting</a></li>
-<li><a href="#_the_format_annotation">7.3. The @Format annotation</a></li>
-<li><a href="#_custom_formatting_annotations">7.4. Custom formatting annotations</a></li>
-<li><a href="#_tables_as_parameters">7.5. Tables as Parameters</a></li>
+<li><a href="#_custom_annotations">7.2. Custom Annotations</a></li>
+<li><a href="#_extended_description">7.3. Extended Description</a></li>
+<li><a href="#_parameter_formatting">7.4. Parameter Formatting</a></li>
+<li><a href="#_the_format_annotation">7.5. The @Format annotation</a></li>
+<li><a href="#_custom_formatting_annotations">7.6. Custom formatting annotations</a></li>
+<li><a href="#_the_pojoformat_annotation">7.7. The @POJOFormat annotation</a></li>
+<li><a href="#_tables_as_parameters">7.8. Tables as Parameters</a></li>
 </ul>
 </li>
 <li><a href="#_parameterized_scenarios">8. Parameterized Scenarios</a>
 <ul class="sectlevel2">
 <li><a href="#_junit_2">8.1. JUnit</a></li>
 <li><a href="#_junit_dataprovider_runner">8.2. JUnit Dataprovider Runner</a></li>
+<li><a href="#_case_as_description">8.3. Case As Description</a></li>
 </ul>
 </li>
 <li><a href="#_tags">9. Tags</a>
@@ -635,13 +644,6 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 </div>
 <div id="content">
-<div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>Version 0.14.1</p>
-</div>
-</div>
-</div>
 <div class="sect1">
 <h2 id="_introduction"><a class="anchor" href="#_introduction"></a>1. Introduction</h2>
 <div class="sectionbody">
@@ -735,7 +737,7 @@ JGiven requires at least JUnit 4.9, while the recommended version is 4.12.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit&lt;/artifactId&gt;
-   &lt;version&gt;0.14.1&lt;/version&gt;
+   &lt;version&gt;0.15.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -746,7 +748,7 @@ JGiven requires at least JUnit 4.9, while the recommended version is 4.12.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-   testCompile 'com.tngtech.jgiven:jgiven-junit:0.14.1'
+   testCompile 'com.tngtech.jgiven:jgiven-junit:0.15.0'
 }</code></pre>
 </div>
 </div>
@@ -766,7 +768,7 @@ thus you also must have a dependency to TestNG itself.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-testng&lt;/artifactId&gt;
-   &lt;version&gt;0.14.1&lt;/version&gt;
+   &lt;version&gt;0.15.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -777,7 +779,7 @@ thus you also must have a dependency to TestNG itself.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-   testCompile 'com.tngtech.jgiven:jgiven-testng:0.14.1'
+   testCompile 'com.tngtech.jgiven:jgiven-testng:0.15.0'
 }</code></pre>
 </div>
 </div>
@@ -1001,7 +1003,7 @@ and all required dependencies are on the Java CLASSPATH)</p>
     &lt;plugin&gt;
       &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
       &lt;artifactId&gt;jgiven-maven-plugin&lt;/artifactId&gt;
-      &lt;version&gt;0.14.1&lt;/version&gt;
+      &lt;version&gt;0.15.0&lt;/version&gt;
       &lt;executions&gt;
         &lt;execution&gt;
           &lt;goals&gt;
@@ -1038,7 +1040,7 @@ Add the following plugins section to your <code>build.gradle</code> file or exte
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">plugins {
-    id &quot;com.tngtech.jgiven.gradle-plugin&quot; version &quot;0.14.1&quot;
+    id &quot;com.tngtech.jgiven.gradle-plugin&quot; version &quot;0.15.0&quot;
 }</code></pre>
 </div>
 </div>
@@ -1053,7 +1055,7 @@ Add the following plugins section to your <code>build.gradle</code> file or exte
     }
 
     dependencies {
-        classpath &quot;com.tngtech.jgiven:jgiven-gradle-plugin:0.14.1&quot;
+        classpath &quot;com.tngtech.jgiven:jgiven-gradle-plugin:0.15.0&quot;
     }
 }
 
@@ -1506,7 +1508,10 @@ JGiven will then validate that a previous stage had provided the value and will 
 <p>The steps of the stage are executed</p>
 </li>
 <li>
-<p>The <code>@AfterStage</code>-annotated methods of the stage are called 4.5. The values of all scenario state fields are extracted.</p>
+<p>The <code>@AfterStage</code>-annotated methods of the stage are called</p>
+</li>
+<li>
+<p>The values of all scenario state fields are extracted.</p>
 </li>
 </ol>
 </div>
@@ -1685,7 +1690,68 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_parameter_formatting"><a class="anchor" href="#_parameter_formatting"></a>7.2. Parameter Formatting</h3>
+<h3 id="_custom_annotations"><a class="anchor" href="#_custom_annotations"></a>7.2. Custom Annotations</h3>
+<div class="paragraph">
+<p>The <code>@As</code> annotation can be used to override the shown sentence. To reference arguments you can use the three different interoperable options which apply to every description in JGiven. For more examples look up <a href="https://github.com/TNG/JGiven/blob/master/jgiven-core/src/test/java/com/tngtech/jgiven/report/model/StepFormatterTest.java">JGiven StepFormatter Tests</a></p>
+</div>
+<div class="paragraph">
+<p>Use <code>$</code> to access the arguments in natural order.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@As</span> ( <span class="string"><span class="delimiter">&quot;</span><span class="content">the $ fresh eggs and the $ cooked rice bowls</span><span class="delimiter">&quot;</span></span> )
+<span class="directive">public</span> SELF <span class="error">$</span>_eggs_and_<span class="error">$</span>_rice_bowls( <span class="type">int</span> eggs, <span class="type">int</span> riceBowls ) { ... }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or enumerate them <code>$1, $2, &#8230;&#8203;</code> to have a direct reference:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@As</span> ( <span class="string"><span class="delimiter">&quot;</span><span class="content">the $1 fresh eggs and the $2 cooked rice bowls</span><span class="delimiter">&quot;</span></span> )
+<span class="directive">public</span> SELF <span class="error">$</span>_eggs_and_<span class="error">$</span>_rice_bowls( <span class="type">int</span> eggs, <span class="type">int</span> riceBowls ) { ... }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Or reference them via the argument names:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@As</span> ( <span class="string"><span class="delimiter">&quot;</span><span class="content">the $eggs fresh eggs and the $riceBowls cooked rice bowls</span><span class="delimiter">&quot;</span></span> )
+<span class="directive">public</span> SELF <span class="error">$</span>_eggs_and_<span class="error">$</span>_rice_bowls( <span class="type">int</span> eggs, <span class="type">int</span> riceBowls ) { ... }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The call to <code>given().<em>$_eggs_and_</em>$_rice_bowls(5, 2)</code> will be shown as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="nowrap">Given the 2 cooked rice bowls and the 5 fresh eggs</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_extended_description"><a class="anchor" href="#_extended_description"></a>7.3. Extended Description</h3>
+<div class="paragraph">
+<p>An extended description is shown if you hover above the step as tooltip, but hidden by default.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExtendedDescription</span> ( <span class="string"><span class="delimiter">&quot;</span><span class="content">The $2 rice bowls were very delicious</span><span class="delimiter">&quot;</span></span> )
+<span class="directive">public</span> SELF <span class="error">$</span>_eggs_and_<span class="error">$</span>_rice_bowls( <span class="type">int</span> eggs, <span class="type">int</span> riceBowls ) { ... }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The call to <code>given().<em>$_eggs_and_</em>$_rice_bowls(5, 2)</code> will still be shown as:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="nowrap">Given 5 eggs and 2 rice bowls</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameter_formatting"><a class="anchor" href="#_parameter_formatting"></a>7.4. Parameter Formatting</h3>
 <div class="paragraph">
 <p>Sometimes the <code>toString()</code> representation of a parameter object does not fit well into the report. In these cases you have three possibilities:</p>
 </div>
@@ -1704,7 +1770,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_the_format_annotation"><a class="anchor" href="#_the_format_annotation"></a>7.3. The @Format annotation</h3>
+<h3 id="_the_format_annotation"><a class="anchor" href="#_the_format_annotation"></a>7.5. The @Format annotation</h3>
 <div class="paragraph">
 <p>The default formatting of a parameter can be overridden by using the <code>@Format</code> annotation. It takes as a parameter a class that implements the <code>ArgumentFormatter</code> interface. In addition, an optional array of arguments can be given to configure the customer formatter. For example, the built-in <code>BooleanFormatter</code> can be used to format <code>boolean</code> values:</p>
 </div>
@@ -1721,7 +1787,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_custom_formatting_annotations"><a class="anchor" href="#_custom_formatting_annotations"></a>7.4. Custom formatting annotations</h3>
+<h3 id="_custom_formatting_annotations"><a class="anchor" href="#_custom_formatting_annotations"></a>7.6. Custom formatting annotations</h3>
 <div class="paragraph">
 <p>As using the <code>@Format</code> annotation is often cumbersome, especially if the same formatter is used in multiple places, one can define and use custom formatting annotations instead.</p>
 </div>
@@ -1740,7 +1806,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 <p>As you can see, the annotation itself is annotated with the <code>@Format</code> annotation as described above, which will be applied to all parameters that are annotated with <code>@Quoted</code>.</p>
 </div>
 <div class="sect3">
-<h4 id="_example_5"><a class="anchor" href="#_example_5"></a>7.4.1. Example</h4>
+<h4 id="_example_5"><a class="anchor" href="#_example_5"></a>7.6.1. Example</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_message_<span class="error">$</span>_is_printed_to_the_console( <span class="annotation">@Quoted</span> message ) { ... }</code></pre>
@@ -1766,7 +1832,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect3">
-<h4 id="_the_annotationformat_annotation"><a class="anchor" href="#_the_annotationformat_annotation"></a>7.4.2. The @AnnotationFormat annotation</h4>
+<h4 id="_the_annotationformat_annotation"><a class="anchor" href="#_the_annotationformat_annotation"></a>7.6.2. The @AnnotationFormat annotation</h4>
 <div class="paragraph">
 <p>Another pre-defined annotation is the <code>@Formatf</code> annotation which uses the <code>@AnnotationFormat</code> annotation to specify the formatter. Formatters of this kind implement the <code>AnnotationArgumentFormatter</code> interface. This allows for very flexible formatters that can take the concrete arguments of the annotation into account.</p>
 </div>
@@ -1783,7 +1849,178 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </div>
 </div>
 <div class="sect2">
-<h3 id="_tables_as_parameters"><a class="anchor" href="#_tables_as_parameters"></a>7.5. Tables as Parameters</h3>
+<h3 id="_the_pojoformat_annotation"><a class="anchor" href="#_the_pojoformat_annotation"></a>7.7. The @POJOFormat annotation</h3>
+<div class="paragraph">
+<p>When step parameter is a POJO, it may sometimes be useful to get a string representation using part or all of the fields composing this POJO.</p>
+</div>
+<div class="paragraph">
+<p>The <code>@POJOFormat</code> fulfills this need while providing a way to format fields values following customizable field formats.</p>
+</div>
+<div class="paragraph">
+<p>Given the following POJO :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="type">class</span> <span class="class">CoffeeWithPrice</span> {
+   <span class="predefined-type">String</span> name;
+   <span class="type">double</span> price_in_EUR;
+   CoffeeWithPrice(<span class="predefined-type">String</span> name, <span class="type">double</span> priceInEur) {
+      <span class="local-variable">this</span>.name = name;
+      <span class="local-variable">this</span>.price_in_EUR = priceInEur;
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then you can define a step method as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_coffee_price_<span class="error">$</span>_is_registered( <span class="annotation">@POJOFormat</span>(fieldsFormat = {
+                    <span class="annotation">@NamedFormat</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>, customFormatAnnotation = Quoted.class),
+                    <span class="annotation">@NamedFormat</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">price_in_EUR</span><span class="delimiter">&quot;</span></span>, format = <span class="annotation">@Format</span>( value = PrintfFormatter.class, args = <span class="string"><span class="delimiter">&quot;</span><span class="content">%s EUR</span><span class="delimiter">&quot;</span></span> ) )
+                } ) CoffeeWithPrice price ) {
+  ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>where <code>@NamedFormat</code> associates a format (classic <code>@Format</code> or any custom format annotation) to a field by its name.</p>
+</div>
+<div class="paragraph">
+<p>Finally, the step method can be called with an argument :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java">given().the_coffee_price_<span class="error">$</span>_is_registered(<span class="keyword">new</span> CoffeeWithPrice(<span class="string"><span class="delimiter">&quot;</span><span class="content">Espresso</span><span class="delimiter">&quot;</span></span>, <span class="float">2.0</span>));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then the report will look as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Given the coffee price [<span class="string"><span class="delimiter">&quot;</span><span class="content">Espresso</span><span class="delimiter">&quot;</span></span>,<span class="float">2.0</span> EUR] is registered</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For additional options, see the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/POJOFormat.html">JavaDoc documentation of the <code>@POJOFormat</code> annotation</a></p>
+</div>
+<div class="sect3">
+<h4 id="_reuse_a_set_of_namedformat_definitions"><a class="anchor" href="#_reuse_a_set_of_namedformat_definitions"></a>7.7.1. Reuse a set of @NamedFormat definitions</h4>
+<div class="paragraph">
+<p>When several steps uses the same type of POJO in their parameters, it may be tedious to redefine this POJO fields formats in each of these steps.</p>
+</div>
+<div class="paragraph">
+<p>The solution in this case is to create a custom annotation where POJO fields formats will be declared once and for all.<br>
+This custom annotation will be itself annotated with the <code>@NamedFormats</code> which will wraps as much as <code>@NamedFormat</code> as there are fields needing a specific formatting.<br>
+It can then further be referenced by any <code>@POJOformat</code> and <code>@Table</code> annotations through their respective <code>fieldsFormatSetAnnotation</code> attribute.</p>
+</div>
+<div class="paragraph">
+<p>Given the following POJO :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="type">class</span> <span class="class">CoffeeWithPrice</span> {
+   <span class="predefined-type">String</span> name;
+   <span class="type">double</span> price_in_EUR;
+   CoffeeWithPrice(<span class="predefined-type">String</span> name, <span class="type">double</span> priceInEur) {
+      <span class="local-variable">this</span>.name = name;
+      <span class="local-variable">this</span>.price_in_EUR = priceInEur;
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then you can specify a reusable set of formats for each field of this POJO through a new custom annotation :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@NamedFormats</span>( {
+   <span class="annotation">@NamedFormat</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>, customFormatAnnotation = Quoted.class),
+   <span class="annotation">@NamedFormat</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">price_in_EUR</span><span class="delimiter">&quot;</span></span>, format = <span class="annotation">@Format</span>( value = PrintfFormatter.class, args = <span class="string"><span class="delimiter">&quot;</span><span class="content">%s EUR</span><span class="delimiter">&quot;</span></span> ) )
+} )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> CoffeeWithPriceFieldsFormatSet {}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then you will be able to reuse this custom named formats set annotation into the kind of steps below :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_coffee_price_<span class="error">$</span>_is_registered( <span class="annotation">@POJOFormat</span>(fieldsFormatSetAnnotation = CoffeeWithPriceFieldsFormatSet.class ) CoffeeWithPrice price ) {
+  ...
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF expected_coffee_price_for_name_<span class="error">$</span>_is_<span class="error">$</span>(<span class="annotation">@Quoted</span> <span class="predefined-type">String</span> coffeeName, <span class="annotation">@POJOFormat</span>(fieldsFormatSetAnnotation = CoffeeWithPriceFieldsFormatSet.class ) CoffeeWithPrice price ) {
+  ...
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_field_level_format_definition"><a class="anchor" href="#_field_level_format_definition"></a>7.7.2. Field-level format definition</h4>
+<div class="paragraph">
+<p>If you have full control over the POJO class, you can also specify fields format directly into the POJO class, at field level, by annotating POJO fields with any format (or chain of formats) of your choice.<br>
+JGiven will then make use of field-level format annotations within a <code>@POJOFormat</code> or <code>@Table</code> context of use.</p>
+</div>
+<div class="paragraph">
+<p>Given the following POJO with field-level specified formats :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="type">class</span> <span class="class">CoffeeWithPrice</span> {
+
+   <span class="annotation">@Quoted</span>
+   <span class="predefined-type">String</span> name;
+
+   <span class="annotation">@Format</span>( value = PrintfFormatter.class, args = <span class="string"><span class="delimiter">&quot;</span><span class="content">%s EUR</span><span class="delimiter">&quot;</span></span> )
+   <span class="type">double</span> price_in_EUR;
+
+   CoffeeWithPrice(<span class="predefined-type">String</span> name, <span class="type">double</span> priceInEur) {
+      <span class="local-variable">this</span>.name = name;
+      <span class="local-variable">this</span>.price_in_EUR = priceInEur;
+   }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then you can define a step method as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_coffee_price_<span class="error">$</span>_is_registered(<span class="annotation">@POJOFormat</span> CoffeeWithPrice price ) {
+  ...
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, the step method can be called with an argument :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java">given().the_coffee_price_<span class="error">$</span>_is_registered(<span class="keyword">new</span> CoffeeWithPrice(<span class="string"><span class="delimiter">&quot;</span><span class="content">Espresso</span><span class="delimiter">&quot;</span></span>, <span class="float">2.0</span>));</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then the report will look as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Given the coffee price [<span class="string"><span class="delimiter">&quot;</span><span class="content">Espresso</span><span class="delimiter">&quot;</span></span>,<span class="float">2.0</span> EUR] is registered</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Please note that <code>@NamedFormat</code> specified at <code>@POJOformat</code> or <code>@Table</code> level have precedence over field-level defined formats.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tables_as_parameters"><a class="anchor" href="#_tables_as_parameters"></a>7.8. Tables as Parameters</h3>
 <div class="paragraph">
 <p>Sometimes information can be represented very concisely by using tables. JGiven supports this with the <code>@Table</code> annotation for step parameters. Such parameters are then formatted as tables in the report. The types of such parameters can be:</p>
 </div>
@@ -1801,7 +2038,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 </ol>
 </div>
 <div class="sect3">
-<h4 id="_example_6"><a class="anchor" href="#_example_6"></a>7.5.1. Example</h4>
+<h4 id="_example_6"><a class="anchor" href="#_example_6"></a>7.8.1. Example</h4>
 <div class="paragraph">
 <p>Given the following POJO:</p>
 </div>
@@ -1858,6 +2095,10 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 <div class="paragraph">
 <p>For additional options, see the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Table.html">JavaDoc documentation of the <code>@Table</code> annotation</a></p>
 </div>
+<div class="paragraph">
+<p>Also note that POJO fields formats can be specified thanks to the <code>@Table#fieldsFormat</code> or <code>@Table#fieldsFormatSetAnnotation</code> options.<br>
+See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section for more informations about how to use these two options.</p>
+</div>
 </div>
 </div>
 </div>
@@ -1904,17 +2145,17 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="java">    <span class="annotation">@Test</span>
     <span class="annotation">@DataProvider</span>( {
-        <span class="string"><span class="delimiter">&quot;</span><span class="content">1, 1</span><span class="delimiter">&quot;</span></span>,
-        <span class="string"><span class="delimiter">&quot;</span><span class="content">0, 2</span><span class="delimiter">&quot;</span></span>,
-        <span class="string"><span class="delimiter">&quot;</span><span class="content">1, 0</span><span class="delimiter">&quot;</span></span>
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">1, 1</span><span class="delimiter">&quot;</span></span>,
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">0, 2</span><span class="delimiter">&quot;</span></span>,
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">1, 0</span><span class="delimiter">&quot;</span></span>
     } )
     <span class="directive">public</span> <span class="type">void</span> coffee_is_not_served( <span class="type">int</span> coffees, <span class="type">int</span> euros ) {
         given().a_coffee_machine()
-            .and().the_coffee_costs_<span class="error">$</span>_euros( <span class="integer">2</span> )
-            .and().there_are_<span class="error">$</span>_coffees_left_in_the_machine( coffees );
+                .and().the_coffee_costs_<span class="error">$</span>_euros( <span class="integer">2</span> )
+                .and().there_are_<span class="error">$</span>_coffees_left_in_the_machine( coffees );
 
         when().I_insert_<span class="error">$</span>_one_euro_coins( euros )
-            .and().I_press_the_coffee_button();
+                .and().I_press_the_coffee_button();
 
         then().I_should_not_be_served_a_coffee();
     }</code></pre>
@@ -1942,6 +2183,46 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
    | 2 |       0 |     2 | Success |
    | 3 |       1 |     0 | Success |</pre>
 </div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_case_as_description"><a class="anchor" href="#_case_as_description"></a>8.3. Case As Description</h3>
+<div class="paragraph">
+<p>If your test has multiple cases, you can use the <code>@CaseAs</code> to provide additional information to the description for each case.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java">    <span class="annotation">@Test</span>
+    <span class="annotation">@DataProvider</span>( {
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">On the first run, 1, quite ok</span><span class="delimiter">&quot;</span></span>,
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">And on the second run, 2, well-done</span><span class="delimiter">&quot;</span></span>
+    } )
+    <span class="annotation">@CaseAs</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">$1</span><span class="delimiter">&quot;</span></span> )
+    <span class="directive">public</span> <span class="type">void</span> coffe_making_gets_better( <span class="predefined-type">String</span> description, <span class="type">int</span> runNr, <span class="predefined-type">String</span> result ) {
+        given().a_coffee_machine();
+        when().I_make_coffee_for_the_<span class="error">$</span>_time( runNr );
+        then().the_result_is( result );
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The resulting report will then look as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="nowrap"> Coffe making gets better
+
+   Given a coffee machine
+    When I make coffee for the &lt;runNr&gt; time
+    Then the result is &lt;result&gt;
+
+  Cases:
+
+   | # | Description           | runNr | result    | Status  |
+   +---+-----------------------+-------+-----------+---------+
+   | 1 | On the first run      |     1 | quite ok  | Success |
+   | 2 | And on the second run |     2 | well-done | Success |</pre>
 </div>
 </div>
 </div>
@@ -2225,7 +2506,7 @@ currentStep.addAttachment( Attachment.fromBase64( base64, MediaType.PNG )
 </div>
 </div>
 <div class="paragraph">
-<p>For a full example, see the <a href="https://github.com/TNG/JGiven/blob/master/jgiven-tests/src/test/java/com/tngtech/jgiven/report/html5/Html5ReportStage.java">Html5ReportStage</a> class that is used by the JGiven tests.</p>
+<p>For a full example, see the <a href="https://github.com/TNG/JGiven/blob/master/jgiven-tests/src/test/java/com/tngtech/jgiven/report/html5/Html5AppStage.java">Html5AppStage</a> class that is used by the JGiven tests.</p>
 </div>
 </div>
 </div>
@@ -2340,7 +2621,7 @@ MyExpectedException someExpectedException;
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spring&lt;/artifactId&gt;
-   &lt;version&gt;0.14.1&lt;/version&gt;
+   &lt;version&gt;0.15.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -2351,7 +2632,7 @@ MyExpectedException someExpectedException;
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.14.1&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.15.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -2367,7 +2648,7 @@ existence of JGiven.</p>
 <h4 id="_annotation_based"><a class="anchor" href="#_annotation_based"></a>12.2.1. Annotation-Based</h4>
 <div class="paragraph">
 <p>If you are using the annotation-based configuration of Spring you can annotate your Spring
-configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.14.1/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
+configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.15.0/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
 This is all you have to do to configure Spring for JGiven.</p>
 </div>
 <div class="sect4">
@@ -2445,7 +2726,7 @@ can copy the content of these classes (one method) into one of your test base cl
 <div class="paragraph">
 <p>In order to treat JGiven stages as Spring beans, e.g. if you want to inject
  other Spring beans into your stages, you have to annotate
-the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.14.1/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
+the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.15.0/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
 </div>
 <div class="sect3">
 <h4 id="_example_10"><a class="anchor" href="#_example_10"></a>12.4.1. Example</h4>
@@ -2537,7 +2818,7 @@ the implementation might be changed in a backwards-incompatible way in future ve
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:0.14.1&quot;)
+    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:0.15.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -2725,7 +3006,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit5&lt;/artifactId&gt;
-   &lt;version&gt;0.14.1&lt;/version&gt;
+   &lt;version&gt;0.15.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -2736,7 +3017,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    testCompile(&quot;com.tngtech.jgiven:jgiven-junit5:0.14.1&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-junit5:0.15.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -2745,7 +3026,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <div class="sect2">
 <h3 id="_use_jgiven_with_junit_5"><a class="anchor" href="#_use_jgiven_with_junit_5"></a>15.3. Use JGiven with JUnit 5</h3>
 <div class="paragraph">
-<p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.14.1/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
+<p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.15.0/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
 JUnit 5 extension. You just annotate your JUnit 5 test class with <code>@ExtendWith( JGivenExtension.class )</code>
 and JGiven is enabled.</p>
 </div>
@@ -2773,8 +3054,8 @@ the <code>@ScenarioStage</code> annotation.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Alternatively, you can use one of the test base classes <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.14.1/com/tngtech/jgiven/junit5/ScenarioTest.html"><code>ScenarioTest</code></a> or
-<a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.14.1/com/tngtech/jgiven/junit5/SimpleScenarioTest.html"><code>SimpleScenarioTest</code></a> that provide additional convenience methods
+<p>Alternatively, you can use one of the test base classes <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.15.0/com/tngtech/jgiven/junit5/ScenarioTest.html"><code>ScenarioTest</code></a> or
+<a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.15.0/com/tngtech/jgiven/junit5/SimpleScenarioTest.html"><code>SimpleScenarioTest</code></a> that provide additional convenience methods
 and allows you to specify stage classes by using type parameters:</p>
 </div>
 <div class="listingblock">
@@ -2803,7 +3084,8 @@ and allows you to specify stage classes by using type parameters:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-02-11 13:46:38 CET
+Version 0.15.0<br>
+Last updated 2017-04-28 07:46:48 +02:00
 </div>
 </div>
 </body>
