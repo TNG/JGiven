@@ -23,7 +23,7 @@ If you want to contribute code or documentation please follow the following work
 * JDK 8 (`JAVA_HOME` and `PATH` should be set accordingly)
     - Note that JGiven is built and compatible with Java 1.6, however, because of some test libraries, Java 8 is required for executing the tests in the `jgiven-tests` project
 * Gradle (is automatically downloaded by the `gradlew` script)
-* PhantomJS (required for the Selenium tests of the HTML5 report, can be installed under Ubuntu, for example, with `sudo apt-get install phantomjs` or with `npm install -g phantomjs-prebuilt`)
+* PhantomJS (required for the Selenium tests of the HTML5 report, can be installed, for example, with `npm install -g phantomjs-prebuilt`)
 
 ## Building and Testing JGiven
 
