@@ -44,9 +44,9 @@ dependencies {
 
   androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
   androidTestCompile 'com.android.support.test:runner:0.5'
-  androidTestCompile 'com.tngtech.jgiven:jgiven-android:0.14.1'
+  androidTestCompile 'com.tngtech.jgiven:jgiven-android:0.15.0'
 
-  jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:0.14.1'
+  jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:0.15.0'
   jgivenReport 'org.slf4j:slf4j-simple:1.7.21'
 }
 

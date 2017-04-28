@@ -7,7 +7,7 @@ scalaVersion := "2.11.7"
 libraryDependencies ++= Seq( 
     "org.scalatest" %% "scalatest" % "2.2.4" % "test",
     "junit" % "junit" % "4.12" % "test",
-    "com.tngtech.jgiven" % "jgiven-junit" % "0.11.0" % "test",
+    "com.tngtech.jgiven" % "jgiven-junit" % "0.15.0" % "test",
     "com.novocode" % "junit-interface" % "0.8" % "test",
     "org.slf4j" % "slf4j-simple" % "1.7.13" % "test"    
     )

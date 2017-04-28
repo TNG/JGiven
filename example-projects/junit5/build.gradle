@@ -9,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id "com.tngtech.jgiven.gradle-plugin" version "0.13.0"
+    id "com.tngtech.jgiven.gradle-plugin" version "0.15.0"
 }
 
 apply plugin: 'org.junit.platform.gradle.plugin'
@@ -26,7 +26,7 @@ compileJava {
 }
 
 ext {
-    junit5Version = '5.0.0-M3'
+    junit5Version = '5.0.0-M4'
 }
 
 repositories {
@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-    testCompile 'com.tngtech.jgiven:jgiven-junit5:latest.integration'
+    testCompile 'com.tngtech.jgiven:jgiven-junit5:latest'
     testCompile 'org.junit.jupiter:junit-jupiter-api:' + junit5Version
     testCompile 'org.junit.jupiter:junit-jupiter-engine:' + junit5Version
 }
