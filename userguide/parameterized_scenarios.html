@@ -463,17 +463,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">    @Test
     @DataProvider( {
-        "1, 1",
-        "0, 2",
-        "1, 0"
+            "1, 1",
+            "0, 2",
+            "1, 0"
     } )
     public void coffee_is_not_served( int coffees, int euros ) {
         given().a_coffee_machine()
-            .and().the_coffee_costs_$_euros( 2 )
-            .and().there_are_$_coffees_left_in_the_machine( coffees );
+                .and().the_coffee_costs_$_euros( 2 )
+                .and().there_are_$_coffees_left_in_the_machine( coffees );
 
         when().I_insert_$_one_euro_coins( euros )
-            .and().I_press_the_coffee_button();
+                .and().I_press_the_coffee_button();
 
         then().I_should_not_be_served_a_coffee();
     }</code></pre>
@@ -504,12 +504,52 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_case_as_description">Case As Description</h3>
+<div class="paragraph">
+<p>If your test has multiple cases, you can use the <code>@CaseAs</code> to provide additional information to the description for each case.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">    @Test
+    @DataProvider( {
+            "On the first run, 1, quite ok",
+            "And on the second run, 2, well-done"
+    } )
+    @CaseAs( "$1" )
+    public void coffe_making_gets_better( String description, int runNr, String result ) {
+        given().a_coffee_machine();
+        when().I_make_coffee_for_the_$_time( runNr );
+        then().the_result_is( result );
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The resulting report will then look as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre> Coffe making gets better
+
+   Given a coffee machine
+    When I make coffee for the &lt;runNr&gt; time
+    Then the result is &lt;result&gt;
+
+  Cases:
+
+   | # | Description           | runNr | result    | Status  |
+   +---+-----------------------+-------+-----------+---------+
+   | 1 | On the first run      |     1 | quite ok  | Success |
+   | 2 | And on the second run |     2 | well-done | Success |</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-02-11 13:46:31 CET
+Last updated 2017-04-28 07:46:48 +02:00
 </div>
 </div>
 </body>
