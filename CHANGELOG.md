@@ -1,3 +1,9 @@
+# v0.15.1
+
+## Fixed Issues
+
+* Fixed a `NullPointerException` when using `@Table(includeNullColumns = true)` and columns with null values [#315](https://github.com/TNG/JGiven/issues/315)
+
 # v0.15.0
 
 ## New Features

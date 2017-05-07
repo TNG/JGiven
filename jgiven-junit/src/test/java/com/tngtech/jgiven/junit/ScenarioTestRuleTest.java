@@ -2,11 +2,11 @@ package com.tngtech.jgiven.junit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.List;
-
-import junitparams.internal.InvokeParameterisedMethod;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -74,8 +74,11 @@ public class ScenarioTestRuleTest {
         return new DataProviderFrameworkMethod( method, 1, args, "%s" );
     }
 
-    private static Object junitParamsStatement( Method method, String args ) {
-        return new InvokeParameterisedMethod( new FrameworkMethod( method ), ScenarioTestRuleTest.class, args, 1 );
+    private static Object junitParamsStatement( Method method, String args ) throws ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+        Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass("junitparams.internal.InvokeParameterisedMethod");
+        Constructor<?> constructor = clazz.getDeclaredConstructors()[0];
+        constructor.setAccessible(true);
+        return constructor.newInstance(new FrameworkMethod(method), ScenarioTestRuleTest.class, args, 1 );
     }
 
     private static Method twoParamsMethod() throws Exception {

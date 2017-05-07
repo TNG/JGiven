@@ -103,7 +103,7 @@ public class PlainTextTableWriter extends PlainTextWriter {
 
     static private boolean hasNewline( List<String> row ) {
         for( String cell : row ) {
-            if( cell.contains( "\n" ) ) {
+            if( cell != null && cell.contains( "\n" ) ) {
                 return true;
             }
         }
