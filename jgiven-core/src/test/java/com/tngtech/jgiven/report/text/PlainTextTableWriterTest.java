@@ -99,4 +99,13 @@ public class PlainTextTableWriterTest {
         assertThat( s ).isEqualTo( "| " + expected1 + " | " + expected2 + " |" + System.getProperty("line.separator") );
 
     }
+
+    @Test
+    public void handleNullValues() throws Exception {
+        String[][] testData = new String[][] {
+                { null } };
+        List<List<String>> result = PlainTextTableWriter.handleNewLines( toListOfList( testData ) );
+        assertThat( result ).isEqualTo( toListOfList( testData ) );
+    }
+
 }
