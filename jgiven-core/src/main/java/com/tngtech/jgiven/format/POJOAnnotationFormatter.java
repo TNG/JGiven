@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import com.google.common.base.Function;
@@ -31,6 +32,10 @@ public class POJOAnnotationFormatter
 
     @Override
     public String format( Object obj, POJOFormat annotation ) {
+        if( Objects.isNull( obj ) ) {
+            return "null";
+        }
+
         List<Field> fields = getFields( obj.getClass(), annotation );
         boolean[] nonNullColumns = new boolean[fields.size()];
 

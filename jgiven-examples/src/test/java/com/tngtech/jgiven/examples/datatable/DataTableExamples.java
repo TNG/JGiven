@@ -3,53 +3,20 @@ package com.tngtech.jgiven.examples.datatable;
 import static com.tngtech.jgiven.annotation.Table.HeaderType.VERTICAL;
 import static java.util.Arrays.asList;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.util.List;
 
 import org.junit.Test;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.Format;
-import com.tngtech.jgiven.annotation.Formatf;
 import com.tngtech.jgiven.annotation.NamedFormat;
-import com.tngtech.jgiven.annotation.NamedFormats;
-import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.annotation.Table;
-import com.tngtech.jgiven.format.ArgumentFormatter;
+import com.tngtech.jgiven.examples.datatable.annotation.CustomerFormat;
+import com.tngtech.jgiven.examples.datatable.annotation.UpperCasedCustomFormatAnnotationChain;
+import com.tngtech.jgiven.examples.datatable.model.Address;
+import com.tngtech.jgiven.examples.datatable.model.Customer;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 
 public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.DataTableStage> {
-
-    public static class ToUpperCaseFormatter implements ArgumentFormatter<String> {
-        @Override
-        public String format( String value, String... args ) {
-            if( value == null ) {
-                return "";
-            }
-
-            return value.toUpperCase();
-        }
-    }
-
-    @Formatf( value = "(uppercased by custom format annotation) %s" )
-    @Format( value = ToUpperCaseFormatter.class )
-    @Retention( RetentionPolicy.RUNTIME )
-    @Target( { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE, ElementType.FIELD } )
-    public static @interface UpperCasedCustomFormatAnnotationChain {}
-
-    @Formatf( value = "(quoted by custom format annotation) %s" )
-    @Quoted
-    @Retention( RetentionPolicy.RUNTIME )
-    @Target( { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE, ElementType.FIELD } )
-    static @interface QuotedCustomFormatAnnotationChain {}
-
-    @NamedFormats( { @NamedFormat( name = "name", format = @Format( value = ToUpperCaseFormatter.class ) ),
-        @NamedFormat( name = "email", formatAnnotation = QuotedCustomFormatAnnotationChain.class ) } )
-    @Retention( RetentionPolicy.RUNTIME )
-    public static @interface TestCustomerFieldFormatSet {}
 
     static class DataTableStage extends Stage<DataTableStage> {
 
@@ -62,7 +29,7 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
             return self();
         }
 
-        public DataTableStage a_list_of_POJOs_is_used_as_parameters( @Table TestCustomer... testCustomer ) {
+        public DataTableStage a_list_of_POJOs_is_used_as_parameters( @Table Customer... testCustomer ) {
             return self();
         }
 
@@ -70,22 +37,22 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
                 @Table( fieldsFormat = {
                     @NamedFormat( name = "name", formatAnnotation = UpperCasedCustomFormatAnnotationChain.class ),
                     @NamedFormat( name = "email" )
-                } ) TestCustomer... testCustomer ) {
+                } ) Customer... testCustomer ) {
             return self();
         }
 
         public DataTableStage a_list_of_POJOs_is_used_as_parameters_and_some_fields_are_formatted_using_a_predefined_set_of_named_formats(
-                @Table( fieldsFormatSetAnnotation = TestCustomerFieldFormatSet.class ) TestCustomer... testCustomer ) {
+                @Table( fieldsFormatSetAnnotation = CustomerFormat.class ) Customer... testCustomer ) {
             return self();
         }
 
         public DataTableStage a_list_of_POJOs_is_used_as_parameters_with_header_type_VERTICAL(
-                @Table( header = VERTICAL ) TestCustomer... testCustomer ) {
+                @Table( header = VERTICAL ) Customer... testCustomer ) {
             return self();
         }
 
         public DataTableStage a_list_of_POJOs_is_used_as_parameters_with_header_type_VERTICAL_and_numbered_columns(
-                @Table( header = VERTICAL, numberedColumns = true ) TestCustomer... testCustomer ) {
+                @Table( header = VERTICAL, numberedColumns = true ) Customer... testCustomer ) {
             return self();
         }
 
@@ -93,29 +60,16 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
 
         }
 
-        public void a_single_POJO_is_used_as_parameters( @Table( header = VERTICAL ) TestCustomer testCustomer ) {}
+        public void a_single_POJO_is_used_as_parameters( @Table( header = VERTICAL ) Customer testCustomer ) {}
 
-        public void a_list_of_POJOs_with_numbered_rows( @Table( numberedRows = true ) TestCustomer... testCustomer ) {}
+        public void a_list_of_POJOs_with_numbered_rows( @Table( numberedRows = true ) Customer... testCustomer ) {}
 
         public void a_list_of_POJOs_with_numbered_rows_and_custom_header(
-                @Table( numberedRowsHeader = "Counter" ) TestCustomer... testCustomer ) {}
+                @Table( numberedRowsHeader = "Counter" ) Customer... testCustomer ) {}
 
         public void a_two_dimensional_array_with_numbered_rows(
                 @Table( numberedRows = true, columnTitles = "t" ) Object[][] testCustomer ) {}
 
-    }
-
-    static class TestCustomer {
-        String name;
-
-        @Formatf( value = "(quoted at POJO field level) %s" )
-        @Quoted
-        String email;
-
-        public TestCustomer( String name, String email ) {
-            this.name = name;
-            this.email = email;
-        }
     }
 
     @Test
@@ -132,48 +86,56 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
 
     @Test
     public void a_list_of_POJOs_can_be_represented_as_data_tables() {
-        given().a_list_of_POJOs_is_used_as_parameters( new TestCustomer( "John Doe", "john@doe.com" ),
-            new TestCustomer( "Jane Roe", "jane@roe.com" ) );
+        given().a_list_of_POJOs_is_used_as_parameters( new Customer( "John Doe", "john@doe.com" ),
+            new Customer( "Jane Roe", "jane@roe.com" ) );
     }
 
     @Test
     public void a_list_of_POJOs_can_be_represented_as_formatted_data_tables() {
         given().a_list_of_POJOs_is_used_as_parameters_and_some_fields_are_formatted_using_inline_specified_named_formats(
-            new TestCustomer( "John Doe", "john@doe.com" ), new TestCustomer( "Jane Roe", "jane@roe.com" ) ).and()
+            new Customer( "John Doe", "john@doe.com" ), new Customer( "Jane Roe", "jane@roe.com" ) ).and()
             .a_list_of_POJOs_is_used_as_parameters_and_some_fields_are_formatted_using_a_predefined_set_of_named_formats(
-                new TestCustomer( "John Doe", "john@doe.com" ), new TestCustomer( "Jane Roe", "jane@roe.com" ) ).and()
+                new Customer( "John Doe", "john@doe.com" ),
+                new Customer( "Jane Roe", "jane@roe.com",
+                    Address.builder()
+                        .street( "4988 Elk Street" )
+                        .zipCode( "90017" )
+                        .city( "Los Angeles" )
+                        .state( "California" )
+                        .country( "US" )
+                        .build() ) )
+            .and()
             .a_list_of_POJOs_is_used_as_parameters_and_some_fields_are_formatted_using_a_predefined_set_of_named_formats(
-                new TestCustomer( "John Doe", null ), new TestCustomer( null, "jane@roe.com" ) )
-            ;
+                new Customer( "John Doe", null ), new Customer( null, "jane@roe.com" ) );
     }
 
     @Test
     public void a_list_of_POJOs_can_be_represented_as_a_data_table_with_a_vertical_header() {
         given().a_list_of_POJOs_is_used_as_parameters_with_header_type_VERTICAL(
-            new TestCustomer( "John Doe", "john@doe.com" ), new TestCustomer( "Jane Roe", "jane@roe.com" ) );
+            new Customer( "John Doe", "john@doe.com" ), new Customer( "Jane Roe", "jane@roe.com" ) );
     }
 
     @Test
     public void a_list_of_POJOs_can_be_represented_as_a_data_table_with_a_vertical_header_and_numbered_columns() {
         given().a_list_of_POJOs_is_used_as_parameters_with_header_type_VERTICAL_and_numbered_columns(
-            new TestCustomer( "John Doe", "john@doe.com" ), new TestCustomer( "Jane Roe", "jane@roe.com" ) );
+            new Customer( "John Doe", "john@doe.com" ), new Customer( "Jane Roe", "jane@roe.com" ) );
     }
 
     @Test
     public void a_single_POJO_can_be_represented_as_a_data_table() {
-        given().a_single_POJO_is_used_as_parameters( new TestCustomer( "Jane Roe", "jane@roe.com" ) );
+        given().a_single_POJO_is_used_as_parameters( new Customer( "Jane Roe", "jane@roe.com" ) );
     }
 
     @Test
     public void parameter_tables_can_have_numbered_rows() {
-        given().a_list_of_POJOs_with_numbered_rows( new TestCustomer( "John Doe", "john@doe.com" ),
-            new TestCustomer( "Jane Roe", "jane@roe.com" ), new TestCustomer( "Lee Smith", "lee@smith.com" ) );
+        given().a_list_of_POJOs_with_numbered_rows( new Customer( "John Doe", "john@doe.com" ),
+            new Customer( "Jane Roe", "jane@roe.com" ), new Customer( "Lee Smith", "lee@smith.com" ) );
     }
 
     @Test
     public void parameter_tables_can_have_numbered_rows_with_custom_headers() {
-        given().a_list_of_POJOs_with_numbered_rows_and_custom_header( new TestCustomer( "John Doe", "john@doe.com" ),
-            new TestCustomer( "Jane Roe", "jane@roe.com" ), new TestCustomer( "Lee Smith", "lee@smith.com" ) );
+        given().a_list_of_POJOs_with_numbered_rows_and_custom_header( new Customer( "John Doe", "john@doe.com" ),
+            new Customer( "Jane Roe", "jane@roe.com" ), new Customer( "Lee Smith", "lee@smith.com" ) );
     }
 
     @Test
