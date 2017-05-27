@@ -1,5 +1,6 @@
 
 dependencies {
+	compile project(':jgiven-core')
     testCompile project(':jgiven-junit')
     testCompile project(':jgiven-spring')
     testCompile project(':jgiven-tests')
