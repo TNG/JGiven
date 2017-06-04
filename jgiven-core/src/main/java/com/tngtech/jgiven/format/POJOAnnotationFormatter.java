@@ -32,7 +32,7 @@ public class POJOAnnotationFormatter
 
     @Override
     public String format( Object obj, POJOFormat annotation ) {
-        if( Objects.isNull( obj ) ) {
+        if( obj == null ) {
             return "null";
         }
 
