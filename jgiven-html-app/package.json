@@ -2,7 +2,8 @@
   "name": "jgiven-html-app",
   "version": "0.15.0",
   "description": "The HTML App of JGiven",
-  "main": "src/index.html",
+  "homepage": "http://jgiven.org",
+  "main": "src/entry.js",
   "scripts": {
     "start": "webpack-dev-server --progress --colors",
     "debug": "webpack-dev-server -d --progress --colors",
@@ -15,9 +16,7 @@
   "files": [
     "package.json",
     "src",
-    "build/dist/index.html",
-    "build/dist/bundle.js",
-    "build/dist/*.ttf"
+    "build/dist/**"
   ],
   "devDependencies": {
     "angular-mocks": "1.5.8",
@@ -50,13 +49,25 @@
   "keywords": [
     "jgiven",
     "BDD",
-    "Java"
+    "Java",
+    "jsgiven",
+    "tdd",
+    "testing",
+    "test",
+    "cucumber",
+    "behavior-driven development",
+    "ATDD",
+    "acceptance testing"
   ],
-  "author": "Jan Schäfer <jan.schaefer@tngtech.com>",
+  "author": "Jan Schäfer <janschaefer@gmx.de",
   "license": "MIT",
+  "readmeFilename": "README.md",
   "repository": {
-    "url": "https://github.com/TNG/jgiven-html-app",
+    "url": "https://github.com/TNG/JGiven",
     "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/TNG/JGiven/issues"
   },
   "dependencies": {
     "angular": "1.5.8",
