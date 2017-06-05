@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "JsGiven v0.1 released"
+date:  2017-06-05
+categories: news
+---
+
+Good news for every Javascript developer who missed a JGiven-like BDD framework! The first version of [JsGiven](https://jsgiven.org/) has been released by [Florent Le Gall](https://github.com/flegall). It applies the concepts of JGiven to the world of Javascript and uses the JGiven HTML5 report for reporting.
+
+[jgiven-gh]: https://github.com/TNG/JGiven
+[jgiven]:    http://jgiven.org
