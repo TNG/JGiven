@@ -10,7 +10,7 @@ cache:
   directories:
   - $HOME/.gradle
   - $HOME/.yarn-cache
-install: "./gradlew -i -s assemble"
+install: "JAVA_HOME=$(jdk_switcher home oraclejdk8) ./gradlew -i -s assemble"
 script:
     - "./gradlew -i -s check -DjunitVersion=4.9"
     - "./gradlew -i -s check -DjunitVersion=4.10"
