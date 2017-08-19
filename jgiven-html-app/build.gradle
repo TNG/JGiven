@@ -1,28 +1,21 @@
 import org.gradle.internal.os.OperatingSystem;
 
-def distDir = "${buildDir}/dist"
+def distDir = "${buildDir}/package/dist"
 
-task yarnInstall(type: CrossPlatformExec) {
-    buildCommand('yarn', 'install')
+def htmlAppVersion = '0.16.1'
+
+task npmPack(type: CrossPlatformExec) {
+    buildCommand('npm', 'pack', 'jgiven-html-app@'+htmlAppVersion)
+
+    doLast {
+      copy {
+         from tarTree(resources.gzip('jgiven-html-app-'+htmlAppVersion+'.tgz'))
+         into buildDir
+      }
+    }
 }
 
-task yarnBuild(type: CrossPlatformExec, dependsOn: yarnInstall) {
-    inputs.files(fileTree(".") {
-        include "src/**"
-        include "package.json"
-    })
-    outputs.files(file(distDir))
-
-    buildCommand('yarn', 'build')
-}
-
-task yarnTest(type: CrossPlatformExec, dependsOn: yarnBuild) {
-    buildCommand('yarn', 'test')
-}
-
-test.finalizedBy(yarnTest)
-
-task zipAppDir(type: Zip, dependsOn: yarnBuild) {
+task zipAppDir(type: Zip, dependsOn: npmPack) {
     from distDir
     archiveName = 'app.zip'
     destinationDir = new File(buildDir, 'resources/main/com/tngtech/jgiven/report/html5')

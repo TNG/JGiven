@@ -2,3 +2,4 @@
 /data
 /dist
 /yarn-error.log
+*.tgz
