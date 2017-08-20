@@ -15,9 +15,7 @@ import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ContainerExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestExtensionContext;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
@@ -56,7 +54,7 @@ public class JGivenExtension implements
     private static final String REPORT_MODEL = "report-model";
 
     @Override
-    public void beforeAll( ContainerExtensionContext context ) throws Exception {
+    public void beforeAll( ExtensionContext context ) throws Exception {
         ReportModel reportModel = new ReportModel();
         reportModel.setTestClass( context.getTestClass().get() );
         if( !context.getDisplayName().equals( context.getTestClass().get().getSimpleName() ) ) {
@@ -71,24 +69,24 @@ public class JGivenExtension implements
     }
 
     @Override
-    public void afterAll( ContainerExtensionContext context ) throws Exception {
+    public void afterAll( ExtensionContext context ) throws Exception {
         new CommonReportHelper().finishReport( (ReportModel) context.getStore( NAMESPACE ).get( REPORT_MODEL ) );
     }
 
     @Override
-    public void beforeEach( TestExtensionContext context ) throws Exception {
+    public void beforeEach( ExtensionContext context ) throws Exception {
         List<NamedArgument> args = new ArrayList<NamedArgument>();
         getScenario().startScenario( context.getTestClass().get(), context.getTestMethod().get(), args );
 
     }
 
     @Override
-    public void afterEach( TestExtensionContext context ) throws Exception {
+    public void afterEach( ExtensionContext context ) throws Exception {
 
         ScenarioBase scenario = getScenario();
         try {
-            if( context.getTestException().isPresent() ) {
-                scenario.getExecutor().failed( context.getTestException().get() );
+            if( context.getExecutionException().isPresent() ) {
+                scenario.getExecutor().failed( context.getExecutionException().get() );
             }
             scenario.finished();
 
