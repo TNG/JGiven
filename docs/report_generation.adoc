@@ -20,6 +20,20 @@ jgiven.report.enabled=false
 
 Note that in order to generate HTML reports, JSON reports are required.
 
+==== Change report directory
+
+If you want to change the `jgiven-reports/json` directory, respectively `target/jgiven-reports/json`, set the following Java system property:
+
+
+[source,java]
+----
+jgiven.report.dir=<targetDir>
+----
+
+If JGiven is executed by the Maven surefire plugin, this can be done by the systemPropertyVariables configuration (see: http://maven.apache.org/surefire/maven-surefire-plugin/examples/system-properties.html).
+
+Note: In case HTML Reports are being generated, the source directory for the JSON Reports needs to be set accordingly (see "HTML Report" for more).
+
 === HTML Report
 
 To generate an HTML report you have to run the JGiven report generator
