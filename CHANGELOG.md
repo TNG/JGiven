@@ -3,7 +3,13 @@
 ## Fixed Issues
 
 * Fixed a `NullPointerException` in the PojoFormatter when passed object is `null` [#318](https://github.com/TNG/JGiven/issues/318)
+* Fixed JUnit 5.0.0 compilation issue due to API changes [#326](https://github.com/TNG/JGiven/issues/326)
 
+## JGiven HTML App
+
+The JGiven HTML5 App is extracted into its own [project](https://github.com/jgiven/jgiven-html-app).
+This allows us to develop the HTML5 App independently of JGiven as it is also used by [jsGiven](https://github.com/jsGiven/jsGiven).
+However, the App will also be delivered together with JGiven so for users of JGiven nothing should change.
 
 # v0.15.1
 
