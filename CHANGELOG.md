@@ -1,3 +1,10 @@
+# v0.15.2
+
+## Fixed Issues
+
+* Fixed a `NullPointerException` in the PojoFormatter when passed object is `null` [#318](https://github.com/TNG/JGiven/issues/318)
+
+
 # v0.15.1
 
 ## Fixed Issues
