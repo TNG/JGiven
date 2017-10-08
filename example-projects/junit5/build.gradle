@@ -2,17 +2,21 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+           url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+           url "https://oss.sonatype.org/content/repositories/staging/"
+        }
     }
     dependencies {
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M3'
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
+        classpath 'com.tngtech.jgiven:jgiven-gradle-plugin:0.15.2'
     }
-}
-
-plugins {
-    id "com.tngtech.jgiven.gradle-plugin" version "0.15.0"
 }
 
 apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -26,7 +30,8 @@ compileJava {
 }
 
 ext {
-    junit5Version = '5.0.0-M4'
+    junit5Version = '5.0.0'
+    jgivenVersion = '0.15.2'
 }
 
 repositories {
@@ -35,17 +40,20 @@ repositories {
     maven {
          url "https://oss.sonatype.org/content/repositories/snapshots/"
     }
-}
+    maven {
+         url "https://oss.sonatype.org/content/repositories/staging/"
+    }
+ }
 
 dependencies {
-    testCompile 'com.tngtech.jgiven:jgiven-junit5:latest'
+    testCompile 'com.tngtech.jgiven:jgiven-junit5:' + jgivenVersion
     testCompile 'org.junit.jupiter:junit-jupiter-api:' + junit5Version
     testCompile 'org.junit.jupiter:junit-jupiter-engine:' + junit5Version
 }
 
 junitPlatform {
     enableStandardTestTask true
-    platformVersion = "1.0.0-M3"
+    platformVersion = "1.0.0"
 }
 
 test.finalizedBy jgivenTestReport
