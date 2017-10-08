@@ -8,14 +8,16 @@ dependencies {
 }
 
 task copyClasses(type: Copy, dependsOn: classes) {
-    from 'build/classes/main'
+    from 'build/classes/java/main'
     into 'build/maven/target/classes'
 }
 
 task generatePom(type: Copy, dependsOn: copyClasses) {
     from 'src/main/maven'
     into 'build/maven'
-    expand(version: project.version)
+    filesMatching("**/pom.*") {
+        expand(version: project.version)
+    }
 }
 
 task generateMavenPlugin(type: CrossPlatformExec, dependsOn: generatePom) {
