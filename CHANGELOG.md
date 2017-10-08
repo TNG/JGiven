@@ -1,3 +1,9 @@
+# v0.15.3
+
+## Fixed Issues
+
+* Removed usages of `javax.xml.bind`, so that JGiven can be used with Java 9 without hassle [#324](https://github.com/TNG/JGiven/issues/324)
+
 # v0.15.2
 
 ## Fixed Issues
