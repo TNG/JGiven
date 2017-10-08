@@ -11,7 +11,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
-        classpath 'com.tngtech.jgiven:jgiven-gradle-plugin:0.15.2'
+        classpath 'com.tngtech.jgiven:jgiven-gradle-plugin:'+version
     }
 }
 
@@ -31,7 +31,7 @@ compileJava {
 
 ext {
     junit5Version = '5.0.0'
-    jgivenVersion = '0.15.2'
+    jgivenVersion = version
 }
 
 repositories {

@@ -6,7 +6,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jgiven.version>0.15.2</jgiven.version>
+    <jgiven.version>0.15.1</jgiven.version>
   </properties>
   <dependencies>
     <dependency>
@@ -60,18 +60,23 @@
       </plugin>
     </plugins>
   </build>
-  <repositories>
-    <repository>
-      <id>sonatype-staging</id>
-      <name>Sonatype Staging</name>
-      <url>https://oss.sonatype.org/content/repositories/staging/</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>sonatype-staging</id>
-      <name>Sonatype Staging</name>
-      <url>https://oss.sonatype.org/content/repositories/staging/</url>
-    </pluginRepository>
-  </pluginRepositories>
+  <profiles>
+    <profile>
+      <id>staging</id>
+      <repositories>
+        <repository>
+          <id>sonatype-staging</id>
+          <name>Sonatype Staging</name>
+          <url>https://oss.sonatype.org/content/repositories/staging/</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>sonatype-staging</id>
+          <name>Sonatype Staging</name>
+          <url>https://oss.sonatype.org/content/repositories/staging/</url>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
 </project>

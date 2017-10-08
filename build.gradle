@@ -55,6 +55,7 @@ asciidoctor {
 
 nexusStaging {
     stagingProfileId = stagingProfileId // stagingProfileId must be defined externally
+    packageGroup = 'com.tngtech'
 }
 
 subprojects {

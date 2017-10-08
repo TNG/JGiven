@@ -28,7 +28,6 @@ sed -i -e s/version=.*/version=$VERSION/ gradle.properties
 
 echo Commiting version change
 git add gradle.properties
-
 git commit -m "Update version to $VERSION"
 
 echo Building, Testing, and Uploading Archives...
@@ -37,7 +36,21 @@ echo Building, Testing, and Uploading Archives...
 echo Creating Tag
 git tag -a -m $VERSION_PREFIXED $VERSION_PREFIXED
 
-#echo "Promoting the release"
-#./gradlew closeAndPromoteRepository
+echo "Closing the repository..."
+./gradlew closeRepository
 
-echo DONE
+echo "Testing staging version..."
+
+echo "Testing Maven plugin..."
+mvn -f example-projects/maven/pom.xml clean test -Pstaging -Djgiven.version=$VERSION
+
+echo "Testing Gradle plugin..."
+./gradlew -b example-projects/junit5/build.gradle clean test -Pversion=$VERSION
+
+echo STAGING SUCCESSFUL!
+echo ""
+read -p "Do you want to release now? [y/N]" -n 1 -r
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    ./gradlew releaseRepository
+fi
