@@ -8,13 +8,12 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import com.google.common.io.BaseEncoding;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.report.model.ReportModel;
-
-import javax.xml.bind.DatatypeConverter;
 
 public class ThenReportGenerator<SELF extends ThenReportGenerator<?>> extends Stage<SELF> {
 
@@ -56,7 +55,7 @@ public class ThenReportGenerator<SELF extends ThenReportGenerator<?>> extends St
     }
 
     public SELF binary_content(@Quoted String base64content) {
-        assertThat(currentFile).hasBinaryContent(DatatypeConverter.parseBase64Binary(base64content));
+        assertThat(currentFile).hasBinaryContent(BaseEncoding.base64().decode(base64content));
         return self();
     }
 

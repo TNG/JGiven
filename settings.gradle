@@ -23,6 +23,10 @@ if (JavaVersion.current().isJava8Compatible() && !release) {
     include ':jgiven-java8-tests'
 }
 
+if (JavaVersion.current().isJava9Compatible() && !release) {
+    include ':jgiven-java9-tests'
+}
+
 if (JavaVersion.current().isJava8Compatible()) {
     include ':jgiven-junit5'
 }

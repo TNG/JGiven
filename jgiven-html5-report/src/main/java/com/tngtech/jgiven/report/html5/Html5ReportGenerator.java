@@ -1,8 +1,25 @@
 package com.tngtech.jgiven.report.html5;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Charsets;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Lists;
+import com.google.common.io.BaseEncoding;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.tngtech.jgiven.exception.JGivenInstallationException;
@@ -11,21 +28,11 @@ import com.tngtech.jgiven.impl.util.Version;
 import com.tngtech.jgiven.report.AbstractReportConfig;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.ReportGenerator;
-import com.tngtech.jgiven.report.config.CommandLineOptionBuilder;
-import com.tngtech.jgiven.report.config.ConfigOption;
-import com.tngtech.jgiven.report.config.ConfigOptionBuilder;
-import com.tngtech.jgiven.report.config.converter.ToBoolean;
-import com.tngtech.jgiven.report.config.converter.ToFile;
-import com.tngtech.jgiven.report.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.xml.bind.DatatypeConverter;
-import java.io.*;
-import java.util.*;
-import java.util.zip.GZIPOutputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ReportModelFile;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.StepModel;
 
 public class Html5ReportGenerator extends AbstractReportGenerator {
     private static final Logger log = LoggerFactory.getLogger( ReportGenerator.class );
@@ -154,7 +161,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
             contentStream.append( "]}" );
             contentStream.flush();
             ResourceUtil.close( contentStream );
-            String base64String = DatatypeConverter.printBase64Binary( byteStream.toByteArray() );
+            String base64String = BaseEncoding.base64().encode( byteStream.toByteArray() );
             this.fileStream.append( "'" + base64String + "'" );
             this.fileStream.append( ");" );
             fileStream.flush();

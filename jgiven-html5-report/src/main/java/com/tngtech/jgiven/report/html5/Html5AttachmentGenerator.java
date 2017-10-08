@@ -1,20 +1,5 @@
 package com.tngtech.jgiven.report.html5;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Sets;
-import com.google.common.io.Files;
-import com.google.common.net.MediaType;
-import com.tngtech.jgiven.exception.JGivenInstallationException;
-import com.tngtech.jgiven.report.model.AttachmentModel;
-import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.report.model.ReportModelVisitor;
-import com.tngtech.jgiven.report.model.StepModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -25,7 +10,23 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import static javax.xml.bind.DatatypeConverter.parseBase64Binary;
+import javax.imageio.ImageIO;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Charsets;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Sets;
+import com.google.common.io.BaseEncoding;
+import com.google.common.io.Files;
+import com.google.common.net.MediaType;
+import com.tngtech.jgiven.exception.JGivenInstallationException;
+import com.tngtech.jgiven.report.model.AttachmentModel;
+import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ReportModelVisitor;
+import com.tngtech.jgiven.report.model.StepModel;
 
 class Html5AttachmentGenerator extends ReportModelVisitor {
     private static final Logger log = LoggerFactory.getLogger( Html5AttachmentGenerator.class );
@@ -132,7 +133,7 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
                     byte[] thumbnail = compressToThumbnail( attachment.getValue(), extension );
                     Files.write( thumbnail, thumbFile );
                 }
-                Files.write( parseBase64Binary( attachment.getValue() ), targetFile );
+                Files.write( BaseEncoding.base64().decode( attachment.getValue() ), targetFile );
             } else {
                 Files.write( attachment.getValue(), targetFile, Charsets.UTF_8 );
             }
@@ -143,7 +144,7 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
     }
 
     private byte[] compressToThumbnail( String base64content, String extension ) {
-        byte[] imageBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary( base64content );
+        byte[] imageBytes = BaseEncoding.base64().decode( base64content );
         double scaleFactor = 0.02;
         byte[] base64thumb = {};
         try {

@@ -2,21 +2,16 @@ package com.tngtech.jgiven.report.html5;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.tngtech.jgiven.attachment.Attachment;
-import com.tngtech.jgiven.attachment.MediaType;
-import com.tngtech.jgiven.report.model.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import javax.xml.bind.DatatypeConverter;
-import java.io.File;
-import java.io.IOException;
+import com.google.common.io.BaseEncoding;
 
 public class Html5AttachmentGeneratorTest {
 
     private static final String JSON_SAMPLE = "{}";
-    private static final byte[] BINARY_SAMPLE = DatatypeConverter.parseHexBinary( "89504E470D0A1A0A" );
+    private static final byte[] BINARY_SAMPLE = BaseEncoding.base64().decode( "89504E470D0A1A0A" );
 
     @Rule
     public final TemporaryFolder temporaryFolderRule = new TemporaryFolder();

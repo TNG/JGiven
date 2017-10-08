@@ -4,8 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
 
-import javax.xml.bind.DatatypeConverter;
-
+import com.google.common.io.BaseEncoding;
 import com.tngtech.jgiven.annotation.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +31,7 @@ public class Html5ReportGeneratorTest extends
     private static final String JSON_SAMPLE = "{" +
             "  \"foo\": \"bar\"" +
             "}";
-    private static final String BINARY_SAMPLE = DatatypeConverter.printBase64Binary(DatatypeConverter.parseHexBinary( "89504E470D0A1A0A" ));
+    private static final String BINARY_SAMPLE = BaseEncoding.base64().encode(BaseEncoding.base32Hex().decode( "89504E470D0A1A0A" ));
 
     @ScenarioStage
     GivenJsonReports<?> jsonReports;
