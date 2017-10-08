@@ -7,7 +7,7 @@ dependencies {
     compile project(':jgiven-html5-report')
 }
 
-task copyClasses(type: Copy, dependsOn: classes) {
+task copyClasses(type: Copy, dependsOn: compileJava) {
     from 'build/classes/java/main'
     into 'build/maven/target/classes'
 }
@@ -36,9 +36,9 @@ generateMavenPlugin.onlyIf {
 
 task copyMavenPlugin(type: Copy, dependsOn: generateMavenPlugin) {
     from('build/maven/target/classes') {
-       include '**/plugin.xml'
+       include '**/*.xml'
     }
-    into 'build/classes/main'
+    into 'build/classes/java/main'
 }
 
 task copyPom(type: Copy, dependsOn: generatePom) {
