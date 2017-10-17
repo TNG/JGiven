@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Charsets;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -31,12 +32,21 @@ import com.tngtech.jgiven.report.model.StepModel;
 class Html5AttachmentGenerator extends ReportModelVisitor {
     private static final Logger log = LoggerFactory.getLogger( Html5AttachmentGenerator.class );
     private static final String ATTACHMENT_DIRNAME = "attachments";
+    public static final int MINIMAL_THUMBNAIL_SIZE = 20;
 
     private File attachmentsDir;
     private String subDir;
     private Multiset<String> fileCounter = HashMultiset.create();
     private Set<String> usedFileNames = Sets.newHashSet();
     private String htmlSubDir;
+
+    public Html5AttachmentGenerator() {
+    }
+
+    @VisibleForTesting
+    public Html5AttachmentGenerator( File attachmentsDir ) {
+        this.attachmentsDir = attachmentsDir;
+    }
 
     public void generateAttachments( File targetDir, ReportModel model ) {
         subDir = ATTACHMENT_DIRNAME + File.separatorChar + model.getClassName().replace( '.', File.separatorChar );
@@ -158,8 +168,8 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
     }
 
     private BufferedImage scaleBy( double factor, BufferedImage before ) {
-        int width = (int) Math.round( before.getWidth() * factor );
-        int height = (int) Math.round( before.getHeight() * factor );
+        int width = Math.max( (int) Math.round( before.getWidth() * factor ), MINIMAL_THUMBNAIL_SIZE );
+        int height = Math.max( (int) Math.round( before.getHeight() * factor ), MINIMAL_THUMBNAIL_SIZE );
         BufferedImage after = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
 
         AffineTransform at = new AffineTransform();
