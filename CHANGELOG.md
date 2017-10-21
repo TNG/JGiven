@@ -1,3 +1,9 @@
+# v0.15.4
+
+## Fixed Issues
+
+* Fixed an IllegalArgumentException when creating thumbnails for very small images [#329](https://github.com/TNG/JGiven/issues/329) (thanks to maccluca)
+
 # v0.15.3
 
 ## Fixed Issues
