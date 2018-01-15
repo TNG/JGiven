@@ -35,7 +35,7 @@ import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
 
 public class Html5ReportGenerator extends AbstractReportGenerator {
-    private static final Logger log = LoggerFactory.getLogger( ReportGenerator.class );
+    private static final Logger log = LoggerFactory.getLogger( Html5ReportGenerator.class );
     private static final int MAX_BATCH_SIZE = 100;
 
     private PrintStream fileStream;
