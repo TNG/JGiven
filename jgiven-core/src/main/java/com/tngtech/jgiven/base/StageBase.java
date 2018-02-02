@@ -49,7 +49,7 @@ public class StageBase<SELF extends StageBase<?>> {
      *
      * <h2>Example Usage</h2>
      * <pre>{@code
-     *     given().$( "a description to improve the report, but is related to any code that needs to be executed");
+     *     given().$( "a description to improve the report, but is not related to any code that needs to be executed");
      *     });
      * }</pre>
      *
