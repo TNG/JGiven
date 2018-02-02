@@ -43,4 +43,20 @@ public class StageBase<SELF extends StageBase<?>> {
         function.apply( self() );
         return self();
     }
+
+    /**
+     * A simple helper to provide a description
+     *
+     * <h2>Example Usage</h2>
+     * <pre>{@code
+     *     given().$( "a description to improve the report, but is related to any code that needs to be executed");
+     *     });
+     * }</pre>
+     *
+     * @param description the description of the step
+     * @since 0.15.4
+     */
+    public SELF $(String description) {
+        return self();
+    }
 }
