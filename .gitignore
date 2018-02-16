@@ -18,3 +18,4 @@ local.properties
 out
 
 generatedSrc
+.vscode
