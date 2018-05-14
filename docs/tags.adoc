@@ -10,9 +10,10 @@ Let’s say you want to know which scenarios covers the coffee feature. To do so
 include::{sourcedir}/tags/ExampleCategory.java[tags=noPackage,indent=0]
 ----
 
-Two things are important:
-. The annotation itself must be annotated with the `@IsTag` annotation to mark it as a JGiven tag.
-. The annotation must have retention policy RUNTIME so that JGiven can recognize it at runtime.
+Two things are important: 
+
+1. The annotation itself must be annotated with the `@IsTag` annotation to mark it as a JGiven tag.
+2. The annotation must have retention policy RUNTIME so that JGiven can recognize it at runtime.
 
 To tag a scenario with the new tag, you just annotate the corresponding test method:
 
