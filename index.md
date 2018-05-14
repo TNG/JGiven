@@ -38,7 +38,7 @@ public void a_pancake_can_be_fried_out_of_an_egg_milk_and_flour() {
 }
 {% endhighlight %}
 
-The above test can be executed like any JUnit test. During the execution, JSON files are generated that can then be used afterwards to generated test reports. By default, a plain text report is shown in the console, which would look as follows:
+The above test can be executed like any JUnit test. During the execution, JSON files are generated that can then be used afterwards to generate test reports. By default, a plain text report is shown in the console, which would look as follows:
 
 ```
 Scenario: a pancake can be fried out of an egg milk and flour
