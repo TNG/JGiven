@@ -18,7 +18,7 @@ In classical BDD tools for Java like [JBehave](http://jbehave.org) or [Cucumber]
 
 Beside the classical BDD tools there are a number of tools for Java to write BDD tests in a programming language like Groovy ([easyb](http://easyb.org)) or Scala ([ScalaTest](http://www.scalatest.org)). To our knowledge, however, there is no BDD tool where scenarios can be written in plain Java.
 
-Finally, there are specification testing frameworks like [Spock](http://spock.org) (Groovy) or [LambdaBehave](http://richardwarburton.github.io/lambda-behave/) which are very developer-centric and good for unit-testing, but the generate reports are not in Given-When-Then form and are not easily readable by non-developers.
+Finally, there are specification testing frameworks like [Spock](http://spock.org) (Groovy) or [LambdaBehave](http://richardwarburton.github.io/lambda-behave/) which are very developer-centric and good for unit-testing, but the generated reports are not in Given-When-Then form and are not easily readable by non-developers.
 
 ## BDD with JGiven
 
@@ -46,7 +46,7 @@ public void a_pancake_can_be_fried_out_of_an_egg_milk_and_flour() {
 ```
 
 The above test can be executed like any JUnit test.
-During the execution, JSON files are generated that can then be used afterwards to generated test reports.
+During the execution, JSON files are generated that can then be used afterwards to generate test reports.
 By default, a plain text report is shown in the console, which would look as follows:
 
 ```
