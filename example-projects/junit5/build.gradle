@@ -10,12 +10,10 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
         classpath 'com.tngtech.jgiven:jgiven-gradle-plugin:'+version
     }
 }
 
-apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 apply plugin: 'java'
@@ -30,7 +28,7 @@ compileJava {
 }
 
 ext {
-    junit5Version = '5.0.0'
+    junit5Version = '5.2.0'
     jgivenVersion = version
 }
 
@@ -51,9 +49,8 @@ dependencies {
     testCompile 'org.junit.jupiter:junit-jupiter-engine:' + junit5Version
 }
 
-junitPlatform {
-    enableStandardTestTask true
-    platformVersion = "1.0.0"
+test {
+    useJUnitPlatform()
 }
 
-test.finalizedBy jgivenTestReport
+test.finalizedBy(jgivenTestReport)
