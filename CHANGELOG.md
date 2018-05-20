@@ -1,8 +1,18 @@
-# v0.15.4
+# v0.16.0
+
+## New Features
+
+* Java 10 is supported now [#345](https://github.com/TNG/JGiven/issues/345)
 
 ## Fixed Issues
 
 * Fixed an IllegalArgumentException when creating thumbnails for very small images [#329](https://github.com/TNG/JGiven/issues/329) (thanks to maccluca)
+* Fixed NPE when using JUnit 5 and one test class has only disabled method [#338](https://github.com/TNG/JGiven/issues/338)
+* Fixed minor issue in JUnit 5 example that did not generate the HTML 5 report [#340](https://github.com/TNG/JGiven/issues/340)
+
+## Backwards Incompatible Changes
+
+* Java 6 is not supported anymore
 
 # v0.15.3
 
