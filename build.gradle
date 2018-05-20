@@ -83,7 +83,7 @@ configure(subprojects.findAll { !it.name.contains("jgiven-junit5") }) {
     apply plugin: 'ru.vyarus.animalsniffer'
 
     dependencies {
-        signature 'org.codehaus.mojo.signature:java16:1.1@signature'
+        signature 'org.codehaus.mojo.signature:java17:1.0@signature'
     }
 }
 
@@ -94,7 +94,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     apply plugin: 'signing'
     apply plugin: 'maven-publish'
 
-    sourceCompatibility = targetCompatibility = 1.6
+    sourceCompatibility = targetCompatibility = 1.7
 
     dependencies {
         compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
