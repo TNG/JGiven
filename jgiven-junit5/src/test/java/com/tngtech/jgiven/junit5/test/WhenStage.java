@@ -17,7 +17,8 @@ public class WhenStage {
         someResult = "Some Result";
     }
 
-    public void some_failing_step() {
+    public WhenStage some_failing_step() {
         Assertions.assertTrue(false, "Intentionally failing");
+        return this;
     }
 }

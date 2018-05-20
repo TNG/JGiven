@@ -7,19 +7,13 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import com.tngtech.jgiven.config.ConfigurationUtil;
-import com.tngtech.jgiven.impl.Config;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestInstancePostProcessor;
+import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
@@ -62,14 +56,15 @@ public class JGivenExtension implements
         }
         context.getStore( NAMESPACE ).put( REPORT_MODEL, reportModel );
 
-        ConfigurationUtil.getConfiguration(context.getTestClass().get())
-                .configureTag(Tag.class)
-                .description("JUnit 5 Tag")
-                .color("orange");
+        ConfigurationUtil.getConfiguration( context.getTestClass().get() )
+            .configureTag( Tag.class )
+            .description( "JUnit 5 Tag" )
+            .color( "orange" );
     }
 
     @Override
     public void afterAll( ExtensionContext context ) throws Exception {
+        ScenarioHolder.get().removeScenarioOfCurrentThread();
         new CommonReportHelper().finishReport( (ReportModel) context.getStore( NAMESPACE ).get( REPORT_MODEL ) );
     }
 
@@ -82,7 +77,6 @@ public class JGivenExtension implements
 
     @Override
     public void afterEach( ExtensionContext context ) throws Exception {
-
         ScenarioBase scenario = getScenario();
         try {
             if( context.getExecutionException().isPresent() ) {

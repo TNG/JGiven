@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.junit5.test;
 
-import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,7 +8,7 @@ import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.junit5.JGivenExtension;
 
-@Tag("Class Tag")
+@Tag("class-tag")
 @ExtendWith( JGivenExtension.class )
 public class TagTest {
 
@@ -23,7 +22,7 @@ public class TagTest {
     ThenStage thenStage;
 
     @Test
-    @Tag("Method Tag")
+    @Tag("method-tag")
     public void scenario_with_a_JUnit5_tag() {
         givenStage.some_state();
         whenStage.some_action();
