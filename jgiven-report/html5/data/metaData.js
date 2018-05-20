@@ -1,1 +1,1 @@
-jgivenReport.setMetaData({"created":"Dec 29, 2016 2:08:51 PM","title":"JGiven Report","data":["data0.js"]} );
+jgivenReport.setMetaData({"created":"May 20, 2018, 6:55:10 PM","version":"0.16.0-2e5ca87f5d3f","title":"JGiven Report","data":["data0.js"],"showThumbnails":true} );
