@@ -5,13 +5,14 @@ import org.junit.jupiter.api.Test;
 
 import com.tngtech.jgiven.junit5.ScenarioTest;
 
-public class JUnit5ScenarioTest extends ScenarioTest<GivenStage, WhenStage, ThenStage> {
+/**
+ * A test class with only disabled test methods to reproduce #338
+ */
+public class AllDisabledTest extends ScenarioTest<GivenStage, WhenStage, ThenStage> {
 
     @Test
-    public void JGiven_works_with_JUnit5_DISABLED() {
+    @Disabled
+    void aTestThatIsDisabled() {
         given().some_state();
-        when().some_action();
-        then().some_outcome();
     }
-
 }

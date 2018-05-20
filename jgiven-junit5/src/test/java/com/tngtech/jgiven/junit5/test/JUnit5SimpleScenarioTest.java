@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class JUnit5SimpleScenarioTest extends SimpleScenarioTest<GeneralStage> {
 
     @Test
-    public void JGiven_works_with_JUnit5() {
+    public void JGiven_works_with_JUnit5_FOO_BAR() {
         given().some_state();
         when().some_action();
         then().some_outcome();
