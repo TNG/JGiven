@@ -153,6 +153,8 @@ public class StepFormatter {
         boolean dropNextWhitespace = false;
         StringBuilder currentWords = new StringBuilder();
 
+        boolean performedReplacement = false;
+
         for( int i = 0; i < stepDescription.length(); i++ ) {
 
             boolean dollarMatch = stepDescription.charAt( i ) == '$';
@@ -166,6 +168,7 @@ public class StepFormatter {
             boolean singleDollarCountIndexExists = singlePlaceholderCounter < arguments.size();
 
             if( dollarMatch ) {
+                performedReplacement = true;
                 // e.g $$
                 if( escapedDollarMatch ) {
                     formattedWords.add( new Word( "$" ) );
@@ -216,7 +219,9 @@ public class StepFormatter {
         }
 
         flushCurrentWord( currentWords, formattedWords, false );
-        formattedWords.addAll( getRemainingArguments( usedArguments ) );
+        if (!performedReplacement) {
+            formattedWords.addAll( getRemainingArguments( usedArguments ) );
+        }
         return formattedWords;
     }
 

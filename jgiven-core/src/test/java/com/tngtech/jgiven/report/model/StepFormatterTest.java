@@ -50,6 +50,9 @@ public class StepFormatterTest {
                 { "$2 $1",         asList( "strA", "strB" ), asList("a", "b"),   "b a" },
                 { "$]",            asList( "strA"),          asList( "a" ),      "a ]" },
                 { "foo $]",        asList( "strA" ),         asList( "a" ),      "foo a ]" },
+                { "foo$",          asList( "strA", "strB"),  asList( "a", "b"),  "foo a"},
+                { "$2",            asList( "strA", "strB"),  asList( "a", "b"),  "b"},
+                { "$",             asList( "strA", "strB"),  asList( "a", "b"),  "a"}
         };
         // @formatter:on
 
