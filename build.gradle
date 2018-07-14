@@ -25,7 +25,7 @@ apply plugin: 'io.codearte.nexus-staging'
 description = 'JGiven - BDD in plain Java'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.7'
+    gradleVersion = '4.8'
 }
 
 allprojects {
