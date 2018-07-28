@@ -172,7 +172,7 @@ Then you can define a step method as follows:
 
 [source,java]
 ----
-public SELF the_coffee_price_$_is_registered( @POJOFormat(fieldsFormat = {
+public SELF the_coffee_price_$_is_registered( @POJOFormat(fieldFormats = {
                     @NamedFormat( name = "name", customFormatAnnotation = Quoted.class),
                     @NamedFormat( name = "price_in_EUR", format = @Format( value = PrintfFormatter.class, args = "%s EUR" ) )
                 } ) CoffeeWithPrice price ) {
