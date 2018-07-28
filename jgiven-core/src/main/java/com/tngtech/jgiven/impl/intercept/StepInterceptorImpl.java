@@ -216,7 +216,8 @@ public class StepInterceptorImpl implements StepInterceptor {
     }
 
     private void handleThrowable( Throwable t ) throws Throwable {
-        if( t.getClass().getName().equals( "org.junit.AssumptionViolatedException" ) ) {
+        if( t.getClass().getName().equals( "org.junit.AssumptionViolatedException" ) ||
+            t.getClass().getName().equals( "org.testng.SkipException")) {
             throw t;
         }
 
