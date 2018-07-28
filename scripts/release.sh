@@ -54,3 +54,9 @@ if [[ $REPLY =~ ^[Yy]$ ]]
 then
     ./gradlew releaseRepository
 fi
+
+echo Publishing Gradle Plugin to Gradle Plugin Repository...
+./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins
+
+echo Testing Gradle Plugin from Gradle Plugin Repository
+#./gradlew -b example-projects/java9/build.gradle clean test -Pversion=$VERSION
