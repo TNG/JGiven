@@ -1,6 +1,6 @@
 plugins {
     id "java-gradle-plugin"
-    id "com.gradle.plugin-publish" version "0.9.6"
+    id "com.gradle.plugin-publish" version "0.10.0"
 }
 
 sourceCompatibility = targetCompatibility = 1.7
@@ -26,7 +26,7 @@ pluginBundle {
     website = 'http://jgiven.org/'
     vcsUrl = 'https://github.com/TNG/JGiven.git'
     description = 'JGiven Gradle plugin'
-    tags = ['jgiven', 'testing']
+    tags = ['jgiven', 'testing','bdd','junit','testng']
 
     plugins {
         jgivenPlugin {
