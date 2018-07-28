@@ -113,6 +113,10 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
+    public GivenTestStep varargs_as_parameters_$( String... params ) {
+        return self();
+    }
+
     public GivenTestStep ALLUPPERCASE() {
         return self();
     }
