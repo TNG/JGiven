@@ -121,11 +121,16 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
+    public GivenTestStep arrays_as_parameters(String[] params) {
+        return self();
+    }
+
     @As( "another description" )
     @IntroWord
     public GivenTestStep an_intro_word_with_an_as_annotation() {
         return self();
     }
+
 
     public static class CustomAsProvider implements AsProvider {
 

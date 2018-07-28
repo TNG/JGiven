@@ -373,6 +373,16 @@ public class PlainTextReporterTest extends ScenarioTestBaseForTesting<GivenTestS
     }
 
     @Test
+    public void array_formatting() throws UnsupportedEncodingException {
+        getScenario().startScenario( "varargs" );
+
+        given().arrays_as_parameters( new String[] {"a", "b", "c" } );
+
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string ).contains( "Given arrays as parameters a, b, c" );
+    }
+
+    @Test
     public void pojo_format_is_working() throws Throwable {
         getScenario().startScenario( "test" );
 
