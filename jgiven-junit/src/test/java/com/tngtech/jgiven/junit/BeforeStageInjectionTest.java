@@ -16,7 +16,7 @@ public class BeforeStageInjectionTest extends SimpleScenarioTest<BeforeStageInje
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
-    public void testAfterScenario( ) {
+    public void scenario_state_should_be_available_in_BeforeState_method() {
         given().someStep();
     }
 
@@ -26,11 +26,11 @@ public class BeforeStageInjectionTest extends SimpleScenarioTest<BeforeStageInje
 
         @BeforeStage
         public void init() {
-            Assertions.assertThat(folder).isNotNull();
+            Assertions.assertThat( folder ).isNotNull();
         }
 
         void someStep() {
-            Assertions.assertThat(folder).isNotNull();
+            Assertions.assertThat( folder ).isNotNull();
         }
     }
 }
