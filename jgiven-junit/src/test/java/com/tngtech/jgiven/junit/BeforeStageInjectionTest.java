@@ -16,7 +16,7 @@ public class BeforeStageInjectionTest extends SimpleScenarioTest<BeforeStageInje
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
-    public void scenario_state_should_be_available_in_BeforeState_method() {
+    public void scenario_state_should_be_available_in_BeforeStage_method() {
         given().someStep();
     }
 
