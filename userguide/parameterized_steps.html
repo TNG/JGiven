@@ -645,7 +645,7 @@ public @interface Formatf {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public SELF the_coffee_price_$_is_registered( @POJOFormat(fieldsFormat = {
+<pre class="highlight"><code class="language-java" data-lang="java">public SELF the_coffee_price_$_is_registered( @POJOFormat(fieldFormats = {
                     @NamedFormat( name = "name", customFormatAnnotation = Quoted.class),
                     @NamedFormat( name = "price_in_EUR", format = @Format( value = PrintfFormatter.class, args = "%s EUR" ) )
                 } ) CoffeeWithPrice price ) {
@@ -875,7 +875,7 @@ See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-08 17:37:29 CEST
+Last updated 2018-07-28 10:03:14 CEST
 </div>
 </div>
 </body>
