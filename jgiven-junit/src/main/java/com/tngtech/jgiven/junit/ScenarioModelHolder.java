@@ -13,7 +13,7 @@ public class ScenarioModelHolder {
 
     private final static ScenarioModelHolder instance = new ScenarioModelHolder();
 
-    private final Map<Class<?>, ReportModel> reportModels = Maps.newHashMap();
+    private final Map<String, ReportModel> reportModels = Maps.newHashMap();
 
     public static ScenarioModelHolder getInstance() {
         return instance;
@@ -28,13 +28,13 @@ public class ScenarioModelHolder {
      */
     public ReportModel getReportModel( Class<? extends Object> testClass ) {
         synchronized( reportModels ) {
-            ReportModel reportModel = reportModels.get( testClass );
+            ReportModel reportModel = reportModels.get( testClass.getCanonicalName() );
 
             if( reportModel == null ) {
                 reportModel = new ReportModel();
                 reportModel.setTestClass( testClass );
 
-                reportModels.put( testClass, reportModel );
+                reportModels.put( testClass.getCanonicalName(), reportModel );
             }
 
             return reportModel;
@@ -46,8 +46,8 @@ public class ScenarioModelHolder {
      */
     public ReportModel getAndRemoveReportModel( Class<?> testClass ) {
         synchronized( reportModels ) {
-            ReportModel reportModel = reportModels.get( testClass );
-            reportModels.remove( testClass );
+            ReportModel reportModel = reportModels.get( testClass.getCanonicalName() );
+            reportModels.remove( testClass.getCanonicalName() );
             return reportModel;
         }
     }
