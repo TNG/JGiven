@@ -2,6 +2,7 @@
 
 ## New Features
 
+* First release of the Spock integration [#358](https://github.com/TNG/JGiven/pull/358) (thanks to mustaine)
 * TestNG SkipExceptions are now recognized [#355](https://github.com/TNG/JGiven/issues/355)
 
 ## Fixed Issues
