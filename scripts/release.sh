@@ -53,10 +53,10 @@ read -p "Do you want to release now? [y/N]" -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     ./gradlew releaseRepository
-fi
 
-echo Publishing Gradle Plugin to Gradle Plugin Repository...
-./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins
+    echo Publishing Gradle Plugin to Gradle Plugin Repository...
+    ./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins
+fi
 
 echo Testing Gradle Plugin from Gradle Plugin Repository
 #./gradlew -b example-projects/java9/build.gradle clean test -Pversion=$VERSION
