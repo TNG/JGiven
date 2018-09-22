@@ -376,10 +376,20 @@ public class PlainTextReporterTest extends ScenarioTestBaseForTesting<GivenTestS
     public void array_formatting() throws UnsupportedEncodingException {
         getScenario().startScenario( "varargs" );
 
-        given().arrays_as_parameters( new String[] {"a", "b", "c" } );
+        given().arrays_as_parameters( new String[] { "a", "b", "c" } );
 
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string ).contains( "Given arrays as parameters a, b, c" );
+        assertThat( string ).doesNotContain( "+" );
+        assertThat( string ).doesNotContain( "|" );
+    }
+
+    @Test
+    public void empty_lists() throws UnsupportedEncodingException {
+        getScenario().startScenario( "empty" );
+        given().table_as_parameter( new String[] {} );
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string ).contains( "Given table as parameter" );
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.tngtech.jgiven.report.text;
 
 import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Splitter;
@@ -23,6 +24,10 @@ public class PlainTextTableWriter extends PlainTextWriter {
     }
 
     public void writeDataTable( DataTable dataTable, String indent ) {
+        if( dataTable.getData().isEmpty() ) {
+            return;
+        }
+
         StringBuilder formatBuilder = new StringBuilder();
         StringBuilder lineBuilder = new StringBuilder();
 
@@ -111,6 +116,10 @@ public class PlainTextTableWriter extends PlainTextWriter {
     }
 
     private List<ColumnSpec> getColumnSpecs( List<List<String>> dataTableModel ) {
+        if( dataTableModel.isEmpty() ) {
+            return Collections.emptyList();
+        }
+
         ColumnSpec[] result = new ColumnSpec[dataTableModel.get( 0 ).size()];
         for( int nrow = 0; nrow < dataTableModel.size(); nrow++ ) {
             List<String> row = dataTableModel.get( nrow );
