@@ -1,3 +1,14 @@
+# v0.16.1
+
+## New Features
+
+* TestNG SkipExceptions are now recognized [#355](https://github.com/TNG/JGiven/issues/355)
+
+## Fixed Issues
+
+* Fixed a bug that prevented the use of the PowerMockRunner [#365](https://github.com/TNG/JGiven/issues/365)
+* Fixed a NPE that was thrown when the `@Table` annotations was used with an empty list [#341](https://github.com/TNG/JGiven/issues/341)
+
 # v0.16.0
 
 ## New Features
