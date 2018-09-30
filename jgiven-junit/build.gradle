@@ -12,6 +12,15 @@ dependencies {
     testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '1.7.4'
 }
 
+
+
+test {
+    // PowerMock does not work with Java 9+
+    if (JavaVersion.current().isJava9Compatible()) {
+        test.exclude '**/PowerMockTest*'
+    }
+}
+
 test.finalizedBy(jgivenHtml5Report)
 
 def generatedSourceDir = "generatedSrc/java"
