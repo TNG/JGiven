@@ -67,7 +67,7 @@ subprojects {
         testngVersion = '6.9.12'
         assertjVersion = '2.5.0'
         slf4jVersion = '1.7.25'
-        bytebuddyVersion = '1.8.11'
+        bytebuddyVersion = '1.9.0'
         paranamerVersion = '2.8'
         jansiVersion = '1.15'
         gsonVersion = '2.8.4'
