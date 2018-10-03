@@ -43,6 +43,18 @@ include::{sourcedir}/userguide/RocketMethods.java[tags=hiddenRocket,indent=0]
 ----
 Note that it is useful to write hidden methods in `CamelCase` to make it immediately visible in the scenario that these methods will not appear in the report.
 
+==== Method Parameters
+The http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Hidden.html[`@Hidden`] annotation is also applicable for method parameters that shall not appear in the report.
+
+For example:
+
+
+
+[source,java]
+----
+include::{sourcedir}/userguide/RocketMethods.java[tags=rocketSetup,indent=0]
+----
+
 === Extended Descriptions
 
 Steps can get an extended description with the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/ExtendedDescription.html[`@ExtendedDescription`] annotation. You can use this to give additional information about the step to the reader of the report. In the HTML report this information is shown in a tooltip.
