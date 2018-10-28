@@ -3,9 +3,7 @@ package com.tngtech.jgiven.junit5;
 import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
 import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
@@ -17,7 +15,6 @@ import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
-import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModel;
 
 /**
@@ -70,9 +67,8 @@ public class JGivenExtension implements
 
     @Override
     public void beforeEach( ExtensionContext context ) throws Exception {
-        List<NamedArgument> args = new ArrayList<NamedArgument>();
-        getScenario().startScenario( context.getTestClass().get(), context.getTestMethod().get(), args );
-
+        getScenario().startScenario( context.getTestClass().get(), context.getTestMethod().get(),
+            ArgumentReflectionUtil.getNamedArgs(context) );
     }
 
     @Override
@@ -119,4 +115,5 @@ public class JGivenExtension implements
         scenario.getExecutor().injectStages( testInstance );
         scenario.getExecutor().readScenarioState( testInstance );
     }
+
 }

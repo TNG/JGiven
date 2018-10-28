@@ -213,6 +213,17 @@ public class ReflectionUtil {
         };
     }
 
+    public static Object getFieldValueOrNull(String fieldName, Object target, String errorDescription) {
+        try {
+            Field field = target.getClass().getDeclaredField(fieldName);
+            return getFieldValueOrNull(field, target, errorDescription);
+        } catch (Exception e) {
+            log.warn(
+                    format( "Not able to access field '%s'." + errorDescription, fieldName ), e );
+            return null;
+        }
+    }
+
     public static Object getFieldValueOrNull(Field field, Object target, String errorDescription) {
         makeAccessible( field, "" );
         try {
