@@ -1,3 +1,9 @@
+# v0.17.0
+
+## Fixed Issues
+
+* Fixed an issue with JUnit 5 and parameterized tests to get the argument values [#372](https://github.com/TNG/JGiven/pull/372)
+
 # v0.16.1
 
 ## New Features
