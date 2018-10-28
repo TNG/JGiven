@@ -3,7 +3,6 @@ rootProject.name = 'jgiven'
 include \
  ':jgiven-core',
 ':jgiven-maven-plugin',
-':jgiven-gradle-plugin',
 ':jgiven-junit',
 ':jgiven-spock',
 ':jgiven-testng',
@@ -31,6 +30,10 @@ if (JavaVersion.current().isJava9Compatible() && !release) {
 
 if (JavaVersion.current().isJava8Compatible()) {
     include ':jgiven-junit5'
+}
+
+if (!JavaVersion.current().isJava11Compatible()) {
+    include ':jgiven-gradle-plugin'
 }
 
 if (android || release) {
