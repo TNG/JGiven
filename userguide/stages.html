@@ -489,6 +489,23 @@ public void prepareRocketSimulator() {
 <div class="paragraph">
 <p>Note that it is useful to write hidden methods in <code>CamelCase</code> to make it immediately visible in the scenario that these methods will not appear in the report.</p>
 </div>
+<div class="sect3">
+<h4 id="_method_parameters">Method Parameters</h4>
+<div class="paragraph">
+<p>The <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Hidden.html"><code>@Hidden</code></a> annotation is also applicable for method parameters that shall not appear in the report.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public void setup_rocket(@Hidden String rocketName, @Hidden String rocketDescription) {
+    this.rocketName = rocketName;
+    this.rocketDescription = rocketDescription;
+}</code></pre>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_extended_descriptions">Extended Descriptions</h3>
@@ -808,7 +825,7 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-05-20 18:55:23 CEST
+Last updated 2018-10-23 21:08:28 CEST
 </div>
 </div>
 </body>
