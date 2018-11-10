@@ -517,7 +517,7 @@ table.CodeRay td.code>pre{padding:0}
 <h1>JGiven User Guide</h1>
 <div class="details">
 <span id="author" class="author">Jan Schäfer</span><br>
-<span id="revnumber">version 0.16.1</span>
+<span id="revnumber">version 0.17.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -737,7 +737,7 @@ JGiven requires at least JUnit 4.9, while the recommended version is 4.12.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit&lt;/artifactId&gt;
-   &lt;version&gt;0.16.1&lt;/version&gt;
+   &lt;version&gt;0.17.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -748,7 +748,7 @@ JGiven requires at least JUnit 4.9, while the recommended version is 4.12.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-   testCompile 'com.tngtech.jgiven:jgiven-junit:0.16.1'
+   testCompile 'com.tngtech.jgiven:jgiven-junit:0.17.0'
 }</code></pre>
 </div>
 </div>
@@ -768,7 +768,7 @@ thus you also must have a dependency to TestNG itself.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-testng&lt;/artifactId&gt;
-   &lt;version&gt;0.16.1&lt;/version&gt;
+   &lt;version&gt;0.17.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -779,7 +779,7 @@ thus you also must have a dependency to TestNG itself.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-   testCompile 'com.tngtech.jgiven:jgiven-testng:0.16.1'
+   testCompile 'com.tngtech.jgiven:jgiven-testng:0.17.0'
 }</code></pre>
 </div>
 </div>
@@ -1020,7 +1020,7 @@ and all required dependencies are on the Java CLASSPATH)</p>
     <span class="tag">&lt;plugin&gt;</span>
       <span class="tag">&lt;groupId&gt;</span>com.tngtech.jgiven<span class="tag">&lt;/groupId&gt;</span>
       <span class="tag">&lt;artifactId&gt;</span>jgiven-maven-plugin<span class="tag">&lt;/artifactId&gt;</span>
-      <span class="tag">&lt;version&gt;</span>0.16.1<span class="tag">&lt;/version&gt;</span>
+      <span class="tag">&lt;version&gt;</span>0.17.0<span class="tag">&lt;/version&gt;</span>
       <span class="tag">&lt;executions&gt;</span>
         <span class="tag">&lt;execution&gt;</span>
           <span class="tag">&lt;goals&gt;</span>
@@ -1104,7 +1104,7 @@ Add the following plugins section to your <code>build.gradle</code> file or exte
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">plugins {
-    id &quot;com.tngtech.jgiven.gradle-plugin&quot; version &quot;0.16.1&quot;
+    id &quot;com.tngtech.jgiven.gradle-plugin&quot; version &quot;0.17.0&quot;
 }</code></pre>
 </div>
 </div>
@@ -1119,7 +1119,7 @@ Add the following plugins section to your <code>build.gradle</code> file or exte
     }
 
     dependencies {
-        classpath &quot;com.tngtech.jgiven:jgiven-gradle-plugin:0.16.1&quot;
+        classpath &quot;com.tngtech.jgiven:jgiven-gradle-plugin:0.17.0&quot;
     }
 }
 
@@ -1222,6 +1222,23 @@ configuration file as follows:</p>
 </div>
 <div class="paragraph">
 <p>Note that it is useful to write hidden methods in <code>CamelCase</code> to make it immediately visible in the scenario that these methods will not appear in the report.</p>
+</div>
+<div class="sect3">
+<h4 id="_method_parameters"><a class="anchor" href="#_method_parameters"></a>5.3.1. Method Parameters</h4>
+<div class="paragraph">
+<p>The <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Hidden.html"><code>@Hidden</code></a> annotation is also applicable for method parameters that shall not appear in the report.</p>
+</div>
+<div class="paragraph">
+<p>For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">void</span> setup_rocket(<span class="annotation">@Hidden</span> <span class="predefined-type">String</span> rocketName, <span class="annotation">@Hidden</span> <span class="predefined-type">String</span> rocketDescription) {
+    <span class="local-variable">this</span>.rocketName = rocketName;
+    <span class="local-variable">this</span>.rocketDescription = rocketDescription;
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -2693,7 +2710,7 @@ MyExpectedException someExpectedException;
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spring&lt;/artifactId&gt;
-   &lt;version&gt;0.16.1&lt;/version&gt;
+   &lt;version&gt;0.17.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -2704,7 +2721,7 @@ MyExpectedException someExpectedException;
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.16.1&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.17.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -2720,7 +2737,7 @@ existence of JGiven.</p>
 <h4 id="_annotation_based"><a class="anchor" href="#_annotation_based"></a>12.2.1. Annotation-Based</h4>
 <div class="paragraph">
 <p>If you are using the annotation-based configuration of Spring you can annotate your Spring
-configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.16.1/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
+configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.17.0/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
 This is all you have to do to configure Spring for JGiven.</p>
 </div>
 <div class="sect4">
@@ -2798,7 +2815,7 @@ can copy the content of these classes (one method) into one of your test base cl
 <div class="paragraph">
 <p>In order to treat JGiven stages as Spring beans, e.g. if you want to inject
  other Spring beans into your stages, you have to annotate
-the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.16.1/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
+the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.17.0/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
 </div>
 <div class="sect3">
 <h4 id="_example_10"><a class="anchor" href="#_example_10"></a>12.4.1. Example</h4>
@@ -2890,7 +2907,7 @@ the implementation might be changed in a backwards-incompatible way in future ve
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:0.16.1&quot;)
+    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:0.17.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -3078,7 +3095,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit5&lt;/artifactId&gt;
-   &lt;version&gt;0.16.1&lt;/version&gt;
+   &lt;version&gt;0.17.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -3089,7 +3106,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    testCompile(&quot;com.tngtech.jgiven:jgiven-junit5:0.16.1&quot;)
+    testCompile(&quot;com.tngtech.jgiven:jgiven-junit5:0.17.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -3098,7 +3115,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <div class="sect2">
 <h3 id="_use_jgiven_with_junit_5"><a class="anchor" href="#_use_jgiven_with_junit_5"></a>15.3. Use JGiven with JUnit 5</h3>
 <div class="paragraph">
-<p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.16.1/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
+<p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.17.0/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
 JUnit 5 extension. You just annotate your JUnit 5 test class with <code>@ExtendWith( JGivenExtension.class )</code>
 and JGiven is enabled.</p>
 </div>
@@ -3126,8 +3143,8 @@ the <code>@ScenarioStage</code> annotation.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Alternatively, you can use one of the test base classes <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.16.1/com/tngtech/jgiven/junit5/ScenarioTest.html"><code>ScenarioTest</code></a> or
-<a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.16.1/com/tngtech/jgiven/junit5/SimpleScenarioTest.html"><code>SimpleScenarioTest</code></a> that provide additional convenience methods
+<p>Alternatively, you can use one of the test base classes <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.17.0/com/tngtech/jgiven/junit5/ScenarioTest.html"><code>ScenarioTest</code></a> or
+<a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.17.0/com/tngtech/jgiven/junit5/SimpleScenarioTest.html"><code>SimpleScenarioTest</code></a> that provide additional convenience methods
 and allows you to specify stage classes by using type parameters:</p>
 </div>
 <div class="listingblock">
@@ -3156,8 +3173,8 @@ and allows you to specify stage classes by using type parameters:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 0.16.1<br>
-Last updated 2018-05-20 18:55:23 CEST
+Version 0.17.0<br>
+Last updated 2018-09-22 13:29:24 CEST
 </div>
 </div>
 </body>
