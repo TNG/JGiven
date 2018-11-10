@@ -1,5 +1,9 @@
 # v0.17.0
 
+## New Features
+
+* Java 11 is supported now [#370](https://github.com/TNG/JGiven/issues/370)
+
 ## Fixed Issues
 
 * Fixed an issue with JUnit 5 and parameterized tests to get the argument values [#372](https://github.com/TNG/JGiven/pull/372)
