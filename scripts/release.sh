@@ -26,9 +26,11 @@ echo Releasing version $VERSION
 echo Updating version in gradle.properties...
 sed -i -e s/version=.*/version=$VERSION/ gradle.properties
 
-echo Commiting version change
-git add gradle.properties
-git commit -m "Update version to $VERSION"
+if [ -n "$(git status --porcelain)" ]; then
+    echo Commiting version change
+    git add gradle.properties
+    git commit -m "Update version to $VERSION"
+fi
 
 echo Building, Testing, and Uploading Archives...
 ./gradlew clean test install uploadArchives
