@@ -369,8 +369,8 @@ coveralls.jacocoReportPath = 'build/reports/jacoco/overallJacocoReport/overallJa
 coveralls.sourceDirs = ["jgiven-core/src/main/java"]
 coveralls.saveAsFile = true
 
-//buildScan {
-  //  licenseAgreementUrl = 'https://gradle.com/terms-of-service'
-    //licenseAgree = 'yes'
-//}
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+}
 
