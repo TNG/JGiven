@@ -10,7 +10,7 @@ buildscript {
 apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 apply plugin: 'groovy'
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 description = "Module for writing JGiven tests with Spock"
 
 

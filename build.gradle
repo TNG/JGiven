@@ -25,7 +25,6 @@ apply plugin: 'io.codearte.nexus-staging'
 description = 'JGiven - BDD in plain Java'
 def jacocoEnabled = !JavaVersion.current().isJava11Compatible();
 
-
 task wrapper(type: Wrapper) {
     gradleVersion = '4.10.2'
 }
@@ -98,7 +97,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     apply plugin: 'signing'
     apply plugin: 'maven-publish'
 
-    sourceCompatibility = targetCompatibility = 1.7
+    sourceCompatibility = targetCompatibility = 1.8
 
     dependencies {
         compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
