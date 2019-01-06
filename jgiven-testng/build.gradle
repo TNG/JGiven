@@ -3,8 +3,8 @@ description = "Module to write JGiven tests with TestNG"
 dependencies {
     compile project(':jgiven-core')
     compile project(':jgiven-html5-report')
-    compile(group: 'org.testng', name: 'testng', version: testngVersion)
-    testCompile(group: 'org.testng.testng-remote', name: 'testng-remote-dist', version: '1.2.1')
+    compile "org.testng:testng:$testngVersion"
+    testCompile 'org.testng.testng-remote:testng-remote-dist:1.2.1'
 }
 
 test.useTestNG() {

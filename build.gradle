@@ -25,9 +25,9 @@ apply plugin: 'io.codearte.nexus-staging'
 description = 'JGiven - BDD in plain Java'
 def jacocoEnabled = !JavaVersion.current().isJava11Compatible();
 
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.10.2'
+wrapper {
+    gradleVersion = '5.1'
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 allprojects {
@@ -42,7 +42,6 @@ allprojects {
         mavenCentral()
     }
 }
-
 
 if (JavaVersion.current().isJava8Compatible()) {
     allprojects {
@@ -163,7 +162,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         from sourceSets.main.allSource
     }
 
-
     javadoc {
         exclude '**/impl/**'
     }
@@ -225,7 +223,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     }
 
     copyAsciiDoc.finalizedBy(asciidoctor)
-
 }
 
 configure(subprojects) {
@@ -368,11 +365,9 @@ overallJacocoReport.dependsOn {
     subprojects*.test
 }
 
-
 coveralls.jacocoReportPath = 'build/reports/jacoco/overallJacocoReport/overallJacocoReport.xml'
 coveralls.sourceDirs = ["jgiven-core/src/main/java"]
 coveralls.saveAsFile = true
-
 
 //buildScan {
   //  licenseAgreementUrl = 'https://gradle.com/terms-of-service'

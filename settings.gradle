@@ -1,14 +1,13 @@
 rootProject.name = 'jgiven'
 
-include \
- ':jgiven-core',
-':jgiven-maven-plugin',
-':jgiven-junit',
-':jgiven-spock',
-':jgiven-testng',
-':jgiven-spring',
-':jgiven-html-app',
-':jgiven-html5-report'
+include ':jgiven-core',
+        ':jgiven-maven-plugin',
+        ':jgiven-junit',
+        ':jgiven-spock',
+        ':jgiven-testng',
+        ':jgiven-spring',
+        ':jgiven-html-app',
+        ':jgiven-html5-report'
 
 def release = System.env.RELEASE == "true"
 def android = System.env.ANDROID == "true"
