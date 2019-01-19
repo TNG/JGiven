@@ -2,7 +2,7 @@ description = "Module for writing JGiven tests with Spock"
 
 apply plugin: 'groovy'
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 
 repositories {
     jcenter()

@@ -14,9 +14,8 @@ jdk:
     - openjdk10
     - oraclejdk9
     - oraclejdk8
-    - openjdk7
 after_success:
-    - test "$TRAVIS_JDK_VERSION" == "oraclejdk7" && test "$TRAVIS_BRANCH" == "master" && test "$TRAVIS_PULL_REQUEST" == "false" && ./gradlew overallJacocoReport coveralls uploadArchives
+    - test "$TRAVIS_JDK_VERSION" == "oraclejdk8" && test "$TRAVIS_BRANCH" == "master" && test "$TRAVIS_PULL_REQUEST" == "false" && ./gradlew overallJacocoReport coveralls uploadArchives
 env:
   global:
   - secure: G7EOz25xYyIzvQwF0eKEgr+0I2S9ZO2xN6BorELeuAVDowYa2B3hJjk4zIRkc1YGWx1CTYvtOEMVVTp9nL93cn18rTNulDMPl5vvBw6t4Ag1BTovUmN2a2y7N1f4N+stmEKHmH2kUZqYSif5vYbK/2044tDtO8nfQ9/va3HxaKs=
