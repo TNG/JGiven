@@ -1,19 +1,16 @@
 package com.tngtech.jgiven.testng;
 
-import java.util.List;
-
+import com.beust.jcommander.internal.Lists;
+import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.impl.ScenarioBase;
-import org.testng.ITestContext;
+import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.testframework.TestExecutionResult;
+import com.tngtech.jgiven.testframework.TestExecutor;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 import org.testng.TestNG;
 
-import com.beust.jcommander.internal.Lists;
-import com.tngtech.jgiven.base.ScenarioTestBase;
-import com.tngtech.jgiven.impl.Config;
-import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.testframework.TestExecutionResult;
-import com.tngtech.jgiven.testframework.TestExecutor;
+import java.util.List;
 
 public class TestNgExecutor extends TestExecutor {
 

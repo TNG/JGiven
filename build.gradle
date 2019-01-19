@@ -15,6 +15,7 @@ buildscript {
 plugins {
     id 'com.github.ben-manes.versions' version '0.17.0'
     id "org.sonarqube" version "2.5" apply false
+    id 'com.gradle.build-scan' version '1.16'
 }
 
 apply plugin: 'com.github.kt3k.coveralls'
@@ -25,8 +26,9 @@ apply plugin: 'io.codearte.nexus-staging'
 description = 'JGiven - BDD in plain Java'
 def jacocoEnabled = !JavaVersion.current().isJava11Compatible();
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.10.2'
+wrapper {
+    gradleVersion = '5.1'
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 allprojects {
@@ -41,7 +43,6 @@ allprojects {
         mavenCentral()
     }
 }
-
 
 if (JavaVersion.current().isJava8Compatible()) {
     allprojects {
@@ -162,7 +163,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         from sourceSets.main.allSource
     }
 
-
     javadoc {
         exclude '**/impl/**'
     }
@@ -224,7 +224,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     }
 
     copyAsciiDoc.finalizedBy(asciidoctor)
-
 }
 
 configure(subprojects) {
@@ -367,14 +366,12 @@ overallJacocoReport.dependsOn {
     subprojects*.test
 }
 
-
 coveralls.jacocoReportPath = 'build/reports/jacoco/overallJacocoReport/overallJacocoReport.xml'
 coveralls.sourceDirs = ["jgiven-core/src/main/java"]
 coveralls.saveAsFile = true
 
-
-//buildScan {
-  //  licenseAgreementUrl = 'https://gradle.com/terms-of-service'
-    //licenseAgree = 'yes'
-//}
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+}
 
