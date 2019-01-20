@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "Version 0.17.1 Released"
+date:  2019-01-20 14:02:55
+categories: news
+---
+
+Released Version 0.17.1 of JGiven. For details see the [release notes](https://github.com/TNG/JGiven/releases/tag/v0.17.1).
+
+[jgiven-gh]: https://github.com/TNG/JGiven
+[jgiven]:    http://jgiven.org
