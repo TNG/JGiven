@@ -1,3 +1,9 @@
+# v0.17.1
+
+## Fixed Issues
+
+* Fix NPE when having @Disabled test in JUnit 5 [#376](https://github.com/TNG/JGiven/issues/376)
+
 # v0.17.0
 
 ## New Features
