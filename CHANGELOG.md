@@ -1,3 +1,13 @@
+# v1.0.0
+
+## Backwards Incompatible Changes
+
+* Java 7 is not supported anymore
+
+## Fixed Issues
+
+* Make it easier to copy the stack trace from an error message [#380](https://github.com/TNG/JGiven/issues/380)
+
 # v0.17.1
 
 ## Fixed Issues
