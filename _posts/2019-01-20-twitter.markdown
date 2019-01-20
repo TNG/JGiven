@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "JGiven at Twitter"
+date:  2019-01-20 12:44:25
+categories: news
+---
+
+JGiven has an official Twitter handle now! Follow <a href="https://twitter.com/JGivenBDD">@JGivenBDD</a> to never miss any JGiven updates anymore.
+
+[jgiven-gh]: https://github.com/TNG/JGiven
+[jgiven]:    http://jgiven.org
