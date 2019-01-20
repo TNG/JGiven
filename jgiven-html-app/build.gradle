@@ -2,7 +2,7 @@ import org.gradle.internal.os.OperatingSystem;
 
 def distDir = "${buildDir}/package/dist"
 
-def htmlAppVersion = '0.16.1'
+def htmlAppVersion = '0.17.0'
 
 task npmPack(type: CrossPlatformExec) {
     buildCommand('npm', 'pack', 'jgiven-html-app@'+htmlAppVersion)
