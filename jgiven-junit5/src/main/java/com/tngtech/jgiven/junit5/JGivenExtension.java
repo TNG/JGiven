@@ -68,7 +68,7 @@ public class JGivenExtension implements
     @Override
     public void beforeEach( ExtensionContext context ) throws Exception {
         getScenario().startScenario( context.getTestClass().get(), context.getTestMethod().get(),
-            ArgumentReflectionUtil.getNamedArgs(context) );
+            ArgumentReflectionUtil.getNamedArgs( context ) );
     }
 
     @Override
@@ -90,7 +90,6 @@ public class JGivenExtension implements
         } finally {
             ScenarioHolder.get().removeScenarioOfCurrentThread();
         }
-
     }
 
     private ScenarioBase getScenario() {
@@ -99,17 +98,23 @@ public class JGivenExtension implements
 
     @Override
     public void postProcessTestInstance( Object testInstance, ExtensionContext context ) throws Exception {
-        ScenarioBase scenario = ScenarioHolder.get().getScenarioOfCurrentThread();
+        ScenarioBase currentScenario = ScenarioHolder.get().getScenarioOfCurrentThread();
 
-        if( scenario == null ) {
-            if( testInstance instanceof ScenarioTestBase ) {
-                scenario = ( (ScenarioTestBase) testInstance ).getScenario();
-            } else {
+        ScenarioBase scenario;
+        if( testInstance instanceof ScenarioTestBase ) {
+            scenario = ((ScenarioTestBase) testInstance).getScenario();
+        } else {
+            if( currentScenario == null ) {
                 scenario = new ScenarioBase();
+            } else {
+                scenario = currentScenario;
             }
-            ReportModel reportModel = (ReportModel) context.getStore( NAMESPACE ).get( REPORT_MODEL );
-            scenario.setModel( reportModel );
-            ScenarioHolder.get().setScenarioOfCurrentThread( scenario );
+        }
+
+        if (scenario != currentScenario) {
+            ReportModel reportModel = (ReportModel) context.getStore(NAMESPACE).get(REPORT_MODEL);
+            scenario.setModel(reportModel);
+            ScenarioHolder.get().setScenarioOfCurrentThread(scenario);
         }
 
         scenario.getExecutor().injectStages( testInstance );
