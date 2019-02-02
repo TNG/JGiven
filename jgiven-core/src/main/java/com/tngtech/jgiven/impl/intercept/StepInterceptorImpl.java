@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.impl.intercept;
 
-import static com.tngtech.jgiven.report.model.InvocationMode.DO_NOT_INTERCEPT;
 import static com.tngtech.jgiven.report.model.InvocationMode.NORMAL;
 import static com.tngtech.jgiven.report.model.InvocationMode.PENDING;
 import static com.tngtech.jgiven.report.model.InvocationMode.SKIPPED;
@@ -86,10 +85,6 @@ public class StepInterceptorImpl implements StepInterceptor {
 
         InvocationMode mode = getInvocationMode( receiver, method );
 
-        if( mode == DO_NOT_INTERCEPT ) {
-            return invoker.proceed();
-        }
-
         boolean hasNestedSteps = method.isAnnotationPresent( NestedSteps.class );
 
         boolean handleMethod = shouldHandleMethod( method );
@@ -138,14 +133,9 @@ public class StepInterceptorImpl implements StepInterceptor {
     }
 
     private boolean shouldInterceptMethod( Method method ) {
-        if( !interceptingEnabled ) {
-            return false;
-        }
-
-        if( method.getDeclaringClass().equals( Object.class ) ) {
-            return false;
-        }
-        return true;
+        return interceptingEnabled
+                && method.getDeclaringClass() != Object.class
+                && !method.isAnnotationPresent(DoNotIntercept.class);
     }
 
     protected Object handleThrowable( Object receiver, Method method, Throwable t, long durationInNanos, boolean handleMethod )
@@ -175,10 +165,6 @@ public class StepInterceptorImpl implements StepInterceptor {
     }
 
     protected InvocationMode getInvocationMode( Object receiver, Method method ) {
-        if( method.getDeclaringClass() == Object.class || method.isAnnotationPresent( DoNotIntercept.class ) ) {
-            return DO_NOT_INTERCEPT;
-        }
-
         if( !methodExecutionEnabled ) {
             return SKIPPED;
         }
