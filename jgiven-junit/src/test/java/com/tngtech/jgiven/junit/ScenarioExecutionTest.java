@@ -286,6 +286,10 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         public void set_description() {
             currentStep.setExtendedDescription( "An extended description" );
         }
+
+        public void set_name() {
+            currentStep.setName( "A new step name" );
+        }
     }
 
     @Test
@@ -310,6 +314,17 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         String description = getScenario().getScenarioCaseModel().getFirstStep().getExtendedDescription();
 
         assertThat( description ).isEqualTo( "An extended description" );
+    }
+
+    @Test
+    public void the_name_of_a_step_can_be_changed_using_the_current_step() {
+        AttachmentStepClass steps = addStage( AttachmentStepClass.class );
+
+        steps.set_name();
+
+        String description = getScenario().getScenarioCaseModel().getFirstStep().getName();
+
+        assertThat( description ).isEqualTo( "A new step name" );
     }
 
     @IsTag

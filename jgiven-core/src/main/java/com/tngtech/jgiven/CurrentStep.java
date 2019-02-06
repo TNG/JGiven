@@ -18,11 +18,20 @@ public interface CurrentStep {
     void addAttachment( Attachment attachment );
 
     /**
-     * Set the extended description of the current step
+     * Sets the extended description of the current step
      * 
      * @param extendedDescription the extended description
      * @see com.tngtech.jgiven.annotation.ExtendedDescription                           
      */
     void setExtendedDescription( String extendedDescription );
 
+    /**
+     * Sets the name of the current step.
+     *
+     * This is similar to the {@link com.tngtech.jgiven.annotation.As} annotation,
+     * but provides additional flexibility.
+     *
+     * @param name the new name of the step
+     */
+    void setName( String name );
 }

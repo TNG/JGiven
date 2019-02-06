@@ -44,6 +44,9 @@ public class NoOpScenarioListener implements ScenarioListener {
     public void extendedDescriptionUpdated( String extendedDescription ) {}
 
     @Override
+    public void stepNameUpdated( String newStepName ) {}
+
+    @Override
     public void sectionAdded( String sectionTitle ) {}
 
     @Override
