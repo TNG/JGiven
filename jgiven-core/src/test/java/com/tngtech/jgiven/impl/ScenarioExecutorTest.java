@@ -126,6 +126,21 @@ public class ScenarioExecutorTest {
         assertThat( i ).isEqualTo( 5 );
     }
 
+    @Test
+    public void DoNotIntercept_methods_do_not_trigger_a_stage_change() {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        AfterStageStep withAfterStage = executor.addStage( AfterStageStep.class );
+        withAfterStage.after_stage_was_not_yet_executed();
+        DoNotInterceptClass doNotIntercept = executor.addStage( DoNotInterceptClass.class );
+        executor.startScenario( "Test" );
+
+        doNotIntercept.an_unintercepted_step();
+        assertThat(withAfterStage.afterStageExecuted).as("@AfterStage was executed").isFalse();
+
+        doNotIntercept.an_intercepted_step();
+        assertThat(withAfterStage.afterStageExecuted).as("@AfterStage was executed").isTrue();
+    }
+
     static class TestClass {
         @ScenarioStage
         TestStep step;
@@ -232,6 +247,13 @@ public class ScenarioExecutorTest {
     static class DoNotInterceptClass {
         public void a_failing_step() {
             assertThat( true ).isFalse();
+        }
+
+        public void an_intercepted_step() {
+        }
+
+        @DoNotIntercept
+        public void an_unintercepted_step() {
         }
 
         @DoNotIntercept

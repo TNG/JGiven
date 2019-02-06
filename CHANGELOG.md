@@ -3,6 +3,8 @@
 ## Backwards Incompatible Changes
 
 * Java 7 is not supported anymore
+* Calling stage methods annotated with `@DoNotIntercept` or declared within `java.lang.Object` will not trigger
+a stage change anymore [#385](https://github.com/TNG/JGiven/pull/385)
 
 ## Fixed Issues
 

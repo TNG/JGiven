@@ -5,8 +5,7 @@ public enum InvocationMode {
     NESTED,
     FAILED,
     SKIPPED,
-    PENDING,
-    DO_NOT_INTERCEPT;
+    PENDING;
 
     public StepStatus toStepStatus() {
         switch( this ) {
