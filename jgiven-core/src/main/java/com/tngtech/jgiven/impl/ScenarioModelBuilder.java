@@ -614,6 +614,11 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     @Override
+    public void stepNameUpdated( String newStepName ) {
+        currentStep.setName( newStepName );
+    }
+
+    @Override
     public void sectionAdded( String sectionTitle ) {
         StepModel stepModel = new StepModel();
         stepModel.setName( sectionTitle );

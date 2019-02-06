@@ -1,8 +1,12 @@
-# v0.17.2
+# v0.18.0
+
+## New Features
+
+* The `CurrentStep` interface has a new method `setName` to change the name of a step programmatically [#386](https://github.com/TNG/JGiven/issues/386)
 
 ## Fixed Issues
 
-* Fix calculation of minimal thumbnail sizes [#413](https://github.com/TNG/JGiven/issues/413)
+* Fixed calculation of minimal thumbnail sizes [#413](https://github.com/TNG/JGiven/issues/413)
 
 # v0.17.1
 

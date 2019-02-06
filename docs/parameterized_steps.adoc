@@ -76,6 +76,17 @@ The call to `given()._$_eggs_and__$_rice_bowls(5, 2)` will still be shown as:
 Given 5 eggs and 2 rice bowls
 ----
 
+The extended description can also be set by using the `CurrentStep` interface, which can be injected into a state with the `@ScenarioState` annotation.
+
+[source,java]
+----
+@ScenarioState
+CurrentStep currentStep;
+
+public SELF $_eggs_and_$_rice_bowls( int eggs, int riceBowls ) {
+    currentStep.setExtendedDescription( "The " + riceBowls + " rice bowls were very delicious" );
+}
+
 === Parameter Formatting
 
 Sometimes the `toString()` representation of a parameter object does not fit well into the report. In these cases you have three possibilities:

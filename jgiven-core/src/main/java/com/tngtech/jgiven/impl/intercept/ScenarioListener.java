@@ -32,6 +32,8 @@ public interface ScenarioListener {
 
     void extendedDescriptionUpdated( String extendedDescription );
 
+    void stepNameUpdated( String newStepName );
+
     void sectionAdded( String sectionTitle );
 
     void tagAdded( Class<? extends Annotation> annotationClass, String... values );

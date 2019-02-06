@@ -19,14 +19,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.CurrentScenario;
 import com.tngtech.jgiven.CurrentStep;
-import com.tngtech.jgiven.annotation.AfterScenario;
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.BeforeScenario;
-import com.tngtech.jgiven.annotation.BeforeStage;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
-import com.tngtech.jgiven.annotation.Pending;
-import com.tngtech.jgiven.annotation.ScenarioRule;
-import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.exception.FailIfPassedException;
 import com.tngtech.jgiven.exception.JGivenMissingRequiredScenarioStateException;
@@ -105,6 +98,11 @@ public class ScenarioExecutor {
         @Override
         public void setExtendedDescription( String extendedDescription ) {
             listener.extendedDescriptionUpdated( extendedDescription );
+        }
+
+        @Override
+        public void setName( String name ) {
+            listener.stepNameUpdated( name );
         }
     }
 
@@ -500,17 +498,16 @@ public class ScenarioExecutor {
         listener.sectionAdded( sectionTitle );
     }
 
-    public void setStageCreator(StageCreator stageCreator) {
+    public void setStageCreator( StageCreator stageCreator ) {
         this.stageCreator = stageCreator;
     }
 
-    public void setStageClassCreator(StageClassCreator stageClassCreator) {
-        this.stageCreator = createStageCreator( stageClassCreator);
+    public void setStageClassCreator( StageClassCreator stageClassCreator ) {
+        this.stageCreator = createStageCreator( stageClassCreator );
     }
 
-    private StageCreator createStageCreator(StageClassCreator stageClassCreator) {
-        return new DefaultStageCreator(new CachingStageClassCreator(stageClassCreator));
+    private StageCreator createStageCreator( StageClassCreator stageClassCreator ) {
+        return new DefaultStageCreator( new CachingStageClassCreator( stageClassCreator ) );
     }
-
 
 }
