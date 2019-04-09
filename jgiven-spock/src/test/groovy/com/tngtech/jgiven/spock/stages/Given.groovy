@@ -2,9 +2,9 @@ package com.tngtech.jgiven.spock.stages
 
 import com.tngtech.jgiven.Stage
 
-class GivenSomeState extends Stage<GivenSomeState> {
+class Given extends Stage<Given> {
 
-    GivenSomeState some_state() {
+    Given some_state() {
         self()
     }
 
