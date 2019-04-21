@@ -1,13 +1,10 @@
 package com.tngtech.jgiven.spock
 
-import com.tngtech.jgiven.annotation.As;
-import com.tngtech.jgiven.spock.stages.GivenSomeState
-import com.tngtech.jgiven.spock.stages.ThenSomeOutcome
-import com.tngtech.jgiven.spock.stages.WhenSomeAction
+import com.tngtech.jgiven.annotation.As
 import spock.lang.Unroll
 
 @As('My shiny JGiven should')
-class MyShinyJGivenShould extends ScenarioSpec<GivenSomeState, WhenSomeAction, ThenSomeOutcome> {
+class MyShinyJGivenShould extends ScenarioSpec<Given, When, Then> {
 
     def "work with Spock"() {
         expect:

@@ -1,0 +1,54 @@
+== Spcok
+:javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-spock/{version}/com/tngtech/jgiven/spock
+
+CAUTION: Spock support is currently in an experimental state.
+This means that the API is not completely stable yet and that not all
+JGiven and Spock features might be supported yet.
+
+=== Install Dependency
+Spock support is provided by the `jgiven-spock` dependency.
+
+==== Maven
+
+[source,maven,subs="verbatim,attributes"]
+----
+<dependency>
+   <groupId>com.tngtech.jgiven</groupId>
+   <artifactId>jgiven-spock</artifactId>
+   <version>{version}</version>
+   <scope>test</scope>
+</dependency>
+----
+
+==== Gradle
+
+[source,gradle,subs="verbatim,attributes"]
+----
+dependencies {
+    testImplementation "com.tngtech.jgiven:jgiven-spock:{version}"
+}
+----
+
+=== Use JGiven with Spock
+
+JGiven support for Spock is provided by extending `ScenarioSpec<Given, When, Then>`
+and JGiven is enabled.
+
+[source,groovy]
+----
+
+class SpockSpec extends ScenarioSpec<Given, When, Then> {
+
+   def "my scenario"() {
+      expect:
+
+      given().some_context()
+      when().some_action()
+      then().some_outcome()
+   }
+}
+----
+
+=== Example Project
+
+You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/spock

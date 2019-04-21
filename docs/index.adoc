@@ -36,6 +36,8 @@ include::attachments.adoc[]
 
 include::exception_handling.adoc[]
 
+include::spock.adoc[]
+
 include::spring.adoc[]
 
 include::selenium.adoc[]
