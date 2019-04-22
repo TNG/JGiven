@@ -10,6 +10,7 @@ script:
     - "./gradlew -i -s check -DjunitVersion=4.11"
     - "./gradlew -i -s check -DjunitVersion=4.12"
 jdk:
+    - openjdk12
     - openjdk11
     - openjdk10
     - oraclejdk9
