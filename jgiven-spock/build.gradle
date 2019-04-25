@@ -1,0 +1,19 @@
+description = "Module for writing JGiven tests with Spock"
+
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.spockframework:spock-core:1.1-groovy-2.4'
+    compile project(':jgiven-junit')
+    testCompile project(':jgiven-html5-report')
+}
+
+test {
+    finalizedBy(jgivenHtml5Report)
+}

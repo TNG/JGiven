@@ -3,9 +3,7 @@ package com.tngtech.jgiven.junit5;
 import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
 import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
@@ -17,7 +15,6 @@ import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
-import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModel;
 
 /**
@@ -70,9 +67,8 @@ public class JGivenExtension implements
 
     @Override
     public void beforeEach( ExtensionContext context ) throws Exception {
-        List<NamedArgument> args = new ArrayList<NamedArgument>();
-        getScenario().startScenario( context.getTestClass().get(), context.getTestMethod().get(), args );
-
+        getScenario().startScenario( context.getTestClass().get(), context.getTestMethod().get(),
+            ArgumentReflectionUtil.getNamedArgs( context ) );
     }
 
     @Override
@@ -94,7 +90,6 @@ public class JGivenExtension implements
         } finally {
             ScenarioHolder.get().removeScenarioOfCurrentThread();
         }
-
     }
 
     private ScenarioBase getScenario() {
@@ -103,20 +98,27 @@ public class JGivenExtension implements
 
     @Override
     public void postProcessTestInstance( Object testInstance, ExtensionContext context ) throws Exception {
-        ScenarioBase scenario = ScenarioHolder.get().getScenarioOfCurrentThread();
+        ScenarioBase currentScenario = ScenarioHolder.get().getScenarioOfCurrentThread();
 
-        if( scenario == null ) {
-            if( testInstance instanceof ScenarioTestBase ) {
-                scenario = ( (ScenarioTestBase) testInstance ).getScenario();
-            } else {
+        ScenarioBase scenario;
+        if( testInstance instanceof ScenarioTestBase ) {
+            scenario = ((ScenarioTestBase) testInstance).getScenario();
+        } else {
+            if( currentScenario == null ) {
                 scenario = new ScenarioBase();
+            } else {
+                scenario = currentScenario;
             }
-            ReportModel reportModel = (ReportModel) context.getStore( NAMESPACE ).get( REPORT_MODEL );
-            scenario.setModel( reportModel );
-            ScenarioHolder.get().setScenarioOfCurrentThread( scenario );
+        }
+
+        if (scenario != currentScenario) {
+            ReportModel reportModel = (ReportModel) context.getStore(NAMESPACE).get(REPORT_MODEL);
+            scenario.setModel(reportModel);
+            ScenarioHolder.get().setScenarioOfCurrentThread(scenario);
         }
 
         scenario.getExecutor().injectStages( testInstance );
         scenario.getExecutor().readScenarioState( testInstance );
     }
+
 }

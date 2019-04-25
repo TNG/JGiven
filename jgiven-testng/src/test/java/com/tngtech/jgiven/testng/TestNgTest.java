@@ -115,5 +115,9 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
 
         public void something() {}
 
+        public void skipped_exception_is_thrown() {
+            throw new org.testng.SkipException( "should be skipped" );
+        }
+
     }
 }

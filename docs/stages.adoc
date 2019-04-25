@@ -29,9 +29,33 @@ include::{sourcedir}/userguide/WhenCalculator.java[tags=method,indent=0]
 ----
 The step will appear as `10 % are added` in the report, when invoked with `10`.
 
+If you need full control over the step text you can inject the `CurrentStep` interface into the stage by using the `@ScenarioState` annotation. You can then use the `setName` method to change the steps text.
+
+[source,java]
+----
+@ScenarioState
+CurrentStep currentStep;
+
+public WhenCalculator $_percent_are_added( int percent ) {
+    currentStep.setName( percent + " percent are added" );
+    return self();
+}
+----
+
 === Completely Hide Steps
 
 Steps can be completely hidden from the report by using the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Hidden.html[`@Hidden`] annotation. This is sometimes useful if you need a technical method call within a scenario, which should not appear in the report.
+
+For example:
+
+[source,java]
+----
+include::{sourcedir}/userguide/RocketMethods.java[tags=hiddenRocket,indent=0]
+----
+Note that it is useful to write hidden methods in `CamelCase` to make it immediately visible in the scenario that these methods will not appear in the report.
+
+==== Method Parameters
+The http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Hidden.html[`@Hidden`] annotation is also applicable for method parameters that shall not appear in the report.
 
 For example:
 
@@ -39,9 +63,8 @@ For example:
 
 [source,java]
 ----
-include::{sourcedir}/userguide/RocketMethods.java[tags=hiddenRocket,indent=0]
+include::{sourcedir}/userguide/RocketMethods.java[tags=rocketSetup,indent=0]
 ----
-Note that it is useful to write hidden methods in `CamelCase` to make it immediately visible in the scenario that these methods will not appear in the report.
 
 === Extended Descriptions
 

@@ -14,7 +14,6 @@ import com.tngtech.jgiven.report.text.PlainTextReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 import org.junit.rules.TemporaryFolder;
 
-import javax.xml.soap.Text;
 import java.io.File;
 import java.io.IOException;
 

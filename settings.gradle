@@ -1,20 +1,18 @@
 rootProject.name = 'jgiven'
 
-include ':jgiven-core'
-include ':jgiven-maven-plugin'
-include ':jgiven-gradle-plugin'
-include ':jgiven-junit'
-include ':jgiven-testng'
-include ':jgiven-spring'
-include ':jgiven-html-app'
-include ':jgiven-html5-report'
+include ':jgiven-core',
+        ':jgiven-maven-plugin',
+        ':jgiven-junit',
+        ':jgiven-spock',
+        ':jgiven-testng',
+        ':jgiven-spring',
+        ':jgiven-html-app',
+        ':jgiven-html5-report'
 
 def release = System.env.RELEASE == "true"
 def android = System.env.ANDROID == "true"
 
-// At least Java 7 is required for the tests as Selenium requires it
-// Still the other projects should be built and tested with Java 6
-if (JavaVersion.current().isJava7Compatible() && !release) {
+if (JavaVersion.current().isJava8Compatible() && !release) {
     include ':jgiven-tests'
     include ':jgiven-examples'
 }
@@ -29,6 +27,10 @@ if (JavaVersion.current().isJava9Compatible() && !release) {
 
 if (JavaVersion.current().isJava8Compatible()) {
     include ':jgiven-junit5'
+}
+
+if (!JavaVersion.current().isJava11Compatible()) {
+    include ':jgiven-gradle-plugin'
 }
 
 if (android || release) {

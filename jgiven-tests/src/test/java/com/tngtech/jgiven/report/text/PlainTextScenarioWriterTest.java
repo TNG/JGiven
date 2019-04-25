@@ -218,4 +218,5 @@ public class PlainTextScenarioWriterTest extends JGivenScenarioTest<GivenReportM
                     "   |   |     2 |         |\n" +
                     "   | 2 |     4 | Success |\n" );
     }
+
 }

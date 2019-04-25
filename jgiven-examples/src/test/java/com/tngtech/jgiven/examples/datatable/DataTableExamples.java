@@ -3,6 +3,8 @@ package com.tngtech.jgiven.examples.datatable;
 import static com.tngtech.jgiven.annotation.Table.HeaderType.VERTICAL;
 import static java.util.Arrays.asList;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -82,6 +84,11 @@ public class DataTableExamples extends SimpleScenarioTest<DataTableExamples.Data
     public void a_list_of_list_can_be_used_as_table_parameter_and_column_titles_can_be_set() {
         given().a_list_of_lists_is_used_as_parameter_with_column_titles(
             asList( asList( "John Doe", "john@doe.com" ), asList( "Jane Roe", "jane@roe.com" ) ) );
+    }
+
+    @Test
+    public void empty_lists_also_work() {
+        given().a_list_of_lists_is_used_as_parameter( Arrays.<List<String>>asList() );
     }
 
     @Test

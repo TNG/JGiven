@@ -2,14 +2,7 @@ package com.tngtech.jgiven;
 
 import java.lang.reflect.Method;
 
-import com.tngtech.jgiven.annotation.As;
-import com.tngtech.jgiven.annotation.AsProvider;
-import com.tngtech.jgiven.annotation.Format;
-import com.tngtech.jgiven.annotation.Formatf;
-import com.tngtech.jgiven.annotation.IntroWord;
-import com.tngtech.jgiven.annotation.NestedSteps;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.format.BooleanFormatter;
 
 public class GivenTestStep extends Stage<GivenTestStep> {
@@ -113,7 +106,19 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
+    public GivenTestStep varargs_as_parameters_$( String... params ) {
+        return self();
+    }
+
     public GivenTestStep ALLUPPERCASE() {
+        return self();
+    }
+
+    public GivenTestStep arrays_as_parameters(String[] params) {
+        return self();
+    }
+
+    public GivenTestStep table_as_parameter(@Table String[] params) {
         return self();
     }
 
@@ -122,6 +127,7 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     public GivenTestStep an_intro_word_with_an_as_annotation() {
         return self();
     }
+
 
     public static class CustomAsProvider implements AsProvider {
 

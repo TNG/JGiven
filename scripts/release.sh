@@ -26,9 +26,11 @@ echo Releasing version $VERSION
 echo Updating version in gradle.properties...
 sed -i -e s/version=.*/version=$VERSION/ gradle.properties
 
-echo Commiting version change
-git add gradle.properties
-git commit -m "Update version to $VERSION"
+if [ -n "$(git status --porcelain)" ]; then
+    echo Commiting version change
+    git add gradle.properties
+    git commit -m "Update version to $VERSION"
+fi
 
 echo Building, Testing, and Uploading Archives...
 ./gradlew clean test install uploadArchives
@@ -53,4 +55,10 @@ read -p "Do you want to release now? [y/N]" -n 1 -r
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
     ./gradlew releaseRepository
+
+    echo Publishing Gradle Plugin to Gradle Plugin Repository...
+    ./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins
 fi
+
+echo Testing Gradle Plugin from Gradle Plugin Repository
+#./gradlew -b example-projects/java9/build.gradle clean test -Pversion=$VERSION

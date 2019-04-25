@@ -17,6 +17,10 @@ public class WhenStage {
         someResult = "Some Result";
     }
 
+    void some_action_with_a_parameter(String s) {
+        someResult = "s";
+    }
+
     public WhenStage some_failing_step() {
         Assertions.assertTrue(false, "Intentionally failing");
         return this;

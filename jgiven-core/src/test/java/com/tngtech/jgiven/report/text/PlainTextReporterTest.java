@@ -18,11 +18,7 @@ import com.tngtech.jgiven.GivenTestStep;
 import com.tngtech.jgiven.ScenarioTestBaseForTesting;
 import com.tngtech.jgiven.ThenTestStep;
 import com.tngtech.jgiven.WhenTestStep;
-import com.tngtech.jgiven.annotation.Format;
-import com.tngtech.jgiven.annotation.Formatf;
-import com.tngtech.jgiven.annotation.NamedFormat;
-import com.tngtech.jgiven.annotation.POJOFormat;
-import com.tngtech.jgiven.annotation.Quoted;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.annotation.POJOFormat.BracketsEnum;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.BooleanFormatter;
@@ -364,6 +360,36 @@ public class PlainTextReporterTest extends ScenarioTestBaseForTesting<GivenTestS
 
         String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
         assertThat( string ).contains( "something [This is a comment.]" );
+    }
+
+    @Test
+    public void varargs_formatting() throws UnsupportedEncodingException {
+        getScenario().startScenario( "varargs" );
+
+        given().varargs_as_parameters_$( "a", "b", "c" );
+
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string ).contains( "Given varargs as parameters a, b, c" );
+    }
+
+    @Test
+    public void array_formatting() throws UnsupportedEncodingException {
+        getScenario().startScenario( "varargs" );
+
+        given().arrays_as_parameters( new String[] { "a", "b", "c" } );
+
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string ).contains( "Given arrays as parameters a, b, c" );
+        assertThat( string ).doesNotContain( "+" );
+        assertThat( string ).doesNotContain( "|" );
+    }
+
+    @Test
+    public void empty_lists() throws UnsupportedEncodingException {
+        getScenario().startScenario( "empty" );
+        given().table_as_parameter( new String[] {} );
+        String string = PlainTextReporter.toString( getScenario().getScenarioModel() );
+        assertThat( string ).contains( "Given table as parameter" );
     }
 
     @Test

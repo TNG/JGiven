@@ -6,6 +6,19 @@ dependencies {
     compile project(':jgiven-html5-report')
     compile(group: 'junit', name: 'junit', version: junitVersion)
     testCompile group: 'pl.pragmatists', name: 'JUnitParams', version: junitParamsVersion
+    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    testCompile group: 'org.powermock', name: 'powermock-core', version: '1.7.4'
+    testCompile group: 'org.powermock', name: 'powermock-api-mockito', version: '1.7.4'
+    testCompile group: 'org.powermock', name: 'powermock-module-junit4', version: '1.7.4'
+}
+
+
+
+test {
+    // PowerMock does not work with Java 9+
+    if (JavaVersion.current().isJava9Compatible()) {
+        test.exclude '**/PowerMockTest*'
+    }
 }
 
 test.finalizedBy(jgivenHtml5Report)

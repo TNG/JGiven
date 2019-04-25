@@ -1,3 +1,47 @@
+# v1.0.0
+
+## New Features
+
+* The `CurrentStep` interface has a new method `setName` to change the name of a step programmatically [#386](https://github.com/TNG/JGiven/issues/386)
+
+## Backwards Incompatible Changes
+
+* Java 7 is not supported anymore
+* Calling stage methods annotated with `@DoNotIntercept` or declared within `java.lang.Object` will not trigger
+a stage change anymore [#385](https://github.com/TNG/JGiven/pull/385)
+
+## Fixed Issues
+
+* Make it easier to copy the stack trace from an error message [#380](https://github.com/TNG/JGiven/issues/380)
+
+# v0.17.1
+
+## Fixed Issues
+
+* Fix NPE when having @Disabled test in JUnit 5 [#376](https://github.com/TNG/JGiven/issues/376)
+
+# v0.17.0
+
+## New Features
+
+* Java 11 is supported now [#370](https://github.com/TNG/JGiven/issues/370)
+
+## Fixed Issues
+
+* Fixed an issue with JUnit 5 and parameterized tests to get the argument values [#372](https://github.com/TNG/JGiven/pull/372)
+
+# v0.16.1
+
+## New Features
+
+* First release of the Spock integration [#358](https://github.com/TNG/JGiven/pull/358) (thanks to mustaine)
+* TestNG SkipExceptions are now recognized [#355](https://github.com/TNG/JGiven/issues/355)
+
+## Fixed Issues
+
+* Fixed a bug that prevented the use of the PowerMockRunner [#365](https://github.com/TNG/JGiven/issues/365)
+* Fixed a NPE that was thrown when the `@Table` annotations was used with an empty list [#341](https://github.com/TNG/JGiven/issues/341)
+
 # v0.16.0
 
 ## New Features
