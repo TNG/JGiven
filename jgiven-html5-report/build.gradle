@@ -1,6 +1,3 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-import org.gradle.internal.os.OperatingSystem;
-
 dependencies {
     compile project(':jgiven-core')
     compile project(':jgiven-html-app')
