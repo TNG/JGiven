@@ -4,13 +4,14 @@
 
 * Java 12 is supported now [#397](https://github.com/TNG/JGiven/pull/397)
 * The `CurrentStep` interface has a new method `setName` to change the name of a step programmatically [#386](https://github.com/TNG/JGiven/issues/386)
-
+* Updated the Guava dependency to v27.1-jre [#398](https://github.com/TNG/JGiven/pull/398)
 
 ## Backwards Incompatible Changes
 
 * Java 7 is not supported anymore
 * Calling stage methods annotated with `@DoNotIntercept` or declared within `java.lang.Object` will not trigger
 a stage change anymore [#385](https://github.com/TNG/JGiven/pull/385)
+* The Guava dependency changed to v27.1-jre. This might lead to problems in case your project also depends on Guava
 
 ## Fixed Issues
 
