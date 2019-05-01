@@ -528,360 +528,358 @@ CurrentStep currentStep;
 
 public SELF $_eggs_and_$_rice_bowls( int eggs, int riceBowls ) {
     currentStep.setExtendedDescription( "The " + riceBowls + " rice bowls were very delicious" );
-}
-
-=== Parameter Formatting
-
-Sometimes the `toString()` representation of a parameter object does not fit well into the report. In these cases you have three possibilities:
-
-. Change the `toString()` implementation. This is often not possible or not desired, because it requires the modification of production code. However, sometimes this is appropriate.
-. Provide a wrapper class for the parameter object that provides a different `toString()` method. This is useful for parameter objects that you use very often.
-. Change the formatting of the parameter by using special JGiven annotations. This can be used in all other cases and also to change the formatting of primitive types.
-
-=== The @Format annotation
-
-The default formatting of a parameter can be overridden by using the `@Format` annotation. It takes as a parameter a class that implements the `ArgumentFormatter` interface. In addition, an optional array of arguments can be given to configure the customer formatter. For example, the built-in `BooleanFormatter` can be used to format `boolean` values:
-
-[source,java]</code></pre>
+}</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_parameter_formatting">Parameter Formatting</h3>
 <div class="paragraph">
-<p>public SELF the_machine_is_$(
-    @Format( value = BooleanFormatter.class, args = { "on", "off" } ) boolean onOrOff ) {
-    &#8230;&#8203;
-}</p>
+<p>Sometimes the <code>toString()</code> representation of a parameter object does not fit well into the report. In these cases you have three possibilities:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Change the <code>toString()</code> implementation. This is often not possible or not desired, because it requires the modification of production code. However, sometimes this is appropriate.</p>
+</li>
+<li>
+<p>Provide a wrapper class for the parameter object that provides a different <code>toString()</code> method. This is useful for parameter objects that you use very often.</p>
+</li>
+<li>
+<p>Change the formatting of the parameter by using special JGiven annotations. This can be used in all other cases and also to change the formatting of primitive types.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_format_annotation">The @Format annotation</h3>
+<div class="paragraph">
+<p>The default formatting of a parameter can be overridden by using the <code>@Format</code> annotation. It takes as a parameter a class that implements the <code>ArgumentFormatter</code> interface. In addition, an optional array of arguments can be given to configure the customer formatter. For example, the built-in <code>BooleanFormatter</code> can be used to format <code>boolean</code> values:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>In this case, `true` values will be formatted as `on` and `false` as `off`.
-
-=== Custom formatting annotations
-
-As using the `@Format` annotation is often cumbersome, especially if the same formatter is used in multiple places, one can define and use custom formatting annotations instead.
-
-An example is the pre-defined `@Quoted` annotation, which surrounds parameters with quotation marks. The annotation is defined as follows:
-[source,java]</pre>
+<pre class="highlight"><code class="language-java" data-lang="java">public SELF the_machine_is_$(
+    @Format( value = BooleanFormatter.class, args = { "on", "off" } ) boolean onOrOff ) {
+    ...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@Format( value = PrintfFormatter.class, args = "\"%s\"" )
+<p>In this case, <code>true</code> values will be formatted as <code>on</code> and <code>false</code> as <code>off</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_custom_formatting_annotations">Custom formatting annotations</h3>
+<div class="paragraph">
+<p>As using the <code>@Format</code> annotation is often cumbersome, especially if the same formatter is used in multiple places, one can define and use custom formatting annotations instead.</p>
+</div>
+<div class="paragraph">
+<p>An example is the pre-defined <code>@Quoted</code> annotation, which surrounds parameters with quotation marks. The annotation is defined as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@Format( value = PrintfFormatter.class, args = "\"%s\"" )
 @Retention( RetentionPolicy.RUNTIME )
 @Target( { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE } )
-public @interface Quoted {}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>As you can see, the annotation itself is annotated with the `@Format` annotation as described above, which will be applied to all parameters that are annotated with `@Quoted`.
-
-==== Example
-
-[source,java]</pre>
+public @interface Quoted {}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public SELF the_message_$_is_printed_to_the_console( @Quoted message ) { &#8230;&#8203; }</p>
+<p>As you can see, the annotation itself is annotated with the <code>@Format</code> annotation as described above, which will be applied to all parameters that are annotated with <code>@Quoted</code>.</p>
 </div>
+<div class="sect3">
+<h4 id="_example">Example</h4>
 <div class="listingblock">
 <div class="content">
-<pre>When invoked as
-
-
-[source,java]</pre>
+<pre class="highlight"><code class="language-java" data-lang="java">public SELF the_message_$_is_printed_to_the_console( @Quoted message ) { ... }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>then().the_message_$_is_printed_to_the_console( "Hello World" );</p>
+<p>When invoked as</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Then this will result in the report as:
-
-
---
-Then the message "Hello World" is printed to the console
---
-
-==== The @AnnotationFormat annotation
-Another pre-defined annotation is the `@Formatf` annotation which uses the `@AnnotationFormat` annotation to specify the formatter. Formatters of this kind implement the `AnnotationArgumentFormatter` interface. This allows for very flexible formatters that can take the concrete arguments of the annotation into account.
-
-[source,java]</pre>
+<pre class="highlight"><code class="language-java" data-lang="java">then().the_message_$_is_printed_to_the_console( "Hello World" );</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@AnnotationFormat( value = PrintfAnnotationFormatter.class )
+<p>Then this will result in the report as:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>Then the message "Hello World" is printed to the console</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_the_annotationformat_annotation">The @AnnotationFormat annotation</h4>
+<div class="paragraph">
+<p>Another pre-defined annotation is the <code>@Formatf</code> annotation which uses the <code>@AnnotationFormat</code> annotation to specify the formatter. Formatters of this kind implement the <code>AnnotationArgumentFormatter</code> interface. This allows for very flexible formatters that can take the concrete arguments of the annotation into account.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@AnnotationFormat( value = PrintfAnnotationFormatter.class )
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.PARAMETER )
 public @interface Formatf {
     String value() default "%s";
-}</p>
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_pojoformat_annotation">The @POJOFormat annotation</h3>
+<div class="paragraph">
+<p>When step parameter is a POJO, it may sometimes be useful to get a string representation using part or all of the fields composing this POJO.</p>
+</div>
+<div class="paragraph">
+<p>The <code>@POJOFormat</code> fulfills this need while providing a way to format fields values following customizable field formats.</p>
+</div>
+<div class="paragraph">
+<p>Given the following POJO :</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>=== The @POJOFormat annotation
-
-When step parameter is a POJO, it may sometimes be useful to get a string representation using part or all of the fields composing this POJO.
-
-The `@POJOFormat` fulfills this need while providing a way to format fields values following customizable field formats.
-
-Given the following POJO :
-
-
-[source,java]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>class CoffeeWithPrice {
+<pre class="highlight"><code class="language-java" data-lang="java">class CoffeeWithPrice {
    String name;
    double price_in_EUR;
    CoffeeWithPrice(String name, double priceInEur) {
       this.name = name;
       this.price_in_EUR = priceInEur;
    }
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Then you can define a step method as follows:
-
-[source,java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public SELF the_coffee_price_$_is_registered( @POJOFormat(fieldFormats = {
+<p>Then you can define a step method as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">public SELF the_coffee_price_$_is_registered( @POJOFormat(fieldFormats = {
                     @NamedFormat( name = "name", customFormatAnnotation = Quoted.class),
                     @NamedFormat( name = "price_in_EUR", format = @Format( value = PrintfFormatter.class, args = "%s EUR" ) )
                 } ) CoffeeWithPrice price ) {
-  &#8230;&#8203;
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>where `@NamedFormat` associates a format (classic `@Format` or any custom format annotation) to a field by its name.
-
-Finally, the step method can be called with an argument :
-
-
-[source,java]</pre>
+  ...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>given().the_coffee_price_$_is_registered(new CoffeeWithPrice("Espresso", 2.0));</p>
+<p>where <code>@NamedFormat</code> associates a format (classic <code>@Format</code> or any custom format annotation) to a field by its name.</p>
+</div>
+<div class="paragraph">
+<p>Finally, the step method can be called with an argument :</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Then the report will look as follows:
-[source,java]</pre>
+<pre class="highlight"><code class="language-java" data-lang="java">given().the_coffee_price_$_is_registered(new CoffeeWithPrice("Espresso", 2.0));</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Given the coffee price ["Espresso",2.0 EUR] is registered</p>
+<p>Then the report will look as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>For additional options, see the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/POJOFormat.html[JavaDoc documentation of the `@POJOFormat` annotation]
-
-==== Reuse a set of @NamedFormat definitions
-When several steps uses the same type of POJO in their parameters, it may be tedious to redefine this POJO fields formats in each of these steps.
-
-The solution in this case is to create a custom annotation where POJO fields formats will be declared once and for all. +
-This custom annotation will be itself annotated with the `@NamedFormats` which will wraps as much as `@NamedFormat` as there are fields needing a specific formatting. +
-It can then further be referenced by any `@POJOformat` and `@Table` annotations through their respective `fieldsFormatSetAnnotation` attribute.
-
-Given the following POJO :
-
-
-[source,java]</pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Given the coffee price ["Espresso",2.0 EUR] is registered</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>class CoffeeWithPrice {
+<p>For additional options, see the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/POJOFormat.html">JavaDoc documentation of the <code>@POJOFormat</code> annotation</a></p>
+</div>
+<div class="sect3">
+<h4 id="_reuse_a_set_of_namedformat_definitions">Reuse a set of @NamedFormat definitions</h4>
+<div class="paragraph">
+<p>When several steps uses the same type of POJO in their parameters, it may be tedious to redefine this POJO fields formats in each of these steps.</p>
+</div>
+<div class="paragraph">
+<p>The solution in this case is to create a custom annotation where POJO fields formats will be declared once and for all.<br>
+This custom annotation will be itself annotated with the <code>@NamedFormats</code> which will wraps as much as <code>@NamedFormat</code> as there are fields needing a specific formatting.<br>
+It can then further be referenced by any <code>@POJOformat</code> and <code>@Table</code> annotations through their respective <code>fieldsFormatSetAnnotation</code> attribute.</p>
+</div>
+<div class="paragraph">
+<p>Given the following POJO :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">class CoffeeWithPrice {
    String name;
    double price_in_EUR;
    CoffeeWithPrice(String name, double priceInEur) {
       this.name = name;
       this.price_in_EUR = priceInEur;
    }
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Then you can specify a reusable set of formats for each field of this POJO through a new custom annotation :
-
-[source,java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@NamedFormats( {
+<p>Then you can specify a reusable set of formats for each field of this POJO through a new custom annotation :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@NamedFormats( {
    @NamedFormat( name = "name", customFormatAnnotation = Quoted.class),
    @NamedFormat( name = "price_in_EUR", format = @Format( value = PrintfFormatter.class, args = "%s EUR" ) )
 } )
 @Retention( RetentionPolicy.RUNTIME )
-public @interface CoffeeWithPriceFieldsFormatSet {}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Then you will be able to reuse this custom named formats set annotation into the kind of steps below :
-
-[source,java]</pre>
+public @interface CoffeeWithPriceFieldsFormatSet {}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public SELF the_coffee_price_$_is_registered( @POJOFormat(fieldsFormatSetAnnotation = CoffeeWithPriceFieldsFormatSet.class ) CoffeeWithPrice price ) {
-  &#8230;&#8203;
-}</p>
+<p>Then you will be able to reuse this custom named formats set annotation into the kind of steps below :</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>[source,java]</pre>
+<pre class="highlight"><code class="language-java" data-lang="java">public SELF the_coffee_price_$_is_registered( @POJOFormat(fieldsFormatSetAnnotation = CoffeeWithPriceFieldsFormatSet.class ) CoffeeWithPrice price ) {
+  ...
+}</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>public SELF expected_coffee_price_for_name_$<em>is</em>$(@Quoted String coffeeName, @POJOFormat(fieldsFormatSetAnnotation = CoffeeWithPriceFieldsFormatSet.class ) CoffeeWithPrice price ) {
-  &#8230;&#8203;
-}</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>==== Field-level format definition
-If you have full control over the POJO class, you can also specify fields format directly into the POJO class, at field level, by annotating POJO fields with any format (or chain of formats) of your choice. +
-JGiven will then make use of field-level format annotations within a `@POJOFormat` or `@Table` context of use.
-
-Given the following POJO with field-level specified formats :
-
-
-[source,java]</pre>
+<pre class="highlight"><code class="language-java" data-lang="java">public SELF expected_coffee_price_for_name_$_is_$(@Quoted String coffeeName, @POJOFormat(fieldsFormatSetAnnotation = CoffeeWithPriceFieldsFormatSet.class ) CoffeeWithPrice price ) {
+  ...
+}</code></pre>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_field_level_format_definition">Field-level format definition</h4>
+<div class="paragraph">
+<p>If you have full control over the POJO class, you can also specify fields format directly into the POJO class, at field level, by annotating POJO fields with any format (or chain of formats) of your choice.<br>
+JGiven will then make use of field-level format annotations within a <code>@POJOFormat</code> or <code>@Table</code> context of use.</p>
 </div>
 <div class="paragraph">
-<p>class CoffeeWithPrice {</p>
+<p>Given the following POJO with field-level specified formats :</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>@Quoted
-String name;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>@Format( value = PrintfFormatter.class, args = "%s EUR" )
-double price_in_EUR;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>   CoffeeWithPrice(String name, double priceInEur) {
+<pre class="highlight"><code class="language-java" data-lang="java">class CoffeeWithPrice {
+
+   @Quoted
+   String name;
+
+   @Format( value = PrintfFormatter.class, args = "%s EUR" )
+   double price_in_EUR;
+
+   CoffeeWithPrice(String name, double priceInEur) {
       this.name = name;
       this.price_in_EUR = priceInEur;
    }
-}</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Then you can define a step method as follows:
-
-[source,java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public SELF the_coffee_price_$_is_registered(@POJOFormat CoffeeWithPrice price ) {
-  &#8230;&#8203;
-}</p>
+<p>Then you can define a step method as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Finally, the step method can be called with an argument :
-
-
-[source,java]</pre>
+<pre class="highlight"><code class="language-java" data-lang="java">public SELF the_coffee_price_$_is_registered(@POJOFormat CoffeeWithPrice price ) {
+  ...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>given().the_coffee_price_$_is_registered(new CoffeeWithPrice("Espresso", 2.0));</p>
+<p>Finally, the step method can be called with an argument :</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Then the report will look as follows:
-[source,java]</pre>
+<pre class="highlight"><code class="language-java" data-lang="java">given().the_coffee_price_$_is_registered(new CoffeeWithPrice("Espresso", 2.0));</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Given the coffee price ["Espresso",2.0 EUR] is registered</p>
+<p>Then the report will look as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Please note that `@NamedFormat` specified at `@POJOformat` or `@Table` level have precedence over field-level defined formats.
-
-=== Tables as Parameters
-
-Sometimes information can be represented very concisely by using tables. JGiven supports this with the `@Table` annotation for step parameters. Such parameters are then formatted as tables in the report. The types of such parameters can be:
-
-. A list of lists, where each inner list represents a single row and the first row represents the headers of the table.
-. A list of POJOs, where each POJO represents a row and the headers are inferred by the names of the fields of the POJO.
-. A single POJO, which is equivalent to a one-element list of POJOs.
-
-==== Example
-
-Given the following POJO:
-
-
-[source,java]</pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Given the coffee price ["Espresso",2.0 EUR] is registered</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>class CoffeeWithPrice {
+<p>Please note that <code>@NamedFormat</code> specified at <code>@POJOformat</code> or <code>@Table</code> level have precedence over field-level defined formats.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tables_as_parameters">Tables as Parameters</h3>
+<div class="paragraph">
+<p>Sometimes information can be represented very concisely by using tables. JGiven supports this with the <code>@Table</code> annotation for step parameters. Such parameters are then formatted as tables in the report. The types of such parameters can be:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>A list of lists, where each inner list represents a single row and the first row represents the headers of the table.</p>
+</li>
+<li>
+<p>A list of POJOs, where each POJO represents a row and the headers are inferred by the names of the fields of the POJO.</p>
+</li>
+<li>
+<p>A single POJO, which is equivalent to a one-element list of POJOs.</p>
+</li>
+</ol>
+</div>
+<div class="sect3">
+<h4 id="_example_2">Example</h4>
+<div class="paragraph">
+<p>Given the following POJO:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">class CoffeeWithPrice {
    String name;
    double price_in_EUR;
    CoffeeWithPrice(String name, double priceInEur) {
       this.name = name;
       this.price_in_EUR = priceInEur;
    }
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Then you can define a step method as follows:
-
-
-
-[source,java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public SELF the_prices_of_the_coffees_are( @Table CoffeeWithPrice&#8230;&#8203; prices ) {
-  &#8230;&#8203;
-}</p>
+<p>Then you can define a step method as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>Finally, the step method can be called with a list of arguments:
-
-
-[source,java]</pre>
+<pre class="highlight"><code class="language-java" data-lang="java">public SELF the_prices_of_the_coffees_are( @Table CoffeeWithPrice... prices ) {
+  ...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>given().the_prices_of_the_coffees_are(
+<p>Finally, the step method can be called with a list of arguments:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">given().the_prices_of_the_coffees_are(
    new CoffeeWithPrice("Espresso", 2.0),
-   new CoffeeWithPrice("Cappuccino", 2.5));</p>
+   new CoffeeWithPrice("Cappuccino", 2.5));</code></pre>
 </div>
-<div class="listingblock">
+</div>
+<div class="paragraph">
+<p>Then the report will look as follows:</p>
+</div>
+<div class="openblock">
 <div class="content">
-<pre>Then the report will look as follows:
-
-
---
-Given the prices of the coffees are
-
-      | name       | price in EUR |
-      +------------+--------------+
-      | Espresso   | 2.0          |
-      | Cappuccino | 2.5          |
---
-For additional options, see the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Table.html[JavaDoc documentation of the `@Table` annotation]
-
-Also note that POJO fields formats can be specified thanks to the `@Table#fieldsFormat` or `@Table#fieldsFormatSetAnnotation` options. +
-See &lt;&lt;_the_pojoformat_annotation&gt;&gt; section for more informations about how to use these two options.</pre>
+<div class="paragraph">
+<p>Given the prices of the coffees are</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>| name       | price in EUR |
++------------+--------------+
+| Espresso   | 2.0          |
+| Cappuccino | 2.5          |</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>For additional options, see the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Table.html">JavaDoc documentation of the <code>@Table</code> annotation</a></p>
+</div>
+<div class="paragraph">
+<p>Also note that POJO fields formats can be specified thanks to the <code>@Table#fieldsFormat</code> or <code>@Table#fieldsFormatSetAnnotation</code> options.<br>
+See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section for more informations about how to use these two options.</p>
 </div>
 </div>
 </div>
@@ -890,7 +888,7 @@ See &lt;&lt;_the_pojoformat_annotation&gt;&gt; section for more informations abo
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-02-06 21:38:06 +01:00
+Last updated 2019-05-01 13:16:13 +02:00
 </div>
 </div>
 </body>
