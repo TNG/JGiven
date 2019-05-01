@@ -2,7 +2,9 @@
 
 ## New Features
 
+* Java 12 is supported now [#397](https://github.com/TNG/JGiven/pull/397)
 * The `CurrentStep` interface has a new method `setName` to change the name of a step programmatically [#386](https://github.com/TNG/JGiven/issues/386)
+
 
 ## Backwards Incompatible Changes
 

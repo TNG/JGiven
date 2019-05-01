@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.tngtech.jgiven:jgiven-gradle-plugin:0.16.1'
+        classpath 'com.tngtech.jgiven:jgiven-gradle-plugin:0.17.1'
     }
 }
 
@@ -15,17 +15,16 @@ description = "Module for writing JGiven tests with Spock"
 
 
 repositories {
-    mavenCentral()
     mavenLocal()
+    jcenter()
     maven {
         url "https://oss.sonatype.org/content/groups/public/"
     }
 }
 
 dependencies {
-    compile 'org.spockframework:spock-core:1.1-groovy-2.4'
-    testCompile group: 'com.tngtech.jgiven', name: 'jgiven-junit', version: 'latest.integration'
-    testCompile group: 'com.tngtech.jgiven', name: 'jgiven-spock', version: 'latest.integration'
+    implementation 'org.spockframework:spock-core:1.3-groovy-2.5'
+    testImplementation 'com.tngtech.jgiven:jgiven-spock:latest.integration'
 }
 
 test.finalizedBy jgivenTestReport
