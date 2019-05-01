@@ -575,6 +575,76 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_parameters_within_a_sentence">7.1. Parameters within a sentence</a></li>
 <li><a href="#_custom_annotations">7.2. Custom Annotations</a></li>
 <li><a href="#_extended_description">7.3. Extended Description</a></li>
+<li><a href="#_parameter_formatting">7.4. Parameter Formatting</a></li>
+<li><a href="#_the_format_annotation">7.5. The @Format annotation</a></li>
+<li><a href="#_custom_formatting_annotations">7.6. Custom formatting annotations</a></li>
+<li><a href="#_the_pojoformat_annotation">7.7. The @POJOFormat annotation</a></li>
+<li><a href="#_tables_as_parameters">7.8. Tables as Parameters</a></li>
+</ul>
+</li>
+<li><a href="#_parameterized_scenarios">8. Parameterized Scenarios</a>
+<ul class="sectlevel2">
+<li><a href="#_junit_2">8.1. JUnit</a></li>
+<li><a href="#_junit_dataprovider_runner">8.2. JUnit Dataprovider Runner</a></li>
+<li><a href="#_case_as_description">8.3. Case As Description</a></li>
+</ul>
+</li>
+<li><a href="#_tags">9. Tags</a>
+<ul class="sectlevel2">
+<li><a href="#_descriptions">9.1. Descriptions</a></li>
+<li><a href="#_overriding_the_name">9.2. Overriding the Name</a></li>
+<li><a href="#_values">9.3. Values</a></li>
+<li><a href="#_overriding_the_value">9.4. Overriding the Value</a></li>
+<li><a href="#_hierarchical_tags">9.5. Hierarchical Tags</a></li>
+</ul>
+</li>
+<li><a href="#_attachments">10. Attachments</a>
+<ul class="sectlevel2">
+<li><a href="#_creating_attachments">10.1. Creating Attachments</a></li>
+<li><a href="#_adding_attachments_to_steps">10.2. Adding Attachments to Steps</a></li>
+<li><a href="#_example_taking_screenshots_with_selenium_webdriver">10.3. Example: Taking Screenshots with Selenium WebDriver</a></li>
+</ul>
+</li>
+<li><a href="#_exception_handling">11. Exception Handling</a>
+<ul class="sectlevel2">
+<li><a href="#_expecting_exceptions">11.1. Expecting Exceptions</a></li>
+<li><a href="#_a_better_approach">11.2. A better approach</a></li>
+</ul>
+</li>
+<li><a href="#_spcok">12. Spcok</a>
+<ul class="sectlevel2">
+<li><a href="#_install_dependency">12.1. Install Dependency</a></li>
+<li><a href="#_use_jgiven_with_spock">12.2. Use JGiven with Spock</a></li>
+<li><a href="#_example_project">12.3. Example Project</a></li>
+</ul>
+</li>
+<li><a href="#_spring">13. Spring</a>
+<ul class="sectlevel2">
+<li><a href="#_install_dependency_2">13.1. Install Dependency</a></li>
+<li><a href="#_configure_spring">13.2. Configure Spring</a></li>
+<li><a href="#_use_jgiven_in_junit_based_spring_tests">13.3. Use JGiven in JUnit-based Spring Tests</a></li>
+<li><a href="#_stages_as_spring_beans">13.4. Stages as Spring Beans</a></li>
+<li><a href="#_example_project_2">13.5. Example Project</a></li>
+</ul>
+</li>
+<li><a href="#_web_testing_with_selenium">14. Web Testing with Selenium</a>
+<ul class="sectlevel2">
+<li><a href="#_page_objects_vs_stages">14.1. Page Objects vs Stages</a></li>
+<li><a href="#_example_project_3">14.2. Example Project</a></li>
+</ul>
+</li>
+<li><a href="#_android">15. Android</a>
+<ul class="sectlevel2">
+<li><a href="#_testing_on_an_device_or_emulator_experimental">15.1. Testing on an Device or Emulator (EXPERIMENTAL)</a></li>
+<li><a href="#_example_project_4">15.2. Example Project</a></li>
+</ul>
+</li>
+<li><a href="#_junit_5_experimental">16. JUnit 5 (EXPERIMENTAL)</a>
+<ul class="sectlevel2">
+<li><a href="#_known_issues">16.1. Known Issues</a></li>
+<li><a href="#_install_dependency_3">16.2. Install Dependency</a></li>
+<li><a href="#_use_jgiven_with_junit_5">16.3. Use JGiven with JUnit 5</a></li>
+<li><a href="#_example_project_5">16.4. Example Project</a></li>
 </ul>
 </li>
 </ul>
@@ -1791,1429 +1861,1420 @@ CurrentStep currentStep;
 
 <span class="directive">public</span> SELF <span class="error">$</span>_eggs_and_<span class="error">$</span>_rice_bowls( <span class="type">int</span> eggs, <span class="type">int</span> riceBowls ) {
     currentStep.setExtendedDescription( <span class="string"><span class="delimiter">&quot;</span><span class="content">The </span><span class="delimiter">&quot;</span></span> + riceBowls + <span class="string"><span class="delimiter">&quot;</span><span class="content"> rice bowls were very delicious</span><span class="delimiter">&quot;</span></span> );
-}
-
-=== Parameter Formatting
-
-Sometimes the <span class="error">`</span>toString()<span class="error">`</span> representation of a parameter object does not fit well into the report. In these cases you have three possibilities:
-
-. Change the <span class="error">`</span>toString()<span class="error">`</span> implementation. This is often not possible or not desired, because it requires the modification of production code. However, sometimes <span class="local-variable">this</span> is appropriate.
-. Provide a wrapper <span class="type">class</span> <span class="class">for</span> the parameter object that provides a different <span class="error">`</span>toString()<span class="error">`</span> method. This is useful <span class="keyword">for</span> parameter objects that you use very often.
-. Change the formatting of the parameter by using special JGiven annotations. This can be used in all other cases and also to change the formatting of primitive types.
-
-=== The <span class="annotation">@Format</span> annotation
-
-The <span class="keyword">default</span> formatting of a parameter can be overridden by using the <span class="error">`</span><span class="annotation">@Format</span><span class="error">`</span> annotation. It takes as a parameter a <span class="type">class</span> <span class="class">that</span> <span class="directive">implements</span> the <span class="error">`</span>ArgumentFormatter<span class="error">`</span> <span class="type">interface</span>. In <span class="class">addition</span>, an optional array of arguments can be given to configure the customer formatter. For example, the built-in <span class="error">`</span>BooleanFormatter<span class="error">`</span> can be used to format <span class="error">`</span><span class="type">boolean</span><span class="error">`</span> values:
-
-[source,java]</code></pre>
+}</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_parameter_formatting"><a class="anchor" href="#_parameter_formatting"></a>7.4. Parameter Formatting</h3>
 <div class="paragraph">
-<p>public SELF the_machine_is_$(
-    @Format( value = BooleanFormatter.class, args = { "on", "off" } ) boolean onOrOff ) {
-    &#8230;&#8203;
-}</p>
+<p>Sometimes the <code>toString()</code> representation of a parameter object does not fit well into the report. In these cases you have three possibilities:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Change the <code>toString()</code> implementation. This is often not possible or not desired, because it requires the modification of production code. However, sometimes this is appropriate.</p>
+</li>
+<li>
+<p>Provide a wrapper class for the parameter object that provides a different <code>toString()</code> method. This is useful for parameter objects that you use very often.</p>
+</li>
+<li>
+<p>Change the formatting of the parameter by using special JGiven annotations. This can be used in all other cases and also to change the formatting of primitive types.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_format_annotation"><a class="anchor" href="#_the_format_annotation"></a>7.5. The @Format annotation</h3>
+<div class="paragraph">
+<p>The default formatting of a parameter can be overridden by using the <code>@Format</code> annotation. It takes as a parameter a class that implements the <code>ArgumentFormatter</code> interface. In addition, an optional array of arguments can be given to configure the customer formatter. For example, the built-in <code>BooleanFormatter</code> can be used to format <code>boolean</code> values:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">In this case, `true` values will be formatted as `on` and `false` as `off`.
-
-=== Custom formatting annotations
-
-As using the `@Format` annotation is often cumbersome, especially if the same formatter is used in multiple places, one can define and use custom formatting annotations instead.
-
-An example is the pre-defined `@Quoted` annotation, which surrounds parameters with quotation marks. The annotation is defined as follows:
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_machine_is_<span class="error">$</span>(
+    <span class="annotation">@Format</span>( value = BooleanFormatter.class, args = { <span class="string"><span class="delimiter">&quot;</span><span class="content">on</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">off</span><span class="delimiter">&quot;</span></span> } ) <span class="type">boolean</span> onOrOff ) {
+    ...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@Format( value = PrintfFormatter.class, args = "\"%s\"" )
-@Retention( RetentionPolicy.RUNTIME )
-@Target( { ElementType.PARAMETER, ElementType.ANNOTATION_TYPE } )
-public @interface Quoted {}</p>
+<p>In this case, <code>true</code> values will be formatted as <code>on</code> and <code>false</code> as <code>off</code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_custom_formatting_annotations"><a class="anchor" href="#_custom_formatting_annotations"></a>7.6. Custom formatting annotations</h3>
+<div class="paragraph">
+<p>As using the <code>@Format</code> annotation is often cumbersome, especially if the same formatter is used in multiple places, one can define and use custom formatting annotations instead.</p>
+</div>
+<div class="paragraph">
+<p>An example is the pre-defined <code>@Quoted</code> annotation, which surrounds parameters with quotation marks. The annotation is defined as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">As you can see, the annotation itself is annotated with the `@Format` annotation as described above, which will be applied to all parameters that are annotated with `@Quoted`.
-
-==== Example
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Format</span>( value = PrintfFormatter.class, args = <span class="string"><span class="delimiter">&quot;</span><span class="char">\&quot;</span><span class="content">%s</span><span class="char">\&quot;</span><span class="delimiter">&quot;</span></span> )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="annotation">@Target</span>( { <span class="predefined-type">ElementType</span>.PARAMETER, <span class="predefined-type">ElementType</span>.ANNOTATION_TYPE } )
+<span class="directive">public</span> <span class="annotation">@interface</span> Quoted {}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public SELF the_message_$_is_printed_to_the_console( @Quoted message ) { &#8230;&#8203; }</p>
+<p>As you can see, the annotation itself is annotated with the <code>@Format</code> annotation as described above, which will be applied to all parameters that are annotated with <code>@Quoted</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="_example_5"><a class="anchor" href="#_example_5"></a>7.6.1. Example</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_message_<span class="error">$</span>_is_printed_to_the_console( <span class="annotation">@Quoted</span> message ) { ... }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When invoked as</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">When invoked as
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">then().the_message_<span class="error">$</span>_is_printed_to_the_console( <span class="string"><span class="delimiter">&quot;</span><span class="content">Hello World</span><span class="delimiter">&quot;</span></span> );</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>then().the_message_$_is_printed_to_the_console( "Hello World" );</p>
+<p>Then this will result in the report as:</p>
+</div>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>Then the message "Hello World" is printed to the console</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_the_annotationformat_annotation"><a class="anchor" href="#_the_annotationformat_annotation"></a>7.6.2. The @AnnotationFormat annotation</h4>
+<div class="paragraph">
+<p>Another pre-defined annotation is the <code>@Formatf</code> annotation which uses the <code>@AnnotationFormat</code> annotation to specify the formatter. Formatters of this kind implement the <code>AnnotationArgumentFormatter</code> interface. This allows for very flexible formatters that can take the concrete arguments of the annotation into account.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">Then this will result in the report as:
-
-
---
-Then the message "Hello World" is printed to the console
---
-
-==== The @AnnotationFormat annotation
-Another pre-defined annotation is the `@Formatf` annotation which uses the `@AnnotationFormat` annotation to specify the formatter. Formatters of this kind implement the `AnnotationArgumentFormatter` interface. This allows for very flexible formatters that can take the concrete arguments of the annotation into account.
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@AnnotationFormat</span>( value = PrintfAnnotationFormatter.class )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="annotation">@Target</span>( <span class="predefined-type">ElementType</span>.PARAMETER )
+<span class="directive">public</span> <span class="annotation">@interface</span> Formatf {
+    <span class="predefined-type">String</span> value() <span class="keyword">default</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">%s</span><span class="delimiter">&quot;</span></span>;
+}</code></pre>
 </div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_pojoformat_annotation"><a class="anchor" href="#_the_pojoformat_annotation"></a>7.7. The @POJOFormat annotation</h3>
+<div class="paragraph">
+<p>When step parameter is a POJO, it may sometimes be useful to get a string representation using part or all of the fields composing this POJO.</p>
 </div>
 <div class="paragraph">
-<p>@AnnotationFormat( value = PrintfAnnotationFormatter.class )
-@Retention( RetentionPolicy.RUNTIME )
-@Target( ElementType.PARAMETER )
-public @interface Formatf {
-    String value() default "%s";
-}</p>
+<p>The <code>@POJOFormat</code> fulfills this need while providing a way to format fields values following customizable field formats.</p>
+</div>
+<div class="paragraph">
+<p>Given the following POJO :</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">=== The @POJOFormat annotation
-
-When step parameter is a POJO, it may sometimes be useful to get a string representation using part or all of the fields composing this POJO.
-
-The `@POJOFormat` fulfills this need while providing a way to format fields values following customizable field formats.
-
-Given the following POJO :
-
-
-[source,java]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>class CoffeeWithPrice {
-   String name;
-   double price_in_EUR;
-   CoffeeWithPrice(String name, double priceInEur) {
-      this.name = name;
-      this.price_in_EUR = priceInEur;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="type">class</span> <span class="class">CoffeeWithPrice</span> {
+   <span class="predefined-type">String</span> name;
+   <span class="type">double</span> price_in_EUR;
+   CoffeeWithPrice(<span class="predefined-type">String</span> name, <span class="type">double</span> priceInEur) {
+      <span class="local-variable">this</span>.name = name;
+      <span class="local-variable">this</span>.price_in_EUR = priceInEur;
    }
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">Then you can define a step method as follows:
-
-[source,java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public SELF the_coffee_price_$_is_registered( @POJOFormat(fieldFormats = {
-                    @NamedFormat( name = "name", customFormatAnnotation = Quoted.class),
-                    @NamedFormat( name = "price_in_EUR", format = @Format( value = PrintfFormatter.class, args = "%s EUR" ) )
+<p>Then you can define a step method as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_coffee_price_<span class="error">$</span>_is_registered( <span class="annotation">@POJOFormat</span>(fieldFormats = {
+                    <span class="annotation">@NamedFormat</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>, customFormatAnnotation = Quoted.class),
+                    <span class="annotation">@NamedFormat</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">price_in_EUR</span><span class="delimiter">&quot;</span></span>, format = <span class="annotation">@Format</span>( value = PrintfFormatter.class, args = <span class="string"><span class="delimiter">&quot;</span><span class="content">%s EUR</span><span class="delimiter">&quot;</span></span> ) )
                 } ) CoffeeWithPrice price ) {
-  &#8230;&#8203;
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">where `@NamedFormat` associates a format (classic `@Format` or any custom format annotation) to a field by its name.
-
-Finally, the step method can be called with an argument :
-
-
-[source,java]</pre>
+  ...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>given().the_coffee_price_$_is_registered(new CoffeeWithPrice("Espresso", 2.0));</p>
+<p>where <code>@NamedFormat</code> associates a format (classic <code>@Format</code> or any custom format annotation) to a field by its name.</p>
+</div>
+<div class="paragraph">
+<p>Finally, the step method can be called with an argument :</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">Then the report will look as follows:
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">given().the_coffee_price_<span class="error">$</span>_is_registered(<span class="keyword">new</span> CoffeeWithPrice(<span class="string"><span class="delimiter">&quot;</span><span class="content">Espresso</span><span class="delimiter">&quot;</span></span>, <span class="float">2.0</span>));</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Given the coffee price ["Espresso",2.0 EUR] is registered</p>
+<p>Then the report will look as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">For additional options, see the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/POJOFormat.html[JavaDoc documentation of the `@POJOFormat` annotation]
-
-==== Reuse a set of @NamedFormat definitions
-When several steps uses the same type of POJO in their parameters, it may be tedious to redefine this POJO fields formats in each of these steps.
-
-The solution in this case is to create a custom annotation where POJO fields formats will be declared once and for all. +
-This custom annotation will be itself annotated with the `@NamedFormats` which will wraps as much as `@NamedFormat` as there are fields needing a specific formatting. +
-It can then further be referenced by any `@POJOformat` and `@Table` annotations through their respective `fieldsFormatSetAnnotation` attribute.
-
-Given the following POJO :
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Given the coffee price [<span class="string"><span class="delimiter">&quot;</span><span class="content">Espresso</span><span class="delimiter">&quot;</span></span>,<span class="float">2.0</span> EUR] is registered</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>class CoffeeWithPrice {
-   String name;
-   double price_in_EUR;
-   CoffeeWithPrice(String name, double priceInEur) {
-      this.name = name;
-      this.price_in_EUR = priceInEur;
+<p>For additional options, see the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/POJOFormat.html">JavaDoc documentation of the <code>@POJOFormat</code> annotation</a></p>
+</div>
+<div class="sect3">
+<h4 id="_reuse_a_set_of_namedformat_definitions"><a class="anchor" href="#_reuse_a_set_of_namedformat_definitions"></a>7.7.1. Reuse a set of @NamedFormat definitions</h4>
+<div class="paragraph">
+<p>When several steps uses the same type of POJO in their parameters, it may be tedious to redefine this POJO fields formats in each of these steps.</p>
+</div>
+<div class="paragraph">
+<p>The solution in this case is to create a custom annotation where POJO fields formats will be declared once and for all.<br>
+This custom annotation will be itself annotated with the <code>@NamedFormats</code> which will wraps as much as <code>@NamedFormat</code> as there are fields needing a specific formatting.<br>
+It can then further be referenced by any <code>@POJOformat</code> and <code>@Table</code> annotations through their respective <code>fieldsFormatSetAnnotation</code> attribute.</p>
+</div>
+<div class="paragraph">
+<p>Given the following POJO :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="type">class</span> <span class="class">CoffeeWithPrice</span> {
+   <span class="predefined-type">String</span> name;
+   <span class="type">double</span> price_in_EUR;
+   CoffeeWithPrice(<span class="predefined-type">String</span> name, <span class="type">double</span> priceInEur) {
+      <span class="local-variable">this</span>.name = name;
+      <span class="local-variable">this</span>.price_in_EUR = priceInEur;
    }
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">Then you can specify a reusable set of formats for each field of this POJO through a new custom annotation :
-
-[source,java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@NamedFormats( {
-   @NamedFormat( name = "name", customFormatAnnotation = Quoted.class),
-   @NamedFormat( name = "price_in_EUR", format = @Format( value = PrintfFormatter.class, args = "%s EUR" ) )
+<p>Then you can specify a reusable set of formats for each field of this POJO through a new custom annotation :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@NamedFormats</span>( {
+   <span class="annotation">@NamedFormat</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>, customFormatAnnotation = Quoted.class),
+   <span class="annotation">@NamedFormat</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">price_in_EUR</span><span class="delimiter">&quot;</span></span>, format = <span class="annotation">@Format</span>( value = PrintfFormatter.class, args = <span class="string"><span class="delimiter">&quot;</span><span class="content">%s EUR</span><span class="delimiter">&quot;</span></span> ) )
 } )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface CoffeeWithPriceFieldsFormatSet {}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">Then you will be able to reuse this custom named formats set annotation into the kind of steps below :
-
-[source,java]</pre>
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> CoffeeWithPriceFieldsFormatSet {}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public SELF the_coffee_price_$_is_registered( @POJOFormat(fieldsFormatSetAnnotation = CoffeeWithPriceFieldsFormatSet.class ) CoffeeWithPrice price ) {
-  &#8230;&#8203;
-}</p>
+<p>Then you will be able to reuse this custom named formats set annotation into the kind of steps below :</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_coffee_price_<span class="error">$</span>_is_registered( <span class="annotation">@POJOFormat</span>(fieldsFormatSetAnnotation = CoffeeWithPriceFieldsFormatSet.class ) CoffeeWithPrice price ) {
+  ...
+}</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>public SELF expected_coffee_price_for_name_$<em>is</em>$(@Quoted String coffeeName, @POJOFormat(fieldsFormatSetAnnotation = CoffeeWithPriceFieldsFormatSet.class ) CoffeeWithPrice price ) {
-  &#8230;&#8203;
-}</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">==== Field-level format definition
-If you have full control over the POJO class, you can also specify fields format directly into the POJO class, at field level, by annotating POJO fields with any format (or chain of formats) of your choice. +
-JGiven will then make use of field-level format annotations within a `@POJOFormat` or `@Table` context of use.
-
-Given the following POJO with field-level specified formats :
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF expected_coffee_price_for_name_<span class="error">$</span>_is_<span class="error">$</span>(<span class="annotation">@Quoted</span> <span class="predefined-type">String</span> coffeeName, <span class="annotation">@POJOFormat</span>(fieldsFormatSetAnnotation = CoffeeWithPriceFieldsFormatSet.class ) CoffeeWithPrice price ) {
+  ...
+}</code></pre>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_field_level_format_definition"><a class="anchor" href="#_field_level_format_definition"></a>7.7.2. Field-level format definition</h4>
+<div class="paragraph">
+<p>If you have full control over the POJO class, you can also specify fields format directly into the POJO class, at field level, by annotating POJO fields with any format (or chain of formats) of your choice.<br>
+JGiven will then make use of field-level format annotations within a <code>@POJOFormat</code> or <code>@Table</code> context of use.</p>
 </div>
 <div class="paragraph">
-<p>class CoffeeWithPrice {</p>
+<p>Given the following POJO with field-level specified formats :</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre class="nowrap">@Quoted
-String name;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">@Format( value = PrintfFormatter.class, args = "%s EUR" )
-double price_in_EUR;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">   CoffeeWithPrice(String name, double priceInEur) {
-      this.name = name;
-      this.price_in_EUR = priceInEur;
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="type">class</span> <span class="class">CoffeeWithPrice</span> {
+
+   <span class="annotation">@Quoted</span>
+   <span class="predefined-type">String</span> name;
+
+   <span class="annotation">@Format</span>( value = PrintfFormatter.class, args = <span class="string"><span class="delimiter">&quot;</span><span class="content">%s EUR</span><span class="delimiter">&quot;</span></span> )
+   <span class="type">double</span> price_in_EUR;
+
+   CoffeeWithPrice(<span class="predefined-type">String</span> name, <span class="type">double</span> priceInEur) {
+      <span class="local-variable">this</span>.name = name;
+      <span class="local-variable">this</span>.price_in_EUR = priceInEur;
    }
-}</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">Then you can define a step method as follows:
-
-[source,java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public SELF the_coffee_price_$_is_registered(@POJOFormat CoffeeWithPrice price ) {
-  &#8230;&#8203;
-}</p>
+<p>Then you can define a step method as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">Finally, the step method can be called with an argument :
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_coffee_price_<span class="error">$</span>_is_registered(<span class="annotation">@POJOFormat</span> CoffeeWithPrice price ) {
+  ...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>given().the_coffee_price_$_is_registered(new CoffeeWithPrice("Espresso", 2.0));</p>
+<p>Finally, the step method can be called with an argument :</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">Then the report will look as follows:
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">given().the_coffee_price_<span class="error">$</span>_is_registered(<span class="keyword">new</span> CoffeeWithPrice(<span class="string"><span class="delimiter">&quot;</span><span class="content">Espresso</span><span class="delimiter">&quot;</span></span>, <span class="float">2.0</span>));</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Given the coffee price ["Espresso",2.0 EUR] is registered</p>
+<p>Then the report will look as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">Please note that `@NamedFormat` specified at `@POJOformat` or `@Table` level have precedence over field-level defined formats.
-
-=== Tables as Parameters
-
-Sometimes information can be represented very concisely by using tables. JGiven supports this with the `@Table` annotation for step parameters. Such parameters are then formatted as tables in the report. The types of such parameters can be:
-
-. A list of lists, where each inner list represents a single row and the first row represents the headers of the table.
-. A list of POJOs, where each POJO represents a row and the headers are inferred by the names of the fields of the POJO.
-. A single POJO, which is equivalent to a one-element list of POJOs.
-
-==== Example
-
-Given the following POJO:
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Given the coffee price [<span class="string"><span class="delimiter">&quot;</span><span class="content">Espresso</span><span class="delimiter">&quot;</span></span>,<span class="float">2.0</span> EUR] is registered</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>class CoffeeWithPrice {
-   String name;
-   double price_in_EUR;
-   CoffeeWithPrice(String name, double priceInEur) {
-      this.name = name;
-      this.price_in_EUR = priceInEur;
+<p>Please note that <code>@NamedFormat</code> specified at <code>@POJOformat</code> or <code>@Table</code> level have precedence over field-level defined formats.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_tables_as_parameters"><a class="anchor" href="#_tables_as_parameters"></a>7.8. Tables as Parameters</h3>
+<div class="paragraph">
+<p>Sometimes information can be represented very concisely by using tables. JGiven supports this with the <code>@Table</code> annotation for step parameters. Such parameters are then formatted as tables in the report. The types of such parameters can be:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>A list of lists, where each inner list represents a single row and the first row represents the headers of the table.</p>
+</li>
+<li>
+<p>A list of POJOs, where each POJO represents a row and the headers are inferred by the names of the fields of the POJO.</p>
+</li>
+<li>
+<p>A single POJO, which is equivalent to a one-element list of POJOs.</p>
+</li>
+</ol>
+</div>
+<div class="sect3">
+<h4 id="_example_6"><a class="anchor" href="#_example_6"></a>7.8.1. Example</h4>
+<div class="paragraph">
+<p>Given the following POJO:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="type">class</span> <span class="class">CoffeeWithPrice</span> {
+   <span class="predefined-type">String</span> name;
+   <span class="type">double</span> price_in_EUR;
+   CoffeeWithPrice(<span class="predefined-type">String</span> name, <span class="type">double</span> priceInEur) {
+      <span class="local-variable">this</span>.name = name;
+      <span class="local-variable">this</span>.price_in_EUR = priceInEur;
    }
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">Then you can define a step method as follows:
-
-
-
-[source,java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public SELF the_prices_of_the_coffees_are( @Table CoffeeWithPrice&#8230;&#8203; prices ) {
-  &#8230;&#8203;
-}</p>
+<p>Then you can define a step method as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">Finally, the step method can be called with a list of arguments:
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF the_prices_of_the_coffees_are( <span class="annotation">@Table</span> CoffeeWithPrice... prices ) {
+  ...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>given().the_prices_of_the_coffees_are(
-   new CoffeeWithPrice("Espresso", 2.0),
-   new CoffeeWithPrice("Cappuccino", 2.5));</p>
+<p>Finally, the step method can be called with a list of arguments:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">Then the report will look as follows:
-
-
---
-Given the prices of the coffees are
-
-      | name       | price in EUR |
-      +------------+--------------+
-      | Espresso   | 2.0          |
-      | Cappuccino | 2.5          |
---
-For additional options, see the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Table.html[JavaDoc documentation of the `@Table` annotation]
-
-Also note that POJO fields formats can be specified thanks to the `@Table#fieldsFormat` or `@Table#fieldsFormatSetAnnotation` options. +
-See &lt;&lt;_the_pojoformat_annotation&gt;&gt; section for more informations about how to use these two options.
-
-== Parameterized Scenarios
-:sourcedir: ../jgiven-examples/src/test/java/com/tngtech/jgiven/examples
-
-JGiven scenarios can be parameterized. This is very useful for writing data-driven scenarios, where the scenarios itself are the same, but are executed with different example values.
-
-Parameterization of Scenarios works with TestNG and JUnit, we only show it for JUnit. For TestNG it works analogous.
-
-=== JUnit
-
-JGiven supports several different ways to parameterize a JUnit test:
-
-. JUnit’s built-in Parametrized Runner
-. https://github.com/TNG/junit-dataprovider[JUnit DataProvider]
-. https://github.com/Pragmatists/JUnitParams[JUnitParams]
-
-We use the JUnit Dataprovider in the following.
-
-=== JUnit Dataprovider Runner
-
-https://github.com/TNG/junit-dataprovider[JUnit Dataprovider] provides a JUnit test runner that enables the execution of paramterized test methods. It is similar to the way parameterized tests work in http://testng.org/[TestNG].
-
-==== Example
-[source,java]</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">@Test
-@DataProvider( {
-        "1, 1",
-        "0, 2",
-        "1, 0"
-} )
-public void coffee_is_not_served( int coffees, int euros ) {
-    given().a_coffee_machine()
-            .and().the_coffee_costs_$_euros( 2 )
-            .and().there_are_$_coffees_left_in_the_machine( coffees );</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">when().I_insert_$_one_euro_coins( euros )
-        .and().I_press_the_coffee_button();</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">    then().I_should_not_be_served_a_coffee();
-}</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">The resulting report will then look as follows:</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">Coffee is not served</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">Given a coffee machine
-  And the coffee costs 2 euros
-  And there are &lt;coffees&gt; coffees left in the machine
- When I insert &lt;euros&gt; one euro coins
-  And I press the coffee button
- Then I should not be served a coffee</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">Cases:</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">| # | coffees | euros | Status  |
-+---+---------+-------+---------+
-| 1 |       1 |     1 | Success |
-| 2 |       0 |     2 | Success |
-| 3 |       1 |     0 | Success |</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">=== Case As Description
-
-If your test has multiple cases, you can use the `@CaseAs` to provide additional information to the description for each case.
-
-[source,java]</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">@Test
-@DataProvider( {
-        "On the first run, 1, quite ok",
-        "And on the second run, 2, well-done"
-} )
-@CaseAs( "$1" )
-public void coffe_making_gets_better( String description, int runNr, String result ) {
-    given().a_coffee_machine();
-    when().I_make_coffee_for_the_$_time( runNr );
-    then().the_result_is( result );
-}</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">The resulting report will then look as follows:</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">Coffe making gets better</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">Given a coffee machine
- When I make coffee for the &lt;runNr&gt; time
- Then the result is &lt;result&gt;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">Cases:</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">| # | Description           | runNr | result    | Status  |
-+---+-----------------------+-------+-----------+---------+
-| 1 | On the first run      |     1 | quite ok  | Success |
-| 2 | And on the second run |     2 | well-done | Success |</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">== Tags
-:sourcedir: ../jgiven-examples/src/test/java/com/tngtech/jgiven/examples
-
-Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html[`@IsTag`] annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.
-
-Let’s say you want to know which scenarios covers the coffee feature. To do so you define a new Java annotation:
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">given().the_prices_of_the_coffees_are(
+   <span class="keyword">new</span> CoffeeWithPrice(<span class="string"><span class="delimiter">&quot;</span><span class="content">Espresso</span><span class="delimiter">&quot;</span></span>, <span class="float">2.0</span>),
+   <span class="keyword">new</span> CoffeeWithPrice(<span class="string"><span class="delimiter">&quot;</span><span class="content">Cappuccino</span><span class="delimiter">&quot;</span></span>, <span class="float">2.5</span>));</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@IsTag
-@Retention( RetentionPolicy.RUNTIME )
-public @interface ExampleCategory {}</p>
+<p>Then the report will look as follows:</p>
 </div>
-<div class="listingblock">
+<div class="openblock">
 <div class="content">
-<pre class="nowrap">Two things are important:
-
-1. The annotation itself must be annotated with the `@IsTag` annotation to mark it as a JGiven tag.
-2. The annotation must have retention policy RUNTIME so that JGiven can recognize it at runtime.
-
-To tag a scenario with the new tag, you just annotate the corresponding test method:
-
-[source,java]</pre>
+<div class="paragraph">
+<p>Given the prices of the coffees are</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre class="nowrap">| name       | price in EUR |
++------------+--------------+
+| Espresso   | 2.0          |
+| Cappuccino | 2.5          |</pre>
+</div>
+</div>
 </div>
 </div>
 <div class="paragraph">
-<p>@ExampleSubCategory
-@Test
-public void tags_can_form_a_hierarchy() {
+<p>For additional options, see the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Table.html">JavaDoc documentation of the <code>@Table</code> annotation</a></p>
+</div>
+<div class="paragraph">
+<p>Also note that POJO fields formats can be specified thanks to the <code>@Table#fieldsFormat</code> or <code>@Table#fieldsFormatSetAnnotation</code> options.<br>
+See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section for more informations about how to use these two options.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_parameterized_scenarios"><a class="anchor" href="#_parameterized_scenarios"></a>8. Parameterized Scenarios</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>JGiven scenarios can be parameterized. This is very useful for writing data-driven scenarios, where the scenarios itself are the same, but are executed with different example values.</p>
+</div>
+<div class="paragraph">
+<p>Parameterization of Scenarios works with TestNG and JUnit, we only show it for JUnit. For TestNG it works analogous.</p>
+</div>
+<div class="sect2">
+<h3 id="_junit_2"><a class="anchor" href="#_junit_2"></a>8.1. JUnit</h3>
+<div class="paragraph">
+<p>JGiven supports several different ways to parameterize a JUnit test:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>JUnit’s built-in Parametrized Runner</p>
+</li>
+<li>
+<p><a href="https://github.com/TNG/junit-dataprovider">JUnit DataProvider</a></p>
+</li>
+<li>
+<p><a href="https://github.com/Pragmatists/JUnitParams">JUnitParams</a></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>We use the JUnit Dataprovider in the following.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_junit_dataprovider_runner"><a class="anchor" href="#_junit_dataprovider_runner"></a>8.2. JUnit Dataprovider Runner</h3>
+<div class="paragraph">
+<p><a href="https://github.com/TNG/junit-dataprovider">JUnit Dataprovider</a> provides a JUnit test runner that enables the execution of paramterized test methods. It is similar to the way parameterized tests work in <a href="http://testng.org/">TestNG</a>.</p>
+</div>
+<div class="sect3">
+<h4 id="_example_7"><a class="anchor" href="#_example_7"></a>8.2.1. Example</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java">    <span class="annotation">@Test</span>
+    <span class="annotation">@DataProvider</span>( {
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">1, 1</span><span class="delimiter">&quot;</span></span>,
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">0, 2</span><span class="delimiter">&quot;</span></span>,
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">1, 0</span><span class="delimiter">&quot;</span></span>
+    } )
+    <span class="directive">public</span> <span class="type">void</span> coffee_is_not_served( <span class="type">int</span> coffees, <span class="type">int</span> euros ) {
+        given().a_coffee_machine()
+                .and().the_coffee_costs_<span class="error">$</span>_euros( <span class="integer">2</span> )
+                .and().there_are_<span class="error">$</span>_coffees_left_in_the_machine( coffees );
+
+        when().I_insert_<span class="error">$</span>_one_euro_coins( euros )
+                .and().I_press_the_coffee_button();
+
+        then().I_should_not_be_served_a_coffee();
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The resulting report will then look as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="nowrap"> Coffee is not served
+
+   Given a coffee machine
+     And the coffee costs 2 euros
+     And there are &lt;coffees&gt; coffees left in the machine
+    When I insert &lt;euros&gt; one euro coins
+     And I press the coffee button
+    Then I should not be served a coffee
+
+  Cases:
+
+   | # | coffees | euros | Status  |
+   +---+---------+-------+---------+
+   | 1 |       1 |     1 | Success |
+   | 2 |       0 |     2 | Success |
+   | 3 |       1 |     0 | Success |</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_case_as_description"><a class="anchor" href="#_case_as_description"></a>8.3. Case As Description</h3>
+<div class="paragraph">
+<p>If your test has multiple cases, you can use the <code>@CaseAs</code> to provide additional information to the description for each case.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java">    <span class="annotation">@Test</span>
+    <span class="annotation">@DataProvider</span>( {
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">On the first run, 1, quite ok</span><span class="delimiter">&quot;</span></span>,
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">And on the second run, 2, well-done</span><span class="delimiter">&quot;</span></span>
+    } )
+    <span class="annotation">@CaseAs</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">$1</span><span class="delimiter">&quot;</span></span> )
+    <span class="directive">public</span> <span class="type">void</span> coffe_making_gets_better( <span class="predefined-type">String</span> description, <span class="type">int</span> runNr, <span class="predefined-type">String</span> result ) {
+        given().a_coffee_machine();
+        when().I_make_coffee_for_the_<span class="error">$</span>_time( runNr );
+        then().the_result_is( result );
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The resulting report will then look as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="nowrap"> Coffe making gets better
+
+   Given a coffee machine
+    When I make coffee for the &lt;runNr&gt; time
+    Then the result is &lt;result&gt;
+
+  Cases:
+
+   | # | Description           | runNr | result    | Status  |
+   +---+-----------------------+-------+-----------+---------+
+   | 1 | On the first run      |     1 | quite ok  | Success |
+   | 2 | And on the second run |     2 | well-done | Success |</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tags"><a class="anchor" href="#_tags"></a>9. Tags</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html"><code>@IsTag</code></a> annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.</p>
+</div>
+<div class="paragraph">
+<p>Let’s say you want to know which scenarios covers the coffee feature. To do so you define a new Java annotation:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> ExampleCategory {}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Two things are important:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The annotation itself must be annotated with the <code>@IsTag</code> annotation to mark it as a JGiven tag.</p>
+</li>
+<li>
+<p>The annotation must have retention policy RUNTIME so that JGiven can recognize it at runtime.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>To tag a scenario with the new tag, you just annotate the corresponding test method:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExampleSubCategory</span>
+<span class="annotation">@Test</span>
+<span class="directive">public</span> <span class="type">void</span> tags_can_form_a_hierarchy() {
     given().tags_annotated_with_tags();
     when().the_report_is_generated();
     then().the_tags_appear_in_a_hierarchy();
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">In the report the scenario will then be tagged with tag CoffeeFeature.
-
-You can also annotate the whole test class, in which case all scenarios of that class will get the tag.
-
-=== Descriptions
-
-Tags can have descriptions. These descriptions appear in the report on the corresponding page for the tag. For example:
-
-[source,java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@IsTag( style = "background-color: darkgreen; color: white; font-weight: bold",
-    description = "Tags can be arbitrarily styled with the 'style' attribute of the '@IsTag' annotation. "<br>
-            "This tag shows how to apply such a custom style" )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface TagsWithCustomStyle {}</p>
+<p>In the report the scenario will then be tagged with tag CoffeeFeature.</p>
+</div>
+<div class="paragraph">
+<p>You can also annotate the whole test class, in which case all scenarios of that class will get the tag.</p>
+</div>
+<div class="sect2">
+<h3 id="_descriptions"><a class="anchor" href="#_descriptions"></a>9.1. Descriptions</h3>
+<div class="paragraph">
+<p>Tags can have descriptions. These descriptions appear in the report on the corresponding page for the tag. For example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">=== Overriding the Name
-
-It is possible to override the name of a tag by using the `name` attribute of the `IsTag` annotation. This allows you to have a different name for the tag than the actual type of the annotation. For example, if you want to have a tag `Feature: Coffee` you can define the `CoffeeFeature` annotation as follows:
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( style = <span class="string"><span class="delimiter">&quot;</span><span class="content">background-color: darkgreen; color: white; font-weight: bold</span><span class="delimiter">&quot;</span></span>,
+    description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Tags can be arbitrarily styled with the 'style' attribute of the '@IsTag' annotation. </span><span class="delimiter">&quot;</span></span> +
+            <span class="string"><span class="delimiter">&quot;</span><span class="content">This tag shows how to apply such a custom style</span><span class="delimiter">&quot;</span></span> )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> TagsWithCustomStyle {}</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_overriding_the_name"><a class="anchor" href="#_overriding_the_name"></a>9.2. Overriding the Name</h3>
 <div class="paragraph">
-<p>@IsTag( name = "Feature: Coffee" )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface CoffeeFeature { }</p>
+<p>It is possible to override the name of a tag by using the <code>name</code> attribute of the <code>IsTag</code> annotation. This allows you to have a different name for the tag than the actual type of the annotation. For example, if you want to have a tag <code>Feature: Coffee</code> you can define the <code>CoffeeFeature</code> annotation as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">=== Values
-
-Sometimes you do not want to always create a new annotation for each tag. Let’s say you organize your work in stories and for each story you want to know which scenarios have been written for that story. Instead of having a separate annotation for each story you can define a `Story` annotation with a `value()` method:
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Feature: Coffee</span><span class="delimiter">&quot;</span></span> )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> CoffeeFeature { }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_values"><a class="anchor" href="#_values"></a>9.3. Values</h3>
 <div class="paragraph">
-<p>@IsTag( prependType = false )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface CategoryWithValue {
-    String value();
-}</p>
+<p>Sometimes you do not want to always create a new annotation for each tag. Let’s say you organize your work in stories and for each story you want to know which scenarios have been written for that story. Instead of having a separate annotation for each story you can define a <code>Story</code> annotation with a <code>value()</code> method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">Annotations with different values are treated as different tags in JGiven. So using the above annotation you can now mark scenarios to belong to certain stories:
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( prependType = <span class="predefined-constant">false</span> )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> CategoryWithValue {
+    <span class="predefined-type">String</span> value();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@Test @Story("ACME-123")
-public void scenarios_can_have_tags() {
-  &#8230;&#8203;
-}</p>
+<p>Annotations with different values are treated as different tags in JGiven. So using the above annotation you can now mark scenarios to belong to certain stories:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">In the report the tag will now be `ACME-123` instead of `Story`.
-
-If you want that the type is prepended to the value in the report you can set the `prependType` attribute of the `IsTag` annotation to `true`. In this case the tag will be shown as `Story-ACME-123`. Note that this feature works in combination with the `name` attribute.
-
-Annotations with the same type but different values are grouped in the report. E.g. multiple `@Story` tags with different values will be grouped under `Story`.
-
-==== Array Values
-
-The value of a tag annotation can also be an array:
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Test</span> <span class="annotation">@Story</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">ACME-123</span><span class="delimiter">&quot;</span></span>)
+<span class="directive">public</span> <span class="type">void</span> scenarios_can_have_tags() {
+  ...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@IsTag
-@Retention( RetentionPolicy.RUNTIME )
-public @interface Story {
-    String[] value();
-}</p>
+<p>In the report the tag will now be <code>ACME-123</code> instead of <code>Story</code>.</p>
+</div>
+<div class="paragraph">
+<p>If you want that the type is prepended to the value in the report you can set the <code>prependType</code> attribute of the <code>IsTag</code> annotation to <code>true</code>. In this case the tag will be shown as <code>Story-ACME-123</code>. Note that this feature works in combination with the <code>name</code> attribute.</p>
+</div>
+<div class="paragraph">
+<p>Annotations with the same type but different values are grouped in the report. E.g. multiple <code>@Story</code> tags with different values will be grouped under <code>Story</code>.</p>
+</div>
+<div class="sect3">
+<h4 id="_array_values"><a class="anchor" href="#_array_values"></a>9.3.1. Array Values</h4>
+<div class="paragraph">
+<p>The value of a tag annotation can also be an array:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">This allows you to give the same scenario multiple tags of the same type with different values:
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> Story {
+    <span class="predefined-type">String</span><span class="type">[]</span> value();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@Test @Story( {"ACME-123", "ACME-456"} )
-public void scenarios_can_have_tags() {
-  &#8230;&#8203;
-}</p>
+<p>This allows you to give the same scenario multiple tags of the same type with different values:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">For each value, one tag will be generated, e.g. `ACME-123` and `ACME-456`. If you do not want that behavior you can set the `explodeArray` attribute of `@IsTag` to `false`, in that case only one tag will be generated and the values will comma-separated, e.g. `ACME-123,ACME-456`.
-
-==== Value Dependent Description
-
-When the description of a tag depends on its value you cannot simply set the description on the `@IsTag` annotation, because it will be the same for all values.
-
-Let’s assume you have an `@Issue` tag and want to have a link to the corresponding GitHub issue in the description. To do so you can provide your own http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/TagDescriptionGenerator.html[`TagDescriptionGenerator`] implementation that generates a description of a tag depending on its actual value:
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Test</span> <span class="annotation">@Story</span>( {<span class="string"><span class="delimiter">&quot;</span><span class="content">ACME-123</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">ACME-456</span><span class="delimiter">&quot;</span></span>} )
+<span class="directive">public</span> <span class="type">void</span> scenarios_can_have_tags() {
+  ...
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public class IssueDescriptionGenerator implements TagDescriptionGenerator {
-    @Override
-    public String generateDescription( TagConfiguration tagConfiguration,
-            Annotation annotation, Object value ) {
-        return String.format(
-           "&lt;a href='https://github.com/TNG/JGiven/issues/%s'&gt;Issue %s&lt;/a&gt;",
+<p>For each value, one tag will be generated, e.g. <code>ACME-123</code> and <code>ACME-456</code>. If you do not want that behavior you can set the <code>explodeArray</code> attribute of <code>@IsTag</code> to <code>false</code>, in that case only one tag will be generated and the values will comma-separated, e.g. <code>ACME-123,ACME-456</code>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_value_dependent_description"><a class="anchor" href="#_value_dependent_description"></a>9.3.2. Value Dependent Description</h4>
+<div class="paragraph">
+<p>When the description of a tag depends on its value you cannot simply set the description on the <code>@IsTag</code> annotation, because it will be the same for all values.</p>
+</div>
+<div class="paragraph">
+<p>Let’s assume you have an <code>@Issue</code> tag and want to have a link to the corresponding GitHub issue in the description. To do so you can provide your own <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/TagDescriptionGenerator.html"><code>TagDescriptionGenerator</code></a> implementation that generates a description of a tag depending on its actual value:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">IssueDescriptionGenerator</span> <span class="directive">implements</span> TagDescriptionGenerator {
+    <span class="annotation">@Override</span>
+    <span class="directive">public</span> <span class="predefined-type">String</span> generateDescription( TagConfiguration tagConfiguration,
+            <span class="predefined-type">Annotation</span> annotation, <span class="predefined-type">Object</span> value ) {
+        <span class="keyword">return</span> <span class="predefined-type">String</span>.format(
+           <span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;a href='https://github.com/TNG/JGiven/issues/%s'&gt;Issue %s&lt;/a&gt;</span><span class="delimiter">&quot;</span></span>,
             value, value );
     }
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">The new `IssueDescriptionGenerator` must now be configured for the `@Issue` annotation using the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html#descriptionGenerator%28%29[`descriptionGenerator`] attribute of `@IsTag`:
-
-
-[source,java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@IsTag( descriptionGenerator = IssueDescriptionGenerator.class )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface Issue {
-    String[] value();
-}</p>
+<p>The new <code>IssueDescriptionGenerator</code> must now be configured for the <code>@Issue</code> annotation using the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html#descriptionGenerator%28%29"><code>descriptionGenerator</code></a> attribute of <code>@IsTag</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">=== Overriding the Value
-
-If you want to group several annotations with different types under a common name. You can combine the `name` attribute with the `value` attribute as follows:
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( descriptionGenerator = IssueDescriptionGenerator.class )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> Issue {
+    <span class="predefined-type">String</span><span class="type">[]</span> value();
+}</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_overriding_the_value"><a class="anchor" href="#_overriding_the_value"></a>9.4. Overriding the Value</h3>
 <div class="paragraph">
-<p>@IsTag( name = "Feature", value = "Tag" )
-@Retention( RetentionPolicy.RUNTIME )
-public @interface FeatureTags { }</p>
+<p>If you want to group several annotations with different types under a common name. You can combine the <code>name</code> attribute with the <code>value</code> attribute as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">The tag will appear as `Tag` in the report and all annotations with name Feature will be grouped together.
-
-=== Hierarchical Tags
-
-If your number of tags grow you typically want to organize your tags somehow. This is easily possible in JGiven by forming tag hierarchies. A tag hierarchy is defined by just annotating a tag annotation with other tags. Each of these tags will then become a parent tag in the hierarchy. For example, if you want to organize your features into ‘Core Features’ and ‘Secondary Features’ you can do so by first defining two tags `@CoreFeature` and `@SecondaryFeature` for each of these categories as you would define a normal JGiven tag. If you now want to define a feature tag as a Core Feature you just annotated that tag accordingly:
-
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Feature</span><span class="delimiter">&quot;</span></span>, value = <span class="string"><span class="delimiter">&quot;</span><span class="content">Tag</span><span class="delimiter">&quot;</span></span> )
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> FeatureTags { }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@CoreFeature
-@IsTag
-@Retention( RetentionPolicy.RUNTIME )
-public @interface OneOfMyCoolCoreFeatures {}</p>
+<p>The tag will appear as <code>Tag</code> in the report and all annotations with name Feature will be grouped together.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hierarchical_tags"><a class="anchor" href="#_hierarchical_tags"></a>9.5. Hierarchical Tags</h3>
+<div class="paragraph">
+<p>If your number of tags grow you typically want to organize your tags somehow. This is easily possible in JGiven by forming tag hierarchies. A tag hierarchy is defined by just annotating a tag annotation with other tags. Each of these tags will then become a parent tag in the hierarchy. For example, if you want to organize your features into ‘Core Features’ and ‘Secondary Features’ you can do so by first defining two tags <code>@CoreFeature</code> and <code>@SecondaryFeature</code> for each of these categories as you would define a normal JGiven tag. If you now want to define a feature tag as a Core Feature you just annotated that tag accordingly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">== Attachments
-
-Steps can have attachments. This is useful, for example, to save sceenshots during tests or to refer to larger files that should not be printed inline in the report.
-
-=== Creating Attachments
-
-There are several ways to create an attachment by using static factory methods of the http://jgiven.org/javadoc/com/tngtech/jgiven/attachment/Attachment.html[`Attachment`] class. For example, you can create textual attachments from a given `String` by using the `fromText` method.
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@CoreFeature</span>
+<span class="annotation">@IsTag</span>
+<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
+<span class="directive">public</span> <span class="annotation">@interface</span> OneOfMyCoolCoreFeatures {}</code></pre>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_attachments"><a class="anchor" href="#_attachments"></a>10. Attachments</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>Attachment attachment = Attachment.fromText("Hello World", MediaType.PLAIN_TEXT);</p>
+<p>Steps can have attachments. This is useful, for example, to save sceenshots during tests or to refer to larger files that should not be printed inline in the report.</p>
+</div>
+<div class="sect2">
+<h3 id="_creating_attachments"><a class="anchor" href="#_creating_attachments"></a>10.1. Creating Attachments</h3>
+<div class="paragraph">
+<p>There are several ways to create an attachment by using static factory methods of the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/attachment/Attachment.html"><code>Attachment</code></a> class. For example, you can create textual attachments from a given <code>String</code> by using the <code>fromText</code> method.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">==== Titles
-
-Attachments can have an optional title which can be used by reports, for example, to show a tooltip. The title is set with the `withTitle` method:
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Attachment attachment = Attachment.fromText(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello World</span><span class="delimiter">&quot;</span></span>, MediaType.PLAIN_TEXT);</code></pre>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_titles"><a class="anchor" href="#_titles"></a>10.1.1. Titles</h4>
 <div class="paragraph">
-<p>Attachment attachment = Attachment
-    .fromText("Hello World", MediaType.PLAIN_TEXT)
-    .withTitle("Some Title");</p>
+<p>Attachments can have an optional title which can be used by reports, for example, to show a tooltip. The title is set with the <code>withTitle</code> method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">==== Binary Attachments
-
-Binary attachments are internally stored by JGiven as Base64-encoded strings. If the binary content is already present as a Base64-encoded string one can just use that to create a binary attachment:
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Attachment attachment = Attachment
+    .fromText(<span class="string"><span class="delimiter">&quot;</span><span class="content">Hello World</span><span class="delimiter">&quot;</span></span>, MediaType.PLAIN_TEXT)
+    .withTitle(<span class="string"><span class="delimiter">&quot;</span><span class="content">Some Title</span><span class="delimiter">&quot;</span></span>);</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_binary_attachments"><a class="anchor" href="#_binary_attachments"></a>10.1.2. Binary Attachments</h4>
 <div class="paragraph">
-<p>Attachment attachment = Attachment
-    .fromBase64("SGVsbG8gV29ybGQK", MediaType.application("jgiven"));</p>
+<p>Binary attachments are internally stored by JGiven as Base64-encoded strings. If the binary content is already present as a Base64-encoded string one can just use that to create a binary attachment:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">=== Adding Attachments to Steps
-
-To add an attachment to a step you have to first inject the http://jgiven.org/javadoc/com/tngtech/jgiven/CurrentStep.html[`CurrentStep`] class into your stage class by using `@ExpectedScenarioState`.
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Attachment attachment = Attachment
+    .fromBase64(<span class="string"><span class="delimiter">&quot;</span><span class="content">SGVsbG8gV29ybGQK</span><span class="delimiter">&quot;</span></span>, MediaType.application(<span class="string"><span class="delimiter">&quot;</span><span class="content">jgiven</span><span class="delimiter">&quot;</span></span>));</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_adding_attachments_to_steps"><a class="anchor" href="#_adding_attachments_to_steps"></a>10.2. Adding Attachments to Steps</h3>
 <div class="paragraph">
-<p>@ExpectedScenarioState
-CurrentStep currentStep;</p>
+<p>To add an attachment to a step you have to first inject the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/CurrentStep.html"><code>CurrentStep</code></a> class into your stage class by using <code>@ExpectedScenarioState</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">Now you can use `currentStep` inside step methods to add attachments using the http://jgiven.org/javadoc/com/tngtech/jgiven/CurrentStep.html#addAttachment%28com.tngtech.jgiven.attachment.Attachment%29[`addAttachment`] method. The method takes as argument an instance of http://jgiven.org/javadoc/com/tngtech/jgiven/attachment/Attachment.html[`Attachment`].
-
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExpectedScenarioState</span>
+CurrentStep currentStep;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public SELF my_step_with_attachment() {
-    Attachment attachment = &#8230;&#8203;
+<p>Now you can use <code>currentStep</code> inside step methods to add attachments using the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/CurrentStep.html#addAttachment%28com.tngtech.jgiven.attachment.Attachment%29"><code>addAttachment</code></a> method. The method takes as argument an instance of <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/attachment/Attachment.html"><code>Attachment</code></a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> SELF my_step_with_attachment() {
+    Attachment attachment = ...
     currentStep.addAttachment( attachment );
-    return self();
-}</p>
+    <span class="keyword">return</span> self();
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_taking_screenshots_with_selenium_webdriver"><a class="anchor" href="#_example_taking_screenshots_with_selenium_webdriver"></a>10.3. Example: Taking Screenshots with Selenium WebDriver</h3>
+<div class="paragraph">
+<p>If you are using Selenium WebDriver and want to add screenshots to a JGiven step you can do so as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">=== Example: Taking Screenshots with Selenium WebDriver
-
-If you are using Selenium WebDriver and want to add screenshots to a JGiven step you can do so as follows:
-
-
-[source,java]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>String base64 = ( (TakesScreenshot) webDriver ).getScreenshotAs( OutputType.BASE64 );
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="predefined-type">String</span> base64 = ( (TakesScreenshot) webDriver ).getScreenshotAs( OutputType.BASE64 );
 currentStep.addAttachment( Attachment.fromBase64( base64, MediaType.PNG )
-           .withTitle( "Screenshot" ) );</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">For a full example, see the https://github.com/TNG/JGiven/blob/master/jgiven-tests/src/test/java/com/tngtech/jgiven/report/html5/Html5AppStage.java[Html5AppStage] class that is used by the JGiven tests.
-
-
-== Exception Handling
-
-When writing JGiven scenarios you should know how JGiven handles exceptions. In general, JGiven captures all exceptions that are thrown in step methods. This is done, so that the steps following the errornous step can still be executed by JGiven to show them in the report as skipped steps. After the whole scenario has been executed, JGiven will rethrow the exception that has been previously thrown, so that the overall test actually fails. This behavior is in general no problem as long as you do not really expect exceptions to happen.
-
-=== Expecting Exceptions
-
-Let’s assume you want to verify that in the step method `doing_some_action` a certain exception is thrown and you write the following scenario using JUnit:
-
-[source,java]</pre>
+           .withTitle( <span class="string"><span class="delimiter">&quot;</span><span class="content">Screenshot</span><span class="delimiter">&quot;</span></span> ) );</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@Test(expected = MyExpectedException.class)
-public void an_expected_exception_should_be_thrown() {
+<p>For a full example, see the <a href="https://github.com/TNG/JGiven/blob/master/jgiven-tests/src/test/java/com/tngtech/jgiven/report/html5/Html5AppStage.java">Html5AppStage</a> class that is used by the JGiven tests.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exception_handling"><a class="anchor" href="#_exception_handling"></a>11. Exception Handling</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When writing JGiven scenarios you should know how JGiven handles exceptions. In general, JGiven captures all exceptions that are thrown in step methods. This is done, so that the steps following the errornous step can still be executed by JGiven to show them in the report as skipped steps. After the whole scenario has been executed, JGiven will rethrow the exception that has been previously thrown, so that the overall test actually fails. This behavior is in general no problem as long as you do not really expect exceptions to happen.</p>
+</div>
+<div class="sect2">
+<h3 id="_expecting_exceptions"><a class="anchor" href="#_expecting_exceptions"></a>11.1. Expecting Exceptions</h3>
+<div class="paragraph">
+<p>Let’s assume you want to verify that in the step method <code>doing_some_action</code> a certain exception is thrown and you write the following scenario using JUnit:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="comment">// DOES NOT WORK!</span>
+<span class="annotation">@Test</span>(expected = MyExpectedException.class)
+<span class="directive">public</span> <span class="type">void</span> an_expected_exception_should_be_thrown() {
     given().some_errornous_precondition();
     when().doing_some_action();
-}</p>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This scenario has two drawbacks: first it will not work and second the generated report will not make clear that actually an exception is expected. It will not work, because the JUnit mechanism to check for an expected exception actually comes too early. As already explained above, JGiven will throw the exception itself, after the scenario has finished. As JGiven is actually implemented as a JUnit rule, throwing this exception will be after JUnit has checked for an expected exception. This technical issue can be fixed by using the <code>ExpectedException</code> rule of JUnit:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">This scenario has two drawbacks: first it will not work and second the generated report will not make clear that actually an exception is expected. It will not work, because the JUnit mechanism to check for an expected exception actually comes too early. As already explained above, JGiven will throw the exception itself, after the scenario has finished. As JGiven is actually implemented as a JUnit rule, throwing this exception will be after JUnit has checked for an expected exception. This technical issue can be fixed by using the `ExpectedException` rule of JUnit:
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Rule</span>
+<span class="directive">public</span> ExpectedException rule = ExpectedException.none();
 
-[source,java]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>@Rule
-public ExpectedException rule = ExpectedException.none();</p>
-</div>
-<div class="paragraph">
-<p>@Test
-public void an_expected_exception_should_be_thrown() {
-   // will work, but is not visible in the report
+<span class="annotation">@Test</span>
+<span class="directive">public</span> <span class="type">void</span> an_expected_exception_should_be_thrown() {
+   <span class="comment">// will work, but is not visible in the report</span>
    rule.expect(MyExpectedException.class);
    given().some_errornous_precondition();
    when().doing_some_action();
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">In this case, the actual verification of the exception is done after JGiven has thrown the exception and thus the `ExpectedException` rule will get the exception.
-
-=== A better approach
-
-The above example has still the big disadvantage that it will not visible in the report that an exception is actually expected. More helpful would be the following scenario:
-
-[source,java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@Test
-public void an_expected_exception_should_be_thrown() {
+<p>In this case, the actual verification of the exception is done after JGiven has thrown the exception and thus the <code>ExpectedException</code> rule will get the exception.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_a_better_approach"><a class="anchor" href="#_a_better_approach"></a>11.2. A better approach</h3>
+<div class="paragraph">
+<p>The above example has still the big disadvantage that it will not visible in the report that an exception is actually expected. More helpful would be the following scenario:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Test</span>
+<span class="directive">public</span> <span class="type">void</span> an_expected_exception_should_be_thrown() {
    given().some_errornous_precondition();
    when().doing_some_action();
    then().an_exception_is_thrown();
-}</p>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note, that this is scenario is still very technical and you should consider replacing the word ‘exception’ with a more domain specific term.</p>
+</div>
+<div class="paragraph">
+<p>In order to realize the above scenario you have to explictly catch the exception in the <code>doing_some_action</code> step and store it into a scenario state field.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">Note, that this is scenario is still very technical and you should consider replacing the word ‘exception’ with a more domain specific term.
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ProvidedScenarioState</span>
+MyExpectedException someExpectedException;
 
-In order to realize the above scenario you have to explictly catch the exception in the `doing_some_action` step and store it into a scenario state field.
-
-
-[source,java]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>@ProvidedScenarioState
-MyExpectedException someExpectedException;</p>
-</div>
-<div class="paragraph">
-<p>public SELF doing_some_action() {
-   try {
-       &#8230;&#8203;
-   } catch (MyExpectedException e) {
+<span class="directive">public</span> SELF doing_some_action() {
+   <span class="keyword">try</span> {
+       ...
+   } <span class="keyword">catch</span> (MyExpectedException e) {
       someExpectedException = e;
    }
-   return self();
-}</p>
+   <span class="keyword">return</span> self();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the When-Stage you then just have to check whether the field is set:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">In the When-Stage you then just have to check whether the field is set:
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExpectedScenarioState</span>
+MyExpectedException someExpectedException;
 
-
-
-[source,java]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>@ExpectedScenarioState
-MyExpectedException someExpectedException;</p>
-</div>
-<div class="paragraph">
-<p>public SELF an_exception_is_thrown() {
+<span class="directive">public</span> SELF an_exception_is_thrown() {
     assertThat( someExpectedException ).isNotNull();
-    return self();
-}</p>
+    <span class="keyword">return</span> self();
+}</code></pre>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">== Spcok
-:javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-spock/{version}/com/tngtech/jgiven/spock
-
-CAUTION: Spock support is currently in an experimental state.
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spcok"><a class="anchor" href="#_spcok"></a>12. Spcok</h2>
+<div class="sectionbody">
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Spock support is currently in an experimental state.
 This means that the API is not completely stable yet and that not all
 JGiven and Spock features might be supported yet.
-
-=== Install Dependency
-Spock support is provided by the `jgiven-spock` dependency.
-
-==== Maven
-
-[source,maven,subs="verbatim,attributes"]</pre>
+</td>
+</tr>
+</table>
 </div>
-</div>
+<div class="sect2">
+<h3 id="_install_dependency"><a class="anchor" href="#_install_dependency"></a>12.1. Install Dependency</h3>
 <div class="paragraph">
-<p>&lt;dependency&gt;
+<p>Spock support is provided by the <code>jgiven-spock</code> dependency.</p>
+</div>
+<div class="sect3">
+<h4 id="_maven_2"><a class="anchor" href="#_maven_2"></a>12.1.1. Maven</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spock&lt;/artifactId&gt;
    &lt;version&gt;0.17.1&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
-&lt;/dependency&gt;</p>
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_gradle_2"><a class="anchor" href="#_gradle_2"></a>12.1.2. Gradle</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
+    testImplementation &quot;com.tngtech.jgiven:jgiven-spock:0.17.1&quot;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_use_jgiven_with_spock"><a class="anchor" href="#_use_jgiven_with_spock"></a>12.2. Use JGiven with Spock</h3>
+<div class="paragraph">
+<p>JGiven support for Spock is provided by extending <code>ScenarioSpec&lt;Given, When, Then&gt;</code>
+and JGiven is enabled.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">==== Gradle
+<pre class="CodeRay highlight nowrap"><code data-lang="groovy"><span class="type">class</span> <span class="class">SpockSpec</span> <span class="directive">extends</span> ScenarioSpec&lt;Given, When, Then&gt; {
 
-[source,gradle,subs="verbatim,attributes"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>dependencies {
-    testImplementation "com.tngtech.jgiven:jgiven-spock:0.17.1"
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">=== Use JGiven with Spock
+   <span class="keyword">def</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">my scenario</span><span class="delimiter">&quot;</span></span>() {
+      <span class="key">expect</span>:
 
-JGiven support for Spock is provided by extending `ScenarioSpec&lt;Given, When, Then&gt;`
-and JGiven is enabled.
-
-[source,groovy]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>class SpockSpec extends ScenarioSpec&lt;Given, When, Then&gt; {</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">def "my scenario"() {
-   expect:</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">      given().some_context()
+      given().some_context()
       when().some_action()
       then().some_outcome()
    }
-}</pre>
+}</code></pre>
 </div>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_example_project"><a class="anchor" href="#_example_project"></a>12.3. Example Project</h3>
+<div class="paragraph">
+<p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/spock" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/spock</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spring"><a class="anchor" href="#_spring"></a>13. Spring</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_install_dependency_2"><a class="anchor" href="#_install_dependency_2"></a>13.1. Install Dependency</h3>
+<div class="paragraph">
+<p>Spring support is provided by the <code>jgiven-spring</code> dependency.</p>
+</div>
+<div class="sect3">
+<h4 id="_maven_3"><a class="anchor" href="#_maven_3"></a>13.1.1. Maven</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">=== Example Project
-
-You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/spock
-
-== Spring
-:javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/{version}/com/tngtech/jgiven/integration/spring
-
-=== Install Dependency
-Spring support is provided by the `jgiven-spring` dependency.
-
-==== Maven
-
-[source,maven,subs="verbatim,attributes"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>&lt;dependency&gt;
+<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spring&lt;/artifactId&gt;
    &lt;version&gt;0.17.1&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
-&lt;/dependency&gt;</p>
+&lt;/dependency&gt;</code></pre>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_gradle_3"><a class="anchor" href="#_gradle_3"></a>13.1.2. Gradle</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">==== Gradle
-
-[source,gradle,subs="verbatim,attributes"]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
+    testCompile(&quot;com.tngtech.jgiven:jgiven-spring:0.17.1&quot;)
+}</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configure_spring"><a class="anchor" href="#_configure_spring"></a>13.2. Configure Spring</h3>
 <div class="paragraph">
-<p>dependencies {
-    testCompile("com.tngtech.jgiven:jgiven-spring:0.17.1")
-}</p>
+<p>In order to enable the JGiven Spring integration you have to tell Spring about the
+existence of JGiven.</p>
 </div>
+<div class="sect3">
+<h4 id="_annotation_based"><a class="anchor" href="#_annotation_based"></a>13.2.1. Annotation-Based</h4>
+<div class="paragraph">
+<p>If you are using the annotation-based configuration of Spring you can annotate your Spring
+configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.17.1/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
+This is all you have to do to configure Spring for JGiven.</p>
+</div>
+<div class="sect4">
+<h5 id="_example_8"><a class="anchor" href="#_example_8"></a>Example</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">=== Configure Spring
-
-In order to enable the JGiven Spring integration you have to tell Spring about the
-existence of JGiven.
-
-==== Annotation-Based
-If you are using the annotation-based configuration of Spring you can annotate your Spring
-configuration with the link:{javadocurl}/EnableJGiven.html[`@EnableJGiven`] annotation.
-This is all you have to do to configure Spring for JGiven.
-
-===== Example
-
-[source,java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@EnableJGiven</span>
+<span class="annotation">@Configuration</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MySpringConfig</span> {
+   ...
+}</code></pre>
 </div>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_xml_based"><a class="anchor" href="#_xml_based"></a>13.2.2. XML-Based</h4>
 <div class="paragraph">
-<p>@EnableJGiven
-@Configuration
-public class MySpringConfig {
-   &#8230;&#8203;
-}</p>
+<p>You can also configure JGiven with XML by adding the <code>jgiven:annotation-driven</code> tag to your
+Spring XML config.</p>
 </div>
+<div class="sect4">
+<h5 id="_example_9"><a class="anchor" href="#_example_9"></a>Example</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">==== XML-Based
-You can also configure JGiven with XML by adding the `jgiven:annotation-driven` tag to your
-Spring XML config.
+<pre class="CodeRay highlight nowrap"><code data-lang="XML"><span class="preprocessor">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="tag">&lt;beans</span> <span class="attribute-name">xmlns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.springframework.org/schema/beans</span><span class="delimiter">&quot;</span></span>
+    <span class="attribute-name">xmlns:xsi</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.w3.org/2001/XMLSchema-instance</span><span class="delimiter">&quot;</span></span>
+    <span class="attribute-name">xmlns:context</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.springframework.org/schema/context</span><span class="delimiter">&quot;</span></span>
+    <span class="attribute-name">xmlns:jgiven</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://jgiven.org/jgiven-spring</span><span class="delimiter">&quot;</span></span>
+    <span class="attribute-name">xsi:schemaLocation</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd</span>
+                        <span class="content">http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd</span>
+                        <span class="content">http://jgiven.org/jgiven-spring http://jgiven.org/schemas/jgiven-spring.xsd</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
 
-===== Example
-[source, XML]</pre>
+  <span class="tag">&lt;jgiven:annotation-driven</span><span class="tag">/&gt;</span>
+
+<span class="tag">&lt;/beans&gt;</span></code></pre>
 </div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_use_jgiven_in_junit_based_spring_tests"><a class="anchor" href="#_use_jgiven_in_junit_based_spring_tests"></a>13.3. Use JGiven in JUnit-based Spring Tests</h3>
+<div class="paragraph">
+<p>To now use JGiven in JUnit-based Spring Tests you should inherit from one of the provided tests classes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>SpringScenarioTest</code></p>
+</li>
+<li>
+<p><code>SpringRuleScenarioTest</code></p>
+</li>
+<li>
+<p><code>SimpleSpringScenarioTest</code></p>
+</li>
+<li>
+<p><code>SimpleSpringRuleScenarioTest</code></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:jgiven="http://jgiven.org/jgiven-spring"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans <a href="http://www.springframework.org/schema/beans/spring-beans-3.0.xsd" class="bare">http://www.springframework.org/schema/beans/spring-beans-3.0.xsd</a>
-                        <a href="http://www.springframework.org/schema/context" class="bare">http://www.springframework.org/schema/context</a> <a href="http://www.springframework.org/schema/context/spring-context-3.0.xsd" class="bare">http://www.springframework.org/schema/context/spring-context-3.0.xsd</a>
-                        <a href="http://jgiven.org/jgiven-spring" class="bare">http://jgiven.org/jgiven-spring</a> <a href="http://jgiven.org/schemas/jgiven-spring.xsd"&gt" class="bare">http://jgiven.org/schemas/jgiven-spring.xsd"&gt</a>;</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">&lt;jgiven:annotation-driven/&gt;</pre>
-</div>
+<p>The test classes with <code>SpringRule</code> tests already include the Spring JUnit rules, thus you need to add these
+rules to your test class and you also don&#8217;t have to specify the Spring JUnit runner.</p>
 </div>
 <div class="paragraph">
-<p>&lt;/beans&gt;</p>
+<p>If you cannot or don&#8217;t want to inherit from these classes, you
+can copy the content of these classes (one method) into one of your test base classes.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">=== Use JGiven in JUnit-based Spring Tests
-
-To now use JGiven in JUnit-based Spring Tests you should inherit from one of the provided tests classes:
-
-   - `SpringScenarioTest`
-   - `SpringRuleScenarioTest`
-   - `SimpleSpringScenarioTest`
-   - `SimpleSpringRuleScenarioTest`
-
-The test classes with `SpringRule` tests already include the Spring JUnit rules, thus you need to add these
-rules to your test class and you also don't have to specify the Spring JUnit runner.
-
-If you cannot or don't want to inherit from these classes, you
-can copy the content of these classes (one method) into one of your test base classes.
-
-=== Stages as Spring Beans
-
-In order to treat JGiven stages as Spring beans, e.g. if you want to inject
+</div>
+<div class="sect2">
+<h3 id="_stages_as_spring_beans"><a class="anchor" href="#_stages_as_spring_beans"></a>13.4. Stages as Spring Beans</h3>
+<div class="paragraph">
+<p>In order to treat JGiven stages as Spring beans, e.g. if you want to inject
  other Spring beans into your stages, you have to annotate
-the stage class with the link:{javadocurl}/JGivenStage.html[`@JGivenStage`] annotation.
-
-==== Example
-
-[source, java]</pre>
+the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.17.1/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
 </div>
-</div>
-<div class="paragraph">
-<p>@JGivenStage
-public class MyStage {</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">   @Autowired
-   MyService myService;
-}</pre>
-</div>
-</div>
+<div class="sect3">
+<h4 id="_example_10"><a class="anchor" href="#_example_10"></a>13.4.1. Example</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">=== Example Project
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@JGivenStage</span>
+<span class="directive">public</span> <span class="type">class</span> <span class="class">MyStage</span> {
 
-You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/spring-boot
-
-== Web Testing with Selenium
-
-JGiven is a completely use-case agnostic testing library.
+   <span class="annotation">@Autowired</span>
+   MyService myService;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_project_2"><a class="anchor" href="#_example_project_2"></a>13.5. Example Project</h3>
+<div class="paragraph">
+<p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/spring-boot" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/spring-boot</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_web_testing_with_selenium"><a class="anchor" href="#_web_testing_with_selenium"></a>14. Web Testing with Selenium</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>JGiven is a completely use-case agnostic testing library.
 So it is no surprise that you can also write Selenium-Tests with JGiven.
 In fact, JGiven can be considered as a perfect addition on top of Selenium:
 In Selenium you define the low-level interaction with the browser and HTML pages.
-In JGiven you define a high-level, domain specific language to specify your scenarios.
-
-There is no additional integration module needed in order to use JGiven with Selenium
-
-=== Page Objects vs Stages
-
-It is possible to treat Selenium page objects directly as JGiven stages.
+In JGiven you define a high-level, domain specific language to specify your scenarios.</p>
+</div>
+<div class="paragraph">
+<p>There is no additional integration module needed in order to use JGiven with Selenium</p>
+</div>
+<div class="sect2">
+<h3 id="_page_objects_vs_stages"><a class="anchor" href="#_page_objects_vs_stages"></a>14.1. Page Objects vs Stages</h3>
+<div class="paragraph">
+<p>It is possible to treat Selenium page objects directly as JGiven stages.
 This sometimes makes sense for simple cases, but from a code design perspective,
 it is better to separate these different concerns into multiple classes.
 The page object should be solely responsible for the low-level
 interaction with a HTML page.
 The stage class contains the high-level steps of the scenario and
-handles the state of the scenario.
-
-=== Example Project
-
-You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/selenium
-
-== Android
-
-JGiven can be used to test Android applications.
-For unit-tests, which are not running on an Android device or emulator, you can just use `jgiven-junit`.
-You don't have to do any special test setup to get that working.
-
-=== Testing on an Device or Emulator (EXPERIMENTAL)
-
-If you want to execute your tests on an Android device or emulator, for example when you want to use the _Espresso_
-test framework, then you need some additional setup.
-
-CAUTION: This feature exists since version 0.14.0-RC1 and is still in an experimental status. This means that it is not tested very well yet and that
+handles the state of the scenario.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_project_3"><a class="anchor" href="#_example_project_3"></a>14.2. Example Project</h3>
+<div class="paragraph">
+<p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/selenium" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/selenium</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_android"><a class="anchor" href="#_android"></a>15. Android</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>JGiven can be used to test Android applications.
+For unit-tests, which are not running on an Android device or emulator, you can just use <code>jgiven-junit</code>.
+You don&#8217;t have to do any special test setup to get that working.</p>
+</div>
+<div class="sect2">
+<h3 id="_testing_on_an_device_or_emulator_experimental"><a class="anchor" href="#_testing_on_an_device_or_emulator_experimental"></a>15.1. Testing on an Device or Emulator (EXPERIMENTAL)</h3>
+<div class="paragraph">
+<p>If you want to execute your tests on an Android device or emulator, for example when you want to use the <em>Espresso</em>
+test framework, then you need some additional setup.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+This feature exists since version 0.14.0-RC1 and is still in an experimental status. This means that it is not tested very well yet and that
 the implementation might be changed in a backwards-incompatible way in future versions of JGiven.
-
-
-==== JGiven Android Dependency
-First of all you need an additional project dependency to the `jgiven-android` module:
-
-[source,gradle,subs="verbatim,attributes"]</pre>
+</td>
+</tr>
+</table>
 </div>
-</div>
+<div class="sect3">
+<h4 id="_jgiven_android_dependency"><a class="anchor" href="#_jgiven_android_dependency"></a>15.1.1. JGiven Android Dependency</h4>
 <div class="paragraph">
-<p>dependencies {
-    androidTestCompile("com.tngtech.jgiven:jgiven-android:0.17.1")
-}</p>
+<p>First of all you need an additional project dependency to the <code>jgiven-android</code> module:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">==== Enable additional Permissions
-
-JGiven writes JSON files during the execution of the tests to the external storage of the device or emulator.
-Thus you have to enable the permission `WRITE_EXTERNAL_STORAGE` when executing the tests.
-You can do that by creating a file `src/debug/AndroidManifest.xml` that enables that permission:
-
-[source,XML]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
+    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:0.17.1&quot;)
+}</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_enable_additional_permissions"><a class="anchor" href="#_enable_additional_permissions"></a>15.1.2. Enable additional Permissions</h4>
 <div class="paragraph">
-<p>&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="the.package.of.my.app"&gt;</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">&lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /&gt;</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>&lt;/manifest&gt;</p>
+<p>JGiven writes JSON files during the execution of the tests to the external storage of the device or emulator.
+Thus you have to enable the permission <code>WRITE_EXTERNAL_STORAGE</code> when executing the tests.
+You can do that by creating a file <code>src/debug/AndroidManifest.xml</code> that enables that permission:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">==== AndroidJGivenTestRule
+<pre class="CodeRay highlight nowrap"><code data-lang="XML"><span class="preprocessor">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="tag">&lt;manifest</span> <span class="attribute-name">xmlns:android</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">http://schemas.android.com/apk/res/android</span><span class="delimiter">&quot;</span></span>
+    <span class="attribute-name">package</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">the.package.of.my.app</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
 
-In your test classes you have to add the following additional JUnit rule:
+    <span class="tag">&lt;uses-permission</span> <span class="attribute-name">android:name</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">android.permission.WRITE_EXTERNAL_STORAGE</span><span class="delimiter">&quot;</span></span> <span class="tag">/&gt;</span>
 
-[source, Java]</pre>
+<span class="tag">&lt;/manifest&gt;</span></code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_androidjgiventestrule"><a class="anchor" href="#_androidjgiventestrule"></a>15.1.3. AndroidJGivenTestRule</h4>
 <div class="paragraph">
-<p>@Rule
-public AndroidJGivenTestRule androidJGivenTestRule = new AndroidJGivenTestRule(this.getScenario());</p>
+<p>In your test classes you have to add the following additional JUnit rule:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">In addition, it is useful to expose the `ActivityTestRule` to Stages by
-using the `@ScenarioState` annotation:
-
-[source, Java]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="Java"><span class="annotation">@Rule</span>
+<span class="directive">public</span> AndroidJGivenTestRule androidJGivenTestRule = <span class="keyword">new</span> AndroidJGivenTestRule(<span class="local-variable">this</span>.getScenario());</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>@Rule
-@ScenarioState
-public ActivityTestRule&lt;MainActivity&gt; activityTestRule = new ActivityTestRule&lt;&gt;(MainActivity.class);</p>
+<p>In addition, it is useful to expose the <code>ActivityTestRule</code> to Stages by
+using the <code>@ScenarioState</code> annotation:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">==== Pull JGiven JSON files from device
-
-When the test execution has finished, you need to pull the JGiven JSON files from the device to the local drive.
-You can do that using the `adb` tool. The following Gradle task does the job:
-
-[source,gradle]</pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="Java"><span class="annotation">@Rule</span>
+<span class="annotation">@ScenarioState</span>
+<span class="directive">public</span> ActivityTestRule&lt;MainActivity&gt; activityTestRule = <span class="keyword">new</span> ActivityTestRule&lt;&gt;(MainActivity.class);</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_pull_jgiven_json_files_from_device"><a class="anchor" href="#_pull_jgiven_json_files_from_device"></a>15.1.4. Pull JGiven JSON files from device</h4>
 <div class="paragraph">
-<p>def targetDir = 'build/reports/jgiven/json'
+<p>When the test execution has finished, you need to pull the JGiven JSON files from the device to the local drive.
+You can do that using the <code>adb</code> tool. The following Gradle task does the job:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">def targetDir = 'build/reports/jgiven/json'
 def adb = android.getAdbExe().toString()
-def reportsDir = '/storage/emulated/0/Download/jgiven-reports'</p>
-</div>
-<div class="paragraph">
-<p>task cleanJGivenReports(type: Delete) {
+def reportsDir = '/storage/emulated/0/Download/jgiven-reports'
+
+task cleanJGivenReports(type: Delete) {
   delete targetDir
-}</p>
-</div>
-<div class="paragraph">
-<p>task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
+}
+
+task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
     doFirst {
         if (!file(targetDir).mkdirs()) {
-            println("Cannot create dir "+targetDir)
+            println(&quot;Cannot create dir &quot;+targetDir)
         }
-    }</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">commandLine adb, 'pull', reportsDir, targetDir</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">    doLast {
-        println("Pulled "+reportsDir+" to "+targetDir);
     }
-}</pre>
+
+    commandLine adb, 'pull', reportsDir, targetDir
+
+    doLast {
+        println(&quot;Pulled &quot;+reportsDir+&quot; to &quot;+targetDir);
+    }
+}</code></pre>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_generate_html_report"><a class="anchor" href="#_generate_html_report"></a>15.1.5. Generate HTML Report</h4>
+<div class="paragraph">
+<p>Given the local JSON files, you can generate the HTML report as described in <a href="#_report_generation">Report Generation</a></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_taking_screen_shots_in_espresso_tests"><a class="anchor" href="#_taking_screen_shots_in_espresso_tests"></a>15.1.6. Taking Screen Shots in Espresso Tests</h4>
+<div class="paragraph">
+<p>It is very useful to take screen shots during your tests and add them to the JGiven documentation.
+When using the <em>Espresso</em> framework, you can use the following piece of code to take
+a screenshot of an activity and turn it into a <code>byte</code> array:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">==== Generate HTML Report
-
-Given the local JSON files, you can generate the HTML report as described in &lt;&lt;_report_generation&gt;&gt;
-
-==== Taking Screen Shots in Espresso Tests
-
-It is very useful to take screen shots during your tests and add them to the JGiven documentation.
-When using the _Espresso_ framework, you can use the following piece of code to take
-a screenshot of an activity and turn it into a `byte` array:
-
-[source, Java]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>public class ScreenshotUtil {
-    public static byte[] takeScreenshot(Activity activity) {
-        View view = activity.getWindow().getDecorView().getRootView();
-        view.setDrawingCacheEnabled(true);
+<pre class="CodeRay highlight nowrap"><code data-lang="Java"><span class="directive">public</span> <span class="type">class</span> <span class="class">ScreenshotUtil</span> {
+    <span class="directive">public</span> <span class="directive">static</span> <span class="type">byte</span><span class="type">[]</span> takeScreenshot(Activity activity) {
+        <span class="predefined-type">View</span> view = activity.getWindow().getDecorView().getRootView();
+        view.setDrawingCacheEnabled(<span class="predefined-constant">true</span>);
         Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
-        view.setDrawingCacheEnabled(false);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        return baos.toByteArray();
+        view.setDrawingCacheEnabled(<span class="predefined-constant">false</span>);
+        <span class="predefined-type">ByteArrayOutputStream</span> baos = <span class="keyword">new</span> <span class="predefined-type">ByteArrayOutputStream</span>();
+        bitmap.compress(Bitmap.CompressFormat.PNG, <span class="integer">100</span>, baos);
+        <span class="keyword">return</span> baos.toByteArray();
     }
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">This byte array can then be added to a step of a JGiven report as usual:
-
-[source, Java]</pre>
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>public class MyStage {
-    @ScenarioState
-    CurrentStep currentStep;</p>
+<p>This byte array can then be added to a step of a JGiven report as usual:</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre class="nowrap">@ScenarioState
-ActivityTestRule&lt;MainActivity&gt; activityTestRule;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">public Steps clicking_the_Click_Me_button() {
-    onView(withId(R.id.clickMeButton)).perform(click());
-    takeScreenshot();
-    return this;
-}</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">    @Hidden
-    public void takeScreenshot() {
+<pre class="CodeRay highlight nowrap"><code data-lang="Java"><span class="directive">public</span> <span class="type">class</span> <span class="class">MyStage</span> {
+    <span class="annotation">@ScenarioState</span>
+    CurrentStep currentStep;
+
+    <span class="annotation">@ScenarioState</span>
+    ActivityTestRule&lt;MainActivity&gt; activityTestRule;
+
+    <span class="directive">public</span> Steps clicking_the_Click_Me_button() {
+        onView(withId(R.id.clickMeButton)).perform(click());
+        takeScreenshot();
+        <span class="keyword">return</span> <span class="local-variable">this</span>;
+    }
+
+    <span class="annotation">@Hidden</span>
+    <span class="directive">public</span> <span class="type">void</span> takeScreenshot() {
         currentStep.addAttachment(
             Attachment.fromBinaryBytes(
                 ScreenshotUtil.takeScreenshot( activityTestRule.getActivity()),
                 MediaType.PNG).showDirectly()) ;
     }
-}</pre>
+}</code></pre>
 </div>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">=== Example Project
-
-You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/android
-
-== JUnit 5 (EXPERIMENTAL)
-:javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/{version}/com/tngtech/jgiven/junit5
-
-CAUTION: JUnit 5 support is currently in an experimental state.
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_project_4"><a class="anchor" href="#_example_project_4"></a>15.2. Example Project</h3>
+<div class="paragraph">
+<p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/android" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/android</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_junit_5_experimental"><a class="anchor" href="#_junit_5_experimental"></a>16. JUnit 5 (EXPERIMENTAL)</h2>
+<div class="sectionbody">
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+JUnit 5 support is currently in an experimental state.
 This means that the API is not completely stable yet and that not all
 JGiven and JUnit 5 features are completely supported yet.
-
-=== Known Issues
-
-* Nested tests are all reported under the outer parent test class
-* Dynamic tests are not reported at all. As dynamic tests in JUnit 5 do not provide life-cycle
-  hooks, it is unclear at the moment, whether JGiven will ever support them.
-
-=== Install Dependency
-JUnit 5 support is provided by the `jgiven-junit5` dependency.
-
-==== Maven
-
-[source,maven,subs="verbatim,attributes"]</pre>
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_known_issues"><a class="anchor" href="#_known_issues"></a>16.1. Known Issues</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Nested tests are all reported under the outer parent test class</p>
+</li>
+<li>
+<p>Dynamic tests are not reported at all. As dynamic tests in JUnit 5 do not provide life-cycle
+hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
+</li>
+</ul>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_install_dependency_3"><a class="anchor" href="#_install_dependency_3"></a>16.2. Install Dependency</h3>
 <div class="paragraph">
-<p>&lt;dependency&gt;
+<p>JUnit 5 support is provided by the <code>jgiven-junit5</code> dependency.</p>
+</div>
+<div class="sect3">
+<h4 id="_maven_4"><a class="anchor" href="#_maven_4"></a>16.2.1. Maven</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit5&lt;/artifactId&gt;
    &lt;version&gt;0.17.1&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
-&lt;/dependency&gt;</p>
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_gradle_4"><a class="anchor" href="#_gradle_4"></a>16.2.2. Gradle</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
+    testCompile(&quot;com.tngtech.jgiven:jgiven-junit5:0.17.1&quot;)
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_use_jgiven_with_junit_5"><a class="anchor" href="#_use_jgiven_with_junit_5"></a>16.3. Use JGiven with JUnit 5</h3>
+<div class="paragraph">
+<p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.17.1/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
+JUnit 5 extension. You just annotate your JUnit 5 test class with <code>@ExtendWith( JGivenExtension.class )</code>
+and JGiven is enabled.</p>
+</div>
+<div class="paragraph">
+<p>If you just use the extension directly, you have to inject your stage classes by using
+the <code>@ScenarioStage</code> annotation.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">==== Gradle
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExtendWith</span>( JGivenExtension.class )
+<span class="directive">public</span> <span class="type">class</span> <span class="class">JUnit5Test</span> {
 
-[source,gradle,subs="verbatim,attributes"]</pre>
+   <span class="annotation">@ScenarioStage</span>
+   MyStage myStage;
+
+   <span class="annotation">@Test</span>
+   <span class="directive">public</span> <span class="type">void</span> my_scenario() {
+      myStage
+        .given().some_context()
+        .when().some_action()
+        .then().some_outcome();
+
+   }
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>dependencies {
-    testCompile("com.tngtech.jgiven:jgiven-junit5:0.17.1")
-}</p>
+<p>Alternatively, you can use one of the test base classes <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.17.1/com/tngtech/jgiven/junit5/ScenarioTest.html"><code>ScenarioTest</code></a> or
+<a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.17.1/com/tngtech/jgiven/junit5/SimpleScenarioTest.html"><code>SimpleScenarioTest</code></a> that provide additional convenience methods
+and allows you to specify stage classes by using type parameters:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="nowrap">=== Use JGiven with JUnit 5
+<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">JGiven5ScenarioTest</span>
+    <span class="directive">extends</span> ScenarioTest&lt;GivenStage, WhenStage, ThenStage&gt; {
 
-JGiven support for JUnit 5 is provided by the link:{javadocurl}/JGivenExtension.html[`JGivenExtension`]
-JUnit 5 extension. You just annotate your JUnit 5 test class with `@ExtendWith( JGivenExtension.class )`
-and JGiven is enabled.
-
-If you just use the extension directly, you have to inject your stage classes by using
-the `@ScenarioStage` annotation.
-
-[source,java]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>@ExtendWith( JGivenExtension.class )
-public class JUnit5Test {</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">@ScenarioStage
-MyStage myStage;</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">@Test
-public void my_scenario() {
-   myStage
-     .given().some_context()
-     .when().some_action()
-     .then().some_outcome();</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">   }
-}</pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">Alternatively, you can use one of the test base classes link:{javadocurl}/ScenarioTest.html[`ScenarioTest`] or
-link:{javadocurl}/SimpleScenarioTest.html[`SimpleScenarioTest`] that provide additional convenience methods
-and allows you to specify stage classes by using type parameters:
-
-[source,java]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>public class JGiven5ScenarioTest
-    extends ScenarioTest&lt;GivenStage, WhenStage, ThenStage&gt; {</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre class="nowrap">    @Test
-    public void JGiven_works_with_JUnit5() {
+    <span class="annotation">@Test</span>
+    <span class="directive">public</span> <span class="type">void</span> JGiven_works_with_JUnit5() {
         given().some_state();
         when().some_action();
         then().some_outcome();
     }
-}</pre>
+}</code></pre>
 </div>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="nowrap">=== Example Project
-
-You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/junit5</pre>
 </div>
+<div class="sect2">
+<h3 id="_example_project_5"><a class="anchor" href="#_example_project_5"></a>16.4. Example Project</h3>
+<div class="paragraph">
+<p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/junit5" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/junit5</a></p>
 </div>
 </div>
 </div>
@@ -3222,7 +3283,7 @@ You find a complete example project on GitHub: https://github.com/TNG/JGiven/tre
 <div id="footer">
 <div id="footer-text">
 Version 0.17.1<br>
-Last updated 2019-05-01 13:11:42 +02:00
+Last updated 2019-05-01 13:13:30 +02:00
 </div>
 </div>
 </body>
