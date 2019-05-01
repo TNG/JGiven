@@ -5,7 +5,7 @@
 <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 1.5.3">
-<title>JUnit 5 (EXPERIMENTAL)</title>
+<title>Spcok</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
@@ -422,7 +422,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_junit_5_experimental">JUnit 5 (EXPERIMENTAL)</h2>
+<h2 id="_spcok">Spcok</h2>
 <div class="sectionbody">
 <div class="admonitionblock caution">
 <table>
@@ -431,31 +431,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="title">Caution</div>
 </td>
 <td class="content">
-JUnit 5 support is currently in an experimental state.
+Spock support is currently in an experimental state.
 This means that the API is not completely stable yet and that not all
-JGiven and JUnit 5 features are completely supported yet.
+JGiven and Spock features might be supported yet.
 </td>
 </tr>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_known_issues">Known Issues</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Nested tests are all reported under the outer parent test class</p>
-</li>
-<li>
-<p>Dynamic tests are not reported at all. As dynamic tests in JUnit 5 do not provide life-cycle
-hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_install_dependency">Install Dependency</h3>
 <div class="paragraph">
-<p>JUnit 5 support is provided by the <code>jgiven-junit5</code> dependency.</p>
+<p>Spock support is provided by the <code>jgiven-spock</code> dependency.</p>
 </div>
 <div class="sect3">
 <h4 id="_maven">Maven</h4>
@@ -463,7 +449,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <div class="content">
 <pre class="highlight"><code class="language-maven" data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
-   &lt;artifactId&gt;jgiven-junit5&lt;/artifactId&gt;
+   &lt;artifactId&gt;jgiven-spock&lt;/artifactId&gt;
    &lt;version&gt;0.17.1&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
@@ -475,58 +461,29 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-gradle" data-lang="gradle">dependencies {
-    testCompile("com.tngtech.jgiven:jgiven-junit5:0.17.1")
+    testImplementation "com.tngtech.jgiven:jgiven-spock:0.17.1"
 }</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_use_jgiven_with_junit_5">Use JGiven with JUnit 5</h3>
+<h3 id="_use_jgiven_with_spock">Use JGiven with Spock</h3>
 <div class="paragraph">
-<p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.17.1/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
-JUnit 5 extension. You just annotate your JUnit 5 test class with <code>@ExtendWith( JGivenExtension.class )</code>
+<p>JGiven support for Spock is provided by extending <code>ScenarioSpec&lt;Given, When, Then&gt;</code>
 and JGiven is enabled.</p>
 </div>
-<div class="paragraph">
-<p>If you just use the extension directly, you have to inject your stage classes by using
-the <code>@ScenarioStage</code> annotation.</p>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ExtendWith( JGivenExtension.class )
-public class JUnit5Test {
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">class SpockSpec extends ScenarioSpec&lt;Given, When, Then&gt; {
 
-   @ScenarioStage
-   MyStage myStage;
+   def "my scenario"() {
+      expect:
 
-   @Test
-   public void my_scenario() {
-      myStage
-        .given().some_context()
-        .when().some_action()
-        .then().some_outcome();
-
+      given().some_context()
+      when().some_action()
+      then().some_outcome()
    }
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Alternatively, you can use one of the test base classes <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.17.1/com/tngtech/jgiven/junit5/ScenarioTest.html"><code>ScenarioTest</code></a> or
-<a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.17.1/com/tngtech/jgiven/junit5/SimpleScenarioTest.html"><code>SimpleScenarioTest</code></a> that provide additional convenience methods
-and allows you to specify stage classes by using type parameters:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class JGiven5ScenarioTest
-    extends ScenarioTest&lt;GivenStage, WhenStage, ThenStage&gt; {
-
-    @Test
-    public void JGiven_works_with_JUnit5() {
-        given().some_state();
-        when().some_action();
-        then().some_outcome();
-    }
 }</code></pre>
 </div>
 </div>
@@ -534,7 +491,7 @@ and allows you to specify stage classes by using type parameters:</p>
 <div class="sect2">
 <h3 id="_example_project">Example Project</h3>
 <div class="paragraph">
-<p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/junit5" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/junit5</a></p>
+<p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/spock" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/spock</a></p>
 </div>
 </div>
 </div>
@@ -542,7 +499,7 @@ and allows you to specify stage classes by using type parameters:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-11-10 12:46:45 +01:00
+Last updated 2019-05-01 13:11:42 +02:00
 </div>
 </div>
 </body>
