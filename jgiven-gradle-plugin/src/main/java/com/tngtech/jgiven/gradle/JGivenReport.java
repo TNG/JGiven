@@ -1,7 +1,6 @@
 package com.tngtech.jgiven.gradle;
 
 import com.tngtech.jgiven.report.AbstractReportGenerator;
-import com.tngtech.jgiven.report.ReportGenerator;
 import org.gradle.api.reporting.DirectoryReport;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFile;
