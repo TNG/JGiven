@@ -1,4 +1,4 @@
-== Spcok
+== Spock
 :javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-spock/{version}/com/tngtech/jgiven/spock
 
 CAUTION: Spock support is currently in an experimental state.
