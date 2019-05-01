@@ -469,6 +469,20 @@ public WhenCalculator $_percent_are_added( int percent ) {
 <div class="paragraph">
 <p>The step will appear as <code>10 % are added</code> in the report, when invoked with <code>10</code>.</p>
 </div>
+<div class="paragraph">
+<p>If you need full control over the step text you can inject the <code>CurrentStep</code> interface into the stage by using the <code>@ScenarioState</code> annotation. You can then use the <code>setName</code> method to change the steps text.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@ScenarioState
+CurrentStep currentStep;
+
+public WhenCalculator $_percent_are_added( int percent ) {
+    currentStep.setName( percent + " percent are added" );
+    return self();
+}</code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_completely_hide_steps">Completely Hide Steps</h3>
@@ -825,7 +839,7 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-10-23 21:08:28 CEST
+Last updated 2019-02-06 21:38:06 +01:00
 </div>
 </div>
 </body>
