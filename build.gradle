@@ -176,9 +176,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     }
 
     artifacts {
-        archives jar
         archives javadocJar
-
         archives sourcesJar
     }
 
