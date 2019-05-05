@@ -11,7 +11,7 @@ dependencies {
 
     testCompile "org.assertj:assertj-core:$assertjVersion"
     testCompile 'org.seleniumhq.selenium:selenium-java:3.141.59'
-    testCompile 'com.codeborne:phantomjsdriver:1.4.4'
+    testCompile 'io.github.bonigarcia:webdrivermanager:3.4.0'
     testCompile 'org.apache.commons:commons-io:1.3.2'
 }
 sourceCompatibility = targetCompatibility = 1.8

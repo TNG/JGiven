@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.github.bonigarcia.wdm.ChromeDriverManager;
+import io.github.bonigarcia.wdm.DriverManagerType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,7 +17,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -35,6 +36,8 @@ import com.tngtech.jgiven.tags.FeatureHtml5Report;
 import com.tngtech.jgiven.tags.FeatureTags;
 import com.tngtech.jgiven.tags.FeatureTagsWithCustomStyle;
 import com.tngtech.jgiven.tags.Issue;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 @BrowserTest
 @FeatureHtml5Report
@@ -54,7 +57,15 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
 
     @BeforeClass
     public static void setupWebDriver() {
-        webDriver = new PhantomJSDriver();
+        ChromeDriverManager.getInstance(DriverManagerType.CHROME).setup();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+        options.addArguments("window-size=1280x768");
+
+        webDriver = new ChromeDriver(options);
+
         webDriver.manage().window().setSize( new Dimension( 1280, 768 ) );
     }
 
