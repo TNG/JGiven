@@ -14,6 +14,7 @@ public class SimpleScenarioTest<STEPS> extends SimpleScenarioTestBase<STEPS> {
     public final JGivenMethodRule scenarioRule = new JGivenMethodRule( createScenario() );
 
     @Override
+    @SuppressWarnings("unchecked")
     public Scenario<STEPS, STEPS, STEPS> getScenario() {
         return (Scenario<STEPS, STEPS, STEPS>) scenarioRule.getScenario();
     }

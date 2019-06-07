@@ -14,6 +14,7 @@ public class DualScenarioTest <GIVEN_WHEN, THEN> extends DualScenarioTestBase<GI
   public final JGivenMethodRule scenarioRule = new JGivenMethodRule( createScenario() );
 
   @Override
+  @SuppressWarnings("unchecked")
   public Scenario<GIVEN_WHEN, GIVEN_WHEN, THEN> getScenario() {
     return (Scenario<GIVEN_WHEN, GIVEN_WHEN, THEN>) scenarioRule.getScenario();
   }
