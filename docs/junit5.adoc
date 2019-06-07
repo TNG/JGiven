@@ -63,8 +63,8 @@ public class JUnit5Test {
 }
 ----
 
-Alternatively, you can use one of the test base classes link:{javadocurl}/ScenarioTest.html[`ScenarioTest`] or
-link:{javadocurl}/SimpleScenarioTest.html[`SimpleScenarioTest`] that provide additional convenience methods
+Alternatively, you can use one of the test base classes link:{javadocurl}/ScenarioTest.html[`ScenarioTest`],
+link:{javadocurl}/SimpleScenarioTest.html[`SimpleScenarioTest`] or link:{javadocurl}/DualScenarioTest.html[`DualScenarioTest`] that provide additional convenience methods
 and allows you to specify stage classes by using type parameters:
 
 [source,java]
