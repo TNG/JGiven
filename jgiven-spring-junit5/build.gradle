@@ -1,0 +1,20 @@
+description = "Module for using Spring dependency injection together with JGiven and JUnit 4"
+
+dependencies {
+    compile project(':jgiven-spring')
+    compile project(':jgiven-junit5')
+    compileOnly(group: 'org.springframework', name: 'spring-context', version: spring5Version)
+    compileOnly(group: 'org.springframework', name: 'spring-test', version: spring5Version)
+    compileOnly(group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junit5Version)
+    testCompile project(':jgiven-html5-report')
+    testCompile(group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junit5Version)
+    testCompile(group: 'org.junit.platform', name: 'junit-platform-runner', version: junit5PlatformRunnerVersion)
+    testCompile(group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: junit5Version)
+    testCompile(group: 'org.springframework', name: 'spring-tx', version: spring5Version)
+    testCompile(group: 'org.springframework', name: 'spring-context', version: spring5Version)
+    testCompile(group: 'org.springframework', name: 'spring-test', version: spring5Version)
+    testCompile(group: 'org.springframework', name: 'spring-jdbc', version: spring5Version)
+    testCompile(group: 'org.hsqldb', name: 'hsqldb', version: '2.3.2')
+    testCompile(group: 'org.aspectj', name: 'aspectjrt', version: '1.6.9')
+    testCompile(group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.6')
+}

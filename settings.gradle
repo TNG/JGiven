@@ -6,27 +6,20 @@ include ':jgiven-core',
         ':jgiven-spock',
         ':jgiven-testng',
         ':jgiven-spring',
+        ':jgiven-spring-junit4',
         ':jgiven-html-app',
-        ':jgiven-html5-report'
+        ':jgiven-html5-report',
+        ':jgiven-tests',
+        ':jgiven-examples',
+        ':jgiven-java8-tests',
+        ':jgiven-junit5',
+        ':jgiven-spring-junit5'
 
 def release = System.env.RELEASE == "true"
 def android = System.env.ANDROID == "true"
 
-if (JavaVersion.current().isJava8Compatible() && !release) {
-    include ':jgiven-tests'
-    include ':jgiven-examples'
-}
-
-if (JavaVersion.current().isJava8Compatible() && !release) {
-    include ':jgiven-java8-tests'
-}
-
-if (JavaVersion.current().isJava9Compatible() && !release) {
+if (JavaVersion.current().isJava9Compatible()) {
     include ':jgiven-java9-tests'
-}
-
-if (JavaVersion.current().isJava8Compatible()) {
-    include ':jgiven-junit5'
 }
 
 if (!JavaVersion.current().isJava11Compatible()) {

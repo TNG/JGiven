@@ -2,7 +2,8 @@
 :javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/{version}/com/tngtech/jgiven/integration/spring
 
 === Install Dependency
-Spring support is provided by the `jgiven-spring` dependency.
+Spring support is provided by the `jgiven-spring-junit4` and the `jgiven-spring-junit5` dependencies, depending
+on which JUnit version you are using. JUnit 5 is only supported with version 5 of Spring.
 
 ==== Maven
 
@@ -10,7 +11,7 @@ Spring support is provided by the `jgiven-spring` dependency.
 ----
 <dependency>
    <groupId>com.tngtech.jgiven</groupId>
-   <artifactId>jgiven-spring</artifactId>
+   <artifactId>jgiven-spring-junit5</artifactId>
    <version>{version}</version>
    <scope>test</scope>
 </dependency>
@@ -21,7 +22,7 @@ Spring support is provided by the `jgiven-spring` dependency.
 [source,gradle,subs="verbatim,attributes"]
 ----
 dependencies {
-    testCompile("com.tngtech.jgiven:jgiven-spring:{version}")
+    testCompile("com.tngtech.jgiven:jgiven-spring-junit5:{version}")
 }
 ----
 
