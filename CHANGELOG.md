@@ -6,6 +6,7 @@
 * The `CurrentStep` interface has a new method `setName` to change the name of a step programmatically [#386](https://github.com/TNG/JGiven/issues/386)
 * Updated the Guava dependency to v27.1-jre [#398](https://github.com/TNG/JGiven/pull/398)
 * Added `DualScenarioTest` [#406](https://github.com/TNG/JGiven/pull/406) (thanks to jangalinksi)
+* Upgraded Gradle Plugin to support Gradle 5 [#381](https://github.com/TNG/JGiven/pull/381) (thanks to mustaine)
 
 ## Backwards Incompatible Changes
 
