@@ -2,7 +2,7 @@
 dependencies {
 	compile project(':jgiven-core')
     testCompile project(':jgiven-junit')
-    testCompile project(':jgiven-spring')
+    testCompile project(':jgiven-spring-junit4')
     testCompile project(':jgiven-tests')
     testCompile project(':jgiven-html5-report')
     testCompile group: 'org.seleniumhq.selenium', name: 'htmlunit-driver', version: '2.23'

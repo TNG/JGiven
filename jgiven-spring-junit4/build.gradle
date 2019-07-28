@@ -1,9 +1,12 @@
-description = "Module for using Spring dependency injection together with JGiven"
+description = "Module for using Spring dependency injection together with JGiven and JUnit 4"
 
 dependencies {
-    compile project(':jgiven-core')
+    compile project(':jgiven-spring')
+    compile project(':jgiven-junit')
+    compileOnly(group: 'junit', name: 'junit', version: junitVersion)
     compileOnly(group: 'org.springframework', name: 'spring-context', version: springVersion)
     compileOnly(group: 'org.springframework', name: 'spring-test', version: springVersion)
+    testCompile(group: 'junit', name: 'junit', version: junitVersion)
     testCompile(group: 'org.springframework', name: 'spring-tx', version: springVersion)
     testCompile(group: 'org.springframework', name: 'spring-context', version: springVersion)
     testCompile(group: 'org.springframework', name: 'spring-test', version: springVersion)

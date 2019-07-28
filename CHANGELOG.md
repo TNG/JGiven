@@ -9,6 +9,12 @@
 * Upgraded Gradle Plugin to support Gradle 5 [#381](https://github.com/TNG/JGiven/pull/381) (thanks to mustaine)
 * `@Pending` can now be added to the test class to make all scenarios of that class pending [#403](https://github.com/TNG/JGiven/issues/403)
 
+### Spring 5 with JUnit 5
+
+To better support Spring 5 with JUnit 5 the `jgiven-spring` module has been split up into three modules.
+You need to adapt your dependencies accordingly. If you are using JUnit 4 use the `jgiven-spring-junit4` module.
+If you are using Spring 5 with JUnit 5 then use the `jgiven-spring-junit5` module.
+
 ## Backwards Incompatible Changes
 
 * Java 7 is not supported anymore
@@ -26,6 +32,7 @@ dependencies to your build:
 ## Removed Deprecated Features
 
 * Removed `@NotImplementedYet` annotation. Use `@Pending` instead.
+* Spring: removed `SpringCanWire`
 
 ## Fixed Issues
 
