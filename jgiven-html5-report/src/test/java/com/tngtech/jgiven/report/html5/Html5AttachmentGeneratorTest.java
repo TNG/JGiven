@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.report.html5;
 
 import static com.tngtech.jgiven.report.html5.Html5AttachmentGenerator.MINIMAL_THUMBNAIL_SIZE;
+import static com.tngtech.jgiven.report.html5.Html5AttachmentGenerator.scaleDown;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.awt.image.BufferedImage;
@@ -11,6 +12,8 @@ import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
 
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import org.assertj.core.util.Lists;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,7 +24,9 @@ import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.Word;
+import org.junit.runner.RunWith;
 
+@RunWith(DataProviderRunner.class)
 public class Html5AttachmentGeneratorTest {
 
     private static final String JSON_SAMPLE = "{}";
@@ -58,8 +63,24 @@ public class Html5AttachmentGeneratorTest {
         File writtenFile = new File( temporaryFolderRule.getRoot().getPath() + "/attachment-thumb.gif" );
         Attachment writtenAttachment = Attachment.fromBinaryFile( writtenFile, MediaType.GIF );
         BufferedImage after = ImageIO.read( new ByteArrayInputStream( BaseEncoding.base64().decode( writtenAttachment.getContent() ) ) );
-        assertThat( after.getWidth() ).isEqualTo( MINIMAL_THUMBNAIL_SIZE );
-        assertThat( after.getHeight() ).isEqualTo( MINIMAL_THUMBNAIL_SIZE );
+        assertThat( after.getWidth() ).isEqualTo(MINIMAL_THUMBNAIL_SIZE);
+        assertThat( after.getHeight() ).isEqualTo(MINIMAL_THUMBNAIL_SIZE);
+    }
+
+    @Test
+    @DataProvider( value = {
+        "100, 10, 100, 10",
+        "100, 100, 20, 20",
+        "10, 100, 10, 100",
+        "1000, 500, 40, 20",
+        "10, 10, 10, 10"
+    })
+    public void testScaleDown(int initialWidth, int initialHeight, int expectedWidth, int expectedHeight) {
+        BufferedImage image = new BufferedImage(initialWidth, initialHeight, BufferedImage.TYPE_INT_BGR);
+        BufferedImage thumb = scaleDown(image);
+
+        assertThat( thumb.getWidth() ).isEqualTo(expectedWidth);
+        assertThat( thumb.getHeight() ).isEqualTo(expectedHeight);
     }
 
 }

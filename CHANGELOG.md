@@ -19,6 +19,12 @@ a stage change anymore [#385](https://github.com/TNG/JGiven/pull/385)
 
 * Make it easier to copy the stack trace from an error message [#380](https://github.com/TNG/JGiven/issues/380)
 
+# v0.17.2
+
+## Fixed Issues
+
+* Fix calculation of minimal thumbnail sizes [#413](https://github.com/TNG/JGiven/issues/413)
+
 # v0.17.1
 
 ## Fixed Issues
