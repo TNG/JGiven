@@ -155,11 +155,10 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
 
     private byte[] compressToThumbnail( String base64content, String extension ) {
         byte[] imageBytes = BaseEncoding.base64().decode( base64content );
-        double scaleFactor = 0.02;
         byte[] base64thumb = {};
         try {
             BufferedImage before = ImageIO.read( new ByteArrayInputStream( imageBytes ) );
-            BufferedImage after = scaleBy( scaleFactor, before );
+            BufferedImage after = scaleDown( before );
             base64thumb = bufferedImageToBase64( after, extension );
         } catch( IOException e ) {
             log.error( "Error while decoding the attachment to BufferedImage ", e );
@@ -167,9 +166,14 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
         return base64thumb;
     }
 
-    private BufferedImage scaleBy( double factor, BufferedImage before ) {
-        int width = Math.max( (int) Math.round( before.getWidth() * factor ), MINIMAL_THUMBNAIL_SIZE );
-        int height = Math.max( (int) Math.round( before.getHeight() * factor ), MINIMAL_THUMBNAIL_SIZE );
+    static BufferedImage scaleDown( BufferedImage before ) {
+        double xFactor = Math.min(1.0, MINIMAL_THUMBNAIL_SIZE / (double) before.getWidth());
+        double yFactor = Math.min(1.0, MINIMAL_THUMBNAIL_SIZE / (double) before.getHeight());
+
+        double factor = Math.max(xFactor, yFactor);
+
+        int width = (int) Math.round(before.getWidth() * factor);
+        int height = (int) Math.round(before.getHeight() * factor);
         BufferedImage after = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
 
         AffineTransform at = new AffineTransform();

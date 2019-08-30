@@ -51,4 +51,9 @@ public class AttachmentsExample extends SimpleScenarioTest<AttachmentsExampleSta
         given().a_$_oval_circle( color );
     }
 
+    @Test
+    public void thumbnails_are_shown_when_not_drawn() throws IOException {
+        given().an_oval_circle_as_thumbnail();
+    }
+
 }

@@ -35,15 +35,24 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
     }
 
     public void a_large_oval_circle() throws IOException {
-        drawOval( 800, 600, Color.BLUE, "large-oval-circle" );
+        addOvalAttachment( 800, 600, Color.BLUE, "large-oval-circle" );
     }
 
     public void an_oval_circle() throws IOException {
-        drawOval( 300, 200, Color.BLUE, "oval-circle" );
+        addOvalAttachment( 300, 200, Color.BLUE, "oval-circle" );
     }
 
     public void a_$_oval_circle( String color ) throws IOException {
-        drawOval( 300, 200, getColor( color ), "oval-circle" );
+        addOvalAttachment( 300, 200, getColor( color ), "oval-circle" );
+    }
+
+    public void an_oval_circle_as_thumbnail() throws IOException {
+        byte[] bytes = drawOval(300, 200, Color.BLUE);
+
+        currentStep.addAttachment(
+                Attachment.fromBinaryBytes( bytes, MediaType.PNG )
+                        .withTitle( "An oval drawn in Java" )
+                        .withFileName( "oval-circle-as-thumbnail" ));
     }
 
     private Color getColor( String color ) {
@@ -53,7 +62,17 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
         return Color.BLUE;
     }
 
-    private void drawOval( int width, int height, Color color, String fileName ) throws IOException {
+    private void addOvalAttachment(int width, int height, Color color, String fileName ) throws IOException {
+        byte[] bytes = drawOval(width, height, color);
+
+        currentStep.addAttachment(
+                Attachment.fromBinaryBytes( bytes, MediaType.PNG )
+                        .withTitle( "An oval drawn in Java" )
+                        .withFileName( fileName )
+                        .showDirectly() );
+    }
+
+    private byte[] drawOval(int width, int height, Color color) throws IOException {
         BufferedImage image = new BufferedImage( width, height, BufferedImage.TYPE_INT_ARGB );
 
         Graphics2D g = image.createGraphics();
@@ -65,17 +84,13 @@ public class AttachmentsExampleStage extends Stage<AttachmentsExampleStage> {
         g.drawOval( 10, 10, width - 20, height - 20 );
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] bytes;
         try {
             ImageIO.write( image, "PNG", outputStream );
-            byte[] bytes = outputStream.toByteArray();
-
-            currentStep.addAttachment(
-                    Attachment.fromBinaryBytes( bytes, MediaType.PNG )
-                            .withTitle( "An oval drawn in Java" )
-                            .withFileName( fileName )
-                            .showDirectly() );
+            bytes = outputStream.toByteArray();
         } finally {
             outputStream.close();
         }
+        return bytes;
     }
 }

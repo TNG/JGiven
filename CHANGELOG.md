@@ -1,3 +1,9 @@
+# v0.17.2
+
+## Fixed Issues
+
+* Fix calculation of minimal thumbnail sizes [#413](https://github.com/TNG/JGiven/issues/413)
+
 # v0.17.1
 
 ## Fixed Issues
