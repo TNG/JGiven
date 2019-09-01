@@ -3,8 +3,7 @@ package com.tngtech.jgiven.tests;
 import org.junit.Test;
 import org.testng.annotations.Listeners;
 
-import com.tngtech.jgiven.annotation.NotImplementedYet;
-import com.tngtech.jgiven.junit.ScenarioTest;
+import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.testng.ScenarioTestListener;
 
 @Listeners( ScenarioTestListener.class )
@@ -49,37 +48,37 @@ public class TestScenarios extends ScenarioTestForTesting<GivenTestStage, WhenTe
 
     @Test
     @org.testng.annotations.Test
-    @NotImplementedYet
-    public void failing_test_with_NotImplementedYet_annotation() {
+    @Pending
+    public void failing_test_with_Pending_annotation() {
         given().an_exception_is_thrown();
         when().something_happens();
     }
 
     @Test
     @org.testng.annotations.Test
-    @NotImplementedYet
-    public void passing_test_with_NotImplementedYet_annotation() {
+    @Pending
+    public void passing_test_with_Pending_annotation() {
         given().nothing();
     }
 
     @Test
     @org.testng.annotations.Test
-    @NotImplementedYet( failIfPass = true )
-    public void passing_test_with_NotImplementedYet_annotation_and_failIfPassed_set_to_true() {
+    @Pending( failIfPass = true )
+    public void passing_test_with_Pending_annotation_and_failIfPassed_set_to_true() {
         given().nothing();
     }
 
     @Test
     @org.testng.annotations.Test
-    @NotImplementedYet( failIfPass = true )
-    public void failing_test_with_NotImplementedYet_annotation_and_failIfPassed_set_to_true() {
+    @Pending( failIfPass = true )
+    public void failing_test_with_Pending_annotation_and_failIfPassed_set_to_true() {
         given().an_exception_is_thrown();
     }
 
     @Test
     @org.testng.annotations.Test
-    @NotImplementedYet( executeSteps = true )
-    public void failing_test_with_NotImplementedYet_annotation_and_executeSteps_set_to_true() {
+    @Pending( failIfPass = true, executeSteps = true )
+    public void failing_test_with_Pending_annotation_and_executeSteps_set_to_true() {
         given().an_exception_is_thrown();
     }
 

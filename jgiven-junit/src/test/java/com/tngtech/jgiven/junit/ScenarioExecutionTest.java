@@ -62,14 +62,6 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         assertThat( stage.beforeCalled ).isTrue();
     }
 
-    @Test
-    @NotImplementedYet
-    public void NotImplementedYet_annotation_works_on_test_methods() {
-        TestStage stage = addStage( TestStage.class );
-        stage.given().an_exception_is_thrown();
-        assertThat( true ).isTrue();
-    }
-
     @Test( expected = AmbiguousResolutionException.class )
     public void an_exception_is_thrown_when_stages_have_ambiguous_fields() {
         TestStageWithAmbiguousFields stage = addStage( TestStageWithAmbiguousFields.class );

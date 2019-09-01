@@ -32,32 +32,6 @@ public class ScenarioExecutorTest {
     }
 
     @Test
-    public void methods_annotated_with_NotImplementedYet_are_not_really_executed() {
-        ScenarioExecutor executor = new ScenarioExecutor();
-        NotImplementedYetTestStep steps = executor.addStage( NotImplementedYetTestStep.class );
-        executor.startScenario( "Test" );
-        steps.something_not_implemented_yet();
-        assertThat( true ).as( "No exception was thrown" ).isTrue();
-    }
-
-    @Test
-    public void methods_annotated_with_NotImplemented_must_follow_fluent_interface_convention_or_return_null() {
-        ScenarioExecutor executor = new ScenarioExecutor();
-        NotImplementedYetTestStep steps = executor.addStage( NotImplementedYetTestStep.class );
-        executor.startScenario( "Test" );
-        assertThat( steps.something_not_implemented_yet_with_wrong_signature() ).isNull();
-    }
-
-    @Test
-    public void stepclasses_annotated_with_NotImplementedYet_are_not_really_executed() {
-        ScenarioExecutor executor = new ScenarioExecutor();
-        NotImplementedYetTestStepClass steps = executor.addStage( NotImplementedYetTestStepClass.class );
-        executor.startScenario( "Test" );
-        steps.something_not_implemented_yet();
-        assertThat( true ).as( "No exception was thrown" ).isTrue();
-    }
-
-    @Test
     public void methods_annotated_with_Pending_are_not_really_executed() {
         ScenarioExecutor executor = new ScenarioExecutor();
         PendingTestStep steps = executor.addStage( PendingTestStep.class );
@@ -221,25 +195,6 @@ public class ScenarioExecutorTest {
     @Pending
     static class PendingTestStepClass {
         public PendingTestStepClass something_pending() {
-            throw new UnsupportedOperationException();
-        }
-    }
-
-    static class NotImplementedYetTestStep {
-        @NotImplementedYet
-        public NotImplementedYetTestStep something_not_implemented_yet() {
-            throw new UnsupportedOperationException();
-        }
-
-        @NotImplementedYet
-        public String something_not_implemented_yet_with_wrong_signature() {
-            return "something";
-        }
-    }
-
-    @NotImplementedYet
-    static class NotImplementedYetTestStepClass {
-        public NotImplementedYetTestStepClass something_not_implemented_yet() {
             throw new UnsupportedOperationException();
         }
     }

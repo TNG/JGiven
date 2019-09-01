@@ -21,10 +21,10 @@ import java.lang.annotation.Target;
  * Annotating a stage class indicates
  * that no step is implemented yet.
  * <p>
- * Finally, a test method can be annotated to indicate that the whole
+ * A test method can be annotated to indicate that the whole
  * test is not implemented yet. The test will then be ignored by the testing-framework.
  * (In fact an AssumptionException is thrown. It depends on the test runner how this
- * is interpreted)
+ * is interpreted). Annotating the test class treats all methods of that test class as pending.
  * <i>Currently only works for JUnit</i>
  *
  * <h2>Example</h2>

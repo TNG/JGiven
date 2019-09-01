@@ -11,7 +11,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.JGivenTestConfiguration;
 import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.impl.ScenarioExecutorTest.TestSteps;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
@@ -57,7 +56,6 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
             assertThat( false ).isTrue();
         }
 
-        @NotImplementedYet
         public void a_NotImplementedYet_annotated_step() {}
 
         public void the_next_step_is_skipped() {}

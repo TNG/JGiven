@@ -15,7 +15,6 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IsTag;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.junit.StepsAreReportedTest.TestSteps;
 import com.tngtech.jgiven.report.model.*;
@@ -48,29 +47,6 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         assertThat( step.getWords() ).isEqualTo( Arrays.asList( Word.introWord( "Given" ), new Word( "some test step" ) ) );
         assertThat( step.isPending() ).isFalse();
 
-    }
-
-    @Test
-    public void steps_annotated_with_NotImplementedYet_are_recognized() throws Throwable {
-        given().some_not_implemented_step();
-
-        getScenario().finished();
-
-        ScenarioModel model = getScenario().getScenarioModel();
-        StepModel stepModel = model.getCase( 0 ).getSteps().get( 0 );
-        assertThat( stepModel.isPending() ).isTrue();
-        assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SCENARIO_PENDING );
-    }
-
-    @Test
-    public void if_some_steps_are_not_implemented_then_scenario_status_is_partially() throws Throwable {
-        given().some_test_step();
-        given().some_not_implemented_step();
-
-        getScenario().finished();
-
-        ScenarioModel model = getScenario().getScenarioModel();
-        assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SOME_STEPS_PENDING );
     }
 
     @Test
@@ -167,11 +143,6 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
     public static class TestSteps extends Stage<TestSteps> {
         public void some_test_step() {
-
-        }
-
-        @NotImplementedYet
-        public void some_not_implemented_step() {
 
         }
 

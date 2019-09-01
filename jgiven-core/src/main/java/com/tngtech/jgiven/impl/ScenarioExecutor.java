@@ -461,19 +461,15 @@ public class ScenarioExecutor {
     public void startScenario( Class<?> testClass, Method method, List<NamedArgument> arguments ) {
         listener.scenarioStarted( testClass, method, arguments );
 
+        Pending annotation = null;
+
         if( method.isAnnotationPresent( Pending.class ) ) {
-            Pending annotation = method.getAnnotation( Pending.class );
+            annotation = method.getAnnotation( Pending.class );
+        } else if( method.getDeclaringClass().isAnnotationPresent( Pending.class ) ) {
+            annotation = method.getDeclaringClass().getAnnotation( Pending.class );
+        }
 
-            if( annotation.failIfPass() ) {
-                failIfPass();
-            } else if( !annotation.executeSteps() ) {
-                methodInterceptor.disableMethodExecution();
-                executeLifeCycleMethods = false;
-            }
-            suppressExceptions = true;
-        } else if( method.isAnnotationPresent( NotImplementedYet.class ) ) {
-            NotImplementedYet annotation = method.getAnnotation( NotImplementedYet.class );
-
+        if( annotation != null ) {
             if( annotation.failIfPass() ) {
                 failIfPass();
             } else if( !annotation.executeSteps() ) {

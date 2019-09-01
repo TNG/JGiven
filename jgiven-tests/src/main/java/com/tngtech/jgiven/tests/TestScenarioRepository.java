@@ -8,7 +8,7 @@ import com.tngtech.jgiven.annotation.Description;
 public class TestScenarioRepository {
 
     public static class SearchCriteria {
-        public boolean notImplementedYet = false;
+        public boolean pending = false;
         public boolean failing = false;
         public Integer numberOfSteps;
         public Integer failingStep;
@@ -22,7 +22,7 @@ public class TestScenarioRepository {
         public String testClassDescription;
 
         public boolean matches( ScenarioCriteria criteria ) {
-            if( notImplementedYet != criteria.notImplementedYet ) {
+            if( pending != criteria.pending) {
                 return false;
             }
 
@@ -63,7 +63,7 @@ public class TestScenarioRepository {
                 return false;
             }
 
-            if( numberOfParameters != null && numberOfParameters != criteria.numberOfParameters ) {
+            if( numberOfParameters != null && !numberOfParameters.equals(criteria.numberOfParameters) ) {
                 return false;
             }
 
@@ -76,7 +76,7 @@ public class TestScenarioRepository {
     }
 
     public static class ScenarioCriteria {
-        public boolean notImplementedYet;
+        public boolean pending;
         public boolean failIfPassed;
         public boolean executeSteps;
         public boolean failing;
@@ -89,8 +89,8 @@ public class TestScenarioRepository {
         private boolean parameterizedRunner;
         private String testClassDescription;
 
-        public ScenarioCriteria notImplementedYet() {
-            notImplementedYet = true;
+        public ScenarioCriteria pending() {
+            pending = true;
             return this;
         }
 
@@ -227,25 +227,25 @@ public class TestScenarioRepository {
             .stageWithFailingAfterStageMethod( 2 )
             .failingStep( 1 );
 
-        addTestScenario( result, "failing_test_with_NotImplementedYet_annotation" )
-            .notImplementedYet()
+        addTestScenario( result, "failing_test_with_Pending_annotation" )
+            .pending()
             .numberOfSteps( 2 )
             .failingStep( 1 );
 
-        addTestScenario( result, "passing_test_with_NotImplementedYet_annotation" )
-            .notImplementedYet();
+        addTestScenario( result, "passing_test_with_Pending_annotation" )
+            .pending();
 
-        addTestScenario( result, "passing_test_with_NotImplementedYet_annotation_and_failIfPassed_set_to_true" )
-            .notImplementedYet()
+        addTestScenario( result, "passing_test_with_Pending_annotation_and_failIfPassed_set_to_true" )
+            .pending()
             .failIfPassed();
 
-        addTestScenario( result, "failing_test_with_NotImplementedYet_annotation_and_failIfPassed_set_to_true" )
-            .notImplementedYet()
+        addTestScenario( result, "failing_test_with_Pending_annotation_and_failIfPassed_set_to_true" )
+            .pending()
             .failIfPassed()
             .failingStep( 1 );
 
-        addTestScenario( result, "failing_test_with_NotImplementedYet_annotation_and_executeSteps_set_to_true" )
-            .notImplementedYet()
+        addTestScenario( result, "failing_test_with_Pending_annotation_and_executeSteps_set_to_true" )
+            .pending()
             .executeSteps()
             .failingStep( 1 );
 

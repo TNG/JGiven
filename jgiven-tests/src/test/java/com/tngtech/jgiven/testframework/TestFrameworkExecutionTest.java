@@ -36,18 +36,18 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
 
     @Test
     @FeaturePending
-    public void failing_tests_annotated_with_NotImplementedYet_are_ignored() {
+    public void failing_tests_annotated_with_Pending_are_ignored() {
         given().a_failing_test()
-            .and().the_test_is_annotated_with_NotImplementedYet();
+            .and().the_test_is_annotated_with_Pending();
         when().the_test_is_executed_with( testFramework );
         then().the_test_is_ignored();
     }
 
     @Test
     @FeaturePending
-    public void passing_tests_annotated_with_NotImplementedYet_are_ignored() {
+    public void passing_tests_annotated_with_Pending_are_ignored() {
         given().a_passing_test()
-            .and().the_test_is_annotated_with_NotImplementedYet();
+            .and().the_test_is_annotated_with_Pending();
         when().the_test_is_executed_with( testFramework );
         then().the_test_is_ignored();
     }
@@ -55,9 +55,9 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
     @Test
     @Issue( "#4" )
     @FeaturePending
-    public void passing_tests_annotated_with_NotImplementedYet_with_failIfPassed_set_to_true_fail() {
+    public void passing_tests_annotated_with_Pending_with_failIfPassed_set_to_true_fail() {
         given().a_passing_test()
-            .and().the_test_is_annotated_with_NotImplementedYet()
+            .and().the_test_is_annotated_with_Pending()
             .with().failIfPassed_set_to_true();
         when().the_test_is_executed_with( testFramework );
         then().the_test_fails_with_message( "Test succeeded, but failIfPassed set to true" );
@@ -66,9 +66,9 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
     @Test
     @Issue( "#4" )
     @FeaturePending
-    public void failing_tests_annotated_with_NotImplementedYet_with_failIfPassed_set_to_true_are_ignored() {
+    public void failing_tests_annotated_with_Pending_with_failIfPassed_set_to_true_are_ignored() {
         given().a_failing_test()
-            .and().the_test_is_annotated_with_NotImplementedYet()
+            .and().the_test_is_annotated_with_Pending()
             .with().failIfPassed_set_to_true();
         when().the_test_is_executed_with( testFramework );
         then().the_test_is_ignored();
@@ -76,9 +76,9 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
 
     @Test
     @FeaturePending
-    public void failing_tests_annotated_with_NotImplementedYet_with_executeSteps_set_to_true_are_ignored() {
+    public void failing_tests_annotated_with_Pending_with_executeSteps_set_to_true_are_ignored() {
         given().a_failing_test()
-            .and().the_test_is_annotated_with_NotImplementedYet()
+            .and().the_test_is_annotated_with_Pending()
             .with().executeSteps_set_to_true();
         when().the_test_is_executed_with( testFramework );
         then().the_test_is_ignored();

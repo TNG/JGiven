@@ -50,8 +50,8 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         return self();
     }
 
-    public SELF the_test_is_annotated_with_NotImplementedYet() {
-        criteria.notImplementedYet = true;
+    public SELF the_test_is_annotated_with_Pending() {
+        criteria.pending = true;
         return self();
     }
 

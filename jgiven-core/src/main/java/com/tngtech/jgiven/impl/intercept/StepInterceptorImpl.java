@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import com.tngtech.jgiven.annotation.DoNotIntercept;
 import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.NestedSteps;
-import com.tngtech.jgiven.annotation.NotImplementedYet;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.impl.ScenarioExecutor;
 import com.tngtech.jgiven.impl.util.ParameterNameUtil;
@@ -169,10 +168,9 @@ public class StepInterceptorImpl implements StepInterceptor {
             return SKIPPED;
         }
 
-        if( method.isAnnotationPresent( NotImplementedYet.class )
-                || receiver.getClass().isAnnotationPresent( NotImplementedYet.class )
-                || method.isAnnotationPresent( Pending.class )
-                || receiver.getClass().isAnnotationPresent( Pending.class ) ) {
+        if( method.isAnnotationPresent( Pending.class )
+            || method.getDeclaringClass().isAnnotationPresent( Pending.class )
+            || receiver.getClass().isAnnotationPresent( Pending.class ) ) {
             return PENDING;
         }
 

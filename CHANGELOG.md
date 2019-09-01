@@ -7,6 +7,7 @@
 * Updated the Guava dependency to v27.1-jre [#398](https://github.com/TNG/JGiven/pull/398)
 * Added `DualScenarioTest` [#406](https://github.com/TNG/JGiven/pull/406) (thanks to jangalinksi)
 * Upgraded Gradle Plugin to support Gradle 5 [#381](https://github.com/TNG/JGiven/pull/381) (thanks to mustaine)
+* `@Pending` can now be added to the test class to make all scenarios of that class pending [#403](https://github.com/TNG/JGiven/issues/403)
 
 ## Backwards Incompatible Changes
 
@@ -14,6 +15,10 @@
 * Calling stage methods annotated with `@DoNotIntercept` or declared within `java.lang.Object` will not trigger
 a stage change anymore [#385](https://github.com/TNG/JGiven/pull/385)
 * The Guava dependency changed to v27.1-jre. This might lead to problems in case your project also depends on Guava
+
+## Removed Deprecated Features
+
+* Removed `@NotImplementedYet` annotation. Use `@Pending` instead.
 
 ## Fixed Issues
 
