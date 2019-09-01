@@ -27,7 +27,7 @@ a stage change anymore [#385](https://github.com/TNG/JGiven/pull/385)
 
 ## Fixed Issues
 
-* Fixed calculation of minimal thumbnail sizes [#413](https://github.com/TNG/JGiven/issues/413)
+* Fixed calculation of minimal thumbnail sizes [#417](https://github.com/TNG/JGiven/issues/417)
 
 # v0.17.1
 
