@@ -5,15 +5,14 @@ import static java.util.Arrays.asList;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
-import com.tngtech.jgiven.impl.ScenarioHolder;
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
+import com.google.common.base.Throwables;
+import com.tngtech.jgiven.exception.FailIfPassedException;
+import org.testng.*;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.ScenarioBase;
+import com.tngtech.jgiven.impl.ScenarioHolder;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
@@ -26,8 +25,7 @@ import com.tngtech.jgiven.report.model.ReportModel;
 public class ScenarioTestListener implements ITestListener {
 
     public static final String SCENARIO_ATTRIBUTE = "jgiven::scenario";
-
-    private volatile ConcurrentMap<String, ReportModel> reportModels;
+    public static final String REPORT_MODELS_ATTRIBUTE = "jgiven::reportModels";
 
     @Override
     public void onTestStart( ITestResult paramITestResult ) {
@@ -43,10 +41,18 @@ public class ScenarioTestListener implements ITestListener {
         }
 
         ScenarioHolder.get().setScenarioOfCurrentThread( scenario );
-        paramITestResult.setAttribute(SCENARIO_ATTRIBUTE, scenario);
+        paramITestResult.setAttribute( SCENARIO_ATTRIBUTE, scenario );
 
-        ReportModel reportModel = getReportModel( instance.getClass() );
+        ReportModel reportModel = getReportModel( paramITestResult, instance.getClass() );
         scenario.setModel( reportModel );
+
+        // TestNG does not work well when catching step exceptions, so we have to disable that feature
+        // this mainly means that steps following a failing step are not reported in JGiven
+        scenario.getExecutor().setSuppressStepExceptions(false);
+
+        // avoid rethrowing exceptions as they are already thrown by the steps
+        scenario.getExecutor().setSuppressExceptions(true);
+
         scenario.getExecutor().injectStages( instance );
 
         Method method = paramITestResult.getMethod().getConstructorOrMethod().getMethod();
@@ -56,11 +62,13 @@ public class ScenarioTestListener implements ITestListener {
         scenario.getExecutor().readScenarioState( instance );
     }
 
-    private ScenarioBase getScenario(ITestResult paramITestResult ) {
-        return (ScenarioBase) paramITestResult.getAttribute(SCENARIO_ATTRIBUTE);
+    private ScenarioBase getScenario( ITestResult paramITestResult ) {
+        return (ScenarioBase) paramITestResult.getAttribute( SCENARIO_ATTRIBUTE );
     }
 
-    private ReportModel getReportModel( Class<?> clazz ) {
+    private ReportModel getReportModel(ITestResult testResult, Class<?> clazz) {
+        ConcurrentHashMap<String, ReportModel> reportModels = getReportModels(testResult.getTestContext());
+
         ReportModel model = reportModels.get( clazz.getName() );
         if( model == null ) {
             model = new ReportModel();
@@ -89,15 +97,19 @@ public class ScenarioTestListener implements ITestListener {
     }
 
     @Override
-    public void onTestSkipped( ITestResult paramITestResult ) {}
+    public void onTestSkipped( ITestResult testResult ) {}
 
-    private void testFinished( ITestResult paramITestResult ) {
+    private void testFinished( ITestResult testResult ) {
         try {
-            ScenarioBase scenario = getScenario( paramITestResult );
+            ScenarioBase scenario = getScenario(testResult);
             scenario.finished();
+        } catch( FailIfPassedException ex ) {
+            testResult.setStatus(ITestResult.FAILURE);
+            testResult.setThrowable(ex);
+            testResult.getTestContext().getPassedTests().removeResult(testResult);
+            testResult.getTestContext().getFailedTests().addResult(testResult, testResult.getMethod());
         } catch( Throwable throwable ) {
-            paramITestResult.setThrowable( throwable );
-            paramITestResult.setStatus( ITestResult.FAILURE );
+            Throwables.propagate(throwable);
         } finally {
             ScenarioHolder.get().removeScenarioOfCurrentThread();
         }
@@ -108,18 +120,23 @@ public class ScenarioTestListener implements ITestListener {
 
     @Override
     public void onStart( ITestContext paramITestContext ) {
-        reportModels = new ConcurrentHashMap<String, ReportModel>();
+        paramITestContext.setAttribute(REPORT_MODELS_ATTRIBUTE, new ConcurrentHashMap<String, ReportModel>());
     }
 
     @Override
     public void onFinish( ITestContext paramITestContext ) {
+        ConcurrentHashMap<String, ReportModel> reportModels = getReportModels(paramITestContext);
         for( ReportModel reportModel : reportModels.values() ) {
             new CommonReportHelper().finishReport( reportModel );
         }
     }
 
+    private ConcurrentHashMap<String, ReportModel> getReportModels(ITestContext paramITestContext) {
+        return (ConcurrentHashMap<String, ReportModel>)
+                paramITestContext.getAttribute(REPORT_MODELS_ATTRIBUTE);
+    }
+
     private List<NamedArgument> getArgumentsFrom( Method method, ITestResult paramITestResult ) {
         return ParameterNameUtil.mapArgumentsWithParameterNames( method, asList( paramITestResult.getParameters() ) );
     }
-
 }

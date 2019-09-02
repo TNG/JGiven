@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
+import com.tngtech.jgiven.annotation.Format;
+import com.tngtech.jgiven.annotation.Pending;
+import com.tngtech.jgiven.format.NotFormatter;
 import org.testng.annotations.Test;
 
 import com.tngtech.jgiven.Stage;
@@ -86,6 +89,18 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
             throw new IllegalStateException( "Something failed" );
         }
 
+        @Pending
+        public TestSteps something_fails_with_pending_annotation() {
+            throw new IllegalStateException( "Something failed" );
+        }
+
+        public TestSteps something_should_$_fail(@Format(NotFormatter.class) boolean shouldFail) {
+            if (shouldFail) {
+                throw new IllegalStateException("Something failed");
+            }
+            return this;
+        }
+
         public TestSteps you_get_sugar_milk() {
             assertThat( result ).isEqualTo( "SugarMilk" );
             return this;
@@ -113,7 +128,9 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
 
         public void mixed_with( String something ) {}
 
-        public void something() {}
+        public TestSteps something() {
+            return this;
+        }
 
         public void skipped_exception_is_thrown() {
             throw new org.testng.SkipException( "should be skipped" );

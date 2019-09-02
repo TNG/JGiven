@@ -41,6 +41,8 @@ public class StepInterceptorImpl implements StepInterceptor {
 
     private int maxStepDepth = INITIAL_MAX_STEP_DEPTH;
 
+    private InvocationMode defaultInvocationMode = InvocationMode.NORMAL;
+
     /**
      * Whether methods should be intercepted or not
      */
@@ -50,6 +52,11 @@ public class StepInterceptorImpl implements StepInterceptor {
      * Whether step methods are actually executed or just skipped
      */
     private boolean methodExecutionEnabled = true;
+
+    /**
+     * Whether all exceptions should be suppressed and not be rethrown
+     */
+    private boolean suppressExceptions = true;
 
     public StepInterceptorImpl(ScenarioExecutor scenarioExecutor, ScenarioListener listener, StageTransitionHandler stageTransitionHandler) {
         this.scenarioExecutor = scenarioExecutor;
@@ -175,7 +182,7 @@ public class StepInterceptorImpl implements StepInterceptor {
             return PENDING;
         }
 
-        return NORMAL;
+        return defaultInvocationMode;
     }
 
     public void enableMethodInterception(boolean b ) {
@@ -192,7 +199,15 @@ public class StepInterceptorImpl implements StepInterceptor {
         return previousMethodExecution;
     }
 
-    private void handleMethod( Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode,
+    public void setSuppressExceptions(boolean b) {
+        suppressExceptions = b;
+    }
+
+    public void setDefaultInvocationMode(InvocationMode defaultInvocationMode) {
+        this.defaultInvocationMode = defaultInvocationMode;
+    }
+
+    private void handleMethod(Object stageInstance, Method paramMethod, Object[] arguments, InvocationMode mode,
                               boolean hasNestedSteps ) throws Throwable {
 
         List<NamedArgument> namedArguments = ParameterNameUtil.mapArgumentsWithParameterNames( paramMethod,
@@ -206,7 +221,12 @@ public class StepInterceptorImpl implements StepInterceptor {
         }
 
         listener.stepMethodFailed( t );
+
         scenarioExecutor.failed( t );
+
+        if (!suppressExceptions) {
+            throw t;
+        }
     }
 
     private void handleMethodFinished( long durationInNanos, boolean hasNestedSteps ) {

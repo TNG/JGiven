@@ -12,6 +12,8 @@ import org.testng.TestNG;
 
 import java.util.List;
 
+import static com.tngtech.jgiven.testng.ScenarioTestListener.SCENARIO_ATTRIBUTE;
+
 public class TestNgExecutor extends TestExecutor {
 
     public static String methodName;
@@ -61,7 +63,7 @@ public class TestNgExecutor extends TestExecutor {
 
         private void setTestResult( ITestResult tr ) {
             testResults.add( tr );
-            reportModel = ((ScenarioBase)tr.getAttribute ("jgiven::scenario")).getModel();
+            reportModel = ((ScenarioBase)tr.getAttribute (SCENARIO_ATTRIBUTE)).getModel();
         }
     }
 
