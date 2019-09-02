@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+import com.tngtech.jgiven.report.model.InvocationMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,9 +68,26 @@ public class ScenarioExecutor {
     protected final StageTransitionHandler stageTransitionHandler = new StageTransitionHandlerImpl();
     protected final StepInterceptorImpl methodInterceptor = new StepInterceptorImpl( this, listener, stageTransitionHandler );
 
+    /**
+     * Set if an exception was thrown during the execution of the scenario and
+     * suppressStepExceptions is true.
+     */
     private Throwable failedException;
+
     private boolean failIfPass;
+
+    /**
+     * Whether exceptions caught while executing steps should be thrown at the end
+     * of the scenario. Only relevant if suppressStepExceptions is true, because otherwise
+     * the exceptions are not caught at all.
+     */
     private boolean suppressExceptions;
+
+    /**
+     * Whether exceptions thrown while executing steps should be suppressed or not.
+     * Only relevant for normal executions of scenarios.
+     */
+    private boolean suppressStepExceptions = true;
 
     public ScenarioExecutor() {
         injector.injectValueByType( ScenarioExecutor.class, this );
@@ -437,8 +455,8 @@ public class ScenarioExecutor {
         if( hasFailed() ) {
             log.error( e.getMessage(), e );
         } else {
-            if( !suppressExceptions ) {
-                listener.scenarioFailed( e );
+            if (!failIfPass) {
+                listener.scenarioFailed(e);
             }
             methodInterceptor.disableMethodExecution();
             failedException = e;
@@ -468,9 +486,12 @@ public class ScenarioExecutor {
 
             if( annotation.failIfPass() ) {
                 failIfPass();
-            } else if( !annotation.executeSteps() ) {
-                methodInterceptor.disableMethodExecution();
-                executeLifeCycleMethods = false;
+            } else {
+                methodInterceptor.setDefaultInvocationMode(InvocationMode.PENDING);
+                if( !annotation.executeSteps() ) {
+                    methodInterceptor.disableMethodExecution();
+                    executeLifeCycleMethods = false;
+                }
             }
             suppressExceptions = true;
         } else if( method.isAnnotationPresent( NotImplementedYet.class ) ) {
@@ -478,11 +499,16 @@ public class ScenarioExecutor {
 
             if( annotation.failIfPass() ) {
                 failIfPass();
-            } else if( !annotation.executeSteps() ) {
-                methodInterceptor.disableMethodExecution();
-                executeLifeCycleMethods = false;
+            } else {
+                methodInterceptor.setDefaultInvocationMode(InvocationMode.PENDING);
+                if( !annotation.executeSteps() ) {
+                    methodInterceptor.disableMethodExecution();
+                    executeLifeCycleMethods = false;
+                }
             }
             suppressExceptions = true;
+        } else {
+            methodInterceptor.setSuppressExceptions(suppressStepExceptions);
         }
 
     }
@@ -494,6 +520,14 @@ public class ScenarioExecutor {
 
     public void failIfPass() {
         failIfPass = true;
+    }
+
+    public void setSuppressStepExceptions(boolean suppressStepExceptions) {
+        this.suppressStepExceptions = suppressStepExceptions;
+    }
+
+    public void setSuppressExceptions( boolean suppressExceptions ) {
+        this.suppressExceptions = suppressExceptions;
     }
 
     public void addSection( String sectionTitle ) {

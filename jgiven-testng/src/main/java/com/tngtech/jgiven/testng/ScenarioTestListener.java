@@ -5,11 +5,10 @@ import static java.util.Arrays.asList;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
+import com.google.common.base.Throwables;
+import com.tngtech.jgiven.exception.FailIfPassedException;
+import org.testng.*;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.impl.ScenarioBase;
@@ -46,6 +45,14 @@ public class ScenarioTestListener implements ITestListener {
 
         ReportModel reportModel = getReportModel( paramITestResult, instance.getClass() );
         scenario.setModel( reportModel );
+
+        // TestNG does not work well when catching step exceptions, so we have to disable that feature
+        // this mainly means that steps following a failing step are not reported in JGiven
+        scenario.getExecutor().setSuppressStepExceptions(false);
+
+        // avoid rethrowing exceptions as they are already thrown by the steps
+        scenario.getExecutor().setSuppressExceptions(true);
+
         scenario.getExecutor().injectStages( instance );
 
         Method method = paramITestResult.getMethod().getConstructorOrMethod().getMethod();
@@ -90,15 +97,19 @@ public class ScenarioTestListener implements ITestListener {
     }
 
     @Override
-    public void onTestSkipped( ITestResult paramITestResult ) {}
+    public void onTestSkipped( ITestResult testResult ) {}
 
-    private void testFinished( ITestResult paramITestResult ) {
+    private void testFinished( ITestResult testResult ) {
         try {
-            ScenarioBase scenario = getScenario( paramITestResult );
+            ScenarioBase scenario = getScenario(testResult);
             scenario.finished();
+        } catch( FailIfPassedException ex ) {
+            testResult.setStatus(ITestResult.FAILURE);
+            testResult.setThrowable(ex);
+            testResult.getTestContext().getPassedTests().removeResult(testResult);
+            testResult.getTestContext().getFailedTests().addResult(testResult, testResult.getMethod());
         } catch( Throwable throwable ) {
-            paramITestResult.setThrowable( throwable );
-            paramITestResult.setStatus( ITestResult.FAILURE );
+            Throwables.propagate(throwable);
         } finally {
             ScenarioHolder.get().removeScenarioOfCurrentThread();
         }
@@ -128,5 +139,4 @@ public class ScenarioTestListener implements ITestListener {
     private List<NamedArgument> getArgumentsFrom( Method method, ITestResult paramITestResult ) {
         return ParameterNameUtil.mapArgumentsWithParameterNames( method, asList( paramITestResult.getParameters() ) );
     }
-
 }

@@ -38,4 +38,38 @@ public class JUnitExecutorTest extends JGivenScenarioTest<GivenScenarioTest<?>, 
         then().the_test_fails_with_message( "assertion failed in test step" );
     }
 
+    @Test
+    public void steps_following_failing_steps_are_reported_as_skipped() {
+        given().a_failing_test_with_$_steps( 3 )
+                .and().step_$_fails( 1 );
+        when().the_test_is_executed_with_JUnit();
+        then().step_$_is_reported_as_failed( 1 )
+                .and().step_$_is_reported_as_skipped( 2 )
+                .and().step_$_is_reported_as_skipped( 3 );
+    }
+
+    @Test
+    public void after_stage_methods_of_stages_following_failing_stages_are_ignored() {
+        given().a_failing_test_with_$_steps( 2 )
+                .and().the_test_has_$_failing_stages( 2 )
+                .and().stage_$_has_a_failing_after_stage_method( 2 )
+                .and().step_$_fails( 1 );
+        when().the_test_is_executed_with_JUnit();
+        then().the_test_fails()
+                .and().step_$_is_reported_as_failed( 1 )
+                .and().step_$_is_reported_as_skipped( 2 );
+    }
+
+    @Test
+    public void all_steps_of_stages_following_failing_stages_are_ignored() {
+        given().a_failing_test_with_$_steps( 2 )
+                .and().the_test_has_$_failing_stages( 2 )
+                .and().step_$_fails( 1 );
+        when().the_test_is_executed_with_JUnit();
+        then().the_test_fails()
+                .and().step_$_is_reported_as_failed( 1 )
+                .and().step_$_is_reported_as_skipped( 2 );
+    }
+
+
 }
