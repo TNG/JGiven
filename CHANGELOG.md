@@ -1,5 +1,13 @@
 # v0.18.1
 
+## Exception handling changed for TestNG
+
+When using TestNG, exceptions are not longer caught and suppressed until the end of a scenario.
+This means that steps following a failed step are no longer shown in the scenario report.
+This change was needed to ensure that TestNG reports the correct test status in case of an exception.
+
+See [PR #422](https://github.com/TNG/JGiven/pull/422) and [Issue #312](https://github.com/TNG/JGiven/issues/312) for details.
+
 ## Fixed Issues
 
 * Fix issue with @Pending(executeSteps = true) that marked a scenario as failed instead of pending [#402](https://github.com/TNG/JGiven/issues/402)
