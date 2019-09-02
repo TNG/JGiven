@@ -3,6 +3,7 @@
 ## Fixed Issues
 
 * Fix issue with @Pending(executeSteps = true) that marked a scenario as failed instead of pending [#402](https://github.com/TNG/JGiven/issues/402)
+* Make TestNG ScenarioTestListener work with parallel="tests" option [#409](https://github.com/TNG/JGiven/issues/409)
 
 # v0.18.0
 
