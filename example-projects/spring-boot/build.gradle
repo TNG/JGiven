@@ -1,12 +1,13 @@
 
 plugins {
-    id "com.tngtech.jgiven.gradle-plugin" version "0.13.0"
-    id 'org.springframework.boot' version '1.4.2.RELEASE'
+    id "com.tngtech.jgiven.gradle-plugin" version "0.18.0"
+    id 'org.springframework.boot' version '2.1.7.RELEASE'
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
+apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -27,7 +28,9 @@ dependencies {
     testCompile group: 'com.tngtech.jgiven', name: 'jgiven-spring', version: 'latest.integration'
     testCompile group: 'org.assertj', name: 'assertj-core', version: '1.7.0'
     testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: '1.9.3'
+    testCompile group: 'org.hsqldb', name: 'hsqldb', version: '2.3.2'
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.springframework.boot:spring-boot-starter-data-jpa")
 }
 
 test.finalizedBy jgivenTestReport
