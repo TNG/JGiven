@@ -3,8 +3,9 @@ description = "Module for writing JGiven tests with JUnit"
 
 dependencies {
     compile project(':jgiven-core')
-    compile project(':jgiven-html5-report')
-    compile(group: 'junit', name: 'junit', version: junitVersion)
+    compileOnly(group: 'junit', name: 'junit', version: junitVersion)
+    testCompile project(':jgiven-html5-report')
+    testCompile(group: 'junit', name: 'junit', version: junitVersion)
     testCompile group: 'pl.pragmatists', name: 'JUnitParams', version: junitParamsVersion
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     testCompile group: 'org.powermock', name: 'powermock-core', version: '1.7.4'

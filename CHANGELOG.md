@@ -16,6 +16,13 @@
 a stage change anymore [#385](https://github.com/TNG/JGiven/pull/385)
 * The Guava dependency changed to v27.1-jre. This might lead to problems in case your project also depends on Guava
 
+## Cleaned up Module Dependencies
+
+Some direct module dependencies have been removed. This means that you might have to add additional
+dependencies to your build:
+
+* jgiven-junit has no direct junit dependency anymore and no direct dependency to jgiven-html5-report
+
 ## Removed Deprecated Features
 
 * Removed `@NotImplementedYet` annotation. Use `@Pending` instead.
