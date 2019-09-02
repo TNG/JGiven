@@ -7,6 +7,6 @@ public class FailIfPassedException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public FailIfPassedException() {
-        super( "Test succeeded, but failIfPassed set to true" );
+        super( "Test succeeded, but failIfPassed set to true. Now might be the right time to remove the @Pending annotation." );
     }
 }

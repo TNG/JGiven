@@ -1,3 +1,9 @@
+# v0.18.1
+
+## Fixed Issues
+
+* Fix issue with @Pending(executeSteps = true) that marked a scenario as failed instead of pending [#402](https://github.com/TNG/JGiven/issues/402)
+
 # v0.18.0
 
 ## New Features

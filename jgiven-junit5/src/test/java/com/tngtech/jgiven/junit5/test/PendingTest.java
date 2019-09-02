@@ -1,22 +1,14 @@
-package com.tngtech.jgiven.junit;
+package com.tngtech.jgiven.junit5.test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.junit5.SimpleScenarioTest;
+
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.Pending;
-import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
-import org.assertj.core.api.Assertions;
-import org.junit.AssumptionViolatedException;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.junit.test.GivenTestStep;
-import com.tngtech.jgiven.junit.test.ThenTestStep;
-import com.tngtech.jgiven.junit.test.WhenTestStep;
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
-import com.tngtech.jgiven.report.model.StepStatus;
+import org.junit.jupiter.api.Test;
 
 public class PendingTest extends SimpleScenarioTest<PendingTest.PendingTestSteps> {
 
@@ -79,5 +71,4 @@ public class PendingTest extends SimpleScenarioTest<PendingTest.PendingTestSteps
         }
 
     }
-
 }
