@@ -60,7 +60,7 @@ public class TestFrameworkExecutionTest extends JGivenScenarioTest<GivenScenario
             .and().the_test_is_annotated_with_Pending()
             .with().failIfPassed_set_to_true();
         when().the_test_is_executed_with( testFramework );
-        then().the_test_fails_with_message( "Test succeeded, but failIfPassed set to true" );
+        then().the_test_fails_with_message( "Test succeeded, but failIfPassed set to true. Now might be the right time to remove the @Pending annotation." );
     }
 
     @Test

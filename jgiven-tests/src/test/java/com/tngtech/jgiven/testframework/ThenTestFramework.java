@@ -19,16 +19,18 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
     @ExpectedScenarioState
     TestExecutionResult result;
 
-    public void the_test_is_ignored() {
+    public SELF the_test_is_ignored() {
         // this is actually not correct, because it depends on the JUnit executor whether
         // a test is ignored if an AssumptionException is thrown.
         // The standard JUnit executor will report the test as passed and not ignored,
         // we thus only test for not failed here
         the_test_passes();
+        return self();
     }
 
-    public void the_test_passes() {
+    public SELF the_test_passes() {
         assertThat( result.getFailureCount() ).as( "failure count" ).isEqualTo( 0 );
+        return self();
     }
 
     public SELF $_tests_fail( int nFailedTests ) {

@@ -61,6 +61,8 @@ public @interface Pending {
      * <p>
      * This makes sense if one ensures that a not implemented feature
      * always leads to failing tests in the spirit of test-driven development.
+     * The test is completely implemented if no test is failing anymore, which means
+     * that the @Pending annotation can be removed.
      * <p>
      * If this is true, the <code>executeSteps</code> attribute is implicitly <code>true</code>.
      */

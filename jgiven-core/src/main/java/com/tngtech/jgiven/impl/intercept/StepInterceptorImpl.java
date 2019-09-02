@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
+import com.tngtech.jgiven.impl.util.ThrowableUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -200,8 +201,7 @@ public class StepInterceptorImpl implements StepInterceptor {
     }
 
     private void handleThrowable( Throwable t ) throws Throwable {
-        if( t.getClass().getName().equals( "org.junit.AssumptionViolatedException" ) ||
-            t.getClass().getName().equals( "org.testng.SkipException")) {
+        if( ThrowableUtil.isAssumptionException(t) ) {
             throw t;
         }
 

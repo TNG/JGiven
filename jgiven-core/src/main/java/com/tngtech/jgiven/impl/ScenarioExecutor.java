@@ -437,7 +437,9 @@ public class ScenarioExecutor {
         if( hasFailed() ) {
             log.error( e.getMessage(), e );
         } else {
-            listener.scenarioFailed( e );
+            if( !suppressExceptions ) {
+                listener.scenarioFailed( e );
+            }
             methodInterceptor.disableMethodExecution();
             failedException = e;
         }
