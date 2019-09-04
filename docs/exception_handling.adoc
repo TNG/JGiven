@@ -1,6 +1,17 @@
 == Exception Handling
 
-When writing JGiven scenarios you should know how JGiven handles exceptions. In general, JGiven captures all exceptions that are thrown in step methods. This is done, so that the steps following the errornous step can still be executed by JGiven to show them in the report as skipped steps. After the whole scenario has been executed, JGiven will rethrow the exception that has been previously thrown, so that the overall test actually fails. This behavior is in general no problem as long as you do not really expect exceptions to happen.
+When writing JGiven scenarios you should know how JGiven handles exceptions.
+In general, JGiven captures all exceptions that are thrown in step methods.
+This is done, so that the steps following the erroneous step can still be executed by JGiven
+to show them in the report as skipped steps. After the whole scenario has been executed,
+JGiven will rethrow the exception that has been previously thrown, so that the overall test actually fails.
+This behavior is in general no problem as long as you do not really expect exceptions to happen.
+
+[NOTE]
+====
+When using TestNG as a test runner, JGiven does not catch exceptions. The reason is that rethrowing the exception
+at the end of the scenario is not working well together with the TestNG execution model.
+====
 
 === Expecting Exceptions
 
@@ -11,7 +22,7 @@ Let’s assume you want to verify that in the step method `doing_some_action` a 
 // DOES NOT WORK!
 @Test(expected = MyExpectedException.class)
 public void an_expected_exception_should_be_thrown() {
-    given().some_errornous_precondition();
+    given().some_erroneous_precondition();
     when().doing_some_action();
 }
 ----
@@ -27,7 +38,7 @@ public ExpectedException rule = ExpectedException.none();
 public void an_expected_exception_should_be_thrown() {
    // will work, but is not visible in the report
    rule.expect(MyExpectedException.class);
-   given().some_errornous_precondition();
+   given().some_erroneous_precondition();
    when().doing_some_action();
 }
 ----
@@ -42,7 +53,7 @@ The above example has still the big disadvantage that it will not visible in the
 ----
 @Test
 public void an_expected_exception_should_be_thrown() {
-   given().some_errornous_precondition();
+   given().some_erroneous_precondition();
    when().doing_some_action();
    then().an_exception_is_thrown();
 }
@@ -50,7 +61,7 @@ public void an_expected_exception_should_be_thrown() {
 
 Note, that this is scenario is still very technical and you should consider replacing the word ‘exception’ with a more domain specific term.
 
-In order to realize the above scenario you have to explictly catch the exception in the `doing_some_action` step and store it into a scenario state field.
+In order to realize the above scenario you have to explicitly catch the exception in the `doing_some_action` step and store it into a scenario state field.
 
 
 [source,java]
