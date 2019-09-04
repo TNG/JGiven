@@ -425,7 +425,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_exception_handling">Exception Handling</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>When writing JGiven scenarios you should know how JGiven handles exceptions. In general, JGiven captures all exceptions that are thrown in step methods. This is done, so that the steps following the errornous step can still be executed by JGiven to show them in the report as skipped steps. After the whole scenario has been executed, JGiven will rethrow the exception that has been previously thrown, so that the overall test actually fails. This behavior is in general no problem as long as you do not really expect exceptions to happen.</p>
+<p>When writing JGiven scenarios you should know how JGiven handles exceptions.
+In general, JGiven captures all exceptions that are thrown in step methods.
+This is done, so that the steps following the erroneous step can still be executed by JGiven
+to show them in the report as skipped steps. After the whole scenario has been executed,
+JGiven will rethrow the exception that has been previously thrown, so that the overall test actually fails.
+This behavior is in general no problem as long as you do not really expect exceptions to happen.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When using TestNG as a test runner, JGiven does not catch exceptions. The reason is that rethrowing the exception
+at the end of the scenario is not working well together with the TestNG execution model.</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
 <h3 id="_expecting_exceptions">Expecting Exceptions</h3>
@@ -437,7 +457,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight"><code class="language-java" data-lang="java">// DOES NOT WORK!
 @Test(expected = MyExpectedException.class)
 public void an_expected_exception_should_be_thrown() {
-    given().some_errornous_precondition();
+    given().some_erroneous_precondition();
     when().doing_some_action();
 }</code></pre>
 </div>
@@ -454,7 +474,7 @@ public ExpectedException rule = ExpectedException.none();
 public void an_expected_exception_should_be_thrown() {
    // will work, but is not visible in the report
    rule.expect(MyExpectedException.class);
-   given().some_errornous_precondition();
+   given().some_erroneous_precondition();
    when().doing_some_action();
 }</code></pre>
 </div>
@@ -472,7 +492,7 @@ public void an_expected_exception_should_be_thrown() {
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@Test
 public void an_expected_exception_should_be_thrown() {
-   given().some_errornous_precondition();
+   given().some_erroneous_precondition();
    when().doing_some_action();
    then().an_exception_is_thrown();
 }</code></pre>
@@ -482,7 +502,7 @@ public void an_expected_exception_should_be_thrown() {
 <p>Note, that this is scenario is still very technical and you should consider replacing the word ‘exception’ with a more domain specific term.</p>
 </div>
 <div class="paragraph">
-<p>In order to realize the above scenario you have to explictly catch the exception in the <code>doing_some_action</code> step and store it into a scenario state field.</p>
+<p>In order to realize the above scenario you have to explicitly catch the exception in the <code>doing_some_action</code> step and store it into a scenario state field.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -519,7 +539,7 @@ public SELF an_exception_is_thrown() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-05-01 13:17:00 +02:00
+Last updated 2019-09-04 11:00:27 CEST
 </div>
 </div>
 </body>
