@@ -16,6 +16,9 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     @ScenarioStage
     GivenTestComposedStep givenTestComposedStep;
 
+    @ScenarioState
+    CurrentStep currentStep;
+
     public void some_integer_value( int someIntValue ) {
         value1 = someIntValue;
     }
@@ -87,6 +90,21 @@ public class GivenTestStep extends Stage<GivenTestStep> {
 
     @As( value = "output", provider = CustomAsProvider.class )
     public GivenTestStep a_step_with_an_As_annotation_and_a_custom_provider() {
+        return self();
+    }
+
+    public GivenTestStep a_step_that_sets_the_name() {
+        this.currentStep.setName("another name");
+        return self();
+    }
+
+    public GivenTestStep a_step_that_sets_a_comment() {
+        this.currentStep.setComment("a comment");
+        return self();
+    }
+
+    public GivenTestStep a_step_that_sets_the_name_with_an_argument(String argument) {
+        this.currentStep.setName("another name " + argument);
         return self();
     }
 

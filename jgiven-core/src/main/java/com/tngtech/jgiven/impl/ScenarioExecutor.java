@@ -122,6 +122,11 @@ public class ScenarioExecutor {
         public void setName( String name ) {
             listener.stepNameUpdated( name );
         }
+
+        @Override
+        public void setComment(String comment) {
+            listener.stepCommentUpdated( comment );
+        }
     }
 
     class ScenarioAccessImpl implements CurrentScenario {

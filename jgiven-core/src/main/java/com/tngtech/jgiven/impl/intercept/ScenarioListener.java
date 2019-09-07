@@ -20,7 +20,7 @@ public interface ScenarioListener {
 
     void introWordAdded( String introWord );
 
-    void stepCommentAdded( List<NamedArgument> arguments );
+    void stepCommentUpdated(String comment );
 
     void stepMethodFailed( Throwable t );
 
