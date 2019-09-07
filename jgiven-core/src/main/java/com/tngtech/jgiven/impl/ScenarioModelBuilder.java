@@ -150,8 +150,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         introWord.setValue( value );
     }
 
-    @Override
-    public void stepCommentAdded( List<NamedArgument> arguments ) {
+    private void addStepComment( List<NamedArgument> arguments  ) {
         if( arguments == null || arguments.size() != 1 ) {
             throw new JGivenWrongUsageException( "A step comment method must have exactly one parameter." );
         }
@@ -165,7 +164,13 @@ public class ScenarioModelBuilder implements ScenarioListener {
                     + "but no step has been executed yet." );
         }
 
-        currentStep.setComment( (String) arguments.get( 0 ).getValue() );
+        stepCommentUpdated((String) arguments.get( 0 ).getValue() );
+    }
+
+
+    @Override
+    public void stepCommentUpdated(String comment ) {
+        currentStep.setComment( comment );
     }
 
     private ScenarioCaseModel getCurrentScenarioCase() {
@@ -180,7 +185,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         if( method.isAnnotationPresent( IntroWord.class ) ) {
             introWordAdded( getDescription( method ) );
         } else if( method.isAnnotationPresent( StepComment.class ) ) {
-            stepCommentAdded( arguments );
+            addStepComment( arguments );
         } else {
             addTags( method.getAnnotations() );
             addTags( method.getDeclaringClass().getAnnotations() );
@@ -615,6 +620,17 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     @Override
     public void stepNameUpdated( String newStepName ) {
+        List<Word> newWords = Lists.newArrayList();
+
+        for (Word word : currentStep.getWords()) {
+            if (word.isIntroWord()) {
+                newWords.add(word);
+            }
+        }
+
+        newWords.add(new Word(newStepName));
+
+        currentStep.setWords(newWords);
         currentStep.setName( newStepName );
     }
 

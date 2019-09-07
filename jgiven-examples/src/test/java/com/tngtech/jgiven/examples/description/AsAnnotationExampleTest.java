@@ -1,15 +1,14 @@
 package com.tngtech.jgiven.examples.description;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.As;
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.annotation.ExtendedDescription;
-import com.tngtech.jgiven.annotation.IntroWord;
-import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.jgiven.CurrentStep;
+import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.junit.SimpleScenarioTest;
 
 @RunWith( DataProviderRunner.class )
 @Description( "Demonstrates the usage of the @As annotation" )
@@ -19,7 +18,7 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
     @As( "Scenario that shows the usage of the @As annotation" )
     public void scenario_that_shows_how_to_override_the_default_text_of_a_step() {
         given().something()
-                .comma().something();
+            .comma().something();
     }
 
     @Test
@@ -27,13 +26,13 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
             "Extended descriptions can give additional information about the rational of a scenario. You can even use <b>HTML</b>." )
     public void scenarios_can_have_an_extended_description() {
         given().something()
-                .and().something();
+            .and().something();
     }
 
     @Test
     @As( "Scenario that shows the usage of @As with argument enumeration" )
     @DataProvider( {
-            "false, 0"
+        "false, 0"
     } )
     public void steps_can_use_at_annotation_to_reference_arguments_by_enumeration( boolean bool, int i ) {
         given().some_boolean_$_and_int_$_value( bool, i );
@@ -42,13 +41,16 @@ public class AsAnnotationExampleTest extends SimpleScenarioTest<AsAnnotationExam
     @Test
     @As( "Scenario that shows the usage of @As with argument names" )
     @DataProvider( {
-            "true, 1"
+        "true, 1"
     } )
     public void steps_can_use_at_annotation_to_reference_arguments_by_name( boolean bool, int i ) {
         given().argument_names_can_be_references( bool, i );
     }
 
     public static class AsAnnotationStage extends Stage<AsAnnotationStage> {
+
+        @ScenarioState
+        CurrentStep currentStep;
 
         @IntroWord
         @As( "," )
