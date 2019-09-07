@@ -45,6 +45,7 @@ files { file("../jgiven-core/src/main/translations").listFiles() }.collect {
     tasks.create(name: taskName, type: Copy) {
         from 'src/main/templates'
         into generatedSourceDir + "/com/tngtech/jgiven/junit/lang/" + pkg
+        rename("SimpleScenarioTest.template",props.simple_scenario_test_class+".java")
         rename("ScenarioTest.template",props.scenario_test_class+".java")
         expand(props)
         filteringCharset = 'UTF-8'

@@ -18,7 +18,7 @@ sourceSets {
     }
 }
 
-def buildNumber = getCheckedOutGitCommitHash()
+def buildNumber = getGitHash()
 
 println 'BUILD SHA1: ' + buildNumber
 
@@ -42,6 +42,7 @@ files { file("src/main/translations").listFiles() }.collect {
         from 'src/main/templates'
         into generatedSourceDir + "/com/tngtech/jgiven/lang/" + pkg
         rename("Stage.template",props.stage_class+".java")
+        rename("SimpleScenarioTestBase.template",props.simple_scenario_test_base_class+".java")
         rename("ScenarioTestBase.template",props.scenario_test_base_class+".java")
         expand(props)
         filteringCharset = 'UTF-8'
@@ -50,22 +51,14 @@ files { file("src/main/translations").listFiles() }.collect {
 }
 
 /**
- * Copied from https://gist.github.com/JonasGroeger/7620911
- * Author: Jonas Groeger
+ * Copied from https://stackoverflow.com/questions/28498688/gradle-script-to-autoversion-and-include-the-commit-hash-in-android
+ * Author: Paul
  */
-def getCheckedOutGitCommitHash() {
-    def gitFolder = "${rootProject.projectDir}/.git/"
-    def takeFromHash = 12
-    /*
-     * '.git/HEAD' contains either
-     *      in case of detached head: the currently checked out commit hash
-     *      otherwise: a reference to a file containing the current commit hash
-     */
-    def head = new File(gitFolder + "HEAD").text.split(":") // .git/HEAD
-    def isCommit = head.length == 1 // e5a7c79edabbf7dd39888442df081b1c9d8e88fd
-
-    if(isCommit) return head[0].trim().take(takeFromHash) // e5a7c79edabb
-
-    def refHead = new File(gitFolder + head[1].trim()) // .git/refs/heads/master
-    refHead.text.trim().take takeFromHash
+def getGitHash() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
 }
