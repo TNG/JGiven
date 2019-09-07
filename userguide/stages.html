@@ -470,15 +470,21 @@ public WhenCalculator $_percent_are_added( int percent ) {
 <p>The step will appear as <code>10 % are added</code> in the report, when invoked with <code>10</code>.</p>
 </div>
 <div class="paragraph">
-<p>If you need full control over the step text you can inject the <code>CurrentStep</code> interface into the stage by using the <code>@ScenarioState</code> annotation. You can then use the <code>setName</code> method to change the steps text.</p>
+<p>If you need full control over the step text you can inject the <code>CurrentStep</code> interface into the stage by using the <code>@ScenarioState</code> annotation.
+You can then use the <code>setName</code> method to change the steps text.
+Note, however, that this does not work well when used within parametrized scenarios, because JGiven will not be able anymore
+to generated data tables. In general, the preferred way to change the step name should be the <code>@As</code> annotation.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@ScenarioState
 CurrentStep currentStep;
 
-public WhenCalculator $_percent_are_added( int percent ) {
-    currentStep.setName( percent + " percent are added" );
+@ScenarioState
+String internalData;
+
+public MyStage some_step() {
+    currentStep.setName( "some step " + internalData );
     return self();
 }</code></pre>
 </div>
@@ -839,7 +845,7 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2019-09-02 14:19:17 CEST
+Last updated 2019-09-07 11:29:04 CEST
 </div>
 </div>
 </body>
