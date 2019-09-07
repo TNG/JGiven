@@ -29,15 +29,21 @@ include::{sourcedir}/userguide/WhenCalculator.java[tags=method,indent=0]
 ----
 The step will appear as `10 % are added` in the report, when invoked with `10`.
 
-If you need full control over the step text you can inject the `CurrentStep` interface into the stage by using the `@ScenarioState` annotation. You can then use the `setName` method to change the steps text.
+If you need full control over the step text you can inject the `CurrentStep` interface into the stage by using the `@ScenarioState` annotation.
+You can then use the `setName` method to change the steps text.
+Note, however, that this does not work well when used within parametrized scenarios, because JGiven will not be able anymore
+to generated data tables. In general, the preferred way to change the step name should be the `@As` annotation.
 
 [source,java]
 ----
 @ScenarioState
 CurrentStep currentStep;
 
-public WhenCalculator $_percent_are_added( int percent ) {
-    currentStep.setName( percent + " percent are added" );
+@ScenarioState
+String internalData;
+
+public MyStage some_step() {
+    currentStep.setName( "some step " + internalData );
     return self();
 }
 ----
