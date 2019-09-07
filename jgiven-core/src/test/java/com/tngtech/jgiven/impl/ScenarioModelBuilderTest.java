@@ -329,6 +329,38 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
     }
 
     @Test
+    public void setName_is_working_correctly_on_CurrentStep() throws Throwable {
+        GivenTestStep stage = getScenario().addStage(GivenTestStep.class);
+        startScenario( "Test Scenario" );
+        stage.given().a_step_that_sets_the_name();
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getName() ).isEqualTo( "another name" );
+        assertThat( step.getCompleteSentence() ).isEqualTo( "given another name" );
+    }
+
+    @Test
+    public void setName_is_working_correctly_on_CurrentStep_with_steps_with_arguments() throws Throwable {
+        GivenTestStep stage = getScenario().addStage(GivenTestStep.class);
+        startScenario( "Test Scenario" );
+        stage.given().a_step_that_sets_the_name_with_an_argument("argument");
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getName() ).isEqualTo( "another name argument" );
+        assertThat( step.getCompleteSentence() ).isEqualTo( "given another name argument" );
+    }
+
+    @Test
+    public void setComment_is_working_correctly_on_CurrentStep() throws Throwable {
+        GivenTestStep stage = getScenario().addStage(GivenTestStep.class);
+        startScenario( "Test Scenario" );
+        stage.given().a_step_that_sets_a_comment();
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getComment() ).isEqualTo( "a comment" );
+    }
+
+    @Test
     public void a_custom_AsProvider_can_be_used() throws Throwable {
         startScenario( "Scenario with a @As tag" );
         given().a_step_with_an_As_annotation_and_a_custom_provider();

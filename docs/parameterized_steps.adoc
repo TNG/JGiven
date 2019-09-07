@@ -85,6 +85,7 @@ CurrentStep currentStep;
 
 public SELF $_eggs_and_$_rice_bowls( int eggs, int riceBowls ) {
     currentStep.setExtendedDescription( "The " + riceBowls + " rice bowls were very delicious" );
+}
 ----
 
 === Parameter Formatting
