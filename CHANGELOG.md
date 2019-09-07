@@ -1,3 +1,9 @@
+# v0.18.2
+
+## Fixed Issues
+
+* Fixed the `setName` method introduced in v0.18.0 to correctly update the words in the report [#386](https://github.com/TNG/JGiven/issues/386)
+
 # v0.18.1
 
 ## Exception handling changed for TestNG
