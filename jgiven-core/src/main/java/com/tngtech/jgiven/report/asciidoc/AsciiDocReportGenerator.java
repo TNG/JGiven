@@ -3,7 +3,6 @@ package com.tngtech.jgiven.report.asciidoc;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
 
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
@@ -15,15 +14,11 @@ import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.AbstractReportModelHandler;
 import com.tngtech.jgiven.report.AbstractReportModelHandler.ScenarioDataTable;
 import com.tngtech.jgiven.report.ReportModelHandler;
-import com.tngtech.jgiven.report.config.ConfigOption;
 import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
 
 public class AsciiDocReportGenerator extends AbstractReportGenerator {
-    private static final Logger log = LoggerFactory.getLogger( AsciiDocReportGenerator.class );
 
     private List<String> allFiles = Lists.newArrayList();
 
@@ -38,7 +33,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         generateIndexFile();
     }
 
-    public void writeReportModelToFile( ReportModel model, File file ) {
+    private void writeReportModelToFile( ReportModel model, File file ) {
         String targetFileName = Files.getNameWithoutExtension( file.getName() ) + ".asciidoc";
 
         allFiles.add( targetFileName );
@@ -55,7 +50,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         }
     }
 
-    public void generateIndexFile() {
+    private void generateIndexFile() {
         PrintWriter printWriter = PrintWriterUtil.getPrintWriter( new File( config.getTargetDir(), "index.asciidoc" ) );
         try {
             printWriter.println( "= JGiven Documentation =\n" );
@@ -82,9 +77,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     class AsciiDocReportModelVisitor implements ReportModelHandler {
 
         private final PrintWriter writer;
-        private boolean literalBlock;
 
-        public AsciiDocReportModelVisitor( PrintWriter printWriter ) {
+        AsciiDocReportModelVisitor( PrintWriter printWriter ) {
             this.writer = printWriter;
         }
 
@@ -143,60 +137,50 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             writer.println();
         }
 
-        @Override
-        public void stepStart() {
-            literalBlock = false;
+        @Override public void stepStart() {
         }
 
         @Override
         public void stepEnd() {
-            if( !literalBlock ) {
-                writer.println( "+" );
-            }
+            writer.println( "+" );
         }
 
         @Override
         public void introWord( String value ) {
             writer.print( value + " " );
-            literalBlock = false;
         }
 
         @Override
         public void stepArgumentPlaceHolder( String placeHolderValue ) {
             writer.print( "*<" + placeHolderValue + ">* " );
-            literalBlock = false;
         }
 
         @Override
         public void stepCaseArgument( String caseArgumentValue ) {
             writer.print( "*" + escapeArgument( caseArgumentValue ) + "* " );
-            literalBlock = false;
         }
 
         @Override
         public void stepArgument( String argumentValue, boolean differs ) {
             if( argumentValue.contains( "\n" ) ) {
                 writer.println( "\n" );
-                writer.println( "[literal]" );
+                writer.println( "...." );
                 writer.println( argumentValue );
+                writer.println( "...." );
                 writer.println();
-                literalBlock = true;
             } else {
                 writer.print( escapeArgument( argumentValue ) + " " );
-                literalBlock = false;
             }
         }
 
         @Override
         public void stepDataTableArgument( DataTable dataTable ) {
             writer.print( "NOT SUPPORTED IN ASCIIDOC YET" );
-            literalBlock = false;
         }
 
         @Override
         public void stepWord( String value, boolean differs ) {
             writer.print( value + " " );
-            literalBlock = false;
         }
 
         private String escapeTableValue( String value ) {
