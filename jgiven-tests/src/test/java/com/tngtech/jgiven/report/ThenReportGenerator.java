@@ -22,7 +22,7 @@ public class ThenReportGenerator<SELF extends ThenReportGenerator<?>> extends St
 
     @ExpectedScenarioState
     protected List<ReportModel> reportModels;
-    private File currentFile;
+    protected File currentFile;
 
     public SELF a_file_with_name_$_exists(@Quoted String name) {
         a_file_$_exists_in_folder_$(name,"");
