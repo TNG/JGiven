@@ -67,7 +67,7 @@ public class ReportGenerator {
     public static AbstractReportGenerator generateHtml5Report() {
         AbstractReportGenerator report;
         try {
-            Class<?> aClass = new ReportGenerator().getClass().getClassLoader()
+            Class<?> aClass = ReportGenerator.class.getClassLoader()
                     .loadClass( "com.tngtech.jgiven.report.html5.Html5ReportGenerator" );
             report = (AbstractReportGenerator) aClass.newInstance();
         } catch( ClassNotFoundException e ) {
@@ -82,5 +82,4 @@ public class ReportGenerator {
     public static void main( String... args ) throws Exception {
         new ReportGenerator().generate( args );
     }
-
 }

@@ -1,11 +1,15 @@
+plugins {
+    id 'java-library'
+}
+
 description = "JGiven core module"
 
 dependencies {
-    compile "com.google.guava:guava:$guavaVersion"
-    compile "com.google.code.gson:gson:$gsonVersion"
-    compile "com.thoughtworks.paranamer:paranamer:$paranamerVersion"
-    compile "net.bytebuddy:byte-buddy:$bytebuddyVersion"
-    compile "org.fusesource.jansi:jansi:$jansiVersion"
+    api "com.google.guava:guava:$guavaVersion"
+    api "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.thoughtworks.paranamer:paranamer:$paranamerVersion"
+    implementation "net.bytebuddy:byte-buddy:$bytebuddyVersion"
+    implementation "org.fusesource.jansi:jansi:$jansiVersion"
 }
 
 def generatedSourceDir = "generatedSrc/java"
