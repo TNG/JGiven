@@ -103,14 +103,14 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     sourceCompatibility = targetCompatibility = 1.8
 
     dependencies {
-        compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
+        implementation "org.slf4j:slf4j-api:$slf4jVersion"
 
-        testCompile group: 'org.slf4j', name: 'jcl-over-slf4j', version: slf4jVersion
-        testCompile group: 'org.slf4j', name: 'slf4j-simple', version: slf4jVersion
-        testCompile group: 'junit', name: 'junit', version: junitVersion
-        testCompile group: 'org.assertj', name: 'assertj-core', version: assertjVersion
-        testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: junitDataproviderVersion
-        testCompile group: 'net.java.quickcheck', name: 'quickcheck', version: quickcheckVersion
+        testImplementation "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+        testImplementation "org.slf4j:slf4j-simple:$slf4jVersion"
+        testImplementation "junit:junit:$junitVersion"
+        testImplementation "org.assertj:assertj-core:$assertjVersion"
+        testImplementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
+        testImplementation "net.java.quickcheck:quickcheck:$quickcheckVersion"
     }
 
     publishing {
@@ -161,7 +161,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     }
 
     task sourcesJar(type: Jar) {
-        classifier = 'sources'
+        archiveClassifier = 'sources'
         from sourceSets.main.allSource
     }
 
@@ -174,7 +174,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     }
 
     task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
+        archiveClassifier = 'javadoc'
         from javadoc.destinationDir
     }
 
