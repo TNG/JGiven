@@ -27,7 +27,6 @@ import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.impl.util.Version;
 import com.tngtech.jgiven.report.AbstractReportConfig;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
-import com.tngtech.jgiven.report.ReportGenerator;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;

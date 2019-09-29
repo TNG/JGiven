@@ -1,4 +1,8 @@
+plugins {
+    id 'java-library'
+}
+
 dependencies {
-    compile project(':jgiven-core')
-    compile project(':jgiven-html-app')
+    implementation project(':jgiven-core')
+    implementation project(':jgiven-html-app')
 }

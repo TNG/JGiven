@@ -23,7 +23,6 @@ public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedSt
         when().I_submit_the_form();
 
         then().the_password_matches();
-
     }
 
     @Test
@@ -35,7 +34,6 @@ public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedSt
         when().I_submit_the_form();
 
         then().the_password_matches();
-
     }
 
     static class NestedStage extends Stage<NestedStage> {
@@ -110,7 +108,5 @@ public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedSt
             Assert.assertEquals( password, repeatedPassword );
             return self();
         }
-
     }
-
 }
