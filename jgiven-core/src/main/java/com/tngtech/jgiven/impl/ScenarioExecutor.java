@@ -124,7 +124,7 @@ public class ScenarioExecutor {
         }
 
         @Override
-        public void setComment(String comment) {
+        public void setComment( String comment ) {
             listener.stepCommentUpdated( comment );
         }
     }
@@ -460,8 +460,8 @@ public class ScenarioExecutor {
         if( hasFailed() ) {
             log.error( e.getMessage(), e );
         } else {
-            if (!failIfPass) {
-                listener.scenarioFailed(e);
+            if( !failIfPass ) {
+                listener.scenarioFailed( e );
             }
             methodInterceptor.disableMethodExecution();
             failedException = e;
@@ -486,29 +486,38 @@ public class ScenarioExecutor {
     public void startScenario( Class<?> testClass, Method method, List<NamedArgument> arguments ) {
         listener.scenarioStarted( testClass, method, arguments );
 
-        Pending annotation = null;
-
-        if( method.isAnnotationPresent( Pending.class ) ) {
-            annotation = method.getAnnotation( Pending.class );
-        } else if( method.getDeclaringClass().isAnnotationPresent( Pending.class ) ) {
-            annotation = method.getDeclaringClass().getAnnotation( Pending.class );
-        }
-
-        if( annotation != null ) {
-            if( annotation.failIfPass() ) {
-                failIfPass();
-            } else {
-                methodInterceptor.setDefaultInvocationMode(InvocationMode.PENDING);
-                if( !annotation.executeSteps() ) {
-                    methodInterceptor.disableMethodExecution();
-                    executeLifeCycleMethods = false;
-                }
-            }
+        if( "true".equals( System.getProperty( "jgiven.report.dry-run" ) ) ) {
+            methodInterceptor.setDefaultInvocationMode( InvocationMode.PENDING );
+            methodInterceptor.disableMethodExecution();
+            executeLifeCycleMethods = false;
             suppressExceptions = true;
         } else {
-            methodInterceptor.setSuppressExceptions(suppressStepExceptions);
+            Pending annotation = extractPendingAnnotation( method );
+            if( annotation == null ) {
+                methodInterceptor.setSuppressExceptions( suppressStepExceptions );
+            } else {
+                if( annotation.failIfPass() ) {
+                    failIfPass();
+                } else {
+                    methodInterceptor.setDefaultInvocationMode( InvocationMode.PENDING );
+                    if( !annotation.executeSteps() ) {
+                        methodInterceptor.disableMethodExecution();
+                        executeLifeCycleMethods = false;
+                    }
+                }
+                suppressExceptions = true;
+            }
         }
+    }
 
+    private Pending extractPendingAnnotation( Method method ) {
+        if( method.isAnnotationPresent( Pending.class ) ) {
+            return method.getAnnotation( Pending.class );
+        }
+        if( method.getDeclaringClass().isAnnotationPresent( Pending.class ) ) {
+            return method.getDeclaringClass().getAnnotation( Pending.class );
+        }
+        return null;
     }
 
     public void setListener( ScenarioListener listener ) {
@@ -520,7 +529,7 @@ public class ScenarioExecutor {
         failIfPass = true;
     }
 
-    public void setSuppressStepExceptions(boolean suppressStepExceptions) {
+    public void setSuppressStepExceptions( boolean suppressStepExceptions ) {
         this.suppressStepExceptions = suppressStepExceptions;
     }
 

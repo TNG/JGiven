@@ -1,17 +1,22 @@
 package com.tngtech.jgiven.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.contrib.java.lang.system.RestoreSystemProperties;
+import org.junit.rules.ExpectedException;
+
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScenarioExecutorTest {
     @Rule
     public final ExpectedException expectedExceptionRule = ExpectedException.none();
+
+    @Rule
+    public final RestoreSystemProperties restoreSystemProperties = new RestoreSystemProperties();
 
     @Test
     public void methods_annotated_with_BeforeStage_are_executed_before_the_first_step_is_executed() {
@@ -32,12 +37,37 @@ public class ScenarioExecutorTest {
     }
 
     @Test
+    public void scenario_with_dry_run_enabled_does_not_execute_steps() throws Exception {
+        System.setProperty( "jgiven.report.dry-run", "true" );
+        ScenarioExecutor executor = new ScenarioExecutor();
+        ExceptionTestStep steps = executor.addStage( ExceptionTestStep.class );
+        executor.startScenario( ExceptionTestStep.class, ExceptionTestStep.class.getMethod( "something_throws_exception" ),
+                Collections.emptyList() );
+        steps.something_throws_exception();
+
+        assertThat( executor.hasFailed() ).isFalse();
+    }
+
+    @Test
+    public void scenario_with_dry_run_disable_fails() throws Exception {
+        System.setProperty( "jgiven.report.dry-run", "false" );
+        ScenarioExecutor executor = new ScenarioExecutor();
+        ExceptionTestStep steps = executor.addStage( ExceptionTestStep.class );
+        executor.startScenario( ExceptionTestStep.class, ExceptionTestStep.class.getMethod( "something_throws_exception" ),
+                Collections.emptyList() );
+        steps.something_throws_exception();
+
+        assertThat( executor.hasFailed() ).isTrue();
+    }
+
+    @Test
     public void methods_annotated_with_Pending_are_not_really_executed() {
         ScenarioExecutor executor = new ScenarioExecutor();
         PendingTestStep steps = executor.addStage( PendingTestStep.class );
         executor.startScenario( "Test" );
         steps.something_pending();
-        assertThat( true ).as( "No exception was thrown" ).isTrue();
+
+        assertThat( executor.hasFailed() ).isFalse();
     }
 
     @Test
@@ -54,7 +84,8 @@ public class ScenarioExecutorTest {
         PendingTestStepClass steps = executor.addStage( PendingTestStepClass.class );
         executor.startScenario( "Test" );
         steps.something_pending();
-        assertThat( true ).as( "No exception was thrown" ).isTrue();
+
+        assertThat( executor.hasFailed() ).isFalse();
     }
 
     @Test
@@ -109,10 +140,10 @@ public class ScenarioExecutorTest {
         executor.startScenario( "Test" );
 
         doNotIntercept.an_unintercepted_step();
-        assertThat(withAfterStage.afterStageExecuted).as("@AfterStage was executed").isFalse();
+        assertThat( withAfterStage.afterStageExecuted ).as( "@AfterStage was executed" ).isFalse();
 
         doNotIntercept.an_intercepted_step();
-        assertThat(withAfterStage.afterStageExecuted).as("@AfterStage was executed").isTrue();
+        assertThat( withAfterStage.afterStageExecuted ).as( "@AfterStage was executed" ).isTrue();
     }
 
     static class TestClass {
@@ -125,7 +156,8 @@ public class ScenarioExecutorTest {
         TestSubStep subStep;
     }
 
-    static class TestSubStep {}
+    static class TestSubStep {
+    }
 
     static class RecursiveTestClass {
         @ScenarioStage
@@ -166,9 +198,11 @@ public class ScenarioExecutorTest {
 
     static class BeforeStageWithParameters {
         @BeforeStage
-        protected void setup( int someParam ) {}
+        protected void setup( int someParam ) {
+        }
 
-        public void something() {}
+        public void something() {
+        }
     }
 
     static class NextSteps {
@@ -177,6 +211,13 @@ public class ScenarioExecutorTest {
 
         public void after_stage_was_executed() {
             assertThat( afterStageExecuted ).isTrue();
+        }
+    }
+
+    static class ExceptionTestStep {
+
+        public ExceptionTestStep something_throws_exception() {
+            throw new UnsupportedOperationException();
         }
     }
 
@@ -216,5 +257,4 @@ public class ScenarioExecutorTest {
             return 5;
         }
     }
-
 }
