@@ -3,18 +3,18 @@ description = "Module for using Spring dependency injection together with JGiven
 dependencies {
     compile project(':jgiven-spring')
     compile project(':jgiven-junit5')
-    compileOnly(group: 'org.springframework', name: 'spring-context', version: spring5Version)
-    compileOnly(group: 'org.springframework', name: 'spring-test', version: spring5Version)
-    compileOnly(group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junit5Version)
+    compileOnly "org.springframework:spring-context:$springVersion"
+    compileOnly "org.springframework:spring-test:$springVersion"
+    compileOnly "org.junit.jupiter:junit-jupiter-api:$junit5Version"
     testCompile project(':jgiven-html5-report')
-    testCompile(group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junit5Version)
-    testCompile(group: 'org.junit.platform', name: 'junit-platform-runner', version: junit5PlatformRunnerVersion)
-    testCompile(group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: junit5Version)
-    testCompile(group: 'org.springframework', name: 'spring-tx', version: spring5Version)
-    testCompile(group: 'org.springframework', name: 'spring-context', version: spring5Version)
-    testCompile(group: 'org.springframework', name: 'spring-test', version: spring5Version)
-    testCompile(group: 'org.springframework', name: 'spring-jdbc', version: spring5Version)
-    testCompile(group: 'org.hsqldb', name: 'hsqldb', version: '2.3.2')
-    testCompile(group: 'org.aspectj', name: 'aspectjrt', version: '1.6.9')
-    testCompile(group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.6')
+    testCompile "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
+    testCompile "org.junit.platform:junit-platform-runner:$junit5PlatformRunnerVersion"
+    testCompile "org.junit.jupiter:junit-jupiter-params:$junit5Version"
+    testCompile "org.springframework:spring-tx:$springVersion"
+    testCompile "org.springframework:spring-context:$springVersion"
+    testCompile "org.springframework:spring-test:$springVersion"
+    testCompile "org.springframework:spring-jdbc:$springVersion"
+    testCompile "org.hsqldb:hsqldb:$hsqldbVersion"
+    testCompile "org.aspectj:aspectjrt:1.9.4"
+    testCompile "org.aspectj:aspectjweaver:1.9.4"
 }

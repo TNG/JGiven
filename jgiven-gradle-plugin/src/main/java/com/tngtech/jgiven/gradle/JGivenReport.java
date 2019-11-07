@@ -39,8 +39,7 @@ public interface JGivenReport extends DirectoryReport {
     void setExcludeEmptyScenarios( boolean excludeEmptyScenarios );
 
     @Input
-    @Optional
-    boolean thumbnailsAreShown();
+    boolean isThumbnailsAreShown();
 
     void setThumbnailsAreShown( boolean showThumbnails );
 }

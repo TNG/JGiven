@@ -11,13 +11,10 @@ import com.tngtech.jgiven.report.text.PlainTextReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 import org.gradle.api.Task;
 import org.gradle.api.reporting.internal.TaskGeneratedSingleDirectoryReport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
 public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirectoryReport implements JGivenReport {
-    private static final Logger log = LoggerFactory.getLogger( AbstractJGivenReportImpl.class );
 
     private File customCssFile;
     private File customJsFile;
@@ -45,7 +42,7 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
             case HTML5:
             default:
                 Html5ReportConfig customConf = new Html5ReportConfig();
-                customConf.setShowThumbnails( thumbnailsAreShown() );
+                customConf.setShowThumbnails( isThumbnailsAreShown() );
                 if (getCustomCssFile() != null) {
                     customConf.setCustomCss( getCustomCssFile() );
                 }
@@ -99,7 +96,7 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
         this.excludeEmptyScenarios = excludeEmptyScenarios;
     }
 
-    @Override public boolean thumbnailsAreShown() {
+    @Override public boolean isThumbnailsAreShown() {
         return thumbnailsAreShown;
     }
 

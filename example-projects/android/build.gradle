@@ -10,10 +10,7 @@ buildscript {
 apply plugin: 'com.android.application'
 
 repositories {
-    mavenCentral()
-    maven {
-        url "http://oss.sonatype.org/content/repositories/staging/"
-    }
+    jcenter()
 }
 
  android {
