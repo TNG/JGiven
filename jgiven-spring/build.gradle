@@ -2,13 +2,13 @@ description = "Module for using Spring dependency injection together with JGiven
 
 dependencies {
     compile project(':jgiven-core')
-    compileOnly(group: 'org.springframework', name: 'spring-context', version: springVersion)
-    compileOnly(group: 'org.springframework', name: 'spring-test', version: springVersion)
-    testCompile(group: 'org.springframework', name: 'spring-tx', version: springVersion)
-    testCompile(group: 'org.springframework', name: 'spring-context', version: springVersion)
-    testCompile(group: 'org.springframework', name: 'spring-test', version: springVersion)
-    testCompile(group: 'org.springframework', name: 'spring-jdbc', version: springVersion)
-    testCompile(group: 'org.hsqldb', name: 'hsqldb', version: '2.3.2')
-    testCompile(group: 'org.aspectj', name: 'aspectjrt', version: '1.6.9')
-    testCompile(group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.6')
+    compileOnly "org.springframework:spring-context:$springVersion"
+    compileOnly "org.springframework:spring-test:$springVersion"
+    testCompile "org.springframework:spring-tx:$springVersion"
+    testCompile "org.springframework:spring-context:$springVersion"
+    testCompile "org.springframework:spring-test:$springVersion"
+    testCompile "org.springframework:spring-jdbc:$springVersion"
+    testCompile "org.hsqldb:hsqldb:$hsqldbVersion"
+    testCompile "org.aspectj:aspectjrt:1.9.4"
+    testCompile "org.aspectj:aspectjweaver:1.9.4"
 }

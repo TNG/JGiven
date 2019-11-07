@@ -1,9 +1,7 @@
 plugins {
     id "java-gradle-plugin"
-    id "com.gradle.plugin-publish" version "0.10.0"
+    id "com.gradle.plugin-publish" version "0.10.1"
 }
-
-sourceCompatibility = targetCompatibility = 1.8
 
 dependencies {
     compile project(':jgiven-core')

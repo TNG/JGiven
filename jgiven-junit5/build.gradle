@@ -1,14 +1,5 @@
 description = "Module for writing JGiven tests with JUnit 5"
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
 compileJava {
    options.compilerArgs += '-parameters'
    options.encoding = 'UTF-8'

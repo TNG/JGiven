@@ -1,3 +1,30 @@
+pluginManagement {
+    plugins {
+        id 'com.tngtech.jgiven.gradle-plugin' version '0.18.2'
+
+    }
+
+    repositories {
+        gradlePluginPortal()
+        jcenter()
+        maven {
+            name "JCenter Gradle Plugins"
+            url "https://dl.bintray.com/gradle/gradle-plugins"
+        }
+    }
+}
+
+plugins {
+    id 'com.gradle.enterprise' version '3.0'
+}
+
+gradleEnterprise {
+    buildScan {
+        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+        termsOfServiceAgree = 'yes'
+    }
+}
+
 rootProject.name = 'jgiven'
 
 include ':jgiven-core',

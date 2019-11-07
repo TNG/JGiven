@@ -1,31 +1,10 @@
-
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-           url "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-        maven {
-           url "https://oss.sonatype.org/content/repositories/staging/"
-        }
-    }
-    dependencies {
-        classpath 'com.tngtech.jgiven:jgiven-gradle-plugin:'+version
-    }
+plugins {
+    id 'com.tngtech.jgiven.gradle-plugin'
 }
-
-
-apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
-
-
-wrapper {
-    gradleVersion = '5.6.4'
-   // distributionType = Wrapper.DistributionType.ALL
-}
 
 compileJava {
     sourceCompatibility = 1.8
@@ -41,13 +20,7 @@ ext {
 
 repositories {
     mavenLocal()
-    mavenCentral()
-    maven {
-         url "https://oss.sonatype.org/content/repositories/snapshots/"
-    }
-    maven {
-         url "https://oss.sonatype.org/content/repositories/staging/"
-    }
+    jcenter()
  }
 
 dependencies {
@@ -60,11 +33,4 @@ test {
     useJUnitPlatform()
 }
 
-test.finalizedBy(jgivenTestReport {
-    reports {
-        html {
-            enabled = true
-            title = 'JUnit 5 Report'
-        }
-    }
-})
+test.finalizedBy(jgivenTestReport)

@@ -1,10 +1,10 @@
 description = 'JGiven Maven Mojo'
 
 dependencies {
-    compile group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-tools-api', version: '3.5'
-    compile group: 'org.apache.maven.plugin-tools', name: 'maven-plugin-annotations', version: '3.5'
     compile project(':jgiven-core')
     compile project(':jgiven-html5-report')
+    compile "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.5"
+    compile "org.apache.maven.plugin-tools:maven-plugin-annotations:3.5"
 }
 
 task copyClasses(type: Copy, dependsOn: compileJava) {

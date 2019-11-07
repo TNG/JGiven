@@ -5,11 +5,6 @@ plugins {
 apply plugin: 'groovy'
 
 description = "Module for writing JGiven tests with Spock"
-sourceCompatibility = 1.8
-
-repositories {
-    jcenter()
-}
 
 dependencies {
     api project(':jgiven-junit')

@@ -1,6 +1,6 @@
 
 plugins {
-    id "com.tngtech.jgiven.gradle-plugin" version "0.18.0"
+    id "com.tngtech.jgiven.gradle-plugin" version "0.18.2"
     id 'org.springframework.boot' version '2.1.7.RELEASE'
 }
 
@@ -15,22 +15,18 @@ targetCompatibility = 1.8
 version = '1.0'
 
 repositories {
-    mavenCentral()
     mavenLocal()
-    maven {
-        url "https://oss.sonatype.org/content/groups/public/"
-    }
+    jcenter()
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-    testCompile group: 'com.tngtech.jgiven', name: 'jgiven-junit', version: 'latest.integration'
-    testCompile group: 'com.tngtech.jgiven', name: 'jgiven-spring', version: 'latest.integration'
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '1.7.0'
-    testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: '1.9.3'
-    testCompile group: 'org.hsqldb', name: 'hsqldb', version: '2.3.2'
-    testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile "org.springframework.boot:spring-boot-starter-web"
+    testCompile "com.tngtech.jgiven:jgiven-junit:latest.integration"
+    testCompile "com.tngtech.jgiven:jgiven-spring:latest.integration"
+    testCompile "org.assertj:assertj-core:$assertjVersion"
+    testCompile "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
+    testCompile "org.springframework.boot:spring-boot-starter-test"
+    testCompile "org.springframework.boot:spring-boot-starter-data-jpa"
 }
 
 test.finalizedBy jgivenTestReport
