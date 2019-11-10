@@ -9,6 +9,7 @@
 * Upgraded Gradle Plugin to support Gradle 5 [#381](https://github.com/TNG/JGiven/pull/381) (thanks to mustaine)
 * `@Pending` can now be added to the test class to make all scenarios of that class pending [#403](https://github.com/TNG/JGiven/issues/403)
 * Added new option 'jgiven.report.dry-run' to generate a report without really executing the tests [#435](https://github.com/TNG/JGiven/issues/435) (thanks to mustaine)
+* Added Portuguese scenario and stage classes [#423](https://github.com/TNG/JGiven/issues/423) (thanks to gandadil)
 
 ### Spring 5 with JUnit 5
 
