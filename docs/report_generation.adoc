@@ -18,7 +18,10 @@ By default JGiven will generate JSON reports into the `jgiven-reports/json` dire
 jgiven.report.enabled=false
 ----
 
-Note that in order to generate HTML reports, JSON reports are required.
+[NOTE]
+====
+In order to generate HTML reports, JSON reports are required.
+====
 
 ==== Change report directory
 
@@ -32,7 +35,26 @@ jgiven.report.dir=<targetDir>
 
 If JGiven is executed by the Maven surefire plugin, this can be done by the systemPropertyVariables configuration (see: http://maven.apache.org/surefire/maven-surefire-plugin/examples/system-properties.html).
 
-Note: In case HTML Reports are being generated, the source directory for the JSON Reports needs to be set accordingly (see "HTML Report" for more).
+[NOTE]
+====
+In case HTML Reports are being generated, the source directory for the JSON Reports needs to be set accordingly (see "HTML Report" for more).
+====
+
+=== Dry Run
+There is a dry run option, which just generates a report without actually
+executing the code. This might be helpful to generate a test report quickly
+without having to wait for the tests to be executed.
+
+[source,java]
+----
+jgiven.report.dry-run=true
+----
+
+[NOTE]
+====
+As the tests are not really executed and thus cannot fail,
+all tests will be reported as successful.
+====
 
 === HTML Report
 
