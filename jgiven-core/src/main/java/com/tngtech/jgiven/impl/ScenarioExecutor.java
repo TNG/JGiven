@@ -486,7 +486,7 @@ public class ScenarioExecutor {
     public void startScenario( Class<?> testClass, Method method, List<NamedArgument> arguments ) {
         listener.scenarioStarted( testClass, method, arguments );
 
-        if( "true".equals( System.getProperty( "jgiven.report.dry-run" ) ) ) {
+        if( Config.config().dryRun() ) {
             methodInterceptor.setDefaultInvocationMode( InvocationMode.PENDING );
             methodInterceptor.disableMethodExecution();
             executeLifeCycleMethods = false;

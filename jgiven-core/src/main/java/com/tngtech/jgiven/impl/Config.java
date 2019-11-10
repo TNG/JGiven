@@ -1,11 +1,12 @@
 package com.tngtech.jgiven.impl;
 
-import com.google.common.base.Optional;
-import com.tngtech.jgiven.config.ConfigValue;
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import com.google.common.base.Optional;
+import com.tngtech.jgiven.config.ConfigValue;
 
 /**
  * Helper class to access all system properties to configure JGiven.
@@ -22,9 +23,16 @@ public class Config {
     private static final String JGIVEN_REPORT_TEXT = "jgiven.report.text";
     private static final String JGIVEN_REPORT_TEXT_COLOR = "jgiven.report.text.color";
     private static final String JGIVEN_FILTER_STACK_TRACE = "jgiven.report.filterStackTrace";
+    private static final String JGIVEN_REPORT_DRY_RUN = "jgiven.report.dry-run";
 
     public static Config config() {
         return INSTANCE;
+    }
+
+    static {
+        if( INSTANCE.dryRun() ) {
+            log.info( "Dry Run enabled." );
+        }
     }
 
     public Optional<File> getReportDir() {
@@ -74,7 +82,11 @@ public class Config {
         return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_FILTER_STACK_TRACE, TRUE ) );
     }
 
-    public void setReportDir(File reportDir) {
+    public void setReportDir( File reportDir ) {
         System.setProperty( JGIVEN_REPORT_DIR, reportDir.getAbsolutePath() );
+    }
+
+    public boolean dryRun() {
+        return TRUE.equals( System.getProperty( JGIVEN_REPORT_DRY_RUN, FALSE ) );
     }
 }
