@@ -611,33 +611,40 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_a_better_approach">11.2. A better approach</a></li>
 </ul>
 </li>
-<li><a href="#_spring">12. Spring</a>
+<li><a href="#_spock">12. Spock</a>
 <ul class="sectlevel2">
 <li><a href="#_install_dependency">12.1. Install Dependency</a></li>
-<li><a href="#_configure_spring">12.2. Configure Spring</a></li>
-<li><a href="#_use_jgiven_in_junit_based_spring_tests">12.3. Use JGiven in JUnit-based Spring Tests</a></li>
-<li><a href="#_stages_as_spring_beans">12.4. Stages as Spring Beans</a></li>
-<li><a href="#_example_project">12.5. Example Project</a></li>
+<li><a href="#_use_jgiven_with_spock">12.2. Use JGiven with Spock</a></li>
+<li><a href="#_example_project">12.3. Example Project</a></li>
 </ul>
 </li>
-<li><a href="#_web_testing_with_selenium">13. Web Testing with Selenium</a>
+<li><a href="#_spring">13. Spring</a>
 <ul class="sectlevel2">
-<li><a href="#_page_objects_vs_stages">13.1. Page Objects vs Stages</a></li>
-<li><a href="#_example_project_2">13.2. Example Project</a></li>
+<li><a href="#_install_dependency_2">13.1. Install Dependency</a></li>
+<li><a href="#_configure_spring">13.2. Configure Spring</a></li>
+<li><a href="#_use_jgiven_in_junit_based_spring_tests">13.3. Use JGiven in JUnit-based Spring Tests</a></li>
+<li><a href="#_stages_as_spring_beans">13.4. Stages as Spring Beans</a></li>
+<li><a href="#_example_project_2">13.5. Example Project</a></li>
 </ul>
 </li>
-<li><a href="#_android">14. Android</a>
+<li><a href="#_web_testing_with_selenium">14. Web Testing with Selenium</a>
 <ul class="sectlevel2">
-<li><a href="#_testing_on_an_device_or_emulator_experimental">14.1. Testing on an Device or Emulator (EXPERIMENTAL)</a></li>
+<li><a href="#_page_objects_vs_stages">14.1. Page Objects vs Stages</a></li>
 <li><a href="#_example_project_3">14.2. Example Project</a></li>
 </ul>
 </li>
-<li><a href="#_junit_5_experimental">15. JUnit 5 (EXPERIMENTAL)</a>
+<li><a href="#_android">15. Android</a>
 <ul class="sectlevel2">
-<li><a href="#_known_issues">15.1. Known Issues</a></li>
-<li><a href="#_install_dependency_2">15.2. Install Dependency</a></li>
-<li><a href="#_use_jgiven_with_junit_5">15.3. Use JGiven with JUnit 5</a></li>
-<li><a href="#_example_project_4">15.4. Example Project</a></li>
+<li><a href="#_testing_on_an_device_or_emulator_experimental">15.1. Testing on an Device or Emulator (EXPERIMENTAL)</a></li>
+<li><a href="#_example_project_4">15.2. Example Project</a></li>
+</ul>
+</li>
+<li><a href="#_junit_5_experimental">16. JUnit 5 (EXPERIMENTAL)</a>
+<ul class="sectlevel2">
+<li><a href="#_known_issues">16.1. Known Issues</a></li>
+<li><a href="#_install_dependency_3">16.2. Install Dependency</a></li>
+<li><a href="#_use_jgiven_with_junit_5">16.3. Use JGiven with JUnit 5</a></li>
+<li><a href="#_example_project_5">16.4. Example Project</a></li>
 </ul>
 </li>
 </ul>
@@ -2749,15 +2756,90 @@ MyExpectedException someExpectedException;
 </div>
 </div>
 <div class="sect1">
-<h2 id="_spring"><a class="anchor" href="#_spring"></a>12. Spring</h2>
+<h2 id="_spock"><a class="anchor" href="#_spock"></a>12. Spock</h2>
 <div class="sectionbody">
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Spock support is currently in an experimental state.
+This means that the API is not completely stable yet and that not all
+JGiven and Spock features might be supported yet.
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
 <h3 id="_install_dependency"><a class="anchor" href="#_install_dependency"></a>12.1. Install Dependency</h3>
+<div class="paragraph">
+<p>Spock support is provided by the <code>jgiven-spock</code> dependency.</p>
+</div>
+<div class="sect3">
+<h4 id="_maven_2"><a class="anchor" href="#_maven_2"></a>12.1.1. Maven</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
+   &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
+   &lt;artifactId&gt;jgiven-spock&lt;/artifactId&gt;
+   &lt;version&gt;0.18.2&lt;/version&gt;
+   &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_gradle_2"><a class="anchor" href="#_gradle_2"></a>12.1.2. Gradle</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
+    testImplementation &quot;com.tngtech.jgiven:jgiven-spock:0.18.2&quot;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_use_jgiven_with_spock"><a class="anchor" href="#_use_jgiven_with_spock"></a>12.2. Use JGiven with Spock</h3>
+<div class="paragraph">
+<p>JGiven support for Spock is provided by extending <code>ScenarioSpec&lt;Given, When, Then&gt;</code>
+and JGiven is enabled.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight nowrap"><code data-lang="groovy"><span class="type">class</span> <span class="class">SpockSpec</span> <span class="directive">extends</span> ScenarioSpec&lt;Given, When, Then&gt; {
+
+   <span class="keyword">def</span> <span class="string"><span class="delimiter">&quot;</span><span class="content">my scenario</span><span class="delimiter">&quot;</span></span>() {
+      <span class="key">expect</span>:
+
+      given().some_context()
+      when().some_action()
+      then().some_outcome()
+   }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_example_project"><a class="anchor" href="#_example_project"></a>12.3. Example Project</h3>
+<div class="paragraph">
+<p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/spock" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/spock</a></p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_spring"><a class="anchor" href="#_spring"></a>13. Spring</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_install_dependency_2"><a class="anchor" href="#_install_dependency_2"></a>13.1. Install Dependency</h3>
 <div class="paragraph">
 <p>Spring support is provided by the <code>jgiven-spring</code> dependency.</p>
 </div>
 <div class="sect3">
-<h4 id="_maven_2"><a class="anchor" href="#_maven_2"></a>12.1.1. Maven</h4>
+<h4 id="_maven_3"><a class="anchor" href="#_maven_3"></a>13.1.1. Maven</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
@@ -2770,7 +2852,7 @@ MyExpectedException someExpectedException;
 </div>
 </div>
 <div class="sect3">
-<h4 id="_gradle_2"><a class="anchor" href="#_gradle_2"></a>12.1.2. Gradle</h4>
+<h4 id="_gradle_3"><a class="anchor" href="#_gradle_3"></a>13.1.2. Gradle</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
@@ -2781,13 +2863,13 @@ MyExpectedException someExpectedException;
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configure_spring"><a class="anchor" href="#_configure_spring"></a>12.2. Configure Spring</h3>
+<h3 id="_configure_spring"><a class="anchor" href="#_configure_spring"></a>13.2. Configure Spring</h3>
 <div class="paragraph">
 <p>In order to enable the JGiven Spring integration you have to tell Spring about the
 existence of JGiven.</p>
 </div>
 <div class="sect3">
-<h4 id="_annotation_based"><a class="anchor" href="#_annotation_based"></a>12.2.1. Annotation-Based</h4>
+<h4 id="_annotation_based"><a class="anchor" href="#_annotation_based"></a>13.2.1. Annotation-Based</h4>
 <div class="paragraph">
 <p>If you are using the annotation-based configuration of Spring you can annotate your Spring
 configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.18.2/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
@@ -2807,7 +2889,7 @@ This is all you have to do to configure Spring for JGiven.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_xml_based"><a class="anchor" href="#_xml_based"></a>12.2.2. XML-Based</h4>
+<h4 id="_xml_based"><a class="anchor" href="#_xml_based"></a>13.2.2. XML-Based</h4>
 <div class="paragraph">
 <p>You can also configure JGiven with XML by adding the <code>jgiven:annotation-driven</code> tag to your
 Spring XML config.</p>
@@ -2834,7 +2916,7 @@ Spring XML config.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_use_jgiven_in_junit_based_spring_tests"><a class="anchor" href="#_use_jgiven_in_junit_based_spring_tests"></a>12.3. Use JGiven in JUnit-based Spring Tests</h3>
+<h3 id="_use_jgiven_in_junit_based_spring_tests"><a class="anchor" href="#_use_jgiven_in_junit_based_spring_tests"></a>13.3. Use JGiven in JUnit-based Spring Tests</h3>
 <div class="paragraph">
 <p>To now use JGiven in JUnit-based Spring Tests you should inherit from one of the provided tests classes:</p>
 </div>
@@ -2864,14 +2946,14 @@ can copy the content of these classes (one method) into one of your test base cl
 </div>
 </div>
 <div class="sect2">
-<h3 id="_stages_as_spring_beans"><a class="anchor" href="#_stages_as_spring_beans"></a>12.4. Stages as Spring Beans</h3>
+<h3 id="_stages_as_spring_beans"><a class="anchor" href="#_stages_as_spring_beans"></a>13.4. Stages as Spring Beans</h3>
 <div class="paragraph">
 <p>In order to treat JGiven stages as Spring beans, e.g. if you want to inject
  other Spring beans into your stages, you have to annotate
 the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/0.18.2/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
 </div>
 <div class="sect3">
-<h4 id="_example_10"><a class="anchor" href="#_example_10"></a>12.4.1. Example</h4>
+<h4 id="_example_10"><a class="anchor" href="#_example_10"></a>13.4.1. Example</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@JGivenStage</span>
@@ -2885,7 +2967,7 @@ the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jg
 </div>
 </div>
 <div class="sect2">
-<h3 id="_example_project"><a class="anchor" href="#_example_project"></a>12.5. Example Project</h3>
+<h3 id="_example_project_2"><a class="anchor" href="#_example_project_2"></a>13.5. Example Project</h3>
 <div class="paragraph">
 <p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/spring-boot" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/spring-boot</a></p>
 </div>
@@ -2893,7 +2975,7 @@ the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jg
 </div>
 </div>
 <div class="sect1">
-<h2 id="_web_testing_with_selenium"><a class="anchor" href="#_web_testing_with_selenium"></a>13. Web Testing with Selenium</h2>
+<h2 id="_web_testing_with_selenium"><a class="anchor" href="#_web_testing_with_selenium"></a>14. Web Testing with Selenium</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>JGiven is a completely use-case agnostic testing library.
@@ -2906,7 +2988,7 @@ In JGiven you define a high-level, domain specific language to specify your scen
 <p>There is no additional integration module needed in order to use JGiven with Selenium</p>
 </div>
 <div class="sect2">
-<h3 id="_page_objects_vs_stages"><a class="anchor" href="#_page_objects_vs_stages"></a>13.1. Page Objects vs Stages</h3>
+<h3 id="_page_objects_vs_stages"><a class="anchor" href="#_page_objects_vs_stages"></a>14.1. Page Objects vs Stages</h3>
 <div class="paragraph">
 <p>It is possible to treat Selenium page objects directly as JGiven stages.
 This sometimes makes sense for simple cases, but from a code design perspective,
@@ -2918,7 +3000,7 @@ handles the state of the scenario.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_example_project_2"><a class="anchor" href="#_example_project_2"></a>13.2. Example Project</h3>
+<h3 id="_example_project_3"><a class="anchor" href="#_example_project_3"></a>14.2. Example Project</h3>
 <div class="paragraph">
 <p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/selenium" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/selenium</a></p>
 </div>
@@ -2926,7 +3008,7 @@ handles the state of the scenario.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_android"><a class="anchor" href="#_android"></a>14. Android</h2>
+<h2 id="_android"><a class="anchor" href="#_android"></a>15. Android</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>JGiven can be used to test Android applications.
@@ -2934,7 +3016,7 @@ For unit-tests, which are not running on an Android device or emulator, you can 
 You don&#8217;t have to do any special test setup to get that working.</p>
 </div>
 <div class="sect2">
-<h3 id="_testing_on_an_device_or_emulator_experimental"><a class="anchor" href="#_testing_on_an_device_or_emulator_experimental"></a>14.1. Testing on an Device or Emulator (EXPERIMENTAL)</h3>
+<h3 id="_testing_on_an_device_or_emulator_experimental"><a class="anchor" href="#_testing_on_an_device_or_emulator_experimental"></a>15.1. Testing on an Device or Emulator (EXPERIMENTAL)</h3>
 <div class="paragraph">
 <p>If you want to execute your tests on an Android device or emulator, for example when you want to use the <em>Espresso</em>
 test framework, then you need some additional setup.</p>
@@ -2953,7 +3035,7 @@ the implementation might be changed in a backwards-incompatible way in future ve
 </table>
 </div>
 <div class="sect3">
-<h4 id="_jgiven_android_dependency"><a class="anchor" href="#_jgiven_android_dependency"></a>14.1.1. JGiven Android Dependency</h4>
+<h4 id="_jgiven_android_dependency"><a class="anchor" href="#_jgiven_android_dependency"></a>15.1.1. JGiven Android Dependency</h4>
 <div class="paragraph">
 <p>First of all you need an additional project dependency to the <code>jgiven-android</code> module:</p>
 </div>
@@ -2966,7 +3048,7 @@ the implementation might be changed in a backwards-incompatible way in future ve
 </div>
 </div>
 <div class="sect3">
-<h4 id="_enable_additional_permissions"><a class="anchor" href="#_enable_additional_permissions"></a>14.1.2. Enable additional Permissions</h4>
+<h4 id="_enable_additional_permissions"><a class="anchor" href="#_enable_additional_permissions"></a>15.1.2. Enable additional Permissions</h4>
 <div class="paragraph">
 <p>JGiven writes JSON files during the execution of the tests to the external storage of the device or emulator.
 Thus you have to enable the permission <code>WRITE_EXTERNAL_STORAGE</code> when executing the tests.
@@ -2985,7 +3067,7 @@ You can do that by creating a file <code>src/debug/AndroidManifest.xml</code> th
 </div>
 </div>
 <div class="sect3">
-<h4 id="_androidjgiventestrule"><a class="anchor" href="#_androidjgiventestrule"></a>14.1.3. AndroidJGivenTestRule</h4>
+<h4 id="_androidjgiventestrule"><a class="anchor" href="#_androidjgiventestrule"></a>15.1.3. AndroidJGivenTestRule</h4>
 <div class="paragraph">
 <p>In your test classes you have to add the following additional JUnit rule:</p>
 </div>
@@ -3008,7 +3090,7 @@ using the <code>@ScenarioState</code> annotation:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_pull_jgiven_json_files_from_device"><a class="anchor" href="#_pull_jgiven_json_files_from_device"></a>14.1.4. Pull JGiven JSON files from device</h4>
+<h4 id="_pull_jgiven_json_files_from_device"><a class="anchor" href="#_pull_jgiven_json_files_from_device"></a>15.1.4. Pull JGiven JSON files from device</h4>
 <div class="paragraph">
 <p>When the test execution has finished, you need to pull the JGiven JSON files from the device to the local drive.
 You can do that using the <code>adb</code> tool. The following Gradle task does the job:</p>
@@ -3040,13 +3122,13 @@ task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
 </div>
 </div>
 <div class="sect3">
-<h4 id="_generate_html_report"><a class="anchor" href="#_generate_html_report"></a>14.1.5. Generate HTML Report</h4>
+<h4 id="_generate_html_report"><a class="anchor" href="#_generate_html_report"></a>15.1.5. Generate HTML Report</h4>
 <div class="paragraph">
 <p>Given the local JSON files, you can generate the HTML report as described in <a href="#_report_generation">Report Generation</a></p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_taking_screen_shots_in_espresso_tests"><a class="anchor" href="#_taking_screen_shots_in_espresso_tests"></a>14.1.6. Taking Screen Shots in Espresso Tests</h4>
+<h4 id="_taking_screen_shots_in_espresso_tests"><a class="anchor" href="#_taking_screen_shots_in_espresso_tests"></a>15.1.6. Taking Screen Shots in Espresso Tests</h4>
 <div class="paragraph">
 <p>It is very useful to take screen shots during your tests and add them to the JGiven documentation.
 When using the <em>Espresso</em> framework, you can use the following piece of code to take
@@ -3098,7 +3180,7 @@ a screenshot of an activity and turn it into a <code>byte</code> array:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_example_project_3"><a class="anchor" href="#_example_project_3"></a>14.2. Example Project</h3>
+<h3 id="_example_project_4"><a class="anchor" href="#_example_project_4"></a>15.2. Example Project</h3>
 <div class="paragraph">
 <p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/android" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/android</a></p>
 </div>
@@ -3106,7 +3188,7 @@ a screenshot of an activity and turn it into a <code>byte</code> array:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_junit_5_experimental"><a class="anchor" href="#_junit_5_experimental"></a>15. JUnit 5 (EXPERIMENTAL)</h2>
+<h2 id="_junit_5_experimental"><a class="anchor" href="#_junit_5_experimental"></a>16. JUnit 5 (EXPERIMENTAL)</h2>
 <div class="sectionbody">
 <div class="admonitionblock caution">
 <table>
@@ -3123,7 +3205,7 @@ JGiven and JUnit 5 features are completely supported yet.
 </table>
 </div>
 <div class="sect2">
-<h3 id="_known_issues"><a class="anchor" href="#_known_issues"></a>15.1. Known Issues</h3>
+<h3 id="_known_issues"><a class="anchor" href="#_known_issues"></a>16.1. Known Issues</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -3137,12 +3219,12 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_install_dependency_2"><a class="anchor" href="#_install_dependency_2"></a>15.2. Install Dependency</h3>
+<h3 id="_install_dependency_3"><a class="anchor" href="#_install_dependency_3"></a>16.2. Install Dependency</h3>
 <div class="paragraph">
 <p>JUnit 5 support is provided by the <code>jgiven-junit5</code> dependency.</p>
 </div>
 <div class="sect3">
-<h4 id="_maven_3"><a class="anchor" href="#_maven_3"></a>15.2.1. Maven</h4>
+<h4 id="_maven_4"><a class="anchor" href="#_maven_4"></a>16.2.1. Maven</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
@@ -3155,7 +3237,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_gradle_3"><a class="anchor" href="#_gradle_3"></a>15.2.2. Gradle</h4>
+<h4 id="_gradle_4"><a class="anchor" href="#_gradle_4"></a>16.2.2. Gradle</h4>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
@@ -3166,7 +3248,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_use_jgiven_with_junit_5"><a class="anchor" href="#_use_jgiven_with_junit_5"></a>15.3. Use JGiven with JUnit 5</h3>
+<h3 id="_use_jgiven_with_junit_5"><a class="anchor" href="#_use_jgiven_with_junit_5"></a>16.3. Use JGiven with JUnit 5</h3>
 <div class="paragraph">
 <p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/0.18.2/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
 JUnit 5 extension. You just annotate your JUnit 5 test class with <code>@ExtendWith( JGivenExtension.class )</code>
@@ -3216,7 +3298,7 @@ and allows you to specify stage classes by using type parameters:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_example_project_4"><a class="anchor" href="#_example_project_4"></a>15.4. Example Project</h3>
+<h3 id="_example_project_5"><a class="anchor" href="#_example_project_5"></a>16.4. Example Project</h3>
 <div class="paragraph">
 <p>You find a complete example project on GitHub: <a href="https://github.com/TNG/JGiven/tree/master/example-projects/junit5" class="bare">https://github.com/TNG/JGiven/tree/master/example-projects/junit5</a></p>
 </div>
@@ -3227,7 +3309,7 @@ and allows you to specify stage classes by using type parameters:</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.18.2<br>
-Last updated 2019-09-04 11:05:10 CEST
+Last updated 2019-11-10 13:33:00 CET
 </div>
 </div>
 </body>
