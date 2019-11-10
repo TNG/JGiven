@@ -14,11 +14,18 @@ buildscript {
     }
 }
 
+
 apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
+
+
+wrapper {
+    gradleVersion = '5.6.4'
+   // distributionType = Wrapper.DistributionType.ALL
+}
 
 compileJava {
     sourceCompatibility = 1.8
@@ -53,4 +60,11 @@ test {
     useJUnitPlatform()
 }
 
-test.finalizedBy(jgivenTestReport)
+test.finalizedBy(jgivenTestReport {
+    reports {
+        html {
+            enabled = true
+            title = 'JUnit 5 Report'
+        }
+    }
+})
