@@ -72,13 +72,6 @@ public class MediaType {
 
     /**
      * text/plain
-     * @deprecated use PLAIN_TEXT_UTF_8 instead
-     */
-    @Deprecated
-    public static final MediaType PLAIN_TEXT = text( "plain" );
-
-    /**
-     * text/plain
      */
     public static final MediaType PLAIN_TEXT_UTF_8 = textUtf8( "plain" );
 
@@ -110,13 +103,11 @@ public class MediaType {
      * Creates a new MediaType
      * @param type the type
      * @param subType the subtype
-     * @param binary whether or not content of this media type is binary. If {@code true}, the 
+     * @param binary whether or not content of this media type is binary. If {@code true}, the
      *                 content will be encoded as Base64 when stored in the JSON model.
      * @throws com.tngtech.jgiven.exception.JGivenWrongUsageException if any of the parameters is {@code null}
-     * @deprecated please use static factory methods instead 
      */
-    @Deprecated
-    public MediaType( Type type, String subType, boolean binary ) {
+    private MediaType( Type type, String subType, boolean binary ) {
         this.type = ApiUtil.notNull( type, "type must not be null" );
         this.subType = ApiUtil.notNull( subType, "subType must not be null" );
         this.binary = binary;
@@ -235,15 +226,6 @@ public class MediaType {
      */
     public static MediaType audio( String subType ) {
         return binary( AUDIO, subType );
-    }
-
-    /**
-     * Creates a non-binary text media type with the given subtype, but without a specified encoding
-     * @deprecated use a method with a specific encoding
-     */
-    @Deprecated
-    public static MediaType text( String subType ) {
-        return new MediaType( TEXT, subType, false );
     }
 
     /**

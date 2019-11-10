@@ -37,7 +37,7 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
     }
 
     public SELF the_case_is_marked_as_failed() {
-        assertThat( getFirstCase().isSuccess() ).isFalse();
+        assertThat( getFirstCase().getExecutionStatus() ).isEqualTo( ExecutionStatus.FAILED );
         return self();
     }
 

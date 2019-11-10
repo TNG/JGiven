@@ -1,9 +1,9 @@
 package com.tngtech.jgiven.junit;
 
-import com.tngtech.jgiven.config.AbstractJGivenConfiguraton;
+import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.junit.tags.ConfiguredTag;
 
-public class TestConfiguration extends AbstractJGivenConfiguraton {
+public class TestConfiguration extends AbstractJGivenConfiguration {
 
     @Override
     public void configure() {

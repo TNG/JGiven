@@ -10,10 +10,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import com.tngtech.jgiven.ScenarioTestBaseForTesting;
-import com.tngtech.jgiven.annotation.As;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -22,17 +18,13 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.GivenTestStep;
+import com.tngtech.jgiven.ScenarioTestBaseForTesting;
 import com.tngtech.jgiven.ThenTestStep;
 import com.tngtech.jgiven.WhenTestStep;
+import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.DoNotIntercept;
 import com.tngtech.jgiven.annotation.IsTag;
-import com.tngtech.jgiven.base.ScenarioTestBase;
-import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.StepModel;
-import com.tngtech.jgiven.report.model.Tag;
-import com.tngtech.jgiven.report.model.Word;
+import com.tngtech.jgiven.report.model.*;
 
 @RunWith( DataProviderRunner.class )
 public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTestStep, WhenTestStep, ThenTestStep> {
@@ -209,7 +201,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
         List<Tag> tags = getScenarioModelBuilder().toTags( AnnotationWithParentTag.class.getAnnotations()[0] );
         assertThat( tags ).hasSize( 1 );
         assertThat( tags.get( 0 ).getTags() ).containsAll( Arrays.asList(
-                this.getClass().getName() + "$ParentTag", this.getClass().getName() + "$ParentTagWithValue-SomeValue" ) );
+            this.getClass().getName() + "$ParentTag", this.getClass().getName() + "$ParentTagWithValue-SomeValue" ) );
     }
 
     @IsTag( value = "default" )
@@ -258,7 +250,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
         assertThat( model.getDescription() ).isEqualTo( description );
 
         ScenarioCaseModel case0 = model.getCase( 0 );
-        assertThat( case0.isSuccess() ).isTrue();
+        assertThat( case0.getExecutionStatus() ).isEqualTo( ExecutionStatus.SUCCESS );
         assertThat( case0.getCaseNr() ).isEqualTo( 1 );
         assertThat( case0.getExplicitArguments() ).isEmpty();
         assertThat( case0.getSteps() ).hasSize( 3 );
@@ -320,7 +312,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
 
     @Test
     public void As_on_overridden_methods_is_correctly_evaluated() throws Throwable {
-        ExtendedGivenTestStep stage = getScenario().addStage(ExtendedGivenTestStep.class);
+        ExtendedGivenTestStep stage = getScenario().addStage( ExtendedGivenTestStep.class );
         startScenario( "Scenario with a @As tag" );
         stage.abstract_step();
         getScenario().finished();
@@ -330,7 +322,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
 
     @Test
     public void setName_is_working_correctly_on_CurrentStep() throws Throwable {
-        GivenTestStep stage = getScenario().addStage(GivenTestStep.class);
+        GivenTestStep stage = getScenario().addStage( GivenTestStep.class );
         startScenario( "Test Scenario" );
         stage.given().a_step_that_sets_the_name();
         getScenario().finished();
@@ -341,9 +333,9 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
 
     @Test
     public void setName_is_working_correctly_on_CurrentStep_with_steps_with_arguments() throws Throwable {
-        GivenTestStep stage = getScenario().addStage(GivenTestStep.class);
+        GivenTestStep stage = getScenario().addStage( GivenTestStep.class );
         startScenario( "Test Scenario" );
-        stage.given().a_step_that_sets_the_name_with_an_argument("argument");
+        stage.given().a_step_that_sets_the_name_with_an_argument( "argument" );
         getScenario().finished();
         StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
         assertThat( step.getName() ).isEqualTo( "another name argument" );
@@ -352,7 +344,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
 
     @Test
     public void setComment_is_working_correctly_on_CurrentStep() throws Throwable {
-        GivenTestStep stage = getScenario().addStage(GivenTestStep.class);
+        GivenTestStep stage = getScenario().addStage( GivenTestStep.class );
         startScenario( "Test Scenario" );
         stage.given().a_step_that_sets_a_comment();
         getScenario().finished();

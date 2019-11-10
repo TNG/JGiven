@@ -39,12 +39,6 @@ public class ScenarioCaseModel {
     private ExecutionStatus status;
 
     /**
-     * @deprecated is replaced by {@link #status}
-     */
-    @Deprecated
-    private boolean success = true;
-
-    /**
      * An optional error message.
      * Can be {@code null}
      */
@@ -151,16 +145,6 @@ public class ScenarioCaseModel {
 
     public String getErrorMessage() {
         return errorMessage;
-    }
-
-    @Deprecated
-    public boolean isSuccess() {
-        return success;
-    }
-
-    @Deprecated
-    public void setSuccess(boolean success ) {
-        this.success = success;
     }
 
     public void setStatus(ExecutionStatus status) {

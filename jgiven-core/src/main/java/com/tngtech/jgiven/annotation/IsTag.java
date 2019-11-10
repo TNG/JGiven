@@ -74,12 +74,6 @@ public @interface IsTag {
     Class<? extends TagDescriptionGenerator> descriptionGenerator() default DefaultTagDescriptionGenerator.class;
 
     /**
-     * @deprecated use {@link #name()} instead
-     */
-    @Deprecated
-    String type() default "";
-
-    /**
      * An optional name that overrides the default which is the name of the annotation.
      * <p>
      * It is possible that multiple annotations have the same type name. However, in this case every 
