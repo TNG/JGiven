@@ -81,8 +81,12 @@ public class DataTablePlainTextScenarioWriter extends PlainTextScenarioWriter {
     }
 
     private String getStatusText( ScenarioCaseModel c ) {
-        if( c.isSuccess() ) {
+        if( c.getExecutionStatus() == ExecutionStatus.SUCCESS ) {
             return "Success";
+        } else if( c.getExecutionStatus() == ExecutionStatus.SCENARIO_PENDING ) {
+            return "Pending";
+        } else if( c.getExecutionStatus() == ExecutionStatus.SOME_STEPS_PENDING ) {
+            return "Pending";
         }
         return "Failed: " + c.getErrorMessage();
     }

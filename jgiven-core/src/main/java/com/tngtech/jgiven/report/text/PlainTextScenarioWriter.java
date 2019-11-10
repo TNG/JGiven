@@ -3,6 +3,7 @@ package com.tngtech.jgiven.report.text;
 import java.io.PrintWriter;
 import java.util.List;
 
+import com.tngtech.jgiven.impl.params.DefaultCaseAsProvider;
 import org.fusesource.jansi.Ansi.Attribute;
 import org.fusesource.jansi.Ansi.Color;
 
@@ -10,7 +11,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
-import com.tngtech.jgiven.impl.params.DefaultCaseDescriptionProvider;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.model.*;
 
@@ -37,7 +37,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     @Override
     public void visitEnd( ScenarioCaseModel scenarioCase ) {
-        if( !scenarioCase.isSuccess() ) {
+        if( scenarioCase.getExecutionStatus() == ExecutionStatus.FAILED ) {
             writer.println();
             writer.print( withColor( Color.RED, Attribute.INTENSITY_BOLD, "FAILED: " + scenarioCase.getErrorMessage() ) );
         }
@@ -63,7 +63,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
         if( scenarioCase.hasDescription() ) {
             return scenarioCase.getDescription();
         } else {
-            return DefaultCaseDescriptionProvider.defaultDescription( currentScenarioModel.getExplicitParameters(),
+            return DefaultCaseAsProvider.defaultDescription( currentScenarioModel.getExplicitParameters(),
                 scenarioCase.getExplicitArguments() );
         }
     }

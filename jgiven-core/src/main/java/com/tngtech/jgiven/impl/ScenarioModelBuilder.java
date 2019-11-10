@@ -216,11 +216,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
         return provider.as( as, paramMethod );
     }
 
-    @Deprecated
-    public void setSuccess( boolean success ) {
-        scenarioCaseModel.setSuccess( success );
-    }
-
     public void setStatus( ExecutionStatus status ) {
         scenarioCaseModel.setStatus( status );
     }
@@ -294,7 +289,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     @Override
     public void scenarioFailed( Throwable e ) {
-        setSuccess( false );
         setStatus( ExecutionStatus.FAILED );
         setException( e );
     }
@@ -496,7 +490,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     public TagConfiguration fromIsTag( IsTag isTag, Class<? extends Annotation> annotationType ) {
-        String name = Strings.isNullOrEmpty( isTag.name() ) ? isTag.type() : isTag.name();
+        String name = isTag.name();
 
         return TagConfiguration.builder( annotationType )
             .defaultValue( isTag.value() )
@@ -595,7 +589,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     @Override
     public void attachmentAdded( Attachment attachment ) {
-        currentStep.setAttachment( attachment );
+        currentStep.addAttachment( attachment );
     }
 
     @Override

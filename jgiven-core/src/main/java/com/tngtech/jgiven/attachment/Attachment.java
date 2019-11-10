@@ -195,32 +195,10 @@ public class Attachment {
     /**
      * Creates a non-binary attachment from the given file.
      * @throws IOException if an I/O error occurs
-     * @throws java.lang.IllegalArgumentException if mediaType is binary
-     * @deprecated use fromTextFile without charSet with a mediaType that has a specified charSet 
-     */
-    @Deprecated
-    public static Attachment fromTextFile( File file, MediaType mediaType, Charset charSet ) throws IOException {
-        return fromText( Files.toString( file, charSet ), mediaType );
-    }
-
-    /**
-     * Creates a non-binary attachment from the given file.
-     * @throws IOException if an I/O error occurs
      * @throws java.lang.IllegalArgumentException if mediaType is either binary or has no specified charset
      */
     public static Attachment fromTextFile( File file, MediaType mediaType ) throws IOException {
         return fromText( Files.toString( file, mediaType.getCharset() ), mediaType );
-    }
-
-    /**
-     * Creates a non-binary attachment from the given file.
-     * @throws IOException if an I/O error occurs
-     * @throws java.lang.IllegalArgumentException if mediaType is binary
-     * @deprecated use fromTextInputStream without charSet with a mediaType that has a specified charSet 
-     */
-    @Deprecated
-    public static Attachment fromTextInputStream( InputStream inputStream, MediaType mediaType, Charset charset ) throws IOException {
-        return fromText( CharStreams.toString( new InputStreamReader( inputStream, charset ) ), mediaType );
     }
 
     /**

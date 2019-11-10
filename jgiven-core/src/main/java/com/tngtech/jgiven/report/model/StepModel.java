@@ -146,14 +146,6 @@ public class StepModel {
         return this.words.get( this.words.size() - 1 );
     }
 
-    /**
-     * @deprecated use addAttachment instead
-     */
-    @Deprecated
-    public void setAttachment( Attachment attachment ) {
-        addAttachment( attachment );
-    }
-
     public void addAttachment( Attachment attachment ) {
         if( attachments == null ) {
             attachments = Lists.newArrayList();
@@ -166,14 +158,6 @@ public class StepModel {
         attachmentModel.setIsBinary( attachment.getMediaType().isBinary() );
         attachmentModel.setShowDirectly( attachment.getShowDirectly() );
         attachments.add( attachmentModel );
-    }
-
-    /**
-     * @deprecated use {@link #getAttachments}
-     */
-    @Deprecated
-    public AttachmentModel getAttachment() {
-        return attachments.get( 0 );
     }
 
     public List<AttachmentModel> getAttachments() {

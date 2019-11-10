@@ -73,15 +73,6 @@ public class TagConfiguration {
             return this;
         }
 
-        /**
-         * @deprecated use {@link #name(String)} instead
-         */
-        @Deprecated
-        public Builder type( String s ) {
-            configuration.name = s;
-            return this;
-        }
-
         public Builder name( String s ) {
             configuration.name = s;
             return this;
@@ -152,15 +143,6 @@ public class TagConfiguration {
      */
     public Class<? extends TagDescriptionGenerator> getDescriptionGenerator() {
         return descriptionGenerator;
-    }
-
-    /**
-     * @deprecated use {@link #getName()} instead
-     * @see com.tngtech.jgiven.annotation.IsTag#type
-     */
-    @Deprecated
-    public String getType() {
-        return name;
     }
 
     /**

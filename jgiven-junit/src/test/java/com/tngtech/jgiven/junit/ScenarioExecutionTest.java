@@ -272,7 +272,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         CurrentStep currentStep;
 
         public void add_attachment() {
-            currentStep.addAttachment( Attachment.fromText( "FOOBAR", MediaType.PLAIN_TEXT ) );
+            currentStep.addAttachment( Attachment.fromText( "FOOBAR", MediaType.PLAIN_TEXT_UTF_8 ) );
         }
 
         public void set_description() {
@@ -294,7 +294,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
         assertThat( attachments ).hasSize( 1 );
         assertThat( attachments.get( 0 ).getValue() ).isEqualTo( "FOOBAR" );
-        assertThat( attachments.get( 0 ).getMediaType() ).isEqualTo( MediaType.PLAIN_TEXT.asString() );
+        assertThat( attachments.get( 0 ).getMediaType() ).isEqualTo( MediaType.PLAIN_TEXT_UTF_8.asString() );
     }
 
     @Test

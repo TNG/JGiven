@@ -7,6 +7,7 @@ import java.util.List;
 import com.tngtech.jgiven.annotation.Format;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.format.NotFormatter;
+import com.tngtech.jgiven.report.model.ExecutionStatus;
 import org.testng.annotations.Test;
 
 import com.tngtech.jgiven.Stage;
@@ -38,7 +39,7 @@ public class TestNgTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
         assertThat( scenarioCaseModel.getExplicitArguments() ).isEmpty();
         assertThat( scenarioCaseModel.getCaseNr() ).isEqualTo( 1 );
         assertThat( scenarioCaseModel.getErrorMessage() ).isNull();
-        assertThat( scenarioCaseModel.isSuccess() ).isTrue();
+        assertThat( scenarioCaseModel.getExecutionStatus() ).isEqualTo(ExecutionStatus.SUCCESS);
 
         List<StepModel> steps = scenarioCaseModel.getSteps();
         assertThat( steps ).hasSize( 4 );

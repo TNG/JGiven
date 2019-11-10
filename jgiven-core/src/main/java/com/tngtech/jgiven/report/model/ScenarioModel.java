@@ -161,13 +161,4 @@ public class ScenarioModel {
         return extendedDescription;
     }
 
-    @Deprecated
-    public void setPending() {
-        this.executionStatus = ExecutionStatus.SCENARIO_PENDING;
-    }
-
-    @Deprecated
-    public boolean isPending() {
-        return executionStatus == ExecutionStatus.SCENARIO_PENDING;
-    }
 }

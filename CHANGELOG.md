@@ -23,6 +23,7 @@ If you are using Spring 5 with JUnit 5 then use the `jgiven-spring-junit5` modul
 * Calling stage methods annotated with `@DoNotIntercept` or declared within `java.lang.Object` will not trigger
 a stage change anymore [#385](https://github.com/TNG/JGiven/pull/385)
 * The Guava dependency changed to v27.1-jre. This might lead to problems in case your project also depends on Guava
+* Removed all deprecated methods and classes
 
 ## Cleaned up Module Dependencies
 
@@ -34,7 +35,15 @@ dependencies to your build:
 ## Removed Deprecated Features
 
 * Removed `@NotImplementedYet` annotation. Use `@Pending` instead.
-* Spring: removed `SpringCanWire`
+* Removed `@CaseDescription` annotation. Use `@CaseAs` instead.
+* Removed `CaseDescriptionProvider`. Use `CaseAsProvider` instead.
+* Removed `DefaultCaseDescriptionProvider`. Use `DefaultCaseAsProvider` instead.
+* Removed `com.tngtech.jgiven.junit.de.SzenarioTest`. Use `com.tngtech.jgiven.junit.lang.de.SzenarioTest` instead.
+* Removed `ScenarioExecutionRule`. Use `JGivenMethodRule` instead.
+* Removed `ScenarioReportRule`. Use `JGivenClassRule` instead.
+* Removed `SpringCanWire`
+
+In addition, all deprecated methods have been removed.
 
 ## Fixed Issues
 

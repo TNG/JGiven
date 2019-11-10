@@ -128,13 +128,13 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF case_$_of_scenario_$_has_failed( int caseNr, int scenarioNr ) {
-        getCase( scenarioNr, caseNr ).setSuccess( false );
+        getCase( scenarioNr, caseNr ).setStatus( ExecutionStatus.FAILED );
         return self();
     }
 
     public SELF case_$_fails_with_error_message( int ncase, String errorMessage ) {
         getCase( ncase ).setErrorMessage( errorMessage );
-        getCase( ncase ).setSuccess( false );
+        getCase( ncase ).setStatus( ExecutionStatus.FAILED );
         return self();
     }
 
