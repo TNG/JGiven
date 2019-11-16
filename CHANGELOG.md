@@ -8,6 +8,7 @@
 * Added `DualScenarioTest` [#406](https://github.com/TNG/JGiven/pull/406) (thanks to jangalinksi)
 * Upgraded Gradle Plugin to support Gradle 5 [#381](https://github.com/TNG/JGiven/pull/381) (thanks to mustaine)
 * `@Pending` can now be added to the test class to make all scenarios of that class pending [#403](https://github.com/TNG/JGiven/issues/403)
+* Added new option 'jgiven.report.dry-run' to generate a report without really executing the tests [#435](https://github.com/TNG/JGiven/issues/435) (thanks to mustaine)
 
 ### Spring 5 with JUnit 5
 
