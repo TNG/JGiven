@@ -1,29 +1,36 @@
 package com.tngtech.jgiven.impl;
 
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.jgiven.base.ScenarioTestBase;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-@RunWith(DataProviderRunner.class)
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class ProxyClassPerformanceTest {
 
     @Test
-    public void test_creation_of_proxy_classes() {
-        for (int i = 0; i < 1000; i++) {
+    public void test_creation_of_proxy_classes(){
+        Set<Long> results = new HashSet<>();
+        for( int i = 0; i < 1000; i++ ) {
             ScenarioBase scenario = new ScenarioBase();
-            TestStage testStage = scenario.addStage(TestStage.class);
+            TestStage testStage = scenario.addStage( TestStage.class );
             testStage.something();
-            if (i % 100 == 0) {
+            if( i % 100 == 0 ) {
                 System.gc();
-                System.out.println("Used memory: "+      (  Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+                long usedMemory = ( Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory() ) / ( 1024 * 1024 );
+                System.out.println( "Used memory: " + usedMemory );
+                results.add( usedMemory );
             }
         }
+
+        assertThat( results )
+                .describedAs( "Only should contains 1 or 2 items, as first iteration might use more memory might contain 2 items" )
+                .hasSizeBetween( 1, 2 );
     }
 
     public static class TestStage {
-        public void something() {}
+        public void something(){
+        }
     }
-
 }

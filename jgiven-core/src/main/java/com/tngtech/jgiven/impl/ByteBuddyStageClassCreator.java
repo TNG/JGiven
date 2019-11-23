@@ -54,19 +54,14 @@ public class ByteBuddyStageClassCreator implements StageClassCreator {
                             StepInterceptorGetterSetter.class ))
                 .to( new ByteBuddyMethodInterceptor() ))
             .make()
-            .load( getClassLoader( stageClass ),
+            .load( stageClass.getClassLoader(),
                 getClassLoadingStrategy( stageClass ) )
             .getLoaded();
     }
 
     protected ClassLoadingStrategy getClassLoadingStrategy( Class<?> stageClass ) {
-        return getClassLoader( stageClass ) == null
+        return stageClass.getClassLoader() == null
                 ? ClassLoadingStrategy.Default.WRAPPER
                 : ClassLoadingStrategy.Default.INJECTION;
     }
-
-    protected ClassLoader getClassLoader( Class<?> stageClass ) {
-        return stageClass.getClassLoader();
-    }
-
 }
