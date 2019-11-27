@@ -1,12 +1,11 @@
 package com.tngtech.jgiven.impl;
 
-import java.io.File;
-
+import com.tngtech.jgiven.config.ConfigValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
-import com.tngtech.jgiven.config.ConfigValue;
+import java.io.File;
+import java.util.Optional;
 
 /**
  * Helper class to access all system properties to configure JGiven.
@@ -25,17 +24,17 @@ public class Config {
     private static final String JGIVEN_FILTER_STACK_TRACE = "jgiven.report.filterStackTrace";
     private static final String JGIVEN_REPORT_DRY_RUN = "jgiven.report.dry-run";
 
-    public static Config config() {
+    public static Config config(){
         return INSTANCE;
     }
 
-    static {
+    static{
         if( INSTANCE.dryRun() ) {
             log.info( "Dry Run enabled." );
         }
     }
 
-    public Optional<File> getReportDir() {
+    public Optional<File> getReportDir(){
         String reportDirName = System.getProperty( JGIVEN_REPORT_DIR );
         if( reportDirName == null ) {
             if( System.getProperty( "surefire.test.class.path" ) != null ) {
@@ -50,7 +49,7 @@ public class Config {
         File reportDir = new File( reportDirName );
         if( reportDir.exists() && !reportDir.isDirectory() ) {
             log.warn( reportDirName + " exists but is not a directory. Will not generate JGiven reports." );
-            return Optional.absent();
+            return Optional.empty();
         }
 
         log.debug( "Using folder " + reportDirName + " to store JGiven reports" );
@@ -58,35 +57,35 @@ public class Config {
         return Optional.of( reportDir );
     }
 
-    public boolean isReportEnabled() {
+    public boolean isReportEnabled(){
         return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_REPORT_ENABLED, TRUE ) );
     }
 
-    public void setReportEnabled( boolean enabled ) {
+    public void setReportEnabled( boolean enabled ){
         System.setProperty( JGIVEN_REPORT_ENABLED, "" + enabled );
     }
 
-    public ConfigValue textColorEnabled() {
+    public ConfigValue textColorEnabled(){
         return ConfigValue.fromString( System.getProperty( JGIVEN_REPORT_TEXT_COLOR, AUTO ) );
     }
 
-    public boolean textReport() {
+    public boolean textReport(){
         return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_REPORT_TEXT, TRUE ) );
     }
 
-    public void setTextReport( boolean b ) {
+    public void setTextReport( boolean b ){
         System.setProperty( JGIVEN_REPORT_TEXT, "" + b );
     }
 
-    public boolean filterStackTrace() {
+    public boolean filterStackTrace(){
         return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_FILTER_STACK_TRACE, TRUE ) );
     }
 
-    public void setReportDir( File reportDir ) {
+    public void setReportDir( File reportDir ){
         System.setProperty( JGIVEN_REPORT_DIR, reportDir.getAbsolutePath() );
     }
 
-    public boolean dryRun() {
+    public boolean dryRun(){
         return TRUE.equals( System.getProperty( JGIVEN_REPORT_DRY_RUN, FALSE ) );
     }
 }

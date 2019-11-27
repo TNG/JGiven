@@ -1,26 +1,15 @@
 package com.tngtech.jgiven.impl;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.reverse;
-import static com.tngtech.jgiven.impl.ScenarioExecutor.State.FINISHED;
-import static com.tngtech.jgiven.impl.ScenarioExecutor.State.STARTED;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-
-import com.tngtech.jgiven.report.model.InvocationMode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.CurrentScenario;
 import com.tngtech.jgiven.CurrentStep;
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.AfterScenario;
+import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.BeforeScenario;
+import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.Pending;
+import com.tngtech.jgiven.annotation.ScenarioRule;
+import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.exception.FailIfPassedException;
 import com.tngtech.jgiven.exception.JGivenMissingRequiredScenarioStateException;
@@ -34,7 +23,24 @@ import com.tngtech.jgiven.impl.util.FieldCache;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil.MethodAction;
 import com.tngtech.jgiven.integration.CanWire;
+import com.tngtech.jgiven.report.model.InvocationMode;
 import com.tngtech.jgiven.report.model.NamedArgument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static com.google.common.collect.Lists.reverse;
+import static com.tngtech.jgiven.impl.ScenarioExecutor.State.FINISHED;
+import static com.tngtech.jgiven.impl.ScenarioExecutor.State.STARTED;
 
 /**
  * Main class of JGiven for executing scenarios.
@@ -58,9 +64,9 @@ public class ScenarioExecutor {
      */
     private boolean executeLifeCycleMethods = true;
 
-    protected final Map<Class<?>, StageState> stages = Maps.newLinkedHashMap();
+    protected final Map<Class<?>, StageState> stages = new LinkedHashMap<>();
 
-    private final List<Object> scenarioRules = Lists.newArrayList();
+    private final List<Object> scenarioRules = new ArrayList<>();
 
     private final ValueInjector injector = new ValueInjector();
     private StageCreator stageCreator = createStageCreator( new ByteBuddyStageClassCreator() );
@@ -410,7 +416,7 @@ public class ScenarioExecutor {
             }
         }
 
-        for( Object rule : Lists.reverse( scenarioRules ) ) {
+        for( Object rule : reverse( scenarioRules ) ) {
             try {
                 invokeRuleMethod( rule, "after" );
             } catch( AssertionError e ) {

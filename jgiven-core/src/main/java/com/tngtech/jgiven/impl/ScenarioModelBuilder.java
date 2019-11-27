@@ -1,18 +1,20 @@
 package com.tngtech.jgiven.impl;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.As;
+import com.tngtech.jgiven.annotation.AsProvider;
+import com.tngtech.jgiven.annotation.CaseAs;
+import com.tngtech.jgiven.annotation.CaseAsProvider;
+import com.tngtech.jgiven.annotation.Description;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
+import com.tngtech.jgiven.annotation.Hidden;
+import com.tngtech.jgiven.annotation.IntroWord;
+import com.tngtech.jgiven.annotation.IsTag;
+import com.tngtech.jgiven.annotation.Pending;
+import com.tngtech.jgiven.annotation.StepComment;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
@@ -27,7 +29,29 @@ import com.tngtech.jgiven.impl.util.AnnotationUtil;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.model.*;
+import com.tngtech.jgiven.report.model.ExecutionStatus;
+import com.tngtech.jgiven.report.model.InvocationMode;
+import com.tngtech.jgiven.report.model.NamedArgument;
+import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.StepFormatter;
+import com.tngtech.jgiven.report.model.StepModel;
+import com.tngtech.jgiven.report.model.StepStatus;
+import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.Word;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.Stack;
 
 public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
@@ -447,10 +471,10 @@ public class ScenarioModelBuilder implements ScenarioListener {
         tag.setTags( tagConfig.getTags() );
 
         if( tagConfig.isIgnoreValue() || !annotation.isPresent() ) {
-            tag.setDescription( getDescriptionFromGenerator( tagConfig, annotation.orNull(), tagConfig.getDefaultValue() ) );
-            tag.setHref( getHref( tagConfig, annotation.orNull(), value ) );
+            tag.setDescription( getDescriptionFromGenerator( tagConfig, annotation.orElse( null ), tagConfig.getDefaultValue() ) );
+            tag.setHref( getHref( tagConfig, annotation.orElse( null ), value ) );
 
-            return Arrays.asList( tag );
+            return Collections.singletonList( tag );
         }
 
         try {
@@ -477,7 +501,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         tag.setDescription( getDescriptionFromGenerator( tagConfig, annotation.get(), value ) );
         tag.setHref( getHref( tagConfig, annotation.get(), value ) );
 
-        return Arrays.asList( tag );
+        return Collections.singletonList( tag );
     }
 
     private TagConfiguration toTagConfiguration( Class<? extends Annotation> annotationType ) {
@@ -629,7 +653,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
             return;
         }
 
-        List<Tag> tags = toTags( tagConfig, Optional.<Annotation>absent() );
+        List<Tag> tags = toTags( tagConfig, Optional.empty() );
         if( tags.isEmpty() ) {
             return;
         }

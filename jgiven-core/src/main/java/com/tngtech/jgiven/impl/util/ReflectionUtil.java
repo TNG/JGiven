@@ -1,24 +1,28 @@
 package com.tngtech.jgiven.impl.util;
 
-import static java.lang.String.format;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
-import java.util.Arrays;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 import com.google.common.base.Throwables;
-import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
 import com.tngtech.jgiven.exception.JGivenInjectionException;
 import com.tngtech.jgiven.exception.JGivenUserException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static java.lang.String.format;
 
 public class ReflectionUtil {
     private static Logger log = LoggerFactory.getLogger( ReflectionUtil.class );
@@ -27,14 +31,11 @@ public class ReflectionUtil {
      * Iterates over all fields of the given class and all its super classes
      * and calls action.act() for the fields that are annotated with the given annotation.
      */
-    public static void forEachField( final Object object, Class<?> clazz, final FieldPredicate predicate, final FieldAction action ) {
-        forEachSuperClass( clazz, new ClassAction() {
-            @Override
-            public void act( Class<?> clazz ) throws Exception {
-                for( Field field : clazz.getDeclaredFields() ) {
-                    if( predicate.isTrue( field ) ) {
-                        action.act( object, field );
-                    }
+    public static void forEachField( final Object object, Class<?> clazz, final FieldPredicate predicate, final FieldAction action ){
+        forEachSuperClass( clazz, clazzAction -> {
+            for( Field field : clazzAction.getDeclaredFields() ) {
+                if( predicate.isTrue( field ) ) {
+                    action.act( object, field );
                 }
             }
         } );
@@ -45,14 +46,11 @@ public class ReflectionUtil {
      * and calls action.act() for the methods that are annotated with the given annotation.
      */
     public static void forEachMethod( final Object object, Class<?> clazz, final Class<? extends Annotation> annotation,
-            final MethodAction action ) {
-        forEachSuperClass( clazz, new ClassAction() {
-            @Override
-            public void act( Class<?> clazz ) throws Exception {
-                for( Method method : clazz.getDeclaredMethods() ) {
-                    if( method.isAnnotationPresent( annotation ) ) {
-                        action.act( object, method );
-                    }
+            final MethodAction action ){
+        forEachSuperClass( clazz, clazzAction -> {
+            for( Method method : clazzAction.getDeclaredMethods() ) {
+                if( method.isAnnotationPresent( annotation ) ) {
+                    action.act( object, method );
                 }
             }
         } );
@@ -62,7 +60,7 @@ public class ReflectionUtil {
      * Iterates over all super classes of the given class (including the class itself)
      * and calls action.act() for these classes.
      */
-    public static void forEachSuperClass( Class<?> clazz, ClassAction action ) {
+    public static void forEachSuperClass( Class<?> clazz, ClassAction action ){
         try {
             action.act( clazz );
             Class<?> superclass = clazz.getSuperclass();
@@ -75,40 +73,27 @@ public class ReflectionUtil {
 
     }
 
-    public static FieldPredicate hasAtLeastOneAnnotation( final Class<? extends Annotation>... annotation ) {
-        return new FieldPredicate() {
-            @Override
-            public boolean isTrue( Field field ) throws Exception {
-                for( Class<? extends Annotation> clazz : annotation ) {
-                    if( field.isAnnotationPresent( clazz ) ) {
-                        return true;
-                    }
+    public static FieldPredicate hasAtLeastOneAnnotation( final Class<? extends Annotation>... annotation ){
+        return field -> {
+            for( Class<? extends Annotation> clazz : annotation ) {
+                if( field.isAnnotationPresent( clazz ) ) {
+                    return true;
                 }
-
-                return false;
             }
+
+            return false;
         };
     }
 
-    public static FieldPredicate allFields() {
-        return new FieldPredicate() {
-            @Override
-            public boolean isTrue( Field field ) throws Exception {
-                return true;
-            }
-        };
+    public static FieldPredicate allFields(){
+        return field -> true;
     }
 
-    public static FieldPredicate nonStaticField() {
-        return new FieldPredicate() {
-            @Override
-            public boolean isTrue( Field field ) throws Exception {
-                return !Modifier.isStatic( field.getModifiers() );
-            }
-        };
+    public static FieldPredicate nonStaticField(){
+        return field -> !Modifier.isStatic( field.getModifiers() );
     }
 
-    public static boolean hasConstructor( Class<?> type, Class<?>... parameterTypes ) {
+    public static boolean hasConstructor( Class<?> type, Class<?>... parameterTypes ){
         try {
             type.getDeclaredConstructor( parameterTypes );
             return true;
@@ -133,9 +118,9 @@ public class ReflectionUtil {
         void act( Object object, Method method ) throws Exception;
     }
 
-    public static Optional<Method> findMethodTransitively( Class<?> clazz, String methodName ) {
+    public static Optional<Method> findMethodTransitively( Class<?> clazz, String methodName ){
         if( clazz == null ) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
         try {
@@ -146,11 +131,11 @@ public class ReflectionUtil {
 
     }
 
-    public static <T> T newInstance( Class<T> type ) {
+    public static <T> T newInstance( Class<T> type ){
         return newInstance( type, new Class<?>[0] );
     }
 
-    public static <T> T newInstance( Class<T> type, Class<?>[] parameterTypes, Object... parameterValues ) {
+    public static <T> T newInstance( Class<T> type, Class<?>[] parameterTypes, Object... parameterValues ){
         try {
             Constructor<T> constructor = type.getDeclaredConstructor( parameterTypes );
             constructor.setAccessible( true );
@@ -166,7 +151,7 @@ public class ReflectionUtil {
         }
     }
 
-    public static void invokeMethod( Object object, Method method, String errorDescription ) {
+    public static void invokeMethod( Object object, Method method, String errorDescription ){
         log.debug( "Executing method %s of class %s", method, object.getClass() );
 
         makeAccessible( method, errorDescription );
@@ -200,47 +185,42 @@ public class ReflectionUtil {
      * @param errorDescription customizable part of logged error message
      * @return a {@link List} containing all the found field values (never {@code null})
      */
-    public static List<Object> getAllNonStaticFieldValuesFrom( final Class<?> clazz, final Object target, final String errorDescription ) {
+    public static List<Object> getAllNonStaticFieldValuesFrom( final Class<?> clazz, final Object target, final String errorDescription ){
         return getAllFieldValues( target, getAllNonStaticFields( clazz ), errorDescription );
     }
 
-    private static Function<Field, Object> getFieldValueFunction( final Object target, final String errorDescription ) {
-        return new Function<Field, Object>() {
-            @Override
-            public Object apply( Field field ) {
-                return getFieldValueOrNull(field, target, errorDescription);
-            }
-        };
+    private static Function<Field, Object> getFieldValueFunction( final Object target, final String errorDescription ){
+        return field -> getFieldValueOrNull( field, target, errorDescription );
     }
 
-    public static Object getFieldValueOrNull(String fieldName, Object target, String errorDescription) {
+    public static Object getFieldValueOrNull( String fieldName, Object target, String errorDescription ){
         try {
-            Field field = target.getClass().getDeclaredField(fieldName);
-            return getFieldValueOrNull(field, target, errorDescription);
-        } catch (Exception e) {
+            Field field = target.getClass().getDeclaredField( fieldName );
+            return getFieldValueOrNull( field, target, errorDescription );
+        } catch( Exception e ) {
             log.warn(
                     format( "Not able to access field '%s'." + errorDescription, fieldName ), e );
             return null;
         }
     }
 
-    public static Object getFieldValueOrNull(Field field, Object target, String errorDescription) {
+    public static Object getFieldValueOrNull( Field field, Object target, String errorDescription ){
         makeAccessible( field, "" );
         try {
             return field.get( target );
         } catch( IllegalAccessException e ) {
             log.warn(
-                format( "Not able to access field '%s'." + errorDescription, toReadableString( field ) ), e );
+                    format( "Not able to access field '%s'." + errorDescription, toReadableString( field ) ), e );
             return null;
         }
     }
 
-    public static List<Field> getAllNonStaticFields( Class<?> clazz ) {
+    public static List<Field> getAllNonStaticFields( Class<?> clazz ){
         final List<Field> result = Lists.newArrayList();
 
         forEachField( null, clazz, nonStaticField(), new FieldAction() {
             @Override
-            public void act( Object target, Field field ) throws Exception {
+            public void act( Object target, Field field ) throws Exception{
                 result.add( field );
             }
         } );
@@ -248,21 +228,19 @@ public class ReflectionUtil {
         return result;
     }
 
-    public static List<Object> getAllFieldValues( Object target, Iterable<Field> fields, String errorDescription ) {
-        return Lists.newArrayList( FluentIterable.from( fields ).transform(
-            getFieldValueFunction( target, errorDescription ) ) );
+    public static List<Object> getAllFieldValues( Object target, Iterable<Field> fields, String errorDescription ){
+        return StreamSupport.stream( fields.spliterator(), false )
+                .map( getFieldValueFunction( target, errorDescription ) )
+                .collect( Collectors.toList() );
     }
 
-    public static List<String> getAllFieldNames( Iterable<Field> fields ) {
-        return FluentIterable.from( fields ).transform( new Function<Field, String>() {
-            @Override
-            public String apply( Field input ) {
-                return input.getName();
-            }
-        } ).toList();
+    public static List<String> getAllFieldNames( Iterable<Field> fields ){
+        return StreamSupport.stream( fields.spliterator(), false )
+                .map( Field::getName )
+                .collect( Collectors.toList() );
     }
 
-    public static void setField( Field field, Object object, Object value, String errorDescription ) {
+    public static void setField( Field field, Object object, Object value, String errorDescription ){
         makeAccessible( field, errorDescription );
         try {
             field.set( object, value );
@@ -278,17 +256,17 @@ public class ReflectionUtil {
         }
     }
 
-    public static void makeAccessible( AccessibleObject object, String errorDescription ) {
+    public static void makeAccessible( AccessibleObject object, String errorDescription ){
         try {
             object.setAccessible( true );
         } catch( SecurityException e ) {
             log.debug( "Caught exception: ", e );
             log.warn( "Could not make {} accessible, trying to access it nevertheless and hoping for the best.",
-                toReadableString( object ), errorDescription );
+                    toReadableString( object ), errorDescription );
         }
     }
 
-    public static String toReadableString( AccessibleObject object ) {
+    public static String toReadableString( AccessibleObject object ){
         if( object instanceof Method ) {
             Method method = (Method) object;
             return "method '" + method.getName() + "' of class '" + method.getDeclaringClass().getSimpleName() + "'";
@@ -302,14 +280,9 @@ public class ReflectionUtil {
         return null;
     }
 
-    public static List<Method> getNonStaticMethod( Method[] declaredMethods ) {
-        return FluentIterable.from( Arrays.asList( declaredMethods ) )
-            .filter( new Predicate<Method>() {
-                @Override
-                public boolean apply( Method input ) {
-                    return ( input.getModifiers() & Modifier.STATIC ) == 0;
-                }
-            } )
-            .toList();
+    public static List<Method> getNonStaticMethod( Method[] declaredMethods ){
+        return Arrays.stream( declaredMethods )
+                .filter( input -> ( input.getModifiers() & Modifier.STATIC ) == 0 )
+                .collect( Collectors.toList() );
     }
 }

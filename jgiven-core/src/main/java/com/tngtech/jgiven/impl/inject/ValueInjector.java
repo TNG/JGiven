@@ -1,15 +1,5 @@
 package com.tngtech.jgiven.impl.inject;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.tngtech.jgiven.impl.util.ReflectionUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
@@ -18,6 +8,15 @@ import com.tngtech.jgiven.annotation.ScenarioState.Resolution;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
 import com.tngtech.jgiven.exception.JGivenMissingRequiredScenarioStateException;
 import com.tngtech.jgiven.impl.util.FieldCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Used by Scenario to inject and read values from objects.
@@ -31,7 +30,7 @@ public class ValueInjector {
      * Caches all classes that have been already validated for ambiguous resolution.
      * This avoids duplicate validations of the same class.
      */
-    private static final ConcurrentHashMap<Class<?>, Boolean> validatedClasses = new ConcurrentHashMap<Class<?>, Boolean>();
+    private static final ConcurrentHashMap<Class<?>, Boolean> validatedClasses = new ConcurrentHashMap<>();
 
     /**
      * @throws AmbiguousResolutionException when multiple fields with the same resolution exist in the given object
@@ -70,7 +69,9 @@ public class ValueInjector {
             .get( object.getClass() )
             .getFieldsWithAnnotation( ScenarioState.class, ProvidedScenarioState.class, ExpectedScenarioState.class );
 
-        return Lists.transform( scenarioFields, ScenarioStateField.fromField );
+        return scenarioFields.stream()
+                .map( ScenarioStateField.fromField )
+                .collect( toList() );
     }
 
     @SuppressWarnings( "unchecked" )
@@ -135,5 +136,4 @@ public class ValueInjector {
 
         return state.getValueByType( field.getField().getType() );
     }
-
 }

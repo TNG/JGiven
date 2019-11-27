@@ -1,16 +1,15 @@
 package com.tngtech.jgiven.report.impl;
 
-import java.io.File;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Optional;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
 import com.tngtech.jgiven.report.json.ScenarioJsonWriter;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.text.PlainTextReporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.Optional;
 
 public class CommonReportHelper {
     private static final Logger log = LoggerFactory.getLogger( CommonReportHelper.class );

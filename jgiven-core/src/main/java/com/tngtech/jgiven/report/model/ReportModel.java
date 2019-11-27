@@ -1,12 +1,5 @@
 package com.tngtech.jgiven.report.model;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -17,6 +10,13 @@ import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class ReportModel {
     /**
@@ -69,7 +69,7 @@ public class ReportModel {
                 return Optional.of( model );
             }
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     public StepModel getFirstStepModelOfLastScenario() {
