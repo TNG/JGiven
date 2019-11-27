@@ -1,0 +1,37 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.3.61"
+    id "com.tngtech.jgiven.gradle-plugin" version "0.18.2"
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.compilerArgs += '-parameters'
+    options.encoding = 'UTF-8'
+}
+
+ext {
+    junit5Version = '5.2.0'
+    jgivenVersion = version
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+ }
+
+dependencies {
+    testCompile 'com.tngtech.jgiven:jgiven-junit5:' + jgivenVersion
+    testCompile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:' + junit5Version
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:' + junit5Version
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy(jgivenTestReport)
+}
