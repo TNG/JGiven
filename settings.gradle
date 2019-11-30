@@ -7,9 +7,16 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         jcenter()
+        google()
         maven {
             name "JCenter Gradle Plugins"
             url "https://dl.bintray.com/gradle/gradle-plugins"
+        }
+        maven {
+           url "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+           url "https://oss.sonatype.org/content/repositories/staging/"
         }
     }
 }

@@ -1,5 +1,5 @@
 plugins {
-    id 'com.tngtech.jgiven.gradle-plugin'
+  id "com.tngtech.jgiven.gradle-plugin" version "$version"
 }
 
 apply plugin: 'java'

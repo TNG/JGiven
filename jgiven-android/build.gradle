@@ -4,10 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath "com.android.tools.build:gradle:3.5.2"
     }
 }
 
@@ -20,10 +17,14 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.2"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 26
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -39,23 +40,30 @@ android {
     }
     lintOptions {
           abortOnError false
-      }
+    }
+
+    dexOptions {
+        additionalParameters '--debug'
+    }
 
 }
 
 dependencies {
-    implementation "junit:junit:$junitVersion"
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    compile('com.android.support.test:rules:0.5') {
+    api "com.google.guava:guava:$guavaAndroidVersion"
+    api("net.bytebuddy:byte-buddy-android:$byteBuddyVersion")
+    api "junit:junit:$junitVersion"
+    implementation "com.android.support:appcompat-v7:$androidBuildToolsVersion"
+    implementation('com.android.support.test:rules:0.5') {
         exclude group: "junit"
     }
-    compile project(path: ':jgiven-junit')
-    compile project(path: ':jgiven-core')
-    //maven jar had junit bundled with it causing multidex issues, also removed unit tests so they are not cluttered
-    compile files('libs/dx-1.7.jar')
-    compile(('net.bytebuddy:byte-buddy-android:1.5.1')) {
-        exclude group: "com.google.android.tools"
-        exclude group: "junit"
+    //implementation files('libs/dx-1.7.jar')
+    implementation(project(path: ':jgiven-junit')) {
+        exclude group: "com.google.guava"
+        exclude group: "net.bytebuddy"
+    }
+    implementation(project(path: ':jgiven-core')) {
+        exclude group: "com.google.guava"
+        exclude group: "net.bytebuddy"
     }
 }
 

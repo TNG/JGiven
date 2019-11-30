@@ -27,15 +27,12 @@ allprojects {
     repositories {
         jcenter()
     }
-}
 
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-        tasks.withType(Javadoc) {
-            options.addStringOption('Xdoclint:none', '-quiet')
-        }
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
     }
 }
+
 
 asciidoctor {
     sourceDir = file('docs')
@@ -63,10 +60,16 @@ subprojects {
         jansiVersion = '1.15'
         gsonVersion = '2.8.6'
         guavaVersion = '28.1-jre'
+        guavaAndroidVersion = '28.1-android'
         springVersion = '5.2.1.RELEASE'
         jacocoVersion = '0.8.5'
         quickcheckVersion = '0.6'
         hsqldbVersion = '2.3.2'
+        byteBuddyVersion = '1.10.2'
+        androidGradleVersion= '3.1.0'
+        androidCompileSdkVersion= 27
+        androidBuildToolsVersion= '27.0.2'
+
     }
 }
 

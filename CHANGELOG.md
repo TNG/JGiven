@@ -1,12 +1,15 @@
 # v1.0.0
 
+This is the first major version update of JGiven. It does not introduce major new features, but it introduces backwards-incompatible changes
+due to the removal of all deprecated classes and methods and the drop of Java 7 support.
+
 ## New Features
 
 * Java 12 is supported now [#397](https://github.com/TNG/JGiven/pull/397)
 * The `CurrentStep` interface has a new method `setName` to change the name of a step programmatically [#386](https://github.com/TNG/JGiven/issues/386)
 * Updated the Guava dependency to v27.1-jre [#398](https://github.com/TNG/JGiven/pull/398)
 * Added `DualScenarioTest` [#406](https://github.com/TNG/JGiven/pull/406) (thanks to jangalinksi)
-* Upgraded Gradle Plugin to support Gradle 5 [#381](https://github.com/TNG/JGiven/pull/381) (thanks to mustaine)
+* Upgraded Gradle Plugin to support Gradle 5 and 6 [#381](https://github.com/TNG/JGiven/pull/381) (thanks to mustaine)
 * `@Pending` can now be added to the test class to make all scenarios of that class pending [#403](https://github.com/TNG/JGiven/issues/403)
 * Added new option 'jgiven.report.dry-run' to generate a report without really executing the tests [#435](https://github.com/TNG/JGiven/issues/435) (thanks to mustaine)
 * Added Portuguese scenario and stage classes [#423](https://github.com/TNG/JGiven/issues/423) (thanks to gandadil)
@@ -23,7 +26,6 @@ If you are using Spring 5 with JUnit 5 then use the `jgiven-spring-junit5` modul
 * Calling stage methods annotated with `@DoNotIntercept` or declared within `java.lang.Object` will not trigger
 a stage change anymore [#385](https://github.com/TNG/JGiven/pull/385)
 * The Guava dependency changed to v27.1-jre. This might lead to problems in case your project also depends on Guava
-* Removed all deprecated methods and classes
 
 ## Cleaned up Module Dependencies
 
@@ -34,6 +36,8 @@ dependencies to your build:
 
 ## Removed Deprecated Features
 
+All deprecated methods and classes have been removed. Please adapt your code according to the JavaDoc documentation.
+
 * Removed `@NotImplementedYet` annotation. Use `@Pending` instead.
 * Removed `@CaseDescription` annotation. Use `@CaseAs` instead.
 * Removed `CaseDescriptionProvider`. Use `CaseAsProvider` instead.
@@ -42,8 +46,6 @@ dependencies to your build:
 * Removed `ScenarioExecutionRule`. Use `JGivenMethodRule` instead.
 * Removed `ScenarioReportRule`. Use `JGivenClassRule` instead.
 * Removed `SpringCanWire`
-
-In addition, all deprecated methods have been removed.
 
 ## Fixed Issues
 
