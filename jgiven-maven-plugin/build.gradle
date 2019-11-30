@@ -24,7 +24,7 @@ task generateMavenPlugin(type: CrossPlatformExec, dependsOn: generatePom) {
     // currenlty it seems to be the more or less only clean solution
     // to generate a plugin.xml file to use maven directly
     // if anyone has a better solution please let us know!
-    buildCommand 'mvn', '-U', '-f', 'build/maven/pom.xml', 'plugin:descriptor'
+    buildCommand 'mvn', '-nsu', '-U', '-f', 'build/maven/pom.xml', 'plugin:descriptor'
 }
 
 generateMavenPlugin.onlyIf {
