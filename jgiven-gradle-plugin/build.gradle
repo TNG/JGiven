@@ -6,6 +6,8 @@ plugins {
 dependencies {
     compile project(':jgiven-core')
     compile project(':jgiven-html5-report')
+    api "com.google.guava:guava:$guavaVersion"
+    api "com.google.code.gson:gson:$gsonVersion"
 
     testCompile gradleTestKit()
     testCompile project(':jgiven-junit')
@@ -25,6 +27,7 @@ pluginBundle {
     vcsUrl = 'https://github.com/TNG/JGiven.git'
     description = 'JGiven Gradle plugin'
     tags = ['jgiven', 'testing','bdd','junit','testng']
+    //version = '1.0.0-RC1.4'
 
     plugins {
         jgivenPlugin {
