@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.gradle;
 
-import com.google.common.util.concurrent.Callables;
 import com.tngtech.jgiven.gradle.internal.JGivenHtmlReportImpl;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.impl.util.WordUtil;
@@ -51,7 +50,12 @@ public class JGivenPlugin implements Plugin<Project> {
         project.getTasks().withType( JGivenReportTask.class,
                 reportTask -> reportTask.getReports().all( (Action<Report>) report -> {
                     ConventionMapping mapping = ( (IConventionAware) report ).getConventionMapping();
-                    mapping.map( "enabled", Callables.returning( report.getName().equals( JGivenHtmlReportImpl.NAME ) ) );
+                    mapping.map( "enabled", new Callable<Boolean>() {
+                        @Override
+                        public Boolean call() {
+                            return report.getName().equals( JGivenHtmlReportImpl.NAME );
+                        }
+                    } );
                 } ) );
     }
 
