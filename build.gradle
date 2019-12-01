@@ -258,6 +258,7 @@ configure(subprojects) {
     }
 
     uploadArchives {
+
         repositories {
             mavenDeployer {
                 beforeDeployment { deployment ->
