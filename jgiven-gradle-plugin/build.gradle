@@ -4,13 +4,13 @@ plugins {
 }
 
 dependencies {
-    compile project(':jgiven-core')
-    compile project(':jgiven-html5-report')
-    api "com.google.guava:guava:$guavaVersion"
-    api "com.google.code.gson:gson:$gsonVersion"
+    implementation project(':jgiven-core')
+    implementation project(':jgiven-html5-report')
+    implementation "com.google.guava:guava:$guavaVersion"
+    implementation "com.google.code.gson:gson:$gsonVersion"
 
-    testCompile gradleTestKit()
-    testCompile project(':jgiven-junit')
+    testImplementation gradleTestKit()
+    testImplementation project(':jgiven-junit')
 }
 
 gradlePlugin {
