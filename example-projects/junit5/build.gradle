@@ -1,5 +1,5 @@
 plugins {
-  id "com.tngtech.jgiven.gradle-plugin" version "$version"
+  id "com.tngtech.jgiven.gradle-plugin" version "${version}"
 }
 
 apply plugin: 'java'
@@ -20,6 +20,7 @@ ext {
 
 repositories {
     mavenLocal()
+    mavenCentral()
     jcenter()
  }
 
