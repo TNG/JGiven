@@ -271,41 +271,43 @@ configure(subprojects) {
                 snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
                     authentication(userName: sonatypeUsername, password: sonatypePassword)
                 }
-                pom {
-                    project {
-                        name project.name
-                        url 'http://jgiven.org'
+                afterEvaluate {
+                    pom {
+                        project {
+                            name project.name
+                            url 'http://jgiven.org'
 
-                        scm {
-                            url 'scm:git@github.com:TNG/jgiven.git'
-                            connection 'scm:git@github.com:TNG/jgiven.git'
-                            developerConnection 'scm:git@github.com:TNG/jgiven.git'
-                        }
+                            scm {
+                                url 'scm:git@github.com:TNG/jgiven.git'
+                                connection 'scm:git@github.com:TNG/jgiven.git'
+                                developerConnection 'scm:git@github.com:TNG/jgiven.git'
+                            }
 
-                        licenses {
-                            license {
-                                name 'The Apache Software License, Version 2.0'
-                                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                                distribution 'repo'
+                            licenses {
+                                license {
+                                    name 'The Apache Software License, Version 2.0'
+                                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                                    distribution 'repo'
+                                }
+                            }
+
+                            developers {
+                                developer {
+                                    id 'janschaefer'
+                                    name 'Jan Schäfer'
+                                }
                             }
                         }
-
-                        developers {
-                            developer {
-                                id 'janschaefer'
-                                name 'Jan Schäfer'
+                        whenConfigured { pom ->
+                            def junitDep = pom.dependencies.find { dep -> dep.groupId == 'junit' && dep.artifactId == 'junit' }
+                            if (junitDep != null) {
+                                junitDep.with {
+                                    version = '[4.9,4.12]'
+                                    scope = 'provided'
+                                }
                             }
+                            pom.dependencies.removeAll(pom.dependencies.findAll { dep -> dep.scope in ['test'] })
                         }
-                    }
-                    whenConfigured { pom ->
-                        def junitDep = pom.dependencies.find { dep -> dep.groupId == 'junit' && dep.artifactId == 'junit' }
-                        if (junitDep != null) {
-                            junitDep.with {
-                                version = '[4.9,4.12]'
-                                scope = 'provided'
-                            }
-                        }
-                        pom.dependencies.removeAll(pom.dependencies.findAll { dep -> dep.scope in ['test'] })
                     }
                 }
             }
