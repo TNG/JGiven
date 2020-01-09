@@ -8,6 +8,7 @@ description = "Module for writing JGiven tests with Spock"
 
 dependencies {
     api project(':jgiven-junit')
+    implementation 'org.codehaus.groovy:groovy:2.5.8'
     implementation 'org.spockframework:spock-core:1.3-groovy-2.5'
     testCompile project(':jgiven-html5-report')
 }
