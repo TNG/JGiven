@@ -358,4 +358,3 @@ overallJacocoReport.dependsOn {
 coveralls.jacocoReportPath = 'build/reports/jacoco/overallJacocoReport/overallJacocoReport.xml'
 coveralls.sourceDirs = ["jgiven-core/src/main/java"]
 coveralls.saveAsFile = true
-
