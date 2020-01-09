@@ -12,10 +12,7 @@ script:
     - "./gradlew -i -s check -DjunitVersion=4.12"
 jdk:
     - openjdk13
-    - openjdk12
     - openjdk11
-    - openjdk10
-    - oraclejdk9
     - oraclejdk8
 after_success:
     - test "$TRAVIS_JDK_VERSION" == "oraclejdk8" && test "$TRAVIS_BRANCH" == "master" && test "$TRAVIS_PULL_REQUEST" == "false" && ./gradlew overallJacocoReport coveralls uploadArchives
