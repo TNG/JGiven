@@ -1,6 +1,7 @@
 plugins {
     id "java-gradle-plugin"
     id "com.gradle.plugin-publish" version "0.10.1"
+    id "groovy"
 }
 
 dependencies {
@@ -9,8 +10,9 @@ dependencies {
     implementation "com.google.guava:guava:$guavaVersion"
     implementation "com.google.code.gson:gson:$gsonVersion"
 
-    testImplementation gradleTestKit()
     testImplementation project(':jgiven-junit')
+    testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
+
 }
 
 gradlePlugin {
