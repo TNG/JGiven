@@ -16,13 +16,11 @@ Behavior-Driven Development (BDD) is a development method where business analyst
 
 In classical BDD tools for Java like [JBehave](http://jbehave.org) or [Cucumber](http://cukes.info) scenarios are written in plain text files. This allows non-developers to write scenarios, because no programming knowledge is required. To make scenarios executable, developers write so-called step-implementations. To bind plain text to step implementations regular expressions are used. For developers maintaining these executable scenarios has a high overhead that is not required if tests would be directly written in a programming language.
 
-Beside the classical BDD tools there are a number of tools for Java to write BDD tests in a programming language like Groovy ([easyb](http://easyb.org)) or Scala ([ScalaTest](http://www.scalatest.org)). To our knowledge, however, there is no BDD tool where scenarios can be written in plain Java.
-
-Finally, there are specification testing frameworks like [Spock](http://spock.org) (Groovy) or [LambdaBehave](http://richardwarburton.github.io/lambda-behave/) which are very developer-centric and good for unit-testing, but the generated reports are not in Given-When-Then form and are not easily readable by non-developers.
+Beside the classical BDD tools there are a number of tools for Java to write BDD tests in a programming language like Scala ([ScalaTest](http://www.scalatest.org)). To our knowledge, however, there is no BDD tool where scenarios can be written in plain Java.
 
 ## BDD with JGiven
 
-* Scenarios are written in standard Java code using a fluent, domain-specific API (no extra language like Scala or Groovy needed, no IDE plugin needed)
+* Scenarios are written in standard Java code using a fluent, domain-specific API (no extra language like Scala, no IDE plugin needed)
 * Java method names and parameters are parsed during test execution (no extra annotations needed)
 * Scenarios are executed by either JUnit or TestNG (no extra test runner needed)
 * Scenarios consist of so-called stages, which share state by injection, providing a modular way of writing Scenarios.
