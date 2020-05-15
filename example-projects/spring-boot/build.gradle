@@ -14,6 +14,11 @@ targetCompatibility = 1.8
 
 version = '1.0'
 
+wrapper {
+    gradleVersion = '6.0.1'
+    distributionType = Wrapper.DistributionType.ALL
+}
+
 repositories {
     mavenLocal()
     jcenter()
