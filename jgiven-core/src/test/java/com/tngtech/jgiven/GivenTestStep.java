@@ -19,14 +19,6 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     @ScenarioState
     CurrentStep currentStep;
 
-    public void some_integer_value( int someIntValue ) {
-        value1 = someIntValue;
-    }
-
-    public void another_integer_value( int anotherValue ) {
-        value2 = anotherValue;
-    }
-
     public void an_integer_value_set_in_a_substep( int substepValue ) {
         givenTestComposedStep.some_integer_value_in_the_substep( substepValue );
     }

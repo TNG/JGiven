@@ -28,10 +28,6 @@ public class WhenTestStep extends Stage<WhenTestStep> {
 
     public void something() {}
 
-    public void some_assertion_fails() {
-        assertThat( true ).isFalse();
-    }
-
     public void some_assumption_fails() {
         Assume.assumeTrue( false );
     }

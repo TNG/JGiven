@@ -17,7 +17,4 @@ public class ThenPlainTextOutput extends Stage<ThenPlainTextOutput> {
         Assertions.assertThat( plainTextOutput.replace( System.getProperty("line.separator"), "\n" ) ).contains(line);
         return this;
     }
-
-    public void the_data_table_has_one_line_for_the_arguments_of_each_case() {}
-
 }
