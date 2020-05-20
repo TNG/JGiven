@@ -68,10 +68,6 @@ public class GivenTestStep extends Stage<GivenTestStep> {
 
     }
 
-    public void some_step_fails( boolean fail ) {
-        assertThat( fail ).isFalse();
-    }
-
     public void a_step_with_a_table_parameter_and_primitive_array( @Table int... args ) {}
 
     @Table(columnTitles = { "custom" })
@@ -89,23 +85,17 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
-    public void another_quoted_string_value( @Quoted String anotherQuotedStringValue ) {
-
-    }
+    public void another_quoted_string_value( @Quoted String anotherQuotedStringValue ) { }
 
     public static class TableClass {
         public String value;
     }
 
-    public void some_data_table( @Table TableClass... param ) {
-
-    }
+    public void some_data_table( @Table TableClass... param ) { }
 
     public static class TestTableEntry {
         int some_field = 1;
     }
-
-    public void a_step_with_a_table_parameter( @Table TestTableEntry... args ) {}
 
     public static class CoffeePrice {
         String name;

@@ -23,10 +23,6 @@ public class WhenTestStep extends Stage<WhenTestStep> {
         intResult = value1 * value2;
     }
 
-    public void multiply_with_two() {
-        intResult = someIntValue * 2;
-    }
-
     public WhenTestStep something_happens() {
         return self();
     }
@@ -38,14 +34,6 @@ public class WhenTestStep extends Stage<WhenTestStep> {
     @AfterStage
     void someAfterStageMethod() {
         afterStageCalled++;
-    }
-
-    public WhenTestStep one_parameter_is_used( String paramA ) {
-        return self();
-    }
-
-    public WhenTestStep another_parameter_is_used( String paramB ) {
-        return self();
     }
 
 }

@@ -59,10 +59,6 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
         html5ReportConfig.setTargetDir( targetReportDir );
     }
 
-    public void the_report_generator_is_executed() {
-        the_report_generator_is_executed_with_format( Format.HTML5 );
-    }
-
     public SELF the_asciidoc_reporter_is_executed() {
         return the_report_generator_is_executed_with_format( Format.ASCIIDOC );
     }

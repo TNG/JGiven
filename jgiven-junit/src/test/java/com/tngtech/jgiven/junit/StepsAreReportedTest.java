@@ -147,13 +147,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         }
 
         @Pending
-        public void some_pending_step() {
-
-        }
-
-        public void a_step_fails() {
-            assertThat( true ).isFalse();
-        }
+        public void some_pending_step() { }
 
         @Hidden
         public void aHiddenStep() {}

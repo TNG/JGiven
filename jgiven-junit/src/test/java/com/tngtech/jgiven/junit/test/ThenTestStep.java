@@ -15,15 +15,9 @@ public class ThenTestStep extends Stage<ThenTestStep> {
         assertThat( intResult > 0 ).isEqualTo( b );
     }
 
-    public void sms_and_emails_exist() {}
-
     public void the_result_is( int i ) {
         assertThat( intResult ).isEqualTo( i );
     }
 
     public void something() {}
-
-    public void something_is_allowed( boolean isAllowed ) {
-
-    }
 }
