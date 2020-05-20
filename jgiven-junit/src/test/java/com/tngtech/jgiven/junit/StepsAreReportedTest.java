@@ -147,7 +147,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         }
 
         @Pending
-        public void some_pending_step() { }
+        public TestSteps some_pending_step() {return self();}
 
         @Hidden
         public void aHiddenStep() {}
