@@ -27,9 +27,7 @@ public class WhenTestStep extends Stage<WhenTestStep> {
         return self();
     }
 
-    public void an_exception_is_thrown() {
-        throw new RuntimeException();
-    }
+    public WhenTestStep an_exception_is_thrown() { throw new RuntimeException(); }
 
     @AfterStage
     void someAfterStageMethod() {

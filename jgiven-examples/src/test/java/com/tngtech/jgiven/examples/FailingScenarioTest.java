@@ -19,8 +19,9 @@ public class FailingScenarioTest extends SimpleScenarioTest<FailingScenarioTest.
     }
 
     public static class Steps {
-        public void multi_line_error_message() {
+        public Steps multi_line_error_message() {
             assertThat(true).as("This\nmessage\nhas\nmultiple lines").isFalse();
+            return this;
         }
     }
 }

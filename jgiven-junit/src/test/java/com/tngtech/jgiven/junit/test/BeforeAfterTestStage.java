@@ -38,9 +38,7 @@ public class BeforeAfterTestStage {
 
     public void something() {}
 
-    public void someFailingStep() {
-        throw new IllegalStateException( "failed step" );
-    }
+    public BeforeAfterTestStage someFailingStep() {throw new IllegalStateException( "failed step" );}
 
     public class RuleForTesting {
         public int afterCalled;

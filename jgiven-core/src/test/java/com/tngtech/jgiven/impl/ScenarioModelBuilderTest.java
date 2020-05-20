@@ -466,9 +466,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
     }
 
     static class FailingTestStage {
-        public void a_failing_test() {
-            throw new IllegalArgumentException( "test error" );
-        }
+        public FailingTestStage a_failing_test() { throw new IllegalArgumentException( "test error" ); }
     }
 
     static class ExtendedGivenTestStep extends AbstractStage {
