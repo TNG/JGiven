@@ -296,6 +296,10 @@ configure(subprojects) {
                                     id 'janschaefer'
                                     name 'Jan Schäfer'
                                 }
+                                developer {
+                                    id 'l-1squared'
+                                    name 'Kristof Karhan'
+                                }
                             }
                         }
                         whenConfigured { pom ->
