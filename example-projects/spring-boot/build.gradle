@@ -31,14 +31,13 @@ ext {
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-web"
-    testCompile "com.tngtech.jgiven:jgiven-junit:$jgivenVersion"
-    testCompile "com.tngtech.jgiven:jgiven-spring-junit4:$jgivenVersion"
-    testCompile "org.assertj:assertj-core:$assertjVersion"
-    testCompile "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
-    testCompile "org.hsqldb:hsqldb:$hsqldbVersion"
-    testCompile "org.springframework.boot:spring-boot-starter-test"
-    testCompile "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation "com.tngtech.jgiven:jgiven-spring-junit4:$jgivenVersion"
+    testImplementation "org.assertj:assertj-core:$assertjVersion"
+    testImplementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
+    testImplementation "org.hsqldb:hsqldb:$hsqldbVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.springframework.boot:spring-boot-starter-data-jpa"
 }
 
 test.finalizedBy jgivenTestReport
