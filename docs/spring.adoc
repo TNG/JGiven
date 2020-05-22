@@ -22,7 +22,7 @@ on which JUnit version you are using. JUnit 5 is only supported with version 5 o
 [source,gradle,subs="verbatim,attributes"]
 ----
 dependencies {
-    testCompile("com.tngtech.jgiven:jgiven-spring-junit5:{version}")
+    testImplementation("com.tngtech.jgiven:jgiven-spring-junit5:{version}")
 }
 ----
 
@@ -43,7 +43,7 @@ This is all you have to do to configure Spring for JGiven.
 @EnableJGiven
 @Configuration
 public class MySpringConfig {
-   ...
+   //...
 }
 ----
 
@@ -73,13 +73,23 @@ Spring XML config.
 To now use JGiven in JUnit-based Spring Tests you should inherit from one of the provided tests classes:
 
    - `SpringScenarioTest`
-   - `SpringRuleScenarioTest`
+   - `SpringRuleScenarioTest` (JUnit4 only)
    - `SimpleSpringScenarioTest`
-   - `SimpleSpringRuleScenarioTest`
+   - `SimpleSpringRuleScenarioTest` (JUnit4 only)
 
 The test classes with `SpringRule` tests already include the Spring JUnit rules, thus you need to add these
 rules to your test class and you also don't have to specify the Spring JUnit runner.
+===== Example
 
+[source,java]
+----
+@SpringBootTest(classes={MockServletContext.class, MySpringConfig.class})
+@WebAppConfiguration
+@JGivenConfiguration(MyTestJGivenConfiguration.class)
+public class MySpringTest extends SimpleSpringScenarioTest<MySpringTest>{
+   //...
+}
+----
 If you cannot or don't want to inherit from these classes, you
 can copy the content of these classes (one method) into one of your test base classes.
 
