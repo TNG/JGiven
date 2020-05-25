@@ -95,10 +95,9 @@ rules to your test class and you also don't have to specify the Spring JUnit run
 
 [source,java]
 ----
-@SpringBootTest(classes={MockServletContext.class, MySpringTestConfig.class})
-@WebAppConfiguration
-@JGivenConfiguration(MyTestJGivenConfiguration.class)
-public class MySpringTest extends SimpleSpringScenarioTest<MySpringTest>{
+@SpringBootTest
+@ContextConfiguration(classes={MySpringTestConfig.class})
+class MySpringBootApplicationTest extends SimpleSpringScenarioTest<MyStage> {
    //...
 }
 ----
