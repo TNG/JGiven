@@ -21,7 +21,10 @@ The life-cycle of a scenario is as follows.
 
 ==== @BeforeScenario
 
-Methods annotated with `@BeforeScenario` are executed before any step of any stage of a scenario. This is useful for some general scenario setup. As an example you could initialize a WebDriver instance for Selenium tests or setup a database connection. Note that such methods are executed before injection of values. Thus the code cannot depend on scenario state fields.
+Methods annotated with `@BeforeScenario` are executed before any step of any stage of a scenario. This is useful for
+some general scenario setup. As an example, you could initialize a WebDriver instance for Selenium tests or setup
+a database connection. Note that such methods are executed before the injection of values.
+Thus, the annotated code must not depend on scenario state fields.
 
 [source,java]
 ----
@@ -30,7 +33,8 @@ include::{sourcedir}/userguide/MyWebDriverUsingStage.java[tags=start,indent=0]
 
 ==== @AfterScenario
 
-Analogous to `@BeforeScenario` there is the `@AfterScenario` annotation to execute a methods when a scenario has finished.
+Analogous to `@BeforeScenario` there is the `@AfterScenario` annotation to execute a methods when a
+scenario has finished.
 
 [source,java]
 ----
@@ -39,9 +43,14 @@ include::{sourcedir}/userguide/MyWebDriverUsingStage.java[tags=middle,indent=0]
 
 === @ScenarioRule
 
-`@BeforeScenario` and `@AfterScenario` methods are often used to setup and tear down some resource. If you want to reuse such a resource in another stage, you would have to copy these methods into that stage. To avoid that, JGiven offers a concept similar to JUnit rules. The idea is to have a separate class that only contains the before and after methods. This class can then be reused in multiple stages.
+`@BeforeScenario` and `@AfterScenario` methods are often used to setup and tear down some resource. If you want to
+reuse such a resource in another stage, you would have to copy these methods into that stage. To avoid that, JGiven
+offers a concept similar to JUnit rules. The idea is to have a separate class that only contains the before and after
+methods. This class can then be reused in multiple stages.
 
-A rule class can be any class that provides the methods `before()` and `after()`. This is compatible with JUnit’s `ExternalResource` class, which means that you can use classes like `TemporaryFolder` from JUnit directly in JGiven.
+A scenario rule class can be any class that provides the methods `before()` and `after()`. This is compatible with
+JUnit’s `ExternalResource` class, which means that you can use classes like `TemporaryFolder` from JUnit directly
+in JGiven.
 
 ==== Example
 
@@ -58,7 +67,8 @@ include::{sourcedir}/userguide/MyWebDriverUsingStage.java[tags=rule]
 
 ==== @BeforeStage
 
-Methods annotated with `@BeforeStage` are executed after injection, but before the first step method is called. This is useful for setup code that is required by all or most steps of a stage.
+Methods annotated with `@BeforeStage` are executed after injection, but before the first step method is called.
+This is useful for setting up code that is required by all or most steps of a stage.
 [source,java]
 ----
 @BeforeStage
@@ -69,7 +79,10 @@ public void setup() {
 
 ==== @AfterStage
 
-Analogous to `@BeforeStage` methods, methods can be annotated with `@AfterStage`. These methods are executed after all steps of a stage have been executed, but before extracting the values of scenario state fields. Thus you can prepare state for following stages in an `@AfterStage` method. A typical use case for this is to apply the builder pattern to build a certain object using step methods and build the final object in an `@AfterStage` method.
+Analogous to `@BeforeStage` methods, methods can be annotated with `@AfterStage`. These methods are executed after
+all steps of a stage have been executed, but before extracting the values of scenario state fields. Thus you can
+prepare state for following stages in an `@AfterStage` method. A typical use case for this is to apply the builder
+pattern to build a certain object using step methods and build the final object in an `@AfterStage` method.
 
 ==== Example
 
