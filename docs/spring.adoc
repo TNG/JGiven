@@ -9,8 +9,6 @@ If you're using JUnit, however, you need to inherit from a
 <<Use JGiven in JUnit-based Spring Tests, spring scenario class>>. Finally, if you want your test stages to act as
 Spring Beans, you need to add a <<Stages as Spring Beans, special annotation>> to them.
 
-
-
 === Install Dependency
 Spring support is provided by the `jgiven-spring-junit4` and the `jgiven-spring-junit5` dependencies,
 depending on which JUnit version you are using. JUnit 5 is only supported with version 5 of Spring.
