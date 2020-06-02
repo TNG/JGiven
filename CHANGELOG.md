@@ -5,13 +5,13 @@ due to the removal of all deprecated classes and methods and the drop of Java 7 
 
 ## New Features
 
-* Java 12 is supported now [#397](https://github.com/TNG/JGiven/pull/397)
+* Java 13 is supported now [#447](https://github.com/TNG/JGiven/pull/447) (thanks to jsalinaspolo)
 * The `CurrentStep` interface has a new method `setName` to change the name of a step programmatically [#386](https://github.com/TNG/JGiven/issues/386)
 * Updated the Guava dependency to v27.1-jre [#398](https://github.com/TNG/JGiven/pull/398)
 * Added `DualScenarioTest` [#406](https://github.com/TNG/JGiven/pull/406) (thanks to jangalinksi)
-* Upgraded Gradle Plugin to support Gradle 5 and 6 [#381](https://github.com/TNG/JGiven/pull/381) (thanks to mustaine)
+* Upgraded Gradle Plugin to support Gradle 5 and 6 [#381](https://github.com/TNG/JGiven/pull/381) (thanks to jsalinaspolo)
 * `@Pending` can now be added to the test class to make all scenarios of that class pending [#403](https://github.com/TNG/JGiven/issues/403)
-* Added new option 'jgiven.report.dry-run' to generate a report without really executing the tests [#435](https://github.com/TNG/JGiven/issues/435) (thanks to mustaine)
+* Added new option 'jgiven.report.dry-run' to generate a report without really executing the tests [#435](https://github.com/TNG/JGiven/issues/435) (thanks to jsalinaspolo)
 * Added Portuguese scenario and stage classes [#423](https://github.com/TNG/JGiven/issues/423) (thanks to gandadil)
 
 ### Spring 5 with JUnit 5
@@ -47,9 +47,14 @@ All deprecated methods and classes have been removed. Please adapt your code acc
 * Removed `ScenarioReportRule`. Use `JGivenClassRule` instead.
 * Removed `SpringCanWire`
 
+## Backwards Incompatible Changes
+* Java 9, 10, 12 are not supported anymore (thanks to jsalinaspolo)
+
 ## Fixed Issues
 
 * Make it easier to copy the stack trace from an error message [#380](https://github.com/TNG/JGiven/issues/380)
+* `TestEntitiyManager` now initialized correctly [#415](https://github.com/TNG/JGiven/issues/415) (thanks to leimer)
+* make tasks in the JGiven-gradle plugin cacheable [#450](https://github.com/TNG/JGiven/pull/450) (thanks to jsalinaspolo)
 
 # v0.18.2
 
