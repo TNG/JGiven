@@ -78,23 +78,27 @@ Spring XML config.
 ----
 
 === Use JGiven in JUnit-based Spring Tests
+==== JUnit 4
+In order to use JGiven in JUnit 4 based Spring tests, you should inherit from:
 
-To now use JGiven in JUnit-based Spring Tests you should inherit from one of the provided tests classes:
+    - `SpringRuleScenarioTest`
+    - `SimpleSpringRuleScenarioTest`
+
+These base classes contain all the methods and JUnit rules necessary to run JGiven with Spring.
+
+==== JUnit 5
+To use JGiven in JUnit 5 based Spring Tests you should inherit from one of the provided tests classes:
 
    - `SpringScenarioTest`
-   - `SpringRuleScenarioTest` (JUnit 4 only)
    - `SimpleSpringScenarioTest`
-   - `SimpleSpringRuleScenarioTest` (JUnit 4 only)
 
-The test classes with `SpringRule` tests already include the Spring JUnit rules, thus you need to add these
-rules to your test class and you also don't have to specify the Spring JUnit runner.
+Both classes contain all the annotations and methods necessary to run JGiven with Spring. The `SimpleSpringScenarioTest` allows to have all stages in a single stage class, while the `SpringScenario-Test` allows to have a class for each stage.
 
 ===== Example
 
 [source,java]
 ----
-@SpringBootTest
-@ContextConfiguration(classes={MySpringTestConfig.class})
+@SpringBootTest(classes={MySpringTestConfig.class})
 class MySpringBootApplicationTest extends SimpleSpringScenarioTest<MyStage> {
    //...
 }
@@ -122,4 +126,4 @@ public class MyStage {
 
 === Example Project
 
-You find a complete example project on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/spring-boot
+You find a complete example project, a SpringBoot webapp tested with JGiven, on GitHub: https://github.com/TNG/JGiven/tree/master/example-projects/spring-boot
