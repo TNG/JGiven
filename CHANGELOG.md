@@ -47,9 +47,6 @@ All deprecated methods and classes have been removed. Please adapt your code acc
 * Removed `ScenarioReportRule`. Use `JGivenClassRule` instead.
 * Removed `SpringCanWire`
 
-## Backwards Incompatible Changes
-* Java 9, 10, 12 are not supported anymore (thanks to jsalinaspolo)
-
 ## Fixed Issues
 
 * Make it easier to copy the stack trace from an error message [#380](https://github.com/TNG/JGiven/issues/380)
