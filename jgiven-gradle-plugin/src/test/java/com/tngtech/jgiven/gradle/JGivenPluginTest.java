@@ -1,6 +1,8 @@
 package com.tngtech.jgiven.gradle;
 
 import com.google.common.base.Charsets;
+import com.google.common.io.CharSink;
+import com.google.common.io.FileWriteMode;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.tngtech.jgiven.Stage;
@@ -11,6 +13,7 @@ import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.junit.ScenarioTest;
 import org.gradle.testkit.runner.BuildResult;
+import org.gradle.testkit.runner.BuildTask;
 import org.gradle.testkit.runner.GradleRunner;
 import org.gradle.testkit.runner.TaskOutcome;
 import org.junit.Rule;
@@ -22,6 +25,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -163,18 +167,19 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
         @ExpectedScenarioState
         private TemporaryFolder testProjectDir;
 
-        File buildFile;
+        CharSink buildFile;
 
         @BeforeStage
         private void setup() throws IOException {
-            buildFile = testProjectDir.newFile( "build.gradle" );
+            File actualBuildFile = testProjectDir.newFile( "build.gradle" );
+            buildFile = Files.asCharSink(actualBuildFile, Charsets.UTF_8, FileWriteMode.APPEND);
         }
 
         public Given the_plugin_is_applied() throws IOException {
-            Files.append( "plugins { id 'java'; id 'com.tngtech.jgiven.gradle-plugin' }\n", buildFile, Charsets.UTF_8 );
-            Files.append( "repositories { mavenCentral() }\n", buildFile, Charsets.UTF_8 );
-            Files.append( "dependencies { testCompile 'com.tngtech.jgiven:jgiven-junit:0.12.1' }\n", buildFile, Charsets.UTF_8 );
-            Files.append( "dependencies { testCompile 'junit:junit:4.12' }\n", buildFile, Charsets.UTF_8 );
+            buildFile.write("plugins { id 'java'; id 'com.tngtech.jgiven.gradle-plugin' }\n");
+            buildFile.write("repositories { mavenCentral() }\n");
+            buildFile.write("dependencies { testCompile 'com.tngtech.jgiven:jgiven-junit:0.12.1' }\n");
+            buildFile.write("dependencies { testCompile 'junit:junit:4.12' }\n");
             return self();
         }
 
@@ -188,12 +193,12 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
         }
 
         public Given the_results_dir_is_set_to( String dir ) throws IOException {
-            Files.append( "test { jgiven { resultsDir = file('" + dir + "') } }\n", buildFile, Charsets.UTF_8 );
+            buildFile.write( "test { jgiven { resultsDir = file('" + dir + "') } }\n");
             return self();
         }
 
         public Given the_jgiven_report_is_configured_by( String configuration ) throws IOException {
-            Files.append( "jgivenTestReport { " + configuration + " } ", buildFile, Charsets.UTF_8 );
+            buildFile.write( "jgivenTestReport { " + configuration + " } ");
             return self();
         }
     }
@@ -204,7 +209,7 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
         @ProvidedScenarioState
         private BuildResult result;
         @ProvidedScenarioState
-        List<String> tasks = new ArrayList<String>();
+        List<String> tasks = new ArrayList<>();
 
         public When the_task( @Quoted String task ) {
             tasks.add( task );
@@ -240,7 +245,10 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
 
         public Then all_tasks_have_been_executed() {
             for( String task : tasks ) {
-                assertThat( result.task( ":" + task ).getOutcome() ).isEqualTo( TaskOutcome.SUCCESS );
+                TaskOutcome outcome = Optional.ofNullable(result.task(":" + task))
+                        .map(BuildTask::getOutcome)
+                        .orElse(TaskOutcome.FAILED);
+                assertThat(outcome).isEqualTo( TaskOutcome.SUCCESS );
             }
             return self();
         }
@@ -258,12 +266,9 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
         private void assertDirectoryContainsFilesOfType( String destination, final String extension ) {
             File destinationDir = new File( testProjectDir.getRoot(), destination );
             assertThat( destinationDir ).isDirectory();
-            assertThat( destinationDir.listFiles( new FilenameFilter() {
-                @Override
-                public boolean accept( File dir, String name ) {
-                    return name.endsWith( "." + extension );
-                }
-            } ) ).isNotEmpty();
+            assertThat( destinationDir
+                    .listFiles( (dir,name) -> name.endsWith("." + extension)))
+                    .isNotEmpty();
         }
 
         public Then the_JGiven_reports_are_not_written_to( String destination ) {
