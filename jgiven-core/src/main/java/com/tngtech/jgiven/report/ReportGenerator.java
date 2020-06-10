@@ -9,6 +9,9 @@ import com.tngtech.jgiven.exception.JGivenInternalDefectException;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 
+import javax.annotation.Nullable;
+import java.util.Arrays;
+
 /**
  *  This is an interface to create a report based on command line flags
  */
@@ -31,13 +34,12 @@ public class ReportGenerator {
             this.text = text;
         }
 
+        @Nullable
         public static Format fromStringOrNull( String value ) {
-            for( Format format : values() ) {
-                if( format.text.equalsIgnoreCase( value ) ) {
-                    return format;
-                }
-            }
-            return null;
+            return Arrays.stream(Format.values())
+                    .filter(format -> format.text.equalsIgnoreCase((value)))
+                    .findFirst()
+                    .orElse(null);
         }
     }
 
@@ -69,7 +71,7 @@ public class ReportGenerator {
         try {
             Class<?> aClass = ReportGenerator.class.getClassLoader()
                     .loadClass( "com.tngtech.jgiven.report.html5.Html5ReportGenerator" );
-            report = (AbstractReportGenerator) aClass.newInstance();
+            report = (AbstractReportGenerator) aClass.getDeclaredConstructor().newInstance();
         } catch( ClassNotFoundException e ) {
             throw new JGivenInstallationException( "The JGiven HTML5 Report Generator seems not to be on the classpath.\n"
                     + "Ensure that you have a dependency to jgiven-html5-report." );
@@ -79,7 +81,7 @@ public class ReportGenerator {
         return report;
     }
 
-    public static void main( String... args ) throws Exception {
+    public static void main( String... args ) {
         new ReportGenerator().generate( args );
     }
 }
