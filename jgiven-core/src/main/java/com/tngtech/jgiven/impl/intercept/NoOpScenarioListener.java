@@ -26,6 +26,9 @@ public class NoOpScenarioListener implements ScenarioListener {
     public void introWordAdded( String introWord ) {}
 
     @Override
+    public void syntacticSugarAdded( String syntacticSugar ) {}
+
+    @Override
     public void stepCommentUpdated( String comment ) {}
 
     @Override

@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.impl;
 
-import com.google.common.collect.Maps;
 import com.tngtech.jgiven.CurrentScenario;
 import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.annotation.AfterScenario;
@@ -99,6 +98,7 @@ public class ScenarioExecutor {
         injector.injectValueByType( ScenarioExecutor.class, this );
         injector.injectValueByType( CurrentStep.class, new StepAccessImpl() );
         injector.injectValueByType( CurrentScenario.class, new ScenarioAccessImpl() );
+        injector.injectValueByType( NavigableStageCreator.class, new NavigableStageCreator( this ) );
     }
 
     protected static class StageState {
@@ -219,6 +219,13 @@ public class ScenarioExecutor {
             updateScenarioState( parentStage );
         }
 
+    }
+
+    public <T extends NavigableStage> T addNavigableStage( Class<T> stageClass ) {
+        stages.remove( stageClass );
+        T stage = addStage( stageClass );
+        getStageState( currentTopLevelStage ).currentChildStage = stage;
+        return stage;
     }
 
     @SuppressWarnings( "unchecked" )

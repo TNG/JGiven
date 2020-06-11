@@ -6,6 +6,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.AsProvider;
+import com.tngtech.jgiven.annotation.BackStep;
 import com.tngtech.jgiven.annotation.CaseAs;
 import com.tngtech.jgiven.annotation.CaseAsProvider;
 import com.tngtech.jgiven.annotation.Description;
@@ -14,7 +15,9 @@ import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IntroWord;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.Pending;
+import com.tngtech.jgiven.annotation.RootStep;
 import com.tngtech.jgiven.annotation.StepComment;
+import com.tngtech.jgiven.annotation.SyntacticSugar;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
@@ -46,12 +49,14 @@ import org.slf4j.LoggerFactory;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Stream.concat;
 
 public class ScenarioModelBuilder implements ScenarioListener {
     private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
@@ -72,6 +77,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
     private List<StepModel> nestedSteps;
 
     private Word introWord;
+
+    private List<Word> syntacticSugarWords = new ArrayList<>();
 
     private long scenarioStartedNanos;
 
@@ -133,6 +140,13 @@ public class ScenarioModelBuilder implements ScenarioListener {
             paramMethod.getParameterAnnotations() );
         stepModel.setWords( new StepFormatter( stepModel.getName(), nonHiddenArguments, formatters ).buildFormattedWords() );
 
+        if( !syntacticSugarWords.isEmpty() ) {
+            stepModel.setWords(
+                concat( syntacticSugarWords.stream(), stepModel.getWords().stream() ).collect( toList() )
+            );
+            syntacticSugarWords.clear();
+        }
+
         if( introWord != null ) {
             stepModel.addIntroWord( introWord );
             introWord = null;
@@ -154,9 +168,22 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     @Override
     public void introWordAdded( String value ) {
+        introWordAdded( value, true );
+    }
+
+    public void introWordAdded( String value, boolean clearParentSteps ) {
         introWord = new Word();
         introWord.setIntroWord( true );
         introWord.setValue( value );
+
+        if ( clearParentSteps ) {
+            parentSteps.clear();
+        }
+    }
+
+    @Override
+    public void syntacticSugarAdded( String syntacticSugar ) {
+        syntacticSugarWords.add( new Word( syntacticSugar ) );
     }
 
     private void addStepComment( List<NamedArgument> arguments  ) {
@@ -192,14 +219,28 @@ public class ScenarioModelBuilder implements ScenarioListener {
     @Override
     public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps ) {
         if( method.isAnnotationPresent( IntroWord.class ) ) {
-            introWordAdded( getDescription( method ) );
+            introWordAdded( getDescription( method ), false );
+        } else if( method.isAnnotationPresent(SyntacticSugar.class) ) {
+            syntacticSugarAdded( getDescription( method ) );
+        } else if ( method.isAnnotationPresent( RootStep.class ) ) {
+            syntacticSugarAdded( getDescription( method ) );
+            parentSteps.clear();
+        } else if ( method.isAnnotationPresent( BackStep.class ) ) {
+            syntacticSugarAdded( getDescription( method ) );
+            if (!parentSteps.isEmpty()) {
+                parentSteps.pop();
+            }
         } else if( method.isAnnotationPresent( StepComment.class ) ) {
             addStepComment( arguments );
         } else {
             addTags( method.getAnnotations() );
             addTags( method.getDeclaringClass().getAnnotations() );
 
-            addStepMethod( method, arguments, mode, hasNestedSteps );
+            if ( NavigableStage.class.isAssignableFrom( method.getReturnType() ) && ( method.getDeclaringClass() != method.getReturnType() ) ) {
+                addStepMethod( method, arguments, mode, true );
+            } else {
+                addStepMethod( method, arguments, mode, hasNestedSteps );
+            }
         }
     }
 

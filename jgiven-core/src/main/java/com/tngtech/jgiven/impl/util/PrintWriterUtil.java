@@ -9,7 +9,12 @@ import com.tngtech.jgiven.config.ConfigValue;
 public class PrintWriterUtil {
     public static PrintWriter getPrintWriter( File file ) {
         try {
-            return new PrintWriter( file, Charsets.UTF_8.name() );
+            return new PrintWriter( file, Charsets.UTF_8.name() ) {
+                @Override
+                public void println() {
+                    write("\n");
+                }
+            };
         } catch( Exception e ) {
             throw Throwables.propagate( e );
         }

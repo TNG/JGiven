@@ -20,6 +20,8 @@ public interface ScenarioListener {
 
     void introWordAdded( String introWord );
 
+    void syntacticSugarAdded( String syntacticSugar );
+
     void stepCommentUpdated(String comment );
 
     void stepMethodFailed( Throwable t );
