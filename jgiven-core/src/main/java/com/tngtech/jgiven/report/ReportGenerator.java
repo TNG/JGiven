@@ -9,7 +9,6 @@ import com.tngtech.jgiven.exception.JGivenInternalDefectException;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 
-import javax.annotation.Nullable;
 import java.util.Arrays;
 
 /**
@@ -34,7 +33,6 @@ public class ReportGenerator {
             this.text = text;
         }
 
-        @Nullable
         public static Format fromStringOrNull( String value ) {
             return Arrays.stream(Format.values())
                     .filter(format -> format.text.equalsIgnoreCase((value)))
