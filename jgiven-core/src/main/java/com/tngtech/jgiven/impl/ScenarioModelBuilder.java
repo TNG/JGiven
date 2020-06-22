@@ -10,6 +10,7 @@ import com.tngtech.jgiven.annotation.CaseAs;
 import com.tngtech.jgiven.annotation.CaseAsProvider;
 import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
+import com.tngtech.jgiven.annotation.FillerWord;
 import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IntroWord;
 import com.tngtech.jgiven.annotation.IsTag;
@@ -46,7 +47,6 @@ import org.slf4j.LoggerFactory;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -71,7 +71,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
      */
     private List<StepModel> nestedSteps;
 
-    private Word introWord;
+    private final SentenceBuilder sentenceBuilder = new SentenceBuilder();
 
     private long scenarioStartedNanos;
 
@@ -131,12 +131,13 @@ public class ScenarioModelBuilder implements ScenarioListener {
         ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil( configuration );
         List<ObjectFormatter<?>> formatters = parameterFormattingUtil.getFormatter( paramMethod.getParameterTypes(), getNames( arguments ),
             paramMethod.getParameterAnnotations() );
-        stepModel.setWords( new StepFormatter( stepModel.getName(), nonHiddenArguments, formatters ).buildFormattedWords() );
 
-        if( introWord != null ) {
-            stepModel.addIntroWord( introWord );
-            introWord = null;
-        }
+        new StepFormatter( stepModel.getName(), nonHiddenArguments, formatters ).buildFormattedWords()
+            .forEach( sentenceBuilder::addWord );
+
+        stepModel.setWords( sentenceBuilder.getWords() );
+
+        sentenceBuilder.clear();
 
         stepModel.setStatus( mode.toStepStatus() );
         return stepModel;
@@ -154,9 +155,15 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     @Override
     public void introWordAdded( String value ) {
-        introWord = new Word();
-        introWord.setIntroWord( true );
-        introWord.setValue( value );
+        sentenceBuilder.addIntroWord( value );
+    }
+
+    private void addToSentence( String value, boolean joinToPreviousWord, boolean joinToNextWord ) {
+        if ( !sentenceBuilder.hasWords() && currentStep != null && joinToPreviousWord ) {
+            currentStep.getLastWord().addSuffix( value );
+        } else {
+            sentenceBuilder.addWord( value, joinToPreviousWord, joinToNextWord );
+        }
     }
 
     private void addStepComment( List<NamedArgument> arguments  ) {
@@ -193,6 +200,9 @@ public class ScenarioModelBuilder implements ScenarioListener {
     public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps ) {
         if( method.isAnnotationPresent( IntroWord.class ) ) {
             introWordAdded( getDescription( method ) );
+        } else if ( method.isAnnotationPresent( FillerWord.class ) ) {
+            FillerWord fillerWord = method.getAnnotation( FillerWord.class );
+            addToSentence( getDescription( method ), fillerWord.joinToPreviousWord(), fillerWord.joinToNextWord() );
         } else if( method.isAnnotationPresent( StepComment.class ) ) {
             addStepComment( arguments );
         } else {

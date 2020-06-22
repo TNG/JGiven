@@ -77,8 +77,16 @@ public class Word {
         value = name;
     }
 
-    public void append( CharSequence word ) {
+    public void appendWord( CharSequence word ) {
         setValue( getValue() + " " + word );
+    }
+
+    public void addPrefix( CharSequence prefix ) {
+        setValue( prefix + getValue() );
+    }
+
+    public void addSuffix( CharSequence suffix ) {
+        setValue( getValue() + suffix );
     }
 
     public boolean isArg() {

@@ -399,6 +399,55 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
     }
 
     @Test
+    public void filler_words_are_prepended_to_stage_methods() throws Throwable {
+        startScenario( "Scenario with filler words" );
+        given().there().is().something();
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getCompleteSentence() ).isEqualTo( "Given there is something" );
+    }
+
+    @Test
+    public void the_Description_annotation_on_filler_words_is_evaluated() throws Throwable {
+        startScenario( "Scenario with @As annotation on filler words" );
+        given().a().filler_word_with_an_as_annotation().and_with().something_else();
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getCompleteSentence() ).isEqualTo( "Given a Filler Word and with something else" );
+    }
+
+    @Test
+    public void filler_words_can_be_joined_to_previous_words() throws Throwable {
+        startScenario( "Scenario with filler word joined to a previous word" );
+        given().there().is().something_filled().comma().another().something_filled().and_with().something_else();
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getCompleteSentence() )
+            .isEqualTo( "Given there is something filled, another something filled and with something else" );
+    }
+
+    @Test
+    public void filler_words_can_surround_words() throws Throwable {
+        startScenario( "Scenario with filler words surrounding a word" );
+        given().there().is().open_bracket().something().close_bracket();
+        getScenario().finished();
+        StepModel step = getScenario().getScenarioCaseModel().getFirstStep();
+        assertThat( step.getCompleteSentence() )
+            .isEqualTo( "Given there is (something)" );
+    }
+
+    @Test
+    public void filler_words_can_be_used_at_the_end_of_a_sentence() throws Throwable {
+        startScenario( "Scenario with filler words at the end of sentences" );
+        given().something().colon().and().something_else().full_stop();
+        getScenario().finished();
+        StepModel firstStep  = getScenario().getScenarioCaseModel().getFirstStep();
+        StepModel secondStep = getScenario().getScenarioCaseModel().getStep( 1 );
+        assertThat( firstStep.getCompleteSentence() ).isEqualTo( "Given something:" );
+        assertThat( secondStep.getCompleteSentence() ).isEqualTo( "and something else." );
+    }
+
+    @Test
     public void printf_annotation_uses_the_PrintfFormatter() throws Throwable {
         startScenario( "printf_annotation_uses_the_PrintfFormatter" );
         given().a_step_with_a_printf_annotation_$( 5.2 );

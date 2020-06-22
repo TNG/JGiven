@@ -202,7 +202,7 @@ public class StepModel {
     }
 
     public void setWords( List<Word> words ) {
-        this.words = words;
+        this.words = Lists.newArrayList( words );
     }
 
     public void addIntroWord( Word introWord ) {
