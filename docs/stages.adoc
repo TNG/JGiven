@@ -110,6 +110,67 @@ public SELF comma() {
 }
 ----
 
+=== Filler Words
+
+Filler words can be used to build a common and reusable vocabulary for your tests. This enables you to write
+beautifully fluent tests whilst at the same time keeping your stage methods clear and concise.
+
+The `@FillerWord` annotation can also be added to stage methods where you want to maintain the continuation of
+of sentences in reports.
+
+For example, given the following filler words:
+
+[source,java]
+----
+include::{sourcedir}/userguide/ExtendedVocabularyTest.java[tags=fillerWords,indent=0]
+----
+
+You can write test stages such as:
+
+[source,java]
+----
+include::{sourcedir}/userguide/ExtendedVocabularyTest.java[tags=givenFiller,indent=0]
+----
+
+This would generate the following report:
+
+----
+Given the ingredients
+      an egg
+      some milk
+      and the ingredient flour
+----
+
+Filler words can also be joined to other words in sentences. Using `joinToPreviousWord` and `joinToNextWord`
+you can create new words without trailing and leading whitespace respectively. A typical use case for using these
+attributes is adding punctuation to your tests.
+
+For example, given the following filler words:
+
+[source,java]
+----
+include::{sourcedir}/userguide/ExtendedVocabularyTest.java[tags=joiningWords,indent=0]
+----
+
+You could write test stages such as:
+
+[source,java]
+----
+include::{sourcedir}/userguide/ExtendedVocabularyTest.java[tags=givenJoiningWords,indent=0]
+----
+
+This would generate the following report:
+
+----
+Given a (clean) worksurface, a bowl and the ingredients:
+     an egg
+     some milk
+     the ingredient flour
+----
+
+Please note that the annotations `@IntroWord` and `@FillerWord` are mutually exclusive. `@IntroWord` takes precedence
+over `@FillerWord`; where there are occurrences of methods having both annotations `@FillerWord` will be ignored.
+
 === State Sharing
 
 Very often it is necessary to share state between steps.

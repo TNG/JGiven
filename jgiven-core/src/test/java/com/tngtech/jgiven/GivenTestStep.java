@@ -1,9 +1,19 @@
 package com.tngtech.jgiven;
 
-import java.lang.reflect.Method;
-
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.As;
+import com.tngtech.jgiven.annotation.AsProvider;
+import com.tngtech.jgiven.annotation.FillerWord;
+import com.tngtech.jgiven.annotation.Format;
+import com.tngtech.jgiven.annotation.Formatf;
+import com.tngtech.jgiven.annotation.IntroWord;
+import com.tngtech.jgiven.annotation.NestedSteps;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.annotation.ScenarioState;
+import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.format.BooleanFormatter;
+
+import java.lang.reflect.Method;
 
 public class GivenTestStep extends Stage<GivenTestStep> {
 
@@ -29,6 +39,11 @@ public class GivenTestStep extends Stage<GivenTestStep> {
     }
 
     public GivenTestStep something() {
+        return self();
+    }
+
+    @FillerWord
+    public GivenTestStep something_filled() {
         return self();
     }
 
@@ -132,12 +147,72 @@ public class GivenTestStep extends Stage<GivenTestStep> {
         return self();
     }
 
-    @As( "another description" )
     @IntroWord
+    @As( "another description" )
     public GivenTestStep an_intro_word_with_an_as_annotation() {
         return self();
     }
 
+    @FillerWord
+    public GivenTestStep a() {
+        return self();
+    }
+
+    @FillerWord
+    public GivenTestStep and_with() {
+        return self();
+    }
+
+    @FillerWord
+    public GivenTestStep another() {
+        return self();
+    }
+
+    @FillerWord
+    public GivenTestStep there() {
+        return self();
+    }
+
+    @FillerWord
+    public GivenTestStep is() {
+        return self();
+    }
+
+    @FillerWord
+    @As( "Filler Word" )
+    public GivenTestStep filler_word_with_an_as_annotation() {
+        return self();
+    }
+
+    @As(",")
+    @FillerWord(joinToPreviousWord = true)
+    public GivenTestStep comma() {
+        return self();
+    }
+
+    @As(":")
+    @FillerWord(joinToPreviousWord = true)
+    public GivenTestStep colon() {
+        return self();
+    }
+
+    @As(".")
+    @FillerWord(joinToPreviousWord = true)
+    public GivenTestStep full_stop() {
+        return self();
+    }
+
+    @As("(")
+    @FillerWord(joinToNextWord = true)
+    public GivenTestStep open_bracket() {
+        return self();
+    }
+
+    @As(")")
+    @FillerWord(joinToPreviousWord = true)
+    public GivenTestStep close_bracket() {
+        return self();
+    }
 
     public static class CustomAsProvider implements AsProvider {
 
