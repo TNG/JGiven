@@ -129,7 +129,7 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
 
     @Override
     public DirectoryProperty getOutputLocation() {
-        return null;
+        return outputLocation;
     }
 }
 
