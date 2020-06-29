@@ -10,6 +10,12 @@ import com.tngtech.jgiven.report.html5.Html5ReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 import org.gradle.api.Task;
+import org.gradle.api.file.DirectoryProperty;
+import org.gradle.api.file.FileSystemLocation;
+import org.gradle.api.file.FileSystemLocationProperty;
+import org.gradle.api.internal.provider.DefaultProperty;
+import org.gradle.api.model.ObjectFactory;
+import org.gradle.api.provider.Property;
 import org.gradle.api.reporting.internal.TaskGeneratedSingleDirectoryReport;
 import org.gradle.api.tasks.Internal;
 
@@ -20,11 +26,21 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
     private File customCssFile;
     private File customJsFile;
     private String title;
+    private final Property<Boolean> isRequired;
+    private final DirectoryProperty outputLocation;
     private boolean excludeEmptyScenarios = false;
     private boolean thumbnailsAreShown = true;
 
-    public AbstractJGivenReportImpl( String name, Task task, String relativeEntryPath ) {
+    public AbstractJGivenReportImpl(String name, Task task, String relativeEntryPath) {
         super( name, task, relativeEntryPath );
+        System.out.println("DEBUG 3:");
+        System.out.println(task.getProject().getObjects().toString());
+        System.out.println("END DEBUG 3:");
+        isRequired = task.getProject().getObjects().property(Boolean.class);
+        isRequired.convention(true);
+        outputLocation = task.getProject().getObjects().directoryProperty();
+
+
     }
 
     public AbstractReportGenerator createGenerator() {
@@ -106,5 +122,14 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
         this.thumbnailsAreShown = thumbnailsAreShown;
     }
 
+    @Override
+    public Property<Boolean> getRequired() {
+        return isRequired;
+    }
+
+    @Override
+    public DirectoryProperty getOutputLocation() {
+        return null;
+    }
 }
 

@@ -63,11 +63,13 @@ public class JGivenPlugin implements Plugin<Project> {
 
     private void addDefaultReports( final Project project ){
         final ReportingExtension reportingExtension = project.getExtensions().findByType( ReportingExtension.class );
+        System.out.println("DEBUG HERE");
         project.getTasks().withType( Test.class, test -> {
             final JGivenReportTask reportTask = project.getTasks()
                     .create( "jgiven" + WordUtil.capitalize( test.getName() ) + "Report", JGivenReportTask.class );
             configureDefaultReportTask( test, reportTask, reportingExtension );
         } );
+        System.out.println("DEBUG HERE2");
     }
 
     private void configureDefaultReportTask( final Test test, JGivenReportTask reportTask,
