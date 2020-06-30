@@ -4,7 +4,7 @@ import com.tngtech.jgiven.gradle.JGivenReport;
 import com.tngtech.jgiven.report.ReportGenerator;
 import org.gradle.api.Task;
 
-public class JGivenTextReportImpl extends AbstractJGivenReportImpl implements JGivenReport {
+public abstract class JGivenTextReportImpl extends AbstractJGivenReportImpl implements JGivenReport {
     static final String NAME = "text";
 
     public JGivenTextReportImpl( Task task ) {
