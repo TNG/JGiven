@@ -1,36 +1,28 @@
-import org.gradle.internal.os.OperatingSystem;
+apply plugin: 'com.github.node-gradle.node'
 
 def distDir = "${buildDir}/package/dist"
 
 def htmlAppVersion = '1.0.0'
 
-task npmPack(type: CrossPlatformExec) {
-    buildCommand('npm', 'pack', 'jgiven-html-app@'+htmlAppVersion)
+node {
+    download true
+}
+
+task npmPack(type: NpmTask) {
+    args = ['pack', "jgiven-html-app@${htmlAppVersion}"]
 
     doLast {
-      copy {
-         from tarTree(resources.gzip('jgiven-html-app-'+htmlAppVersion+'.tgz'))
-         into buildDir
-      }
+        copy {
+            from tarTree(resources.gzip("jgiven-html-app-${htmlAppVersion}.tgz"))
+            into buildDir
+        }
     }
 }
 
 task zipAppDir(type: Zip, dependsOn: npmPack) {
     from distDir
-    archiveName = 'app.zip'
-    destinationDir = new File(buildDir, 'resources/main/com/tngtech/jgiven/report/html5')
+    archiveFileName = 'app.zip'
+    destinationDirectory = new File(buildDir, 'resources/main/com/tngtech/jgiven/report/html5')
 }
 
 jar.dependsOn zipAppDir
-
-class CrossPlatformExec extends Exec {
-    void buildCommand(String command, String... commandArgs) {
-        if(OperatingSystem.current().isWindows()) {
-            executable = 'cmd'
-            args = ['/c', command]
-        } else {
-            executable = command
-        }
-        args(commandArgs.toList());
-    }
-}
