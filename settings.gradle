@@ -47,17 +47,14 @@ include ':jgiven-core',
         ':jgiven-examples',
         ':jgiven-java8-tests',
         ':jgiven-junit5',
-        ':jgiven-spring-junit5'
+        ':jgiven-spring-junit5',
+        ':jgiven-gradle-plugin'
 
 def release = System.env.RELEASE == "true"
 def android = System.env.ANDROID == "true"
 
 if (JavaVersion.current().isJava9Compatible()) {
     include ':jgiven-java9-tests'
-}
-
-if (!JavaVersion.current().isJava11Compatible()) {
-    include ':jgiven-gradle-plugin'
 }
 
 if (android || release) {

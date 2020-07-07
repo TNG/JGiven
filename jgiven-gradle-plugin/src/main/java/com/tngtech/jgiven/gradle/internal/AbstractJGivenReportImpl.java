@@ -11,6 +11,7 @@ import com.tngtech.jgiven.report.text.PlainTextReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 import org.gradle.api.Task;
 import org.gradle.api.reporting.internal.TaskGeneratedSingleDirectoryReport;
+import org.gradle.api.tasks.Internal;
 
 import java.io.File;
 
@@ -62,6 +63,7 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
         return generator;
     }
 
+    @Internal
     public abstract ReportGenerator.Format getFormat();
 
     @Override public File getCustomCssFile() {
