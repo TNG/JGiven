@@ -1,10 +1,11 @@
 # v1.0.0
 
-This is the first major version update of JGiven. It does not introduce major new features, but it introduces backwards-incompatible changes
+This is the first major version update of JGiven. It does introduce new features, as well as backwards-incompatible changes,
 due to the removal of all deprecated classes and methods and the drop of Java 7 support.
 
 ## New Features
 
+* Additon of `@FillerWords` to prepend scenario stage methods. [#472](https://github.com/TNG/JGiven/pull/472) (thanks to richard-stowe)
 * Java 13 is supported now [#447](https://github.com/TNG/JGiven/pull/447) (thanks to jsalinaspolo)
 * The `CurrentStep` interface has a new method `setName` to change the name of a step programmatically [#386](https://github.com/TNG/JGiven/issues/386)
 * Updated the Guava dependency to v27.1-jre [#398](https://github.com/TNG/JGiven/pull/398)
