@@ -14,11 +14,6 @@ def jacocoEnabled = !JavaVersion.current().isJava11Compatible();
 
 
 
-wrapper {
-    gradleVersion = '6.0.1'
-    distributionType = Wrapper.DistributionType.ALL
-}
-
 allprojects {
     group = 'com.tngtech.jgiven'
     version = version
@@ -88,9 +83,9 @@ subprojects {
 configure(subprojects.findAll { !it.name.contains("android") }) {
     apply plugin: 'java'
     apply plugin: 'org.asciidoctor.jvm.convert'
-    apply plugin: 'maven'
-    apply plugin: 'signing'
-    apply plugin: 'maven-publish'
+//    apply plugin: 'maven'
+//    apply plugin: 'signing'
+//    apply plugin: 'maven-publish'
 
     sourceCompatibility = targetCompatibility = 1.8
 
