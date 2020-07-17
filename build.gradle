@@ -12,6 +12,8 @@ apply plugin: 'project-report'
 description = 'JGiven - BDD in plain Java'
 def jacocoEnabled = !JavaVersion.current().isJava11Compatible();
 
+
+
 wrapper {
     gradleVersion = '6.0.1'
     distributionType = Wrapper.DistributionType.ALL
@@ -21,7 +23,6 @@ allprojects {
     group = 'com.tngtech.jgiven'
     version = version
     ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-    ext.isCI = System.env.CI == "true"
     if (jacocoEnabled) {
         apply plugin: 'jacoco'
     }
@@ -32,6 +33,13 @@ allprojects {
     tasks.withType(Javadoc) {
         options.addStringOption('Xdoclint:none', '-quiet')
     }
+
+    ext.sonatypeUsername = (rootProject.hasProperty('sonatypeUsername')) ?
+            rootProject.sonatypeUsername :
+            System.getenv().getOrDefault("SONATYPE_USERNAME", "")
+    ext.sonatypePassword = (rootProject.hasProperty('sonatypePassword')) ?
+            rootProject.sonatypePassword :
+            System.getenv().getOrDefault("SONATYPE_PASSWORD", "")
 }
 
 
@@ -43,6 +51,8 @@ asciidoctor {
 nexusStaging {
     stagingProfileId = stagingProfileId // stagingProfileId must be defined externally
     packageGroup = 'com.tngtech'
+    username = sonatypeUsername
+    password = sonatypePassword
 }
 
 subprojects {
@@ -245,17 +255,10 @@ configure(subprojects) {
         required {
             isReleaseVersion && gradle.taskGraph.hasTask('uploadArchives')
         }
+        def signingKey = findProperty("signingKey")
+        def signingPassword = findProperty("signingPassword")
+        useInMemoryPgpKeys(signingKey, signingPassword)
         sign configurations.archives
-    }
-
-    ext {
-        sonatypeUsername = (rootProject.hasProperty('sonatypeUsername')) ?
-                rootProject.sonatypeUsername :
-                "$System.env.SONATYPE_USERNAME"
-
-        sonatypePassword = (rootProject.hasProperty('sonatypePassword')) ?
-                rootProject.sonatypePassword :
-                "$System.env.SONATYPE_PASSWORD"
     }
 
     uploadArchives {
@@ -329,11 +332,11 @@ configure(subprojects) {
     }
 
     uploadArchives.onlyIf {
-        !(isCI && isReleaseVersion)
+        isReleaseVersion
     }
 
     uploadArchives.doFirst {
-        if (!isCI && isReleaseVersion && !JavaVersion.current().isJava8Compatible()) {
+        if (isReleaseVersion && !JavaVersion.current().isJava8Compatible()) {
             throw new GradleException("Releases have to be done with Java 8");
         }
     }
