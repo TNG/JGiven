@@ -38,27 +38,41 @@ echo Building, Testing, and Uploading Archives...
 echo Creating Tag
 git tag -a -m $VERSION_PREFIXED $VERSION_PREFIXED
 
-echo "Closing the repository..."
+echo Closing the repository...
 ./gradlew closeRepository
 
-echo "Testing staging version..."
+echo Testing staging version...
 
-echo "Testing Maven plugin..."
+echo Testing Maven plugin...
 mvn -f example-projects/maven/pom.xml clean test -Pstaging -Djgiven.version=$VERSION
 
-echo "Testing Gradle plugin..."
-./gradlew -b example-projects/junit5/build.gradle clean test -Pversion=$VERSION
+echo Testing Gradle plugin...
+./gradlew -b example-projects/junit5/build.gradle clean test -Pstaging -Pversion=$VERSION
 
 echo STAGING SUCCESSFUL!
-echo ""
-read -p "Do you want to release now? [y/N]" -n 1 -r
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-    ./gradlew releaseRepository
 
-    echo Publishing Gradle Plugin to Gradle Plugin Repository...
-    ./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins
+echo $CI
+if [[ $CI == "true" ]]
+then
+  releaseRepositoryAndPushVersion
+else
+  read -p "Do you want to release and push now? [y/N]" -n 1 -r
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+    releaseRepositoryAndPushVersion
+fi
 fi
 
-echo Testing Gradle Plugin from Gradle Plugin Repository
-#./gradlew -b example-projects/java9/build.gradle clean test -Pversion=$VERSION
+releaseRepositoryAndPushVersion()
+{
+  echo Releasing the repository...
+  ./gradlew releaseRepository
+
+  echo Publishing Gradle Plugin to Gradle Plugin Repository...
+  ./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins -Dgradle.publish.key=$GRADLE_PLUGIN_RELEASE_KEY -Dgradle.publish.secret=$GRADLE_PLUGIN_RELEASE_SECRET
+
+  echo Testing Gradle Plugin from Gradle Plugin Repository
+  ./gradlew -b example-projects/java9/build.gradle clean test -Pversion=$VERSION
+
+  git push
+}
