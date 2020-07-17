@@ -1,10 +1,18 @@
-plugins {
-  id "com.tngtech.jgiven.gradle-plugin" version "${version}"
+buildscript {
+    repositories {
+        if (project.hasProperty('staging')) {
+            maven { url "https://oss.sonatype.org/content/repositories/staging/" }
+        }
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.tngtech.jgiven:jgiven-gradle-plugin:${version}"
+    }
 }
 
+apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'eclipse'
 
 compileJava {
     sourceCompatibility = 1.8
@@ -19,10 +27,13 @@ ext {
 }
 
 repositories {
+    if (project.hasProperty('staging')) {
+        maven { url "https://oss.sonatype.org/content/repositories/staging/" }
+    }
     mavenLocal()
     mavenCentral()
     jcenter()
- }
+}
 
 dependencies {
     testCompile 'com.tngtech.jgiven:jgiven-junit5:' + jgivenVersion
