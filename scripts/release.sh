@@ -18,6 +18,10 @@ if [[ ! $1 =~ ^[0-9]*\.[0-9]*\.[0-9]*(-[A-Z0-9]*)?$ ]]; then
     exit 1
 fi
 
+if [ -z $ANDROID_SDK_ROOT ]; then
+    echo "Android package will NOT be released"
+fi
+
 VERSION=$1
 VERSION_PREFIXED="v$1"
 
