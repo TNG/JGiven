@@ -14,6 +14,7 @@ repositories {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 27
@@ -39,11 +40,65 @@ android {
         }
     }
     lintOptions {
-          abortOnError false
+        abortOnError false
     }
 
     dexOptions {
         additionalParameters '--debug'
+    }
+    afterEvaluate {
+        publishing {
+            publications {
+                maven(MavenPublication) {
+                    from components.release
+                    pom {
+                        name = project.name
+                        url = 'http://jgiven.org'
+                        // to be able use project.description which may be overridden in later executed build.gradle of subproject
+                        afterEvaluate {
+                            description = project.description
+                        }
+
+                        scm {
+                            url = 'scm:git@github.com:TNG/jgiven.git'
+                            connection = 'scm:git@github.com:TNG/jgiven.git'
+                            developerConnection = 'scm:git@github.com:TNG/jgiven.git'
+                        }
+
+                        licenses {
+                            license {
+                                name = 'The Apache Software License, Version 2.0'
+                                url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                                distribution = 'repo'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id = 'janschaefer'
+                                name = 'Jan Schäfer'
+                            }
+                            developer {
+                                id = 'l-1squared'
+                                name = 'Kristof Karhan'
+                            }
+                        }
+
+                    }
+                }
+            }
+            repositories {
+                maven {
+                    String releaseUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                    String snapshotUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+                    url = System.env.RELEASE == "true" ? releaseUrl : snapshotUrl
+                    credentials {
+                        username = sonatypeUsername
+                        password = sonatypePassword
+                    }
+                }
+            }
+        }
     }
 
 }
