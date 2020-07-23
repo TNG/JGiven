@@ -33,7 +33,7 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 echo Building, Testing, and Uploading Archives...
-./gradlew --no-parallel clean test install uploadArchives
+./gradlew --no-parallel clean test publishToMaven
 
 echo Creating Tag
 git tag -a -m $VERSION_PREFIXED $VERSION_PREFIXED
@@ -44,7 +44,7 @@ echo Closing the repository...
 echo Testing staging version...
 
 echo Testing Maven plugin from staging repository...
-mvn -f example-projects/maven/pom.xml clean test -Pstaging -Djgiven.version=$VERSION
+mvn -f example-projects/maven/pom.xml clean test -Djgiven.version=$VERSION
 
 echo Testing Gradle plugin from staging repository...
 ./gradlew -b example-projects/junit5/build.gradle clean test -Pstaging -Pversion=$VERSION
