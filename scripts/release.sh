@@ -51,18 +51,6 @@ echo Testing Gradle plugin...
 
 echo STAGING SUCCESSFUL!
 
-echo $CI
-if [[ $CI == "true" ]]
-then
-  releaseRepositoryAndPushVersion
-else
-  read -p "Do you want to release and push now? [y/N]" -n 1 -r
-  if [[ $REPLY =~ ^[Yy]$ ]]
-  then
-    releaseRepositoryAndPushVersion
-fi
-fi
-
 releaseRepositoryAndPushVersion()
 {
   echo Releasing the repository...
@@ -76,3 +64,15 @@ releaseRepositoryAndPushVersion()
 
   git push
 }
+
+echo $CI
+if [[ $CI == "true" ]]
+then
+  releaseRepositoryAndPushVersion
+else
+  read -p "Do you want to release and push now? [y/N]" -n 1 -r
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+    releaseRepositoryAndPushVersion
+fi
+fi
