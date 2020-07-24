@@ -183,6 +183,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
                 '--customcss=build/resources/test/jgiven/custom.css',
                 '--show-thumbnails=true'
 
+        //TODO: this does not work, because the empty for jgiven-core. Propbably need dependency on other task, or different resolution
         classpath = configurations.testCompile
     }
 
@@ -192,6 +193,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
                 '--targetDir=build/reports/jgiven/asciidoc',
                 '--format=asciidoc'
 
+        //TODO: this will likely fail as well if we switch to "testImplementation" in subprojects
         classpath = configurations.testCompile
     }
 
