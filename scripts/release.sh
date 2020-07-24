@@ -65,7 +65,9 @@ releaseRepositoryAndPushVersion()
   echo Testing Gradle Plugin from Gradle Plugin repository...
   ./gradlew -b example-projects/java9/build.gradle clean test -Pversion=$VERSION
 
+  echo Pushing version and tag to GitHub repository...
   git push
+  git push $(git config --get remote.origin.url) $VERSION_PREFIXED
 }
 
 echo $CI
