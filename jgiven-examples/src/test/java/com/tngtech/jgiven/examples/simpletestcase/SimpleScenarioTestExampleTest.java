@@ -29,7 +29,7 @@ public class SimpleScenarioTestExampleTest extends SimpleScenarioTest<TestSteps>
     }
 
     @Test
-    public void coffee_should_be_served() throws Exception {
+    public void coffee_should_be_served() {
         given().a_coffee_machine_with_$n_coffees( 100 );
 
         when().enough_money_is_deposited()
@@ -39,7 +39,7 @@ public class SimpleScenarioTestExampleTest extends SimpleScenarioTest<TestSteps>
     }
 
     @Test
-    public void coffee_should_not_be_served_if_there_are_no_coffees_left() throws Exception {
+    public void coffee_should_not_be_served_if_there_are_no_coffees_left() {
         given().a_coffee_machine_with_$n_coffees( 0 );
 
         when().enough_money_is_deposited()
@@ -49,7 +49,7 @@ public class SimpleScenarioTestExampleTest extends SimpleScenarioTest<TestSteps>
     }
 
     @Test
-    public void coffee_should_not_be_served_if_not_enough_money_is_deposited() throws Exception {
+    public void coffee_should_not_be_served_if_not_enough_money_is_deposited() {
         given().a_coffee_machine();
 
         when().$_euros_are_deposited( 1 )
@@ -86,11 +86,11 @@ public class SimpleScenarioTestExampleTest extends SimpleScenarioTest<TestSteps>
         }
 
         public void a_cup_of_coffee_is_served() {
-            Assert.assertTrue( "no coffee was served", coffeeMachine.servedCoffee );
+            Assert.assertTrue( "coffee was served", coffeeMachine.servedCoffee );
         }
 
         public void no_cup_of_coffee_is_served() {
-            Assert.assertFalse( "coffee was served", coffeeMachine.servedCoffee );
+            Assert.assertFalse( "no coffee was served", coffeeMachine.servedCoffee );
         }
 
     }
