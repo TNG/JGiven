@@ -43,13 +43,32 @@ echo Closing the repository...
 
 echo Testing staging version...
 
-echo Testing Maven plugin...
+echo Testing Maven plugin from staging repository...
 mvn -f example-projects/maven/pom.xml clean test -Pstaging -Djgiven.version=$VERSION
 
-echo Testing Gradle plugin...
+echo Testing Gradle plugin from staging repository...
 ./gradlew -b example-projects/junit5/build.gradle clean test -Pstaging -Pversion=$VERSION
 
 echo STAGING SUCCESSFUL!
+
+releaseRepositoryAndPushVersion()
+{
+  echo Releasing the repository...
+  ./gradlew releaseRepository
+
+  echo Testing Maven plugin from Maven repository...
+  mvn -f example-projects/maven/pom.xml clean test -Djgiven.version=$VERSION
+
+  echo Publishing Gradle Plugin to Gradle Plugin repository...
+  ./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins -Dgradle.publish.key=$GRADLE_PLUGIN_RELEASE_KEY -Dgradle.publish.secret=$GRADLE_PLUGIN_RELEASE_SECRET
+
+  echo Testing Gradle Plugin from Gradle Plugin repository...
+  ./gradlew -b example-projects/java9/build.gradle clean test -Pversion=$VERSION
+
+  echo Pushing version and tag to GitHub repository...
+  git push
+  git push $(git config --get remote.origin.url) $VERSION_PREFIXED
+}
 
 echo $CI
 if [[ $CI == "true" ]]
@@ -60,19 +79,5 @@ else
   if [[ $REPLY =~ ^[Yy]$ ]]
   then
     releaseRepositoryAndPushVersion
+  fi
 fi
-fi
-
-releaseRepositoryAndPushVersion()
-{
-  echo Releasing the repository...
-  ./gradlew releaseRepository
-
-  echo Publishing Gradle Plugin to Gradle Plugin Repository...
-  ./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins -Dgradle.publish.key=$GRADLE_PLUGIN_RELEASE_KEY -Dgradle.publish.secret=$GRADLE_PLUGIN_RELEASE_SECRET
-
-  echo Testing Gradle Plugin from Gradle Plugin Repository
-  ./gradlew -b example-projects/java9/build.gradle clean test -Pversion=$VERSION
-
-  git push
-}
