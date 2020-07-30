@@ -96,6 +96,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         testImplementation "net.java.quickcheck:quickcheck:$quickcheckVersion"
     }
 
+    //Why is this still here?
     publishing {
         publications {
             mavenJava(MavenPublication) {
@@ -148,6 +149,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         }
     }
 
+    //TODO: why is this still here?
     task sourcesJar(type: Jar) {
         archiveClassifier = 'sources'
         from sourceSets.main.allSource
@@ -183,8 +185,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
                 '--customcss=build/resources/test/jgiven/custom.css',
                 '--show-thumbnails=true'
 
-        //TODO: this does not work, because the empty for jgiven-core. Propbably need dependency on other task, or different resolution
-        classpath = configurations.testCompile
+        classpath = configurations.testRuntimeClasspath
     }
 
     task jgivenAsciiDocReport(type: JavaExec) {
@@ -193,8 +194,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
                 '--targetDir=build/reports/jgiven/asciidoc',
                 '--format=asciidoc'
 
-        //TODO: this will likely fail as well if we switch to "testImplementation" in subprojects
-        classpath = configurations.testCompile
+        classpath = configurations.testRuntimeClasspath
     }
 
     asciidoctor {
