@@ -96,15 +96,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         testImplementation "net.java.quickcheck:quickcheck:$quickcheckVersion"
     }
 
-    //Why is this still here?
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-            }
-        }
-    }
-
     test {
         systemProperty 'jgiven.report.dir', 'build/reports/jgiven/json'
         systemProperty 'jgiven.report.text', 'false'
@@ -147,12 +138,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         runtimeClasspath {
             ignore "META-INF/MANIFEST.MF"
         }
-    }
-
-    //TODO: why is this still here?
-    task sourcesJar(type: Jar) {
-        archiveClassifier = 'sources'
-        from sourceSets.main.allSource
     }
 
     javadoc {
