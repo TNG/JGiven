@@ -36,6 +36,7 @@ allprojects {
 }
 
 
+
 asciidoctor {
     sourceDir = file('docs')
     attributes 'version': version
@@ -75,6 +76,71 @@ subprojects {
         androidCompileSdkVersion = 27
         androidBuildToolsVersion = '27.0.2'
 
+        publishVariant = {String variant->
+            publishing {
+                publications {
+                    maven(MavenPublication) {
+                        from components[variant]
+                        pom {
+                            name = project.name
+                            url = 'http://jgiven.org'
+                            // to be able use project.description which may be overridden in later executed build.gradle of subproject
+                            afterEvaluate {
+                                description = project.description
+                            }
+                            withXml {
+                                project.configurations.compileOnly.allDependencies.each { dep ->
+                                    asNode().dependencies[0].appendNode('dependency').with {
+                                        it.appendNode('groupId', dep.group)
+                                        it.appendNode('artifactId', dep.name)
+                                        it.appendNode('version', dep.version)
+                                        it.appendNode('scope', 'provided')
+                                    }
+                                }
+
+                            }
+
+                            scm {
+                                url = 'scm:git@github.com:TNG/jgiven.git'
+                                connection = 'scm:git@github.com:TNG/jgiven.git'
+                                developerConnection = 'scm:git@github.com:TNG/jgiven.git'
+                            }
+
+                            licenses {
+                                license {
+                                    name = 'The Apache Software License, Version 2.0'
+                                    url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                                    distribution = 'repo'
+                                }
+                            }
+
+                            developers {
+                                developer {
+                                    id = 'janschaefer'
+                                    name = 'Jan Schäfer'
+                                }
+                                developer {
+                                    id = 'l-1squared'
+                                    name = 'Kristof Karhan'
+                                }
+                            }
+
+                        }
+                    }
+                }
+                repositories {
+                    maven {
+                        String releaseUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                        String snapshotUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+                        url = System.env.RELEASE == "true" ? releaseUrl : snapshotUrl
+                        credentials {
+                            username = sonatypeUsername
+                            password = sonatypePassword
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -195,69 +261,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
 
     copyAsciiDoc.finalizedBy(asciidoctor)
 
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from components.java
-                pom {
-                    name = project.name
-                    url = 'http://jgiven.org'
-                    // to be able use project.description which may be overridden in later executed build.gradle of subproject
-                    afterEvaluate {
-                        description = project.description
-                    }
-                    withXml {
-                        project.configurations.compileOnly.allDependencies.each { dep ->
-                            asNode().dependencies[0].appendNode('dependency').with {
-                                it.appendNode('groupId', dep.group)
-                                it.appendNode('artifactId', dep.name)
-                                it.appendNode('version', dep.version)
-                                it.appendNode('scope', 'provided')
-                            }
-                        }
-
-                    }
-
-                    scm {
-                        url = 'scm:git@github.com:TNG/jgiven.git'
-                        connection = 'scm:git@github.com:TNG/jgiven.git'
-                        developerConnection = 'scm:git@github.com:TNG/jgiven.git'
-                    }
-
-                    licenses {
-                        license {
-                            name = 'The Apache Software License, Version 2.0'
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                            distribution = 'repo'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id = 'janschaefer'
-                            name = 'Jan Schäfer'
-                        }
-                        developer {
-                            id = 'l-1squared'
-                            name = 'Kristof Karhan'
-                        }
-                    }
-
-                }
-            }
-        }
-        repositories {
-            maven {
-                String releaseUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-                String snapshotUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
-                url = System.env.RELEASE == "true" ? releaseUrl : snapshotUrl
-                credentials {
-                    username = sonatypeUsername
-                    password = sonatypePassword
-                }
-            }
-        }
-    }
+    project.ext.publishVariant('java')
 }
 
 configure(subprojects) {
