@@ -35,8 +35,6 @@ allprojects {
             System.getenv().getOrDefault("SONATYPE_PASSWORD", "")
 }
 
-
-
 asciidoctor {
     sourceDir = file('docs')
     attributes 'version': version
@@ -76,7 +74,7 @@ subprojects {
         androidCompileSdkVersion = 27
         androidBuildToolsVersion = '27.0.2'
 
-        publishVariant = {String variant->
+        publishVariant = { String variant ->
             publishing {
                 publications {
                     maven(MavenPublication) {
