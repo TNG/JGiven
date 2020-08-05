@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:3.5.2"
+        classpath "com.android.tools.build:gradle:4.0.1"
     }
 }
 
@@ -14,6 +14,7 @@ repositories {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 27
@@ -39,11 +40,15 @@ android {
         }
     }
     lintOptions {
-          abortOnError false
+        abortOnError false
     }
 
     dexOptions {
         additionalParameters '--debug'
+    }
+
+    afterEvaluate {
+        project.ext.publishVariant('release')
     }
 
 }

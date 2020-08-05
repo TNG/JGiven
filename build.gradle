@@ -10,14 +10,7 @@ plugins {
 apply plugin: 'project-report'
 
 description = 'JGiven - BDD in plain Java'
-def jacocoEnabled = !JavaVersion.current().isJava11Compatible();
-
-
-
-wrapper {
-    gradleVersion = '6.0.1'
-    distributionType = Wrapper.DistributionType.ALL
-}
+def jacocoEnabled = !JavaVersion.current().isJava11Compatible()
 
 allprojects {
     group = 'com.tngtech.jgiven'
@@ -41,7 +34,6 @@ allprojects {
             rootProject.sonatypePassword :
             System.getenv().getOrDefault("SONATYPE_PASSWORD", "")
 }
-
 
 asciidoctor {
     sourceDir = file('docs')
@@ -78,18 +70,81 @@ subprojects {
         quickcheckVersion = '0.6'
         hsqldbVersion = '2.3.2'
         byteBuddyVersion = '1.10.2'
-        androidGradleVersion= '3.1.0'
-        androidCompileSdkVersion= 27
-        androidBuildToolsVersion= '27.0.2'
+        androidGradleVersion = '3.1.0'
+        androidCompileSdkVersion = 27
+        androidBuildToolsVersion = '27.0.2'
 
+        publishVariant = { String variant ->
+            publishing {
+                publications {
+                    maven(MavenPublication) {
+                        from components[variant]
+                        pom {
+                            name = project.name
+                            url = 'http://jgiven.org'
+                            // to be able use project.description which may be overridden in later executed build.gradle of subproject
+                            afterEvaluate {
+                                description = project.description
+                            }
+                            withXml {
+                                project.configurations.compileOnly.allDependencies.each { dep ->
+                                    asNode().dependencies[0].appendNode('dependency').with {
+                                        it.appendNode('groupId', dep.group)
+                                        it.appendNode('artifactId', dep.name)
+                                        it.appendNode('version', dep.version)
+                                        it.appendNode('scope', 'provided')
+                                    }
+                                }
+
+                            }
+
+                            scm {
+                                url = 'scm:git@github.com:TNG/jgiven.git'
+                                connection = 'scm:git@github.com:TNG/jgiven.git'
+                                developerConnection = 'scm:git@github.com:TNG/jgiven.git'
+                            }
+
+                            licenses {
+                                license {
+                                    name = 'The Apache Software License, Version 2.0'
+                                    url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                                    distribution = 'repo'
+                                }
+                            }
+
+                            developers {
+                                developer {
+                                    id = 'janschaefer'
+                                    name = 'Jan Schäfer'
+                                }
+                                developer {
+                                    id = 'l-1squared'
+                                    name = 'Kristof Karhan'
+                                }
+                            }
+
+                        }
+                    }
+                }
+                repositories {
+                    maven {
+                        String releaseUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                        String snapshotUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+                        url = System.env.RELEASE == "true" ? releaseUrl : snapshotUrl
+                        credentials {
+                            username = sonatypeUsername
+                            password = sonatypePassword
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
 configure(subprojects.findAll { !it.name.contains("android") }) {
     apply plugin: 'java'
     apply plugin: 'org.asciidoctor.jvm.convert'
-    apply plugin: 'maven'
-    apply plugin: 'signing'
     apply plugin: 'maven-publish'
 
     sourceCompatibility = targetCompatibility = 1.8
@@ -103,14 +158,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         testImplementation "org.assertj:assertj-core:$assertjVersion"
         testImplementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
         testImplementation "net.java.quickcheck:quickcheck:$quickcheckVersion"
-    }
-
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                from components.java
-            }
-        }
     }
 
     test {
@@ -157,27 +204,17 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         }
     }
 
-    task sourcesJar(type: Jar) {
-        archiveClassifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
     javadoc {
         exclude '**/impl/**'
+
+        onlyIf {
+            JavaVersion.current().isJava8Compatible()
+        }
     }
 
-    javadoc.onlyIf {
-        JavaVersion.current().isJava8Compatible()
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        archiveClassifier = 'javadoc'
-        from javadoc.destinationDir
-    }
-
-    artifacts {
-        archives javadocJar
-        archives sourcesJar
+    java {
+        withJavadocJar()
+        withSourcesJar()
     }
 
     if (jacocoEnabled) {
@@ -197,7 +234,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
                 '--customcss=build/resources/test/jgiven/custom.css',
                 '--show-thumbnails=true'
 
-        classpath = configurations.testCompile
+        classpath = configurations.testRuntimeClasspath
     }
 
     task jgivenAsciiDocReport(type: JavaExec) {
@@ -206,7 +243,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
                 '--targetDir=build/reports/jgiven/asciidoc',
                 '--format=asciidoc'
 
-        classpath = configurations.testCompile
+        classpath = configurations.testRuntimeClasspath
     }
 
     asciidoctor {
@@ -221,13 +258,14 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     }
 
     copyAsciiDoc.finalizedBy(asciidoctor)
+
+    project.ext.publishVariant('java')
 }
 
 configure(subprojects) {
     apply plugin: 'checkstyle'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
-    apply plugin: 'maven'
     apply plugin: 'signing'
     apply plugin: 'maven-publish'
 
@@ -254,92 +292,12 @@ configure(subprojects) {
     signing {
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
         required {
-            isReleaseVersion && gradle.taskGraph.hasTask('uploadArchives')
+            isReleaseVersion && gradle.taskGraph.hasTask('publish')
         }
         def signingKey = findProperty("signingKey")
         def signingPassword = findProperty("signingPassword")
         useInMemoryPgpKeys(signingKey, signingPassword)
-        sign configurations.archives
-    }
-
-    uploadArchives {
-
-        repositories {
-            mavenDeployer {
-                beforeDeployment { deployment ->
-                    signing.signPom(deployment)
-                }
-                repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-                    // username and password from gradle.properties
-                    authentication(userName: sonatypeUsername, password: sonatypePassword)
-                }
-                snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
-                    authentication(userName: sonatypeUsername, password: sonatypePassword)
-                }
-                afterEvaluate {
-                    pom {
-                        project {
-                            name project.name
-                            url 'http://jgiven.org'
-
-                            scm {
-                                url 'scm:git@github.com:TNG/jgiven.git'
-                                connection 'scm:git@github.com:TNG/jgiven.git'
-                                developerConnection 'scm:git@github.com:TNG/jgiven.git'
-                            }
-
-                            licenses {
-                                license {
-                                    name 'The Apache Software License, Version 2.0'
-                                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                                    distribution 'repo'
-                                }
-                            }
-
-                            developers {
-                                developer {
-                                    id 'janschaefer'
-                                    name 'Jan Schäfer'
-                                }
-                                developer {
-                                    id 'l-1squared'
-                                    name 'Kristof Karhan'
-                                }
-                            }
-                        }
-                        whenConfigured { pom ->
-                            def junitDep = pom.dependencies.find { dep -> dep.groupId == 'junit' && dep.artifactId == 'junit' }
-                            if (junitDep != null) {
-                                junitDep.with {
-                                    version = '[4.9,4.12]'
-                                    scope = 'provided'
-                                }
-                            }
-                            pom.dependencies.removeAll(pom.dependencies.findAll { dep -> dep.scope in ['test'] })
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // to be able use project.description which may be overridden in later executed build.gradle of subproject
-    project.afterEvaluate {
-        uploadArchives.repositories {
-            mavenDeployer.pom.project {
-                description = project.description
-            }
-        }
-    }
-
-    uploadArchives.onlyIf {
-        isReleaseVersion
-    }
-
-    uploadArchives.doFirst {
-        if (isReleaseVersion && !JavaVersion.current().isJava8Compatible()) {
-            throw new GradleException("Releases have to be done with Java 8");
-        }
+        sign publishing.publications
     }
 
     idea {

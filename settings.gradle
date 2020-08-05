@@ -52,16 +52,17 @@ include ':jgiven-core',
 
 def release = System.env.RELEASE == "true"
 def android = System.env.ANDROID == "true"
+boolean hasAndroidSourcePath = ( System.env.ANDROID_SDK_ROOT )
 
 if (JavaVersion.current().isJava9Compatible()) {
     include ':jgiven-java9-tests'
 }
 
-if (android || release) {
+if ((android || release) && hasAndroidSourcePath) {
     include ':jgiven-android'
 }
 
-if (android && !release) {
+if (android && !release && hasAndroidSourcePath) {
     include ':jgiven-android-test'
 }
 
