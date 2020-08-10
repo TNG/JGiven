@@ -38,7 +38,7 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 echo Building, Testing, and Uploading Archives...
-./gradlew --no-parallel clean test publishToMaven
+./gradlew --no-parallel clean test publish
 
 echo Creating Tag
 git tag -a -m $VERSION_PREFIXED $VERSION_PREFIXED
