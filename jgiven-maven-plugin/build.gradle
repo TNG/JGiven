@@ -31,7 +31,7 @@ generateMavenPlugin.onlyIf {
    // as the generateMavenPlugin task requires mvn, it is only executed
    // when actually uploading the archives
    // that way the standard build stays maven-free
-   gradle.taskGraph.hasTask(uploadArchives) || gradle.taskGraph.hasTask(publishToMavenLocal)
+   gradle.taskGraph.getAllTasks().any{it instanceof AbstractPublishToMaven}
 }
 
 task copyMavenPlugin(type: Copy, dependsOn: generateMavenPlugin) {
