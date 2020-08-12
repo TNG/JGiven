@@ -292,7 +292,7 @@ configure(subprojects) {
     signing {
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
         required {
-            isReleaseVersion && gradle.taskGraph.hasTask('publish')
+            isReleaseVersion && gradle.taskGraph.getAllTasks().any{it instanceof PublishToMavenRepository}
         }
         def signingKey = findProperty("signingKey")
         def signingPassword = findProperty("signingPassword")
