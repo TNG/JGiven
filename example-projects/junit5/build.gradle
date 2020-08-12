@@ -37,6 +37,7 @@ repositories {
 
 dependencies {
     testCompile 'com.tngtech.jgiven:jgiven-junit5:' + jgivenVersion
+    testImplementation 'com.tngtech.jgiven:jgiven-core:' + jgivenVersion
     testCompile 'org.junit.jupiter:junit-jupiter-api:' + junit5Version
     testCompile 'org.junit.jupiter:junit-jupiter-engine:' + junit5Version
 }
