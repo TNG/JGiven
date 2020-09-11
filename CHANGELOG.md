@@ -54,6 +54,7 @@ All deprecated methods and classes have been removed. Please adapt your code acc
 * Make it easier to copy the stack trace from an error message [#380](https://github.com/TNG/JGiven/issues/380)
 * `TestEntitiyManager` now initialized correctly [#415](https://github.com/TNG/JGiven/issues/415) (thanks to leimer)
 * make tasks in the JGiven-gradle plugin cacheable [#450](https://github.com/TNG/JGiven/pull/450) (thanks to jsalinaspolo)
+* make sure the spring-junit-5 plugin is actually tested [#493](https://github.com/TNG/JGiven/pull/493) (thanks to catchin)
 
 # v0.18.2
 
