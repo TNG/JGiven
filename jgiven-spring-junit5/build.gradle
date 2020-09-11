@@ -1,4 +1,4 @@
-description = "Module for using Spring dependency injection together with JGiven and JUnit 4"
+description = "Module for using Spring dependency injection together with JGiven and JUnit 5"
 
 dependencies {
     compile project(':jgiven-spring')
@@ -17,4 +17,9 @@ dependencies {
     testCompile "org.hsqldb:hsqldb:$hsqldbVersion"
     testCompile "org.aspectj:aspectjrt:1.9.4"
     testCompile "org.aspectj:aspectjweaver:1.9.4"
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy(jgivenHtml5Report)
 }
