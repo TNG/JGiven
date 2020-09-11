@@ -5,9 +5,10 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.impl.Scenario;
 import com.tngtech.jgiven.integration.spring.SpringStageCreator;
 import com.tngtech.jgiven.junit5.JGivenExtension;
-import com.tngtech.jgiven.junit5.ScenarioTest;
 
 /**
  * Base class for Spring 5 and JUnit 5 test with three stage classes
@@ -18,9 +19,16 @@ import com.tngtech.jgiven.junit5.ScenarioTest;
  *
  * @since 1.0.0
  */
-@ExtendWith( SpringExtension.class )
+@ExtendWith( {SpringExtension.class, JGivenExtension.class} )
 public class SpringScenarioTest<GIVEN, WHEN, THEN> extends
-        ScenarioTest<GIVEN, WHEN, THEN> implements BeanFactoryAware {
+        ScenarioTestBase<GIVEN, WHEN, THEN> implements BeanFactoryAware {
+
+    private Scenario<GIVEN, WHEN, THEN> scenario = createScenario();
+
+    @Override
+    public Scenario<GIVEN, WHEN, THEN> getScenario() {
+        return scenario;
+    }
 
     @Override
     public void setBeanFactory( BeanFactory beanFactory ) {
