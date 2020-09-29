@@ -1,3 +1,6 @@
+plugins {
+    id 'java-library'
+}
 description = "Module for writing JGiven tests with JUnit 5"
 
 compileJava {
@@ -11,7 +14,7 @@ test {
 }
 
 dependencies {
-    implementation project(':jgiven-core')
+    api project(':jgiven-core')
 
     compileOnly 'org.junit.jupiter:junit-jupiter-api:5.3.2'
 
