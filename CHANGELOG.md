@@ -55,6 +55,7 @@ All deprecated methods and classes have been removed. Please adapt your code acc
 * `TestEntitiyManager` now initialized correctly [#415](https://github.com/TNG/JGiven/issues/415) (thanks to leimer)
 * make tasks in the JGiven-gradle plugin cacheable [#450](https://github.com/TNG/JGiven/pull/450) (thanks to jsalinaspolo)
 * make sure the spring-junit-5 plugin is actually tested [#493](https://github.com/TNG/JGiven/pull/493) (thanks to catchin)
+* spring-junit5 tests now initialize spring before JGiven [#494](https://github.com/TNG/JGiven/pull/494) (thanks to catchin)
 
 # v0.18.2
 
