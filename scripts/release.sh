@@ -1,4 +1,15 @@
 #!/bin/bash
+# to run this script locally, set
+# SONATYPE_PASSWORD='${sonatypePassword}'
+# SONATYPE_USERNAME='${sonatpyeUsername}'
+# ANDROID_SDK_ROOT='${androidRoot}'
+# JAVA_HOME='${java8Home}'
+# and run with the following arguments
+#"${version}" "-PsigningKey=$(gpg --export-secret-key -a ${id} | sed -e '/^---.*/d' | tr -d '\n')" "-PsigningPassword=${password}"
+
+SCRIPT_LOCATION=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
+# shellcheck source=./release_functions.sh
+source "${SCRIPT_LOCATION}"/release_functions.sh
 
 set -e
 
@@ -18,18 +29,21 @@ if [[ ! $1 =~ ^[0-9]*\.[0-9]*\.[0-9]*(-[A-Z0-9]*)?$ ]]; then
     exit 1
 fi
 
-if [ -z $ANDROID_SDK_ROOT ]; then
+if [ -z "${ANDROID_SDK_ROOT}" ]; then
     echo "Variable 'ANDROID_SDK_ROOT' not set. Will not continue release because the android package can't be built."
     exit 1
 fi
 
-VERSION=$1
-VERSION_PREFIXED="v$1"
 
-echo Releasing version $VERSION
+
+VERSION="$1"
+VERSION_PREFIXED="v$1"
+GRADLE_PROPERTIES="$(find_gradle_property "$@")"
+
+echo Releasing version "${VERSION}"
 
 echo Updating version in gradle.properties...
-sed -i -e s/version=.*/version=$VERSION/ gradle.properties
+sed -i -e "s/version=.*/version=${VERSION}/" gradle.properties
 
 if [ -n "$(git status --porcelain)" ]; then
     echo Commiting version change
@@ -38,51 +52,33 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 echo Building, Testing, and Uploading Archives...
-./gradlew --no-parallel clean test publishMavenPublicationToMavenRepository
+./gradlew --no-parallel clean test publishMavenPublicationToMavenRepository ${GRADLE_PROPERTIES}
 
 echo Creating Tag
-git tag -a -m $VERSION_PREFIXED $VERSION_PREFIXED
+git tag -a -m "${VERSION_PREFIXED}" "${VERSION_PREFIXED}"
 
 echo Closing the repository...
-./gradlew closeRepository
+./gradlew closeRepository "${GRADLE_PROPERTIES}"
 
 echo Testing staging version...
 
 echo Testing Maven plugin from staging repository...
-mvn -f example-projects/maven/pom.xml clean test -Djgiven.version=$VERSION
+mvn -f example-projects/maven/pom.xml clean test -Djgiven.version="${VERSION}"
 
 echo Testing Gradle plugin from staging repository...
-./gradlew -b example-projects/junit5/build.gradle clean test -Pstaging -Pversion=$VERSION
+./gradlew -b example-projects/junit5/build.gradle clean test -Pstaging -Pversion="${VERSION}" "${GRADLE_PROPERTIES}"
 
 echo STAGING SUCCESSFUL!
 
-releaseRepositoryAndPushVersion()
-{
-  echo Releasing the repository...
-  ./gradlew releaseRepository
-
-  echo Testing Maven plugin from Maven repository...
-  mvn -f example-projects/maven/pom.xml clean test -Djgiven.version=$VERSION
-
-  echo Publishing Gradle Plugin to Gradle Plugin repository...
-  ./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins -Dgradle.publish.key=$GRADLE_PLUGIN_RELEASE_KEY -Dgradle.publish.secret=$GRADLE_PLUGIN_RELEASE_SECRET
-
-  echo Testing Gradle Plugin from Gradle Plugin repository...
-  ./gradlew -b example-projects/java9/build.gradle clean test -Pversion=$VERSION
-
-  echo Pushing version and tag to GitHub repository...
-  git push
-  git push $(git config --get remote.origin.url) $VERSION_PREFIXED
-}
-
-echo $CI
-if [[ $CI == "true" ]]
+echo "${CI}"
+if [[ "${CI}" == "true" ]]
 then
-  releaseRepositoryAndPushVersion
+  releaseRepositoryAndPushVersion || exit $?
 else
   read -p "Do you want to release and push now? [y/N]" -n 1 -r
-  if [[ $REPLY =~ ^[Yy]$ ]]
+  if [[ "${REPLY}" =~ ^[Yy]$ ]]
   then
-    releaseRepositoryAndPushVersion
+    releaseRepositoryAndPushVersion || exit $?
   fi
 fi
+
