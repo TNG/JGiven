@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 function find_gradle_property(){
+    [[ "$(declare -p $1 2>/dev/null)" =~ "declare -a" ]] || return 11
+    local -n output_target=$1
     for command_line_argument in "$@"; do
-        gradle_properties=""
         if [[ "${command_line_argument}" =~ ^-P.*=.* ]];then
-          gradle_properties="${gradle_properties} ${command_line_argument}"
+          output_target+=("${command_line_argument}")
         fi
-        printf "%s" "${gradle_properties}"
     done
 }
 
