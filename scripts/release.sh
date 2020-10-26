@@ -38,7 +38,8 @@ fi
 
 VERSION="$1"
 VERSION_PREFIXED="v$1"
-GRADLE_PROPERTIES="$(find_gradle_property "$@")"
+declare -a GRADLE_PROPERTIES
+find_gradle_property GRADLE_PROPERTIES "$@"
 
 echo Releasing version "${VERSION}"
 
@@ -52,13 +53,13 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 
 echo Building, Testing, and Uploading Archives...
-./gradlew --no-parallel clean test  publishMavenPublicationToMavenLocal publishMavenPublicationToMavenRepository ${GRADLE_PROPERTIES}
+./gradlew --no-parallel clean test  publishMavenPublicationToMavenLocal publishMavenPublicationToMavenRepository "${GRADLE_PROPERTIES[@]}"
 
 echo Creating Tag
 git tag -a -m "${VERSION_PREFIXED}" "${VERSION_PREFIXED}"
 
 echo Closing the repository...
-./gradlew closeRepository "${GRADLE_PROPERTIES}"
+./gradlew closeRepository "${GRADLE_PROPERTIES[@]}"
 
 echo Testing staging version...
 
@@ -66,7 +67,7 @@ echo Testing Maven plugin from staging repository...
 mvn -f example-projects/maven/pom.xml clean test -Djgiven.version="${VERSION}"
 
 echo Testing Gradle plugin from staging repository...
-./gradlew -b example-projects/junit5/build.gradle clean test -Pstaging -Pversion="${VERSION}" "${GRADLE_PROPERTIES}"
+./gradlew -b example-projects/junit5/build.gradle clean test -Pstaging -Pversion="${VERSION}" "${GRADLE_PROPERTIES[@]}"
 
 echo STAGING SUCCESSFUL!
 
