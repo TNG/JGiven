@@ -5610,7 +5610,7 @@ kbd {
         width: 100%; }
   .orbit-container .orbit-slide-number {
     left: 10px;
-    background: transparent;
+    background: rgba(0, 0, 0, 0);
     color: #FFFFFF;
     font-size: 12px;
     position: absolute;
@@ -7815,7 +7815,7 @@ ul.off-canvas-list {
   box-shadow: -4px 0 4px rgba(0, 0, 0, 0.5), 4px 0 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: background 300ms ease;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: rgba(255, 255, 255, 0.2);
   bottom: 0;
   display: block;
@@ -7840,7 +7840,7 @@ ul.off-canvas-list {
   box-shadow: -4px 0 4px rgba(0, 0, 0, 0.5), 4px 0 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: background 300ms ease;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: rgba(255, 255, 255, 0.2);
   bottom: 0;
   display: block;
@@ -7865,7 +7865,7 @@ ul.off-canvas-list {
   box-shadow: -4px 0 4px rgba(0, 0, 0, 0.5), 4px 0 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: background 300ms ease;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: rgba(255, 255, 255, 0.2);
   bottom: 0;
   display: block;
@@ -7890,7 +7890,7 @@ ul.off-canvas-list {
   box-shadow: -4px 0 4px rgba(0, 0, 0, 0.5), 4px 0 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: background 300ms ease;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: rgba(255, 255, 255, 0.2);
   bottom: 0;
   display: block;
@@ -7917,7 +7917,7 @@ ul.off-canvas-list {
   box-shadow: -4px 0 4px rgba(0, 0, 0, 0.5), 4px 0 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: background 300ms ease;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: rgba(255, 255, 255, 0.2);
   bottom: 0;
   display: block;
@@ -7943,7 +7943,7 @@ ul.off-canvas-list {
   box-shadow: -4px 0 4px rgba(0, 0, 0, 0.5), 4px 0 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: background 300ms ease;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: rgba(255, 255, 255, 0.2);
   bottom: 0;
   display: block;
@@ -7969,7 +7969,7 @@ ul.off-canvas-list {
   box-shadow: -4px 0 4px rgba(0, 0, 0, 0.5), 4px 0 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: background 300ms ease;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: rgba(255, 255, 255, 0.2);
   bottom: 0;
   display: block;
@@ -7995,7 +7995,7 @@ ul.off-canvas-list {
   box-shadow: -4px 0 4px rgba(0, 0, 0, 0.5), 4px 0 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: background 300ms ease;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: rgba(255, 255, 255, 0.2);
   bottom: 0;
   display: block;
@@ -8021,7 +8021,7 @@ ul.off-canvas-list {
   box-shadow: -4px 0 4px rgba(0, 0, 0, 0.5), 4px 0 4px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: background 300ms ease;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background: rgba(255, 255, 255, 0.2);
   bottom: 0;
   display: block;
@@ -9293,6 +9293,10 @@ a.show-tree-link:hover {
 
 .no-pad-left {
   padding-left: 0; }
+
+.fa-fws {
+  width: 0.7em;
+  text-align: center; }
 
 @media only screen and (max-width: 64em) {
   #scenario-container {
