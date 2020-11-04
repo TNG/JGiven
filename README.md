@@ -1,12 +1,12 @@
-[![Build Status](http://img.shields.io/travis/TNG/JGiven.svg?style=flat-square)](https://travis-ci.org/TNG/JGiven)
-[![Coverage Status](http://img.shields.io/coveralls/TNG/JGiven.svg?style=flat-square)](https://coveralls.io/r/TNG/JGiven?branch=master)
-[![Apache License 2.0](http://img.shields.io/badge/license-apache2-red.svg?style=flat-square)](http://opensource.org/licenses/Apache-2.0)
-[![Maven Central](http://img.shields.io/maven-central/v/com.tngtech.jgiven/jgiven-junit.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.tngtech.jgiven/jgiven-junit)
+[![Build Status](https://img.shields.io/travis/TNG/JGiven.svg?style=flat-square)](https://travis-ci.org/TNG/JGiven)
+[![Coverage Status](https://img.shields.io/coveralls/TNG/JGiven.svg?style=flat-square)](https://coveralls.io/r/TNG/JGiven?branch=master)
+[![Apache License 2.0](https://img.shields.io/badge/license-apache2-red.svg?style=flat-square)](http://opensource.org/licenses/Apache-2.0)
+[![Maven Central](https://img.shields.io/maven-central/v/com.tngtech.jgiven/jgiven-junit.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.tngtech.jgiven/jgiven-junit)
 [![Join the chat at https://gitter.im/TNG/JGiven](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/TNG/JGiven?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Javadocs](http://javadoc.io/badge/com.tngtech.jgiven/jgiven-core.svg?color=brightgreen)](http://javadoc.io/doc/com.tngtech.jgiven/jgiven-core)
+[![Javadocs](https://javadoc.io/badge/com.tngtech.jgiven/jgiven-core.svg?color=brightgreen)](https://javadoc.io/doc/com.tngtech.jgiven/jgiven-core)
 [![Open Source Helpers](https://www.codetriage.com/tng/jgiven/badges/users.svg)](https://www.codetriage.com/tng/jgiven)
 
-<img src="http://jgiven.org/img/logo.png" height="80" alt="JGiven">
+<img src="https://jgiven.org/img/logo.png" height="80" alt="JGiven">
 
 JGiven is a *developer-friendly* and *pragmatic* BDD tool for Java. Developers write scenarios in plain Java using a fluent, domain-specific API, JGiven generates reports that are readable by domain experts.
 
@@ -14,11 +14,11 @@ JGiven is a *developer-friendly* and *pragmatic* BDD tool for Java. Developers w
 
 Behavior-Driven Development (BDD) is a development method where business analysts, developers, and testers describe the behavior of a software product in a common language and notation. Behavior is typically described in terms of scenarios, which are written in the Given-When-Then notation. The common language and notation is one cornerstone of BDD. The other cornerstone is that the defined scenarios are executable, form a comprehensive test suite, and a living documentation for the software product.
 
-In classical BDD tools for Java like [JBehave](http://jbehave.org) or [Cucumber](http://cukes.info) scenarios are written in plain text files. This allows non-developers to write scenarios, because no programming knowledge is required. To make scenarios executable, developers write so-called step-implementations. To bind plain text to step implementations regular expressions are used. For developers maintaining these executable scenarios has a high overhead that is not required if tests would be directly written in a programming language.
+In classical BDD tools for Java like [JBehave](https://jbehave.org) or [Cucumber](https://cukes.info) scenarios are written in plain text files. This allows non-developers to write scenarios, because no programming knowledge is required. To make scenarios executable, developers write so-called step-implementations. To bind plain text to step implementations regular expressions are used. For developers maintaining these executable scenarios has a high overhead that is not required if tests would be directly written in a programming language.
 
 Beside the classical BDD tools there are a number of tools for Java to write BDD tests in a programming language like Groovy ([easyb](http://easyb.org)) or Scala ([ScalaTest](http://www.scalatest.org)). To our knowledge, however, there is no BDD tool where scenarios can be written in plain Java.
 
-Finally, there are specification testing frameworks like [Spock](http://spock.org) (Groovy) or [LambdaBehave](http://richardwarburton.github.io/lambda-behave/) which are very developer-centric and good for unit-testing, but the generated reports are not in Given-When-Then form and are not easily readable by non-developers.
+Finally, there are specification testing frameworks like [Spock](https://spock.org) (Groovy) or [LambdaBehave](https://richardwarburton.github.io/lambda-behave/) which are very developer-centric and good for unit-testing, but the generated reports are not in Given-When-Then form and are not easily readable by non-developers.
 
 ## BDD with JGiven
 
@@ -59,17 +59,17 @@ Scenario: a pancake can be fried out of an egg milk and flour
     And the cook fries the dough in a pan
    Then the resulting meal is a pancake
 ```
-In addition, you can generate a [HTML Report](http://jgiven.org/jgiven-report/html5/).
+In addition, you can generate a [HTML Report](https://jgiven.org/jgiven-report/html5/).
 
 ## Getting Started
 
-1. Start by reading the [documentation](http://jgiven.org/docs/) section on JGiven's website.
-2. See the [talk](http://www.techcast.com/events/bigtechday8/maffei-1345/) on JGiven held on the TNG Big TechDay
+1. Start by reading the [documentation](https://jgiven.org/docs/) section on JGiven's website.
+2. See the [talk](https://www.techcast.com/events/bigtechday8/maffei-1345/) on JGiven held on the TNG Big TechDay
 
 ## License
 
 JGiven is published under the Apache License 2.0, see
-http://www.apache.org/licenses/LICENSE-2.0 for details.
+https://www.apache.org/licenses/LICENSE-2.0 for details.
 
 ## Contributing
 
