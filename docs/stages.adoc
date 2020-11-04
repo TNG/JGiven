@@ -50,7 +50,7 @@ public MyStage some_step() {
 
 === Completely Hide Steps
 
-Steps can be completely hidden from the report by using the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Hidden.html[`@Hidden`] annotation. This is sometimes useful if you need a technical method call within a scenario, which should not appear in the report.
+Steps can be completely hidden from the report by using the https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Hidden.html[`@Hidden`] annotation. This is sometimes useful if you need a technical method call within a scenario, which should not appear in the report.
 
 For example:
 
@@ -61,7 +61,7 @@ include::{sourcedir}/userguide/RocketMethods.java[tags=hiddenRocket,indent=0]
 Note that it is useful to write hidden methods in `CamelCase` to make it immediately visible in the scenario that these methods will not appear in the report.
 
 ==== Method Parameters
-The http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Hidden.html[`@Hidden`] annotation is also applicable for method parameters that shall not appear in the report.
+The https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Hidden.html[`@Hidden`] annotation is also applicable for method parameters that shall not appear in the report.
 
 For example:
 
@@ -74,7 +74,7 @@ include::{sourcedir}/userguide/RocketMethods.java[tags=rocketSetup,indent=0]
 
 === Extended Descriptions
 
-Steps can get an extended description with the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/ExtendedDescription.html[`@ExtendedDescription`] annotation. You can use this to give additional information about the step to the reader of the report. In the HTML report this information is shown in a tooltip.
+Steps can get an extended description with the https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/ExtendedDescription.html[`@ExtendedDescription`] annotation. You can use this to give additional information about the step to the reader of the report. In the HTML report this information is shown in a tooltip.
 
 Example:
 
@@ -85,7 +85,7 @@ include::{sourcedir}/userguide/RocketMethods.java[tags=rocketDesc,indent=0]
 
 === Intro Words
 
-If the predefined introductionary words in the http://jgiven.org/javadoc/com/tngtech/jgiven/Stage.html[`Stage`] class are not enough for you and you want to define additional ones you can use the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IntroWord.html[`@IntroWord`] annotation on a step method.
+If the predefined introductionary words in the https://jgiven.org/javadoc/com/tngtech/jgiven/Stage.html[`Stage`] class are not enough for you and you want to define additional ones you can use the https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IntroWord.html[`@IntroWord`] annotation on a step method.
 
 Example:
 
