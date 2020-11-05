@@ -208,7 +208,7 @@ Then the report will look as follows:
 Given the coffee price ["Espresso",2.0 EUR] is registered
 ----
 
-For additional options, see the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/POJOFormat.html[JavaDoc documentation of the `@POJOFormat` annotation]
+For additional options, see the https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/POJOFormat.html[JavaDoc documentation of the `@POJOFormat` annotation]
 
 ==== Reuse a set of @NamedFormat definitions
 When several steps uses the same type of POJO in their parameters, it may be tedious to redefine this POJO fields formats in each of these steps.
@@ -364,7 +364,7 @@ Given the prices of the coffees are
       | Espresso   | 2.0          |
       | Cappuccino | 2.5          |
 --
-For additional options, see the http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Table.html[JavaDoc documentation of the `@Table` annotation]
+For additional options, see the https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Table.html[JavaDoc documentation of the `@Table` annotation]
 
 Also note that POJO fields formats can be specified thanks to the `@Table#fieldsFormat` or `@Table#fieldsFormatSetAnnotation` options. +
 See <<_the_pojoformat_annotation>> section for more informations about how to use these two options.

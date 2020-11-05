@@ -75,7 +75,7 @@ java com.tngtech.jgiven.report.ReportGenerator \
 ----
 
 To see the HTML report in action you can have a look at the
-http://jgiven.org/jgiven-report/html5/[HTML report of JGiven itself]
+https://jgiven.org/jgiven-report/html5/[HTML report of JGiven itself]
 
 ==== Maven
 

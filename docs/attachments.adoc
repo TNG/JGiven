@@ -4,7 +4,7 @@ Steps can have attachments. This is useful, for example, to save sceenshots duri
 
 === Creating Attachments
 
-There are several ways to create an attachment by using static factory methods of the http://jgiven.org/javadoc/com/tngtech/jgiven/attachment/Attachment.html[`Attachment`] class. For example, you can create textual attachments from a given `String` by using the `fromText` method.
+There are several ways to create an attachment by using static factory methods of the https://jgiven.org/javadoc/com/tngtech/jgiven/attachment/Attachment.html[`Attachment`] class. For example, you can create textual attachments from a given `String` by using the `fromText` method.
 
 [source,java]
 ----
@@ -35,7 +35,7 @@ Attachment attachment = Attachment
 
 === Adding Attachments to Steps
 
-To add an attachment to a step you have to first inject the http://jgiven.org/javadoc/com/tngtech/jgiven/CurrentStep.html[`CurrentStep`] class into your stage class by using `@ExpectedScenarioState`.
+To add an attachment to a step you have to first inject the https://jgiven.org/javadoc/com/tngtech/jgiven/CurrentStep.html[`CurrentStep`] class into your stage class by using `@ExpectedScenarioState`.
 
 
 [source,java]
@@ -44,7 +44,7 @@ To add an attachment to a step you have to first inject the http://jgiven.org/ja
 CurrentStep currentStep;
 ----
 
-Now you can use `currentStep` inside step methods to add attachments using the http://jgiven.org/javadoc/com/tngtech/jgiven/CurrentStep.html#addAttachment%28com.tngtech.jgiven.attachment.Attachment%29[`addAttachment`] method. The method takes as argument an instance of http://jgiven.org/javadoc/com/tngtech/jgiven/attachment/Attachment.html[`Attachment`].
+Now you can use `currentStep` inside step methods to add attachments using the https://jgiven.org/javadoc/com/tngtech/jgiven/CurrentStep.html#addAttachment%28com.tngtech.jgiven.attachment.Attachment%29[`addAttachment`] method. The method takes as argument an instance of https://jgiven.org/javadoc/com/tngtech/jgiven/attachment/Attachment.html[`Attachment`].
 
 
 [source,java]
