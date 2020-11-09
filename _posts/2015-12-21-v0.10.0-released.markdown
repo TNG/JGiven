@@ -8,4 +8,4 @@ categories: news
 Version 0.10.0 was published in a broken state to maven central, please use v0.10.1 instead.
 
 [jgiven-gh]: https://github.com/TNG/JGiven
-[jgiven]:    http://jgiven.org
+[jgiven]:    https://jgiven.org

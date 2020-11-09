@@ -7,4 +7,4 @@ categories: news
 Welcome! Here you will find updates about new releases, documentation, and other information about JGiven.
 
 [jgiven-gh]: https://github.com/TNG/JGiven
-[jgiven]:    http://jgiven.org
+[jgiven]:    https://jgiven.org
