@@ -8,4 +8,4 @@ Thanks to [Stefan Wolf](https://twitter.com/wolfs42), there exists now a [Jenkin
 The plugin allows you to generate JGiven reports as a post-build action of a Jenkins job. The resulting reports are then directly accessible via the Jenkins UI.
 
 [jgiven-gh]: https://github.com/TNG/JGiven
-[jgiven]:    http://jgiven.org
+[jgiven]:    https://jgiven.org
