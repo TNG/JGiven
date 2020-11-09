@@ -444,7 +444,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_tags">Tags</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html"><code>@IsTag</code></a> annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.</p>
+<p>Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the <a href="https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html"><code>@IsTag</code></a> annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.</p>
 </div>
 <div class="paragraph">
 <p>Let’s say you want to know which scenarios covers the coffee feature. To do so you define a new Java annotation:</p>
@@ -586,7 +586,7 @@ public void scenarios_can_have_tags() {
 <p>When the description of a tag depends on its value you cannot simply set the description on the <code>@IsTag</code> annotation, because it will be the same for all values.</p>
 </div>
 <div class="paragraph">
-<p>Let’s assume you have an <code>@Issue</code> tag and want to have a link to the corresponding GitHub issue in the description. To do so you can provide your own <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/TagDescriptionGenerator.html"><code>TagDescriptionGenerator</code></a> implementation that generates a description of a tag depending on its actual value:</p>
+<p>Let’s assume you have an <code>@Issue</code> tag and want to have a link to the corresponding GitHub issue in the description. To do so you can provide your own <a href="https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/TagDescriptionGenerator.html"><code>TagDescriptionGenerator</code></a> implementation that generates a description of a tag depending on its actual value:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -602,7 +602,7 @@ public void scenarios_can_have_tags() {
 </div>
 </div>
 <div class="paragraph">
-<p>The new <code>IssueDescriptionGenerator</code> must now be configured for the <code>@Issue</code> annotation using the <a href="http://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html#descriptionGenerator%28%29"><code>descriptionGenerator</code></a> attribute of <code>@IsTag</code>:</p>
+<p>The new <code>IssueDescriptionGenerator</code> must now be configured for the <code>@Issue</code> annotation using the <a href="https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html#descriptionGenerator%28%29"><code>descriptionGenerator</code></a> attribute of <code>@IsTag</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -651,7 +651,7 @@ public @interface OneOfMyCoolCoreFeatures {}</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.0-RC5<br>
-Last updated 2020-10-30 16:18:04 +0100
+Last updated 2020-11-09 16:03:14 +0100
 </div>
 </div>
 </body>
