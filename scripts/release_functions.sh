@@ -22,7 +22,7 @@ function releaseRepositoryAndPushVersion()
   ./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins -Dgradle.publish.key="${GRADLE_PLUGIN_RELEASE_KEY}" -Dgradle.publish.secret="${GRADLE_PLUGIN_RELEASE_SECRET}" || return 23
 
   echo Testing Gradle Plugin from Gradle Plugin repository...
-  ./gradlew -b example-projects/java9/build.gradle clean test -Pversion="${VERSION}" || return 24
+  ./gradlew -b example-projects/junit5/build.gradle clean test -Pversion="${VERSION}" || return 24
 
   echo Pushing version and tag to GitHub repository...
   git push
