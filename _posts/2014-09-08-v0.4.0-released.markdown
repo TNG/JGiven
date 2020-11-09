@@ -17,4 +17,4 @@ The new version 0.4.0 of JGiven is released:
 * fixed case generation for parameterized JUnit runner (Issue-#21)
 
 [jgiven-gh]: https://github.com/TNG/JGiven
-[jgiven]:    http://jgiven.org
+[jgiven]:    https://jgiven.org

@@ -9,4 +9,4 @@ The new version 0.5.1 of JGiven is [released](https://github.com/TNG/JGiven/rele
 
 
 [jgiven-gh]: https://github.com/TNG/JGiven
-[jgiven]:    http://jgiven.org
+[jgiven]:    https://jgiven.org
