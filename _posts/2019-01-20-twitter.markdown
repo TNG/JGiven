@@ -8,4 +8,4 @@ categories: news
 JGiven has an official Twitter handle now! Follow <a href="https://twitter.com/JGivenBDD">@JGivenBDD</a> to never miss any JGiven updates anymore.
 
 [jgiven-gh]: https://github.com/TNG/JGiven
-[jgiven]:    http://jgiven.org
+[jgiven]:    https://jgiven.org

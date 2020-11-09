@@ -8,4 +8,4 @@ categories: news
 JGiven will be presented at JavaOne! Don't miss the talk of Jan Schäfer on Tuesday, Sep. 20, 8pm in room Yosemite, Hilton.
 
 [jgiven-gh]: https://github.com/TNG/JGiven
-[jgiven]:    http://jgiven.org
+[jgiven]:    https://jgiven.org

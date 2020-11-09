@@ -9,4 +9,4 @@ We are happy to announce that the new version 0.6.2 of JGiven has been released.
 
 
 [jgiven-gh]: https://github.com/TNG/JGiven
-[jgiven]:    http://jgiven.org
+[jgiven]:    https://jgiven.org
