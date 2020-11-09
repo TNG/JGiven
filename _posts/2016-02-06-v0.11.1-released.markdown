@@ -9,4 +9,4 @@ Released Version 0.11.1 of JGiven. For details see the [release notes](https://g
 
 
 [jgiven-gh]: https://github.com/TNG/JGiven
-[jgiven]:    http://jgiven.org
+[jgiven]:    https://jgiven.org
