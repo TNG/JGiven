@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "Version 1.0.0-RC6 Released"
+date:  2020-11-09 16:27:17
+categories: news
+---
+
+Released Version 1.0.0-RC6 of JGiven. For details see the [release notes](https://github.com/TNG/JGiven/releases/tag/v1.0.0-RC6).
+
+[jgiven-gh]: https://github.com/TNG/JGiven
+[jgiven]:    https://jgiven.org
