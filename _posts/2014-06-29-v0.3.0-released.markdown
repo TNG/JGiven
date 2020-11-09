@@ -16,4 +16,4 @@ The new version 0.3.0 of JGiven is released:
 
 
 [jgiven-gh]: https://github.com/TNG/JGiven
-[jgiven]:    http://jgiven.org
+[jgiven]:    https://jgiven.org
