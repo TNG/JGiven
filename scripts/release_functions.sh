@@ -19,7 +19,7 @@ function releaseRepositoryAndPushVersion()
   mvn -f example-projects/maven/pom.xml clean test -Djgiven.version="${VERSION}" || return 22
 
   echo Publishing Gradle Plugin to Gradle Plugin repository...
-  ./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins -Dgradle.publish.key="${GRADLE_PLUGIN_RELEASE_KEY}" -Dgradle.publish.secret="${GRADLE_PLUGIN_RELEASE_SECRET}" || return 23
+  ./gradlew -b jgiven-gradle-plugin/build.gradle publishPlugins -Pgradle.publish.key="${GRADLE_PLUGIN_RELEASE_KEY}" -Pgradle.publish.secret="${GRADLE_PLUGIN_RELEASE_SECRET}" || return 23
 
   echo Testing Gradle Plugin from Gradle Plugin repository...
   ./gradlew -b example-projects/java9/build.gradle clean test -Pversion="${VERSION}" || return 24
