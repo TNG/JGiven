@@ -46,7 +46,7 @@ nexusStaging {
     packageGroup = 'com.tngtech'
     username = sonatypeUsername
     password = sonatypePassword
-    numberOfRetries = 60
+    numberOfRetries = 100
 }
 
 subprojects {
