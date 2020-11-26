@@ -1,6 +1,6 @@
 
 plugins {
-    id "com.tngtech.jgiven.gradle-plugin" version "1.0.0-RC6"
+    id "com.tngtech.jgiven.gradle-plugin" version "1.0.0-RC7"
     id 'org.springframework.boot' version '2.1.7.RELEASE'
 }
 
