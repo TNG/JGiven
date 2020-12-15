@@ -4,5 +4,6 @@
   ],
   "ignorePaths": [
     "**/example-projects/scala/**"
-  ]
+  ],
+  "commitBody": "Signed-off-by: l-1squared <30831153+l-1squared@users.noreply.github.com>"
 }
