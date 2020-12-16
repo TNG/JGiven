@@ -11,7 +11,7 @@ dependencies {
     implementation "net.bytebuddy:byte-buddy:$bytebuddyVersion"
     implementation "org.fusesource.jansi:jansi:$jansiVersion"
 
-    testImplementation 'com.github.stefanbirkner:system-rules:1.2.0'
+    testImplementation 'com.github.stefanbirkner:system-rules:1.19.0'
 }
 
 def generatedSourceDir = "generatedSrc/java"
