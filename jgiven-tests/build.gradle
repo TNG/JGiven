@@ -7,7 +7,7 @@ dependencies {
     compile "junit:junit:$junitVersion"
     compile "org.testng:testng:$testngVersion"
     compile "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
-    compile 'com.beust:jcommander:1.72'
+    compile 'com.beust:jcommander:1.80'
 
     testCompile "org.assertj:assertj-core:$assertjVersion"
     testCompile 'org.seleniumhq.selenium:selenium-java:3.141.59'
