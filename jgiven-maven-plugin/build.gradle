@@ -3,7 +3,7 @@ description = 'JGiven Maven Mojo'
 dependencies {
     compile project(':jgiven-core')
     compile project(':jgiven-html5-report')
-    compile "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.5"
+    compile "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.6.0"
     compile "org.apache.maven.plugin-tools:maven-plugin-annotations:3.5"
 }
 
