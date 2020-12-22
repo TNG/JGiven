@@ -12,6 +12,6 @@ dependencies {
     testCompile "org.springframework:spring-test:$springVersion"
     testCompile "org.springframework:spring-jdbc:$springVersion"
     testCompile "org.hsqldb:hsqldb:$hsqldbVersion"
-    testCompile "org.aspectj:aspectjrt:1.9.4"
+    testCompile "org.aspectj:aspectjrt:1.9.6"
     testCompile "org.aspectj:aspectjweaver:1.9.6"
 }
