@@ -62,7 +62,7 @@ subprojects {
         slf4jVersion = '1.7.25'
         bytebuddyVersion = '1.10.19'
         paranamerVersion = '2.8'
-        jansiVersion = '1.15'
+        jansiVersion = '1.18'
         gsonVersion = '2.8.6'
         guavaVersion = '28.2-jre'
         guavaAndroidVersion = '28.1-android'
