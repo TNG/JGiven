@@ -24,7 +24,7 @@ repositories {
 }
 
 ext {
-    assertjVersion = '3.14.0'
+    assertjVersion = '3.18.1'
     junitDataproviderVersion = '1.13.1'
     jgivenVersion = '1.0.0-RC7'
     hsqldbVersion = '2.3.2'
