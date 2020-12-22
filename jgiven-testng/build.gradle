@@ -4,7 +4,7 @@ dependencies {
     compile project(':jgiven-core')
     compile project(':jgiven-html5-report')
     compile "org.testng:testng:$testngVersion"
-    testCompile 'org.testng.testng-remote:testng-remote-dist:1.2.1'
+    testCompile 'org.testng.testng-remote:testng-remote-dist:1.4.0'
 }
 
 test.useTestNG() {
