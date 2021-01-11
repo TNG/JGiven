@@ -5,5 +5,35 @@
   "ignorePaths": [
     "**/example-projects/scala/**"
   ],
-  "commitBody": "Signed-off-by: Renovate Bot <bot@renovateapp.com>"
+  "commitBody": "Signed-off-by: Renovate Bot <bot@renovateapp.com>",
+  "prCreation": "not-pending",
+  "additionalReviewers": [
+    "fudler",
+    "l-1squared"
+  ],
+  "packageRules": [
+    {
+      "packagePatterns": [
+        "slf4j"
+      ],
+      "groupName": "slf4j"
+    },
+    {
+      "packagePatterns": [
+        "junit.jupiter"
+      ],
+      "groupName": "junit5"
+    },
+    {
+      "packagePatterns": [
+        "powermock"
+      ],
+      "groupName": "powermock"
+    }
+  ],
+  "schedule": [
+    "after 10pm every weekday",
+    "before 5am every weekday",
+    "every weekend"
+  ]
 }
