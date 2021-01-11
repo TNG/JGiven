@@ -56,7 +56,7 @@ subprojects {
         junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.13.1'
         junit5Version = '5.7.0'
         junit5PlatformRunnerVersion = '1.7.0'
-        junitParamsVersion = '1.0.5'
+        junitParamsVersion = '1.1.1'
         testngVersion = '7.3.0'
         assertjVersion = '3.18.1'
         slf4jVersion = '1.7.30'
