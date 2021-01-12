@@ -17,7 +17,7 @@ repositories {
 
  android {
     compileSdkVersion 27
-    buildToolsVersion '27.0.2'
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.tngtech.jgiven.android.example"
         minSdkVersion 15
@@ -41,9 +41,9 @@ configurations {
 dependencies {
   implementation 'com.android.support:appcompat-v7:27.0.2'
 
-  androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-  androidTestCompile 'com.android.support.test:runner:0.5'
-  androidTestCompile 'com.tngtech.jgiven:jgiven-android:' + version
+  androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+  androidTestImplementation 'com.android.support.test:runner:0.5'
+  androidTestImplementation 'com.tngtech.jgiven:jgiven-android:' + version
 
   jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:' + version
   jgivenReport 'org.slf4j:slf4j-simple:1.7.30'
@@ -67,7 +67,7 @@ task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
     commandLine adb, 'pull', reportsDir, targetDir
 
     doLast {
-        println("Pulled "+reportsDir+" to "+targetDir);
+        println("Pulled "+reportsDir+" to "+targetDir)
     }
 }
 
