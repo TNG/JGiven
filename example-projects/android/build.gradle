@@ -4,7 +4,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
+        classpath 'com.android.tools.build:gradle:3.4.0'
     }
 }
 
@@ -15,7 +15,7 @@ repositories {
     jcenter()
 }
 
- android {
+android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.tngtech.jgiven.android.example"
@@ -34,18 +34,19 @@ repositories {
 }
 
 configurations {
-  jgivenReport
+    jgivenReport
 }
 
 dependencies {
-  implementation 'com.android.support:appcompat-v7:27.0.2'
+    implementation 'com.android.support:appcompat-v7:27.0.2'
 
-  androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
-  androidTestImplementation 'com.android.support.test:runner:0.5'
-  androidTestImplementation 'com.tngtech.jgiven:jgiven-android:' + version
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestImplementation 'com.android.support.test:runner:0.5'
+    androidTestImplementation 'com.tngtech.jgiven:jgiven-android:' + version
+    androidTestImplementation 'com.tngtech.jgiven:jgiven-junit:' + version
 
-  jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:' + version
-  jgivenReport 'org.slf4j:slf4j-simple:1.7.30'
+    jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:' + version
+    jgivenReport 'org.slf4j:slf4j-simple:1.7.30'
 }
 
 def targetDir = 'build/reports/jgiven/json'
@@ -53,20 +54,20 @@ def adb = android.getAdbExe().toString()
 def reportsDir = '/storage/emulated/0/Download/jgiven-reports'
 
 task cleanJGivenReports(type: Delete) {
-  delete targetDir
+    delete targetDir
 }
 
 task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
     doFirst {
         if (!file(targetDir).mkdirs()) {
-            println("Cannot create dir "+targetDir)
+            println("Cannot create dir " + targetDir)
         }
     }
 
     commandLine adb, 'pull', reportsDir, targetDir
 
     doLast {
-        println("Pulled "+reportsDir+" to "+targetDir)
+        println("Pulled " + reportsDir + " to " + targetDir)
     }
 }
 
@@ -74,30 +75,30 @@ task cleanJGivenReportsFromDevice(type: Exec) {
     commandLine adb, 'shell', 'rm -rf', reportsDir
 
     doLast {
-        println("Deleted "+reportsDir)
+        println("Deleted " + reportsDir)
     }
 }
 
 pullJGivenReports.finalizedBy(cleanJGivenReportsFromDevice)
 
 task cleanJGivenHtmlReport(type: Delete) {
-  delete 'build/reports/jgiven/html'
+    delete 'build/reports/jgiven/html'
 }
 
 task jgivenHtml5Report(type: JavaExec, dependsOn: cleanJGivenHtmlReport) {
     main = 'com.tngtech.jgiven.report.ReportGenerator'
     args '--sourceDir=build/reports/jgiven/json',
-         '--targetDir=build/reports/jgiven/html',
-         '--format=html5',
-         '--exclude-empty-scenarios=true'
-        classpath = configurations.jgivenReport
+            '--targetDir=build/reports/jgiven/html',
+            '--format=html5',
+            '--exclude-empty-scenarios=true'
+    classpath = configurations.jgivenReport
 }
 
 pullJGivenReports.finalizedBy(jgivenHtml5Report)
 
 tasks.whenTaskAdded { task ->
-  if (task.name == 'connectedAndroidTest') {
-    task.finalizedBy 'pullJGivenReports'
-  }
+    if (task.name == 'connectedAndroidTest') {
+        task.finalizedBy 'pullJGivenReports'
+    }
 }
 
