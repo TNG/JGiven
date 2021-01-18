@@ -7,8 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.DriverManagerType;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -57,7 +56,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
 
     @BeforeClass
     public static void setupWebDriver() {
-        ChromeDriverManager.getInstance(DriverManagerType.CHROME).setup();
+        WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
@@ -150,8 +149,6 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
     @Issue( "#191" )
     @FeatureAttachments
     public void attachments_of_all_cases_appear_in_the_HTML5_report_when_having_a_data_table() throws Exception {
-        String content1 = "Some Example Attachment\nwith some example content";
-        String content2 = "A second Example Attachment\nwith some example content";
 
         given().a_report_model()
             .and().the_scenario_has_one_parameter()

@@ -1,7 +1,6 @@
 package com.tngtech.jgiven.example.selenium;
 
-import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.DriverManagerType;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,7 +18,7 @@ public class IndexHtmlTest extends SimpleScenarioTest<IndexStage> {
 
     @BeforeClass
     public static void createWebDriver() {
-        ChromeDriverManager.getInstance(DriverManagerType.CHROME).setup();
+        WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
