@@ -1,0 +1,24 @@
+@startuml
+Testframework -> Testframework: start test
+Testframework -> JGiven-Extension: load JGiven
+JGivenExtension-> ScenarioBase
+ScenarioBase --> ScenarioExtension : load Executor
+ScenarioBase --> ScenarioModelBuilder : create
+
+start
+JGivenExtension:beforeEach -->
+@enduml
+
+@startuml
+:JGivenExtesion@beforeAll create Reporter;
+:JGivenExtension@postProcessor create Scenario in ScenarioHolder;
+:JGivenExtension@beforeEach start Scenario;
+:ScenarioBase@startScenario insert Builder into Executor;
+:ScenarioBase@startScenario startExecutorScenario;
+:ScenarioExecutor@startScenario start model builder;
+:ScenarioModelBuilder@scenarioStarted load configuration into class;
+:ScenarioModelBuilder@scenarioStarted read annoations;
+:ScenarioModelBuilder@readAnnotations evaluate Test Description based on Method Annotations;
+:ScenarioMOdelBuilde@readAnnoations call "startScenario With Description";
+:ScenarioModelBuilder@scenarioStarted(description) create ScenarioCaseModel and ScenarioModel;
+@enduml
