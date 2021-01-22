@@ -12,6 +12,14 @@ JGivenExtension:beforeEach -->
 @startuml
 :JGivenExtesion@beforeAll create Reporter;
 :JGivenExtension@postProcessor create Scenario in ScenarioHolder;
+:JGivenExtension@postProcessor injectStages;
+
+
+
+
+
+
+:JGivenExtension@postProcessor readScenarioState;
 :JGivenExtension@beforeEach start Scenario;
 :ScenarioBase@startScenario insert Builder into Executor;
 :ScenarioBase@startScenario startExecutorScenario;
@@ -21,4 +29,54 @@ JGivenExtension:beforeEach -->
 :ScenarioModelBuilder@readAnnotations evaluate Test Description based on Method Annotations;
 :ScenarioMOdelBuilde@readAnnoations call "startScenario With Description";
 :ScenarioModelBuilder@scenarioStarted(description) create ScenarioCaseModel and ScenarioModel;
+:ScenarioModelBuilder@readAnnoations actually read class and method annoations;
+:ScenarioModelBuilder@scenarioStarted set name of test method in model;
+:ScenarioModelBuilder@scenarioStarted ...other init operations;
+:ScenarioExecutor@startScenario suppress exceptions if not Pending;
+:StepInterceptorImpl@setSupressExceptions true;
+:ScenarioExecutor@startScenario: done;
+:JGivenExtension@beforeEach return to JUnit;
+
+@enduml
+
+@startuml
+participant JUnit
+participant JGivenExtension as JGE
+
+box JGiven Core
+participant ScenarioBase
+participant ScenarioExecutor as Executor
+participant ScenarioModelBuilder as Builder
+participant ScenarioHolder
+participant ReportModel
+end box
+JUnit -> JGE : postProcessTestInstance
+group postProcessTestInstance
+JGE -> ScenarioBase ** : create
+JGE -> ReportModel ** : create
+ScenarioBase -> Builder ** : create
+ScenarioBase -> Executor ** : create
+JGE -> ScenarioHolder : add ScenarioBase
+ScenarioHolder -> JGE
+JGE -> Executor : injectStages
+Executor -> JGE
+end group
+JGE -> JUnit
+JUnit -> JGE
+group BeforeEach
+JGE -> ScenarioBase : start Scenario
+ScenarioBase -> Executor : add ScenarioModelBuilder
+ScenarioBase -> Executor : start Scenario
+group StartScenario
+Executor -> Builder : startScenario
+Builder -> Builder : load configuration
+Builder -> Builder : Create scenario description from annotations
+Builder -> Builder : Create scenario model and scenario case model
+Builder -> Executor
+Executor -> Executor : supress Exceptions
+Executor -> ScenarioBase
+end group
+ScenarioBase -> JGE
+end group
+JGE -> JUnit
 @enduml
