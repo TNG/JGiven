@@ -1,8 +1,13 @@
+package com.tngtech.jgiven.example.selenium;
+
+import io.github.bonigarcia.wdm.ChromeDriverManager;
+import io.github.bonigarcia.wdm.DriverManagerType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
@@ -14,8 +19,13 @@ public class IndexHtmlTest extends SimpleScenarioTest<IndexStage> {
 
     @BeforeClass
     public static void createWebDriver() {
-        webDriver = new PhantomJSDriver();
-    }
+        ChromeDriverManager.getInstance(DriverManagerType.CHROME).setup();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");
+        options.addArguments("window-size=1280x768");
+        webDriver = new ChromeDriver(); }
 
     @AfterClass
     public static void closeWebDriver() {

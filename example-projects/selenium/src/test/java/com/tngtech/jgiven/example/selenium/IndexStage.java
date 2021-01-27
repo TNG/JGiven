@@ -1,6 +1,7 @@
+package com.tngtech.jgiven.example.selenium;
+
 import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
