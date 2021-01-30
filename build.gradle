@@ -66,7 +66,7 @@ subprojects {
         gsonVersion = '2.8.6'
         guavaVersion = '28.2-jre'
         guavaAndroidVersion = '28.1-android'
-        springVersion = '5.3.2'
+        springVersion = '5.3.3'
         jacocoVersion = '0.8.5'
         quickcheckVersion = '0.6'
         hsqldbVersion = '2.3.2'
