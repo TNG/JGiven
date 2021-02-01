@@ -1,14 +1,28 @@
 plugins {
-    id 'com.tngtech.jgiven.gradle-plugin'
+    id 'com.tngtech.jgiven.gradle-plugin' version "1.0.0-RC7"
+    id 'java-library'
 }
 
 apply plugin: 'groovy'
 
 description = "Module for writing JGiven tests with Spock"
 
-dependencies {
-    implementation 'org.spockframework:spock-core:1.3-groovy-2.5'
-    testImplementation 'com.tngtech.jgiven:jgiven-spock:latest.integration'
+ext {
+    jGivenVersion = version
 }
 
-test.finalizedBy jgivenTestReport
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    implementation "org.spockframework:spock-core:2.0-M4-groovy-3.0"
+    implementation "org.spockframework:spock-junit4:2.0-M4-groovy-3.0"
+    testImplementation "com.tngtech.jgiven:jgiven-spock:${jGivenVersion}"
+}
+
+test {
+    useJUnitPlatform()
+    test.finalizedBy jgivenTestReport
+}
