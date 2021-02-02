@@ -2,10 +2,10 @@ package com.tngtech.jgiven.spock.stages
 
 import com.tngtech.jgiven.Stage
 
-class ThenSomeOutcome extends Stage<ThenSomeOutcome> {
+class Then extends Stage<Then> {
 
-    ThenSomeOutcome some_outcome() {
+    Then some_outcome() {
         assert true
-        self()
+        return self()
     }
 }
