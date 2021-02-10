@@ -11,17 +11,9 @@ dependencies {
 
     testImplementation "junit:junit:$junitVersion"
     testImplementation "pl.pragmatists:JUnitParams:$junitParamsVersion"
-    testImplementation "org.mockito:mockito-all:1.10.19"
-    testImplementation "org.powermock:powermock-core:1.7.4"
-    testImplementation "org.powermock:powermock-api-mockito:1.7.4"
-    testImplementation "org.powermock:powermock-module-junit4:1.7.4"
-}
-
-test {
-    // PowerMock does not work with Java 9+
-    if (JavaVersion.current().isJava9Compatible()) {
-        test.exclude '**/PowerMockTest*'
-    }
+    testImplementation "org.mockito:mockito-core:3.7.7"
+    testImplementation "org.powermock:powermock-api-mockito2:2.0.9"
+    testImplementation "org.powermock:powermock-module-junit4:2.0.9"
 }
 
 test.finalizedBy(jgivenHtml5Report)
