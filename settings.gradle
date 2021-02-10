@@ -38,6 +38,7 @@ include ':jgiven-core',
         ':jgiven-maven-plugin',
         ':jgiven-junit',
         ':jgiven-spock',
+        ':jgiven-spock-junit5',
         ':jgiven-testng',
         ':jgiven-spring',
         ':jgiven-spring-junit4',
@@ -65,4 +66,6 @@ if ((android || release) && hasAndroidSourcePath) {
 if (android && !release && hasAndroidSourcePath) {
     include ':jgiven-android-test'
 }
+include 'jgiven-spock-junit5'
+include 'jgiven-spock-junit5'
 
