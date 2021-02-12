@@ -5,7 +5,7 @@ def distDir = "${buildDir}/package/dist"
 def htmlAppVersion = '1.0.0'
 
 node {
-    download true
+    download = true
 }
 
 task npmPack(type: NpmTask) {
