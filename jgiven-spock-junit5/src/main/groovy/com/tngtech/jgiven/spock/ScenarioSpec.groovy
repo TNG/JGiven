@@ -1,29 +1,25 @@
 package com.tngtech.jgiven.spock
 
 import com.google.common.reflect.TypeToken
-import com.tngtech.jgiven.impl.Scenario
-import com.tngtech.jgiven.junit.JGivenClassRule
-import com.tngtech.jgiven.spock.junit5.JGivenSpockMethodRule
-import org.junit.ClassRule
-import org.junit.Rule
-import spock.lang.Shared
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import com.tngtech.jgiven.junit5.JGivenExtension;
+import com.tngtech.jgiven.impl.Scenario;
 import spock.lang.Specification
 
+@ExtendWith( JGivenExtension.class )
 class ScenarioSpec<GIVEN, WHEN, THEN> extends Specification {
 
-    @ClassRule @Shared JGivenClassRule writerRule = new JGivenClassRule()
-    @Rule JGivenSpockMethodRule scenarioRule = new JGivenSpockMethodRule(createScenario())
-
     GIVEN given() {
-        getScenario().given()
+        return getScenario().given()
     }
 
     WHEN when() {
-        getScenario().when()
+        return getScenario().when()
     }
 
     THEN then() {
-        getScenario().then()
+        return getScenario().then()
     }
 
     Scenario<GIVEN, WHEN, THEN> getScenario() {
