@@ -1,6 +1,8 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    "group:springBoot",
+    "group:springCore"
   ],
   "ignorePaths": [
     "**/example-projects/scala/**"
@@ -29,6 +31,11 @@
         "powermock"
       ],
       "groupName": "powermock"
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
     }
   ],
   "schedule": [
