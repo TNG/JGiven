@@ -5,8 +5,9 @@
     "group:springCore"
   ],
   "ignorePaths": [
-    "**/example-projects/scala/**"
+    "**/example-projects/scala/**",
   ],
+  "ignoreDeps": ["org.codehaus.groovy:groovy:2.5.14", "org.spockframework:spock-core:1.3-groovy-2.5"],
   "commitBody": "Signed-off-by: Renovate Bot <bot@renovateapp.com>",
   "prCreation": "not-pending",
   "additionalReviewers": [

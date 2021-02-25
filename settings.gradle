@@ -66,3 +66,7 @@ if (android && !release && hasAndroidSourcePath) {
     include ':jgiven-android-test'
 }
 
+if (!release){
+    include ':jgiven-spock2'
+}
+
