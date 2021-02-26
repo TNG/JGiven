@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.spock
+package com.tngtech.jgiven.spock2
 
 import com.google.common.reflect.TypeToken
 

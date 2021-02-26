@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.spock.stages
+package com.tngtech.jgiven.spock2.stages
 
 import com.tngtech.jgiven.Stage
 

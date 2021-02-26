@@ -1,9 +1,9 @@
-package com.tngtech.jgiven.spock
+package com.tngtech.jgiven.spock2
 
 import com.tngtech.jgiven.annotation.ExtendedDescription
-import com.tngtech.jgiven.spock.stages.Given
-import com.tngtech.jgiven.spock.stages.Then
-import com.tngtech.jgiven.spock.stages.When
+import com.tngtech.jgiven.spock2.stages.Given
+import com.tngtech.jgiven.spock2.stages.Then
+import com.tngtech.jgiven.spock2.stages.When
 import spock.lang.Unroll
 
 class MyShinyJGivenShould extends ScenarioSpec<Given, When, Then> {

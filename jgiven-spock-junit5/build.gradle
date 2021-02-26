@@ -21,4 +21,7 @@ dependencies {
     compile project(':jgiven-junit5')
 }
 
-test.finalizedBy(jgivenHtml5Report)
+test {
+    useJUnitPlatform()
+    test.finalizedBy(jgivenHtml5Report)
+}

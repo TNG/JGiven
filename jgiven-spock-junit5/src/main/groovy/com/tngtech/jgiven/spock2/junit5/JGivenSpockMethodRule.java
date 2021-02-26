@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.spock.junit5;
+package com.tngtech.jgiven.spock2.junit5;
 
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.junit.JGivenMethodRule;
