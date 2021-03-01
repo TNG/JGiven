@@ -1,13 +1,7 @@
-== JUnit 5 (EXPERIMENTAL)
+== JUnit 5
 :javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/{version}/com/tngtech/jgiven/junit5
 
-CAUTION: JUnit 5 support is currently in an experimental state.
-This means that the API is not completely stable yet and that not all
-JGiven and JUnit 5 features are completely supported yet.
-
-=== Known Issues
-
-* Nested tests are all reported under the outer parent test class
+=== Known Issue
 * Dynamic tests are not reported at all. As dynamic tests in JUnit 5 do not provide life-cycle
   hooks, it is unclear at the moment, whether JGiven will ever support them.
 
@@ -31,7 +25,7 @@ JUnit 5 support is provided by the `jgiven-junit5` dependency.
 [source,gradle,subs="verbatim,attributes"]
 ----
 dependencies {
-    testCompile("com.tngtech.jgiven:jgiven-junit5:{version}")
+    testImplementation("com.tngtech.jgiven:jgiven-junit5:{version}")
 }
 ----
 
