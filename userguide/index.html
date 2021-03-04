@@ -445,7 +445,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>JGiven User Guide</h1>
 <div class="details">
 <span id="author" class="author">Jan Schäfer</span><br>
-<span id="revnumber">version 1.0.0-RC7</span>
+<span id="revnumber">version 1.0.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -569,9 +569,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_example_project_4">15.2. Example Project</a></li>
 </ul>
 </li>
-<li><a href="#_junit_5_experimental">16. JUnit 5 (EXPERIMENTAL)</a>
+<li><a href="#_junit_5_2">16. JUnit 5</a>
 <ul class="sectlevel2">
-<li><a href="#_known_issues">16.1. Known Issues</a></li>
+<li><a href="#_known_issue">16.1. Known Issue</a></li>
 <li><a href="#_install_dependency_3">16.2. Install Dependency</a></li>
 <li><a href="#_use_jgiven_with_junit_5">16.3. Use JGiven with JUnit 5</a></li>
 <li><a href="#_example_project_5">16.4. Example Project</a></li>
@@ -674,7 +674,7 @@ JGiven requires at least JUnit 4.9, while the recommended version is 4.12.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit&lt;/artifactId&gt;
-   &lt;version&gt;1.0.0-RC7&lt;/version&gt;
+   &lt;version&gt;1.0.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -685,7 +685,7 @@ JGiven requires at least JUnit 4.9, while the recommended version is 4.12.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-   testCompile 'com.tngtech.jgiven:jgiven-junit:1.0.0-RC7'
+   testCompile 'com.tngtech.jgiven:jgiven-junit:1.0.0'
 }</code></pre>
 </div>
 </div>
@@ -705,7 +705,7 @@ thus you also must have a dependency to TestNG itself.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-testng&lt;/artifactId&gt;
-   &lt;version&gt;1.0.0-RC7&lt;/version&gt;
+   &lt;version&gt;1.0.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -716,7 +716,7 @@ thus you also must have a dependency to TestNG itself.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-   testCompile 'com.tngtech.jgiven:jgiven-testng:1.0.0-RC7'
+   testCompile 'com.tngtech.jgiven:jgiven-testng:1.0.0'
 }</code></pre>
 </div>
 </div>
@@ -743,10 +743,7 @@ thus you also must have a dependency to TestNG itself.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">com.tngtech.jgiven.junit.ScenarioTest</span>;
-
-<span class="directive">public</span> <span class="type">class</span> <span class="class">MyShinyJGivenTest</span>
-        <span class="directive">extends</span> ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyShinyJGivenTest.java[tags=header]
 }</code></pre>
 </div>
 </div>
@@ -762,35 +759,17 @@ For scenarios where you only want to differentiate between steps that modify sta
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">com.tngtech.jgiven.Stage</span>;
-
-<span class="directive">public</span> <span class="type">class</span> <span class="class">GivenSomeState</span> <span class="directive">extends</span> Stage&lt;GivenSomeState&gt; {
-    <span class="directive">public</span> GivenSomeState some_state() {
-        <span class="keyword">return</span> self();
-    }
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/GivenSomeState.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">com.tngtech.jgiven.Stage</span>;
-
-<span class="directive">public</span> <span class="type">class</span> <span class="class">WhenSomeAction</span> <span class="directive">extends</span> Stage&lt;WhenSomeAction&gt; {
-    <span class="directive">public</span> WhenSomeAction some_action() {
-        <span class="keyword">return</span> self();
-    }
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/WhenSomeAction.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">com.tngtech.jgiven.Stage</span>;
-
-<span class="directive">public</span> <span class="type">class</span> <span class="class">ThenSomeOutcome</span> <span class="directive">extends</span> Stage&lt;ThenSomeOutcome&gt; {
-    <span class="directive">public</span> ThenSomeOutcome some_outcome() {
-        <span class="keyword">return</span> self();
-    }
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/ThenSomeOutcome.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -804,19 +783,7 @@ For scenarios where you only want to differentiate between steps that modify sta
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.Test</span>;
-<span class="keyword">import</span> <span class="include">com.tngtech.jgiven.junit.ScenarioTest</span>;
-
-<span class="directive">public</span> <span class="type">class</span> <span class="class">MyShinyJGivenTest</span>
-        <span class="directive">extends</span> ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> something_should_happen() {
-        given().some_state();
-        when().some_action();
-        then().some_outcome();
-    }
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyShinyJGivenTest.java[tags=noPackage]</code></pre>
 </div>
 </div>
 </div>
@@ -839,30 +806,7 @@ In that case you can directly use the JUnit Rules of JGiven. Instead of providin
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">UsingRulesTest</span> {
-
-    <span class="annotation">@ClassRule</span>
-    <span class="directive">public</span> <span class="directive">static</span> <span class="directive">final</span> JGivenClassRule writerRule = <span class="keyword">new</span> JGivenClassRule();
-
-    <span class="annotation">@Rule</span>
-    <span class="directive">public</span> <span class="directive">final</span> JGivenMethodRule scenarioRule = <span class="keyword">new</span> JGivenMethodRule();
-
-    <span class="annotation">@ScenarioStage</span>
-    GivenSomeState someState;
-
-    <span class="annotation">@ScenarioStage</span>
-    WhenSomeAction someAction;
-
-    <span class="annotation">@ScenarioStage</span>
-    ThenSomeOutcome someOutcome;
-
-    <span class="annotation">@Test</span>
-    <span class="directive">public</span> <span class="type">void</span> something_should_happen() {
-        someState.given().some_state();
-        someAction.when().some_action();
-        someOutcome.then().some_outcome();
-    }
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/UsingRulesTest.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1008,7 +952,7 @@ and all required dependencies are on the Java CLASSPATH)</p>
     <span class="tag">&lt;plugin&gt;</span>
       <span class="tag">&lt;groupId&gt;</span>com.tngtech.jgiven<span class="tag">&lt;/groupId&gt;</span>
       <span class="tag">&lt;artifactId&gt;</span>jgiven-maven-plugin<span class="tag">&lt;/artifactId&gt;</span>
-      <span class="tag">&lt;version&gt;</span>1.0.0-RC7<span class="tag">&lt;/version&gt;</span>
+      <span class="tag">&lt;version&gt;</span>1.0.0<span class="tag">&lt;/version&gt;</span>
       <span class="tag">&lt;executions&gt;</span>
         <span class="tag">&lt;execution&gt;</span>
           <span class="tag">&lt;goals&gt;</span>
@@ -1092,7 +1036,7 @@ Add the following plugins section to your <code>build.gradle</code> file or exte
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">plugins {
-    id &quot;com.tngtech.jgiven.gradle-plugin&quot; version &quot;1.0.0-RC7&quot;
+    id &quot;com.tngtech.jgiven.gradle-plugin&quot; version &quot;1.0.0&quot;
 }</code></pre>
 </div>
 </div>
@@ -1107,7 +1051,7 @@ Add the following plugins section to your <code>build.gradle</code> file or exte
     }
 
     dependencies {
-        classpath &quot;com.tngtech.jgiven:jgiven-gradle-plugin:1.0.0-RC7&quot;
+        classpath &quot;com.tngtech.jgiven:jgiven-gradle-plugin:1.0.0&quot;
     }
 }
 
@@ -1159,13 +1103,7 @@ configuration file as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> WhenCook the_cook_mangles_everthing_to_a_dough() {
-    assertThat( cook ).isNotNull();
-    assertThat( ingredients ).isNotNull();
-
-    dough = cook.makeADough( ingredients );
-    <span class="keyword">return</span> <span class="local-variable">this</span>;
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/pancakes/test/steps/WhenCook.java[tags=cookManglesDough,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1182,10 +1120,7 @@ configuration file as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@As</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">$ % are added</span><span class="delimiter">&quot;</span></span> )
-<span class="directive">public</span> WhenCalculator <span class="error">$</span>_percent_are_added( <span class="type">int</span> percent ) {
-    <span class="keyword">return</span> self();
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/WhenCalculator.java[tags=method,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1222,10 +1157,7 @@ CurrentStep currentStep;
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Hidden</span>
-<span class="directive">public</span> <span class="type">void</span> prepareRocketSimulator() {
-    rocketSimulator = createRocketSimulator();
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/RocketMethods.java[tags=hiddenRocket,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1241,10 +1173,7 @@ CurrentStep currentStep;
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">void</span> setup_rocket(<span class="annotation">@Hidden</span> <span class="predefined-type">String</span> rocketName, <span class="annotation">@Hidden</span> <span class="predefined-type">String</span> rocketDescription) {
-    <span class="local-variable">this</span>.rocketName = rocketName;
-    <span class="local-variable">this</span>.rocketDescription = rocketDescription;
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/RocketMethods.java[tags=rocketSetup,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 </div>
@@ -1259,11 +1188,7 @@ CurrentStep currentStep;
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExtendedDescription</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">Actually uses a rocket simulator</span><span class="delimiter">&quot;</span></span>)
-<span class="directive">public</span> RocketMethods launch_rocket() {
-    rocketLaunched = rocketSimulator.launchRocket();
-    <span class="keyword">return</span> <span class="local-variable">this</span>;
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/RocketMethods.java[tags=rocketDesc,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 </div>
@@ -1311,31 +1236,7 @@ of sentences in reports.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@FillerWord</span>
-<span class="directive">public</span> SELF a() {
-    <span class="keyword">return</span> self();
-}
-
-
-<span class="annotation">@FillerWord</span>
-<span class="directive">public</span> SELF an() {
-    <span class="keyword">return</span> self();
-}
-
-<span class="annotation">@FillerWord</span>
-<span class="directive">public</span> SELF and() {
-    <span class="keyword">return</span> self();
-}
-
-<span class="annotation">@FillerWord</span>
-<span class="directive">public</span> SELF some() {
-    <span class="keyword">return</span> self();
-}
-
-<span class="annotation">@FillerWord</span>
-<span class="directive">public</span> SELF the() {
-    <span class="keyword">return</span> self();
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/ExtendedVocabularyTest.java[tags=fillerWords,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1343,10 +1244,7 @@ of sentences in reports.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java">given().the().ingredients()
-    .an().egg()
-    .some().milk()
-    .and().the().ingredient( <span class="string"><span class="delimiter">&quot;</span><span class="content">flour</span><span class="delimiter">&quot;</span></span> );</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/ExtendedVocabularyTest.java[tags=givenFiller,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1370,29 +1268,7 @@ attributes is adding punctuation to your tests.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@As</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">,</span><span class="delimiter">&quot;</span></span>)
-<span class="annotation">@FillerWord</span>(joinToPreviousWord = <span class="predefined-constant">true</span>)
-<span class="directive">public</span> SELF comma() {
-    <span class="keyword">return</span> self();
-}
-
-<span class="annotation">@As</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">:</span><span class="delimiter">&quot;</span></span>)
-<span class="annotation">@FillerWord</span>(joinToPreviousWord = <span class="predefined-constant">true</span>)
-<span class="directive">public</span> SELF colon() {
-    <span class="keyword">return</span> self();
-}
-
-<span class="annotation">@As</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">(</span><span class="delimiter">&quot;</span></span>)
-<span class="annotation">@FillerWord</span>(joinToNextWord = <span class="predefined-constant">true</span>)
-<span class="directive">public</span> SELF open_bracket() {
-    <span class="keyword">return</span> self();
-}
-
-<span class="annotation">@As</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">)</span><span class="delimiter">&quot;</span></span>)
-<span class="annotation">@FillerWord</span>(joinToPreviousWord = <span class="predefined-constant">true</span>)
-<span class="directive">public</span> SELF close_bracket() {
-    <span class="keyword">return</span> self();
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/ExtendedVocabularyTest.java[tags=joiningWords,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1400,10 +1276,7 @@ attributes is adding punctuation to your tests.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java">given().a().open_bracket().clean().close_bracket().worksurface().comma().a().bowl().and().the().ingredients().colon()
-    .an().egg()
-    .some().milk()
-    .the().ingredient( <span class="string"><span class="delimiter">&quot;</span><span class="content">flour</span><span class="delimiter">&quot;</span></span> );</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/ExtendedVocabularyTest.java[tags=givenJoiningWords,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1438,59 +1311,12 @@ For example, to be able to access the value of the ingredients field of the Give
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">package</span> <span class="namespace">com.tngtech.jgiven.examples.pancakes.test.steps</span>;
-
-<span class="keyword">import</span> <span class="include">java.util.ArrayList</span>;
-<span class="keyword">import</span> <span class="include">java.util.List</span>;
-
-<span class="keyword">import</span> <span class="include">com.tngtech.jgiven.Stage</span>;
-<span class="keyword">import</span> <span class="include">com.tngtech.jgiven.annotation.ProvidedScenarioState</span>;
-
-<span class="directive">public</span> <span class="type">class</span> <span class="class">GivenIngredients</span> <span class="directive">extends</span> Stage&lt;GivenIngredients&gt; {
-
-    <span class="annotation">@ProvidedScenarioState</span>
-    <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; ingredients = <span class="keyword">new</span> <span class="predefined-type">ArrayList</span>&lt;<span class="predefined-type">String</span>&gt;();
-
-    <span class="directive">public</span> GivenIngredients an_egg() {
-        <span class="keyword">return</span> the_ingredient( <span class="string"><span class="delimiter">&quot;</span><span class="content">egg</span><span class="delimiter">&quot;</span></span> );
-    }
-
-    <span class="directive">public</span> GivenIngredients the_ingredient( <span class="predefined-type">String</span> ingredient ) {
-        ingredients.add( ingredient );
-        <span class="keyword">return</span> <span class="local-variable">this</span>;
-    }
-
-    <span class="directive">public</span> GivenIngredients some_milk() {
-        <span class="keyword">return</span> the_ingredient( <span class="string"><span class="delimiter">&quot;</span><span class="content">milk</span><span class="delimiter">&quot;</span></span> );
-    }
-
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/pancakes/test/steps/GivenIngredients.java<span class="type">[]</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@JGivenStage</span>
-<span class="directive">public</span> <span class="type">class</span> <span class="class">WhenCook</span> <span class="directive">extends</span> Stage&lt;WhenCook&gt; {
-    <span class="annotation">@Autowired</span>
-    <span class="annotation">@ScenarioState</span>
-    Cook cook;
-
-    <span class="annotation">@ExpectedScenarioState</span>
-    <span class="predefined-type">List</span>&lt;<span class="predefined-type">String</span>&gt; ingredients;
-
-    <span class="annotation">@ProvidedScenarioState</span>
-    <span class="predefined-type">Set</span>&lt;<span class="predefined-type">String</span>&gt; dough;
-
-    <span class="annotation">@ProvidedScenarioState</span>
-    <span class="predefined-type">String</span> meal;
-
-    <span class="directive">public</span> WhenCook the_cook_fries_the_dough_in_a_pan() {
-        assertThat( cook ).isNotNull();
-        assertThat( dough ).isNotNull();
-
-        meal = cook.fryDoughInAPan( dough );
-        <span class="keyword">return</span> <span class="local-variable">this</span>;
-    }</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/pancakes/test/steps/WhenCook.java[tags=state]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1541,23 +1367,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">MyInjectedJGivenTest</span> <span class="directive">extends</span>
-   ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
-
-   <span class="annotation">@ScenarioStage</span>
-   GivenAdditionalState additionalState;
-
-   <span class="annotation">@Test</span>
-   <span class="directive">public</span> <span class="type">void</span> something_should_happen() {
-      given().some_state();
-
-      additionalState
-         .and().some_additional_state();
-
-      when().some_action();
-      then().some_outcome();
-   }
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyInjectedJGivenTest.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1592,25 +1402,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 <h5 id="_example_2"><a class="anchor" href="#_example_2"></a>Example</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="keyword">import</span> <span class="include">org.junit.Test</span>;
-<span class="keyword">import</span> <span class="include">com.tngtech.jgiven.junit.ScenarioTest</span>;
-
-<span class="directive">public</span> <span class="type">class</span> <span class="class">MyDynamicallyAddedTest</span> <span class="directive">extends</span>
-   ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
-
-   <span class="annotation">@Test</span>
-   <span class="directive">public</span> <span class="type">void</span> something_should_happen() {
-      GivenAdditionalState additionalState = addStage(GivenAdditionalState.class);
-
-      given().some_state();
-
-      additionalState
-         .and().some_additional_state();
-
-      when().some_action();
-      then().some_outcome();
-   }
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyDynamicallyAddedTest.java[tags=noPackage]</code></pre>
 </div>
 </div>
 </div>
@@ -1626,10 +1418,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">GivenCommonSteps</span> <span class="directive">extends</span> Stage&lt;GivenCommonSteps&gt; {
-    <span class="directive">public</span> GivenCommonSteps my_common_step() {
-        <span class="keyword">return</span> <span class="local-variable">this</span>;
-    }</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/subclassing/GivenCommonSteps.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1637,11 +1426,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">GivenSpecialSteps</span> <span class="directive">extends</span> GivenCommonSteps {
-    <span class="directive">public</span> GivenSpecialSteps my_special_step() {
-        <span class="keyword">return</span> <span class="local-variable">this</span>;
-    }
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/subclassing/GivenSpecialSteps.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1649,11 +1434,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@Test</span>
-<span class="directive">public</span> <span class="type">void</span> subclassing_of_stages_should_work() {
-    given().my_common_step()
-      .and().cant_do_this();
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/subclassing/CommonStagesTest.java[tags=onlyMethod,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1664,11 +1445,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">GivenCommonStepsFixed</span>&lt;SELF <span class="directive">extends</span> GivenCommonStepsFixed&lt;SELF&gt;&gt; <span class="directive">extends</span> Stage&lt;SELF&gt; {
-    <span class="directive">public</span> SELF my_common_step() {
-        <span class="keyword">return</span> self();
-    }
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/subclassing/GivenCommonStepsFixed.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1679,12 +1456,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">GivenSpecialStepsFixed</span>&lt;SELF <span class="directive">extends</span> GivenSpecialStepsFixed&lt;SELF&gt;&gt;
-        <span class="directive">extends</span> GivenCommonStepsFixed&lt;SELF&gt; {
-    <span class="directive">public</span> SELF my_special_step() {
-        <span class="keyword">return</span> self();
-    }
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/subclassing/GivenSpecialStepsFixed.java[tags=noPackage]</code></pre>
 </div>
 </div>
 </div>
@@ -1752,13 +1524,7 @@ Thus, the annotated code must not depend on scenario state fields.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ProvidedScenarioState</span>
-<span class="directive">protected</span> WebDriver webDriver;
-
-<span class="annotation">@BeforeScenario</span>
-<span class="directive">public</span> <span class="type">void</span> startBrowser() {
-    webDriver = <span class="keyword">new</span> HtmlUnitDriver( <span class="predefined-constant">true</span> );
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in lifecycle_methods.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyWebDriverUsingStage.java[tags=start,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 </div>
@@ -1770,13 +1536,7 @@ scenario has finished.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ProvidedScenarioState</span>
-<span class="directive">protected</span> WebDriver webdriver;
-
-<span class="annotation">@AfterScenario</span>
-<span class="directive">public</span> <span class="type">void</span> closeBrowser() {
-    webdriver.close();
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in lifecycle_methods.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyWebDriverUsingStage.java[tags=middle,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 </div>
@@ -1798,23 +1558,9 @@ in JGiven.</p>
 <h4 id="_example_3"><a class="anchor" href="#_example_3"></a>6.3.1. Example</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">WebDriverRule</span> {
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in lifecycle_methods.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/WebDriverRule.java[tags=noPackage]
 
-    <span class="directive">protected</span> WebDriver webDriver;
-
-    <span class="directive">public</span> <span class="type">void</span> before() {
-         webDriver = <span class="keyword">new</span> HtmlUnitDriver( <span class="predefined-constant">true</span> );
-    }
-
-    <span class="directive">public</span> <span class="type">void</span> after() {
-         webDriver.close();
-    }
- }
-
-
-<span class="directive">public</span> <span class="type">class</span> <span class="class">MyWebDriverUsingStage</span> {
-    <span class="annotation">@ScenarioRule</span>
-    <span class="directive">protected</span> WebDriverRule webDriverRule = <span class="keyword">new</span> WebDriverRule();
+Unresolved directive in lifecycle_methods.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyWebDriverUsingStage.java[tags=rule]
 }</code></pre>
 </div>
 </div>
@@ -1850,30 +1596,7 @@ pattern to build a certain object using step methods and build the final object 
 <h4 id="_example_4"><a class="anchor" href="#_example_4"></a>6.4.3. Example</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="directive">public</span> <span class="type">class</span> <span class="class">MyStage</span> {
-
-    <span class="directive">protected</span> CustomerBuilder customerBuilder;
-
-    <span class="annotation">@ProvidedScenarioState</span>
-    <span class="directive">protected</span> Customer customer;
-
-    <span class="directive">public</span> MyStage a_customer() {
-        customerBuilder = <span class="keyword">new</span> CustomerBuilder();
-        <span class="keyword">return</span> <span class="local-variable">this</span>;
-    }
-
-    <span class="directive">public</span> MyStage the_customer_has_name( <span class="predefined-type">String</span> name ) {
-        customerBuilder.withName( name );
-        <span class="keyword">return</span> <span class="local-variable">this</span>;
-    }
-
-    <span class="annotation">@AfterStage</span>
-    <span class="directive">public</span> <span class="type">void</span> buildCustomer() {
-        <span class="keyword">if</span> (customerBuilder != <span class="predefined-constant">null</span>) {
-            customer = customerBuilder.build();
-        }
-    }
- }</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in lifecycle_methods.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyStage.java[tags=noPackage]</code></pre>
 </div>
 </div>
 </div>
@@ -2480,9 +2203,7 @@ See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>
-<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
-<span class="directive">public</span> <span class="annotation">@interface</span> ExampleCategory {}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in tags.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/tags/ExampleCategory.java[tags=noPackage,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2503,13 +2224,7 @@ See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@ExampleSubCategory</span>
-<span class="annotation">@Test</span>
-<span class="directive">public</span> <span class="type">void</span> tags_can_form_a_hierarchy() {
-    given().tags_annotated_with_tags();
-    when().the_report_is_generated();
-    then().the_tags_appear_in_a_hierarchy();
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in tags.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/tags/TagHierarchyExampleTest.java[tags=taginaction,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2525,11 +2240,7 @@ See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( style = <span class="string"><span class="delimiter">&quot;</span><span class="content">background-color: darkgreen; color: white; font-weight: bold</span><span class="delimiter">&quot;</span></span>,
-    description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Tags can be arbitrarily styled with the 'style' attribute of the '@IsTag' annotation. </span><span class="delimiter">&quot;</span></span> +
-            <span class="string"><span class="delimiter">&quot;</span><span class="content">This tag shows how to apply such a custom style</span><span class="delimiter">&quot;</span></span> )
-<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
-<span class="directive">public</span> <span class="annotation">@interface</span> TagsWithCustomStyle {}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in tags.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/tags/TagsWithCustomStyle.java[tags=desc,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 </div>
@@ -2553,11 +2264,7 @@ See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@IsTag</span>( prependType = <span class="predefined-constant">false</span> )
-<span class="annotation">@Retention</span>( <span class="predefined-type">RetentionPolicy</span>.RUNTIME )
-<span class="directive">public</span> <span class="annotation">@interface</span> CategoryWithValue {
-    <span class="predefined-type">String</span> value();
-}</code></pre>
+<pre class="CodeRay highlight nowrap"><code data-lang="java">Unresolved directive in tags.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/tags/CategoryWithValue.java[tags=noPackage,indent=<span class="integer">0</span>]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2904,7 +2611,7 @@ JGiven and Spock features might be supported yet.
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spock&lt;/artifactId&gt;
-   &lt;version&gt;1.0.0-RC7&lt;/version&gt;
+   &lt;version&gt;1.0.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -2915,7 +2622,7 @@ JGiven and Spock features might be supported yet.
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    testImplementation &quot;com.tngtech.jgiven:jgiven-spock:1.0.0-RC7&quot;
+    testImplementation &quot;com.tngtech.jgiven:jgiven-spock:1.0.0&quot;
 }</code></pre>
 </div>
 </div>
@@ -2976,7 +2683,7 @@ depending on which JUnit version you are using. JUnit 5 is only supported with v
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spring-junit5&lt;/artifactId&gt;
-   &lt;version&gt;1.0.0-RC7&lt;/version&gt;
+   &lt;version&gt;1.0.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -2987,7 +2694,7 @@ depending on which JUnit version you are using. JUnit 5 is only supported with v
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    testImplementation(&quot;com.tngtech.jgiven:jgiven-spring-junit5:1.0.0-RC7&quot;)
+    testImplementation(&quot;com.tngtech.jgiven:jgiven-spring-junit5:1.0.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -3003,7 +2710,7 @@ existence of JGiven.</p>
 <h4 id="_annotation_based"><a class="anchor" href="#_annotation_based"></a>13.2.1. Annotation-Based</h4>
 <div class="paragraph">
 <p>If you are using the annotation-based configuration of Spring you can annotate your Spring
-Test Configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/1.0.0-RC7/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
+Test Configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/1.0.0/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
 This is all you have to do to configure Spring for JGiven.</p>
 </div>
 <div class="sect4">
@@ -3108,7 +2815,7 @@ can copy the content of these classes (one method) into one of your test base cl
 <div class="paragraph">
 <p>In order to treat JGiven stages as Spring beans, e.g. if you want to inject
  other Spring beans into your stages, you have to annotate
-the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/1.0.0-RC7/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
+the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/1.0.0/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
 </div>
 <div class="sect3">
 <h4 id="_example_11"><a class="anchor" href="#_example_11"></a>13.4.1. Example</h4>
@@ -3200,7 +2907,7 @@ the implementation might be changed in a backwards-incompatible way in future ve
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:1.0.0-RC7&quot;)
+    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:1.0.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -3346,29 +3053,12 @@ a screenshot of an activity and turn it into a <code>byte</code> array:</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_junit_5_experimental"><a class="anchor" href="#_junit_5_experimental"></a>16. JUnit 5 (EXPERIMENTAL)</h2>
+<h2 id="_junit_5_2"><a class="anchor" href="#_junit_5_2"></a>16. JUnit 5</h2>
 <div class="sectionbody">
-<div class="admonitionblock caution">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-caution" title="Caution"></i>
-</td>
-<td class="content">
-JUnit 5 support is currently in an experimental state.
-This means that the API is not completely stable yet and that not all
-JGiven and JUnit 5 features are completely supported yet.
-</td>
-</tr>
-</table>
-</div>
 <div class="sect2">
-<h3 id="_known_issues"><a class="anchor" href="#_known_issues"></a>16.1. Known Issues</h3>
+<h3 id="_known_issue"><a class="anchor" href="#_known_issue"></a>16.1. Known Issue</h3>
 <div class="ulist">
 <ul>
-<li>
-<p>Nested tests are all reported under the outer parent test class</p>
-</li>
 <li>
 <p>Dynamic tests are not reported at all. As dynamic tests in JUnit 5 do not provide life-cycle
 hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
@@ -3388,7 +3078,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit5&lt;/artifactId&gt;
-   &lt;version&gt;1.0.0-RC7&lt;/version&gt;
+   &lt;version&gt;1.0.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -3399,7 +3089,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    testCompile(&quot;com.tngtech.jgiven:jgiven-junit5:1.0.0-RC7&quot;)
+    testImplementation(&quot;com.tngtech.jgiven:jgiven-junit5:1.0.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -3408,7 +3098,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <div class="sect2">
 <h3 id="_use_jgiven_with_junit_5"><a class="anchor" href="#_use_jgiven_with_junit_5"></a>16.3. Use JGiven with JUnit 5</h3>
 <div class="paragraph">
-<p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.0.0-RC7/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
+<p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.0.0/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
 JUnit 5 extension. You just annotate your JUnit 5 test class with <code>@ExtendWith( JGivenExtension.class )</code>
 and JGiven is enabled.</p>
 </div>
@@ -3436,8 +3126,8 @@ the <code>@ScenarioStage</code> annotation.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Alternatively, you can use one of the test base classes <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.0.0-RC7/com/tngtech/jgiven/junit5/ScenarioTest.html"><code>ScenarioTest</code></a>,
-<a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.0.0-RC7/com/tngtech/jgiven/junit5/SimpleScenarioTest.html"><code>SimpleScenarioTest</code></a> or <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.0.0-RC7/com/tngtech/jgiven/junit5/DualScenarioTest.html"><code>DualScenarioTest</code></a> that provide additional convenience methods
+<p>Alternatively, you can use one of the test base classes <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.0.0/com/tngtech/jgiven/junit5/ScenarioTest.html"><code>ScenarioTest</code></a>,
+<a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.0.0/com/tngtech/jgiven/junit5/SimpleScenarioTest.html"><code>SimpleScenarioTest</code></a> or <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.0.0/com/tngtech/jgiven/junit5/DualScenarioTest.html"><code>DualScenarioTest</code></a> that provide additional convenience methods
 and allows you to specify stage classes by using type parameters:</p>
 </div>
 <div class="listingblock">
@@ -3466,8 +3156,8 @@ and allows you to specify stage classes by using type parameters:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.0-RC7<br>
-Last updated 2020-11-10 16:47:36 +0100
+Version 1.0.0<br>
+Last updated 2021-03-04 18:49:10 +0100
 </div>
 </div>
 <style>
