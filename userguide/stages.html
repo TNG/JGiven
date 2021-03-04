@@ -456,13 +456,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public WhenCook the_cook_mangles_everthing_to_a_dough() {
-    assertThat( cook ).isNotNull();
-    assertThat( ingredients ).isNotNull();
-
-    dough = cook.makeADough( ingredients );
-    return this;
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/pancakes/test/steps/WhenCook.java[tags=cookManglesDough,indent=0]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -479,10 +473,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@As( "$ % are added" )
-public WhenCalculator $_percent_are_added( int percent ) {
-    return self();
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/WhenCalculator.java[tags=method,indent=0]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -519,10 +510,7 @@ public MyStage some_step() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Hidden
-public void prepareRocketSimulator() {
-    rocketSimulator = createRocketSimulator();
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/RocketMethods.java[tags=hiddenRocket,indent=0]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -538,10 +526,7 @@ public void prepareRocketSimulator() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public void setup_rocket(@Hidden String rocketName, @Hidden String rocketDescription) {
-    this.rocketName = rocketName;
-    this.rocketDescription = rocketDescription;
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/RocketMethods.java[tags=rocketSetup,indent=0]</code></pre>
 </div>
 </div>
 </div>
@@ -556,11 +541,7 @@ public void prepareRocketSimulator() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@ExtendedDescription("Actually uses a rocket simulator")
-public RocketMethods launch_rocket() {
-    rocketLaunched = rocketSimulator.launchRocket();
-    return this;
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/RocketMethods.java[tags=rocketDesc,indent=0]</code></pre>
 </div>
 </div>
 </div>
@@ -608,31 +589,7 @@ of sentences in reports.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@FillerWord
-public SELF a() {
-    return self();
-}
-
-
-@FillerWord
-public SELF an() {
-    return self();
-}
-
-@FillerWord
-public SELF and() {
-    return self();
-}
-
-@FillerWord
-public SELF some() {
-    return self();
-}
-
-@FillerWord
-public SELF the() {
-    return self();
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/ExtendedVocabularyTest.java[tags=fillerWords,indent=0]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -640,10 +597,7 @@ public SELF the() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">given().the().ingredients()
-    .an().egg()
-    .some().milk()
-    .and().the().ingredient( "flour" );</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/ExtendedVocabularyTest.java[tags=givenFiller,indent=0]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -667,29 +621,7 @@ attributes is adding punctuation to your tests.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@As(",")
-@FillerWord(joinToPreviousWord = true)
-public SELF comma() {
-    return self();
-}
-
-@As(":")
-@FillerWord(joinToPreviousWord = true)
-public SELF colon() {
-    return self();
-}
-
-@As("(")
-@FillerWord(joinToNextWord = true)
-public SELF open_bracket() {
-    return self();
-}
-
-@As(")")
-@FillerWord(joinToPreviousWord = true)
-public SELF close_bracket() {
-    return self();
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/ExtendedVocabularyTest.java[tags=joiningWords,indent=0]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -697,10 +629,7 @@ public SELF close_bracket() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">given().a().open_bracket().clean().close_bracket().worksurface().comma().a().bowl().and().the().ingredients().colon()
-    .an().egg()
-    .some().milk()
-    .the().ingredient( "flour" );</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/ExtendedVocabularyTest.java[tags=givenJoiningWords,indent=0]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -735,59 +664,12 @@ For example, to be able to access the value of the ingredients field of the Give
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">package com.tngtech.jgiven.examples.pancakes.test.steps;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-
-public class GivenIngredients extends Stage&lt;GivenIngredients&gt; {
-
-    @ProvidedScenarioState
-    List&lt;String&gt; ingredients = new ArrayList&lt;String&gt;();
-
-    public GivenIngredients an_egg() {
-        return the_ingredient( "egg" );
-    }
-
-    public GivenIngredients the_ingredient( String ingredient ) {
-        ingredients.add( ingredient );
-        return this;
-    }
-
-    public GivenIngredients some_milk() {
-        return the_ingredient( "milk" );
-    }
-
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/pancakes/test/steps/GivenIngredients.java[]</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@JGivenStage
-public class WhenCook extends Stage&lt;WhenCook&gt; {
-    @Autowired
-    @ScenarioState
-    Cook cook;
-
-    @ExpectedScenarioState
-    List&lt;String&gt; ingredients;
-
-    @ProvidedScenarioState
-    Set&lt;String&gt; dough;
-
-    @ProvidedScenarioState
-    String meal;
-
-    public WhenCook the_cook_fries_the_dough_in_a_pan() {
-        assertThat( cook ).isNotNull();
-        assertThat( dough ).isNotNull();
-
-        meal = cook.fryDoughInAPan( dough );
-        return this;
-    }</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/pancakes/test/steps/WhenCook.java[tags=state]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -838,23 +720,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class MyInjectedJGivenTest extends
-   ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
-
-   @ScenarioStage
-   GivenAdditionalState additionalState;
-
-   @Test
-   public void something_should_happen() {
-      given().some_state();
-
-      additionalState
-         .and().some_additional_state();
-
-      when().some_action();
-      then().some_outcome();
-   }
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyInjectedJGivenTest.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -889,25 +755,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 <h5 id="_example_2">Example</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">import org.junit.Test;
-import com.tngtech.jgiven.junit.ScenarioTest;
-
-public class MyDynamicallyAddedTest extends
-   ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
-
-   @Test
-   public void something_should_happen() {
-      GivenAdditionalState additionalState = addStage(GivenAdditionalState.class);
-
-      given().some_state();
-
-      additionalState
-         .and().some_additional_state();
-
-      when().some_action();
-      then().some_outcome();
-   }
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyDynamicallyAddedTest.java[tags=noPackage]</code></pre>
 </div>
 </div>
 </div>
@@ -923,10 +771,7 @@ public class MyDynamicallyAddedTest extends
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class GivenCommonSteps extends Stage&lt;GivenCommonSteps&gt; {
-    public GivenCommonSteps my_common_step() {
-        return this;
-    }</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/subclassing/GivenCommonSteps.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -934,11 +779,7 @@ public class MyDynamicallyAddedTest extends
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class GivenSpecialSteps extends GivenCommonSteps {
-    public GivenSpecialSteps my_special_step() {
-        return this;
-    }
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/subclassing/GivenSpecialSteps.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -946,11 +787,7 @@ public class MyDynamicallyAddedTest extends
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">@Test
-public void subclassing_of_stages_should_work() {
-    given().my_common_step()
-      .and().cant_do_this();
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/subclassing/CommonStagesTest.java[tags=onlyMethod,indent=0]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -961,11 +798,7 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class GivenCommonStepsFixed&lt;SELF extends GivenCommonStepsFixed&lt;SELF&gt;&gt; extends Stage&lt;SELF&gt; {
-    public SELF my_common_step() {
-        return self();
-    }
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/subclassing/GivenCommonStepsFixed.java[tags=noPackage]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -976,12 +809,7 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">public class GivenSpecialStepsFixed&lt;SELF extends GivenSpecialStepsFixed&lt;SELF&gt;&gt;
-        extends GivenCommonStepsFixed&lt;SELF&gt; {
-    public SELF my_special_step() {
-        return self();
-    }
-}</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in stages.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/subclassing/GivenSpecialStepsFixed.java[tags=noPackage]</code></pre>
 </div>
 </div>
 </div>
@@ -990,8 +818,8 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.0-RC7<br>
-Last updated 2020-11-10 16:47:36 +0100
+Version 1.0.0<br>
+Last updated 2021-03-04 18:49:10 +0100
 </div>
 </div>
 </body>
