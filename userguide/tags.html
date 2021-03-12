@@ -451,7 +451,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in tags.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/tags/ExampleCategory.java[tags=noPackage,indent=0]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@IsTag
+@Retention( RetentionPolicy.RUNTIME )
+public @interface ExampleCategory {}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -472,7 +474,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in tags.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/tags/TagHierarchyExampleTest.java[tags=taginaction,indent=0]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@ExampleSubCategory
+@Test
+public void tags_can_form_a_hierarchy() {
+    given().tags_annotated_with_tags();
+    when().the_report_is_generated();
+    then().the_tags_appear_in_a_hierarchy();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -488,7 +496,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in tags.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/tags/TagsWithCustomStyle.java[tags=desc,indent=0]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@IsTag( style = "background-color: darkgreen; color: white; font-weight: bold",
+    description = "Tags can be arbitrarily styled with the 'style' attribute of the '@IsTag' annotation. " +
+            "This tag shows how to apply such a custom style" )
+@Retention( RetentionPolicy.RUNTIME )
+public @interface TagsWithCustomStyle {}</code></pre>
 </div>
 </div>
 </div>
@@ -512,7 +524,11 @@ public @interface CoffeeFeature { }</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in tags.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/tags/CategoryWithValue.java[tags=noPackage,indent=0]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@IsTag( prependType = false )
+@Retention( RetentionPolicy.RUNTIME )
+public @interface CategoryWithValue {
+    String value();
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -635,7 +651,7 @@ public @interface OneOfMyCoolCoreFeatures {}</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.0<br>
-Last updated 2021-03-04 18:49:10 +0100
+Last updated 2021-01-12 17:38:22 +0100
 </div>
 </div>
 </body>
