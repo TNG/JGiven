@@ -453,7 +453,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyShinyJGivenTest.java[tags=header]
+<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.junit.ScenarioTest;
+
+public class MyShinyJGivenTest
+        extends ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
 }</code></pre>
 </div>
 </div>
@@ -469,17 +472,35 @@ For scenarios where you only want to differentiate between steps that modify sta
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/GivenSomeState.java[tags=noPackage]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.Stage;
+
+public class GivenSomeState extends Stage&lt;GivenSomeState&gt; {
+    public GivenSomeState some_state() {
+        return self();
+    }
+}</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/WhenSomeAction.java[tags=noPackage]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.Stage;
+
+public class WhenSomeAction extends Stage&lt;WhenSomeAction&gt; {
+    public WhenSomeAction some_action() {
+        return self();
+    }
+}</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/ThenSomeOutcome.java[tags=noPackage]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">import com.tngtech.jgiven.Stage;
+
+public class ThenSomeOutcome extends Stage&lt;ThenSomeOutcome&gt; {
+    public ThenSomeOutcome some_outcome() {
+        return self();
+    }
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -493,7 +514,19 @@ For scenarios where you only want to differentiate between steps that modify sta
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyShinyJGivenTest.java[tags=noPackage]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">import org.junit.Test;
+import com.tngtech.jgiven.junit.ScenarioTest;
+
+public class MyShinyJGivenTest
+        extends ScenarioTest&lt;GivenSomeState, WhenSomeAction, ThenSomeOutcome&gt; {
+
+    @Test
+    public void something_should_happen() {
+        given().some_state();
+        when().some_action();
+        then().some_outcome();
+    }
+}</code></pre>
 </div>
 </div>
 </div>
@@ -516,7 +549,30 @@ In that case you can directly use the JUnit Rules of JGiven. Instead of providin
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in getting_started.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/UsingRulesTest.java[tags=noPackage]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">public class UsingRulesTest {
+
+    @ClassRule
+    public static final JGivenClassRule writerRule = new JGivenClassRule();
+
+    @Rule
+    public final JGivenMethodRule scenarioRule = new JGivenMethodRule();
+
+    @ScenarioStage
+    GivenSomeState someState;
+
+    @ScenarioStage
+    WhenSomeAction someAction;
+
+    @ScenarioStage
+    ThenSomeOutcome someOutcome;
+
+    @Test
+    public void something_should_happen() {
+        someState.given().some_state();
+        someAction.when().some_action();
+        someOutcome.then().some_outcome();
+    }
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -537,7 +593,7 @@ You can now also define convenient methods in your test class to get cleaner sce
 <div id="footer">
 <div id="footer-text">
 Version 1.0.0<br>
-Last updated 2021-03-04 18:49:10 +0100
+Last updated 2021-01-12 17:38:22 +0100
 </div>
 </div>
 </body>
