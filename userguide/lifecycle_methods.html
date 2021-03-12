@@ -502,7 +502,13 @@ Thus, the annotated code must not depend on scenario state fields.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in lifecycle_methods.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyWebDriverUsingStage.java[tags=start,indent=0]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@ProvidedScenarioState
+protected WebDriver webDriver;
+
+@BeforeScenario
+public void startBrowser() {
+    webDriver = new HtmlUnitDriver( true );
+}</code></pre>
 </div>
 </div>
 </div>
@@ -514,7 +520,13 @@ scenario has finished.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in lifecycle_methods.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyWebDriverUsingStage.java[tags=middle,indent=0]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">@ProvidedScenarioState
+protected WebDriver webdriver;
+
+@AfterScenario
+public void closeBrowser() {
+    webdriver.close();
+}</code></pre>
 </div>
 </div>
 </div>
@@ -536,9 +548,23 @@ in JGiven.</p>
 <h4 id="_example">Example</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in lifecycle_methods.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/WebDriverRule.java[tags=noPackage]
+<pre class="highlight"><code class="language-java" data-lang="java">public class WebDriverRule {
 
-Unresolved directive in lifecycle_methods.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyWebDriverUsingStage.java[tags=rule]
+    protected WebDriver webDriver;
+
+    public void before() {
+         webDriver = new HtmlUnitDriver( true );
+    }
+
+    public void after() {
+         webDriver.close();
+    }
+ }
+
+
+public class MyWebDriverUsingStage {
+    @ScenarioRule
+    protected WebDriverRule webDriverRule = new WebDriverRule();
 }</code></pre>
 </div>
 </div>
@@ -574,7 +600,30 @@ pattern to build a certain object using step methods and build the final object 
 <h4 id="_example_2">Example</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">Unresolved directive in lifecycle_methods.adoc - include::../jgiven-examples/src/test/java/com/tngtech/jgiven/examples/userguide/MyStage.java[tags=noPackage]</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">public class MyStage {
+
+    protected CustomerBuilder customerBuilder;
+
+    @ProvidedScenarioState
+    protected Customer customer;
+
+    public MyStage a_customer() {
+        customerBuilder = new CustomerBuilder();
+        return this;
+    }
+
+    public MyStage the_customer_has_name( String name ) {
+        customerBuilder.withName( name );
+        return this;
+    }
+
+    @AfterStage
+    public void buildCustomer() {
+        if (customerBuilder != null) {
+            customer = customerBuilder.build();
+        }
+    }
+ }</code></pre>
 </div>
 </div>
 </div>
@@ -585,7 +634,7 @@ pattern to build a certain object using step methods and build the final object 
 <div id="footer">
 <div id="footer-text">
 Version 1.0.0<br>
-Last updated 2021-03-04 18:49:10 +0100
+Last updated 2021-01-12 17:38:22 +0100
 </div>
 </div>
 </body>
