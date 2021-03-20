@@ -64,7 +64,7 @@ subprojects {
         paranamerVersion = '2.8'
         jansiVersion = '1.18'
         gsonVersion = '2.8.6'
-        guavaVersion = '30.1-jre'
+        guavaVersion = '30.1.1-jre'
         guavaAndroidVersion = '28.1-android'
         springVersion = '5.3.4'
         jacocoVersion = '0.8.5'
