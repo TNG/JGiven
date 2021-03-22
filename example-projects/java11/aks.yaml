@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java11-test-deployment
+  labels:
+    app: java11-test-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java11
+  template:
+    metadata:
+      labels:
+        app: java11
+    spec:
+      containers:
+      - name: java11
+        image: jgivenimages.azurecr.io/first-example:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name: jgivenregistrykey
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: java11-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: java11
