@@ -31,11 +31,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.reverse;
@@ -64,7 +60,7 @@ public class ScenarioExecutor {
      */
     private boolean executeLifeCycleMethods = true;
 
-    protected final Map<Class<?>, StageState> stages = new LinkedHashMap<>();
+    protected final Map<Class<?>, StageState2> stages = new LinkedHashMap<>();
 
     private final List<Object> scenarioRules = new ArrayList<>();
 
@@ -171,7 +167,7 @@ public class ScenarioExecutor {
                     // if there has been a child stage that was executed before
                     // and the new child stage is different, we have to execute
                     // the after stage methods of the previous child stage
-                    StageState stageState = getStageState( parentStage );
+                    StageState2 stageState = getStageState( parentStage );
                     if( stageState.currentChildStage != null && stageState.currentChildStage != childStage
                             && !afterStageMethodsCalled( stageState.currentChildStage ) ) {
                         updateScenarioState( stageState.currentChildStage );
@@ -185,7 +181,7 @@ public class ScenarioExecutor {
 
             updateScenarioState( childStage );
 
-            StageState stageState = getStageState( childStage );
+            StageState2 stageState = getStageState( childStage );
             if( !stageState.beforeStageCalled ) {
                 stageState.beforeStageCalled = true;
                 executeBeforeStageSteps( childStage );
@@ -206,7 +202,7 @@ public class ScenarioExecutor {
 
             // in case we leave a child stage that itself had a child stage
             // we have to execute the after stage method of that transitive child
-            StageState childState = getStageState( childStage );
+            StageState2 childState = getStageState( childStage );
             if( childState.currentChildStage != null ) {
                 updateScenarioState( childState.currentChildStage );
                 if( executeAfterStageMethods( childState.currentChildStage ) ) {
@@ -230,7 +226,7 @@ public class ScenarioExecutor {
         T result = stageCreator.createStage( stageClass, methodInterceptor );
         methodInterceptor.enableMethodInterception( true );
 
-        stages.put( stageClass, new StageState( result ) );
+        stages.put( stageClass, new StageState2( result ) );
         gatherRules( result );
         injectStages( result );
         return result;
@@ -264,21 +260,25 @@ public class ScenarioExecutor {
     }
 
     private boolean afterStageMethodsCalled( Object stage ) {
-        return getStageState( stage ).afterStageCalled;
+        return getStageState( stage ).allAfterStageMethodsHaveBeenExecuted();
     }
 
     private boolean executeAfterStageMethods( Object stage ) throws Throwable {
-        StageState stageState = getStageState( stage );
-        if( stageState.afterStageCalled ) {
+        StageState2 stageState = getStageState( stage );
+        if( stageState.allAfterStageMethodsHaveBeenExecuted()) {
             return false;
         }
-        stageState.afterStageCalled = true;
-        executeAnnotatedMethods( stage, AfterStage.class );
+
+        List<Method> methodsToExecute = getExecutableAfterStageMethods(stage);
+        methodsToExecute.forEach(stageState::markAfterStageAsExecuted);
+        doExecuteLifeCycleMethods(stage, methodsToExecute);
+        //executeAnnotatedMethods( stage, AfterStage.class );
         return true;
     }
 
-    public StageState getStageState( Object stage ) {
-        StageState stageState = stages.get( stage.getClass() );
+
+    public StageState2 getStageState( Object stage ) {
+        StageState2 stageState = stages.get( stage.getClass() );
         return stageState != null ? stageState : stages.get( stage.getClass().getSuperclass() );
     }
 
@@ -296,7 +296,7 @@ public class ScenarioExecutor {
 
             beforeScenarioMethodsExecuted = true;
 
-            for( StageState stage : stages.values() ) {
+            for( StageState2 stage : stages.values() ) {
                 executeBeforeScenarioMethods( stage.instance );
             }
         } catch( Throwable e ) {
@@ -307,22 +307,47 @@ public class ScenarioExecutor {
 
         methodInterceptor.enableMethodInterception( true );
     }
+    private List<Method> getExecutableAfterStageMethods(Object stage){
+        StageState2 stageState = getStageState(stage);
+        List<Method> methodList = newArrayList();
+        ReflectionUtil.forEachMethod(stage, stage.getClass(), AfterStage.class, (Object object,Method method)-> {
+            if (!stageState.afterStageMethodHasBeenExecuted(method)){
+                methodList.add(method);
+            }
+        });
+        return methodList;
+    }
+
+    //TODO What about execute annotated methods
+    private void doExecuteLifeCycleMethods(Object object, List<Method> methods) throws  Throwable{
+        if( !executeLifeCycleMethods ) {
+            return;
+        }
+        boolean previousMethodExecution = methodInterceptor.enableMethodExecution( true );
+        try {
+            methodInterceptor.enableMethodInterception( false );
+            methods.forEach(it -> ReflectionUtil.invokeMethod(object, it,""));
+            methodInterceptor.enableMethodInterception( true );
+        } catch( JGivenUserException e ) {
+            throw e.getCause();
+        } finally {
+            methodInterceptor.enableMethodExecution( previousMethodExecution );
+        }
+    }
 
     private void executeAnnotatedMethods( Object stage, final Class<? extends Annotation> annotationClass ) throws Throwable {
         if( !executeLifeCycleMethods ) {
             return;
         }
 
+
         log.debug( "Executing methods annotated with @{}", annotationClass.getName() );
         boolean previousMethodExecution = methodInterceptor.enableMethodExecution( true );
         try {
             methodInterceptor.enableMethodInterception( false );
-            ReflectionUtil.forEachMethod( stage, stage.getClass(), annotationClass, new MethodAction() {
-                @Override
-                public void act( Object object, Method method ) throws Exception {
-                    ReflectionUtil.invokeMethod( object, method, " with annotation @" + annotationClass.getName() );
-                }
-            } );
+            ReflectionUtil.forEachMethod( stage, stage.getClass(), annotationClass, (Object object, Method method ) ->
+                    ReflectionUtil.invokeMethod( object, method, " with annotation @" + annotationClass.getName())
+             );
             methodInterceptor.enableMethodInterception( true );
         } catch( JGivenUserException e ) {
             throw e.getCause();
@@ -365,7 +390,7 @@ public class ScenarioExecutor {
      * Used for DI frameworks to inject values into stages.
      */
     public void wireSteps( CanWire canWire ) {
-        for( StageState steps : stages.values() ) {
+        for( StageState2 steps : stages.values() ) {
             canWire.wire( steps.instance );
         }
     }
@@ -399,17 +424,13 @@ public class ScenarioExecutor {
                 if( currentTopLevelStage != null ) {
                     executeAfterStageMethods( currentTopLevelStage );
                 }
-            } catch( AssertionError e ) {
-                firstThrownException = logAndGetFirstException( firstThrownException, e );
             } catch( Exception e ) {
                 firstThrownException = logAndGetFirstException( firstThrownException, e );
             }
 
-            for( StageState stage : reverse( newArrayList( stages.values() ) ) ) {
+            for( StageState2 stage : reverse( newArrayList( stages.values() ) ) ) {
                 try {
                     executeAnnotatedMethods( stage.instance, AfterScenario.class );
-                } catch( AssertionError e ) {
-                    firstThrownException = logAndGetFirstException( firstThrownException, e );
                 } catch( Exception e ) {
                     firstThrownException = logAndGetFirstException( firstThrownException, e );
                 }
@@ -419,8 +440,6 @@ public class ScenarioExecutor {
         for( Object rule : reverse( scenarioRules ) ) {
             try {
                 invokeRuleMethod( rule, "after" );
-            } catch( AssertionError e ) {
-                firstThrownException = logAndGetFirstException( firstThrownException, e );
             } catch( Exception e ) {
                 firstThrownException = logAndGetFirstException( firstThrownException, e );
             }
