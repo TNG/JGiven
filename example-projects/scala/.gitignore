@@ -4,6 +4,7 @@
 /project/project/
 /project/target/
 /target/
+.bsp/
 .cache*
 .sbtserver
 activator*
