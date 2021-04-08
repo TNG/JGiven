@@ -27,7 +27,7 @@ ext {
     assertjVersion = '3.19.0'
     junitDataproviderVersion = '1.13.1'
     jgivenVersion = '1.0.0'
-    hsqldbVersion = '2.5.1'
+    hsqldbVersion = '2.6.0'
 }
 
 dependencies {
