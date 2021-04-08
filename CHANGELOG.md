@@ -1,3 +1,8 @@
+# v1.x
+##New Features
+
+##Fixed Issues
+* Refurbished the jgiven-scala example project [#619](https://github.com/TNG/JGiven/pull/619) (thanks to seblm)
 # v1.0.0
 
 This is the first major version update of JGiven. It does introduce new features, as well as backwards-incompatible changes,
