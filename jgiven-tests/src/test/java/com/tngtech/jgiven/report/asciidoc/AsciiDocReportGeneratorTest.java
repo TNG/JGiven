@@ -13,7 +13,7 @@ import com.tngtech.jgiven.report.WhenReportGenerator;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.tags.FeatureAsciiDocReport;
 
-@RunWith( DataProviderRunner.class )
+@RunWith(DataProviderRunner.class)
 @FeatureAsciiDocReport
 public class AsciiDocReportGeneratorTest extends
         JGivenScenarioTest<GivenReportModels<?>, WhenReportGenerator<?>, ThenAsciiDocReportGenerator<?>> {
@@ -26,25 +26,25 @@ public class AsciiDocReportGeneratorTest extends
         given().a_report_model();
         jsonReports.and().the_report_exist_as_JSON_file();
         when().the_asciidoc_reporter_is_executed();
-        then().a_file_with_name_$_exists( "index.asciidoc" )
-                .and().a_file_with_name_$_exists( "allClasses.asciidoc" )
-                .and().a_file_with_name_$_exists( "Test.asciidoc" );
+        then().a_file_with_name_$_exists("index.asciidoc")
+                .and().a_file_with_name_$_exists("allClasses.asciidoc")
+                .and().a_file_with_name_$_exists("Test.asciidoc");
     }
 
     @Test
     public void the_multilines_values_are_rendered_as_literal_blocks() throws IOException {
-        String content = "Some \n text \n with \n newlines";
+        String content = "Some " + System.lineSeparator() + "text " + System.lineSeparator() + "with " + System.lineSeparator() + "newlines";
         given().a_report_model()
-                .and().step_$_of_case_$_has_a_formatted_value_$_as_parameter( 1, 1, content );
+                .and().step_$_of_case_$_has_a_formatted_value_$_as_parameter(1, 1, content);
         jsonReports
                 .and().the_report_exist_as_JSON_file();
 
         when().the_asciidoc_reporter_is_executed();
-        then().the_asciidoc_reporte_$_exists( "Test.asciidoc" )
+        then().the_asciidoc_reporte_$_exists("Test.asciidoc")
                 .and().the_literal_block_is_added_$(
-                "....\n" +
-                        content + "\n" +
-                        "...." );
+                "...." + System.lineSeparator() +
+                        content + System.lineSeparator() +
+                        "....");
     }
 
 }
