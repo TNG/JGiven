@@ -41,9 +41,6 @@ import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Tag;
 import com.tngtech.jgiven.report.model.Word;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -52,22 +49,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ScenarioModelBuilder implements ScenarioListener {
-    private static final Logger log = LoggerFactory.getLogger( ScenarioModelBuilder.class );
+    private static final Logger log = LoggerFactory.getLogger(ScenarioModelBuilder.class);
 
     private static final Set<String> STACK_TRACE_FILTER = ImmutableSet
-        .of( "sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept", "$$EnhancerByCGLIB$$",
-            "java.lang.reflect", "net.sf.cglib.proxy", "com.sun.proxy" );
+        .of("sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept",
+            "$$EnhancerByCGLIB$$",
+            "java.lang.reflect", "net.sf.cglib.proxy", "com.sun.proxy");
     private static final boolean FILTER_STACK_TRACE = Config.config().filterStackTrace();
 
     private ScenarioModel scenarioModel;
     private ScenarioCaseModel scenarioCaseModel;
     private StepModel currentStep;
-    private final Stack<StepModel> parentSteps = new Stack<StepModel>();
+    private final Stack<StepModel> parentSteps = new Stack<>();
 
     /**
-     * In case the current step is a step with nested steps, this list contains these steps
+     * In case the current step is a step with nested steps, this list contains these steps.
      */
     private List<StepModel> nestedSteps;
 
@@ -79,560 +79,570 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     private ReportModel reportModel;
 
-    public void setReportModel( ReportModel reportModel ) {
+    public void setReportModel(ReportModel reportModel) {
         this.reportModel = reportModel;
     }
 
     @Override
-    public void scenarioStarted( String description ) {
+    public void scenarioStarted(String description) {
         scenarioStartedNanos = System.nanoTime();
         String readableDescription = description;
 
-        if( description.contains( "_" ) ) {
-            readableDescription = description.replace( '_', ' ' );
-        } else if( !description.contains( " " ) ) {
-            readableDescription = WordUtil.camelCaseToCapitalizedReadableText( description );
+        if (description.contains("_")) {
+            readableDescription = description.replace('_', ' ');
+        } else if (!description.contains(" ")) {
+            readableDescription = WordUtil.camelCaseToCapitalizedReadableText(description);
         }
 
         scenarioCaseModel = new ScenarioCaseModel();
 
         scenarioModel = new ScenarioModel();
-        scenarioModel.addCase( scenarioCaseModel );
-        scenarioModel.setDescription( readableDescription );
+        scenarioModel.addCase(scenarioCaseModel);
+        scenarioModel.setDescription(readableDescription);
     }
 
-    public void addStepMethod( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps ) {
-        StepModel stepModel = createStepModel( paramMethod, arguments, mode );
+    public void addStepMethod(Method paramMethod, List<NamedArgument> arguments, InvocationMode mode,
+                              boolean hasNestedSteps) {
+        StepModel stepModel = createStepModel(paramMethod, arguments, mode);
 
-        if( parentSteps.empty() ) {
-            getCurrentScenarioCase().addStep( stepModel );
+        if (parentSteps.empty()) {
+            getCurrentScenarioCase().addStep(stepModel);
         } else {
-            parentSteps.peek().addNestedStep( stepModel );
+            parentSteps.peek().addNestedStep(stepModel);
         }
 
-        if( hasNestedSteps ) {
-            parentSteps.push( stepModel );
+        if (hasNestedSteps) {
+            parentSteps.push(stepModel);
         }
         currentStep = stepModel;
     }
 
-    StepModel createStepModel( Method paramMethod, List<NamedArgument> arguments, InvocationMode mode ) {
+    StepModel createStepModel(Method paramMethod, List<NamedArgument> arguments, InvocationMode mode) {
         StepModel stepModel = new StepModel();
 
-        stepModel.setName( getDescription( paramMethod ) );
+        stepModel.setName(getDescription(paramMethod));
 
-        ExtendedDescription extendedDescriptionAnnotation = paramMethod.getAnnotation( ExtendedDescription.class );
-        if( extendedDescriptionAnnotation != null ) {
-            stepModel.setExtendedDescription( extendedDescriptionAnnotation.value() );
+        ExtendedDescription extendedDescriptionAnnotation = paramMethod.getAnnotation(ExtendedDescription.class);
+        if (extendedDescriptionAnnotation != null) {
+            stepModel.setExtendedDescription(extendedDescriptionAnnotation.value());
         }
 
-        List<NamedArgument> nonHiddenArguments = filterHiddenArguments( arguments, paramMethod.getParameterAnnotations() );
+        List<NamedArgument> nonHiddenArguments =
+            filterHiddenArguments(arguments, paramMethod.getParameterAnnotations());
 
-        ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil( configuration );
-        List<ObjectFormatter<?>> formatters = parameterFormattingUtil.getFormatter( paramMethod.getParameterTypes(), getNames( arguments ),
-            paramMethod.getParameterAnnotations() );
+        ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil(configuration);
+        List<ObjectFormatter<?>> formatters =
+            parameterFormattingUtil.getFormatter(paramMethod.getParameterTypes(), getNames(arguments),
+                paramMethod.getParameterAnnotations());
 
-        new StepFormatter( stepModel.getName(), nonHiddenArguments, formatters ).buildFormattedWords()
-            .forEach( sentenceBuilder::addWord );
+        new StepFormatter(stepModel.getName(), nonHiddenArguments, formatters).buildFormattedWords()
+            .forEach(sentenceBuilder::addWord);
 
-        stepModel.setWords( sentenceBuilder.getWords() );
+        stepModel.setWords(sentenceBuilder.getWords());
 
         sentenceBuilder.clear();
 
-        stepModel.setStatus( mode.toStepStatus() );
+        stepModel.setStatus(mode.toStepStatus());
         return stepModel;
     }
 
-    private List<NamedArgument> filterHiddenArguments( List<NamedArgument> arguments, Annotation[][] parameterAnnotations ) {
+    private List<NamedArgument> filterHiddenArguments(List<NamedArgument> arguments,
+                                                      Annotation[][] parameterAnnotations) {
         List<NamedArgument> result = Lists.newArrayList();
-        for( int i = 0; i < parameterAnnotations.length; i++ ) {
-            if( !AnnotationUtil.isHidden( parameterAnnotations[i] ) ) {
-                result.add( arguments.get( i ) );
+        for (int i = 0; i < parameterAnnotations.length; i++) {
+            if (!AnnotationUtil.isHidden(parameterAnnotations[i])) {
+                result.add(arguments.get(i));
             }
         }
         return result;
     }
 
     @Override
-    public void introWordAdded( String value ) {
-        sentenceBuilder.addIntroWord( value );
+    public void introWordAdded(String value) {
+        sentenceBuilder.addIntroWord(value);
     }
 
-    private void addToSentence( String value, boolean joinToPreviousWord, boolean joinToNextWord ) {
-        if ( !sentenceBuilder.hasWords() && currentStep != null && joinToPreviousWord ) {
-            currentStep.getLastWord().addSuffix( value );
+    private void addToSentence(String value, boolean joinToPreviousWord, boolean joinToNextWord) {
+        if (!sentenceBuilder.hasWords() && currentStep != null && joinToPreviousWord) {
+            currentStep.getLastWord().addSuffix(value);
         } else {
-            sentenceBuilder.addWord( value, joinToPreviousWord, joinToNextWord );
+            sentenceBuilder.addWord(value, joinToPreviousWord, joinToNextWord);
         }
     }
 
-    private void addStepComment( List<NamedArgument> arguments  ) {
-        if( arguments == null || arguments.size() != 1 ) {
-            throw new JGivenWrongUsageException( "A step comment method must have exactly one parameter." );
+    private void addStepComment(List<NamedArgument> arguments) {
+        if (arguments == null || arguments.size() != 1) {
+            throw new JGivenWrongUsageException("A step comment method must have exactly one parameter.");
         }
 
-        if( !( arguments.get( 0 ).getValue() instanceof String ) ) {
-            throw new JGivenWrongUsageException( "The step comment method parameter must be a string." );
+        if (!(arguments.get(0).getValue() instanceof String)) {
+            throw new JGivenWrongUsageException("The step comment method parameter must be a string.");
         }
 
-        if( currentStep == null ) {
-            throw new JGivenWrongUsageException( "A step comment must be added after the corresponding step, "
-                    + "but no step has been executed yet." );
+        if (currentStep == null) {
+            throw new JGivenWrongUsageException("A step comment must be added after the corresponding step, "
+                + "but no step has been executed yet.");
         }
 
-        stepCommentUpdated((String) arguments.get( 0 ).getValue() );
+        stepCommentUpdated((String) arguments.get(0).getValue());
     }
 
 
     @Override
-    public void stepCommentUpdated(String comment ) {
-        currentStep.setComment( comment );
+    public void stepCommentUpdated(String comment) {
+        currentStep.setComment(comment);
     }
 
     private ScenarioCaseModel getCurrentScenarioCase() {
-        if( scenarioCaseModel == null ) {
-            scenarioStarted( "A Scenario" );
+        if (scenarioCaseModel == null) {
+            scenarioStarted("A Scenario");
         }
         return scenarioCaseModel;
     }
 
     @Override
-    public void stepMethodInvoked( Method method, List<NamedArgument> arguments, InvocationMode mode, boolean hasNestedSteps ) {
-        if( method.isAnnotationPresent( IntroWord.class ) ) {
-            introWordAdded( getDescription( method ) );
-        } else if ( method.isAnnotationPresent( FillerWord.class ) ) {
-            FillerWord fillerWord = method.getAnnotation( FillerWord.class );
-            addToSentence( getDescription( method ), fillerWord.joinToPreviousWord(), fillerWord.joinToNextWord() );
-        } else if( method.isAnnotationPresent( StepComment.class ) ) {
-            addStepComment( arguments );
+    public void stepMethodInvoked(Method method, List<NamedArgument> arguments, InvocationMode mode,
+                                  boolean hasNestedSteps) {
+        if (method.isAnnotationPresent(IntroWord.class)) {
+            introWordAdded(getDescription(method));
+        } else if (method.isAnnotationPresent(FillerWord.class)) {
+            FillerWord fillerWord = method.getAnnotation(FillerWord.class);
+            addToSentence(getDescription(method), fillerWord.joinToPreviousWord(), fillerWord.joinToNextWord());
+        } else if (method.isAnnotationPresent(StepComment.class)) {
+            addStepComment(arguments);
         } else {
-            addTags( method.getAnnotations() );
-            addTags( method.getDeclaringClass().getAnnotations() );
+            addTags(method.getAnnotations());
+            addTags(method.getDeclaringClass().getAnnotations());
 
-            addStepMethod( method, arguments, mode, hasNestedSteps );
+            addStepMethod(method, arguments, mode, hasNestedSteps);
         }
     }
 
-    public void setMethodName( String methodName ) {
-        scenarioModel.setTestMethodName( methodName );
+    public void setMethodName(String methodName) {
+        scenarioModel.setTestMethodName(methodName);
     }
 
-    public void setArguments( List<String> arguments ) {
-        scenarioCaseModel.setExplicitArguments( arguments );
+    public void setArguments(List<String> arguments) {
+        scenarioCaseModel.setExplicitArguments(arguments);
     }
 
-    public void setParameterNames( List<String> parameterNames ) {
-        scenarioModel.setExplicitParameters( removeUnderlines( parameterNames ) );
+    public void setParameterNames(List<String> parameterNames) {
+        scenarioModel.setExplicitParameters(removeUnderlines(parameterNames));
     }
 
-    private static List<String> removeUnderlines( List<String> parameterNames ) {
-        List<String> result = Lists.newArrayListWithCapacity( parameterNames.size() );
-        for( String paramName : parameterNames ) {
-            result.add( WordUtil.fromSnakeCase( paramName ) );
+    private static List<String> removeUnderlines(List<String> parameterNames) {
+        List<String> result = Lists.newArrayListWithCapacity(parameterNames.size());
+        for (String paramName : parameterNames) {
+            result.add(WordUtil.fromSnakeCase(paramName));
         }
         return result;
     }
 
-    private String getDescription( Method paramMethod ) {
-        if( paramMethod.isAnnotationPresent( Hidden.class ) ) {
+    private String getDescription(Method paramMethod) {
+        if (paramMethod.isAnnotationPresent(Hidden.class)) {
             return "";
         }
 
-        Description description = paramMethod.getAnnotation( Description.class );
-        if( description != null ) {
+        Description description = paramMethod.getAnnotation(Description.class);
+        if (description != null) {
             return description.value();
         }
 
-        As as = paramMethod.getAnnotation( As.class );
+        As as = paramMethod.getAnnotation(As.class);
         AsProvider provider = as != null
-                ? ReflectionUtil.newInstance( as.provider() )
-                : new DefaultAsProvider();
-        return provider.as( as, paramMethod );
+            ? ReflectionUtil.newInstance(as.provider())
+            : new DefaultAsProvider();
+        return provider.as(as, paramMethod);
     }
 
-    public void setStatus( ExecutionStatus status ) {
-        scenarioCaseModel.setStatus( status );
+    public void setStatus(ExecutionStatus status) {
+        scenarioCaseModel.setStatus(status);
     }
 
-    public void setException( Throwable throwable ) {
-        scenarioCaseModel.setErrorMessage( throwable.getClass().getName() + ": " + throwable.getMessage() );
-        scenarioCaseModel.setStackTrace( getStackTrace( throwable, FILTER_STACK_TRACE ) );
+    public void setException(Throwable throwable) {
+        scenarioCaseModel.setErrorMessage(throwable.getClass().getName() + ": " + throwable.getMessage());
+        scenarioCaseModel.setStackTrace(getStackTrace(throwable, FILTER_STACK_TRACE));
     }
 
-    private List<String> getStackTrace( Throwable exception, boolean filterStackTrace ) {
+    private List<String> getStackTrace(Throwable exception, boolean filterStackTrace) {
         StackTraceElement[] stackTraceElements = exception.getStackTrace();
-        ArrayList<String> stackTrace = new ArrayList<String>( stackTraceElements.length );
+        ArrayList<String> stackTrace = new ArrayList<>(stackTraceElements.length);
 
         outer:
-        for( StackTraceElement element : stackTraceElements ) {
-            if( filterStackTrace ) {
-                for( String filter : STACK_TRACE_FILTER ) {
-                    if( element.getClassName().contains( filter ) ) {
+        for (StackTraceElement element : stackTraceElements) {
+            if (filterStackTrace) {
+                for (String filter : STACK_TRACE_FILTER) {
+                    if (element.getClassName().contains(filter)) {
                         continue outer;
                     }
                 }
             }
-            stackTrace.add( element.toString() );
+            stackTrace.add(element.toString());
         }
         return stackTrace;
     }
 
     @Override
-    public void stepMethodFailed( Throwable t ) {
-        if( currentStep != null ) {
-            currentStep.setStatus( StepStatus.FAILED );
+    public void stepMethodFailed(Throwable t) {
+        if (currentStep != null) {
+            currentStep.setStatus(StepStatus.FAILED);
         }
     }
 
     @Override
-    public void stepMethodFinished( long durationInNanos, boolean hasNestedSteps ) {
-        if( hasNestedSteps && !parentSteps.isEmpty() ) {
+    public void stepMethodFinished(long durationInNanos, boolean hasNestedSteps) {
+        if (hasNestedSteps && !parentSteps.isEmpty()) {
             currentStep = parentSteps.peek();
         }
 
-        if( currentStep != null ) {
-            currentStep.setDurationInNanos( durationInNanos );
-            if( hasNestedSteps ) {
-                if( currentStep.getStatus() != StepStatus.FAILED ) {
-                    currentStep.setStatus( getStatusFromNestedSteps( currentStep.getNestedSteps() ) );
+        if (currentStep != null) {
+            currentStep.setDurationInNanos(durationInNanos);
+            if (hasNestedSteps) {
+                if (currentStep.getStatus() != StepStatus.FAILED) {
+                    currentStep.setStatus(getStatusFromNestedSteps(currentStep.getNestedSteps()));
                 }
                 parentSteps.pop();
             }
         }
 
-        if( !hasNestedSteps && !parentSteps.isEmpty() ) {
+        if (!hasNestedSteps && !parentSteps.isEmpty()) {
             currentStep = parentSteps.peek();
         }
     }
 
-    private StepStatus getStatusFromNestedSteps( List<StepModel> nestedSteps ) {
+    private StepStatus getStatusFromNestedSteps(List<StepModel> nestedSteps) {
         StepStatus status = StepStatus.PASSED;
-        for( StepModel nestedModel : nestedSteps ) {
+        for (StepModel nestedModel : nestedSteps) {
             StepStatus nestedStatus = nestedModel.getStatus();
 
-            switch( nestedStatus ) {
+            switch (nestedStatus) {
                 case FAILED:
                     return StepStatus.FAILED;
                 case PENDING:
                     status = StepStatus.PENDING;
                     break;
+                default:
             }
         }
         return status;
     }
 
     @Override
-    public void scenarioFailed( Throwable e ) {
-        setStatus( ExecutionStatus.FAILED );
-        setException( e );
+    public void scenarioFailed(Throwable e) {
+        setStatus(ExecutionStatus.FAILED);
+        setException(e);
     }
 
     @Override
-    public void scenarioStarted( Class<?> testClass, Method method, List<NamedArgument> namedArguments ) {
-        readConfiguration( testClass );
-        readAnnotations( testClass, method );
-        scenarioModel.setClassName( testClass.getName() );
-        setParameterNames( getNames( namedArguments ) );
+    public void scenarioStarted(Class<?> testClass, Method method, List<NamedArgument> namedArguments) {
+        readConfiguration(testClass);
+        readAnnotations(testClass, method);
+        scenarioModel.setClassName(testClass.getName());
+        setParameterNames(getNames(namedArguments));
 
         // must come at last
-        setMethodName( method.getName() );
+        setMethodName(method.getName());
 
-        ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil( configuration );
-        List<ObjectFormatter<?>> formatter = parameterFormattingUtil.getFormatter( method.getParameterTypes(), getNames( namedArguments ),
-            method.getParameterAnnotations() );
+        ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil(configuration);
+        List<ObjectFormatter<?>> formatter =
+            parameterFormattingUtil.getFormatter(method.getParameterTypes(), getNames(namedArguments),
+                method.getParameterAnnotations());
 
-        setArguments( parameterFormattingUtil.toStringList( formatter, getValues( namedArguments ) ) );
-        setCaseDescription( testClass, method, namedArguments );
+        setArguments(parameterFormattingUtil.toStringList(formatter, getValues(namedArguments)));
+        setCaseDescription(testClass, method, namedArguments);
     }
 
-    private void setCaseDescription( Class<?> testClass, Method method, List<NamedArgument> namedArguments ) {
+    private void setCaseDescription(Class<?> testClass, Method method, List<NamedArgument> namedArguments) {
 
         CaseAs annotation = null;
-        if( method.isAnnotationPresent( CaseAs.class ) ) {
-            annotation = method.getAnnotation( CaseAs.class );
-        } else if( testClass.isAnnotationPresent( CaseAs.class ) ) {
-            annotation = testClass.getAnnotation( CaseAs.class );
+        if (method.isAnnotationPresent(CaseAs.class)) {
+            annotation = method.getAnnotation(CaseAs.class);
+        } else if (testClass.isAnnotationPresent(CaseAs.class)) {
+            annotation = testClass.getAnnotation(CaseAs.class);
         }
 
-        if( annotation != null ) {
-            CaseAsProvider caseDescriptionProvider = ReflectionUtil.newInstance( annotation.provider() );
+        if (annotation != null) {
+            CaseAsProvider caseDescriptionProvider = ReflectionUtil.newInstance(annotation.provider());
             String value = annotation.value();
             List<?> values;
-            if( annotation.formatValues() ) {
+            if (annotation.formatValues()) {
                 values = scenarioCaseModel.getExplicitArguments();
             } else {
-                values = getValues( namedArguments );
+                values = getValues(namedArguments);
             }
-            String caseDescription = caseDescriptionProvider.as( value, scenarioModel.getExplicitParameters(), values );
-            scenarioCaseModel.setDescription( caseDescription );
+            String caseDescription = caseDescriptionProvider.as(value, scenarioModel.getExplicitParameters(), values);
+            scenarioCaseModel.setDescription(caseDescription);
         }
     }
 
-    private List<Object> getValues( List<NamedArgument> namedArguments ) {
+    private List<Object> getValues(List<NamedArgument> namedArguments) {
         List<Object> result = Lists.newArrayList();
-        for( NamedArgument a : namedArguments ) {
-            result.add( a.value );
+        for (NamedArgument a : namedArguments) {
+            result.add(a.value);
         }
         return result;
     }
 
-    private List<String> getNames( List<NamedArgument> namedArguments ) {
+    private List<String> getNames(List<NamedArgument> namedArguments) {
         List<String> result = Lists.newArrayList();
-        for( NamedArgument a : namedArguments ) {
-            result.add( a.name );
+        for (NamedArgument a : namedArguments) {
+            result.add(a.name);
         }
         return result;
     }
 
-    private void readConfiguration( Class<?> testClass ) {
-        configuration = ConfigurationUtil.getConfiguration( testClass );
+    private void readConfiguration(Class<?> testClass) {
+        configuration = ConfigurationUtil.getConfiguration(testClass);
     }
 
-    private void readAnnotations( Class<?> testClass, Method method ) {
+    private void readAnnotations(Class<?> testClass, Method method) {
         String scenarioDescription = method.getName();
 
-        if( method.isAnnotationPresent( Description.class ) ) {
-            scenarioDescription = method.getAnnotation( Description.class ).value();
-        } else if( method.isAnnotationPresent( As.class ) ) {
-            As as = method.getAnnotation( As.class );
+        if (method.isAnnotationPresent(Description.class)) {
+            scenarioDescription = method.getAnnotation(Description.class).value();
+        } else if (method.isAnnotationPresent(As.class)) {
+            As as = method.getAnnotation(As.class);
 
-            AsProvider provider = ReflectionUtil.newInstance( as.provider() );
-            scenarioDescription = provider.as( as, method );
+            AsProvider provider = ReflectionUtil.newInstance(as.provider());
+            scenarioDescription = provider.as(as, method);
         }
 
-        scenarioStarted( scenarioDescription );
+        scenarioStarted(scenarioDescription);
 
-        if( method.isAnnotationPresent( ExtendedDescription.class ) ) {
-            scenarioModel.setExtendedDescription( method.getAnnotation( ExtendedDescription.class ).value() );
+        if (method.isAnnotationPresent(ExtendedDescription.class)) {
+            scenarioModel.setExtendedDescription(method.getAnnotation(ExtendedDescription.class).value());
         }
 
-        if( method.isAnnotationPresent( Pending.class ) || method.getDeclaringClass().isAnnotationPresent( Pending.class ) ) {
-            scenarioCaseModel.setStatus( ExecutionStatus.SCENARIO_PENDING );
+        if (method.isAnnotationPresent(Pending.class)
+            || method.getDeclaringClass().isAnnotationPresent(Pending.class)) {
+            scenarioCaseModel.setStatus(ExecutionStatus.SCENARIO_PENDING);
         }
 
-        if( scenarioCaseModel.getCaseNr() == 1 ) {
-            addTags( testClass.getAnnotations() );
-            addTags( method.getAnnotations() );
-        }
-    }
-
-    public void addTags( Annotation... annotations ) {
-        for( Annotation annotation : annotations ) {
-            addTags( toTags( annotation ) );
+        if (scenarioCaseModel.getCaseNr() == 1) {
+            addTags(testClass.getAnnotations());
+            addTags(method.getAnnotations());
         }
     }
 
-    private void addTags( List<Tag> tags ) {
-        if( tags.isEmpty() ) {
+    public void addTags(Annotation... annotations) {
+        for (Annotation annotation : annotations) {
+            addTags(toTags(annotation));
+        }
+    }
+
+    private void addTags(List<Tag> tags) {
+        if (tags.isEmpty()) {
             return;
         }
 
-        if( reportModel != null ) {
-            this.reportModel.addTags( tags );
+        if (reportModel != null) {
+            this.reportModel.addTags(tags);
         }
 
-        if( scenarioModel != null ) {
-            this.scenarioModel.addTags( tags );
+        if (scenarioModel != null) {
+            this.scenarioModel.addTags(tags);
         }
     }
 
-    public List<Tag> toTags( Annotation annotation ) {
+    public List<Tag> toTags(Annotation annotation) {
         Class<? extends Annotation> annotationType = annotation.annotationType();
-        TagConfiguration tagConfig = toTagConfiguration( annotationType );
-        if( tagConfig == null ) {
+        TagConfiguration tagConfig = toTagConfiguration(annotationType);
+        if (tagConfig == null) {
             return Collections.emptyList();
         }
 
-        return toTags( tagConfig, Optional.of( annotation ) );
+        return toTags(tagConfig, Optional.of(annotation));
     }
 
-    private List<Tag> toTags( TagConfiguration tagConfig, Optional<Annotation> annotation ) {
-        Tag tag = new Tag( tagConfig.getAnnotationFullType() );
+    @SuppressWarnings("checkstyle:EmptyCatchBlock")
+    private List<Tag> toTags(TagConfiguration tagConfig, Optional<Annotation> annotation) {
+        Tag tag = new Tag(tagConfig.getAnnotationFullType());
 
-        tag.setType( tagConfig.getAnnotationType() );
+        tag.setType(tagConfig.getAnnotationType());
 
-        if( !Strings.isNullOrEmpty( tagConfig.getName() ) ) {
-            tag.setName( tagConfig.getName() );
+        if (!Strings.isNullOrEmpty(tagConfig.getName())) {
+            tag.setName(tagConfig.getName());
         }
 
-        if( tagConfig.isPrependType() ) {
-            tag.setPrependType( true );
+        if (tagConfig.isPrependType()) {
+            tag.setPrependType(true);
         }
 
-        tag.setShowInNavigation( tagConfig.showInNavigation() );
+        tag.setShowInNavigation(tagConfig.showInNavigation());
 
-        if( !Strings.isNullOrEmpty( tagConfig.getCssClass() ) ) {
-            tag.setCssClass( tagConfig.getCssClass() );
+        if (!Strings.isNullOrEmpty(tagConfig.getCssClass())) {
+            tag.setCssClass(tagConfig.getCssClass());
         }
 
-        if( !Strings.isNullOrEmpty( tagConfig.getColor() ) ) {
-            tag.setColor( tagConfig.getColor() );
+        if (!Strings.isNullOrEmpty(tagConfig.getColor())) {
+            tag.setColor(tagConfig.getColor());
         }
 
-        if( !Strings.isNullOrEmpty( tagConfig.getStyle() ) ) {
-            tag.setStyle( tagConfig.getStyle() );
+        if (!Strings.isNullOrEmpty(tagConfig.getStyle())) {
+            tag.setStyle(tagConfig.getStyle());
         }
 
         Object value = tagConfig.getDefaultValue();
-        if( !Strings.isNullOrEmpty( tagConfig.getDefaultValue() ) ) {
-            tag.setValue( tagConfig.getDefaultValue() );
+        if (!Strings.isNullOrEmpty(tagConfig.getDefaultValue())) {
+            tag.setValue(tagConfig.getDefaultValue());
         }
 
-        tag.setTags( tagConfig.getTags() );
+        tag.setTags(tagConfig.getTags());
 
-        if( tagConfig.isIgnoreValue() || !annotation.isPresent() ) {
-            tag.setDescription( getDescriptionFromGenerator( tagConfig, annotation.orElse( null ), tagConfig.getDefaultValue() ) );
-            tag.setHref( getHref( tagConfig, annotation.orElse( null ), value ) );
+        if (tagConfig.isIgnoreValue() || !annotation.isPresent()) {
+            tag.setDescription(
+                getDescriptionFromGenerator(tagConfig, annotation.orElse(null), tagConfig.getDefaultValue()));
+            tag.setHref(getHref(tagConfig, annotation.orElse(null), value));
 
-            return Collections.singletonList( tag );
+            return Collections.singletonList(tag);
         }
 
         try {
-            Method method = annotation.get().annotationType().getMethod( "value" );
-            value = method.invoke( annotation.get() );
-            if( value != null ) {
-                if( value.getClass().isArray() ) {
+            Method method = annotation.get().annotationType().getMethod("value");
+            value = method.invoke(annotation.get());
+            if (value != null) {
+                if (value.getClass().isArray()) {
                     Object[] objectArray = (Object[]) value;
-                    if( tagConfig.isExplodeArray() ) {
-                        List<Tag> explodedTags = getExplodedTags( tag, objectArray, annotation.get(), tagConfig );
+                    if (tagConfig.isExplodeArray()) {
+                        List<Tag> explodedTags = getExplodedTags(tag, objectArray, annotation.get(), tagConfig);
                         return explodedTags;
                     }
-                    tag.setValue( toStringList( objectArray ) );
+                    tag.setValue(toStringList(objectArray));
                 } else {
-                    tag.setValue( String.valueOf( value ) );
+                    tag.setValue(String.valueOf(value));
                 }
             }
-        } catch( NoSuchMethodException ignore ) {
+        } catch (NoSuchMethodException ignore) {
 
-        } catch( Exception e ) {
-            log.error( "Error while getting 'value' method of annotation " + annotation.get(), e );
+        } catch (Exception e) {
+            log.error("Error while getting 'value' method of annotation " + annotation.get(), e);
         }
 
-        tag.setDescription( getDescriptionFromGenerator( tagConfig, annotation.get(), value ) );
-        tag.setHref( getHref( tagConfig, annotation.get(), value ) );
+        tag.setDescription(getDescriptionFromGenerator(tagConfig, annotation.get(), value));
+        tag.setHref(getHref(tagConfig, annotation.get(), value));
 
-        return Collections.singletonList( tag );
+        return Collections.singletonList(tag);
     }
 
-    private TagConfiguration toTagConfiguration( Class<? extends Annotation> annotationType ) {
-        IsTag isTag = annotationType.getAnnotation( IsTag.class );
-        if( isTag != null ) {
-            return fromIsTag( isTag, annotationType );
+    private TagConfiguration toTagConfiguration(Class<? extends Annotation> annotationType) {
+        IsTag isTag = annotationType.getAnnotation(IsTag.class);
+        if (isTag != null) {
+            return fromIsTag(isTag, annotationType);
         }
 
-        return configuration.getTagConfiguration( annotationType );
+        return configuration.getTagConfiguration(annotationType);
     }
 
-    public TagConfiguration fromIsTag( IsTag isTag, Class<? extends Annotation> annotationType ) {
+    public TagConfiguration fromIsTag(IsTag isTag, Class<? extends Annotation> annotationType) {
         String name = isTag.name();
 
-        return TagConfiguration.builder( annotationType )
-            .defaultValue( isTag.value() )
-            .description( isTag.description() )
-            .explodeArray( isTag.explodeArray() )
-            .ignoreValue( isTag.ignoreValue() )
-            .prependType( isTag.prependType() )
-            .name( name )
-            .descriptionGenerator( isTag.descriptionGenerator() )
-            .cssClass( isTag.cssClass() )
-            .color( isTag.color() )
-            .style( isTag.style() )
-            .tags( getTagNames( isTag, annotationType ) )
-            .href( isTag.href() )
-            .hrefGenerator( isTag.hrefGenerator() )
-            .showInNavigation( isTag.showInNavigation() )
+        return TagConfiguration.builder(annotationType)
+            .defaultValue(isTag.value())
+            .description(isTag.description())
+            .explodeArray(isTag.explodeArray())
+            .ignoreValue(isTag.ignoreValue())
+            .prependType(isTag.prependType())
+            .name(name)
+            .descriptionGenerator(isTag.descriptionGenerator())
+            .cssClass(isTag.cssClass())
+            .color(isTag.color())
+            .style(isTag.style())
+            .tags(getTagNames(isTag, annotationType))
+            .href(isTag.href())
+            .hrefGenerator(isTag.hrefGenerator())
+            .showInNavigation(isTag.showInNavigation())
             .build();
     }
 
-    private List<String> getTagNames( IsTag isTag, Class<? extends Annotation> annotationType ) {
-        List<Tag> tags = getTags( isTag, annotationType );
-        reportModel.addTags( tags );
+    private List<String> getTagNames(IsTag isTag, Class<? extends Annotation> annotationType) {
+        List<Tag> tags = getTags(annotationType);
+        reportModel.addTags(tags);
         List<String> tagNames = Lists.newArrayList();
-        for( Tag tag : tags ) {
-            tagNames.add( tag.toIdString() );
+        for (Tag tag : tags) {
+            tagNames.add(tag.toIdString());
         }
         return tagNames;
     }
 
-    private List<Tag> getTags( IsTag isTag, Class<? extends Annotation> annotationType ) {
+    private List<Tag> getTags(Class<? extends Annotation> annotationType) {
         List<Tag> allTags = Lists.newArrayList();
 
-        for( Annotation a : annotationType.getAnnotations() ) {
-            if( a.annotationType().isAnnotationPresent( IsTag.class ) ) {
-                List<Tag> tags = toTags( a );
-                for( Tag tag : tags ) {
-                    allTags.add( tag );
-                }
+        for (Annotation annotation : annotationType.getAnnotations()) {
+            if (annotation.annotationType().isAnnotationPresent(IsTag.class)) {
+                allTags.addAll(toTags(annotation));
             }
         }
 
         return allTags;
     }
 
-    private List<String> toStringList( Object[] value ) {
-        Object[] array = value;
+    private List<String> toStringList(Object[] value) {
         List<String> values = Lists.newArrayList();
-        for( Object v : array ) {
-            values.add( String.valueOf( v ) );
+        for (Object v : value) {
+            values.add(String.valueOf(v));
         }
         return values;
     }
 
-    private String getDescriptionFromGenerator( TagConfiguration tagConfiguration, Annotation annotation, Object value ) {
+    private String getDescriptionFromGenerator(TagConfiguration tagConfiguration, Annotation annotation, Object value) {
         try {
-            return tagConfiguration.getDescriptionGenerator().newInstance().generateDescription( tagConfiguration, annotation, value );
-        } catch( Exception e ) {
+            return tagConfiguration.getDescriptionGenerator().getDeclaredConstructor().newInstance()
+                .generateDescription(tagConfiguration, annotation, value);
+        } catch (Exception e) {
             throw new JGivenWrongUsageException(
-                "Error while trying to generate the description for annotation " + annotation + " using DescriptionGenerator class "
-                        + tagConfiguration.getDescriptionGenerator() + ": " + e.getMessage(),
-                e );
+                "Error while trying to generate the description for annotation " + annotation
+                    + " using DescriptionGenerator class "
+                    + tagConfiguration.getDescriptionGenerator() + ": " + e.getMessage(),
+                e);
         }
     }
 
-    private String getHref( TagConfiguration tagConfiguration, Annotation annotation, Object value ) {
+    private String getHref(TagConfiguration tagConfiguration, Annotation annotation, Object value) {
         try {
-            return tagConfiguration.getHrefGenerator().newInstance().generateHref( tagConfiguration, annotation, value );
-        } catch( Exception e ) {
+            return tagConfiguration.getHrefGenerator().getDeclaredConstructor().newInstance()
+                .generateHref(tagConfiguration, annotation, value);
+        } catch (Exception e) {
             throw new JGivenWrongUsageException(
                 "Error while trying to generate the href for annotation " + annotation + " using HrefGenerator class "
-                        + tagConfiguration.getHrefGenerator() + ": " + e.getMessage(),
-                e );
+                    + tagConfiguration.getHrefGenerator() + ": " + e.getMessage(),
+                e);
         }
     }
 
-    private List<Tag> getExplodedTags( Tag originalTag, Object[] values, Annotation annotation, TagConfiguration tagConfig ) {
+    private List<Tag> getExplodedTags(Tag originalTag, Object[] values, Annotation annotation,
+                                      TagConfiguration tagConfig) {
         List<Tag> result = Lists.newArrayList();
-        for( Object singleValue : values ) {
+        for (Object singleValue : values) {
             Tag newTag = originalTag.copy();
-            newTag.setValue( String.valueOf( singleValue ) );
-            newTag.setDescription( getDescriptionFromGenerator( tagConfig, annotation, singleValue ) );
-            newTag.setHref( getHref( tagConfig, annotation, singleValue ) );
-            result.add( newTag );
+            newTag.setValue(String.valueOf(singleValue));
+            newTag.setDescription(getDescriptionFromGenerator(tagConfig, annotation, singleValue));
+            newTag.setHref(getHref(tagConfig, annotation, singleValue));
+            result.add(newTag);
         }
         return result;
     }
 
     @Override
     public void scenarioFinished() {
-        AssertionUtil.assertTrue( scenarioStartedNanos > 0, "Scenario has no start time" );
+        AssertionUtil.assertTrue(scenarioStartedNanos > 0, "Scenario has no start time");
         long durationInNanos = System.nanoTime() - scenarioStartedNanos;
-        scenarioCaseModel.setDurationInNanos( durationInNanos );
-        scenarioModel.addDurationInNanos( durationInNanos );
-        reportModel.addScenarioModelOrMergeWithExistingOne( scenarioModel );
+        scenarioCaseModel.setDurationInNanos(durationInNanos);
+        scenarioModel.addDurationInNanos(durationInNanos);
+        reportModel.addScenarioModelOrMergeWithExistingOne(scenarioModel);
     }
 
     @Override
-    public void attachmentAdded( Attachment attachment ) {
-        currentStep.addAttachment( attachment );
+    public void attachmentAdded(Attachment attachment) {
+        currentStep.addAttachment(attachment);
     }
 
     @Override
-    public void extendedDescriptionUpdated( String extendedDescription ) {
-        currentStep.setExtendedDescription( extendedDescription );
+    public void extendedDescriptionUpdated(String extendedDescription) {
+        currentStep.setExtendedDescription(extendedDescription);
     }
 
     @Override
-    public void stepNameUpdated( String newStepName ) {
+    public void stepNameUpdated(String newStepName) {
         List<Word> newWords = Lists.newArrayList();
 
         for (Word word : currentStep.getWords()) {
@@ -644,34 +654,34 @@ public class ScenarioModelBuilder implements ScenarioListener {
         newWords.add(new Word(newStepName));
 
         currentStep.setWords(newWords);
-        currentStep.setName( newStepName );
+        currentStep.setName(newStepName);
     }
 
     @Override
-    public void sectionAdded( String sectionTitle ) {
+    public void sectionAdded(String sectionTitle) {
         StepModel stepModel = new StepModel();
-        stepModel.setName( sectionTitle );
-        stepModel.addWords( new Word( sectionTitle ) );
-        stepModel.setIsSectionTitle( true );
-        getCurrentScenarioCase().addStep( stepModel );
+        stepModel.setName(sectionTitle);
+        stepModel.addWords(new Word(sectionTitle));
+        stepModel.setIsSectionTitle(true);
+        getCurrentScenarioCase().addStep(stepModel);
     }
 
     @Override
-    public void tagAdded( Class<? extends Annotation> annotationClass, String... values ) {
-        TagConfiguration tagConfig = toTagConfiguration( annotationClass );
-        if( tagConfig == null ) {
+    public void tagAdded(Class<? extends Annotation> annotationClass, String... values) {
+        TagConfiguration tagConfig = toTagConfiguration(annotationClass);
+        if (tagConfig == null) {
             return;
         }
 
-        List<Tag> tags = toTags( tagConfig, Optional.empty() );
-        if( tags.isEmpty() ) {
+        List<Tag> tags = toTags(tagConfig, Optional.empty());
+        if (tags.isEmpty()) {
             return;
         }
 
-        if( values.length > 0 ) {
-            addTags( getExplodedTags( Iterables.getOnlyElement( tags ), values, null, tagConfig ) );
+        if (values.length > 0) {
+            addTags(getExplodedTags(Iterables.getOnlyElement(tags), values, null, tagConfig));
         } else {
-            addTags( tags );
+            addTags(tags);
         }
     }
 
