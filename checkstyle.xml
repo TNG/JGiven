@@ -30,6 +30,7 @@
                   default="checkstyle-suppressions.xml"/>
         <property name="optional" value="true"/>
     </module>
+    <module name="SuppressWarningsFilter"/>
 
     <!-- Checks for whitespace                               -->
     <!-- See http://checkstyle.org/config_whitespace.html -->
@@ -52,6 +53,7 @@
             <property name="message"
                       value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>
         </module>
+        <module name="SuppressWarningsHolder"/>
         <module name="AvoidEscapedUnicodeCharacters">
             <property name="allowEscapesForControlCharacters" value="true"/>
             <property name="allowByTailComment" value="true"/>
