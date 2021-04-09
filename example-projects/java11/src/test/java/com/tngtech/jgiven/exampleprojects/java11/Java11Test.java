@@ -20,7 +20,8 @@ public class Java11Test extends SimpleScenarioTest<Java11Test.Steps> {
         }
 
         public void some_action() {
-            Java11.test("f");
+
+            //Java11.test("f");
         }
 
         public void some_outcome() {
