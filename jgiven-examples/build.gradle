@@ -5,7 +5,7 @@ dependencies {
     testCompile project(':jgiven-spring-junit4')
     testCompile project(':jgiven-tests')
     testCompile project(':jgiven-html5-report')
-    testCompile "org.seleniumhq.selenium:htmlunit-driver:2.48.0"
+    testCompile "org.seleniumhq.selenium:htmlunit-driver:2.49.0"
     testCompile "org.springframework:spring-context:$springVersion"
     testCompile "org.springframework:spring-test:$springVersion"
     testCompile "pl.pragmatists:JUnitParams:$junitParamsVersion"
