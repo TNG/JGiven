@@ -1,22 +1,22 @@
 description = "Module for using Spring dependency injection together with JGiven and JUnit 5"
 
 dependencies {
-    compile project(':jgiven-spring')
-    compile project(':jgiven-junit5')
+    implementation project(':jgiven-spring') //TODO: might be api
+    implementation project(':jgiven-junit5') //TODO: might be api
     compileOnly "org.springframework:spring-context:$springVersion"
     compileOnly "org.springframework:spring-test:$springVersion"
     compileOnly "org.junit.jupiter:junit-jupiter-api:$junit5Version"
-    testCompile project(':jgiven-html5-report')
-    testCompile "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
-    testCompile "org.junit.platform:junit-platform-runner:$junit5PlatformRunnerVersion"
-    testCompile "org.junit.jupiter:junit-jupiter-params:$junit5Version"
-    testCompile "org.springframework:spring-tx:$springVersion"
-    testCompile "org.springframework:spring-context:$springVersion"
-    testCompile "org.springframework:spring-test:$springVersion"
-    testCompile "org.springframework:spring-jdbc:$springVersion"
-    testCompile "org.hsqldb:hsqldb:$hsqldbVersion"
-    testCompile "org.aspectj:aspectjrt:1.9.6"
-    testCompile "org.aspectj:aspectjweaver:1.9.6"
+    testImplementation project(':jgiven-html5-report')
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
+    testImplementation "org.junit.platform:junit-platform-runner:$junit5PlatformRunnerVersion"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:$junit5Version"
+    testImplementation "org.springframework:spring-tx:$springVersion"
+    testImplementation "org.springframework:spring-context:$springVersion"
+    testImplementation "org.springframework:spring-test:$springVersion"
+    testImplementation "org.springframework:spring-jdbc:$springVersion"
+    testImplementation "org.hsqldb:hsqldb:$hsqldbVersion"
+    testImplementation "org.aspectj:aspectjrt:1.9.6"
+    testImplementation "org.aspectj:aspectjweaver:1.9.6"
 }
 
 test {
