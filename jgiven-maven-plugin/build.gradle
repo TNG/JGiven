@@ -1,10 +1,11 @@
 description = 'JGiven Maven Mojo'
 
+
 dependencies {
-    compile project(':jgiven-core')
-    compile project(':jgiven-html5-report')
-    compile "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.6.1"
-    compile "org.apache.maven.plugin-tools:maven-plugin-annotations:3.6.1"
+    implementation project(':jgiven-core')
+    implementation project(':jgiven-html5-report')
+    implementation "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.6.1"
+    implementation "org.apache.maven.plugin-tools:maven-plugin-annotations:3.6.1"
 }
 
 task copyClasses(type: Copy, dependsOn: compileJava) {
@@ -63,6 +64,6 @@ class CrossPlatformExec extends Exec {
         } else {
             executable = command
         }
-        args(commandArgs.toList());
+        args(commandArgs.toList())
     }
 }

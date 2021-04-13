@@ -1,8 +1,8 @@
 
 dependencies {
-    compile project(':jgiven-core')
-    compile project(':jgiven-junit')
-    compile project(':jgiven-html5-report')
+    implementation project(':jgiven-core')
+    implementation project(':jgiven-junit')
+    implementation project(':jgiven-html5-report')
 
     testImplementation "junit:junit:$junitVersion"
 }

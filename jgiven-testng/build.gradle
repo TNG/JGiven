@@ -1,10 +1,14 @@
+plugins {
+    id 'java-library'
+}
 description = "Module to write JGiven tests with TestNG"
 
+
 dependencies {
-    compile project(':jgiven-core')
-    compile project(':jgiven-html5-report')
-    compile "org.testng:testng:$testngVersion"
-    testCompile 'org.testng.testng-remote:testng-remote-dist:1.4.0'
+    implementation project(':jgiven-core')  //TODO: might be api
+    implementation project(':jgiven-html5-report') //TODO: might be api
+    api "org.testng:testng:$testngVersion"
+    testImplementation 'org.testng.testng-remote:testng-remote-dist:1.4.0'
 }
 
 test.useTestNG() {
