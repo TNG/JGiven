@@ -18,6 +18,7 @@ class JGivenPluginShould extends Specification {
         buildFile = new File(testProjectDir,'build.gradle')
     }
 
+    //TODO: link dependencies to dependency file somehow
     def "test is cacheable"() {
         given:
         buildFile << """

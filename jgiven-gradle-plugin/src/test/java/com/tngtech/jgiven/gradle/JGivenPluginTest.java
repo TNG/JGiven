@@ -186,7 +186,7 @@ public class JGivenPluginTest extends
             buildFile.write("plugins { id 'java'; id 'com.tngtech.jgiven.gradle-plugin' }\n");
             buildFile.write("repositories { mavenCentral() }\n");
             buildFile.write("dependencies { testImplementation 'com.tngtech.jgiven:jgiven-junit:1.0.0' }\n");
-            buildFile.write("dependencies { testImplementation 'junit:junit:4.13' }\n");
+            buildFile.write("dependencies { testImplementation 'junit:junit:4.13' }\n"); //somehow link this to dependency files
             return self();
         }
 
