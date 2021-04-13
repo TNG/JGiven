@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.gradle;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharSink;
 import com.google.common.io.FileWriteMode;
@@ -11,33 +13,39 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.annotation.ScenarioState;
-import com.tngtech.jgiven.junit.ScenarioTest;
-import org.gradle.testkit.runner.BuildResult;
-import org.gradle.testkit.runner.BuildTask;
-import org.gradle.testkit.runner.GradleRunner;
-import org.gradle.testkit.runner.TaskOutcome;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
+import com.tngtech.jgiven.junit5.JGivenExtension;
+import com.tngtech.jgiven.junit5.ScenarioTest;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.gradle.testkit.runner.BuildResult;
+import org.gradle.testkit.runner.BuildTask;
+import org.gradle.testkit.runner.GradleRunner;
+import org.gradle.testkit.runner.TaskOutcome;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 
-import static org.assertj.core.api.Assertions.assertThat;
+@ExtendWith(JGivenExtension.class)
+public class JGivenPluginTest extends
+    ScenarioTest<JGivenPluginTest.Given, JGivenPluginTest.When, JGivenPluginTest.Then> {
 
-public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGivenPluginTest.When, JGivenPluginTest.Then> {
-    @Rule
     @ScenarioState
-    public final TemporaryFolder testProjectDir = new TemporaryFolder();
+    public final FileWrapper testProjectDir = new FileWrapper();
+
+    @BeforeEach
+    public void createTempFolder(@TempDir File testProjectDir) {
+        this.testProjectDir.set(testProjectDir);
+    }
 
     @Test
     public void plugin_does_not_force_creation_of_buildDir_during_configuration() throws Exception {
         given().the_plugin_is_applied();
 
-        when().a_build().with().the_task( "tasks" ).is_successful();
+        when().a_build().with().the_task("tasks").is_successful();
 
         then().the_build_directory_has_not_been_created();
     }
@@ -46,7 +54,7 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
     public void plugin_can_build_with_an_empty_project() throws Exception {
         given().the_plugin_is_applied();
 
-        when().a_build().with().the_task( "build" ).is_successful();
+        when().a_build().with().the_task("build").is_successful();
 
         then().all_tasks_have_been_executed();
     }
@@ -54,14 +62,14 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
     @Test
     public void jgiven_test_results_are_written_to_the_buildDir() throws IOException {
         given()
-                .the_plugin_is_applied()
-                .and().there_are_JGiven_tests();
+            .the_plugin_is_applied()
+            .and().there_are_JGiven_tests();
 
         when()
-                .a_build().with().the_task( "test" ).is_successful();
+            .a_build().with().the_task("test").is_successful();
 
         then()
-                .the_JGiven_results_are_written_to( "build/jgiven-results/test" );
+            .the_JGiven_results_are_written_to("build/jgiven-results/test");
 
     }
 
@@ -69,218 +77,230 @@ public class JGivenPluginTest extends ScenarioTest<JGivenPluginTest.Given, JGive
     public void jgiven_test_results_can_be_written_to_custom_directory() throws IOException {
         String customResultsDir = "build/jgiven-jsons";
         given()
-                .the_plugin_is_applied()
-                .and().the_results_dir_is_set_to( customResultsDir )
-                .and().there_are_JGiven_tests();
+            .the_plugin_is_applied()
+            .and().the_results_dir_is_set_to(customResultsDir)
+            .and().there_are_JGiven_tests();
 
         when()
-                .a_build().with().the_task( "test" ).is_successful();
+            .a_build().with().the_task("test").is_successful();
 
         then()
-                .the_JGiven_results_are_written_to( customResultsDir );
+            .the_JGiven_results_are_written_to(customResultsDir);
 
     }
 
     @Test
     public void jgiven_html_report_is_generated() throws IOException {
         given()
-                .the_plugin_is_applied()
-                .and().there_are_JGiven_tests();
+            .the_plugin_is_applied()
+            .and().there_are_JGiven_tests();
 
         when()
-                .a_build().with()
-                .the_task( "test" ).and()
-                .the_task( "jgivenTestReport" ).is_successful();
+            .a_build().with()
+            .the_task("test").and()
+            .the_task("jgivenTestReport").is_successful();
 
         then()
-                .the_JGiven_html_reports_are_written_to( "build/reports/jgiven/test/html" );
+            .the_JGiven_html_reports_are_written_to("build/reports/jgiven/test/html");
 
     }
 
     @Test
     public void configure_reports() throws IOException {
         given()
-                .the_plugin_is_applied()
-                .and().there_are_JGiven_tests()
-                .and().the_jgiven_report_is_configured_by( "reports {\n"
+            .the_plugin_is_applied()
+            .and().there_are_JGiven_tests()
+            .and().the_jgiven_report_is_configured_by("reports {\n"
                 + "  html {\n"
                 + "    enabled = false\n"
                 + "  }\n"
                 + "  text {\n"
                 + "    enabled = true\n"
                 + "  }\n"
-                + "}\n" )
+                + "}\n")
         ;
 
         when()
-                .a_build().with()
-                .the_task( "test" ).and()
-                .the_task( "jgivenTestReport" ).is_successful();
+            .a_build().with()
+            .the_task("test").and()
+            .the_task("jgivenTestReport").is_successful();
 
         then()
-                .the_JGiven_reports_are_not_written_to( "build/reports/jgiven/test/html" )
-                .and().the_JGiven_text_reports_are_written_to( "build/reports/jgiven/test/text" );
+            .the_JGiven_reports_are_not_written_to("build/reports/jgiven/test/html")
+            .and().the_JGiven_text_reports_are_written_to("build/reports/jgiven/test/text");
 
     }
 
     @Test
     public void configure_html_report() throws IOException {
         given()
-                .the_plugin_is_applied()
-                .and().there_are_JGiven_tests()
-                .and().the_jgiven_report_is_configured_by( "reports {\n"
+            .the_plugin_is_applied()
+            .and().there_are_JGiven_tests()
+            .and().the_jgiven_report_is_configured_by("reports {\n"
                 + "  html {\n"
                 + "    enabled = true\n"
                 + "    title = 'JGiven Gradle Plugin'\n"
                 + "  }\n"
-                + "}\n" )
+                + "}\n")
         ;
 
         when()
-                .a_build().with()
-                .the_task( "test" ).and()
-                .the_task( "jgivenTestReport" ).is_successful();
+            .a_build().with()
+            .the_task("test").and()
+            .the_task("jgivenTestReport").is_successful();
 
         then()
-                .the_JGiven_html_reports_are_written_to( "build/reports/jgiven/test/html" );
+            .the_JGiven_html_reports_are_written_to("build/reports/jgiven/test/html");
 
     }
 
     @Test
-    public void no_jgiven_results_no_report() throws IOException {
+    void no_jgiven_results_no_report() throws IOException {
 
         given()
-                .the_plugin_is_applied()
-                .and().there_are_JGiven_tests();
+            .the_plugin_is_applied()
+            .and().there_are_JGiven_tests();
 
         when()
-                .a_build().with()
-                .the_task( "jgivenTestReport" ).is_successful();
+            .a_build().with()
+            .the_task("jgivenTestReport").is_successful();
 
         then()
-                .the_JGiven_reports_are_not_written_to( "build/reports/jgiven/test/html" );
+            .the_JGiven_reports_are_not_written_to("build/reports/jgiven/test/html");
 
     }
 
-    public static class Given extends Stage<Given> {
+    static class Given extends Stage<Given> {
         @ExpectedScenarioState
-        private TemporaryFolder testProjectDir;
+        private FileWrapper testProjectDir;
 
         CharSink buildFile;
 
         @BeforeStage
-        private void setup() throws IOException {
-            File actualBuildFile = testProjectDir.newFile( "build.gradle" );
+        private void setup() {
+            File actualBuildFile = new File(testProjectDir.file, "build.gradle");
             buildFile = Files.asCharSink(actualBuildFile, Charsets.UTF_8, FileWriteMode.APPEND);
         }
 
-        public Given the_plugin_is_applied() throws IOException {
+        Given the_plugin_is_applied() throws IOException {
             buildFile.write("plugins { id 'java'; id 'com.tngtech.jgiven.gradle-plugin' }\n");
             buildFile.write("repositories { mavenCentral() }\n");
-            buildFile.write("dependencies { testCompile 'com.tngtech.jgiven:jgiven-junit:0.12.1' }\n");
-            buildFile.write("dependencies { testCompile 'junit:junit:4.12' }\n");
+            buildFile.write("dependencies { testImplementation 'com.tngtech.jgiven:jgiven-junit:1.0.0' }\n");
+            buildFile.write("dependencies { testImplementation 'junit:junit:4.13' }\n");
             return self();
         }
 
-        public Given there_are_JGiven_tests() throws IOException {
-            testProjectDir.newFolder( "src", "test", "java" );
-            File scenario = testProjectDir.newFile( "src/test/java/SimpleScenario.java" );
+        Given there_are_JGiven_tests() throws IOException {
+            new File(testProjectDir.get(), "src/test/java").mkdirs();
+            File scenario = new File(testProjectDir.get(), "src/test/java/SimpleScenario.java");
 
-            Files.write( Resources.toByteArray( Resources.getResource( "SimpleScenario.java" ) ), scenario );
+            Files.write(Resources.toByteArray(Resources.getResource("SimpleScenario.java")), scenario);
 
             return self();
         }
 
-        public Given the_results_dir_is_set_to( String dir ) throws IOException {
-            buildFile.write( "test { jgiven { resultsDir = file('" + dir + "') } }\n");
+        Given the_results_dir_is_set_to(String dir) throws IOException {
+            buildFile.write("test { jgiven { resultsDir = file('" + dir + "') } }\n");
             return self();
         }
 
-        public Given the_jgiven_report_is_configured_by( String configuration ) throws IOException {
-            buildFile.write( "jgivenTestReport { " + configuration + " } ");
+        Given the_jgiven_report_is_configured_by(String configuration) throws IOException {
+            buildFile.write("jgivenTestReport { " + configuration + " } ");
             return self();
         }
     }
 
-    public static class When extends Stage<When> {
+    static class When extends Stage<When> {
         @ExpectedScenarioState
-        private TemporaryFolder testProjectDir;
+        private FileWrapper testProjectDir;
         @ProvidedScenarioState
         private BuildResult result;
         @ProvidedScenarioState
         List<String> tasks = new ArrayList<>();
 
-        public When the_task( @Quoted String task ) {
-            tasks.add( task );
+        When the_task(@Quoted String task) {
+            tasks.add(task);
             return self();
         }
 
-        public When a_build() {
+        When a_build() {
             return self();
         }
 
-        public When is_successful() {
+        When is_successful() {
             result = GradleRunner.create()
-                    .withProjectDir( testProjectDir.getRoot() )
-                    .withArguments( tasks )
-                    .withPluginClasspath()
-                    .build();
+                .withProjectDir(testProjectDir.get())
+                .withArguments(tasks)
+                .withPluginClasspath()
+                .build();
             return self();
         }
     }
 
-    public static class Then extends Stage<Then> {
+    static class Then extends Stage<Then> {
         @ExpectedScenarioState
         private BuildResult result;
         @ExpectedScenarioState
-        private TemporaryFolder testProjectDir;
+        private FileWrapper testProjectDir;
         @ScenarioState
         List<String> tasks;
 
-        public Then the_build_directory_has_not_been_created() {
-            assertThat( new File( testProjectDir.getRoot(), "build" ) ).doesNotExist();
+        Then the_build_directory_has_not_been_created() {
+            assertThat(new File(testProjectDir.get(), "build")).doesNotExist();
             return self();
         }
 
-        public Then all_tasks_have_been_executed() {
-            for( String task : tasks ) {
+        Then all_tasks_have_been_executed() {
+            for (String task : tasks) {
                 TaskOutcome outcome = Optional.ofNullable(result.task(":" + task))
-                        .map(BuildTask::getOutcome)
-                        .orElse(TaskOutcome.FAILED);
-                assertThat(outcome).isEqualTo( TaskOutcome.SUCCESS );
+                    .map(BuildTask::getOutcome)
+                    .orElse(TaskOutcome.FAILED);
+                assertThat(outcome).isEqualTo(TaskOutcome.SUCCESS);
             }
             return self();
         }
 
-        public Then the_JGiven_results_are_written_to( String destination ) {
-            assertDirectoryContainsFilesOfType( destination, "json" );
+        Then the_JGiven_results_are_written_to(String destination) {
+            assertDirectoryContainsFilesOfType(destination, "json");
             return self();
         }
 
-        public Then the_JGiven_html_reports_are_written_to( String reportDirectory ) {
-            assertDirectoryContainsFilesOfType( reportDirectory, "html" );
+        Then the_JGiven_html_reports_are_written_to(String reportDirectory) {
+            assertDirectoryContainsFilesOfType(reportDirectory, "html");
             return self();
         }
 
-        private void assertDirectoryContainsFilesOfType( String destination, final String extension ) {
-            File destinationDir = new File( testProjectDir.getRoot(), destination );
-            assertThat( destinationDir ).isDirectory();
-            assertThat( destinationDir
-                    .listFiles( (dir,name) -> name.endsWith("." + extension)))
-                    .isNotEmpty();
+        private void assertDirectoryContainsFilesOfType(String destination, final String extension) {
+            File destinationDir = new File(testProjectDir.get(), destination);
+            assertThat(destinationDir).isDirectory();
+            assertThat(destinationDir
+                .listFiles((dir, name) -> name.endsWith("." + extension)))
+                .isNotEmpty();
         }
 
-        public Then the_JGiven_reports_are_not_written_to( String destination ) {
-            File destinationDir = new File( testProjectDir.getRoot(), destination );
-            if( destinationDir.exists() ) {
-                assertThat( destinationDir.listFiles() ).isEmpty();
+        Then the_JGiven_reports_are_not_written_to(String destination) {
+            File destinationDir = new File(testProjectDir.get(), destination);
+            if (destinationDir.exists()) {
+                assertThat(destinationDir.listFiles()).isEmpty();
             }
             return self();
         }
 
-        public Then the_JGiven_text_reports_are_written_to( String destination ) {
-            assertDirectoryContainsFilesOfType( destination, "feature" );
+        Then the_JGiven_text_reports_are_written_to(String destination) {
+            assertDirectoryContainsFilesOfType(destination, "feature");
             return self();
+        }
+    }
+
+    private static class FileWrapper {
+        private File file;
+
+        public File get() {
+            return file;
+        }
+
+        public void set(File file) {
+            this.file = file;
         }
     }
 }

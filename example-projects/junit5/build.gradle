@@ -11,7 +11,7 @@ buildscript {
     }
 }
 
-apply plugin: 'com.tngtech.jgiven.gradle-plugin'
+apply plugin: 'com.tngtech.jgiven.gradle-plugin:1.0.0'
 apply plugin: 'java'
 
 compileJava {
