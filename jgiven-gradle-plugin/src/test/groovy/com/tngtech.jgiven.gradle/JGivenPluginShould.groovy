@@ -40,7 +40,7 @@ class JGivenPluginShould extends Specification {
         when:
         def result = GradleRunner.create()
                 .withProjectDir(testProjectDir)
-                .withArguments("--build-cache", "test", "jgivenTestReport", "-S", "--debug")
+                .withArguments("--build-cache", "test", "jgivenTestReport", "-S", "--info")
                 .withPluginClasspath()
                 .build()
 
@@ -52,7 +52,7 @@ class JGivenPluginShould extends Specification {
         new File(testProjectDir, 'build').deleteDir()
         result = GradleRunner.create()
                 .withProjectDir(testProjectDir)
-                .withArguments("--build-cache", "test", "jgivenTestReport", "-S", "--debug")
+                .withArguments("--build-cache", "test", "jgivenTestReport", "-S", "--info")
                 .withPluginClasspath()
                 .build()
 
