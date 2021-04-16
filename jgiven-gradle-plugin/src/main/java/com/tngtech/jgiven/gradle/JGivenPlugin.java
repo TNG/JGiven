@@ -3,6 +3,9 @@ package com.tngtech.jgiven.gradle;
 import com.tngtech.jgiven.gradle.internal.JGivenHtmlReportImpl;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.impl.util.WordUtil;
+import java.io.File;
+import java.util.Objects;
+import java.util.concurrent.Callable;
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -13,9 +16,6 @@ import org.gradle.api.plugins.ReportingBasePlugin;
 import org.gradle.api.reporting.Report;
 import org.gradle.api.reporting.ReportingExtension;
 import org.gradle.api.tasks.testing.Test;
-
-import java.io.File;
-import java.util.concurrent.Callable;
 
 public class JGivenPlugin implements Plugin<Project> {
     @Override
@@ -36,7 +36,7 @@ public class JGivenPlugin implements Plugin<Project> {
         final JGivenTaskExtension extension = test.getExtensions().create( "jgiven", JGivenTaskExtension.class );
         final Project project = test.getProject();
         ( (IConventionAware) extension ).getConventionMapping().map( "resultsDir",
-                (Callable<File>) () -> project.file( project.getBuildDir() + "/jgiven-results/" + testName ) );
+                (Callable<File>) () -> project.file( project.getBuildDir() + "/jgiven-results/" + testName ));
 
         File resultsDir = extension.getResultsDir();
         if( resultsDir != null ) {
@@ -46,6 +46,7 @@ public class JGivenPlugin implements Plugin<Project> {
         // Java lambda classes are created at runtime with a non-deterministic classname.
         // Therefore, the class name does not identify the implementation of the lambda and changes between different Gradle runs.
         // https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:how_does_it_work
+        //noinspection Convert2Lambda
         test.prependParallelSafeAction( new Action<Task>() {
             @Override
             public void execute( Task task ){
@@ -72,9 +73,10 @@ public class JGivenPlugin implements Plugin<Project> {
 
     private void configureDefaultReportTask( final Test test, JGivenReportTask reportTask,
             final ReportingExtension reportingExtension ){
+        reportTask.mustRunAfter(test);
         ConventionMapping mapping = ( (IConventionAware) reportTask ).getConventionMapping();
         mapping.map( "results", (Callable<File>) () -> test.getExtensions().getByType( JGivenTaskExtension.class ).getResultsDir() );
-        mapping.getConventionValue( reportTask.getReports(), "reports", false )
+        Objects.requireNonNull(mapping.getConventionValue(reportTask.getReports(), "reports", false))
                 .all( (Action<Report>) report -> {
                     ConventionMapping reportMapping = ( (IConventionAware) report ).getConventionMapping();
                     reportMapping.map( "destination",
