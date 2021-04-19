@@ -13,6 +13,7 @@ import org.gradle.api.Task;
 import org.gradle.api.internal.ConventionMapping;
 import org.gradle.api.internal.IConventionAware;
 import org.gradle.api.plugins.ReportingBasePlugin;
+import org.gradle.api.provider.Provider;
 import org.gradle.api.reporting.Report;
 import org.gradle.api.reporting.ReportingExtension;
 import org.gradle.api.tasks.testing.Test;
@@ -36,9 +37,9 @@ public class JGivenPlugin implements Plugin<Project> {
         final JGivenTaskExtension extension = test.getExtensions().create( "jgiven", JGivenTaskExtension.class );
         final Project project = test.getProject();
         ( (IConventionAware) extension ).getConventionMapping().map( "resultsDir",
-                (Callable<File>) () -> project.file( project.getBuildDir() + "/jgiven-results/" + testName ));
+                (Callable<Provider<File>>) () ->  project.provider(() ->project.file( project.getBuildDir() + "/jgiven-results/" + testName )));
 
-        File resultsDir = extension.getResultsDir();
+        Provider<File> resultsDir = extension.getResultsDir();
         if( resultsDir != null ) {
             test.getOutputs().dir( resultsDir ).withPropertyName( "jgiven.resultsDir" );
         }
@@ -50,7 +51,7 @@ public class JGivenPlugin implements Plugin<Project> {
         test.prependParallelSafeAction( new Action<Task>() {
             @Override
             public void execute( Task task ){
-                ((Test) task).systemProperty( Config.JGIVEN_REPORT_DIR, extension.getResultsDir().getAbsolutePath() );
+                ((Test) task).systemProperty( Config.JGIVEN_REPORT_DIR, extension.getResultsDir().get().getAbsolutePath() );
             }
         } );
     }
@@ -73,9 +74,8 @@ public class JGivenPlugin implements Plugin<Project> {
 
     private void configureDefaultReportTask( final Test test, JGivenReportTask reportTask,
             final ReportingExtension reportingExtension ){
-        reportTask.mustRunAfter(test);
         ConventionMapping mapping = ( (IConventionAware) reportTask ).getConventionMapping();
-        mapping.map( "results", (Callable<File>) () -> test.getExtensions().getByType( JGivenTaskExtension.class ).getResultsDir() );
+        mapping.map( "results", (Callable<Provider<File>>) () -> test.getExtensions().getByType( JGivenTaskExtension.class ).getResultsDir() );
         Objects.requireNonNull(mapping.getConventionValue(reportTask.getReports(), "reports", false))
                 .all( (Action<Report>) report -> {
                     ConventionMapping reportMapping = ( (IConventionAware) report ).getConventionMapping();

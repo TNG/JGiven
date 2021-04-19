@@ -59,6 +59,9 @@ class JGivenPluginShould extends Specification {
 
 
         then:
+        println('\n\n###BEGIN TEST OUTPUT')
+        println(result.output)
+        println('###END TEST OUTPUT\n')
         result.task(":test").outcome == FROM_CACHE
         result.task(":jgivenTestReport").outcome == FROM_CACHE
 

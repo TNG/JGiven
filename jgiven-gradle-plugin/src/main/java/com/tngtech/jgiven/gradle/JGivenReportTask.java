@@ -7,6 +7,7 @@ import java.io.File;
 import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.provider.Provider;
 import org.gradle.api.reporting.Reporting;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.InputDirectory;
@@ -21,7 +22,7 @@ import org.gradle.util.ConfigureUtil;
 @CacheableTask
 public class JGivenReportTask extends DefaultTask implements Reporting<JGivenReportsContainer> {
     private final JGivenReportsContainer reports;
-    private File results;
+    private Provider<File> results;
 
     public JGivenReportTask() {
         reports = getInstantiator().newInstance(JGivenReportsContainerImpl.class, this);
@@ -35,11 +36,11 @@ public class JGivenReportTask extends DefaultTask implements Reporting<JGivenRep
     @InputDirectory
     @SkipWhenEmpty
     @PathSensitive(PathSensitivity.NONE)
-    public File getResults() {
+    public Provider<File> getResults() {
         return results;
     }
 
-    public void setResults(File results) {
+    public void setResults(Provider<File> results) {
         this.results = results;
     }
 
@@ -47,7 +48,7 @@ public class JGivenReportTask extends DefaultTask implements Reporting<JGivenRep
     public void generate() throws Exception {
         for (JGivenReport report : getReports().getEnabled()) {
             AbstractReportGenerator generator = report.createGenerator();
-            generator.config.setSourceDir(getResults());
+            generator.config.setSourceDir(getResults().get());
             generator.loadReportModel();
             generator.generate();
         }
