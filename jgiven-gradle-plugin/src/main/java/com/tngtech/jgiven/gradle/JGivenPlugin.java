@@ -33,11 +33,11 @@ public class JGivenPlugin implements Plugin<Project> {
     }
 
     private void applyTo( Test test ){
-        final String testName = test.getName();
         final JGivenTaskExtension extension = test.getExtensions().create( "jgiven", JGivenTaskExtension.class );
         final Project project = test.getProject();
+        final Provider<String> testName = project.provider(() ->test.getName());
         ( (IConventionAware) extension ).getConventionMapping().map( "resultsDir",
-                (Callable<Provider<File>>) () ->  project.provider(() ->project.file( project.getBuildDir() + "/jgiven-results/" + testName )));
+                (Callable<Provider<File>>) () ->  testName.map(name -> project.file( project.getBuildDir() + "/jgiven-results/" + name)));
 
         Provider<File> resultsDir = extension.getResultsDir();
         if( resultsDir != null ) {
