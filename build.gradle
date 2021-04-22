@@ -282,8 +282,8 @@ configure(subprojects) {
     }
 
     checkstyle {
-        toolVersion '8.19'
-        configFile = file("${rootProject.projectDir}/develop/checkstyle-rules.xml")
+        toolVersion = 8.41
+        configFile = file("${rootProject.projectDir}/checkstyle.xml")
         showViolations = false
         ignoreFailures = true
     }
@@ -293,7 +293,7 @@ configure(subprojects) {
     signing {
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
         required {
-            isReleaseVersion && gradle.taskGraph.getAllTasks().any{it instanceof PublishToMavenRepository}
+            isReleaseVersion && gradle.taskGraph.getAllTasks().any { it instanceof PublishToMavenRepository }
         }
         def signingKey = findProperty("signingKey")
         def signingPassword = findProperty("signingPassword")

@@ -8,7 +8,7 @@ public enum InvocationMode {
     PENDING;
 
     public StepStatus toStepStatus() {
-        switch( this ) {
+        switch (this) {
             case NORMAL:
                 return StepStatus.PASSED;
             case FAILED:
@@ -18,7 +18,7 @@ public enum InvocationMode {
             case SKIPPED:
                 return StepStatus.SKIPPED;
             default:
-                throw new IllegalArgumentException( this.toString() );
+                throw new IllegalArgumentException(this.toString());
         }
     }
 }
