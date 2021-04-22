@@ -9,18 +9,13 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'io.spring.dependency-management'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-version = '1.0'
-
 wrapper {
-    gradleVersion = '6.0.1'
+    gradleVersion = '7.0.0'
     distributionType = Wrapper.DistributionType.ALL
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 ext {

@@ -1,7 +1,7 @@
 description = "Module for using Spring dependency injection together with JGiven"
 
 dependencies {
-    implementation project(':jgiven-core') //TODO: might be api
+    implementation project(':jgiven-core')
     compileOnly "org.springframework:spring-context:$springVersion"
     compileOnly "org.springframework:spring-test:$springVersion"
     testImplementation "org.springframework:spring-tx:$springVersion"
