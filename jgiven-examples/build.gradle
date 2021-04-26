@@ -10,6 +10,7 @@ dependencies {
     testImplementation "org.springframework:spring-context:$springVersion"
     testImplementation "org.springframework:spring-test:$springVersion"
     testImplementation "pl.pragmatists:JUnitParams:$junitParamsVersion"
+    testImplementation "org.testng:testng:$testngVersion"
 }
 
 test.finalizedBy jgivenHtml5Report
