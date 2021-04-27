@@ -6,6 +6,7 @@ import com.tngtech.jgiven.impl.util.WordUtil;
 import java.io.File;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.stream.Stream;
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -38,6 +39,7 @@ public class JGivenPlugin implements Plugin<Project> {
     private void applyTo(Test test) {
         final JGivenTaskExtension extension = test.getExtensions().create("jgiven", JGivenTaskExtension.class);
         final Project project = test.getProject();
+        test.getJvmArgumentProviders().stream().flatMap(it -> Stream.of(it.asArguments().iterator(),false)).forEach(System.out::println);
         final Provider<String> testName = project.provider(() -> test.getName());
         ((IConventionAware) extension).getConventionMapping().map("resultsDir",
             (Callable<Provider<File>>) () -> testName
