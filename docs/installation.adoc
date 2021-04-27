@@ -30,7 +30,7 @@ JGiven requires at least JUnit 4.9, while the recommended version is 4.12.
 [source,gradle,subs="verbatim,attributes"]
 ----
 dependencies {
-   testCompile 'com.tngtech.jgiven:jgiven-junit:{version}'
+   testImplementation 'com.tngtech.jgiven:jgiven-junit:{version}'
 }
 ----
 
@@ -53,7 +53,7 @@ thus you also must have a dependency to TestNG itself.
 [source,gradle,subs="verbatim,attributes"]
 ----
 dependencies {
-   testCompile 'com.tngtech.jgiven:jgiven-testng:{version}'
+   testImplementation 'com.tngtech.jgiven:jgiven-testng:{version}'
 }
 ----
 
