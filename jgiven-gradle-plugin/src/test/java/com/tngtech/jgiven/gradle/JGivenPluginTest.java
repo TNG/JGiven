@@ -186,7 +186,7 @@ public class JGivenPluginTest extends
             buildFile.write("plugins { id 'java'; id 'com.tngtech.jgiven.gradle-plugin' }\n");
             buildFile.write("repositories { mavenCentral() }\n");
             buildFile.write("dependencies { testImplementation 'com.tngtech.jgiven:jgiven-junit:1.0.0' }\n");
-            buildFile.write("dependencies { testImplementation 'junit:junit:4.13' }\n"); //somehow link this to dependency files
+            buildFile.write("dependencies { testImplementation 'junit:junit:4.13' }\n");
             return self();
         }
 
@@ -200,7 +200,7 @@ public class JGivenPluginTest extends
         }
 
         Given the_results_dir_is_set_to(String dir) throws IOException {
-            buildFile.write("test { jgiven { resultsDir = file('" + dir + "') } }\n");
+            buildFile.write("test { jgiven { resultsDir = provider(() ->file('" + dir + "')) } }\n");
             return self();
         }
 
