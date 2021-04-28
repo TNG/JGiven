@@ -65,4 +65,3 @@ if ((android || release) && hasAndroidSourcePath) {
 if (android && !release && hasAndroidSourcePath) {
     include ':jgiven-android-test'
 }
-
