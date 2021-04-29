@@ -3,6 +3,12 @@
 
 ##Fixed Issues
 * Refurbished the jgiven-scala example project [#619](https://github.com/TNG/JGiven/pull/619) (thanks to seblm)
+
+## Backwards Incompatible Changes
+* JGiven-TestNG now expects you to provide a version of TestNG on the runtime classpath
+* JGiven-Spring does not export its dependency on JGiven-Core anymore, because JGiven-Spring should be used with
+  of the test packages JGiven-JUnit, JGiven-Spock, JGiven-JUnit5, JGiven-TestNG, where that dependency is exported
+
 # v1.0.0
 
 This is the first major version update of JGiven. It does introduce new features, as well as backwards-incompatible changes,
