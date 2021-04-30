@@ -38,7 +38,8 @@ public class JGivenPlugin implements Plugin<Project> {
     private void applyTo(Test test) {
         final JGivenTaskExtension extension = test.getExtensions().create("jgiven", JGivenTaskExtension.class);
         final Project project = test.getProject();
-        final Provider<String> testName = project.getTasks().register(test.getName()).map(Task::getName); //now that's super duplicated
+        test.getOutputs().
+        final Provider<String> testName = project.getTasks()..register(test.getName()).map(Task::getName); //now that's super duplicated
         ((IConventionAware) extension).getConventionMapping().map("resultsDir",
             (Callable<Provider<File>>) () -> testName
                 .map(name -> project.file(project.getBuildDir() + "/jgiven-results/" + name)));
@@ -72,18 +73,18 @@ public class JGivenPlugin implements Plugin<Project> {
     private void addDefaultReports(final Project project) {
         final ReportingExtension reportingExtension = project.getExtensions().findByType(ReportingExtension.class);
         project.getTasks().withType(Test.class, test -> {
-            final JGivenReportTask reportTask = project.getTasks()
-                .create("jgiven" + WordUtil.capitalize(test.getName()) + "Report", JGivenReportTask.class);
+            final Provider<JGivenReportTask> reportTask = project.getTasks()
+                .register("jgiven" + WordUtil.capitalize(test.getName()) + "Report", JGivenReportTask.class);
             configureDefaultReportTask(test, reportTask, reportingExtension);
         });
     }
 
-    private void configureDefaultReportTask(final Test test, JGivenReportTask reportTask,
+    private void configureDefaultReportTask(final Test test, Provider<JGivenReportTask> reportTask,
                                             final ReportingExtension reportingExtension) {
         ConventionMapping mapping = ((IConventionAware) reportTask).getConventionMapping();
         mapping.map("results",
             (Callable<Provider<File>>) () -> test.getExtensions().getByType(JGivenTaskExtension.class).getResultsDir());
-        Objects.requireNonNull(mapping.getConventionValue(reportTask.getReports(), "reports", false))
+        Objects.requireNonNull(mapping.getConventionValue(reportTask.get().getReports(), "reports", false))
             .all((Action<Report>) report -> {
                 ConventionMapping reportMapping = ((IConventionAware) report).getConventionMapping();
                 reportMapping.map("destination",

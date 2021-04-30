@@ -44,6 +44,10 @@ public class JGivenReportTask extends DefaultTask implements Reporting<JGivenRep
         this.results = results;
     }
 
+    public void setResults(File results) {
+        this.results = this.getProject().provider(() -> results);
+    }
+
     @TaskAction
     public void generate() throws Exception {
         for (JGivenReport report : getReports().getEnabled()) {

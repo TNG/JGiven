@@ -200,7 +200,7 @@ public class JGivenPluginTest extends
         }
 
         Given the_results_dir_is_set_to(String dir) throws IOException {
-            buildFile.write("test { jgiven { resultsDir = provider(() ->file('" + dir + "')) } }\n");
+            buildFile.write("test { jgiven { resultsDir = file('" + dir + "')) } }\n");
             return self();
         }
 
