@@ -19,68 +19,75 @@ import org.gradle.api.tasks.testing.Test;
 
 public class JGivenPlugin implements Plugin<Project> {
     @Override
-    public void apply( final Project project ){
-        project.getPluginManager().apply( ReportingBasePlugin.class );
+    public void apply(final Project project) {
+        project.getPluginManager().apply(ReportingBasePlugin.class);
 
-        addTaskExtension( project );
-        addDefaultReports( project );
-        configureJGivenReportDefaults( project );
+        addTaskExtension(project);
+        addDefaultReports(project);
+        configureJGivenReportDefaults(project);
     }
 
-    private void addTaskExtension( Project project ){
-        project.getTasks().withType( Test.class, this::applyTo );
+    private void addTaskExtension(Project project) {
+        project.getTasks().withType(Test.class).configureEach(this::applyTo);
     }
 
-    private void applyTo( Test test ){
+    private void applyTo(Test test) {
         final String testName = test.getName();
-        final JGivenTaskExtension extension = test.getExtensions().create( "jgiven", JGivenTaskExtension.class );
+        final JGivenTaskExtension extension = test.getExtensions().create("jgiven", JGivenTaskExtension.class);
         final Project project = test.getProject();
-        ( (IConventionAware) extension ).getConventionMapping().map( "resultsDir",
-                (Callable<File>) () -> project.file( project.getBuildDir() + "/jgiven-results/" + testName ));
+        ((IConventionAware) extension).getConventionMapping().map("resultsDir",
+            (Callable<File>) () -> project.file(project.getBuildDir() + "/jgiven-results/" + testName));
 
         File resultsDir = extension.getResultsDir();
-        if( resultsDir != null ) {
-            test.getOutputs().dir( resultsDir ).withPropertyName( "jgiven.resultsDir" );
+        if (resultsDir != null) {
+            test.getOutputs().dir(resultsDir).withPropertyName("jgiven.resultsDir");
         }
 
-        // Java lambda classes are created at runtime with a non-deterministic classname.
-        // Therefore, the class name does not identify the implementation of the lambda and changes between different Gradle runs.
-        // https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:how_does_it_work
+        /* Java lambda classes are created at runtime with a non-deterministic classname.
+         * Therefore, the class name does not identify the implementation of the lambda,
+         * and changes between different Gradle runs.
+         * See: https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:how_does_it_work
+         */
         //noinspection Convert2Lambda
-        test.prependParallelSafeAction( new Action<Task>() {
+        test.prependParallelSafeAction(new Action<Task>() {
             @Override
-            public void execute( Task task ){
-                ((Test) task).systemProperty( Config.JGIVEN_REPORT_DIR, extension.getResultsDir().getAbsolutePath() );
+            public void execute(Task task) {
+                ((Test) task).systemProperty(Config.JGIVEN_REPORT_DIR, extension.getResultsDir().getAbsolutePath());
             }
-        } );
+        });
     }
 
-    private void configureJGivenReportDefaults( Project project ){
-        project.getTasks().withType( JGivenReportTask.class, reportTask -> reportTask.getReports().all( (Action<Report>) report -> {
-            ConventionMapping mapping = ( (IConventionAware) report ).getConventionMapping();
-            mapping.map( "enabled", (Callable<Boolean>) () -> report.getName().equals( JGivenHtmlReportImpl.NAME ) );
-        } ) );
+    private void configureJGivenReportDefaults(Project project) {
+        project.getTasks()
+            .withType(JGivenReportTask.class).forEach(reportTask -> reportTask.getReports().all((Action<Report>) report -> {
+                ConventionMapping mapping = ((IConventionAware) report).getConventionMapping();
+                mapping.map("enabled", (Callable<Boolean>) () -> report.getName().equals(JGivenHtmlReportImpl.NAME));
+            }));
     }
 
-    private void addDefaultReports( final Project project ){
-        final ReportingExtension reportingExtension = project.getExtensions().findByType( ReportingExtension.class );
-        project.getTasks().withType( Test.class, test -> {
-            final JGivenReportTask reportTask = project.getTasks()
-                    .create( "jgiven" + WordUtil.capitalize( test.getName() ) + "Report", JGivenReportTask.class );
-            configureDefaultReportTask( test, reportTask, reportingExtension );
-        } );
+    private void addDefaultReports(final Project project) {
+        final ReportingExtension reportingExtension = project.getExtensions().findByType(ReportingExtension.class);
+        project.getTasks().withType(Test.class).forEach(test -> {
+            project.getTasks()
+                .register("jgiven" + WordUtil.capitalize(test.getName()) + "Report", JGivenReportTask.class)
+                .configure(reportTask ->
+            configureDefaultReportTask(test, reportTask, reportingExtension));
+        });
     }
 
-    private void configureDefaultReportTask( final Test test, JGivenReportTask reportTask,
-            final ReportingExtension reportingExtension ){
+    private void configureDefaultReportTask(final Test test, JGivenReportTask reportTask,
+                                            final ReportingExtension reportingExtension) {
         reportTask.mustRunAfter(test);
-        ConventionMapping mapping = ( (IConventionAware) reportTask ).getConventionMapping();
-        mapping.map( "results", (Callable<File>) () -> test.getExtensions().getByType( JGivenTaskExtension.class ).getResultsDir() );
-        Objects.requireNonNull(mapping.getConventionValue(reportTask.getReports(), "reports", false))
-                .all( (Action<Report>) report -> {
-                    ConventionMapping reportMapping = ( (IConventionAware) report ).getConventionMapping();
-                    reportMapping.map( "destination",
-                            (Callable<File>) () -> reportingExtension.file( "jgiven" + "/" + test.getName() + "/" + report.getName() ) );
-                } );
+        ConventionMapping mapping = ((IConventionAware) reportTask).getConventionMapping();
+        mapping.map("results",
+            (Callable<File>) () -> test.getExtensions().getByType(JGivenTaskExtension.class).getResultsDir());
+        Objects.requireNonNull(
+            mapping.getConventionValue(reportTask.getReports(), "reports", false)
+        ).all((Action<Report>) report -> {
+            ConventionMapping reportMapping = ((IConventionAware) report).getConventionMapping();
+            reportMapping.map("destination",
+                (Callable<File>) () -> reportingExtension
+                    .file("jgiven" + "/" + test.getName() + "/" + report.getName()));
+        });
     }
 }
