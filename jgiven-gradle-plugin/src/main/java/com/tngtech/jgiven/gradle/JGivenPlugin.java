@@ -13,6 +13,7 @@ import org.gradle.api.Task;
 import org.gradle.api.internal.ConventionMapping;
 import org.gradle.api.internal.IConventionAware;
 import org.gradle.api.plugins.ReportingBasePlugin;
+import org.gradle.api.provider.Provider;
 import org.gradle.api.reporting.Report;
 import org.gradle.api.reporting.ReportingExtension;
 import org.gradle.api.tasks.testing.Test;
@@ -32,13 +33,14 @@ public class JGivenPlugin implements Plugin<Project> {
     }
 
     private void applyTo(Test test) {
-        final String testName = test.getName();
         final JGivenTaskExtension extension = test.getExtensions().create("jgiven", JGivenTaskExtension.class);
         final Project project = test.getProject();
+        final Provider<String> testName = project.getTasks().named(test.getName()).map(Task::getName);
         ((IConventionAware) extension).getConventionMapping().map("resultsDir",
-            (Callable<File>) () -> project.file(project.getBuildDir() + "/jgiven-results/" + testName));
+            (Callable<Provider<File>>) () -> testName
+                .map(name -> project.file(project.getBuildDir() + "/jgiven-results/" + name)));
 
-        File resultsDir = extension.getResultsDir();
+        Provider<File> resultsDir = getResultsDir(extension, project);
         if (resultsDir != null) {
             test.getOutputs().dir(resultsDir).withPropertyName("jgiven.resultsDir");
         }
@@ -52,14 +54,28 @@ public class JGivenPlugin implements Plugin<Project> {
         test.prependParallelSafeAction(new Action<Task>() {
             @Override
             public void execute(Task task) {
-                ((Test) task).systemProperty(Config.JGIVEN_REPORT_DIR, extension.getResultsDir().getAbsolutePath());
+                ((Test) task)
+                    .systemProperty(Config.JGIVEN_REPORT_DIR,
+                        getResultsDir(extension, project).get().getAbsolutePath());
             }
         });
     }
 
+    private Provider<File> getResultsDir(JGivenTaskExtension extension, Project project) {
+        Object resultsDir = extension.getResultsDir();
+        if (resultsDir instanceof Provider) {
+            return (Provider<File>) resultsDir;
+        } else if (resultsDir instanceof File) {
+            return project.provider(() -> (File) resultsDir);
+        } else {
+            throw new IllegalStateException("results dir happend to be neither file nor file provider");
+        }
+    }
+
     private void configureJGivenReportDefaults(Project project) {
         project.getTasks()
-            .withType(JGivenReportTask.class).forEach(reportTask -> reportTask.getReports().all((Action<Report>) report -> {
+            .withType(JGivenReportTask.class)
+            .forEach(reportTask -> reportTask.getReports().all((Action<Report>) report -> {
                 ConventionMapping mapping = ((IConventionAware) report).getConventionMapping();
                 mapping.map("enabled", (Callable<Boolean>) () -> report.getName().equals(JGivenHtmlReportImpl.NAME));
             }));
@@ -71,16 +87,18 @@ public class JGivenPlugin implements Plugin<Project> {
             project.getTasks()
                 .register("jgiven" + WordUtil.capitalize(test.getName()) + "Report", JGivenReportTask.class)
                 .configure(reportTask ->
-            configureDefaultReportTask(test, reportTask, reportingExtension));
+                    configureDefaultReportTask(test, reportTask, reportingExtension));
         });
     }
 
     private void configureDefaultReportTask(final Test test, JGivenReportTask reportTask,
                                             final ReportingExtension reportingExtension) {
-        reportTask.mustRunAfter(test);
         ConventionMapping mapping = ((IConventionAware) reportTask).getConventionMapping();
         mapping.map("results",
-            (Callable<File>) () -> test.getExtensions().getByType(JGivenTaskExtension.class).getResultsDir());
+            (Callable<Provider<File>>) () -> {
+                JGivenTaskExtension extension = test.getExtensions().getByType(JGivenTaskExtension.class);
+                return getResultsDir(extension, test.getProject());
+            });
         Objects.requireNonNull(
             mapping.getConventionValue(reportTask.getReports(), "reports", false)
         ).all((Action<Report>) report -> {
