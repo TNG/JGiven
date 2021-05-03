@@ -25,6 +25,7 @@ import org.gradle.testkit.runner.BuildTask;
 import org.gradle.testkit.runner.GradleRunner;
 import org.gradle.testkit.runner.TaskOutcome;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
@@ -111,13 +112,13 @@ public class JGivenPluginTest extends
             .the_plugin_is_applied()
             .and().there_are_JGiven_tests()
             .and().the_jgiven_report_is_configured_by("reports {\n"
-                + "  html {\n"
-                + "    enabled = false\n"
-                + "  }\n"
-                + "  text {\n"
-                + "    enabled = true\n"
-                + "  }\n"
-                + "}\n")
+            + "  html {\n"
+            + "    enabled = false\n"
+            + "  }\n"
+            + "  text {\n"
+            + "    enabled = true\n"
+            + "  }\n"
+            + "}\n")
         ;
 
         when()
@@ -137,11 +138,11 @@ public class JGivenPluginTest extends
             .the_plugin_is_applied()
             .and().there_are_JGiven_tests()
             .and().the_jgiven_report_is_configured_by("reports {\n"
-                + "  html {\n"
-                + "    enabled = true\n"
-                + "    title = 'JGiven Gradle Plugin'\n"
-                + "  }\n"
-                + "}\n")
+            + "  html {\n"
+            + "    enabled = true\n"
+            + "    title = 'JGiven Gradle Plugin'\n"
+            + "  }\n"
+            + "}\n")
         ;
 
         when()
@@ -155,6 +156,7 @@ public class JGivenPluginTest extends
     }
 
     @Test
+    @Disabled("Interferes with the current dependency resolution scheme")
     void no_jgiven_results_no_report() throws IOException {
 
         given()
