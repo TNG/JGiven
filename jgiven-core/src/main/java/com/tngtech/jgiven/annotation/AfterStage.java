@@ -12,13 +12,17 @@ import java.lang.annotation.Target;
  * either on next call of a step method of the next stage,
  * or, for the last stage, after the scenario (but before any {@link AfterScenario} method).
  * <p>
- * {@code @AfterStage} can be used to finish builders, for example.
+ * If marked as repeatable, the {@code @AfterStage} method will execute every time a stage is reused;
+ * if not marked as repeatable,it is guaranteed that the {@code @AfterStage} method is invoked only once.
  * <p>
- * It is guaranteed that {@code @AfterStage} methods are only invoked once.
+ * {@code @AfterStage} can be used to finish builders, for example.
  */
 @Documented
-@Retention( RetentionPolicy.RUNTIME )
-@Target( ElementType.METHOD )
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
 public @interface AfterStage {
-
+    /**
+     * marks an after stage method for repeated execution.
+     */
+    boolean repeatable() default false;
 }
