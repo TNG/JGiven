@@ -36,6 +36,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -182,13 +183,7 @@ public class ScenarioExecutor {
             }
 
             updateScenarioState(childStage);
-
-            StageState2 stageState = getStageState(childStage);
-            if (!stageState.beforeStageCalled) {
-                stageState.beforeStageCalled = true;
-                executeBeforeStageSteps(childStage);
-            }
-
+            executeBeforeStageSteps(childStage);
             if (parentStage == null) {
                 currentTopLevelStage = childStage;
             }
@@ -271,10 +266,10 @@ public class ScenarioExecutor {
             return false;
         }
 
-        List<Method> methodsToExecute = getExecutableAfterStageMethods(stage);
+        List<Method> methodsToExecute = getExecutableLifecycleMethods(stage, AfterStage.class, StageState2::afterStageMethodHasBeenExecuted);
         methodsToExecute.forEach(stageState::markAfterStageAsExecuted);
         doExecuteLifeCycleMethods(stage, methodsToExecute);
-        //executeAnnotatedMethods( stage, AfterStage.class );
+        //executeAnnotatedMethods( stage, AfterStage.class ); TODO
         return true;
     }
 
@@ -310,11 +305,11 @@ public class ScenarioExecutor {
         methodInterceptor.enableMethodInterception(true);
     }
 
-    private List<Method> getExecutableAfterStageMethods(Object stage) {
+    private <T extends Annotation> List<Method> getExecutableLifecycleMethods(Object stage, Class<T> annotation, BiFunction<StageState2,Method,Boolean> hasBeenExeuctedPredicate) {
         StageState2 stageState = getStageState(stage);
         List<Method> methodList = newArrayList();
-        ReflectionUtil.forEachMethod(stage, stage.getClass(), AfterStage.class, (Object object, Method method) -> {
-            if (!stageState.afterStageMethodHasBeenExecuted(method)) {
+        ReflectionUtil.forEachMethod(stage, stage.getClass(), annotation, (Object object, Method method) -> {
+            if (!hasBeenExeuctedPredicate.apply(stageState, method)) {
                 methodList.add(method);
             }
         });
@@ -379,7 +374,14 @@ public class ScenarioExecutor {
     }
 
     void executeBeforeStageSteps(Object stage) throws Throwable {
-        executeAnnotatedMethods(stage, BeforeStage.class);
+        StageState2 stageState = getStageState(stage);
+        if (stageState.allBeforeStageMethodsHaveBeenExecuted()) {
+            return;
+        }
+        List<Method> methodsToExecute = getExecutableLifecycleMethods(stage, BeforeStage.class, StageState2::beforeStageMethodHasBeenExecuted);
+        methodsToExecute.forEach(stageState::markBeforeStageAsExecuted);
+        doExecuteLifeCycleMethods(stage, methodsToExecute);
+        //executeAnnotatedMethods(stage, BeforeStage.class); TODO
     }
 
     private void executeBeforeScenarioMethods(Object stage) throws Throwable {

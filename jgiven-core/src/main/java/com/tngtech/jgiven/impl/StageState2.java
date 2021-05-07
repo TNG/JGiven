@@ -1,72 +1,117 @@
 package com.tngtech.jgiven.impl;
 
 import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
-
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 //TODO This class is still closely linked with the ScenarioExecutor Maybe it should be an inner class
 class StageState2 {
     final Object instance;
-    private Map<Method, StepExecutionState> afterStageCalled;
-    boolean beforeStageCalled;
+    private LifeCycleMethodRegister<AfterStage> afterStageCalled;
+    private LifeCycleMethodRegister<BeforeStage> beforeStageCalled;
     Object currentChildStage;
 
-    StageState2(Object instance){
-       this.instance = instance;
-       this.afterStageCalled = new HashMap<>();
-       beforeStageCalled = false;
-       fillAfterStageRegister();
+    StageState2(Object instance) {
+        this.instance = instance;
+        this.afterStageCalled = new LifeCycleMethodRegister<>(this.instance, AfterStage.class, AfterStage::repeatable);
+        beforeStageCalled = new LifeCycleMethodRegister<>(this.instance, BeforeStage.class, BeforeStage::repeatable);
     }
 
-    private void fillAfterStageRegister(){
-        ReflectionUtil.forEachMethod(instance, instance.getClass(), AfterStage.class,
-                (object, method)-> {
-                   Arrays.stream(method.getDeclaredAnnotations())
-                           .filter(annotation -> annotation instanceof AfterStage)
-                           .map(annotation -> (AfterStage) annotation)
-                           .findFirst()
-                           .ifPresent(
-                                   it -> afterStageCalled.put(method, it.repeatable()? StepExecutionState.REPEATABLE : StepExecutionState.NOT_EXECUTED)
-                           );
-                });
+    boolean allBeforeStageMethodsHaveBeenExecuted() {
+        return beforeStageCalled.allStageMethodsHaveBeenExecuted();
     }
 
-    boolean allAfterStageMethodsHaveBeenExecuted(){
-        for ( StepExecutionState value: afterStageCalled.values()) {
-           if(!value.toBoolean()){
-              return false;
-           }
-        }
-        return true;
-    }
-    boolean afterStageMethodHasBeenExecuted(Method method){
-        return Optional.ofNullable(afterStageCalled.get(method))
-                .map(StepExecutionState::toBoolean)
-                .orElse(true);
-    }
-    void markAfterStageAsExecuted(Method method){
-       StepExecutionState afterStepState = afterStageCalled.get(method);
-         if(afterStepState == StepExecutionState.NOT_EXECUTED){
-            afterStageCalled.put(method, StepExecutionState.EXECUTED);
-         }
+    boolean allAfterStageMethodsHaveBeenExecuted() {
+        return afterStageCalled.allStageMethodsHaveBeenExecuted();
     }
 
-   private enum StepExecutionState {
+    boolean beforeStageMethodHasBeenExecuted(Method method) {
+        return beforeStageCalled.stageMethodHasBeenExecuted(method);
+    }
+
+    boolean afterStageMethodHasBeenExecuted(Method method) {
+        return afterStageCalled.stageMethodHasBeenExecuted(method);
+    }
+
+
+    void markBeforeStageAsExecuted(Method method) {
+        beforeStageCalled.markStageAsExecuted(method);
+    }
+
+    void markAfterStageAsExecuted(Method method) {
+        afterStageCalled.markStageAsExecuted(method);
+    }
+
+    private enum StepExecutionState {
         EXECUTED(true),
         REPEATABLE(false),
         NOT_EXECUTED(false);
 
-       private boolean hasBeenExecuted;
+        private boolean hasBeenExecuted;
 
-       StepExecutionState(boolean hasBeenExecuted){
-          this.hasBeenExecuted = hasBeenExecuted;
-       }
-        public boolean toBoolean(){ return this.hasBeenExecuted; }
+        StepExecutionState(boolean hasBeenExecuted) {
+            this.hasBeenExecuted = hasBeenExecuted;
+        }
+
+        public boolean toBoolean() {
+            return this.hasBeenExecuted;
+        }
     }
 
+    private static class LifeCycleMethodRegister<T extends Annotation> {
+        private final Object instance;
+        private final Class<T> targetAnnotation;
+        private final Map<Method, StepExecutionState> register = new HashMap<>();
+        private final Function<T, Boolean> predicateFromT;
+
+        private LifeCycleMethodRegister(Object instance, Class<T> targetAnnotation,
+                                        Function<T, Boolean> preditcateFromAnnotation) {
+            this.instance = instance;
+            this.targetAnnotation = targetAnnotation;
+            this.predicateFromT = preditcateFromAnnotation;
+            fillStageRegister();
+        }
+
+        void markStageAsExecuted(Method method) {
+            StepExecutionState stepState = register.get(method);
+            if (stepState == StepExecutionState.NOT_EXECUTED) {
+                register.put(method, StepExecutionState.EXECUTED);
+            }
+        }
+
+        boolean stageMethodHasBeenExecuted(Method method) {
+            return Optional.ofNullable(register.get(method))
+                .map(StepExecutionState::toBoolean)
+                .orElse(true);
+        }
+
+        private void fillStageRegister() {
+            ReflectionUtil.forEachMethod(instance, instance.getClass(), targetAnnotation,
+                (object, method) -> {
+                    Arrays.stream(method.getDeclaredAnnotations())
+                        .filter(annotation -> targetAnnotation.isAssignableFrom(annotation.getClass()))
+                        .map(annotation -> (T) annotation)
+                        .findFirst()
+                        .map(it -> predicateFromT.apply(it) ? StepExecutionState.REPEATABLE :
+                            StepExecutionState.NOT_EXECUTED)
+                        .ifPresent(it -> register.put(method, it));
+                });
+        }
+
+        boolean allStageMethodsHaveBeenExecuted() {
+            for (StepExecutionState value : register.values()) {
+                if (!value.toBoolean()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
 }

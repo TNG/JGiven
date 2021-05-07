@@ -39,6 +39,7 @@ public class RepeatedStageUseTest extends ScenarioTest<
         then().non_repeatable_lifecycle_method_ran(true)
             .and().repeatable_lifecycle_method_ran(true);
 
+        given().a_scenario_step();
         whenBeforeStage.a_stage_is_completed();
         then().repeatable_lifecycle_method_ran(true)
             .and().non_repeatable_lifecycle_method_ran(false);
