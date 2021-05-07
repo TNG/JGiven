@@ -1,0 +1,27 @@
+plugins {
+    id 'com.tngtech.jgiven.gradle-plugin' version '1.0.0'
+    id 'java'
+}
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.compilerArgs += '-parameters'
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'com.tngtech.jgiven:jgiven-testng:1.0.0'
+    testImplementation 'org.testng:testng:7.3.0'
+}
+
+test.useTestNG() {
+    parallel 'methods'
+    threadCount 10
+}
+test.finalizedBy(jgivenTestReport)

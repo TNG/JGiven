@@ -1,14 +1,16 @@
 
 dependencies {
-	compile project(':jgiven-core')
-    testCompile project(':jgiven-junit')
-    testCompile project(':jgiven-spring-junit4')
-    testCompile project(':jgiven-tests')
-    testCompile project(':jgiven-html5-report')
-    testCompile "org.seleniumhq.selenium:htmlunit-driver:2.49.1"
-    testCompile "org.springframework:spring-context:$springVersion"
-    testCompile "org.springframework:spring-test:$springVersion"
-    testCompile "pl.pragmatists:JUnitParams:$junitParamsVersion"
+	implementation project(':jgiven-core')
+    testImplementation project(':jgiven-junit')
+    testImplementation project(':jgiven-spring-junit4')
+    testImplementation project(':jgiven-tests')
+    testImplementation project(':jgiven-html5-report')
+    testImplementation project(':jgiven-testng')
+    testImplementation "org.seleniumhq.selenium:htmlunit-driver:2.49.1"
+    testImplementation "org.springframework:spring-context:$springVersion"
+    testImplementation "org.springframework:spring-test:$springVersion"
+    testImplementation "pl.pragmatists:JUnitParams:$junitParamsVersion"
+    testImplementation "org.testng:testng:$testngVersion"
 }
 
 test.finalizedBy jgivenHtml5Report

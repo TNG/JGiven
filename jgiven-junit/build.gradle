@@ -7,7 +7,7 @@ description = "Module for writing JGiven tests with JUnit"
 dependencies {
     api project(':jgiven-core')
     compileOnly "junit:junit:$junitVersion"
-    compile project(':jgiven-html5-report')
+    implementation project(':jgiven-html5-report')
 
     testImplementation "junit:junit:$junitVersion"
     testImplementation "pl.pragmatists:JUnitParams:$junitParamsVersion"

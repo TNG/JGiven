@@ -3,6 +3,8 @@ package com.tngtech.jgiven.gradle;
 import com.tngtech.jgiven.gradle.internal.JGivenReportsContainerImpl;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
 import groovy.lang.Closure;
+import java.io.File;
+import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.reporting.Reporting;
@@ -15,9 +17,6 @@ import org.gradle.api.tasks.SkipWhenEmpty;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.reflect.Instantiator;
 import org.gradle.util.ConfigureUtil;
-
-import javax.inject.Inject;
-import java.io.File;
 
 @CacheableTask
 public class JGivenReportTask extends DefaultTask implements Reporting<JGivenReportsContainer> {
