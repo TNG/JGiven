@@ -36,7 +36,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiFunction;
+import java.util.function.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -172,7 +172,7 @@ public class ScenarioExecutor {
             }
 
             updateScenarioState(childStage);
-            executeBeforeStageSteps(childStage);
+            executeBeforeStageMethods(childStage);
             if (parentStage == null) {
                 currentTopLevelStage = childStage;
             }
@@ -250,20 +250,6 @@ public class ScenarioExecutor {
         return getStageState(stage).allAfterStageMethodsHaveBeenExecuted();
     }
 
-    private void executeAfterStageMethods(Object stage) throws Throwable {
-        StageState stageState = getStageState(stage);
-        if (stageState.allAfterStageMethodsHaveBeenExecuted()) {
-            return;
-        }
-
-        List<Method> methodsToExecute =
-            getExecutableLifecycleMethods(stage, AfterStage.class, StageState::afterStageMethodHasBeenExecuted);
-        methodsToExecute.forEach(stageState::markAfterStageAsExecuted);
-        doExecuteLifeCycleMethods(stage, methodsToExecute);
-        //executeAnnotatedMethods( stage, AfterStage.class ); TODO
-    }
-
-
     public StageState getStageState(Object stage) {
         StageState stageState = stages.get(stage.getClass());
         return stageState != null ? stageState : stages.get(stage.getClass().getSuperclass());
@@ -295,50 +281,30 @@ public class ScenarioExecutor {
         methodInterceptor.enableMethodInterception(true);
     }
 
-    //TODO: shorten input
     private <T extends Annotation> List<Method>
-    getExecutableLifecycleMethods(Object stage, Class<T> annotation,
-                                  BiFunction<StageState, Method, Boolean> hasBeenExeuctedPredicate) {
-        StageState stageState = getStageState(stage);
+    getExecutableLifecycleMethods(Object stage, Class<T> annotation, Predicate<Method> selectForExecution) {
         List<Method> methodList = newArrayList();
         ReflectionUtil.forEachMethod(stage, stage.getClass(), annotation, (Object object, Method method) -> {
-            if (!hasBeenExeuctedPredicate.apply(stageState, method)) {
+            if (selectForExecution.test(method)) {
                 methodList.add(method);
             }
         });
         return methodList;
     }
 
-    //TODO What about execute annotated methods
-    private void doExecuteLifeCycleMethods(Object object, List<Method> methods) throws Throwable {
+    //TODO: factor out log statements
+    private <T extends Annotation> void doExecuteLifeCycleMethods(Object target, Iterable<Method> methods,
+                                                                  Class<T> annotationType) throws Throwable {
         if (!executeLifeCycleMethods) {
             return;
         }
+        log.debug("Executing methods annotated with @{}", annotationType.getName());
         boolean previousMethodExecution = methodInterceptor.enableMethodExecution(true);
         try {
             methodInterceptor.enableMethodInterception(false);
-            methods.forEach(it -> ReflectionUtil.invokeMethod(object, it, ""));
-            methodInterceptor.enableMethodInterception(true);
-        } catch (JGivenUserException e) {
-            throw e.getCause();
-        } finally {
-            methodInterceptor.enableMethodExecution(previousMethodExecution);
-        }
-    }
-
-    private void executeAnnotatedMethods(Object stage, final Class<? extends Annotation> annotationClass)
-        throws Throwable {
-        if (!executeLifeCycleMethods) {
-            return;
-        }
-
-
-        log.debug("Executing methods annotated with @{}", annotationClass.getName());
-        boolean previousMethodExecution = methodInterceptor.enableMethodExecution(true);
-        try {
-            methodInterceptor.enableMethodInterception(false);
-            ReflectionUtil.forEachMethod(stage, stage.getClass(), annotationClass, (Object object, Method method) ->
-                ReflectionUtil.invokeMethod(object, method, " with annotation @" + annotationClass.getName())
+            methods.forEach(it -> ReflectionUtil.invokeMethod(target,
+                it,
+                " with annotation @" + annotationType.getName())
             );
             methodInterceptor.enableMethodInterception(true);
         } catch (JGivenUserException e) {
@@ -366,20 +332,39 @@ public class ScenarioExecutor {
         }
     }
 
-    void executeBeforeStageSteps(Object stage) throws Throwable {
+    private void executeBeforeScenarioMethods(Object stage) throws Throwable {
+        List<Method> methodsToExecute =
+            getExecutableLifecycleMethods(stage, BeforeScenario.class, (it) -> true);
+        doExecuteLifeCycleMethods(stage, methodsToExecute, BeforeScenario.class);
+    }
+
+    void executeBeforeStageMethods(Object stage) throws Throwable {
         StageState stageState = getStageState(stage);
         if (stageState.allBeforeStageMethodsHaveBeenExecuted()) {
             return;
         }
         List<Method> methodsToExecute =
-            getExecutableLifecycleMethods(stage, BeforeStage.class, StageState::beforeStageMethodHasBeenExecuted);
+            getExecutableLifecycleMethods(stage, BeforeStage.class, stageState::beforeStageMethodIsExecutable);
         methodsToExecute.forEach(stageState::markBeforeStageAsExecuted);
-        doExecuteLifeCycleMethods(stage, methodsToExecute);
-        //executeAnnotatedMethods(stage, BeforeStage.class); TODO
+        doExecuteLifeCycleMethods(stage, methodsToExecute, BeforeStage.class);
     }
 
-    private void executeBeforeScenarioMethods(Object stage) throws Throwable {
-        executeAnnotatedMethods(stage, BeforeScenario.class);
+    private void executeAfterStageMethods(Object stage) throws Throwable {
+        StageState stageState = getStageState(stage);
+        if (stageState.allAfterStageMethodsHaveBeenExecuted()) {
+            return;
+        }
+
+        List<Method> methodsToExecute =
+            getExecutableLifecycleMethods(stage, AfterStage.class, stageState::afterStageMethodIsExecutable);
+        methodsToExecute.forEach(stageState::markAfterStageAsExecuted);
+        doExecuteLifeCycleMethods(stage, methodsToExecute, AfterStage.class);
+    }
+
+    private void executeAfterScenarioMethods(Object stage) throws Throwable {
+        List<Method> methodsToExecute =
+            getExecutableLifecycleMethods(stage, AfterScenario.class, (it) -> true);
+        doExecuteLifeCycleMethods(stage, methodsToExecute, AfterScenario.class);
     }
 
     public void readScenarioState(Object object) {
@@ -430,7 +415,7 @@ public class ScenarioExecutor {
 
             for (StageState stage : reverse(newArrayList(stages.values()))) {
                 try {
-                    executeAnnotatedMethods(stage.instance, AfterScenario.class);
+                    executeAfterScenarioMethods(stage.instance);
                 } catch (Exception e) {
                     firstThrownException = logAndGetFirstException(firstThrownException, e);
                 }

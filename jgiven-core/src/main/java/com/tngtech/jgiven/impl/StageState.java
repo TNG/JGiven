@@ -40,6 +40,14 @@ class StageState {
         return afterStageCalled.stageMethodHasBeenExecuted(method);
     }
 
+    boolean beforeStageMethodIsExecutable(Method method) {
+        return !beforeStageMethodHasBeenExecuted(method);
+    }
+
+    boolean afterStageMethodIsExecutable(Method method) {
+        return !afterStageMethodHasBeenExecuted(method);
+    }
+
 
     void markBeforeStageAsExecuted(Method method) {
         beforeStageCalled.markStageAsExecuted(method);
