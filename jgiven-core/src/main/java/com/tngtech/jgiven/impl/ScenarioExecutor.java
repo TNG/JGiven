@@ -202,7 +202,8 @@ public class ScenarioExecutor {
             StageState2 childState = getStageState(childStage);
             if (childState.currentChildStage != null) {
                 updateScenarioState(childState.currentChildStage);
-                if (executeAfterStageMethods(childState.currentChildStage)) {
+                if (!getStageState(childState.currentChildStage).allAfterStageMethodsHaveBeenExecuted()) {
+                    executeAfterStageMethods(childState.currentChildStage);
                     readScenarioState(childState.currentChildStage);
                     updateScenarioState(childStage);
                 }
@@ -260,17 +261,17 @@ public class ScenarioExecutor {
         return getStageState(stage).allAfterStageMethodsHaveBeenExecuted();
     }
 
-    private boolean executeAfterStageMethods(Object stage) throws Throwable {
+    private void executeAfterStageMethods(Object stage) throws Throwable {
         StageState2 stageState = getStageState(stage);
         if (stageState.allAfterStageMethodsHaveBeenExecuted()) {
-            return false;
+            return;
         }
 
-        List<Method> methodsToExecute = getExecutableLifecycleMethods(stage, AfterStage.class, StageState2::afterStageMethodHasBeenExecuted);
+        List<Method> methodsToExecute =
+            getExecutableLifecycleMethods(stage, AfterStage.class, StageState2::afterStageMethodHasBeenExecuted);
         methodsToExecute.forEach(stageState::markAfterStageAsExecuted);
         doExecuteLifeCycleMethods(stage, methodsToExecute);
         //executeAnnotatedMethods( stage, AfterStage.class ); TODO
-        return true;
     }
 
 
@@ -305,7 +306,10 @@ public class ScenarioExecutor {
         methodInterceptor.enableMethodInterception(true);
     }
 
-    private <T extends Annotation> List<Method> getExecutableLifecycleMethods(Object stage, Class<T> annotation, BiFunction<StageState2,Method,Boolean> hasBeenExeuctedPredicate) {
+    //TODO: shorten input 
+    private <T extends Annotation> List<Method>
+    getExecutableLifecycleMethods(Object stage, Class<T> annotation,
+                                  BiFunction<StageState2, Method, Boolean> hasBeenExeuctedPredicate) {
         StageState2 stageState = getStageState(stage);
         List<Method> methodList = newArrayList();
         ReflectionUtil.forEachMethod(stage, stage.getClass(), annotation, (Object object, Method method) -> {
@@ -378,7 +382,8 @@ public class ScenarioExecutor {
         if (stageState.allBeforeStageMethodsHaveBeenExecuted()) {
             return;
         }
-        List<Method> methodsToExecute = getExecutableLifecycleMethods(stage, BeforeStage.class, StageState2::beforeStageMethodHasBeenExecuted);
+        List<Method> methodsToExecute =
+            getExecutableLifecycleMethods(stage, BeforeStage.class, StageState2::beforeStageMethodHasBeenExecuted);
         methodsToExecute.forEach(stageState::markBeforeStageAsExecuted);
         doExecuteLifeCycleMethods(stage, methodsToExecute);
         //executeAnnotatedMethods(stage, BeforeStage.class); TODO
