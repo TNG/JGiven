@@ -62,7 +62,7 @@ public class ScenarioExecutor {
      */
     private boolean executeLifeCycleMethods = true;
 
-    protected final Map<Class<?>, StageState2> stages = new LinkedHashMap<>();
+    protected final Map<Class<?>, StageState> stages = new LinkedHashMap<>();
 
     private final List<Object> scenarioRules = new ArrayList<>();
 
@@ -98,17 +98,6 @@ public class ScenarioExecutor {
         injector.injectValueByType(ScenarioExecutor.class, this);
         injector.injectValueByType(CurrentStep.class, new StepAccessImpl());
         injector.injectValueByType(CurrentScenario.class, new ScenarioAccessImpl());
-    }
-
-    protected static class StageState {
-        final Object instance;
-        boolean afterStageCalled;
-        boolean beforeStageCalled;
-        public Object currentChildStage;
-
-        StageState(Object instance) {
-            this.instance = instance;
-        }
     }
 
     class StepAccessImpl implements CurrentStep {
@@ -170,7 +159,7 @@ public class ScenarioExecutor {
                     // if there has been a child stage that was executed before
                     // and the new child stage is different, we have to execute
                     // the after stage methods of the previous child stage
-                    StageState2 stageState = getStageState(parentStage);
+                    StageState stageState = getStageState(parentStage);
                     if (stageState.currentChildStage != null && stageState.currentChildStage != childStage
                         && !afterStageMethodsCalled(stageState.currentChildStage)) {
                         updateScenarioState(stageState.currentChildStage);
@@ -199,7 +188,7 @@ public class ScenarioExecutor {
 
             // in case we leave a child stage that itself had a child stage
             // we have to execute the after stage method of that transitive child
-            StageState2 childState = getStageState(childStage);
+            StageState childState = getStageState(childStage);
             if (childState.currentChildStage != null) {
                 updateScenarioState(childState.currentChildStage);
                 if (!getStageState(childState.currentChildStage).allAfterStageMethodsHaveBeenExecuted()) {
@@ -224,7 +213,7 @@ public class ScenarioExecutor {
         T result = stageCreator.createStage(stageClass, methodInterceptor);
         methodInterceptor.enableMethodInterception(true);
 
-        stages.put(stageClass, new StageState2(result));
+        stages.put(stageClass, new StageState(result));
         gatherRules(result);
         injectStages(result);
         return result;
@@ -262,21 +251,21 @@ public class ScenarioExecutor {
     }
 
     private void executeAfterStageMethods(Object stage) throws Throwable {
-        StageState2 stageState = getStageState(stage);
+        StageState stageState = getStageState(stage);
         if (stageState.allAfterStageMethodsHaveBeenExecuted()) {
             return;
         }
 
         List<Method> methodsToExecute =
-            getExecutableLifecycleMethods(stage, AfterStage.class, StageState2::afterStageMethodHasBeenExecuted);
+            getExecutableLifecycleMethods(stage, AfterStage.class, StageState::afterStageMethodHasBeenExecuted);
         methodsToExecute.forEach(stageState::markAfterStageAsExecuted);
         doExecuteLifeCycleMethods(stage, methodsToExecute);
         //executeAnnotatedMethods( stage, AfterStage.class ); TODO
     }
 
 
-    public StageState2 getStageState(Object stage) {
-        StageState2 stageState = stages.get(stage.getClass());
+    public StageState getStageState(Object stage) {
+        StageState stageState = stages.get(stage.getClass());
         return stageState != null ? stageState : stages.get(stage.getClass().getSuperclass());
     }
 
@@ -294,7 +283,7 @@ public class ScenarioExecutor {
 
             beforeScenarioMethodsExecuted = true;
 
-            for (StageState2 stage : stages.values()) {
+            for (StageState stage : stages.values()) {
                 executeBeforeScenarioMethods(stage.instance);
             }
         } catch (Throwable e) {
@@ -306,11 +295,11 @@ public class ScenarioExecutor {
         methodInterceptor.enableMethodInterception(true);
     }
 
-    //TODO: shorten input 
+    //TODO: shorten input
     private <T extends Annotation> List<Method>
     getExecutableLifecycleMethods(Object stage, Class<T> annotation,
-                                  BiFunction<StageState2, Method, Boolean> hasBeenExeuctedPredicate) {
-        StageState2 stageState = getStageState(stage);
+                                  BiFunction<StageState, Method, Boolean> hasBeenExeuctedPredicate) {
+        StageState stageState = getStageState(stage);
         List<Method> methodList = newArrayList();
         ReflectionUtil.forEachMethod(stage, stage.getClass(), annotation, (Object object, Method method) -> {
             if (!hasBeenExeuctedPredicate.apply(stageState, method)) {
@@ -378,12 +367,12 @@ public class ScenarioExecutor {
     }
 
     void executeBeforeStageSteps(Object stage) throws Throwable {
-        StageState2 stageState = getStageState(stage);
+        StageState stageState = getStageState(stage);
         if (stageState.allBeforeStageMethodsHaveBeenExecuted()) {
             return;
         }
         List<Method> methodsToExecute =
-            getExecutableLifecycleMethods(stage, BeforeStage.class, StageState2::beforeStageMethodHasBeenExecuted);
+            getExecutableLifecycleMethods(stage, BeforeStage.class, StageState::beforeStageMethodHasBeenExecuted);
         methodsToExecute.forEach(stageState::markBeforeStageAsExecuted);
         doExecuteLifeCycleMethods(stage, methodsToExecute);
         //executeAnnotatedMethods(stage, BeforeStage.class); TODO
@@ -401,7 +390,7 @@ public class ScenarioExecutor {
      * Used for DI frameworks to inject values into stages.
      */
     public void wireSteps(CanWire canWire) {
-        for (StageState2 steps : stages.values()) {
+        for (StageState steps : stages.values()) {
             canWire.wire(steps.instance);
         }
     }
@@ -439,7 +428,7 @@ public class ScenarioExecutor {
                 firstThrownException = logAndGetFirstException(firstThrownException, e);
             }
 
-            for (StageState2 stage : reverse(newArrayList(stages.values()))) {
+            for (StageState stage : reverse(newArrayList(stages.values()))) {
                 try {
                     executeAnnotatedMethods(stage.instance, AfterScenario.class);
                 } catch (Exception e) {

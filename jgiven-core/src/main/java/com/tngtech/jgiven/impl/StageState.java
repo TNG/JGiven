@@ -12,13 +12,13 @@ import java.util.Optional;
 import java.util.function.Function;
 
 //TODO This class is still closely linked with the ScenarioExecutor Maybe it should be an inner class
-class StageState2 {
+class StageState {
     final Object instance;
-    private LifeCycleMethodRegister<AfterStage> afterStageCalled;
-    private LifeCycleMethodRegister<BeforeStage> beforeStageCalled;
+    private final LifeCycleMethodRegister<AfterStage> afterStageCalled;
+    private final LifeCycleMethodRegister<BeforeStage> beforeStageCalled;
     Object currentChildStage;
 
-    StageState2(Object instance) {
+    StageState(Object instance) {
         this.instance = instance;
         this.afterStageCalled = new LifeCycleMethodRegister<>(this.instance, AfterStage.class, AfterStage::repeatable);
         beforeStageCalled = new LifeCycleMethodRegister<>(this.instance, BeforeStage.class, BeforeStage::repeatable);
@@ -54,7 +54,7 @@ class StageState2 {
         REPEATABLE(false),
         NOT_EXECUTED(false);
 
-        private boolean hasBeenExecuted;
+        private final boolean hasBeenExecuted;
 
         StepExecutionState(boolean hasBeenExecuted) {
             this.hasBeenExecuted = hasBeenExecuted;
@@ -92,17 +92,18 @@ class StageState2 {
                 .orElse(true);
         }
 
+        @SuppressWarnings({"unchecked"})
         private void fillStageRegister() {
             ReflectionUtil.forEachMethod(instance, instance.getClass(), targetAnnotation,
-                (object, method) -> {
+                (object, method) ->
                     Arrays.stream(method.getDeclaredAnnotations())
                         .filter(annotation -> targetAnnotation.isAssignableFrom(annotation.getClass()))
                         .map(annotation -> (T) annotation)
                         .findFirst()
                         .map(it -> predicateFromT.apply(it) ? StepExecutionState.REPEATABLE :
                             StepExecutionState.NOT_EXECUTED)
-                        .ifPresent(it -> register.put(method, it));
-                });
+                        .ifPresent(it -> register.put(method, it))
+            );
         }
 
         boolean allStageMethodsHaveBeenExecuted() {
