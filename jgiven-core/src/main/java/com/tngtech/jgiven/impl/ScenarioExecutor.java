@@ -8,9 +8,7 @@ import static com.tngtech.jgiven.impl.ScenarioExecutor.State.STARTED;
 import com.tngtech.jgiven.CurrentScenario;
 import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.annotation.AfterScenario;
-import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
-import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.annotation.ScenarioStage;
@@ -338,27 +336,20 @@ public class ScenarioExecutor {
         doExecuteLifeCycleMethods(stage, methodsToExecute, BeforeScenario.class);
     }
 
-    void executeBeforeStageMethods(Object stage) throws Throwable {
-        StageState stageState = getStageState(stage);
+    private void executeBeforeStageMethods(Object stage) throws Throwable {
+        StageLifecycleManager stageState = getStageState(stage);
         if (stageState.allBeforeStageMethodsHaveBeenExecuted()) {
             return;
         }
-        List<Method> methodsToExecute =
-            getExecutableLifecycleMethods(stage, BeforeStage.class, stageState::beforeStageMethodIsExecutable);
-        methodsToExecute.forEach(stageState::markBeforeStageAsExecuted);
-        doExecuteLifeCycleMethods(stage, methodsToExecute, BeforeStage.class);
+        stageState.executeBeforeStageMethods(methodInterceptor, executeLifeCycleMethods);
     }
 
     private void executeAfterStageMethods(Object stage) throws Throwable {
-        StageState stageState = getStageState(stage);
+        StageLifecycleManager stageState = getStageState(stage);
         if (stageState.allAfterStageMethodsHaveBeenExecuted()) {
             return;
         }
-
-        List<Method> methodsToExecute =
-            getExecutableLifecycleMethods(stage, AfterStage.class, stageState::afterStageMethodIsExecutable);
-        methodsToExecute.forEach(stageState::markAfterStageAsExecuted);
-        doExecuteLifeCycleMethods(stage, methodsToExecute, AfterStage.class);
+        stageState.executeAfterStageMethods(methodInterceptor, executeLifeCycleMethods);
     }
 
     private void executeAfterScenarioMethods(Object stage) throws Throwable {
@@ -562,6 +553,16 @@ public class ScenarioExecutor {
 
     private StageCreator createStageCreator(StageClassCreator stageClassCreator) {
         return new DefaultStageCreator(new CachingStageClassCreator(stageClassCreator));
+    }
+
+    private static class StageState extends StageLifecycleManager {
+        final Object instance;
+        Object currentChildStage;
+        private StageState(Object instance) {
+            super(instance);
+            this.instance = instance;
+        }
+
     }
 
 }
