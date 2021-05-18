@@ -1,6 +1,8 @@
 package com.tngtech.jgiven.impl;
 
+import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.exception.JGivenUserException;
 import com.tngtech.jgiven.impl.intercept.StepInterceptorImpl;
@@ -11,44 +13,57 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*TODO This class is still closely linked with the ScenarioExecutor Maybe it should be an inner class
-    Separation suggestion:
-    * make this class only care about all the lifecycle methods, maybe create another variant of the register class
-      for the BeforeScenario & AfterScenario Methods
-    * create a child class of this as inner class of ScenarioExecutor.
-      That class should hold the instance publicly and the child stage.
-    * The methodInterceptor and the lifecycle Method execution may become fields herein.
- */
 class StageLifecycleManager {
-    private final LifeCycleMethodRegister<AfterStage> afterStageCalled;
-    private final LifeCycleMethodRegister<BeforeStage> beforeStageCalled;
+    private static final Logger log = LoggerFactory.getLogger(StageLifecycleManager.class);
 
-    StageLifecycleManager(Object instance) {
-        this.afterStageCalled = new LifeCycleMethodRegister<>(instance, AfterStage.class, AfterStage::repeatable);
-        beforeStageCalled = new LifeCycleMethodRegister<>(instance, BeforeStage.class, BeforeStage::repeatable);
-    }
+    private final Object instance;
+    private final StepInterceptorImpl methodInterceptor;
+    private final LifecycyleMethodManager<AfterStage> afterStageRegister;
+    private final LifecycyleMethodManager<BeforeStage> beforeStageRegister;
+    private final LifecycyleMethodManager<BeforeScenario> beforeScenarioRegister;
+    private final LifecycyleMethodManager<AfterScenario> afterScenarioRegister;
 
-    boolean allBeforeStageMethodsHaveBeenExecuted() {
-        return beforeStageCalled.allStageMethodsHaveBeenExecuted();
+    StageLifecycleManager(Object instance, StepInterceptorImpl methodInterceptor) {
+        this.methodInterceptor = methodInterceptor;
+        this.instance = instance;
+
+        afterStageRegister = new LifecycyleMethodManager<>(AfterStage.class, AfterStage::repeatable);
+        beforeStageRegister = new LifecycyleMethodManager<>(BeforeStage.class, BeforeStage::repeatable);
+        beforeScenarioRegister = new LifecycyleMethodManager<>(BeforeScenario.class, (it) -> false);
+        afterScenarioRegister = new LifecycyleMethodManager<>(AfterScenario.class, (it) -> false);
     }
 
     boolean allAfterStageMethodsHaveBeenExecuted() {
-        return afterStageCalled.allStageMethodsHaveBeenExecuted();
+        return afterStageRegister.allMethodsHaveBeenExecuted();
     }
 
-    void executeAfterStageMethods(StepInterceptorImpl methodInterceptor, boolean enableLifecycleExecution)
-        throws Throwable {
-        afterStageCalled.executeWithInterceptor(methodInterceptor, enableLifecycleExecution);
+    void executeAfterStageMethods(boolean fakeExecution) throws Throwable {
+        executeLifecycleMethods(afterStageRegister, fakeExecution);
     }
 
-    void executeBeforeStageMethods(StepInterceptorImpl methodInterceptor, boolean enableLifecycleExecution)
-        throws Throwable {
-        beforeStageCalled.executeWithInterceptor(methodInterceptor, enableLifecycleExecution);
+    void executeBeforeStageMethods(boolean fakeExecution) throws Throwable {
+        executeLifecycleMethods(beforeStageRegister, fakeExecution);
+    }
+
+    void executeAfterScenarioMethods(boolean fakeExecution) throws Throwable {
+        executeLifecycleMethods(afterScenarioRegister, fakeExecution);
+    }
+
+    void executeBeforeScenarioMethods(boolean fakeExecution) throws Throwable {
+        executeLifecycleMethods(beforeScenarioRegister, fakeExecution);
+    }
+
+    private void executeLifecycleMethods(LifecycyleMethodManager<?> register, boolean fakeExecution) throws Throwable {
+        if (fakeExecution) {
+            register.fakeExecution();
+        } else {
+            register.executeMethods();
+        }
     }
 
     private enum StepExecutionState {
@@ -67,85 +82,84 @@ class StageLifecycleManager {
         }
     }
 
-    private static class LifeCycleMethodRegister<T extends Annotation> {
-        private static final Logger log = LoggerFactory.getLogger(LifeCycleMethodRegister.class);
-        private final Object instance;
+    private class LifecycyleMethodManager<T extends Annotation> {
         private final Class<T> targetAnnotation;
         private final Map<Method, StepExecutionState> register = new HashMap<>();
-        private final Function<T, Boolean> predicateFromT;
+        private final Predicate<T> predicateFromT;
 
-        private LifeCycleMethodRegister(Object instance, Class<T> targetAnnotation,
-                                        Function<T, Boolean> preditcateFromAnnotation) {
-            this.instance = instance;
+        private LifecycyleMethodManager(Class<T> targetAnnotation, Predicate<T> predicateFromAnnotation) {
             this.targetAnnotation = targetAnnotation;
-            this.predicateFromT = preditcateFromAnnotation;
-            fillStageRegister();
-        }
-
-        void markStageAsExecuted(Method method) {
-            StepExecutionState stepState = register.get(method);
-            if (stepState == StepExecutionState.NOT_EXECUTED) {
-                register.put(method, StepExecutionState.EXECUTED);
-            }
-        }
-
-        //TODO: Perform check inside register.
-        boolean stageMethodHasBeenExecuted(Method method) {
-            return Optional.ofNullable(register.get(method))
-                .map(StepExecutionState::toBoolean)
-                .orElse(true);
+            this.predicateFromT = predicateFromAnnotation;
+            fillStageRegister(instance);
         }
 
         @SuppressWarnings({"unchecked"})
-        private void fillStageRegister() {
+        private void fillStageRegister(Object instance) {
             ReflectionUtil.forEachMethod(instance, instance.getClass(), targetAnnotation,
                 (object, method) ->
                     Arrays.stream(method.getDeclaredAnnotations())
                         .filter(annotation -> targetAnnotation.isAssignableFrom(annotation.getClass()))
                         .map(annotation -> (T) annotation)
                         .findFirst()
-                        .map(it -> predicateFromT.apply(it) ? StepExecutionState.REPEATABLE :
+                        .map(it -> predicateFromT.test(it) ? StepExecutionState.REPEATABLE :
                             StepExecutionState.NOT_EXECUTED)
                         .ifPresent(it -> register.put(method, it))
             );
-            log.debug("Added methods '{}' as '{}' methods", register.keySet(), targetAnnotation.getSimpleName());
+            log.debug("Added methods '{}' as '{}' methods to the register",
+                register.keySet(), targetAnnotation.getSimpleName());
         }
 
-        void executeWithInterceptor(StepInterceptorImpl methodInterceptor, boolean enableLifecycleExecution)
-            throws Throwable {
+        boolean methodMarkedForExecution(Method method) {
+            return !Optional.ofNullable(register.get(method))
+                .map(StepExecutionState::toBoolean)
+                .orElse(true);
+        }
 
-            Stream<Method> methods = register.keySet().stream().filter(method -> !stageMethodHasBeenExecuted(method));
-            if (!enableLifecycleExecution) {
-                methods.forEach(this::markStageAsExecuted);
-                return;
+        boolean allMethodsHaveBeenExecuted() {
+            return register.values().stream().allMatch(StepExecutionState::toBoolean);
+        }
+
+        /**
+         * Do everything except method invocation.
+         */
+        void fakeExecution() throws Throwable {
+            prepareMethods();
+            doExecutionOn(Stream.of());
+        }
+
+        void executeMethods() throws Throwable {
+            Stream<Method> methodsToExecute = prepareMethods();
+            doExecutionOn(methodsToExecute);
+        }
+
+        private Stream<Method> prepareMethods() {
+            return register.keySet().stream().filter(this::methodMarkedForExecution)
+                .peek(this::markStageAsExecuted);
+        }
+
+
+        private void markStageAsExecuted(Method method) {
+            StepExecutionState stepState = register.get(method);
+            if (stepState == StepExecutionState.NOT_EXECUTED) {
+                register.put(method, StepExecutionState.EXECUTED);
             }
+        }
 
+        private void doExecutionOn(Stream<Method> methodsToExecute)
+            throws Throwable {
             log.debug("Executing methods annotated with @{}", targetAnnotation.getName());
             boolean previousMethodExecution = methodInterceptor.enableMethodExecution(true);
             try {
                 methodInterceptor.enableMethodInterception(false);
-                methods
-                    .filter(method -> !stageMethodHasBeenExecuted(method))
-                    .forEach(method -> {
-                        markStageAsExecuted(method);
-                        ReflectionUtil.invokeMethod(instance, method,
-                            " with annotation @" + targetAnnotation.getName());
-                    });
+                methodsToExecute.forEach(method ->
+                    ReflectionUtil.invokeMethod(instance, method,
+                        " with annotation @" + targetAnnotation.getName()));
                 methodInterceptor.enableMethodInterception(true);
             } catch (JGivenUserException e) {
                 throw e.getCause();
             } finally {
                 methodInterceptor.enableMethodExecution(previousMethodExecution);
             }
-        }
-
-        boolean allStageMethodsHaveBeenExecuted() {
-            for (StepExecutionState value : register.values()) {
-                if (!value.toBoolean()) {
-                    return false;
-                }
-            }
-            return true;
         }
     }
 }

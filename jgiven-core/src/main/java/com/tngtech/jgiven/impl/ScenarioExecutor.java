@@ -7,8 +7,6 @@ import static com.tngtech.jgiven.impl.ScenarioExecutor.State.STARTED;
 
 import com.tngtech.jgiven.CurrentScenario;
 import com.tngtech.jgiven.CurrentStep;
-import com.tngtech.jgiven.annotation.AfterScenario;
-import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.annotation.ScenarioStage;
@@ -34,7 +32,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -211,7 +208,7 @@ public class ScenarioExecutor {
         T result = stageCreator.createStage(stageClass, methodInterceptor);
         methodInterceptor.enableMethodInterception(true);
 
-        stages.put(stageClass, new StageState(result));
+        stages.put(stageClass, new StageState(result, methodInterceptor));
         gatherRules(result);
         injectStages(result);
         return result;
@@ -248,10 +245,18 @@ public class ScenarioExecutor {
         return getStageState(stage).allAfterStageMethodsHaveBeenExecuted();
     }
 
+    //TODO: nicer stage search?
+    // What may happen if there is a common superclass to two distinct implementations? Is that even possible?
     public StageState getStageState(Object stage) {
-        StageState stageState = stages.get(stage.getClass());
-        return stageState != null ? stageState : stages.get(stage.getClass().getSuperclass());
+        Class<?> stageClass = stage.getClass();
+        StageState stageState = stages.get(stageClass);
+        while (stageState == null && stageClass != stageClass.getSuperclass()) {
+            stageState = stages.get(stageClass);
+            stageClass = stageClass.getSuperclass();
+        }
+        return stageState;
     }
+
 
     private void ensureBeforeScenarioMethodsAreExecuted() throws Throwable {
         if (state != State.INIT) {
@@ -279,39 +284,6 @@ public class ScenarioExecutor {
         methodInterceptor.enableMethodInterception(true);
     }
 
-    private <T extends Annotation> List<Method>
-    getExecutableLifecycleMethods(Object stage, Class<T> annotation, Predicate<Method> selectForExecution) {
-        List<Method> methodList = newArrayList();
-        ReflectionUtil.forEachMethod(stage, stage.getClass(), annotation, (Object object, Method method) -> {
-            if (selectForExecution.test(method)) {
-                methodList.add(method);
-            }
-        });
-        return methodList;
-    }
-
-    //TODO: factor out log statements
-    private <T extends Annotation> void doExecuteLifeCycleMethods(Object target, Iterable<Method> methods,
-                                                                  Class<T> annotationType) throws Throwable {
-        if (!executeLifeCycleMethods) {
-            return;
-        }
-        log.debug("Executing methods annotated with @{}", annotationType.getName());
-        boolean previousMethodExecution = methodInterceptor.enableMethodExecution(true);
-        try {
-            methodInterceptor.enableMethodInterception(false);
-            methods.forEach(it -> ReflectionUtil.invokeMethod(target,
-                it,
-                " with annotation @" + annotationType.getName())
-            );
-            methodInterceptor.enableMethodInterception(true);
-        } catch (JGivenUserException e) {
-            throw e.getCause();
-        } finally {
-            methodInterceptor.enableMethodExecution(previousMethodExecution);
-        }
-    }
-
     private void invokeRuleMethod(Object rule, String methodName) throws Throwable {
         if (!executeLifeCycleMethods) {
             return;
@@ -331,31 +303,19 @@ public class ScenarioExecutor {
     }
 
     private void executeBeforeScenarioMethods(Object stage) throws Throwable {
-        List<Method> methodsToExecute =
-            getExecutableLifecycleMethods(stage, BeforeScenario.class, (it) -> true);
-        doExecuteLifeCycleMethods(stage, methodsToExecute, BeforeScenario.class);
+        getStageState(stage).executeBeforeScenarioMethods(!executeLifeCycleMethods);
     }
 
     private void executeBeforeStageMethods(Object stage) throws Throwable {
-        StageLifecycleManager stageState = getStageState(stage);
-        if (stageState.allBeforeStageMethodsHaveBeenExecuted()) {
-            return;
-        }
-        stageState.executeBeforeStageMethods(methodInterceptor, executeLifeCycleMethods);
+        getStageState(stage).executeBeforeStageMethods(!executeLifeCycleMethods);
     }
 
     private void executeAfterStageMethods(Object stage) throws Throwable {
-        StageLifecycleManager stageState = getStageState(stage);
-        if (stageState.allAfterStageMethodsHaveBeenExecuted()) {
-            return;
-        }
-        stageState.executeAfterStageMethods(methodInterceptor, executeLifeCycleMethods);
+        getStageState(stage).executeAfterStageMethods(!executeLifeCycleMethods);
     }
 
     private void executeAfterScenarioMethods(Object stage) throws Throwable {
-        List<Method> methodsToExecute =
-            getExecutableLifecycleMethods(stage, AfterScenario.class, (it) -> true);
-        doExecuteLifeCycleMethods(stage, methodsToExecute, AfterScenario.class);
+        getStageState(stage).executeAfterScenarioMethods(!executeLifeCycleMethods);
     }
 
     public void readScenarioState(Object object) {
@@ -558,8 +518,9 @@ public class ScenarioExecutor {
     private static class StageState extends StageLifecycleManager {
         final Object instance;
         Object currentChildStage;
-        private StageState(Object instance) {
-            super(instance);
+
+        private StageState(Object instance, StepInterceptorImpl methodInterceptor) {
+            super(instance, methodInterceptor);
             this.instance = instance;
         }
 
