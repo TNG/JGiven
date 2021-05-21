@@ -89,6 +89,9 @@ public class ScenarioExecutor {
      */
     private boolean suppressStepExceptions = true;
 
+    /**
+     * Create a new ScenarioExecutor instance.
+     */
     public ScenarioExecutor() {
         injector.injectValueByType(ScenarioExecutor.class, this);
         injector.injectValueByType(CurrentStep.class, new StepAccessImpl());
@@ -200,7 +203,7 @@ public class ScenarioExecutor {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T addStage(Class<T> stageClass) {
+    <T> T addStage(Class<T> stageClass) {
         if (stages.containsKey(stageClass)) {
             return (T) stages.get(stageClass).instance;
         }
@@ -247,7 +250,7 @@ public class ScenarioExecutor {
 
     //TODO: nicer stage search?
     // What may happen if there is a common superclass to two distinct implementations? Is that even possible?
-    public StageState getStageState(Object stage) {
+    StageState getStageState(Object stage) {
         Class<?> stageClass = stage.getClass();
         StageState stageState = stages.get(stageClass);
         while (stageState == null && stageClass != stageClass.getSuperclass()) {
@@ -397,6 +400,9 @@ public class ScenarioExecutor {
         return firstThrownException == null ? newException : firstThrownException;
     }
 
+    /**
+     * Initialize the fields annotated with {@link ScenarioStage} in the test class.
+     */
     @SuppressWarnings("unchecked")
     public void injectStages(Object stage) {
         for (Field field : FieldCache.get(stage.getClass()).getFieldsWithAnnotation(ScenarioStage.class)) {
@@ -417,6 +423,9 @@ public class ScenarioExecutor {
         failedException = e;
     }
 
+    /**
+     * Handle ocurred exception and continue.
+     */
     public void failed(Throwable e) {
         if (hasFailed()) {
             log.error(e.getMessage(), e);
