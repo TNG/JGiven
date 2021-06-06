@@ -193,3 +193,24 @@ test.finalizedBy jgivenTestReport
 
 For additional information about the Gradle plugin refer to
 https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin
+
+=== Configuration File
+
+JGiven will optionally load a configuration properties file, defaulting to:
+`jgiven.properties`. The path to the configuration can be customized with the system property:
+----
+jgiven.config.path
+----
+The encoding for the file is assumed to be `UTF-8`, but can be customized with the system property:
+----
+jgiven.config.charset
+----
+The following can be defined the properties file:
+----
+jgiven.report.enabled
+jgiven.report.dir
+jgiven.report.text
+jgiven.report.text.color
+jgiven.report.filterStackTrace
+----
+Configuration defined via Java system properties will take precedence over values in the configuration file.
