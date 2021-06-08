@@ -10,12 +10,31 @@ A stage class contains multiple step methods that can be called in a scenario an
 
 The following code shows a valid step method of the `WhenCook` stage:
 
-
 [source,java]
 ----
 include::{sourcedir}/pancakes/test/steps/WhenCook.java[tags=cookManglesDough,indent=0]
 ----
 JGiven removes the underlines so the step will appear as _the cook mangles everything to a dough_ in the report.
+
+==== Nested Steps
+In general, JGiven does not resolve the contents of a step method for reporting. This behavior can be changed by adding the `@NestedSteps` annotation to a step method. This is useful for grouping a large set of small scale steps
+into a small set of higher order steps. For instance, the code
+
+[source,java]
+----
+include::{sourcedir}/nested/NestedStepsTest.java[tags=fillRegistrationForm,indent=0]
+----
+will result in the report
+
+[source]
+----
+I fill out the registration form
+    I enter a name Franky
+    And I enter a email address franky@acme.com
+    And I enter a password password1234
+    And I enter a repeated password password1234
+----
+The nested steps will appear as a collapsible group in the HTML report.
 
 === Overriding the Default Reporting
 
@@ -251,7 +270,7 @@ Scenario: something should happen
 
 Also note that you should not forget to first invoke an intro method, like `and()` or `given()` on the injected stage before calling the step method.
 
-==== Dynamic Adding of Stages
+==== Dynamic Addition of Stages
 
 The disadvantage of injecting a stage into a test class is that this stage will be used for all tests of that class. This might result in an overhead if the stage contains `@BeforeScenario` or `@AfterScenario` methods, because these methods will also be executed in the injected stages. If an additional stage is only required for a single test method you should instead dynamically add that stage to the scenario by using the `addStage` method.
 

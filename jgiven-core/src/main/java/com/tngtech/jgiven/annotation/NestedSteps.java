@@ -1,12 +1,16 @@
 package com.tngtech.jgiven.annotation;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Marks a step method to have nested steps.
  * <p>
- *     Nested steps are useful if you want to group certain steps together under a new description.
- *     This allows you to give a larger scenario more structure and make it better readable
+ * Nested steps are useful if you want to group certain steps together under a new description.
+ * This allows you to give a larger scenario more structure and make it better readable
  *
  * </p>
  * <h2>Example</h2>
@@ -30,11 +34,13 @@ import java.lang.annotation.*;
  *            And I enter a password password1234
  *            And I enter a repeated password password1234
  * </pre>
- * 
+ *
  * In the HTML report nested steps can be expanded and collapsed
+ *
  * @since 0.10.0
  */
 @Documented
-@Retention( RetentionPolicy.RUNTIME )
-@Target( { ElementType.METHOD } )
-public @interface NestedSteps {}
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.METHOD})
+public @interface NestedSteps {
+}

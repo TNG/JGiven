@@ -50,6 +50,7 @@ public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedSt
         @ProvidedScenarioState
         String repeatedPassword;
 
+        // tag::fillRegistrationForm[]
         @NestedSteps
         public NestedStage I_fill_out_the_registration_form_with_valid_values() {
             return I_enter_a_name( "Franky" )
@@ -57,6 +58,7 @@ public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedSt
                 .and().I_enter_a_password( "password1234" )
                 .and().I_enter_a_repeated_password( "password1234" );
         }
+        // end::fillRegistrationForm[]
 
         @NestedSteps
         public NestedStage I_fill_out_the_registration_form_with_invalid_values() {
