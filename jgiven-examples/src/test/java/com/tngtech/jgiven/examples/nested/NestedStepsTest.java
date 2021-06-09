@@ -15,7 +15,7 @@ import com.tngtech.jgiven.junit.SimpleScenarioTest;
 public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedStage> {
 
     @Test
-    @ExtendedDescription( "This scenario contains nested steps." )
+    @ExtendedDescription("This scenario contains nested steps.")
     public void a_scenario_with_nested_steps() {
 
         given().I_fill_out_the_registration_form_with_valid_values();
@@ -50,52 +50,55 @@ public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedSt
         @ProvidedScenarioState
         String repeatedPassword;
 
+        // tag::fillRegistrationForm[]
         @NestedSteps
         public NestedStage I_fill_out_the_registration_form_with_valid_values() {
-            return I_enter_a_name( "Franky" )
-                .and().I_enter_a_email_address( "franky@acme.com" )
-                .and().I_enter_a_password( "password1234" )
-                .and().I_enter_a_repeated_password( "password1234" );
+            return I_enter_a_name("Franky")
+                .and().I_enter_a_email_address("franky@acme.com")
+                .and().I_enter_a_password("password1234")
+                .and().I_enter_a_repeated_password("password1234");
         }
+        // end::fillRegistrationForm[]
 
         @NestedSteps
         public NestedStage I_fill_out_the_registration_form_with_invalid_values() {
-            return I_enter_a_name( "Franky" )
-                .and().I_enter_a_email_address( "franky@acme.com" )
+            return I_enter_a_name("Franky")
+                .and().I_enter_a_email_address("franky@acme.com")
                 .and().something_fails_for_demonstration_purposes();
         }
 
+
         public NestedStage something_fails_for_demonstration_purposes() {
-            assertThat( true ).as( "Fails on purpose" ).isFalse();
+            assertThat(true).as("Fails on purpose").isFalse();
             return self();
         }
 
         @NestedSteps
-        public NestedStage I_enter_a_name( String name ) {
-            return I_think_a_name( name )
-                .and().I_write_the_name( name );
+        public NestedStage I_enter_a_name(String name) {
+            return I_think_a_name(name)
+                .and().I_write_the_name(name);
         }
 
-        public NestedStage I_think_a_name( String name ) {
+        public NestedStage I_think_a_name(String name) {
             return self();
         }
 
-        public NestedStage I_write_the_name( String name ) {
+        public NestedStage I_write_the_name(String name) {
             this.name = name;
             return self();
         }
 
-        public NestedStage I_enter_a_email_address( String email ) {
+        public NestedStage I_enter_a_email_address(String email) {
             this.email = email;
             return self();
         }
 
-        public NestedStage I_enter_a_password( String password ) {
+        public NestedStage I_enter_a_password(String password) {
             this.password = password;
             return self();
         }
 
-        public NestedStage I_enter_a_repeated_password( String repeatedPassword ) {
+        public NestedStage I_enter_a_repeated_password(String repeatedPassword) {
             this.repeatedPassword = repeatedPassword;
             return self();
         }
@@ -105,7 +108,7 @@ public class NestedStepsTest extends SimpleScenarioTest<NestedStepsTest.NestedSt
         }
 
         public NestedStage the_password_matches() {
-            Assert.assertEquals( password, repeatedPassword );
+            Assert.assertEquals(password, repeatedPassword);
             return self();
         }
     }
