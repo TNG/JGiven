@@ -1,18 +1,17 @@
 package com.tngtech.jgiven.testng;
 
+import static com.tngtech.jgiven.testng.ScenarioTestListener.SCENARIO_ATTRIBUTE;
+
 import com.beust.jcommander.internal.Lists;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.testframework.TestExecutionResult;
 import com.tngtech.jgiven.testframework.TestExecutor;
+import java.util.List;
 import org.testng.ITestResult;
 import org.testng.TestListenerAdapter;
 import org.testng.TestNG;
-
-import java.util.List;
-
-import static com.tngtech.jgiven.testng.ScenarioTestListener.SCENARIO_ATTRIBUTE;
 
 public class TestNgExecutor extends TestExecutor {
 
@@ -26,7 +25,7 @@ public class TestNgExecutor extends TestExecutor {
         testng.setTestClasses( new Class<?>[] { testClass } );
         if( testMethod != null ) {
             methodName = testMethod;
-            testng.addMethodSelector( MethodSelector.class.getName(), 10 );
+            testng.addMethodSelector( MethodSelector.class.getName(), 175 );
         }
         testng.addListener( testListenerAdapter );
         Config.config().setReportEnabled( false );
