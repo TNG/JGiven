@@ -1,8 +1,10 @@
-# v1.x
-##New Features
+# v1.1
+##New features
+* The lifecycle method annotations `@BeforeStage` and `@AfterStage` have an option to make the associated methods be invoked repeatedly if the stage class is invoked multiple times. Note that the duration of a stage is denoted by the change of the stage class, thus multiple invocations (no matter the form) on the same stage class count as one stage.
 
 ##Fixed Issues
 * Refurbished the jgiven-scala example project [#619](https://github.com/TNG/JGiven/pull/619) (thanks to seblm)
+* Updated most dependencies in the project
 
 ## Backwards Incompatible Changes
 * JGiven-TestNG now expects you to provide a version of TestNG on the runtime classpath
