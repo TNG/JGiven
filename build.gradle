@@ -58,7 +58,7 @@ subprojects {
         junit5PlatformRunnerVersion = '1.7.0'
         junitParamsVersion = '1.1.1'
         testngVersion = '7.4.0'
-        assertjVersion = '3.20.1'
+        assertjVersion = '3.20.2'
         slf4jVersion = '1.7.30'
         bytebuddyVersion = '1.11.2'
         paranamerVersion = '2.8'
