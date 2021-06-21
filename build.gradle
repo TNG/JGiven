@@ -1,3 +1,4 @@
+//file:noinspection GroovyAssignabilityCheck
 plugins {
     id 'com.github.kt3k.coveralls' version '2.12.0'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
@@ -83,7 +84,7 @@ subprojects {
                         from components[variant]
                         pom {
                             name = project.name
-                            url = 'http://jgiven.org'
+                            url = 'https://jgiven.org'
                             // to be able use project.description which may be overridden in later executed build.gradle of subproject
                             afterEvaluate {
                                 description = project.description
@@ -109,7 +110,7 @@ subprojects {
                             licenses {
                                 license {
                                     name = 'The Apache Software License, Version 2.0'
-                                    url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                                    url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
                                     distribution = 'repo'
                                 }
                             }
@@ -228,7 +229,8 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     }
 
     task jgivenHtml5Report(type: JavaExec) {
-        main = 'com.tngtech.jgiven.report.ReportGenerator'
+        //noinspection GroovyAccessibility
+        mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',
                 '--targetDir=build/reports/jgiven/html5',
                 '--format=html5',
@@ -240,7 +242,8 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     }
 
     task jgivenAsciiDocReport(type: JavaExec) {
-        main = 'com.tngtech.jgiven.report.ReportGenerator'
+        //noinspection GroovyAccessibility
+        mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',
                 '--targetDir=build/reports/jgiven/asciidoc',
                 '--format=asciidoc'
@@ -315,8 +318,8 @@ task overallJacocoReport(type: JacocoReport) {
     getSourceDirectories().setFrom files("jgiven-core/src/main/java")
     getClassDirectories().setFrom files("jgiven-core/build/classes/main")
     reports {
-        xml.enabled = true // coveralls plugin depends on xml format report
-        html.enabled = true
+        xml.getRequired().set(true) // coveralls plugin depends on xml format report
+        html.getRequired().set(true)
     }
 }
 
