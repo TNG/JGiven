@@ -7,6 +7,7 @@ import java.io.File;
 import javax.inject.Inject;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.NonNullApi;
 import org.gradle.api.reporting.Reporting;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.InputDirectory;
@@ -16,9 +17,9 @@ import org.gradle.api.tasks.PathSensitivity;
 import org.gradle.api.tasks.SkipWhenEmpty;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.internal.reflect.Instantiator;
-import org.gradle.util.ConfigureUtil;
 
 @CacheableTask
+@NonNullApi
 public class JGivenReportTask extends DefaultTask implements Reporting<JGivenReportsContainer> {
     private final JGivenReportsContainer reports;
     private File results;
@@ -44,12 +45,20 @@ public class JGivenReportTask extends DefaultTask implements Reporting<JGivenRep
     }
 
     @TaskAction
-    public void generate() throws Exception {
-        for (JGivenReport report : getReports().getEnabled()) {
-            AbstractReportGenerator generator = report.createGenerator();
-            generator.config.setSourceDir(getResults());
-            generator.loadReportModel();
+    public void generate() {
+        getReports().stream()
+            .filter(report -> report.getRequired().get())
+            .forEach(this::generateReport);
+    }
+
+    private void generateReport(JGivenReport report) {
+        AbstractReportGenerator generator = report.createGenerator();
+        generator.config.setSourceDir(getResults());
+        generator.loadReportModel();
+        try {
             generator.generate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -61,7 +70,7 @@ public class JGivenReportTask extends DefaultTask implements Reporting<JGivenRep
 
     @Override
     public JGivenReportsContainer reports(Closure closure) {
-        return reports(ConfigureUtil.configureUsing(closure));
+        return (JGivenReportsContainer) reports.configure(closure);
     }
 
     @Override

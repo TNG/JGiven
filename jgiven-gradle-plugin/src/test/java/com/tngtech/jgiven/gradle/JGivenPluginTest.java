@@ -112,10 +112,10 @@ public class JGivenPluginTest extends
             .and().there_are_JGiven_tests()
             .and().the_jgiven_report_is_configured_by("reports {\n"
                 + "  html {\n"
-                + "    enabled = false\n"
+                + "    required = false\n"
                 + "  }\n"
                 + "  text {\n"
-                + "    enabled = true\n"
+                + "    required = true\n"
                 + "  }\n"
                 + "}\n")
         ;
@@ -138,7 +138,7 @@ public class JGivenPluginTest extends
             .and().there_are_JGiven_tests()
             .and().the_jgiven_report_is_configured_by("reports {\n"
                 + "  html {\n"
-                + "    enabled = true\n"
+                + "    required = true\n"
                 + "    title = 'JGiven Gradle Plugin'\n"
                 + "  }\n"
                 + "}\n")
