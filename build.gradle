@@ -20,7 +20,8 @@ allprojects {
         apply plugin: 'jacoco'
     }
     repositories {
-        jcenter()
+        mavenLocal()
+        mavenCentral()
     }
 
     tasks.withType(Javadoc) {

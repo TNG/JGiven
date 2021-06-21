@@ -7,7 +7,7 @@ dependencies {
     implementation "junit:junit:$junitVersion"
     implementation "org.testng:testng:$testngVersion"
     implementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
-    implementation 'com.beust:jcommander:1.80'
+    implementation 'com.beust:jcommander:1.81'
 
     testImplementation "org.assertj:assertj-core:$assertjVersion"
     testImplementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
