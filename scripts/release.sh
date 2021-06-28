@@ -45,6 +45,8 @@ echo Releasing version "${VERSION}"
 
 echo Updating version in gradle.properties...
 sed -i -e "s/version=.*/version=${VERSION}/" gradle.properties
+sed -i -e "s/version=.*/version=${VERSION}/" ./example-projects/junit5/gradle.properties
+sed -i -e "s/version=.*/version=${VERSION}/" ./example-projects/spock/gradle.properties
 
 if [ -n "$(git status --porcelain)" ]; then
     echo Commiting version change

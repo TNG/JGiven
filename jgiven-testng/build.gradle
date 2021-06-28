@@ -9,7 +9,6 @@ dependencies {
     implementation project(':jgiven-html5-report')
     compileOnly "org.testng:testng:$testngVersion"
 
-    testImplementation 'org.testng.testng-remote:testng-remote-dist:1.4.0'
     testImplementation "org.testng:testng:$testngVersion"
 }
 
