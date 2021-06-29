@@ -44,6 +44,10 @@ find_gradle_property GRADLE_PROPERTIES "$@"
 echo Releasing version "${VERSION}"
 
 echo Updating version in gradle.properties...
+ls
+echo "Example project"
+ls ./example-projects/junit5
+pwd
 sed -i -e "s/version=.*/version=${VERSION}/" gradle.properties
 sed -i -e "s/version=.*/version=${VERSION}/" ./example-projects/junit5/gradle.properties
 sed -i -e "s/version=.*/version=${VERSION}/" ./example-projects/spock/gradle.properties
