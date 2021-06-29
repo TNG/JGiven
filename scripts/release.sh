@@ -45,12 +45,17 @@ echo Releasing version "${VERSION}"
 
 echo Updating version in gradle.properties...
 ls
-echo "Example project"
+echo "#OUTPUT::Example project"
 ls ./example-projects/junit5
+echo "#OUTPUT::Folder path"
 pwd
-sed -i -e "s/version=.*/version=${VERSION}/" gradle.properties
-sed -i -e "s/version=.*/version=${VERSION}/" ./example-projects/junit5/gradle.properties
-sed -i -e "s/version=.*/version=${VERSION}/" ./example-projects/spock/gradle.properties
+echo "#OUTPUT::File path"
+ls ./example-projects/junit5/gradle.properties
+echo "#OUTPUT::sleeping for one second"
+sleep 1
+sed -i -e "s/version=.*/version=${VERSION}/" 'gradle.properties'
+sed -i -e "s/version=.*/version=${VERSION}/" 'example-projects/junit5/gradle.properties'
+sed -i -e "s/version=.*/version=${VERSION}/" './example-projects/spock/gradle.properties'
 
 if [ -n "$(git status --porcelain)" ]; then
     echo Commiting version change
