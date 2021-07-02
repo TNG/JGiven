@@ -30,7 +30,7 @@ test_find_gradle_property_writes_to_array_variable(){
 test_find_gradle_property_extracts_property(){
   expected_output="-PsecretKey=secret -PsecretPassword=password"
   local -a output_array
-  find_gradle_property release.sh 1.0.0 "${expected_output}"
+  find_gradle_property output_array release.sh 1.0.0 "${expected_output}"
   printf "Expected \"%s\", got \"%s\"" "${expected_output}" "${output}"
   [ "${output_array[@]}" == "${expected_output}" ] || return 1 && return 0
 }
@@ -38,7 +38,7 @@ test_find_gradle_property_extracts_property(){
 test_find_gradle_property_handles_spaces(){
   expected_output="-Pkey=a name"
   local -a output_array
-  find_gradle_property release.sh 1.0.0 "${expected_output}"
+  find_gradle_property output_array release.sh 1.0.0 "${expected_output}"
   printf "Expected \"%s\", got \"%s\"" "${expected_output}" "${output}"
   [ "${output_array[@]}" == "${expected_output}" ] || return 1 && return 0
 }
