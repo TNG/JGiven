@@ -1,0 +1,27 @@
+name: Java CI with Gradle
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build JGiven on Java ${{ matrix.java }} with Junit ${{matrix.junit}}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [ '8', '11', '13']
+        junit: [ '4.9', '4.13' ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK ${{matrix.java}}
+        uses: actions/setup-java@v2
+        with:
+          java-version: ${{matrix.java}}
+          distribution: 'adopt'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle  and Junit ${{matrix.junit}}
+        env:
+          JUNIT_VERSION: ${{matrix.junit}}
+        run:   "./gradlew -i -s check -DjunitVersion=${JUNIT_VERSION}"
+      - name: Run Jacoco
+        if: ${{matrix.java == '8' && github.ref == 'refs/heads/master' && github.head_ref == null}}
+        run: ./gradlew overallJacocoReport coveralls
