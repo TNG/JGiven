@@ -2,7 +2,8 @@
 
 SCRIPT_LOCATION=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
 # shellcheck source=./release_functions.sh
-source "${SCRIPT_LOCATION}"/release_functions.sh
+source "${SCRIPT_LOCATION}/release_functions.sh"
+source "${SCRIPT_LOCATION}/test_runner.sh"
 
 test_find_gradle_property_check_fails_if_variable_is_undeclared(){
   unset undeclared_variable # Just to be safe that our test variable is not declared
@@ -55,26 +56,10 @@ test_properties_are_passed_on_correctly(){
 
 }
 
-run_tests(){
-  total_tests=0
-  failed_tests=0
-  for test in "$@";do
-
-    if test_response=$(eval "${test}"); then
-      total_tests=$((total_tests + 1))
-      printf "Test '%s' succeeded\n" "${test}"
-    else
-      total_tests=$((total_tests + 1))
-      failed_tests=$((failed_tests + 1))
-      printf "Test '%s' failed with output '%s'\n" "${test}" "${test_response}"
-    fi
-  done
-  printf "Ran Tests: %2d successful, %2d failed, %2d total\n" $((total_tests - failed_tests)) ${failed_tests} ${total_tests}
-}
-
 run_tests "test_find_gradle_property_extracts_property" \
 "test_find_gradle_property_handles_spaces" \
 "test_properties_are_passed_on_correctly" \
 "test_find_gradle_property_check_fails_if_variable_is_undeclared" \
 "test_find_gradle_property_check_fails_if_variable_is_not_an_array" \
 "test_find_gradle_property_writes_to_array_variable"
+exit $?

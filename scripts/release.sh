@@ -9,7 +9,8 @@
 
 SCRIPT_LOCATION=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
 # shellcheck source=./release_functions.sh
-source "${SCRIPT_LOCATION}"/release_functions.sh
+source "${SCRIPT_LOCATION}/release_functions.sh"
+source "${SCRIPT_LOCATION}/helper_functions.sh"
 
 set -e
 
@@ -34,8 +35,6 @@ if [ -z "${ANDROID_SDK_ROOT}" ]; then
     exit 1
 fi
 
-
-
 VERSION="$1"
 VERSION_PREFIXED="v$1"
 declare -a GRADLE_PROPERTIES
@@ -44,9 +43,15 @@ find_gradle_property GRADLE_PROPERTIES "$@"
 echo Releasing version "${VERSION}"
 
 echo Updating version in gradle.properties...
-sed -i -e "s/version=.*/version=${VERSION}/" gradle.properties
-sed -i -e "s/version=.*/version=${VERSION}/" ./example-projects/junit5/gradle.properties
-sed -i -e "s/version=.*/version=${VERSION}/" ./example-projects/spock/gradle.properties
+for file in "gradle.properties" \
+"example-projects/junit5/gradle.properties" \
+"example-projects/spock/gradle.properties" \
+"example-projects/testng/gradle.properties" \
+"example-projects/android/gradle.properties" \
+"example-projects/selenium/gradle.properties" \
+do
+  update_version "${VERSION}" "${file}" || exit 1
+done
 
 if [ -n "$(git status --porcelain)" ]; then
     echo Commiting version change
@@ -84,4 +89,3 @@ else
     releaseRepositoryAndPushVersion || exit $?
   fi
 fi
-
