@@ -1,9 +1,6 @@
 package com.tngtech.jgiven.impl;
 
 import com.tngtech.jgiven.config.ConfigValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -12,13 +9,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Helper class to access all system properties to configure JGiven.
  */
 public class Config {
     private static final Logger log = LoggerFactory.getLogger(Config.class);
-    private static final Properties CONFIG_FILE_PROPERTIES = loadConfigFileProperties();
     private static final Config INSTANCE = new Config();
 
     private static final String TRUE = "true";
@@ -33,6 +31,8 @@ public class Config {
     private static final String JGIVEN_CONFIG_PATH = "jgiven.config.path";
     private static final String JGIVEN_CONFIG_CHARSET = "jgiven.config.charset";
 
+    private final Properties configFileProperties = loadConfigFileProperties();
+
     public static Config config() {
         return INSTANCE;
     }
@@ -41,6 +41,9 @@ public class Config {
         if (INSTANCE.dryRun()) {
             log.info("Dry Run enabled.");
         }
+    }
+
+    private Config() {
     }
 
     private static Properties loadConfigFileProperties() {
@@ -62,9 +65,14 @@ public class Config {
     }
 
     private String resolveProperty(String name, String defaultValue) {
-        return System.getProperty(name, CONFIG_FILE_PROPERTIES.getProperty(name, defaultValue));
+        return System.getProperty(name, configFileProperties.getProperty(name, defaultValue));
     }
 
+    /**
+     * Returns the directory set either via a configuration file or a system property.
+     * If no value is specified and the surefire test classpath is set, the default maven directory will be used,
+     * otherwise a default is returned.
+     */
     public Optional<File> getReportDir() {
         String reportDirName = resolveProperty(JGIVEN_REPORT_DIR);
         if (reportDirName == null) {
