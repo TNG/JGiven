@@ -12,7 +12,6 @@ public class Timer {
 
   public void reset() {
    this.timer.reset();
-   assert (this.timer.isRunning());
   }
 
   public long stop() {
