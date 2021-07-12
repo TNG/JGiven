@@ -65,6 +65,16 @@ public class StepModel {
      */
     private String comment;
 
+    /**
+     * The depth of the step.
+     */
+    private int depth;
+    
+    /**
+     * Indicates if the parent step has failed.
+     */
+    private boolean parentFailed;
+
     public StepModel() {
     }
 
@@ -223,6 +233,22 @@ public class StepModel {
 
     public boolean hasAttachment() {
         return !getAttachments().isEmpty();
+    }
+
+    public int getDepth() {
+      return depth;
+    }
+
+    public void setDepth(int depth) {
+      this.depth = depth;
+    }
+
+    public boolean isParentFailed() {
+      return parentFailed;
+    }
+
+    public void setParentFailed(boolean parentFailed) {
+      this.parentFailed = parentFailed;
     }
 
 }
