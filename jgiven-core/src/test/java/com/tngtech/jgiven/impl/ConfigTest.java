@@ -93,7 +93,9 @@ public class ConfigTest {
 
     private void setSystemProperty(String key, String value) {
         String originalValue = System.getProperty(key);
-        systemPropertiesBackup.put(key, originalValue);
+        if (!systemPropertiesBackup.containsKey(key)) {
+            systemPropertiesBackup.put(key, originalValue);
+        }
         if (value == null) {
             System.clearProperty(key);
         } else {
