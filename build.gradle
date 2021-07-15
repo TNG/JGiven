@@ -12,6 +12,7 @@ apply plugin: 'project-report'
 
 description = 'JGiven - BDD in plain Java'
 def jacocoEnabled = !JavaVersion.current().isJava11Compatible()
+def timingEnabled = System.getenv("JGivenTiming")
 
 allprojects {
     group = 'com.tngtech.jgiven'
@@ -155,7 +156,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     dependencies {
         implementation "org.slf4j:slf4j-api:$slf4jVersion"
 
-        testImplementation project(':jgiven-timing')
         testImplementation "org.slf4j:jcl-over-slf4j:$slf4jVersion"
         testImplementation "org.slf4j:slf4j-simple:$slf4jVersion"
         testImplementation "junit:junit:$junitVersion"
@@ -164,13 +164,19 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         testImplementation "net.java.quickcheck:quickcheck:$quickcheckVersion"
     }
 
+    if (timingEnabled) {
+        dependencies {
+            testImplementation project(':jgiven-timing')
+        }
+        test {
+            jvmArgs += "-javaagent:${rootProject.projectDir}/jgiven-timing/build/libs/jgiven-timing-1.0.0.jar"
+        }
+    }
+
     test {
         systemProperty 'jgiven.report.dir', 'build/reports/jgiven/json'
         systemProperty 'jgiven.report.text', 'false'
         systemProperty 'org.slf4j.simpleLogger.defaultLogLevel', 'warn'
-
-        //Uncomment the following line to get time measurements for tests
-        //jvmArgs "-javaagent:${rootProject.projectDir}/jgiven-timing/build/libs/jgiven-timing-1.0.0.jar"
 
         if (jacocoEnabled) {
             jacoco {
