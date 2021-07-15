@@ -25,10 +25,18 @@ public class TimerConfig {
         TimerConfig.isTimerStarted.set(isTimerStarted);
     }
 
+    protected static void resetTimer() {
+        currentThreadTimer.set(null);
+    }
+
     protected static boolean isTimerStarted() {
         if (TimerConfig.isTimerStarted.get() == null) {
             setIsTimerStarted(false);
         }
         return TimerConfig.isTimerStarted.get();
+    }
+
+    protected static void setLogger(Logger givenLogger) {
+        timingLogger = givenLogger;
     }
 }

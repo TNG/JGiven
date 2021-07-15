@@ -14,7 +14,7 @@ public class TimerHandler {
     protected static void stopAndPrintTimer(Timer currentTimer) {
         currentTimer.stop();
         long duration = 0L;
-        TimeUnit validTimeUnit = TimeUnit.MICROSECONDS;
+        TimeUnit validTimeUnit = TimeUnit.MILLISECONDS;
 
         if (currentTimer.getInnerTimer().elapsed(TimeUnit.MILLISECONDS) < 10) {
             duration = currentTimer.getInnerTimer().elapsed(TimeUnit.MICROSECONDS);

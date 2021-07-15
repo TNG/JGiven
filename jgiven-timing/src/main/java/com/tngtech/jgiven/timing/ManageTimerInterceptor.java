@@ -15,7 +15,7 @@ public class ManageTimerInterceptor {
      * Helper object for seeing if current method was the first one to call finish on the scenario,
      * so we can stop the timer at the very last step.
      */
-    private static final ThreadLocal<Boolean> wasTimerStoppedAttempted = new ThreadLocal<Boolean>();
+    protected static final ThreadLocal<Boolean> wasTimerStoppedAttempted = new ThreadLocal<Boolean>();
 
     private static void attemptToStartTimer() {
         if (!TimerConfig.isTimerStarted()) {
