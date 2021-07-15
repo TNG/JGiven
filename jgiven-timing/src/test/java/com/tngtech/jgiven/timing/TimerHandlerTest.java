@@ -1,6 +1,9 @@
 package com.tngtech.jgiven.timing;
 
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -10,10 +13,11 @@ import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
+@SuppressWarnings("UnstableApiUsage")
 public class TimerHandlerTest {
     private Timer timerMock;
     private Stopwatch stopwatchMock;
@@ -21,15 +25,15 @@ public class TimerHandlerTest {
 
     @Before
     public void setup() {
-        timerMock = Mockito.mock(Timer.class);
-        loggerMock = Mockito.mock(Logger.class);
-        stopwatchMock = Mockito.mock(Stopwatch.class);
-        TimerConfig.setLogger(loggerMock);
+        timerMock = mock(Timer.class);
+        loggerMock = mock(Logger.class);
+        stopwatchMock = mock(Stopwatch.class);
+        TimerHandler.setLogger(loggerMock);
     }
 
     @After
     public void teardown() {
-        TimerConfig.setLogger(LoggerFactory.getLogger(TimerConfig.class));
+        TimerHandler.setLogger(LoggerFactory.getLogger(TimerHandler.class));
     }
 
     @Test
@@ -43,12 +47,12 @@ public class TimerHandlerTest {
     public void startTimer_logs_the_event() {
         TimerHandler.startTimer(timerMock);
 
-        verify(loggerMock).info("The timer has been started");
+        verify(loggerMock).info(TimerHandler.TIMER_STARTED_MESSAGE);
     }
 
     @Test
     public void stopTimer_stops_the_internal_timer() {
-        doReturn(Stopwatch.createStarted(new FakeTicker())).when(timerMock).getInnerTimer();
+        timerMock.setTimer(Stopwatch.createStarted(new FakeTicker()));
 
         TimerHandler.stopAndPrintTimer(timerMock);
 
@@ -56,48 +60,29 @@ public class TimerHandlerTest {
     }
 
     @Test
-    public void stopTimer_calls_get_inner_timer_twice_if_less_than_10_millis() {
-        FakeTicker ticker = new FakeTicker().advance(7, TimeUnit.MILLISECONDS);
-        Stopwatch stopwatch = Stopwatch.createStarted(ticker);
-        doReturn(stopwatch).when(timerMock).getInnerTimer();
-
-        TimerHandler.stopAndPrintTimer(timerMock);
-
-        verify(timerMock, times(2)).getInnerTimer();
-    }
-
-    @Test
-    public void stopTimer_calls_get_inner_timer_twice_if_more_than_10_millis() {
-        FakeTicker ticker = new FakeTicker().advance(11, TimeUnit.MILLISECONDS);
-        Stopwatch stopwatch = Stopwatch.createStarted(ticker);
-        doReturn(stopwatch).when(timerMock).getInnerTimer();
-
-        TimerHandler.stopAndPrintTimer(timerMock);
-
-        verify(timerMock, times(2)).getInnerTimer();
-    }
-
-    @Test
     public void stopTimer_gets_the_correct_duration_for_millis() {
         doReturn(15L).when(stopwatchMock).elapsed(TimeUnit.MILLISECONDS);
-        doReturn(stopwatchMock).when(timerMock).getInnerTimer();
+        doCallRealMethod().when(timerMock).setTimer(any());
+        doCallRealMethod().when(timerMock).elapsed(any());
+        timerMock.setTimer(stopwatchMock);
 
         TimerHandler.stopAndPrintTimer(timerMock);
 
         verify(stopwatchMock, times(2)).elapsed(TimeUnit.MILLISECONDS);
-        verify(loggerMock).info("The current test took 15 MILLISECONDS to execute");
+        verify(loggerMock).info(TimerHandler.TIMER_STOPPED_MESSAGE, 15L, TimeUnit.MILLISECONDS);
     }
 
     @Test
     public void stopTimer_gets_the_correct_duration_for_micros() {
-        TimerConfig.setLogger(loggerMock);
         doReturn(15L).when(stopwatchMock).elapsed(TimeUnit.MICROSECONDS);
-        doReturn(stopwatchMock).when(timerMock).getInnerTimer();
+        doCallRealMethod().when(timerMock).setTimer(any());
+        doCallRealMethod().when(timerMock).elapsed(any());
+        timerMock.setTimer(stopwatchMock);
 
         TimerHandler.stopAndPrintTimer(timerMock);
 
         verify(stopwatchMock, times(1)).elapsed(TimeUnit.MILLISECONDS);
         verify(stopwatchMock, times(1)).elapsed(TimeUnit.MICROSECONDS);
-        verify(loggerMock).info("The current test took 15 MICROSECONDS to execute");
+        verify(loggerMock).info(TimerHandler.TIMER_STOPPED_MESSAGE, 15L, TimeUnit.MICROSECONDS);
     }
 }

@@ -17,13 +17,8 @@ public class TimerInjectorAgent {
         new AgentBuilder.Default()
                 .type(ElementMatchers.isSubTypeOf(ScenarioBase.class))
                 .transform((builder, type, classLoader, module) ->
-                        builder.method(ElementMatchers.named("initialize"))
-                                .intercept(MethodDelegation.to(ManageTimerInterceptor.class))
-                ).installOn(instrumentation);
-        new AgentBuilder.Default()
-                .type(ElementMatchers.isSubTypeOf(ScenarioBase.class))
-                .transform((builder, type, classLoader, module) ->
-                        builder.method(ElementMatchers.named("finished"))
+                        builder.method(ElementMatchers.named("initialize")
+                                .or(ElementMatchers.named("finished")))
                                 .intercept(MethodDelegation.to(ManageTimerInterceptor.class))
                 ).installOn(instrumentation);
     }

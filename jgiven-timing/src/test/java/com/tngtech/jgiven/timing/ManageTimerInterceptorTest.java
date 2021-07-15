@@ -11,29 +11,27 @@ import org.slf4j.LoggerFactory;
 public class ManageTimerInterceptorTest {
 
     Method methodMock;
-    MyCallable callableMock;
+    Callable<Object> callableMock;
 
     public void initialize() {
-
+        //only here to get a Method object of it.
     }
 
     public void finished() {
-
+        //only here to get a Method object of it.
     }
 
     @Before
     public void setup() throws NoSuchMethodException {
         methodMock = this.getClass().getDeclaredMethod("initialize");
-        callableMock = new MyCallable();
-        TimerConfig.setIsTimerStarted(false);
+        callableMock = Object::new;
         TimerConfig.resetTimer();
         ManageTimerInterceptor.wasTimerStoppedAttempted.set(false);
-        TimerConfig.setLogger(LoggerFactory.getLogger(TimerConfig.class));
+        TimerHandler.setLogger(LoggerFactory.getLogger(TimerHandler.class));
     }
 
     @After
     public void teardown() {
-        TimerConfig.setIsTimerStarted(false);
         TimerConfig.resetTimer();
         ManageTimerInterceptor.wasTimerStoppedAttempted.set(false);
     }
@@ -42,7 +40,7 @@ public class ManageTimerInterceptorTest {
     public void first_method_starts_the_timer() throws Exception {
         ManageTimerInterceptor.intercept(methodMock, callableMock);
 
-        Assert.assertTrue(TimerConfig.isTimerStarted());
+        Assert.assertTrue(TimerConfig.getTimer().getIsTimerStarted());
     }
 
     @Test
@@ -56,7 +54,6 @@ public class ManageTimerInterceptorTest {
 
     @Test
     public void first_method_stops_the_timer_if_it_was_started() throws Exception {
-        TimerConfig.setIsTimerStarted(true);
         TimerConfig.getTimer().start();
         methodMock = this.getClass().getMethod("finished");
 
@@ -73,12 +70,5 @@ public class ManageTimerInterceptorTest {
         ManageTimerInterceptor.intercept(methodMock, callableMock);
 
         Assert.assertTrue(ManageTimerInterceptor.wasTimerStoppedAttempted.get());
-    }
-
-    private static class MyCallable implements Callable<Object> {
-        @Override
-        public Object call() throws Exception {
-            return null;
-        }
     }
 }

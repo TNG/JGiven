@@ -1,15 +1,10 @@
 package com.tngtech.jgiven.timing;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * Helper class for managing the timers for each individual thread.
  */
 public class TimerConfig {
-    private static final ThreadLocal<Timer> currentThreadTimer = new ThreadLocal<Timer>();
-    private static final ThreadLocal<Boolean> isTimerStarted = new ThreadLocal<Boolean>();
-    protected static Logger timingLogger = LoggerFactory.getLogger(TimerConfig.class);
+    private static final ThreadLocal<Timer> currentThreadTimer = new ThreadLocal<>();
 
     /**
      * Method for creating and returning a Timer object associated with the current thread.
@@ -21,22 +16,7 @@ public class TimerConfig {
         return currentThreadTimer.get();
     }
 
-    protected static void setIsTimerStarted(boolean isTimerStarted) {
-        TimerConfig.isTimerStarted.set(isTimerStarted);
-    }
-
     protected static void resetTimer() {
         currentThreadTimer.set(null);
-    }
-
-    protected static boolean isTimerStarted() {
-        if (TimerConfig.isTimerStarted.get() == null) {
-            setIsTimerStarted(false);
-        }
-        return TimerConfig.isTimerStarted.get();
-    }
-
-    protected static void setLogger(Logger givenLogger) {
-        timingLogger = givenLogger;
     }
 }

@@ -15,19 +15,17 @@ public class ManageTimerInterceptor {
      * Helper object for seeing if current method was the first one to call finish on the scenario,
      * so we can stop the timer at the very last step.
      */
-    protected static final ThreadLocal<Boolean> wasTimerStoppedAttempted = new ThreadLocal<Boolean>();
+    protected static final ThreadLocal<Boolean> wasTimerStoppedAttempted = new ThreadLocal<>();
 
     private static void attemptToStartTimer() {
-        if (!TimerConfig.isTimerStarted()) {
+        if (!TimerConfig.getTimer().getIsTimerStarted()) {
             TimerHandler.startTimer(TimerConfig.getTimer());
-            TimerConfig.setIsTimerStarted(true);
         }
     }
 
     private static void attemptToStopTimer(boolean wasMethodTheFirstToCallFinish) {
-        if (TimerConfig.isTimerStarted() && wasMethodTheFirstToCallFinish) {
+        if (TimerConfig.getTimer().getIsTimerStarted() && wasMethodTheFirstToCallFinish) {
             TimerHandler.stopAndPrintTimer(TimerConfig.getTimer());
-            TimerConfig.setIsTimerStarted(false);
             wasTimerStoppedAttempted.set(false);
         }
     }
@@ -65,5 +63,4 @@ public class ManageTimerInterceptor {
 
         return manageTimerPrinting(callable);
     }
-
 }
