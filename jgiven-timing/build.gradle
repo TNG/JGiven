@@ -1,0 +1,36 @@
+plugins {
+    id 'java-library'
+}
+
+repositories {
+    mavenCentral()
+}
+
+description = "Module for injecting automated performance analysis for test methods"
+
+dependencies {
+    implementation project(":jgiven-core")
+    implementation("com.google.guava:guava:30.1.1-jre")
+    implementation 'net.bytebuddy:byte-buddy-gradle-plugin:1.11.6'
+    implementation 'net.bytebuddy:byte-buddy-agent:1.11.6'
+    testImplementation('com.google.guava:guava-testlib:30.1.1-jre')
+    testImplementation 'org.mockito:mockito-inline:3.11.2'
+}
+
+def generatedSourceDir = "generatedSrc/java"
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/main/java", generatedSourceDir]
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                "Premain-Class": "com.tngtech.jgiven.timing.TimerInjectorAgent"
+        )
+    }
+}

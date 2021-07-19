@@ -45,6 +45,12 @@ include ':jgiven-core',
         ':jgiven-spring-junit5',
         ':jgiven-gradle-plugin'
 
+def timingEnabled = System.getenv("JGivenTiming")
+
+if (timingEnabled) {
+    include ':jgiven-timing'
+}
+
 def release = System.env.RELEASE == "true"
 def android = System.env.ANDROID == "true"
 boolean hasAndroidSourcePath = ( System.env.ANDROID_SDK_ROOT )

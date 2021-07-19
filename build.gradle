@@ -12,6 +12,7 @@ apply plugin: 'project-report'
 
 description = 'JGiven - BDD in plain Java'
 def jacocoEnabled = !JavaVersion.current().isJava11Compatible()
+def timingEnabled = System.getenv("JGivenTiming")
 
 allprojects {
     group = 'com.tngtech.jgiven'
@@ -161,6 +162,15 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         testImplementation "org.assertj:assertj-core:$assertjVersion"
         testImplementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
         testImplementation "net.java.quickcheck:quickcheck:$quickcheckVersion"
+    }
+
+    if (timingEnabled) {
+        dependencies {
+            testImplementation project(':jgiven-timing')
+        }
+        test {
+            jvmArgs += "-javaagent:${rootProject.projectDir}/jgiven-timing/build/libs/jgiven-timing-1.0.0.jar"
+        }
     }
 
     test {
