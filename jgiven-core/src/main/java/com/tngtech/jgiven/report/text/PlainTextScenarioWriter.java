@@ -90,18 +90,18 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     @Override
     public void visit( StepModel stepModel ) {
-      if (stepModel.isFailed()&& stepModel.getNestedSteps()!=null) {
-        for (StepModel step : stepModel.getNestedSteps()) {
-          step.setParentFailed(true);
+        if( stepModel.isFailed() && stepModel.getNestedSteps() != null ) {
+            for( StepModel step : stepModel.getNestedSteps() ) {
+                step.setParentFailed( true );
+            }
         }
-      }
         printStep( stepModel, false );
         firstStep = false;
     }
 
     private void printStep( StepModel stepModel, boolean showPassed ) {
         List<Word> words = stepModel.getWords();
-       
+
         if( stepModel.isSectionTitle() ) {
             printSectionTitle( stepModel );
             return;
@@ -127,7 +127,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
             line = gray( line + " (skipped)" );
         } else if( stepModel.isFailed() ) {
             line = boldRed( line + " (failed)" );
-        } else if( showPassed || stepModel.getDepth() > 0 && stepModel.isParentFailed()) {
+        } else if( showPassed || stepModel.getDepth() > 0 && stepModel.isParentFailed() ) {
             line = green( line + " (passed)" );
         }
 

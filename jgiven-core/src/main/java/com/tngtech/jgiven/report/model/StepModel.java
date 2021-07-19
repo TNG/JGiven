@@ -69,7 +69,7 @@ public class StepModel {
      * The depth of the step.
      */
     private int depth;
-    
+
     /**
      * Indicates if the parent step has failed.
      */
@@ -236,19 +236,19 @@ public class StepModel {
     }
 
     public int getDepth() {
-      return depth;
+        return depth;
     }
 
-    public void setDepth(int depth) {
-      this.depth = depth;
+    public void setDepth( int depth ) {
+        this.depth = depth;
     }
 
     public boolean isParentFailed() {
-      return parentFailed;
+        return parentFailed;
     }
 
-    public void setParentFailed(boolean parentFailed) {
-      this.parentFailed = parentFailed;
+    public void setParentFailed( boolean parentFailed ) {
+        this.parentFailed = parentFailed;
     }
 
 }
