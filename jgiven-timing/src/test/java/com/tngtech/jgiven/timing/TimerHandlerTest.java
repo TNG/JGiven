@@ -68,7 +68,6 @@ public class TimerHandlerTest {
 
         TimerHandler.stopAndPrintTimer(timerMock);
 
-        verify(stopwatchMock, times(2)).elapsed(TimeUnit.MILLISECONDS);
         verify(loggerMock).info(TimerHandler.TIMER_STOPPED_MESSAGE, 15L, TimeUnit.MILLISECONDS);
     }
 
@@ -81,8 +80,6 @@ public class TimerHandlerTest {
 
         TimerHandler.stopAndPrintTimer(timerMock);
 
-        verify(stopwatchMock, times(1)).elapsed(TimeUnit.MILLISECONDS);
-        verify(stopwatchMock, times(1)).elapsed(TimeUnit.MICROSECONDS);
         verify(loggerMock).info(TimerHandler.TIMER_STOPPED_MESSAGE, 15L, TimeUnit.MICROSECONDS);
     }
 }
