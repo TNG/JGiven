@@ -72,16 +72,19 @@ public class Html5AttachmentGeneratorTest {
     }
 
     @Test
-    public void testFindingAndGeneratingAttachmentsInAllSteps() {
+    public void testFindingAndGeneratingAttachmentsInAllSteps() throws IOException {
         Html5AttachmentGenerator generator = new Html5AttachmentGenerator( temporaryFolderRule.getRoot() );
         File root = temporaryFolderRule.getRoot();
         generator.generateAttachments( root, generateReportModelWithAttachments() );
 
-        File parentStepFile = new File( temporaryFolderRule.getRoot().getPath() + "/parentAttachment.gif" );
-        File nestedStepFile = new File( temporaryFolderRule.getRoot().getPath() + "/nestedAttachment.gif" );
+        File parentStepFile = new File( temporaryFolderRule.getRoot().getPath() + "/attachments/testing/parentAttachment.gif" );
+        File nestedStepFile = new File( temporaryFolderRule.getRoot().getPath() + "/attachments/testing/nestedAttachment.gif" );
+        
+        Attachment writtenParentAttachment = Attachment.fromBinaryFile( parentStepFile, MediaType.GIF );
+        Attachment writtenNestedAttachment = Attachment.fromBinaryFile( nestedStepFile, MediaType.GIF );
+        assertThat( writtenParentAttachment.getContent() ).isNotNull();
+        assertThat( writtenNestedAttachment.getContent() ).isNotNull();
 
-        assertThat( parentStepFile.exists() );
-        assertThat( nestedStepFile.exists() );
     }
 
     private ReportModel generateReportModelWithAttachments() {
@@ -100,7 +103,7 @@ public class Html5AttachmentGeneratorTest {
         scenarioModel.addCase( scenarioCase );
         scenarios.add( scenarioModel );
         model.setScenarios( scenarios );
-        model.setClassName( "testFindingAndGeneratingAttachmentsInNestedSteps" );
+        model.setClassName( "testing" );
         return model;
     }
 
