@@ -142,7 +142,7 @@ Now run:
 $ mvn verify
 ----
 
-HTML reports are then generated into the `target/jgiven-reports/html` directory.
+HTML reports are then generated into the `target/jgiven-reports/html` directory. Note that the plugin relies on the existence of the JSON output, so if the property `jgiven.reports.enabled` was set to `false`, no output will be generated.
 
 ==== Gradle
 
@@ -171,6 +171,7 @@ buildscript {
 }
 
 apply plugin: "com.tngtech.jgiven.gradle-plugin"
+
 ----
 
 Now run:
@@ -180,7 +181,7 @@ Now run:
 $ gradle test jgivenTestReport
 ----
 
-HTML reports are then generated into the `build/reports/jgiven/test/html/` directory.
+HTML reports are then generated into the `build/reports/jgiven/test/html/` directory. Note that the plugin relies on the existence of the JSON output, so if the property `jgiven.reports.enabled` was set to `false`, no output will be generated.
 
 If you want that the HTML report is always generated after the tests
 have been executed, you can configure the `test` task in your Gradle
