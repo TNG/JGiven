@@ -5,6 +5,7 @@
 ##Fixed Issues
 * Refurbished the jgiven-scala example project [#619](https://github.com/TNG/JGiven/pull/619) (thanks to seblm)
 * Updated most dependencies in the project
+* Enabled printing of nested stage [#366](https://github.com/TNG/JGiven/pull/619) (thanks to laurinvesely)
 
 ## Backwards Incompatible Changes
 * JGiven-TestNG now expects you to provide a version of TestNG on the runtime classpath
