@@ -90,11 +90,16 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
 
     @Override
     public void visit( StepModel stepModel ) {
-        printStep( stepModel, 0, false );
+        if( stepModel.isFailed() && stepModel.getNestedSteps() != null ) {
+            for( StepModel step : stepModel.getNestedSteps() ) {
+                step.setParentFailed( true );
+            }
+        }
+        printStep( stepModel, false );
         firstStep = false;
     }
 
-    private void printStep( StepModel stepModel, int depth, boolean showPassed ) {
+    private void printStep( StepModel stepModel, boolean showPassed ) {
         List<Word> words = stepModel.getWords();
 
         if( stepModel.isSectionTitle() ) {
@@ -102,7 +107,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
             return;
         }
 
-        String introString = getIntroString( words, depth );
+        String introString = getIntroString( words, stepModel.getDepth() );
 
         int restSize = words.size();
         boolean printDataTable = false;
@@ -122,7 +127,7 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
             line = gray( line + " (skipped)" );
         } else if( stepModel.isFailed() ) {
             line = boldRed( line + " (failed)" );
-        } else if( showPassed ) {
+        } else if( showPassed || stepModel.getDepth() > 0 && stepModel.isParentFailed() ) {
             line = green( line + " (passed)" );
         }
 
@@ -131,8 +136,6 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
         }
 
         writer.println( line );
-
-        printNestedSteps( stepModel, depth, showPassed );
 
         if( printDataTable ) {
             writer.println();
@@ -165,12 +168,6 @@ public class PlainTextScenarioWriter extends PlainTextWriter {
             }
         }
         return intro;
-    }
-
-    private void printNestedSteps( StepModel stepModel, int depth, boolean showPassed ) {
-        for( StepModel nestedStepModel : stepModel.getNestedSteps() ) {
-            printStep( nestedStepModel, depth + 1, stepModel.getStatus() == StepStatus.FAILED || showPassed );
-        }
     }
 
     private void printDataTable( Word word ) {

@@ -63,10 +63,18 @@ public class ScenarioCaseModel {
 
     public void accept( ReportModelVisitor visitor ) {
         visitor.visit( this );
-        for( StepModel step : getSteps() ) {
-            step.accept( visitor );
-        }
+        visitStepsRecursively( visitor, getSteps(), 0 );
         visitor.visitEnd( this );
+    }
+
+    private void visitStepsRecursively( ReportModelVisitor visitor, List<StepModel> steps, int depth ) {
+        for( StepModel step : steps ) {
+            step.setDepth( depth );
+            step.accept( visitor );
+            if( !step.getNestedSteps().isEmpty() ) {
+                visitStepsRecursively( visitor, step.getNestedSteps(), depth + 1 );
+            }
+        }
     }
 
     public void addExplicitArguments( String... args ) {

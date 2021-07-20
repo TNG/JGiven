@@ -9,6 +9,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -22,6 +23,9 @@ import org.junit.rules.TemporaryFolder;
 import com.google.common.io.BaseEncoding;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
+import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.Word;
 import org.junit.runner.RunWith;
@@ -65,6 +69,42 @@ public class Html5AttachmentGeneratorTest {
         BufferedImage after = ImageIO.read( new ByteArrayInputStream( BaseEncoding.base64().decode( writtenAttachment.getContent() ) ) );
         assertThat( after.getWidth() ).isEqualTo(MINIMAL_THUMBNAIL_SIZE);
         assertThat( after.getHeight() ).isEqualTo(MINIMAL_THUMBNAIL_SIZE);
+    }
+
+    @Test
+    public void testFindingAndGeneratingAttachmentsInAllSteps() throws IOException {
+        Html5AttachmentGenerator generator = new Html5AttachmentGenerator( temporaryFolderRule.getRoot() );
+        File root = temporaryFolderRule.getRoot();
+        generator.generateAttachments( root, generateReportModelWithAttachments() );
+
+        File parentStepFile = new File( temporaryFolderRule.getRoot().getPath() + "/attachments/testing/parentAttachment.gif" );
+        File nestedStepFile = new File( temporaryFolderRule.getRoot().getPath() + "/attachments/testing/nestedAttachment.gif" );
+        
+        Attachment writtenParentAttachment = Attachment.fromBinaryFile( parentStepFile, MediaType.GIF );
+        Attachment writtenNestedAttachment = Attachment.fromBinaryFile( nestedStepFile, MediaType.GIF );
+        assertThat( writtenParentAttachment.getContent() ).isNotNull();
+        assertThat( writtenNestedAttachment.getContent() ).isNotNull();
+
+    }
+
+    private ReportModel generateReportModelWithAttachments() {
+        Attachment nestedAttachment = Attachment.fromBinaryBytes( BINARY_SAMPLE, MediaType.GIF ).withFileName( "nestedAttachment" );
+        Attachment parentAttachment = Attachment.fromBinaryBytes( BINARY_SAMPLE, MediaType.GIF ).withFileName( "parentAttachment" );
+        StepModel parentStep = new StepModel( "test", Lists.<Word>newArrayList() );
+        StepModel nestedStep = new StepModel( "test", Lists.<Word>newArrayList() );
+        nestedStep.addAttachment( nestedAttachment );
+        parentStep.addNestedStep( nestedStep );
+        parentStep.addAttachment( parentAttachment );
+        ReportModel model = new ReportModel();
+        ArrayList<ScenarioModel> scenarios = new ArrayList<ScenarioModel>();
+        ScenarioModel scenarioModel = new ScenarioModel();
+        ScenarioCaseModel scenarioCase = new ScenarioCaseModel();
+        scenarioCase.addStep( parentStep );
+        scenarioModel.addCase( scenarioCase );
+        scenarios.add( scenarioModel );
+        model.setScenarios( scenarios );
+        model.setClassName( "testing" );
+        return model;
     }
 
     @Test
