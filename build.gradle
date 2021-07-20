@@ -62,7 +62,7 @@ subprojects {
         junitParamsVersion = '1.1.1'
         testngVersion = '7.4.0'
         assertjVersion = '3.20.2'
-        slf4jVersion = '1.7.31'
+        slf4jVersion = '1.7.32'
         bytebuddyVersion = '1.11.6'
         paranamerVersion = '2.8'
         jansiVersion = '1.18'
