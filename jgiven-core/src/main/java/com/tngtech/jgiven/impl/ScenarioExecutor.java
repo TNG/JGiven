@@ -136,10 +136,10 @@ public class ScenarioExecutor {
 
         @Override
         public void enterStage(Object parentStage, Object childStage) throws Throwable {
-            String lastExecutedClassName = getLastExecutedClassNameOrGiven();
-            String stageName = getStageNameOrLastExecClassName(childStage, lastExecutedClassName);
+            String lastExecutedClassName = getLastExecutedClassNameOrNull();
+            String stageName = getStageNameOrGiven(childStage, lastExecutedClassName);
 
-            if (parentStage == childStage || (lastExecutedClassName.equals(stageName) && childStage == currentTopLevelStage)) {
+            if (parentStage == childStage || (stageName.equals(lastExecutedClassName) && childStage == currentTopLevelStage)) {
                 return;
             }
 
@@ -266,15 +266,14 @@ public class ScenarioExecutor {
         return stageState;
     }
 
-    private String getStageNameOrLastExecClassName(Object stage, String lastExecutedClassName) throws NoSuchFieldException, IllegalAccessException {
+    private String getStageNameOrGiven(Object stage, String lastExecutedClassName) throws NoSuchFieldException, IllegalAccessException {
         String name = SingleStageNameFieldGetterSetter.getStageName(stage);
 
-        return name == null ? lastExecutedClassName : name;
+        return name == null ? "GIVEN" : name;
     }
 
-    protected String getLastExecutedClassNameOrGiven() {
-        String lastExecutedClassName = lastExecutedStageClassName.get();
-        return lastExecutedClassName == null ? "GIVEN" : lastExecutedClassName;
+    protected String getLastExecutedClassNameOrNull() {
+        return lastExecutedStageClassName.get();
     }
 
     protected void setLastExecutedStageClassName(String newExecutedStageClassName) {
