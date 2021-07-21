@@ -15,12 +15,7 @@ public class SimpleStageRepetitionUseTest
     @ScenarioStage
     DontRepeatLifecycleMethods dontRepeatLifecycleMethods;
 
-    /* FIXME:
-    We use the change of a stage class to detect that there is a new stage.
-    Hence, repeatedly using the same stage does not work!
-    */
     @Test
-    @Ignore("Feature not implemented yet")
     public void lifecycle_methods_of_a_shared_stage_are_called_individually() {
         given().a_simple_stage_containing_before_and_after_methods();
         when().the_test_is_executed();
@@ -29,6 +24,7 @@ public class SimpleStageRepetitionUseTest
     }
 
     @Test
+    @Ignore //needs fixing for repeatable methods
     public void non_repeatable_methods_are_called_exactly_once() {
         dontRepeatLifecycleMethods.given().a_simple_stage_containing_before_and_after_methods();
         dontRepeatLifecycleMethods.when().the_test_is_executed();
