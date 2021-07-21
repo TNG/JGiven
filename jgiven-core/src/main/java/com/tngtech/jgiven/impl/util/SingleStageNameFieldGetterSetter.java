@@ -16,7 +16,10 @@ public class SingleStageNameFieldGetterSetter {
     }
 
     public static void setStageName(Object stage, Method method) {
-        setStageName(stage, getMethodName(method));
+        String methodName = getMethodName(method);
+        if (methodName != null) {
+            setStageName(stage, methodName);
+        }
     }
 
     private static String getMethodName(Method method) {
