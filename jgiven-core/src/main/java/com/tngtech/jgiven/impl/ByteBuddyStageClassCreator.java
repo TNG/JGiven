@@ -16,6 +16,7 @@ import net.bytebuddy.matcher.ElementMatchers;
 public class ByteBuddyStageClassCreator implements StageClassCreator {
 
     public static final String INTERCEPTOR_FIELD_NAME = "__jgiven_stepInterceptor";
+    public static final String STAGE_NAME_FIELD_NAME = "__jgiven_stageName";
     public static final String SETTER_NAME = "__jgiven_setStepInterceptor";
 
     public interface StepInterceptorGetterSetter {
@@ -35,6 +36,7 @@ public class ByteBuddyStageClassCreator implements StageClassCreator {
             .subclass( stageClass, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING )
             .implement( StageInterceptorInternal.class )
             .defineField( INTERCEPTOR_FIELD_NAME, StepInterceptor.class )
+            .defineField(STAGE_NAME_FIELD_NAME, String.class)
             .method( named(SETTER_NAME) )
                 .intercept(
                     MethodDelegation.withDefaultConfiguration()

@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.impl.intercept;
 
 import com.tngtech.jgiven.impl.ByteBuddyStageClassCreator.StepInterceptorGetterSetter;
+import com.tngtech.jgiven.impl.util.SingleStageNameFieldGetterSetter;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.BindingPriority;
 import net.bytebuddy.implementation.bind.annotation.DefaultCall;
@@ -29,6 +30,7 @@ public class ByteBuddyMethodInterceptor {
             throws Throwable{
 
         StepInterceptor interceptor = (StepInterceptor) stepInterceptorGetter.getValue();
+        SingleStageNameFieldGetterSetter.setStageName(receiver, method);
 
         if( interceptor == null ) {
             return zuper.call();
@@ -45,6 +47,7 @@ public class ByteBuddyMethodInterceptor {
             throws Throwable{
 
         StepInterceptor interceptor = (StepInterceptor) stepInterceptorGetter.getValue();
+        SingleStageNameFieldGetterSetter.setStageName(receiver, method);
 
         if( interceptor == null ) {
             return zuper.call();
@@ -60,6 +63,7 @@ public class ByteBuddyMethodInterceptor {
             throws Throwable{
         // this intercepted method does not have a non-abstract super method
         StepInterceptor interceptor = (StepInterceptor) stepInterceptorGetter.getValue();
+        SingleStageNameFieldGetterSetter.setStageName(receiver, method);
 
         if( interceptor == null ) {
             return null;
