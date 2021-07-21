@@ -5,13 +5,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.Properties;
 
 /**
  * Helper class to access all system properties to configure JGiven.
  */
 public class Config {
     private static final Logger log = LoggerFactory.getLogger( Config.class );
+    private static final Properties CONFIG_FILE_PROPERTIES = loadConfigFileProperties();
     private static final Config INSTANCE = new Config();
 
     private static final String TRUE = "true";
@@ -23,6 +30,8 @@ public class Config {
     private static final String JGIVEN_REPORT_TEXT_COLOR = "jgiven.report.text.color";
     private static final String JGIVEN_FILTER_STACK_TRACE = "jgiven.report.filterStackTrace";
     private static final String JGIVEN_REPORT_DRY_RUN = "jgiven.report.dry-run";
+    private static final String JGIVEN_CONFIG_PATH = "jgiven.config.path";
+    private static final String JGIVEN_CONFIG_CHARSET = "jgiven.config.charset";
 
     public static Config config(){
         return INSTANCE;
@@ -34,8 +43,30 @@ public class Config {
         }
     }
 
+    private static Properties loadConfigFileProperties() {
+        String path = System.getProperty(JGIVEN_CONFIG_PATH, "jgiven.properties");
+        String charset = System.getProperty(JGIVEN_CONFIG_CHARSET, "UTF-8");
+        Properties properties = new Properties();
+        try {
+            try (Reader reader = Files.newBufferedReader(Paths.get(path), Charset.forName(charset))) {
+                properties.load(reader);
+            }
+        } catch (IOException e) {
+            log.debug("config file " + path + " not loaded: " + e.getMessage());
+        }
+        return properties;
+    }
+
+    private String resolveProperty(String name) {
+        return resolveProperty(name, null);
+    }
+
+    private String resolveProperty(String name, String defaultValue) {
+        return System.getProperty(name, CONFIG_FILE_PROPERTIES.getProperty(name, defaultValue));
+    }
+
     public Optional<File> getReportDir(){
-        String reportDirName = System.getProperty( JGIVEN_REPORT_DIR );
+        String reportDirName = resolveProperty( JGIVEN_REPORT_DIR );
         if( reportDirName == null ) {
             if( System.getProperty( "surefire.test.class.path" ) != null ) {
                 reportDirName = "target/jgiven-reports/json";
@@ -58,7 +89,7 @@ public class Config {
     }
 
     public boolean isReportEnabled(){
-        return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_REPORT_ENABLED, TRUE ) );
+        return TRUE.equalsIgnoreCase( resolveProperty( JGIVEN_REPORT_ENABLED, TRUE ) );
     }
 
     public void setReportEnabled( boolean enabled ){
@@ -66,11 +97,11 @@ public class Config {
     }
 
     public ConfigValue textColorEnabled(){
-        return ConfigValue.fromString( System.getProperty( JGIVEN_REPORT_TEXT_COLOR, AUTO ) );
+        return ConfigValue.fromString( resolveProperty( JGIVEN_REPORT_TEXT_COLOR, AUTO ) );
     }
 
     public boolean textReport(){
-        return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_REPORT_TEXT, TRUE ) );
+        return TRUE.equalsIgnoreCase( resolveProperty( JGIVEN_REPORT_TEXT, TRUE ) );
     }
 
     public void setTextReport( boolean b ){
@@ -78,7 +109,7 @@ public class Config {
     }
 
     public boolean filterStackTrace(){
-        return TRUE.equalsIgnoreCase( System.getProperty( JGIVEN_FILTER_STACK_TRACE, TRUE ) );
+        return TRUE.equalsIgnoreCase( resolveProperty( JGIVEN_FILTER_STACK_TRACE, TRUE ) );
     }
 
     public void setReportDir( File reportDir ){
