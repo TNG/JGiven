@@ -21,6 +21,7 @@ import com.tngtech.jgiven.impl.intercept.StageTransitionHandler;
 import com.tngtech.jgiven.impl.intercept.StepInterceptorImpl;
 import com.tngtech.jgiven.impl.util.FieldCache;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
+import com.tngtech.jgiven.impl.util.SingleStageNameFieldGetterSetter;
 import com.tngtech.jgiven.integration.CanWire;
 import com.tngtech.jgiven.report.model.InvocationMode;
 import com.tngtech.jgiven.report.model.NamedArgument;
@@ -50,6 +51,7 @@ public class ScenarioExecutor {
     private Object currentTopLevelStage;
     private State state = State.INIT;
     private boolean beforeScenarioMethodsExecuted;
+    private static final ThreadLocal<String> lastExecutedStageClassName = new ThreadLocal<>();
 
     /**
      * Whether life cycle methods should be executed.
@@ -134,10 +136,14 @@ public class ScenarioExecutor {
 
         @Override
         public void enterStage(Object parentStage, Object childStage) throws Throwable {
-            if (parentStage == childStage || currentTopLevelStage == childStage) { // NOSONAR: reference comparison OK
+            String lastExecutedClassName = getLastExecutedClassNameOrEmpty();
+            String stageName = getStageNameOrGiven(childStage);
+
+            if (parentStage == childStage || (stageName.equals(lastExecutedClassName) && childStage == currentTopLevelStage)) {
                 return;
             }
 
+            setLastExecutedStageClassName(stageName);
             // if currentStage == null, this means that no stage at
             // all has been executed, thus we call all beforeScenarioMethods
             if (currentTopLevelStage == null) {
@@ -260,6 +266,20 @@ public class ScenarioExecutor {
         return stageState;
     }
 
+    private String getStageNameOrGiven(Object stage) throws NoSuchFieldException, IllegalAccessException {
+        String name = SingleStageNameFieldGetterSetter.getStageName(stage);
+
+        return name == null ? "GIVEN" : name;
+    }
+
+    protected String getLastExecutedClassNameOrEmpty() {
+        String lastExecutedClassName = lastExecutedStageClassName.get();
+        return lastExecutedClassName == null ? "" : "GIVEN";
+    }
+
+    protected void setLastExecutedStageClassName(String newExecutedStageClassName) {
+        lastExecutedStageClassName.set(newExecutedStageClassName);
+    }
 
     private void ensureBeforeScenarioMethodsAreExecuted() throws Throwable {
         if (state != State.INIT) {

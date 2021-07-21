@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.impl;
 
+import com.tngtech.jgiven.impl.util.SingleStageNameFieldGetterSetter;
+
 /**
  * A default scenario implementation that takes three type arguments,
  * one for each stage.
@@ -30,14 +32,17 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
     }
 
     public GIVEN getGivenStage() {
+        SingleStageNameFieldGetterSetter.setStageName(givenStage, "GIVEN");
         return givenStage;
     }
 
     public WHEN getWhenStage() {
+        SingleStageNameFieldGetterSetter.setStageName(whenStage, "WHEN");
         return whenStage;
     }
 
     public THEN getThenStage() {
+        SingleStageNameFieldGetterSetter.setStageName(thenStage, "THEN");
         return thenStage;
     }
 
@@ -134,5 +139,4 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
         addIntroWord( translatedThen );
         return getThenStage();
     }
-
 }
