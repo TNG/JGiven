@@ -240,15 +240,6 @@ public class ReflectionUtil {
         }
     }
 
-    public static void setField(String fieldName, Object object, Object value, String errorDescription) {
-        try {
-            setField(object.getClass().getDeclaredField(fieldName), object, value, errorDescription);
-        } catch (NoSuchFieldException e) {
-            log.debug(
-                    format("Not able to access field '%s'." + errorDescription, fieldName), e);
-        }
-    }
-
     public static void makeAccessible(AccessibleObject object, String errorDescription) {
         try {
             object.setAccessible(true);
