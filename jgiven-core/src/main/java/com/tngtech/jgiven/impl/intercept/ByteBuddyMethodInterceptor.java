@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.impl.intercept;
 
+import com.tngtech.jgiven.base.StageNameWrapper;
 import com.tngtech.jgiven.impl.ByteBuddyStageClassCreator.StepInterceptorGetterSetter;
-import com.tngtech.jgiven.impl.util.SingleStageNameFieldGetterSetter;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.BindingPriority;
 import net.bytebuddy.implementation.bind.annotation.DefaultCall;
@@ -29,7 +29,7 @@ public class ByteBuddyMethodInterceptor {
             throws Throwable {
 
         StepInterceptor interceptor = (StepInterceptor) stepInterceptorGetter.getValue();
-        SingleStageNameFieldGetterSetter.setStageName(receiver, method);
+        updateStageNameWrapper(receiver, method);
 
         if (interceptor == null) {
             return zuper.call();
@@ -46,7 +46,7 @@ public class ByteBuddyMethodInterceptor {
             throws Throwable {
 
         StepInterceptor interceptor = (StepInterceptor) stepInterceptorGetter.getValue();
-        SingleStageNameFieldGetterSetter.setStageName(receiver, method);
+        updateStageNameWrapper(receiver, method);
 
         if (interceptor == null) {
             return zuper.call();
@@ -62,12 +62,27 @@ public class ByteBuddyMethodInterceptor {
             throws Throwable {
         // this intercepted method does not have a non-abstract super method
         StepInterceptor interceptor = (StepInterceptor) stepInterceptorGetter.getValue();
-        SingleStageNameFieldGetterSetter.setStageName(receiver, method);
+        updateStageNameWrapper(receiver, method);
 
         if (interceptor == null) {
             return null;
         }
 
         return interceptor.intercept(receiver, method, parameters, () -> null);
+    }
+
+    private void updateStageNameWrapper(Object stageObject, Method method) {
+        StageNameWrapper methodNameWrapper = getMethodNameWrapper(method);
+        if (methodNameWrapper != null) {
+            ((StageNameInternal) stageObject).__jgiven_setStageNameWrapper(methodNameWrapper);
+        }
+    }
+
+    private StageNameWrapper getMethodNameWrapper(Method method) {
+        String methodName = method.getName();
+        if (methodName.equals("given") || methodName.equals("when") || methodName.equals("then")) {
+            return new StageNameWrapper(methodName.toUpperCase());
+        }
+        return null;
     }
 }
