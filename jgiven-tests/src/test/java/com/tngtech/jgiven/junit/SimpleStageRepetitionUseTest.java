@@ -6,7 +6,6 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ScenarioStage;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class SimpleStageRepetitionUseTest
@@ -24,13 +23,12 @@ public class SimpleStageRepetitionUseTest
     }
 
     @Test
-    @Ignore //needs fixing for repeatable methods
     public void non_repeatable_methods_are_called_exactly_once() {
         dontRepeatLifecycleMethods.given().a_simple_stage_containing_before_and_after_methods();
         dontRepeatLifecycleMethods.when().the_test_is_executed();
         dontRepeatLifecycleMethods.then().the_before_stage_was_called_$_times(1).and()
-            .the_after_stage_method_was_called_$_times(0);
-    }
+            .the_after_stage_method_was_called_$_times(1); // non repeatable before and after stage methods
+    }                                                      // are executed only in the first stage (given)
 
     static class DontRepeatLifecycleMethods extends AllTestSteps<DontRepeatLifecycleMethods> {
         @BeforeStage
