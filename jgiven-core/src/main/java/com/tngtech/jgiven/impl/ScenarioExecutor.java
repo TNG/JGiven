@@ -11,14 +11,12 @@ import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.attachment.Attachment;
+import com.tngtech.jgiven.base.StageNameWrapper;
 import com.tngtech.jgiven.exception.FailIfPassedException;
 import com.tngtech.jgiven.exception.JGivenMissingRequiredScenarioStateException;
 import com.tngtech.jgiven.exception.JGivenUserException;
 import com.tngtech.jgiven.impl.inject.ValueInjector;
-import com.tngtech.jgiven.impl.intercept.NoOpScenarioListener;
-import com.tngtech.jgiven.impl.intercept.ScenarioListener;
-import com.tngtech.jgiven.impl.intercept.StageTransitionHandler;
-import com.tngtech.jgiven.impl.intercept.StepInterceptorImpl;
+import com.tngtech.jgiven.impl.intercept.*;
 import com.tngtech.jgiven.impl.util.FieldCache;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.integration.CanWire;
@@ -27,11 +25,8 @@ import com.tngtech.jgiven.report.model.NamedArgument;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +45,7 @@ public class ScenarioExecutor {
     private Object currentTopLevelStage;
     private State state = State.INIT;
     private boolean beforeScenarioMethodsExecuted;
+    private StageNameWrapper lastExecutedStageNameWrapper = null;
 
     /**
      * Whether life cycle methods should be executed.
@@ -134,10 +130,14 @@ public class ScenarioExecutor {
 
         @Override
         public void enterStage(Object parentStage, Object childStage) throws Throwable {
-            if (parentStage == childStage || currentTopLevelStage == childStage) { // NOSONAR: reference comparison OK
+            StageNameWrapper lastExecutedStageNameWrapper = getLastExecutedStageNameWrapper();
+            StageNameWrapper stageNameWrapper = getStageNameWrapper(childStage, lastExecutedStageNameWrapper);
+
+            if (parentStage == childStage || (Objects.equals(stageNameWrapper, lastExecutedStageNameWrapper) && childStage == currentTopLevelStage)) {
                 return;
             }
 
+            setLastExecutedStageNameWrapper(stageNameWrapper);
             // if currentStage == null, this means that no stage at
             // all has been executed, thus we call all beforeScenarioMethods
             if (currentTopLevelStage == null) {
@@ -260,6 +260,22 @@ public class ScenarioExecutor {
         return stageState;
     }
 
+    protected StageNameWrapper getStageNameWrapper(Object stage, StageNameWrapper lastExecutedStageNameWrapper) {
+        StageNameWrapper stageNameWrapper = ((StageNameInternal) stage).__jgiven_getStageNameWrapper();
+
+        return stageNameWrapper == null ? lastExecutedStageNameWrapper : stageNameWrapper;
+    }
+
+    protected StageNameWrapper getLastExecutedStageNameWrapper() {
+        return lastExecutedStageNameWrapper;
+    }
+
+    protected void setLastExecutedStageNameWrapper(StageNameWrapper newExecutedStageNameWrapper) {
+        if (newExecutedStageNameWrapper == null) {
+            return;
+        }
+        lastExecutedStageNameWrapper = newExecutedStageNameWrapper;
+    }
 
     private void ensureBeforeScenarioMethodsAreExecuted() throws Throwable {
         if (state != State.INIT) {

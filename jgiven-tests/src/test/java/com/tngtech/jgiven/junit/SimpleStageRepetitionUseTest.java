@@ -6,7 +6,6 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ScenarioStage;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class SimpleStageRepetitionUseTest
@@ -15,12 +14,7 @@ public class SimpleStageRepetitionUseTest
     @ScenarioStage
     DontRepeatLifecycleMethods dontRepeatLifecycleMethods;
 
-    /* FIXME:
-    We use the change of a stage class to detect that there is a new stage.
-    Hence, repeatedly using the same stage does not work!
-    */
     @Test
-    @Ignore("Feature not implemented yet")
     public void lifecycle_methods_of_a_shared_stage_are_called_individually() {
         given().a_simple_stage_containing_before_and_after_methods();
         when().the_test_is_executed();
@@ -33,8 +27,8 @@ public class SimpleStageRepetitionUseTest
         dontRepeatLifecycleMethods.given().a_simple_stage_containing_before_and_after_methods();
         dontRepeatLifecycleMethods.when().the_test_is_executed();
         dontRepeatLifecycleMethods.then().the_before_stage_was_called_$_times(1).and()
-            .the_after_stage_method_was_called_$_times(0);
-    }
+            .the_after_stage_method_was_called_$_times(1); // non repeatable before and after stage methods
+    }                                                      // are executed only in the first stage (given)
 
     static class DontRepeatLifecycleMethods extends AllTestSteps<DontRepeatLifecycleMethods> {
         @BeforeStage
