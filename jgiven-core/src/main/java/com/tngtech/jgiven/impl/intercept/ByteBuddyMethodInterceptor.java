@@ -18,57 +18,56 @@ import static com.tngtech.jgiven.impl.ByteBuddyStageClassCreator.INTERCEPTOR_FIE
 
 /**
  * StepInterceptorImpl that uses ByteBuddy Method interceptor with annotations for intercepting JGiven methods
- *
  */
 public class ByteBuddyMethodInterceptor {
 
     @RuntimeType
-    @BindingPriority( BindingPriority.DEFAULT * 3 )
-    public Object interceptSuper( @SuperCall final Callable<?> zuper, @This final Object receiver, @Origin Method method,
-            @AllArguments final Object[] parameters,
-            @FieldProxy( INTERCEPTOR_FIELD_NAME ) StepInterceptorGetterSetter stepInterceptorGetter )
-            throws Throwable{
+    @BindingPriority(BindingPriority.DEFAULT * 3)
+    public Object interceptSuper(@SuperCall final Callable<?> zuper, @This final Object receiver, @Origin Method method,
+                                 @AllArguments final Object[] parameters,
+                                 @FieldProxy(INTERCEPTOR_FIELD_NAME) StepInterceptorGetterSetter stepInterceptorGetter)
+            throws Throwable {
 
         StepInterceptor interceptor = (StepInterceptor) stepInterceptorGetter.getValue();
         SingleStageNameFieldGetterSetter.setStageName(receiver, method);
 
-        if( interceptor == null ) {
+        if (interceptor == null) {
             return zuper.call();
         }
 
-        return interceptor.intercept( receiver, method, parameters, zuper::call );
+        return interceptor.intercept(receiver, method, parameters, zuper::call);
     }
 
     @RuntimeType
-    @BindingPriority( BindingPriority.DEFAULT * 2 )
-    public Object interceptDefault( @DefaultCall final Callable<?> zuper, @This final Object receiver, @Origin Method method,
-            @AllArguments final Object[] parameters,
-            @FieldProxy( INTERCEPTOR_FIELD_NAME ) StepInterceptorGetterSetter stepInterceptorGetter )
-            throws Throwable{
+    @BindingPriority(BindingPriority.DEFAULT * 2)
+    public Object interceptDefault(@DefaultCall final Callable<?> zuper, @This final Object receiver, @Origin Method method,
+                                   @AllArguments final Object[] parameters,
+                                   @FieldProxy(INTERCEPTOR_FIELD_NAME) StepInterceptorGetterSetter stepInterceptorGetter)
+            throws Throwable {
 
         StepInterceptor interceptor = (StepInterceptor) stepInterceptorGetter.getValue();
         SingleStageNameFieldGetterSetter.setStageName(receiver, method);
 
-        if( interceptor == null ) {
+        if (interceptor == null) {
             return zuper.call();
         }
 
-        return interceptor.intercept( receiver, method, parameters, zuper::call );
+        return interceptor.intercept(receiver, method, parameters, zuper::call);
     }
 
     @RuntimeType
-    public Object intercept( @This final Object receiver, @Origin final Method method,
-            @AllArguments final Object[] parameters,
-            @FieldProxy( INTERCEPTOR_FIELD_NAME ) StepInterceptorGetterSetter stepInterceptorGetter )
-            throws Throwable{
+    public Object intercept(@This final Object receiver, @Origin final Method method,
+                            @AllArguments final Object[] parameters,
+                            @FieldProxy(INTERCEPTOR_FIELD_NAME) StepInterceptorGetterSetter stepInterceptorGetter)
+            throws Throwable {
         // this intercepted method does not have a non-abstract super method
         StepInterceptor interceptor = (StepInterceptor) stepInterceptorGetter.getValue();
         SingleStageNameFieldGetterSetter.setStageName(receiver, method);
 
-        if( interceptor == null ) {
+        if (interceptor == null) {
             return null;
         }
 
-        return interceptor.intercept( receiver, method, parameters, () -> null );
+        return interceptor.intercept(receiver, method, parameters, () -> null);
     }
 }
