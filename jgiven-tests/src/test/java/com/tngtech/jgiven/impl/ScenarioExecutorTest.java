@@ -1,25 +1,39 @@
 package com.tngtech.jgiven.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.JGivenTestConfiguration;
+import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
+import com.tngtech.jgiven.base.StageNameWrapper;
 import com.tngtech.jgiven.impl.ScenarioExecutorTest.TestSteps;
+import com.tngtech.jgiven.impl.intercept.StageNameInternal;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.tags.FeatureStepParameters;
 import com.tngtech.jgiven.tags.Issue;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 
 @RunWith(DataProviderRunner.class)
 @JGivenConfiguration(JGivenTestConfiguration.class)
 public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
+    @Mock
+    Object mockedStageObject;
+
+    @Before
+    public void setup() {
+        mockedStageObject = mock(new ByteBuddyStageClassCreator().createStageClass(Stage.class));
+    }
 
     @DataProvider
     public static Object[][] primitiveArrays() {
@@ -42,6 +56,49 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
     }
 
     @Test
+    public void set_last_executed_stage_sets_to_the_given_object_if_not_null() {
+        ScenarioExecutor simpleScenarioExecutorObject = new ScenarioExecutor();
+        StageNameWrapper stageNameWrapper = new StageNameWrapper("GIVEN");
+
+        simpleScenarioExecutorObject.setLastExecutedStageNameWrapper(stageNameWrapper);
+
+        assertThat(simpleScenarioExecutorObject.getLastExecutedStageNameWrapper()).isSameAs(stageNameWrapper);
+    }
+
+    @Test
+    public void set_last_executed_stage_does_not_set_to_the_given_object_if_null() {
+        ScenarioExecutor simpleScenarioExecutorObject = new ScenarioExecutor();
+        StageNameWrapper stageNameWrapper = new StageNameWrapper("GIVEN");
+        simpleScenarioExecutorObject.setLastExecutedStageNameWrapper(stageNameWrapper);
+
+        simpleScenarioExecutorObject.setLastExecutedStageNameWrapper(null);
+
+        assertThat(simpleScenarioExecutorObject.getLastExecutedStageNameWrapper()).isSameAs(stageNameWrapper);
+    }
+
+    @Test
+    public void get_stage_name_wrapper_returns_a_new_stage_name_if_not_null() {
+        ScenarioExecutor simpleScenarioExecutorObject = new ScenarioExecutor();
+        StageNameWrapper stageNameWrapper = new StageNameWrapper("GIVEN");
+
+        doReturn(stageNameWrapper).when((StageNameInternal) mockedStageObject).__jgiven_getStageNameWrapper();
+
+        assertThat(simpleScenarioExecutorObject
+                .getStageNameWrapper(mockedStageObject, null)).isSameAs(stageNameWrapper);
+    }
+
+    @Test
+    public void get_stage_name_wrapper_returns_the_last_executed_wrapper_if_given_wrapper_null() {
+        ScenarioExecutor simpleScenarioExecutorObject = new ScenarioExecutor();
+        StageNameWrapper stageNameWrapper = new StageNameWrapper("GIVEN");
+
+        doReturn(null).when((StageNameInternal) mockedStageObject).__jgiven_getStageNameWrapper();
+
+        assertThat(simpleScenarioExecutorObject
+                .getStageNameWrapper(mockedStageObject, stageNameWrapper)).isSameAs(stageNameWrapper);
+    }
+
+    @Test
     @UseDataProvider("primitiveArrays")
     @Issue("#1")
     @FeatureStepParameters
@@ -60,6 +117,10 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
         }
 
         public void some_stage_with_method_called_during_construction() {
+        }
+
+        public void a_scenario_executor_object() {
+
         }
 
         public void a_step_method_with_a_primitive_$_array_$_as_parameter(String type, Object array) {

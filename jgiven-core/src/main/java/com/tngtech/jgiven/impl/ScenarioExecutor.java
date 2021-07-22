@@ -260,7 +260,7 @@ public class ScenarioExecutor {
         return stageState;
     }
 
-    private StageNameWrapper getStageNameWrapper(Object stage, StageNameWrapper lastExecutedStageNameWrapper) {
+    protected StageNameWrapper getStageNameWrapper(Object stage, StageNameWrapper lastExecutedStageNameWrapper) {
         StageNameWrapper stageNameWrapper = ((StageNameInternal) stage).__jgiven_getStageNameWrapper();
 
         return stageNameWrapper == null ? lastExecutedStageNameWrapper : stageNameWrapper;
