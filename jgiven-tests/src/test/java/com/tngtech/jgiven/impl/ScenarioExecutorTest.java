@@ -11,7 +11,7 @@ import com.tngtech.jgiven.JGivenTestConfiguration;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
-import com.tngtech.jgiven.base.StageNameWrapper;
+import com.tngtech.jgiven.base.StageName;
 import com.tngtech.jgiven.impl.ScenarioExecutorTest.TestSteps;
 import com.tngtech.jgiven.impl.intercept.StageNameInternal;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
@@ -57,45 +57,45 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
 
     @Test
     public void set_last_executed_stage_sets_to_the_given_object_if_not_null() {
-        ScenarioExecutor simpleScenarioExecutorObject = new ScenarioExecutor();
-        StageNameWrapper stageNameWrapper = new StageNameWrapper("GIVEN");
+        ScenarioExecutor scenarioExecutor = new ScenarioExecutor();
+        StageName stageName = new StageName("GIVEN");
 
-        simpleScenarioExecutorObject.setLastExecutedStageNameWrapper(stageNameWrapper);
+        scenarioExecutor.setLastExecutedStageNameWrapper(stageName);
 
-        assertThat(simpleScenarioExecutorObject.getLastExecutedStageNameWrapper()).isSameAs(stageNameWrapper);
+        assertThat(scenarioExecutor.getLastExecutedStageNameWrapper()).isSameAs(stageName);
     }
 
     @Test
     public void set_last_executed_stage_does_not_set_to_the_given_object_if_null() {
-        ScenarioExecutor simpleScenarioExecutorObject = new ScenarioExecutor();
-        StageNameWrapper stageNameWrapper = new StageNameWrapper("GIVEN");
-        simpleScenarioExecutorObject.setLastExecutedStageNameWrapper(stageNameWrapper);
+        ScenarioExecutor scenarioExecutor = new ScenarioExecutor();
+        StageName stageName = new StageName("GIVEN");
+        scenarioExecutor.setLastExecutedStageNameWrapper(stageName);
 
-        simpleScenarioExecutorObject.setLastExecutedStageNameWrapper(null);
+        scenarioExecutor.setLastExecutedStageNameWrapper(null);
 
-        assertThat(simpleScenarioExecutorObject.getLastExecutedStageNameWrapper()).isSameAs(stageNameWrapper);
+        assertThat(scenarioExecutor.getLastExecutedStageNameWrapper()).isSameAs(stageName);
     }
 
     @Test
     public void get_stage_name_wrapper_returns_a_new_stage_name_if_not_null() {
-        ScenarioExecutor simpleScenarioExecutorObject = new ScenarioExecutor();
-        StageNameWrapper stageNameWrapper = new StageNameWrapper("GIVEN");
+        ScenarioExecutor scenarioExecutor = new ScenarioExecutor();
+        StageName stageName = new StageName("GIVEN");
 
-        doReturn(stageNameWrapper).when((StageNameInternal) mockedStageObject).__jgiven_getStageNameWrapper();
+        doReturn(stageName).when((StageNameInternal) mockedStageObject).__jgiven_getStageNameWrapper();
 
-        assertThat(simpleScenarioExecutorObject
-                .getStageNameWrapper(mockedStageObject, null)).isSameAs(stageNameWrapper);
+        assertThat(scenarioExecutor
+                .getStageNameWrapper(mockedStageObject, null)).isSameAs(stageName);
     }
 
     @Test
     public void get_stage_name_wrapper_returns_the_last_executed_wrapper_if_given_wrapper_null() {
-        ScenarioExecutor simpleScenarioExecutorObject = new ScenarioExecutor();
-        StageNameWrapper stageNameWrapper = new StageNameWrapper("GIVEN");
+        ScenarioExecutor scenarioExecutor = new ScenarioExecutor();
+        StageName stageName = new StageName("GIVEN");
 
         doReturn(null).when((StageNameInternal) mockedStageObject).__jgiven_getStageNameWrapper();
 
-        assertThat(simpleScenarioExecutorObject
-                .getStageNameWrapper(mockedStageObject, stageNameWrapper)).isSameAs(stageNameWrapper);
+        assertThat(scenarioExecutor
+                .getStageNameWrapper(mockedStageObject, stageName)).isSameAs(stageName);
     }
 
     @Test

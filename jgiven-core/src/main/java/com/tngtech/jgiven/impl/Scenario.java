@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.impl;
 
-import com.tngtech.jgiven.base.StageNameWrapper;
+import com.tngtech.jgiven.base.StageName;
 import com.tngtech.jgiven.impl.intercept.StageNameInternal;
 
 /**
@@ -33,17 +33,17 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
     }
 
     public GIVEN getGivenStage() {
-        ((StageNameInternal) givenStage).__jgiven_setStageNameWrapper(new StageNameWrapper("GIVEN"));
+        ((StageNameInternal) givenStage).__jgiven_setStageNameWrapper(new StageName("GIVEN"));
         return givenStage;
     }
 
     public WHEN getWhenStage() {
-        ((StageNameInternal) whenStage).__jgiven_setStageNameWrapper(new StageNameWrapper("WHEN"));
+        ((StageNameInternal) whenStage).__jgiven_setStageNameWrapper(new StageName("WHEN"));
         return whenStage;
     }
 
     public THEN getThenStage() {
-        ((StageNameInternal) thenStage).__jgiven_setStageNameWrapper(new StageNameWrapper("THEN"));
+        ((StageNameInternal) thenStage).__jgiven_setStageNameWrapper(new StageName("THEN"));
         return thenStage;
     }
 

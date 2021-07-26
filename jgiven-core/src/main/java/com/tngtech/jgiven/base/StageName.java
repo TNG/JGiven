@@ -6,26 +6,19 @@ import java.util.Objects;
  * Wrapper class for the name held in the stage objects.
  * Helps when making a single stage act as the default three stages.
  */
-public class StageNameWrapper {
+public class StageName {
     private String stageName = null;
 
-    public StageNameWrapper(String stageName) {
-        this.stageName = stageName;
-    }
-
-    public String getStageName() {
-        return stageName;
-    }
-
-    public void setStageName(String stageName) {
+    public StageName(String stageName) {
         this.stageName = stageName;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        StageNameWrapper that = (StageNameWrapper) o;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        StageName that = (StageName) o;
         return Objects.equals(stageName, that.stageName);
     }
 

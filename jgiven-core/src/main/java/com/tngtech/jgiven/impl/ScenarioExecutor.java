@@ -11,7 +11,7 @@ import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.annotation.ScenarioRule;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.attachment.Attachment;
-import com.tngtech.jgiven.base.StageNameWrapper;
+import com.tngtech.jgiven.base.StageName;
 import com.tngtech.jgiven.exception.FailIfPassedException;
 import com.tngtech.jgiven.exception.JGivenMissingRequiredScenarioStateException;
 import com.tngtech.jgiven.exception.JGivenUserException;
@@ -45,7 +45,7 @@ public class ScenarioExecutor {
     private Object currentTopLevelStage;
     private State state = State.INIT;
     private boolean beforeScenarioMethodsExecuted;
-    private StageNameWrapper lastExecutedStageNameWrapper = null;
+    private StageName lastExecutedStageName = null;
 
     /**
      * Whether life cycle methods should be executed.
@@ -130,14 +130,14 @@ public class ScenarioExecutor {
 
         @Override
         public void enterStage(Object parentStage, Object childStage) throws Throwable {
-            StageNameWrapper lastExecutedStageNameWrapper = getLastExecutedStageNameWrapper();
-            StageNameWrapper stageNameWrapper = getStageNameWrapper(childStage, lastExecutedStageNameWrapper);
+            StageName lastExecutedStageName = getLastExecutedStageNameWrapper();
+            StageName stageName = getStageNameWrapper(childStage, lastExecutedStageName);
 
-            if (parentStage == childStage || (Objects.equals(stageNameWrapper, lastExecutedStageNameWrapper) && childStage == currentTopLevelStage)) {
+            if (parentStage == childStage || (Objects.equals(stageName, lastExecutedStageName) && childStage == currentTopLevelStage)) {
                 return;
             }
 
-            setLastExecutedStageNameWrapper(stageNameWrapper);
+            setLastExecutedStageNameWrapper(stageName);
             // if currentStage == null, this means that no stage at
             // all has been executed, thus we call all beforeScenarioMethods
             if (currentTopLevelStage == null) {
@@ -260,21 +260,21 @@ public class ScenarioExecutor {
         return stageState;
     }
 
-    protected StageNameWrapper getStageNameWrapper(Object stage, StageNameWrapper lastExecutedStageNameWrapper) {
-        StageNameWrapper stageNameWrapper = ((StageNameInternal) stage).__jgiven_getStageNameWrapper();
+    protected StageName getStageNameWrapper(Object stage, StageName lastExecutedStageName) {
+        StageName stageName = ((StageNameInternal) stage).__jgiven_getStageNameWrapper();
 
-        return stageNameWrapper == null ? lastExecutedStageNameWrapper : stageNameWrapper;
+        return stageName == null ? lastExecutedStageName : stageName;
     }
 
-    protected StageNameWrapper getLastExecutedStageNameWrapper() {
-        return lastExecutedStageNameWrapper;
+    protected StageName getLastExecutedStageNameWrapper() {
+        return lastExecutedStageName;
     }
 
-    protected void setLastExecutedStageNameWrapper(StageNameWrapper newExecutedStageNameWrapper) {
-        if (newExecutedStageNameWrapper == null) {
+    protected void setLastExecutedStageNameWrapper(StageName newExecutedStageName) {
+        if (newExecutedStageName == null) {
             return;
         }
-        lastExecutedStageNameWrapper = newExecutedStageNameWrapper;
+        lastExecutedStageName = newExecutedStageName;
     }
 
     private void ensureBeforeScenarioMethodsAreExecuted() throws Throwable {

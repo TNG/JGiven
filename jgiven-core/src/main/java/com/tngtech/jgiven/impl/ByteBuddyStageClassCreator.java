@@ -3,7 +3,7 @@ package com.tngtech.jgiven.impl;
 import static net.bytebuddy.matcher.ElementMatchers.named;
 import static net.bytebuddy.matcher.ElementMatchers.not;
 
-import com.tngtech.jgiven.base.StageNameWrapper;
+import com.tngtech.jgiven.base.StageName;
 import com.tngtech.jgiven.impl.intercept.ByteBuddyMethodInterceptor;
 import com.tngtech.jgiven.impl.intercept.StageInterceptorInternal;
 import com.tngtech.jgiven.impl.intercept.StageNameInternal;
@@ -28,7 +28,7 @@ public class ByteBuddyStageClassCreator implements StageClassCreator {
                 .subclass(stageClass, ConstructorStrategy.Default.IMITATE_SUPER_CLASS_OPENING)
                 .implement(StageInterceptorInternal.class, StageNameInternal.class)
                 .defineField(INTERCEPTOR_FIELD_NAME, StepInterceptor.class)
-                .defineField(STAGE_NAME_WRAPPER_FIELD_NAME, StageNameWrapper.class)
+                .defineField(STAGE_NAME_WRAPPER_FIELD_NAME, StageName.class)
                 .method(named(SETTER_NAME))
                 .intercept(
                         MethodDelegation.withDefaultConfiguration()
@@ -73,12 +73,12 @@ public class ByteBuddyStageClassCreator implements StageClassCreator {
     }
 
     public static class StageNameWrapperInterceptor {
-        public StageNameWrapper interceptGetter(@FieldProxy(STAGE_NAME_WRAPPER_FIELD_NAME) StageNameWrapperGetterSetter stageNameWrapperGetter) {
-            return (StageNameWrapper) stageNameWrapperGetter.getValue();
+        public StageName interceptGetter(@FieldProxy(STAGE_NAME_WRAPPER_FIELD_NAME) StageNameWrapperGetterSetter stageNameWrapperGetter) {
+            return (StageName) stageNameWrapperGetter.getValue();
         }
 
-        public void interceptSetter(StageNameWrapper interceptor,
-                    @FieldProxy(STAGE_NAME_WRAPPER_FIELD_NAME) StageNameWrapperGetterSetter stageNameWrapperSetter) {
+        public void interceptSetter(StageName interceptor,
+                                    @FieldProxy(STAGE_NAME_WRAPPER_FIELD_NAME) StageNameWrapperGetterSetter stageNameWrapperSetter) {
             stageNameWrapperSetter.setValue(interceptor);
         }
     }

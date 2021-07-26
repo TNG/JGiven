@@ -1,9 +1,9 @@
 package com.tngtech.jgiven.impl.intercept;
 
-import com.tngtech.jgiven.base.StageNameWrapper;
+import com.tngtech.jgiven.base.StageName;
 
 public interface StageNameInternal {
-    void __jgiven_setStageNameWrapper(StageNameWrapper stageNameWrapper);
+    void __jgiven_setStageNameWrapper(StageName stageName);
 
-    StageNameWrapper __jgiven_getStageNameWrapper();
+    StageName __jgiven_getStageNameWrapper();
 }

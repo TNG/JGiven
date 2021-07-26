@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.impl.intercept;
 
-import com.tngtech.jgiven.base.StageNameWrapper;
+import com.tngtech.jgiven.base.StageName;
 import com.tngtech.jgiven.impl.ByteBuddyStageClassCreator.StepInterceptorGetterSetter;
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.BindingPriority;
@@ -72,16 +72,16 @@ public class ByteBuddyMethodInterceptor {
     }
 
     private void updateStageNameWrapper(Object stageObject, Method method) {
-        StageNameWrapper methodNameWrapper = getMethodNameWrapper(method);
+        StageName methodNameWrapper = getMethodNameWrapper(method);
         if (methodNameWrapper != null) {
             ((StageNameInternal) stageObject).__jgiven_setStageNameWrapper(methodNameWrapper);
         }
     }
 
-    private StageNameWrapper getMethodNameWrapper(Method method) {
+    private StageName getMethodNameWrapper(Method method) {
         String methodName = method.getName();
         if (methodName.equals("given") || methodName.equals("when") || methodName.equals("then")) {
-            return new StageNameWrapper(methodName.toUpperCase());
+            return new StageName(methodName.toUpperCase());
         }
         return null;
     }
