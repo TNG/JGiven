@@ -154,8 +154,13 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     sourceCompatibility = targetCompatibility = 1.8
 
     dependencies {
+        compileOnly 'org.projectlombok:lombok:1.18.20'
+        annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
         implementation "org.slf4j:slf4j-api:$slf4jVersion"
 
+        testCompileOnly 'org.projectlombok:lombok:1.18.20'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
         testImplementation "org.slf4j:jcl-over-slf4j:$slf4jVersion"
         testImplementation "org.slf4j:slf4j-simple:$slf4jVersion"
         testImplementation "junit:junit:$junitVersion"
