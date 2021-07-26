@@ -6,10 +6,14 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.Table.HeaderType;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents a data table argument.
  */
+@Getter
+@Setter
 public class DataTable {
 
     /**
@@ -35,22 +39,6 @@ public class DataTable {
         }
 
         return dataCopy;
-    }
-
-    public HeaderType getHeaderType() {
-        return headerType;
-    }
-
-    public void setHeaderType( HeaderType headerType ) {
-        this.headerType = headerType;
-    }
-
-    public List<List<String>> getData() {
-        return data;
-    }
-
-    public void setData( List<List<String>> data ) {
-        this.data = data;
     }
 
     public int getRowCount() {

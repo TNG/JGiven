@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.impl;
 
+import lombok.Getter;
+
 /**
  * A default scenario implementation that takes three type arguments,
  * one for each stage.
@@ -8,6 +10,7 @@ package com.tngtech.jgiven.impl;
  * @param <WHEN> then When stage
  * @param <THEN> then Then stage
  */
+@Getter
 public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
 
     private GIVEN givenStage;
@@ -29,17 +32,6 @@ public class Scenario<GIVEN, WHEN, THEN> extends ScenarioBase {
         this.thenClass = thenClass;
     }
 
-    public GIVEN getGivenStage() {
-        return givenStage;
-    }
-
-    public WHEN getWhenStage() {
-        return whenStage;
-    }
-
-    public THEN getThenStage() {
-        return thenStage;
-    }
 
     public void addIntroWord( String word ) {
         executor.addIntroWord( word );
