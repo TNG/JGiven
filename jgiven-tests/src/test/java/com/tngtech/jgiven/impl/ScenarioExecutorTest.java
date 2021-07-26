@@ -13,6 +13,7 @@ import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.base.StageName;
 import com.tngtech.jgiven.impl.ScenarioExecutorTest.TestSteps;
+import com.tngtech.jgiven.impl.intercept.ByteBuddyMethodInterceptor;
 import com.tngtech.jgiven.impl.intercept.StageNameInternal;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
@@ -96,6 +97,34 @@ public class ScenarioExecutorTest extends SimpleScenarioTest<TestSteps> {
 
         assertThat(scenarioExecutor
                 .getStageNameWrapper(mockedStageObject, stageName)).isSameAs(stageName);
+    }
+
+    @Test
+    public void get_method_name_wrapper_returns_uppercase_if_given_when_then() {
+        assertThat(((StageNameInternal) getScenario().getGivenStage())
+                .__jgiven_getStageNameWrapper().getStageName()).isEqualTo("GIVEN");
+        assertThat(((StageNameInternal) getScenario().getWhenStage())
+                .__jgiven_getStageNameWrapper().getStageName()).isEqualTo("WHEN");
+        assertThat(((StageNameInternal) getScenario().getThenStage())
+                .__jgiven_getStageNameWrapper().getStageName()).isEqualTo("THEN");
+    }
+
+    @Test
+    public void get_method_name_wrapper_returns_null_and_stage_not_updated_if_not_given_when_then() {
+        Object sharedStage = getScenario().getGivenStage();
+
+        //assert after each call, since shared object per stage
+        given().a_scenario_executor_object();
+        assertThat(((StageNameInternal) sharedStage)
+                .__jgiven_getStageNameWrapper().getStageName()).isEqualTo("GIVEN");
+
+        when().a_scenario_executor_object();
+        assertThat(((StageNameInternal) sharedStage)
+                .__jgiven_getStageNameWrapper().getStageName()).isEqualTo("WHEN");
+
+        then().no_exception_is_thrown();
+        assertThat(((StageNameInternal) sharedStage)
+                .__jgiven_getStageNameWrapper().getStageName()).isEqualTo("THEN");
     }
 
     @Test

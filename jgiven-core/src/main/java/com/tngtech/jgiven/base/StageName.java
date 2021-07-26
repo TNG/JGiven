@@ -13,6 +13,10 @@ public class StageName {
         this.stageName = stageName;
     }
 
+    public String getStageName() {
+        return stageName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) {
@@ -25,5 +29,12 @@ public class StageName {
     @Override
     public int hashCode() {
         return Objects.hash(stageName);
+    }
+
+    @Override
+    public String toString() {
+        return "StageName{" +
+                "stageName='" + stageName + '\'' +
+                '}';
     }
 }
