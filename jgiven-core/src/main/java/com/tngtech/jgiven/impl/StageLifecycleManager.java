@@ -4,10 +4,15 @@ import com.tngtech.jgiven.annotation.AfterScenario;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeScenario;
 import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioState;
+import com.tngtech.jgiven.exception.JGivenMissingGuaranteedScenarioStateException;
 import com.tngtech.jgiven.exception.JGivenUserException;
 import com.tngtech.jgiven.impl.intercept.StepInterceptorImpl;
+import com.tngtech.jgiven.impl.util.FieldCache;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -44,6 +49,7 @@ class StageLifecycleManager {
 
     void executeAfterStageMethods(boolean fakeExecution) throws Throwable {
         executeLifecycleMethods(afterStageRegister, fakeExecution);
+        checkGuaranteedStatesAreInitialized(); //before or after the other after stage methods?
     }
 
     void executeBeforeStageMethods(boolean fakeExecution) throws Throwable {
@@ -63,6 +69,33 @@ class StageLifecycleManager {
             register.fakeExecution();
         } else {
             register.executeMethods();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void checkGuaranteedStatesAreInitialized() throws JGivenMissingGuaranteedScenarioStateException {
+        for (Field field: FieldCache.get(instance.getClass())
+                                    .getFieldsWithAnnotation(ProvidedScenarioState.class, ScenarioState.class)) {
+            if (field.isAnnotationPresent(ProvidedScenarioState.class)) {
+                if (field.getAnnotation(ProvidedScenarioState.class).guaranteed()) {
+                    checkInialized(field);
+                }
+            }
+            if (field.isAnnotationPresent(ScenarioState.class)) {
+                if (field.getAnnotation(ScenarioState.class).guaranteed()) {
+                    checkInialized(field);
+                }
+            }
+        }
+    }
+
+    private void checkInialized(Field field) {
+        Object value = null;
+        try {
+            value = field.get(instance);
+        } catch (IllegalAccessException e) { }
+        if (value == null) {
+            throw new JGivenMissingGuaranteedScenarioStateException(field);
         }
     }
 

@@ -26,4 +26,6 @@ public @interface ScenarioState {
      * @since 0.14.0
      */
     boolean required() default false;
+
+    boolean guaranteed() default false;
 }

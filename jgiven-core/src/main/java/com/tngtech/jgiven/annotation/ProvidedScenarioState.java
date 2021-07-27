@@ -18,4 +18,6 @@ import com.tngtech.jgiven.annotation.ScenarioState.Resolution;
 @Target( ElementType.FIELD )
 public @interface ProvidedScenarioState {
     Resolution resolution() default Resolution.AUTO;
+
+    boolean guaranteed() default false;
 }

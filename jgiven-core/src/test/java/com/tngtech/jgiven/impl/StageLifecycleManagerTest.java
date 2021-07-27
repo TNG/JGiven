@@ -2,10 +2,8 @@ package com.tngtech.jgiven.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.tngtech.jgiven.annotation.AfterScenario;
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.BeforeScenario;
-import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.exception.JGivenMissingGuaranteedScenarioStateException;
 import com.tngtech.jgiven.impl.intercept.StepInterceptorImpl;
 import org.junit.Test;
 
@@ -75,6 +73,42 @@ public class StageLifecycleManagerTest {
         assertThat(methodContainer.repeatableAfterMethodInvoked).isEqualTo(times);
         assertThat(methodContainer.afterMethodInvoked).isEqualTo(times);
         assertThat(methodContainer.afterScenarioMethodInvoked).isEqualTo(times);
+    }
+
+    @Test(expected = JGivenMissingGuaranteedScenarioStateException.class)
+    public void null_provided_field_throws_exception() throws Throwable {
+        FakeStage stageObject = new FakeStage(null, "");
+        underTest = new StageLifecycleManager(stageObject, mockInterceptor);
+
+        underTest.executeAfterStageMethods(true);
+    }
+
+    @Test(expected = JGivenMissingGuaranteedScenarioStateException.class)
+    public void null_state_field_throws_exception() throws Throwable {
+        FakeStage stageObject = new FakeStage("", null);
+        underTest = new StageLifecycleManager(stageObject, mockInterceptor);
+
+        underTest.executeAfterStageMethods(true);
+    }
+
+    @Test
+    public void initialized_fields_do_not_interrupt_execution() throws Throwable {
+        FakeStage stageObject = new FakeStage("", "");
+        underTest = new StageLifecycleManager(stageObject, mockInterceptor);
+
+        underTest.executeAfterStageMethods(true);
+    }
+
+    private class FakeStage {
+        @ProvidedScenarioState(guaranteed = true)
+        String providedObject;
+        @ScenarioState(guaranteed = true)
+        String stateObject;
+
+        public FakeStage(String providedObject, String stateObject) {
+            this.providedObject = providedObject;
+            this.stateObject = stateObject;
+        }
     }
 
     private static class LifecycleMethodContainer {
