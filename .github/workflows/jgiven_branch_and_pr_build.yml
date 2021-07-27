@@ -25,3 +25,8 @@ jobs:
       - name: Run Jacoco
         if: ${{matrix.java == '8' && github.ref == 'refs/heads/master' && github.head_ref == null}}
         run: ./gradlew overallJacocoReport coveralls
+      - name: Upload test results html files
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-report ${{matrix.java}} ${{matrix.junit}}
+          path: /home/runner/work/JGiven/JGiven/jgiven-tests/build/reports/tests
