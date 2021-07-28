@@ -10,8 +10,11 @@ import com.tngtech.jgiven.attachment.MediaType;
 import java.io.File;
 import java.util.List;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Html5AppStage<SELF extends Html5AppStage<?>> extends Stage<SELF> {
+    private static final int WEBDRIVER_FIND_TIMEOUT_SECONDS = 120;
     @ExpectedScenarioState
     protected CurrentStep currentStep;
 
@@ -27,8 +30,12 @@ public class Html5AppStage<SELF extends Html5AppStage<?>> extends Stage<SELF> {
     }
 
     protected WebElement findTagWithName(String tagName) {
-        List<WebElement> links = webDriver.findElements(
-                By.xpath(String.format("//a/span[contains(@class,'tag') and contains(text(), '%s')]/..", tagName)));
+        By elementLocator = By.xpath(String.format("//a/span[contains(@class,'tag') and contains(text(), '%s')]/..",
+                                                   tagName));
+        WebDriverWait timeoutSetter = new WebDriverWait(webDriver, WEBDRIVER_FIND_TIMEOUT_SECONDS);
+        timeoutSetter.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
+
+        List<WebElement> links = webDriver.findElements(elementLocator);
         assertThat(links).isNotEmpty();
         return links.get(0);
     }
