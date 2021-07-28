@@ -8,6 +8,7 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState.Resolution;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
+import com.tngtech.jgiven.exception.JGivenMissingGuaranteedScenarioStateException;
 import com.tngtech.jgiven.exception.JGivenMissingRequiredScenarioStateException;
 import com.tngtech.jgiven.impl.util.FieldCache;
 import java.lang.reflect.Field;
@@ -71,9 +72,15 @@ public class ValueInjector {
                 .collect(toList());
     }
 
+    /**
+     * @throws JGivenMissingGuaranteedScenarioStateException in case a field is guaranteed
+     *                                                     and is not initialized by the finishing stage
+     */
     @SuppressWarnings("unchecked")
     public void readValues(Object object) {
         validateFields(object);
+        checkGuaranteedStatesAreInitialized(object);
+
         for (ScenarioStateField field : getScenarioFields(object)) {
             try {
                 Object value = field.getField().get(object);
@@ -131,5 +138,32 @@ public class ValueInjector {
         }
 
         return state.getValueByType(field.getField().getType());
+    }
+
+    private void checkGuaranteedStatesAreInitialized(Object instance)
+                                        throws JGivenMissingGuaranteedScenarioStateException {
+        for (Field field: FieldCache.get(instance.getClass())
+                .getFieldsWithAnnotation(ProvidedScenarioState.class, ScenarioState.class)) {
+            if (field.isAnnotationPresent(ProvidedScenarioState.class)) {
+                if (field.getAnnotation(ProvidedScenarioState.class).guaranteed()) {
+                    checkInitialized(instance, field);
+                }
+            }
+            if (field.isAnnotationPresent(ScenarioState.class)) {
+                if (field.getAnnotation(ScenarioState.class).guaranteed()) {
+                    checkInitialized(instance, field);
+                }
+            }
+        }
+    }
+
+    private void checkInitialized(Object instance, Field field) {
+        Object value = null;
+        try {
+            value = field.get(instance);
+        } catch (IllegalAccessException e) { }
+        if (value == null) {
+            throw new JGivenMissingGuaranteedScenarioStateException(field);
+        }
     }
 }
