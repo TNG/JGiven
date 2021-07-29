@@ -140,8 +140,7 @@ public class ValueInjector {
         return state.getValueByType(field.getField().getType());
     }
 
-    private void checkGuaranteedStatesAreInitialized(Object instance)
-                                        throws JGivenMissingGuaranteedScenarioStateException {
+    private void checkGuaranteedStatesAreInitialized(Object instance) {
         for (Field field: FieldCache.get(instance.getClass())
                 .getFieldsWithAnnotation(ProvidedScenarioState.class, ScenarioState.class)) {
             if (field.isAnnotationPresent(ProvidedScenarioState.class)) {
