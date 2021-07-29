@@ -26,6 +26,8 @@ jobs:
         if: ${{matrix.java == '8' && github.ref == 'refs/heads/master' && github.head_ref == null}}
         run: ./gradlew overallJacocoReport coveralls
       - name: Upload test results html files
+        continue-on-error: true
+        if: ${{failure()}}
         uses: actions/upload-artifact@v2
         with:
           name: test-report_${{matrix.java}}_${{matrix.junit}}
