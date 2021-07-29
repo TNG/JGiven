@@ -30,12 +30,13 @@ public class Html5AppStage<SELF extends Html5AppStage<?>> extends Stage<SELF> {
     }
 
     protected WebElement findTagWithName(String tagName) {
-        By elementLocator = By.xpath(String.format("//a/span[contains(@class,'tag') and contains(text(), '%s')]/..",
-                                                   tagName));
         WebDriverWait timeoutSetter = new WebDriverWait(webDriver, WEBDRIVER_FIND_TIMEOUT_SECONDS);
-        timeoutSetter.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
 
+        By elementLocator = By.xpath(String.format("//a/span[contains(@class,'tag') and contains(text(), '%s')]/..",
+                tagName));
+        timeoutSetter.until(ExpectedConditions.visibilityOfElementLocated(elementLocator));
         List<WebElement> links = webDriver.findElements(elementLocator);
+
         assertThat(links).isNotEmpty();
         return links.get(0);
     }
