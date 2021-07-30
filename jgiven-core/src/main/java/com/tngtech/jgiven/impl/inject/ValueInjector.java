@@ -8,6 +8,7 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState.Resolution;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
+import com.tngtech.jgiven.exception.JGivenInjectionException;
 import com.tngtech.jgiven.exception.JGivenMissingGuaranteedScenarioStateException;
 import com.tngtech.jgiven.exception.JGivenMissingRequiredScenarioStateException;
 import com.tngtech.jgiven.impl.util.FieldCache;
@@ -160,7 +161,10 @@ public class ValueInjector {
         Object value = null;
         try {
             value = field.get(instance);
-        } catch (IllegalAccessException e) { }
+        } catch (IllegalAccessException e) {
+            throw new JGivenInjectionException("The guaranteed field inside the scenario state cannot be accessed",
+                                                e);
+        }
         if (value == null) {
             throw new JGivenMissingGuaranteedScenarioStateException(field);
         }
