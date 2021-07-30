@@ -42,16 +42,7 @@ find_gradle_property GRADLE_PROPERTIES "$@"
 
 echo Releasing version "${VERSION}"
 
-echo Updating version in gradle.properties...
-for file in "gradle.properties" \
-"example-projects/junit5/gradle.properties" \
-"example-projects/spock/gradle.properties" \
-"example-projects/testng/gradle.properties" \
-"example-projects/android/gradle.properties" \
-"example-projects/selenium/gradle.properties" \
-do
-  update_version "${VERSION}" "${file}" || exit 1
-done
+updateAllVersionInformation $VERSION
 
 if [ -n "$(git status --porcelain)" ]; then
     echo Commiting version change

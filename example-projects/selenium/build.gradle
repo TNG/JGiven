@@ -1,20 +1,35 @@
-plugins {
-    id "com.tngtech.jgiven.gradle-plugin" version "1.0.0"
+buildscript {
+    repositories {
+        if (project.hasProperty('staging')) {
+            maven { url "https://oss.sonatype.org/content/repositories/staging/" }
+        }
+        gradlePluginPortal()
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.tngtech.jgiven:jgiven-gradle-plugin:${version}"
+    }
 }
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'eclipse'
+plugins {
+    id 'java'
+    id 'idea'
+    id 'eclipse'
+}
+
+apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 repositories {
-    jcenter()
+    mavenLocal()
+    mavenCentral()
     maven {
         url "https://oss.sonatype.org/content/groups/public/"
     }
 }
 
 dependencies {
-    testImplementation 'com.tngtech.jgiven:jgiven-junit:latest.integration'
+    testImplementation "com.tngtech.jgiven:jgiven-junit:${version}"
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
     testImplementation 'io.github.bonigarcia:webdrivermanager:4.4.3'

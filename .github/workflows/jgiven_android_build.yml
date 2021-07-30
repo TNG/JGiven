@@ -1,0 +1,33 @@
+name: "Build and test android plugin and projects"
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build and test android
+    runs-on: macos-latest
+    env:
+      ANDROID: true
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set upt JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: 8
+          distribution: 'adopt'
+      - name: Grant execute permission for bash script
+        run: chmod +x scripts/local_android_release_with_version.sh
+      - name: Load the bash script
+        run: source scripts/local_android_release_with_version.sh
+      - name: Test Android plugin and Android example project
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          script: source scripts/helper_functions.sh && runAndroidTestOnGivenProject jgiven-android-test/build.gradle 1.0-t && runAndroidTestOnGivenProject example-projects/android/build.gradle 1.0-t
+      - name: Upload test results html files
+        continue-on-error: true
+        if: ${{failure()}}
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-report-example-projects
+          path: /home/runner/work/JGiven/JGiven/example-projects/*/build/reports/tests
+          if-no-files-found: ignore

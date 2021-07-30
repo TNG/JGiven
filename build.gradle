@@ -24,6 +24,7 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        google()
     }
 
     tasks.withType(Javadoc) {

@@ -5,6 +5,8 @@ jobs:
   build:
     name: Build JGiven on Java ${{ matrix.java }} with Junit ${{matrix.junit}}
     runs-on: ubuntu-latest
+    env:
+      ANDROID: true
     strategy:
       matrix:
         java: [ '8', '11', '13']

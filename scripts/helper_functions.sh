@@ -15,3 +15,45 @@ function update_version(){
   fi
   return 0
 }
+
+function updateAllVersionInformation() {
+  [ $# -eq 1 ] || return 11
+  local VERSION="$1"
+
+  echo Updating version in gradle.properties...
+  for file in "gradle.properties" \
+  "example-projects/junit5/gradle.properties" \
+  "example-projects/spock/gradle.properties" \
+  "example-projects/testng/gradle.properties" \
+  "example-projects/android/gradle.properties" \
+  "example-projects/kotlin/gradle.properties" \
+  "example-projects/selenium/gradle.properties" \
+  "example-projects/spring-boot/gradle.properties"
+  do
+    update_version "${VERSION}" "${file}" || exit 1
+  done
+}
+
+function runGradleTestOnGivenProject() {
+    [ $# -eq 2 ] || return 11
+    local givenProject="$1"
+    local VERSION="$2"
+
+    ./gradlew -b $givenProject clean test -Pversion=$VERSION
+}
+
+function runAndroidTestOnGivenProject() {
+    [ $# -eq 2 ] || return 11
+    local givenProject="$1"
+    local VERSION="$2"
+
+    ./gradlew -b $givenProject clean test connectedAndroidTest -Pversion=$VERSION
+}
+
+function runMavenTestOnGivenProject() {
+    [ $# -eq 2 ] || return 11
+    local givenProject="$1"
+    local VERSION="$2"
+
+    mvn -U -f $givenProject clean test -Djgiven.version=$VERSION
+}

@@ -28,7 +28,7 @@ pluginBundle {
     website = 'http://jgiven.org/'
     vcsUrl = 'https://github.com/TNG/JGiven.git'
     tags = ['jgiven', 'testing','bdd','junit','testng']
-    version = '1.0.0'
+    version = version
 }
 
 gradlePlugin {
