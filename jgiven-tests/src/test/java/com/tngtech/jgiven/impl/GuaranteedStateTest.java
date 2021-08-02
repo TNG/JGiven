@@ -6,6 +6,7 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.exception.JGivenMissingGuaranteedScenarioStateException;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.testframework.TestExecutionResult;
 import com.tngtech.jgiven.testframework.TestExecutor;
 import com.tngtech.jgiven.testframework.TestFramework;
 import com.tngtech.jgiven.tests.GuaranteedFieldRealTest;
@@ -37,12 +38,16 @@ public class GuaranteedStateTest extends SimpleScenarioTest<GuaranteedStateTest.
         }
 
         public void a_Jgiven_test_with_a_guaranteed_state() {
-            testScenario = new TestScenarioRepository.TestScenario(GuaranteedFieldRealTest.class, "a_sample_initialized_test");
+            testScenario = new TestScenarioRepository.TestScenario(GuaranteedFieldRealTest.class,
+                                                            "a_sample_initialized_test");
         }
 
         public void the_test_is_executed() {
-            testReport = TestExecutor.getExecutor(TestFramework.JUnit)
-                                .execute(testScenario.testClass, testScenario.testMethod).getReportModel();
+            TestExecutor testExecutor = TestExecutor.getExecutor(TestFramework.JUnit);
+            TestExecutionResult testExecutionResult = testExecutor.execute(testScenario.testClass,
+                                                                           testScenario.testMethod);
+
+            testReport = testExecutionResult.getReportModel();
         }
 
         public void the_report_contains_$_exception(Class<? extends Exception> givenException) {
