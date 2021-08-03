@@ -1,8 +1,9 @@
 # v1.1
-##New features
+## New features
 * The lifecycle method annotations `@BeforeStage` and `@AfterStage` have an option to make the associated methods be invoked repeatedly if the stage class is invoked multiple times. Note that the duration of a stage is denoted by the change of the stage class, thus multiple invocations (no matter the form) on the same stage class count as one stage.
+* The field annotations `@ScenarioState` and `@ProvidedScenarioState` can be set to be `guaranteed`. This ensures that the stage that is declaring such field must operate on it during execution and after the stage finishes the field is ensured to be initialized. 
 
-##Fixed Issues
+## Fixed Issues
 * Refurbished the jgiven-scala example project [#619](https://github.com/TNG/JGiven/pull/619) (thanks to seblm)
 * Updated most dependencies in the project
 * Enabled printing of nested stage [#366](https://github.com/TNG/JGiven/pull/619) (thanks to laurinvesely)
