@@ -7,10 +7,13 @@ import com.google.common.io.CharSink;
 import com.google.common.io.FileWriteMode;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.config.ConfigValue;
+import com.tngtech.jgiven.impl.TestUtil.JGivenLogHandler;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,14 +26,65 @@ public class ConfigTest {
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     private final Map<String, String> systemPropertiesBackup = new HashMap<>();
+    private final JGivenLogHandler handler = new JGivenLogHandler();
     private CharSink jgivenConfig;
 
     @Before
     public void setupPropertiesFile() throws Exception {
+        Logger.getLogger(Config.class.getName()).addHandler(handler);
         File configFile = temporaryFolder.newFile();
         jgivenConfig = Files.asCharSink(configFile, Charsets.UTF_8, FileWriteMode.APPEND);
         setSystemProperty("jgiven.config.path", configFile.getAbsolutePath());
         setSystemProperty("jgiven.report.dir", null);
+    }
+
+    @After
+    public void teardown() {
+        Logger.getLogger(Config.class.getName()).removeHandler(handler);
+    }
+
+    @Test
+    public void disabledReportsLogAMessage() {
+        setSystemProperty("jgiven.report.enabled", "false");
+
+        JGivenLogHandler.resetEvents();
+        Config.logReportEnabled();
+
+        assertThat(JGivenLogHandler.containsLoggingEvent("Please note that the report generation is turned off.",
+                                                                Level.INFO)).isTrue();
+    }
+
+    @Test
+    public void enabledReportsDontLogAMessage() {
+        setSystemProperty("jgiven.report.enabled", "true");
+
+        JGivenLogHandler.resetEvents();
+        Config.logReportEnabled();
+
+        assertThat(JGivenLogHandler.containsLoggingEvent("Please note that the report generation is turned off.",
+                                                            Level.INFO)).isFalse();
+    }
+
+    @Test
+    public void dryRunEnabledLogsAMessage() {
+        setSystemProperty("jgiven.report.dry-run", "true");
+
+        JGivenLogHandler.resetEvents();
+        Config.logDryRunEnabled();
+
+        assertThat(JGivenLogHandler.containsLoggingEvent("Dry Run enabled.",
+                Level.INFO)).isTrue();
+    }
+
+    @Test
+    public void dryRunDisabledDoesntLogAMessage() {
+        setSystemProperty("jgiven.report.dry-run", "false");
+
+        JGivenLogHandler.resetEvents();
+        Config.logDryRunEnabled();
+
+        assertThat(JGivenLogHandler.containsLoggingEvent("Dry Run enabled.",
+                Level.INFO)).isFalse();
     }
 
     @Test

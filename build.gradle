@@ -157,8 +157,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     dependencies {
         implementation "org.slf4j:slf4j-api:$slf4jVersion"
 
-        testImplementation "org.slf4j:jcl-over-slf4j:$slf4jVersion"
-        testImplementation "org.slf4j:slf4j-simple:$slf4jVersion"
+        testImplementation "org.slf4j:slf4j-jdk14:$slf4jVersion"
         testImplementation "junit:junit:$junitVersion"
         testImplementation "org.assertj:assertj-core:$assertjVersion"
         testImplementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
@@ -177,7 +176,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     test {
         systemProperty 'jgiven.report.dir', 'build/reports/jgiven/json'
         systemProperty 'jgiven.report.text', 'false'
-        systemProperty 'org.slf4j.simpleLogger.defaultLogLevel', 'warn'
 
         if (jacocoEnabled) {
             jacoco {

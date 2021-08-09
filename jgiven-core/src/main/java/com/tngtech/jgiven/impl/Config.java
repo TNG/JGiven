@@ -38,8 +38,19 @@ public class Config {
     }
 
     static {
+        logDryRunEnabled();
+        logReportEnabled();
+    }
+
+    static void logDryRunEnabled() {
         if (INSTANCE.dryRun()) {
             log.info("Dry Run enabled.");
+        }
+    }
+
+    static void logReportEnabled() {
+        if (!INSTANCE.isReportEnabled()) {
+            log.info("Please note that the report generation is turned off.");
         }
     }
 
