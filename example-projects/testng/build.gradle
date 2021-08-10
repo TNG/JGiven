@@ -1,7 +1,17 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.tngtech.jgiven:jgiven-gradle-plugin:${version}"
+    }
+}
+
 plugins {
-    id 'com.tngtech.jgiven.gradle-plugin' version '1.0.0'
     id 'java'
 }
+apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 compileJava {
     sourceCompatibility = 1.8
@@ -16,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'com.tngtech.jgiven:jgiven-testng:1.0.0'
+    testImplementation "com.tngtech.jgiven:jgiven-testng:${version}"
     testImplementation 'org.testng:testng:7.4.0'
 }
 

@@ -1,0 +1,66 @@
+name: "Test example projects"
+on: [push, pull_request]
+
+jobs:
+  build_java8:
+    name: Build the examples on Java 8
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Grant execute permission for bash script
+        run: chmod +x scripts/local_release_with_version.sh
+      - name: Load the bash script
+        run: source scripts/local_release_with_version.sh
+      - name: Test Kotlin Example Project
+        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/kotlin/build.gradle 1.0-t
+      - name: Test JUnit5 Example Project
+        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/junit5/build.gradle 1.0-t
+      - name: Test Selenium Example Project
+        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/selenium/build.gradle 1.0-t
+      - name: Test Spock Example Project
+        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/spock/build.gradle 1.0-t
+      - name: Test Spring-Boot Example Project
+        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/spring-boot/build.gradle 1.0-t
+      - name: Test TestNG Example Project
+        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/testng/build.gradle 1.0-t
+      - name: Test Maven Example Project
+        run: source scripts/helper_functions.sh && runMavenTestOnGivenProject example-projects/maven/pom.xml 1.0-t
+      - name: Upload test results html files
+        continue-on-error: true
+        if: ${{failure()}}
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-report-example-projects
+          path: /home/runner/work/JGiven/JGiven/example-projects/*/build/reports/tests
+          if-no-files-found: ignore
+  build_java11:
+    name: Build the example for Java 11
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Grant execute permission for bash script
+        run: chmod +x scripts/local_release_with_version.sh
+      - name: Load the bash script
+        run: source scripts/local_release_with_version.sh
+      - name: Test Java 11 Project
+        run: source scripts/helper_functions.sh && runMavenTestOnGivenProject example-projects/java11/pom.xml 1.0-t
+      - name: Upload test results html files
+        continue-on-error: true
+        if: ${{failure()}}
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-report-example-projects
+          path: /home/runner/work/JGiven/JGiven/example-projects/*/build/reports/tests
+          if-no-files-found: ignore

@@ -1,16 +1,15 @@
 package com.tngtech.jgiven.integration.android;
 
-import android.os.Environment;
-import android.support.test.InstrumentationRegistry;
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 
+import android.os.Environment;
+import androidx.test.platform.app.InstrumentationRegistry;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.impl.ScenarioBase;
-
+import java.io.File;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
-
-import java.io.File;
 
 public class AndroidJGivenTestRule implements TestRule {
     public AndroidJGivenTestRule(ScenarioBase scenario) {
@@ -25,7 +24,7 @@ public class AndroidJGivenTestRule implements TestRule {
 
     private void grantPermission(String permission) {
         InstrumentationRegistry.getInstrumentation().getUiAutomation().executeShellCommand(
-                "pm grant " + InstrumentationRegistry.getTargetContext().getPackageName()
+                "pm grant " + getApplicationContext().getPackageName()
                         + " android.permission." + permission);
     }
 

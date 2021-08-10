@@ -2,7 +2,6 @@ package com.tngtech.jgiven.example.springboot;
 
 import com.tngtech.jgiven.integration.spring.SimpleSpringRuleScenarioTest;
 import org.junit.Test;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockServletContext;

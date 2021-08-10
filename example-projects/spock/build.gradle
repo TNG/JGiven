@@ -1,9 +1,19 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.tngtech.jgiven:jgiven-gradle-plugin:${version}"
+    }
+}
+
 plugins {
-    id 'com.tngtech.jgiven.gradle-plugin' version "1.0.0"
-    id 'java-library'
+    id 'java'
 }
 
 apply plugin: 'groovy'
+apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 description = "Module for writing JGiven tests with Spock"
 
@@ -12,6 +22,7 @@ ext {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 

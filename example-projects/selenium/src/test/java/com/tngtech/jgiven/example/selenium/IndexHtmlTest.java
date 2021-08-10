@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.Dimension;
 
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
@@ -17,14 +18,18 @@ public class IndexHtmlTest extends SimpleScenarioTest<IndexStage> {
     static WebDriver webDriver;
 
     @BeforeClass
-    public static void createWebDriver() {
+    public static void setupWebDriver() {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("--disable-gpu");
         options.addArguments("window-size=1280x768");
-        webDriver = new ChromeDriver(); }
+
+        webDriver = new ChromeDriver(options);
+
+        webDriver.manage().window().setSize( new Dimension( 1280, 768 ) );
+    }
 
     @AfterClass
     public static void closeWebDriver() {

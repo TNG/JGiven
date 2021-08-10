@@ -12,9 +12,11 @@ buildscript {
     }
 }
 
+plugins {
+    id 'java'
+}
 
 apply plugin: 'com.tngtech.jgiven.gradle-plugin'
-apply plugin: 'java'
 
 compileJava {
     sourceCompatibility = 1.8

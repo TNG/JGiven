@@ -1,13 +1,22 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.tngtech.jgiven:jgiven-gradle-plugin:${version}"
+    }
+}
 
 plugins {
-    id "com.tngtech.jgiven.gradle-plugin" version "1.0.0"
-    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'org.springframework.boot' version '2.5.3'
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 wrapper {
     gradleVersion = '7.0.0'
@@ -15,18 +24,21 @@ wrapper {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 ext {
     assertjVersion = '3.20.2'
     junitDataproviderVersion = '1.13.1'
-    jgivenVersion = '1.0.0'
+    jgivenVersion = version
     hsqldbVersion = '2.6.0'
 }
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
+    testImplementation 'junit:junit:4.13.2'
+    implementation 'com.h2database:h2:1.4.200'
     testImplementation "com.tngtech.jgiven:jgiven-spring-junit4:$jgivenVersion"
     testImplementation "org.assertj:assertj-core:$assertjVersion"
     testImplementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
