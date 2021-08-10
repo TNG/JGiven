@@ -1,11 +1,14 @@
 name := """hello-jgiven-scala"""
 
 version := "1.0"
+val jgivenVersion = "1.0.0"
 
 scalaVersion := "2.13.5"
 
+resolvers += Resolver.mavenLocal
+
 libraryDependencies ++= Seq(
-  "com.tngtech.jgiven" % "jgiven-junit5" % "1.0.0" % Test,
+  "com.tngtech.jgiven" % "jgiven-junit5" % jgivenVersion % Test,
   "net.aichler" % "jupiter-interface" % JupiterKeys.jupiterVersion.value % Test,
   "org.scalatest" %% "scalatest-core" % "3.2.7" % Test,
   "org.scalatest" %% "scalatest-shouldmatchers" % "3.2.7" % Test,
