@@ -16,6 +16,21 @@ function update_version(){
   return 0
 }
 
+function updateScalaVersion() {
+  [ $# -eq 2 ] || return 11
+  local target_version="$1"
+  local target_file="$2"
+  local version_property="jgivenVersion"
+  local version_matcher="${version_property} = .*"
+  if grep -E "${version_matcher}" "${target_file}" ;then
+    sed -i -e "s/${version_matcher}/${version_property} = \"${target_version}\"/" "${target_file}"
+  else
+    printf "Could not find version property to replace in file %s\n" "${target_file}"
+    return 12
+  fi
+  return 0
+}
+
 function updateAllVersionInformation() {
   [ $# -eq 1 ] || return 11
   local VERSION="$1"
@@ -32,6 +47,8 @@ function updateAllVersionInformation() {
   do
     update_version "${VERSION}" "${file}" || exit 1
   done
+
+  updateScalaVersion "${VERSION}" "example-projects/scala/build.sbt" || exit 1
 }
 
 function runGradleTestOnGivenProject() {
@@ -40,6 +57,12 @@ function runGradleTestOnGivenProject() {
     local VERSION="$2"
 
     ./gradlew -b $givenProject clean test -Pversion=$VERSION
+}
+
+function runScalaTest() {
+    cd example-projects/scala
+    sbt test jgivenReport
+    cd ../..
 }
 
 function runAndroidTestOnGivenProject() {
