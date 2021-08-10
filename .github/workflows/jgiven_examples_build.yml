@@ -22,7 +22,7 @@ jobs:
         run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/kotlin/build.gradle 1.0-t
       - name: Test JUnit5 Example Project
         run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/junit5/build.gradle 1.0-t
-      - uses: olafurpg/setup-scala@v11
+      - uses: olafurpg/setup-scala@v13
       - name: Test Scala Example Project
         run: source scripts/helper_functions.sh && runScalaTest
       - name: Test Selenium Example Project
