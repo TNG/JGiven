@@ -1,17 +1,19 @@
 package com.tngtech.jgiven.report.html5;
 
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
 
+import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -145,7 +147,11 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
                 }
                 Files.write( BaseEncoding.base64().decode( attachment.getValue() ), targetFile );
             } else {
-                Files.write( attachment.getValue(), targetFile, Charsets.UTF_8 );
+                Files.write(attachment.getValue().getBytes(Charsets.UTF_8), targetFile);
+                if (attachment.getMediaType().equals(com.tngtech.jgiven.attachment.MediaType.SVG_UTF_8.toString())) {
+                    File thumbFile = getThumbnailFileFor(targetFile);
+                    writeThumbnailForSVG(targetFile, thumbFile);
+                }
             }
         } catch( IOException e ) {
             log.error( "Error while trying to write attachment to file " + targetFile, e );
@@ -194,5 +200,79 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
             log.error( "Error while decoding the compressed BufferedImage to base64 ", e );
         }
         return imageArray;
+    }
+
+    private void writeThumbnailForSVG(File initialSVG, File thumbnailSVG) {
+        String base64PNGImage = getPNGFromSVG(initialSVG);
+        byte[] scaledDownInBytes = compressToThumbnail(base64PNGImage, "png");
+        Dimension imageDimension = getImageDimension(scaledDownInBytes);
+        String base64ScaledDownContent = BaseEncoding.base64().encode(scaledDownInBytes);
+        createSVGThumbFile(thumbnailSVG, base64ScaledDownContent, imageDimension);
+    }
+
+    Dimension getImageDimension(byte[] givenImage) {
+        ByteArrayInputStream bais = new ByteArrayInputStream(givenImage);
+        Dimension dimension = new Dimension();
+        try {
+            BufferedImage image = ImageIO.read(bais);
+            dimension.height = image.getHeight();
+            dimension.width = image.getWidth();
+        } catch (IOException e) {
+            log.error("The converted png image cannot be read.");
+        }
+
+        return dimension;
+    }
+
+    void createSVGThumbFile(File targetFile, String base64Image, Dimension dimension) {
+        String xmlFormat = getXMLFormat(base64Image, dimension);
+        try {
+            FileWriter fileWriter = new FileWriter(targetFile);
+            fileWriter.write(xmlFormat);
+            fileWriter.close();
+        } catch (IOException e) {
+            log.error("Error writing the thumbnail svg to " + targetFile);
+        }
+    }
+
+    private String getXMLFormat(String base64Image, Dimension dimension) {
+        return "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" " +
+                "height=\"" + dimension.getHeight() + "px\" width=\"" + dimension.getWidth() + "px\">"+
+                "<image height=\"100%\" width=\"100%\" xlink:href=\"data:image/png;base64, " + base64Image + "\"/>" +
+                "</svg>";
+    }
+
+    String getPNGFromSVG(File givenSVG) {
+        PNGTranscoder transcoder = new PNGTranscoder();
+        TranscoderInput transcoderInput = new TranscoderInput();
+        TranscoderOutput transcoderOutput = new TranscoderOutput();
+
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(givenSVG);
+        } catch (FileNotFoundException e) {
+            log.error("Error while reading the initial svg file.");
+            return null;
+        }
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        transcoderInput.setInputStream(fis);
+        transcoderOutput.setOutputStream(baos);
+
+        try {
+            transcoder.transcode(transcoderInput, transcoderOutput);
+        } catch (TranscoderException e) {
+            e.printStackTrace();
+            log.error("Error while transcoding the svg file to png. Is the svg formatted correctly?");
+            return null;
+        }
+
+        try {
+            fis.close();
+        } catch (IOException e) {
+            log.error("Error closing the {} file", givenSVG);
+        }
+
+        return BaseEncoding.base64().encode(baos.toByteArray());
     }
 }

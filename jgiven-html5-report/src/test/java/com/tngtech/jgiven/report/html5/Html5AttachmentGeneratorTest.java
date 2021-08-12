@@ -4,12 +4,12 @@ import static com.tngtech.jgiven.report.html5.Html5AttachmentGenerator.MINIMAL_T
 import static com.tngtech.jgiven.report.html5.Html5AttachmentGenerator.scaleDown;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
@@ -85,6 +85,42 @@ public class Html5AttachmentGeneratorTest {
         assertThat( writtenParentAttachment.getContent() ).isNotNull();
         assertThat( writtenNestedAttachment.getContent() ).isNotNull();
 
+    }
+
+    @Test
+    public void testGetImageDimensions() {
+        Html5AttachmentGenerator generator = new Html5AttachmentGenerator(temporaryFolderRule.getRoot());
+        assertThat(generator.getImageDimension(BINARY_SAMPLE)).isEqualTo(new Dimension(22, 22));
+    }
+
+    @Test
+    public void testPNGConvertor() {
+        Html5AttachmentGenerator generator = new Html5AttachmentGenerator(temporaryFolderRule.getRoot());
+        File sampleSVG = new File("src/test/resources/SampleSVG.svg");
+        String pngContent = generator.getPNGFromSVG(sampleSVG);
+
+        assertThat(generator.getImageDimension(BaseEncoding.base64().decode(pngContent)))
+                .isEqualTo(new Dimension(25, 25));
+    }
+
+    @Test
+    public void testSVGFilesHaveAGeneratedThumbnail() throws IOException {
+        Html5AttachmentGenerator generator = new Html5AttachmentGenerator(temporaryFolderRule.getRoot());
+        File sampleSVG = new File("src/test/resources/SampleSVG.svg");
+        Attachment sampleSVGAttachment= Attachment.fromTextFile(sampleSVG, MediaType.SVG_UTF_8)
+                .withFileName("SampleSVG");
+        StepModel stepModel = new StepModel("svgTest", Lists.newArrayList());
+        stepModel.addAttachment(sampleSVGAttachment);
+
+        generator.visit(stepModel);
+
+        File svgThumbnail = new File( temporaryFolderRule.getRoot().getPath() +
+                                        "/SampleSVG-thumb.svg" );
+
+        String pngContent = generator.getPNGFromSVG(svgThumbnail);
+
+        assertThat(generator.getImageDimension(BaseEncoding.base64().decode(pngContent)))
+                .isEqualTo(new Dimension(MINIMAL_THUMBNAIL_SIZE, MINIMAL_THUMBNAIL_SIZE));
     }
 
     private ReportModel generateReportModelWithAttachments() {
