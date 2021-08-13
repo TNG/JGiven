@@ -145,7 +145,7 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
                 Files.write(BaseEncoding.base64().decode(attachment.getValue()), targetFile);
             } else {
                 Files.write(attachment.getValue().getBytes(Charsets.UTF_8), targetFile);
-                if (attachment.getMediaType().equals(com.tngtech.jgiven.attachment.MediaType.SVG_UTF_8.toString())) {
+                if (com.tngtech.jgiven.attachment.MediaType.SVG_UTF_8.toString().equals(attachment.getMediaType())) {
                     File thumbFile = getThumbnailFileFor(targetFile);
                     writeThumbnailForSVG(targetFile, thumbFile);
                 }
@@ -208,9 +208,8 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
     }
 
     Dimension getImageDimension(byte[] givenImage) {
-        ByteArrayInputStream bais = new ByteArrayInputStream(givenImage);
         Dimension dimension = new Dimension();
-        try {
+        try (ByteArrayInputStream bais = new ByteArrayInputStream(givenImage)) {
             BufferedImage image = ImageIO.read(bais);
             dimension.height = image.getHeight();
             dimension.width = image.getWidth();
@@ -223,10 +222,8 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
 
     void createSVGThumbFile(File targetFile, String base64Image, Dimension dimension) {
         String xmlFormat = getXMLFormat(base64Image, dimension);
-        try {
-            FileWriter fileWriter = new FileWriter(targetFile);
+        try (FileWriter fileWriter = new FileWriter(targetFile)) {
             fileWriter.write(xmlFormat);
-            fileWriter.close();
         } catch (IOException e) {
             log.error("Error writing the thumbnail svg to " + targetFile);
         }
@@ -244,32 +241,21 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
         TranscoderInput transcoderInput = new TranscoderInput();
         TranscoderOutput transcoderOutput = new TranscoderOutput();
 
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(givenSVG);
+        try (FileInputStream fis = new FileInputStream(givenSVG);
+             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            transcoderInput.setInputStream(fis);
+            transcoderOutput.setOutputStream(baos);
+
+            transcoder.transcode(transcoderInput, transcoderOutput);
+            return BaseEncoding.base64().encode(baos.toByteArray());
         } catch (FileNotFoundException e) {
             log.error("Error while reading the initial svg file.");
-            return null;
-        }
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-        transcoderInput.setInputStream(fis);
-        transcoderOutput.setOutputStream(baos);
-
-        try {
-            transcoder.transcode(transcoderInput, transcoderOutput);
-        } catch (TranscoderException e) {
-            e.printStackTrace();
-            log.error("Error while transcoding the svg file to png. Is the svg formatted correctly?");
-            return null;
-        }
-
-        try {
-            fis.close();
         } catch (IOException e) {
             log.error("Error closing the {} file", givenSVG);
+        } catch (TranscoderException e) {
+            log.error("Error while transcoding the svg file to png. Is the svg formatted correctly?");
         }
 
-        return BaseEncoding.base64().encode(baos.toByteArray());
+        return null;
     }
 }

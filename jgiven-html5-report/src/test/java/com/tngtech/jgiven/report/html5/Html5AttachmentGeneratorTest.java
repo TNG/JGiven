@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import org.assertj.core.util.Lists;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -28,23 +29,25 @@ import org.junit.runner.RunWith;
 @RunWith(DataProviderRunner.class)
 public class Html5AttachmentGeneratorTest {
 
-    private static final String JSON_SAMPLE = "{}";
+    private Html5AttachmentGenerator generator;
     private static final byte[] BINARY_SAMPLE = BaseEncoding.base64().decode(
             "R0lGODlhFgAWAOZiAAUFBd3d3eHh4be3tzg4ODU1NaysrMHBwTs7O39/f15eXs/Pz+fn5wwMDEVFRTIyMh0dHUpKSigoKJeXl3x8fKioqOTk5NPT05qamjc3N2RkZDExMYmJiUxMTDo6Ouvr62pqanFxcW1tbfz8/CAgIM3Nze7u7vn5+eLi4m5ubjMzM52dnRcXF5ubm/Pz801NTcvLyz09PSwsLISEhJmZmT8/P+Xl5SIiIggICJGRkVxcXCUlJfDw8K2trZaWlhAQED4+Pmtra2hoaMfHx0BAQFpaWsrKynl5eVZWVq+vr6Ojo/j4+IeHh3p6ehQUFNjY2Ly8vK6ursLCwmBgYJSUlHBwcICAgIODg/Hx8WJiYouLi9/f33JycsTExC4uLvb29v///wICAi4uLgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAGIALAAAAAAWABYAAAf/gGKCgwVFPgFfXwEtUwWDj4MbIQJglQxblWACKV6QggQ9YCcTDmGmYQVaX2BKHpAEMGADJKe1YRJGYAsIkVFgKwC2tgBXYAcPglyywcLCVGBNYgUCLhCnDwi1LFkNpjgoAh4KYDmnMpUJpjcWYBOnGmBBNGAEpySrYAk77GAcp04jBgTgYSsCPiyVDDAzVQLRE2ERlmRSaCtJogvCJHzIZEWYAUUfbElgUGkEOltdAlQAY83UD5JgDHTAB+IUABMDhIARcYpAwmAGwVQ45QBMFQICbHQzpQHEwgIJWoaBIgCImCP9mjUbx0TQgwNgFGitheDEgQyDiCwAQ2FsGB1fKxZ0gFQD7AUkS4lKMfbCkxgVFCh9KYEBwxATmmag9SsIgQiBiQIMCBHDUyAAOw==");
 
     @Rule
     public final TemporaryFolder temporaryFolderRule = new TemporaryFolder();
 
+    @Before
+    public void setup() {
+        generator = new Html5AttachmentGenerator(temporaryFolderRule.getRoot());
+    }
+
     @Test
     public void testFileNameGeneration() {
-        Html5AttachmentGenerator generator = new Html5AttachmentGenerator();
-
         assertThat(generator.getTargetFile("foo", "txt").getName()).isEqualTo("foo.txt");
         assertThat(generator.getTargetFile("foo", "txt").getName()).isEqualTo("foo2.txt");
         assertThat(generator.getTargetFile("foo", "png").getName()).isEqualTo("foo3.png");
         assertThat(generator.getTargetFile("foo4", "png").getName()).isEqualTo("foo4.png");
         assertThat(generator.getTargetFile("foo", "png").getName()).isEqualTo("foo5.png");
-
     }
 
     @Test
@@ -55,7 +58,6 @@ public class Html5AttachmentGeneratorTest {
         assertThat(before.getWidth()).isEqualTo(22);
         assertThat(before.getHeight()).isEqualTo(22);
 
-        Html5AttachmentGenerator generator = new Html5AttachmentGenerator(temporaryFolderRule.getRoot());
         StepModel stepModel = new StepModel("test", Lists.newArrayList());
         stepModel.addAttachment(attachment);
         generator.visit(stepModel);
@@ -70,7 +72,6 @@ public class Html5AttachmentGeneratorTest {
 
     @Test
     public void testFindingAndGeneratingAttachmentsInAllSteps() throws IOException {
-        Html5AttachmentGenerator generator = new Html5AttachmentGenerator(temporaryFolderRule.getRoot());
         File root = temporaryFolderRule.getRoot();
         generator.generateAttachments(root, generateReportModelWithAttachments());
 
@@ -88,13 +89,11 @@ public class Html5AttachmentGeneratorTest {
 
     @Test
     public void testGetImageDimensions() {
-        Html5AttachmentGenerator generator = new Html5AttachmentGenerator(temporaryFolderRule.getRoot());
         assertThat(generator.getImageDimension(BINARY_SAMPLE)).isEqualTo(new Dimension(22, 22));
     }
 
     @Test
     public void testPNGConvertor() {
-        Html5AttachmentGenerator generator = new Html5AttachmentGenerator(temporaryFolderRule.getRoot());
         File sampleSVG = new File("src/test/resources/SampleSVG.svg");
         String pngContent = generator.getPNGFromSVG(sampleSVG);
 
@@ -104,7 +103,6 @@ public class Html5AttachmentGeneratorTest {
 
     @Test
     public void testSVGFilesHaveAGeneratedThumbnail() throws IOException {
-        Html5AttachmentGenerator generator = new Html5AttachmentGenerator(temporaryFolderRule.getRoot());
         File sampleSVG = new File("src/test/resources/SampleSVG.svg");
         Attachment sampleSVGAttachment = Attachment.fromTextFile(sampleSVG, MediaType.SVG_UTF_8)
                 .withFileName("SampleSVG");
@@ -159,5 +157,4 @@ public class Html5AttachmentGeneratorTest {
         assertThat(thumb.getWidth()).isEqualTo(expectedWidth);
         assertThat(thumb.getHeight()).isEqualTo(expectedHeight);
     }
-
 }

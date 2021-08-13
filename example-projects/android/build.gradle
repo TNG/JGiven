@@ -38,10 +38,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    packagingOptions {
-        exclude 'license/**'
-    }
 }
 
 configurations {
@@ -59,7 +55,6 @@ dependencies {
         exclude group: "junit"
     }
     androidTestImplementation('com.tngtech.jgiven:jgiven-android:' + version)
-    androidTestImplementation('com.tngtech.jgiven:jgiven-junit:' + version)
 
     jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:' + version
     jgivenReport 'org.slf4j:slf4j-simple:1.7.32'
