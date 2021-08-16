@@ -209,8 +209,8 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
 
     Dimension getImageDimension(byte[] givenImage) {
         Dimension dimension = new Dimension();
-        try (ByteArrayInputStream bais = new ByteArrayInputStream(givenImage)) {
-            BufferedImage image = ImageIO.read(bais);
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(givenImage)) {
+            BufferedImage image = ImageIO.read(inputStream);
             dimension.height = image.getHeight();
             dimension.width = image.getWidth();
         } catch (IOException e) {
@@ -241,13 +241,13 @@ class Html5AttachmentGenerator extends ReportModelVisitor {
         TranscoderInput transcoderInput = new TranscoderInput();
         TranscoderOutput transcoderOutput = new TranscoderOutput();
 
-        try (FileInputStream fis = new FileInputStream(givenSVG);
-             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            transcoderInput.setInputStream(fis);
-            transcoderOutput.setOutputStream(baos);
+        try (FileInputStream inputStream = new FileInputStream(givenSVG);
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            transcoderInput.setInputStream(inputStream);
+            transcoderOutput.setOutputStream(outputStream);
 
             transcoder.transcode(transcoderInput, transcoderOutput);
-            return BaseEncoding.base64().encode(baos.toByteArray());
+            return BaseEncoding.base64().encode(outputStream.toByteArray());
         } catch (FileNotFoundException e) {
             log.error("Error while reading the initial svg file.");
         } catch (IOException e) {
