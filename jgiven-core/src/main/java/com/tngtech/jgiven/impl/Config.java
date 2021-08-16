@@ -61,10 +61,8 @@ public class Config {
         String path = System.getProperty(JGIVEN_CONFIG_PATH, "jgiven.properties");
         String charset = System.getProperty(JGIVEN_CONFIG_CHARSET, "UTF-8");
         Properties properties = new Properties();
-        try {
-            try (Reader reader = Files.newBufferedReader(Paths.get(path), Charset.forName(charset))) {
-                properties.load(reader);
-            }
+        try (Reader reader = Files.newBufferedReader(Paths.get(path), Charset.forName(charset))) {
+            properties.load(reader);
         } catch (IOException e) {
             log.debug("config file " + path + " not loaded: " + e.getMessage());
         }

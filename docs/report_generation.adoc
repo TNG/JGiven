@@ -206,12 +206,12 @@ The encoding for the file is assumed to be `UTF-8`, but can be customized with t
 ----
 jgiven.config.charset
 ----
-The following can be defined the properties file:
+The following can be defined in the properties file:
 ----
-jgiven.report.enabled
-jgiven.report.dir
-jgiven.report.text
+jgiven.report.enabled=false
+jgiven.report.dir=<targetDir>
+jgiven.report.text=false
 jgiven.report.text.color
-jgiven.report.filterStackTrace
+jgiven.report.filterStackTrace=true
 ----
 Configuration defined via Java system properties will take precedence over values in the configuration file.
