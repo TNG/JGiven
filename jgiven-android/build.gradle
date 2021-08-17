@@ -55,6 +55,10 @@ android {
 
 }
 
+configurations.all {
+    exclude group: 'xml-apis', module: 'xml-apis-ext'
+}
+
 dependencies {
     api "com.google.guava:guava:$guavaAndroidVersion"
     api("net.bytebuddy:byte-buddy-android:$byteBuddyVersion")

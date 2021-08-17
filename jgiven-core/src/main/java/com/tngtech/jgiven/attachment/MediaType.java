@@ -68,7 +68,7 @@ public class MediaType {
     /**
      * image/svg+xml
      */
-    public static final MediaType SVG_UTF_8 = imageUtf8( "svg+xml" );
+    public static final MediaType SVG_UTF_8 = imageUtf8( "svg+xml; charset=utf-8" );
 
     /**
      * text/plain
