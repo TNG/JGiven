@@ -142,7 +142,7 @@ Now run:
 $ mvn verify
 ----
 
-HTML reports are then generated into the `target/jgiven-reports/html` directory.
+HTML reports are then generated into the `target/jgiven-reports/html` directory. Note that the plugin relies on the existence of the JSON output, so if the property `jgiven.reports.enabled` was set to `false`, no output will be generated.
 
 ==== Gradle
 
@@ -171,6 +171,7 @@ buildscript {
 }
 
 apply plugin: "com.tngtech.jgiven.gradle-plugin"
+
 ----
 
 Now run:
@@ -180,7 +181,7 @@ Now run:
 $ gradle test jgivenTestReport
 ----
 
-HTML reports are then generated into the `build/reports/jgiven/test/html/` directory.
+HTML reports are then generated into the `build/reports/jgiven/test/html/` directory. Note that the plugin relies on the existence of the JSON output, so if the property `jgiven.reports.enabled` was set to `false`, no output will be generated.
 
 If you want that the HTML report is always generated after the tests
 have been executed, you can configure the `test` task in your Gradle
@@ -193,3 +194,24 @@ test.finalizedBy jgivenTestReport
 
 For additional information about the Gradle plugin refer to
 https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin
+
+=== Configuration File
+
+JGiven will optionally load a configuration properties file, defaulting to:
+`jgiven.properties`. The path to the configuration can be customized with the system property:
+----
+jgiven.config.path
+----
+The encoding for the file is assumed to be `UTF-8`, but can be customized with the system property:
+----
+jgiven.config.charset
+----
+The following can be defined in the properties file:
+----
+jgiven.report.enabled=false
+jgiven.report.dir=<targetDir>
+jgiven.report.text=false
+jgiven.report.text.color
+jgiven.report.filterStackTrace=true
+----
+Configuration defined via Java system properties will take precedence over values in the configuration file.
