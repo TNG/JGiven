@@ -495,9 +495,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect3">
 <h4 id="_beforescenario">@BeforeScenario</h4>
 <div class="paragraph">
-<p>Methods annotated with <code>@BeforeScenario</code> are executed before any step of any stage of a scenario. This is useful for
-some general scenario setup. As an example, you could initialize a WebDriver instance for Selenium tests or setup
-a database connection. Note that such methods are executed before the injection of values.
+<p>Methods annotated with <code>@BeforeScenario</code> are executed before any step of any stage of a scenario.
+This is useful for some general scenario setup.
+As an example, you could initialize a WebDriver instance for Selenium tests or setup a database connection.
+Note that such methods are executed before the injection of values.
 Thus, the annotated code must not depend on scenario state fields.</p>
 </div>
 <div class="listingblock">
@@ -515,8 +516,7 @@ public void startBrowser() {
 <div class="sect3">
 <h4 id="_afterscenario">@AfterScenario</h4>
 <div class="paragraph">
-<p>Analogous to <code>@BeforeScenario</code> there is the <code>@AfterScenario</code> annotation to execute a methods when a
-scenario has finished.</p>
+<p>Analogous to <code>@BeforeScenario</code> there is the <code>@AfterScenario</code> annotation to execute a methods when a scenario has finished.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -534,15 +534,15 @@ public void closeBrowser() {
 <div class="sect2">
 <h3 id="_scenariorule">@ScenarioRule</h3>
 <div class="paragraph">
-<p><code>@BeforeScenario</code> and <code>@AfterScenario</code> methods are often used to setup and tear down some resource. If you want to
-reuse such a resource in another stage, you would have to copy these methods into that stage. To avoid that, JGiven
-offers a concept similar to JUnit rules. The idea is to have a separate class that only contains the before and after
-methods. This class can then be reused in multiple stages.</p>
+<p><code>@BeforeScenario</code> and <code>@AfterScenario</code> methods are often used to setup and tear down some resource.
+If you want to reuse such a resource in another stage, you would have to copy these methods into that stage.
+To avoid that, JGiven offers a concept similar to JUnit rules.
+The idea is to have a separate class that only contains the before and after methods.
+This class can then be reused in multiple stages.</p>
 </div>
 <div class="paragraph">
-<p>A scenario rule class can be any class that provides the methods <code>before()</code> and <code>after()</code>. This is compatible with
-JUnit’s <code>ExternalResource</code> class, which means that you can use classes like <code>TemporaryFolder</code> from JUnit directly
-in JGiven.</p>
+<p>A scenario rule class can be any class that provides the methods <code>before()</code> and <code>after()</code>.
+This is compatible with JUnit’s <code>ExternalResource</code> class, which means that you can use classes like <code>TemporaryFolder</code> from JUnit directly in JGiven.</p>
 </div>
 <div class="sect3">
 <h4 id="_example">Example</h4>
@@ -590,10 +590,10 @@ public void setup() {
 <div class="sect3">
 <h4 id="_afterstage">@AfterStage</h4>
 <div class="paragraph">
-<p>Analogous to <code>@BeforeStage</code> methods, methods can be annotated with <code>@AfterStage</code>. These methods are executed after
-all steps of a stage have been executed, but before extracting the values of scenario state fields. Thus you can
-prepare state for following stages in an <code>@AfterStage</code> method. A typical use case for this is to apply the builder
-pattern to build a certain object using step methods and build the final object in an <code>@AfterStage</code> method.</p>
+<p>Analogous to <code>@BeforeStage</code> methods, methods can be annotated with <code>@AfterStage</code>.
+These methods are executed after all steps of a stage have been executed, but before extracting the values of scenario state fields.
+Thus you can prepare state for following stages in an <code>@AfterStage</code> method.
+A typical use case for this is to apply the builder pattern to build a certain object using step methods and build the final object in an <code>@AfterStage</code> method.</p>
 </div>
 </div>
 <div class="sect3">
@@ -627,14 +627,58 @@ pattern to build a certain object using step methods and build the final object 
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_repeatable_stage_methods">Repeatable Stage Methods</h4>
+<div class="paragraph">
+<p>The <code>@BeforeStage</code> and <code>@AfterStage</code> methods come with an optional parameter that allows to execute these methods each time you enter or leave the stage, respectively.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@BeforeStage(repeatable=true)
+void setup(){
+    //do something useful several times
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The process of entering or leaving a stage is determined by a change of the active stage class.
+Hence, in order for a repeated execution to work, a different stage has had to be executed in between two invocations of the same stage.
+Therefore, the following setup only executes the <code>@BeforeStage</code> once.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">class RepeatableStage extends Stage&lt;RepeatableStage&gt;{
+    @BeforeStage(repeatable=true)
+    void beforeStageMethod(){ /*...*/}
+
+    public void given_method(){/*...*/}
+
+    public void when_method() {/*...*/}
+}
+class UseRepeatableStage {
+    //...
+    @Test
+    public void test(){
+        //@BeforeStage will only be executed before this invocation
+        repeatableStage.given().given_method();
+        //Still the same stage class, no @BeforeStage execution here
+        repeatableStage.when().when_method();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Likewise, <code>@AfterStage</code> methods in such scenarios will only be executed after the last invocation of the stage.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.0<br>
-Last updated 2021-01-12 17:38:22 +0100
+Version 1.1.0<br>
+Last updated 2021-08-18 16:47:18 +0200
 </div>
 </div>
 </body>
