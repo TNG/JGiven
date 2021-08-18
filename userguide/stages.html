@@ -468,6 +468,39 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>JGiven removes the underlines so the step will appear as <em>the cook mangles everything to a dough</em> in the report.</p>
 </div>
+<div class="sect3">
+<h4 id="_nested_steps">Nested Steps</h4>
+<div class="paragraph">
+<p>In general, JGiven does not resolve the contents of a step method for reporting. This behavior can be changed by adding the <code>@NestedSteps</code> annotation to a step method. This is useful for grouping a large set of small scale steps
+into a small set of higher order steps. For instance, the code</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">@NestedSteps
+public NestedStage I_fill_out_the_registration_form_with_valid_values() {
+    return I_enter_a_name("Franky")
+        .and().I_enter_a_email_address("franky@acme.com")
+        .and().I_enter_a_password("password1234")
+        .and().I_enter_a_repeated_password("password1234");
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>will result in the report</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>I fill out the registration form
+    I enter a name Franky
+    And I enter a email address franky@acme.com
+    And I enter a password password1234
+    And I enter a repeated password password1234</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The nested steps will appear as a collapsible group in the HTML report.</p>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_overriding_the_default_reporting">Overriding the Default Reporting</h3>
@@ -881,7 +914,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_dynamic_adding_of_stages">Dynamic Adding of Stages</h4>
+<h4 id="_dynamic_addition_of_stages">Dynamic Addition of Stages</h4>
 <div class="paragraph">
 <p>The disadvantage of injecting a stage into a test class is that this stage will be used for all tests of that class. This might result in an overhead if the stage contains <code>@BeforeScenario</code> or <code>@AfterScenario</code> methods, because these methods will also be executed in the injected stages. If an additional stage is only required for a single test method you should instead dynamically add that stage to the scenario by using the <code>addStage</code> method.</p>
 </div>
@@ -990,8 +1023,8 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.0<br>
-Last updated 2021-01-12 17:38:22 +0100
+Version 1.1.0<br>
+Last updated 2021-08-18 16:47:18 +0200
 </div>
 </div>
 </body>
