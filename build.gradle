@@ -169,7 +169,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
             testImplementation project(':jgiven-timing')
         }
         test {
-            jvmArgs += "-javaagent:${rootProject.projectDir}/jgiven-timing/build/libs/jgiven-timing-1.0.0.jar"
+            jvmArgs += "-javaagent:${rootProject.projectDir}/jgiven-timing/build/libs/jgiven-timing-1.1.0.jar"
         }
     }
 

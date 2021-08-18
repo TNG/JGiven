@@ -14,7 +14,7 @@ if [ ! -e 'gradle.properties' ]; then
 fi
 
 
-VERSION="1.0-t"
+VERSION="1.1-t"
 
 updateAllVersionInformation $VERSION
 
