@@ -67,7 +67,7 @@ subprojects {
         bytebuddyVersion = '1.11.13'
         paranamerVersion = '2.8'
         jansiVersion = '1.18'
-        gsonVersion = '2.8.7'
+        gsonVersion = '2.8.8'
         guavaVersion = '30.1.1-jre'
         guavaAndroidVersion = '28.1-android'
         springVersion = '5.3.9'
