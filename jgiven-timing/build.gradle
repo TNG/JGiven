@@ -14,7 +14,7 @@ dependencies {
     implementation "net.bytebuddy:byte-buddy-gradle-plugin:$bytebuddyVersion"
     implementation "net.bytebuddy:byte-buddy-agent:$bytebuddyVersion"
     testImplementation("com.google.guava:guava-testlib:$guavaVersion")
-    testImplementation 'org.mockito:mockito-inline:3.11.2'
+    testImplementation 'org.mockito:mockito-inline:3.12.4'
 }
 
 def generatedSourceDir = "generatedSrc/java"
