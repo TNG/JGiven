@@ -32,7 +32,7 @@ dependencies {
     testImplementation "com.tngtech.jgiven:jgiven-junit:${version}"
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
-    testImplementation 'io.github.bonigarcia:webdrivermanager:4.4.3'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.0.1'
     testImplementation 'org.assertj:assertj-core:3.20.2'
 
 }
