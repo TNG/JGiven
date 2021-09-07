@@ -1,0 +1,20 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "6d4b1476-3a89-4eca-ba13-df048e3d697a",
+    "name": "publishjgivenreport",
+    "friendlyName": "publishjgivenreport",
+    "description": "Used to publish JGiven reports to Azure DevOps",
+    "category": "Utility",
+    "author": "Andru-Lucian Stefanescu",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 99
+    },
+    "instanceNameFormat": "publishjgivenreport",
+    "execution": {
+        "Node10": {
+            "target": "index.js"
+        }
+    }
+}

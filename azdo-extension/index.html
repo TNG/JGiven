@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="lib/VSS.SDK.min.js"></script>
+    <script type="text/javascript">
+        VSS.init({
+            usePlatformScripts: true,
+            moduleLoaderConfig: {
+                paths: { "enhancer": "scripts" }
+            }
+        });
+
+        VSS.ready(function () {
+            require(["enhancer/tab"], function () { });
+        });
+    </script>
+    <style>
+        iframe {
+            border: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+</body>
+
+</html>

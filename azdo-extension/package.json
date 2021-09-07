@@ -1,0 +1,25 @@
+{
+  "name": "publishjgivenreport",
+  "version": "0.1.99",
+  "description": "Extension that publishes JGiven test reports in Azure DevOps console",
+  "scripts": {
+    "build": "tsc -p . && tsc -p publishjgivenreport/",
+    "postbuild": "npm run package",
+    "package": "tfx extension create",
+    "clean": "rimraf ./dist && rimraf ./*.vsix"
+  },
+  "author": "Andru-Lucian Stefanescu",
+  "devDependencies": {
+    "ncp": "^2.0.0",
+    "rimraf": "^3.0.2",
+    "tfx-cli": "^0.9.2",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "azure-pipelines-task-lib": "^3.1.8",
+    "@types/jquery": "^3.5.6",
+    "@types/q": "^1.5.5",
+    "@types/pako": "^1.0.2",
+    "vss-web-extension-sdk": "^5.141.0"
+  }
+}

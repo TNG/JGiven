@@ -1,0 +1,76 @@
+{
+    "manifestVersion": 1,
+    "id": "jgiven-publishTestReports",
+    "version": "0.1.99",
+    "name": "JGiven Reports Publisher",
+    "publisher": "jgiven-publishTestResults",
+    "public": false,  
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "files": [       
+        {
+            "path": "node_modules/vss-web-extension-sdk/lib",
+            "addressable": true,
+            "packagePath": "lib"
+        },
+        {
+            "path": "publishjgivenreport",
+            "addressable": true
+        },
+        {
+            "path": "index.html",
+            "addressable": true
+        },    
+        {
+            "path": "dist",
+            "addressable": true,
+            "packagePath": "scripts"
+        },
+        {
+            "path": "app.bundle.js",
+            "addressable": true
+        },
+        {
+            "path": "styles.css",
+            "addressable": true
+        },
+        {
+            "path": "font.woff",
+            "addressable": true
+        }
+    ],
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "scopes": [
+        "vso.build_execute"
+    ],
+    "contributions": [
+        {
+            "id": "build-info-tab",
+            "type": "ms.vss-build-web.build-results-tab",
+            "description": "A tab contributing to build results view",
+            "targets": [
+                "ms.vss-build-web.build-results-view"
+            ],
+            "properties": {
+                "name": "JGiven Test Results",
+                 "uri": "index.html",
+                 "supportsTasks": ["6d4b1476-3a89-4eca-ba13-df048e3d697a"]
+            }
+        },
+        {
+            "id": "custom-publishjgivenreport",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "publishjgivenreport"
+            }
+        }
+    ]
+}

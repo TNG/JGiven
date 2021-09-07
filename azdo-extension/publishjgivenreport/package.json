@@ -1,0 +1,29 @@
+{
+  "name": "publishjgivenreport",
+  "version": "0.1.99",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "inputs": [
+    {
+      "name": "jgivenReportLocation",
+      "type": "string",
+      "label": "jgivenReportLocation",
+      "required": false
+    }
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "azure-pipelines-task-lib": "^3.1.8"
+  },
+  "devDependencies": {
+    "@types/node": "^16.7.2",
+    "@types/pako": "^1.0.2",
+    "@types/q": "^1.5.5",
+    "pako": "^2.0.4",
+    "typescript": "^4.3.5"
+  }
+}
