@@ -26,7 +26,7 @@ compileJava {
 }
 
 ext {
-    junit5Version = '5.7.2'
+    junit5Version = '5.8.0'
     jgivenVersion = version
 }
 
