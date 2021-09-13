@@ -12,7 +12,7 @@ dependencies {
     implementation "com.google.code.gson:gson:$gsonVersion"
 
     testImplementation project(':jgiven-junit5')
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.0'
     testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
 
 }
