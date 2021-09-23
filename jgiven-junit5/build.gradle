@@ -20,7 +20,7 @@ dependencies {
 
     testImplementation project(':jgiven-html5-report')
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    testImplementation 'org.junit.platform:junit-platform-runner:1.8.0'
+    testImplementation 'org.junit.platform:junit-platform-runner:1.8.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.1'
 }
 
