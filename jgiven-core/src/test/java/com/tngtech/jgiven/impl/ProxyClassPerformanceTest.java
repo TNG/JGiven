@@ -1,36 +1,63 @@
 package com.tngtech.jgiven.impl;
 
-import org.junit.Test;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Test;
+
+/**
+ * test that the continued creation of proxy classes does not
+ * constantly consume memory.
+ */
 public class ProxyClassPerformanceTest {
 
+    private static final int NUMBER_OF_RUNS = 10000;
+    private static final int PROBE_INTERVAL = 100;
+
     @Test
-    public void test_creation_of_proxy_classes(){
-        Set<Long> results = new HashSet<>();
-        for( int i = 0; i < 1000; i++ ) {
+    public void test_creation_of_proxy_classes() {
+        List<Long> memoryUsageRecordInMebibytes = new ArrayList<>(NUMBER_OF_RUNS / PROBE_INTERVAL);
+        for (int i = 0; i < NUMBER_OF_RUNS; i++) {
             ScenarioBase scenario = new ScenarioBase();
-            TestStage testStage = scenario.addStage( TestStage.class );
+            TestStage testStage = scenario.addStage(TestStage.class);
             testStage.something();
-            if( i % 100 == 0 ) {
+            if (i % PROBE_INTERVAL == 0) {
                 System.gc();
-                long usedMemory = ( Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory() ) / ( 1024 * 1024 );
-                System.out.println( "Used memory: " + usedMemory );
-                results.add( usedMemory );
+                long usedMemory = calculateMemoryUsageRoundedDownToMebibytes();
+                System.out.println("Used memory: " + usedMemory);
+                memoryUsageRecordInMebibytes.add(usedMemory);
             }
         }
-
-        assertThat( results )
-                .describedAs( "Only should contains 1 or 2 items, as first iteration might use more memory might contain 2 items" )
-                .hasSizeBetween( 1, 2 );
+        List<Long> growth = calculateChangeInMemoryConsumption(memoryUsageRecordInMebibytes);
+        double averageConsumptionChange = average(growth);
+        assertThat(averageConsumptionChange)
+            .as("There is no net increase of memory consumption "
+            + "for the continued creation and discarding of proxy classes.")
+            .isLessThanOrEqualTo(0);
     }
 
-    public static class TestStage {
-        public void something(){
+    private List<Long> calculateChangeInMemoryConsumption(List<Long> record) {
+        List<Long> growth = new ArrayList<>(record.size() - 1);
+        for (int i = 1; i < record.size(); i++) {
+            growth.add(record.get(i) - record.get(i - 1));
+        }
+        return growth;
+    }
+
+    private double average(List<Long> data) {
+        return data.stream()
+            .mapToDouble(Double::valueOf)
+            .reduce((currentAverage, dataPoint) -> currentAverage + dataPoint / data.size())
+            .orElse(0.0);
+    }
+
+    private long calculateMemoryUsageRoundedDownToMebibytes() {
+        return (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / (1024 * 1024);
+    }
+
+    static class TestStage {
+        public void something() {
         }
     }
 }
