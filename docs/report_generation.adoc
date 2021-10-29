@@ -156,6 +156,8 @@ plugins {
 }
 ----
 
+When using Kotlin, make sure the JGiven Gradle plugin is configured _after_ the `kotlin("jvm")` plugin.
+
 Alternatively you can configure the plugin as follows:
 
 [source,gradle,subs="verbatim,attributes"]
