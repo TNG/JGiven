@@ -44,11 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ScenarioModelBuilder implements ScenarioListener {
-    private static final Logger log = LoggerFactory.getLogger(ScenarioModelBuilder.class);
 
     private static final Set<String> STACK_TRACE_FILTER = ImmutableSet
         .of("sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept",
@@ -98,7 +95,26 @@ public class ScenarioModelBuilder implements ScenarioListener {
         this.tagCreator = new TagCreator(configuration);
     }
 
-    public void addStepMethod(Method paramMethod, List<NamedArgument> arguments, InvocationMode mode,
+    @Override
+    public void scenarioStarted(Class<?> testClass, Method method, List<NamedArgument> namedArguments) {
+        readConfiguration(testClass);
+        readAnnotations(testClass, method);
+        scenarioModel.setClassName(testClass.getName());
+        setParameterNames(getNames(namedArguments));
+
+        // must come at last
+        setMethodName(method.getName());
+
+        ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil(configuration);
+        List<ObjectFormatter<?>> formatter =
+            parameterFormattingUtil.getFormatter(method.getParameterTypes(), getNames(namedArguments),
+                method.getParameterAnnotations());
+
+        setArguments(parameterFormattingUtil.toStringList(formatter, getValues(namedArguments)));
+        setCaseDescription(testClass, method, namedArguments);
+    }
+
+    private void addStepMethod(Method paramMethod, List<NamedArgument> arguments, InvocationMode mode,
                               boolean hasNestedSteps) {
         StepModel stepModel = createStepModel(paramMethod, arguments, mode);
 
@@ -330,26 +346,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         setException(e);
     }
 
-    @Override
-    public void scenarioStarted(Class<?> testClass, Method method, List<NamedArgument> namedArguments) {
-        readConfiguration(testClass);
-        readAnnotations(testClass, method);
-        scenarioModel.setClassName(testClass.getName());
-        setParameterNames(getNames(namedArguments));
-
-        // must come at last
-        setMethodName(method.getName());
-
-        ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil(configuration);
-        List<ObjectFormatter<?>> formatter =
-            parameterFormattingUtil.getFormatter(method.getParameterTypes(), getNames(namedArguments),
-                method.getParameterAnnotations());
-
-        setArguments(parameterFormattingUtil.toStringList(formatter, getValues(namedArguments)));
-        setCaseDescription(testClass, method, namedArguments);
-    }
-
-    private void setCaseDescription(Class<?> testClass, Method method, List<NamedArgument> namedArguments) {
+        private void setCaseDescription(Class<?> testClass, Method method, List<NamedArgument> namedArguments) {
 
         CaseAs annotation = null;
         if (method.isAnnotationPresent(CaseAs.class)) {
@@ -421,8 +418,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
     }
 
-
-
     @Override
     public void scenarioFinished() {
         AssertionUtil.assertTrue(scenarioStartedNanos > 0, "Scenario has no start time");
@@ -473,13 +468,13 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
 
-    public void addTags(Annotation... annotations) {
+    private void addTags(Annotation... annotations) {
         for (Annotation annotation : annotations) {
             addTags(tagCreator.toTags(annotation));
         }
     }
 
-    public void addTags(List<Tag> tags) {
+    private void addTags(List<Tag> tags) {
         if (tags.isEmpty()) {
             return;
         }
