@@ -1,17 +1,21 @@
 package com.tngtech.jgiven.report.model;
 
+import static java.util.Arrays.asList;
+
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.Quoted;
+import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Arrays.asList;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
 
@@ -109,6 +113,12 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         reportModel.getLastScenarioModel().setDurationInNanos(durationInNanos);
         return self();
     }
+
+    public SELF the_step_$_has_a_duration_of_$_nano_seconds(int step, long durationInNanos) {
+        reportModel.getLastScenarioModel().getCase(0).getStep(step).setDurationInNanos(durationInNanos);
+        return self();
+    }
+
 
     public SELF the_scenario_has_$_cases(int ncases) {
         ScenarioModel scenarioModel = reportModel.getLastScenarioModel();

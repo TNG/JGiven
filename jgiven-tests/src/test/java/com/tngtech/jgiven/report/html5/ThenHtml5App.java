@@ -108,6 +108,16 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
         return self();
     }
 
+    /**
+     * @param index the ordinal number of this element, starting at 1.
+     */
+    public SELF the_$_th_element_with_a_$_class_exists(int index, String multiline) {
+        List<WebElement> elements = webDriver.findElements(By.className(multiline));
+        assertThat(elements).hasSizeGreaterThanOrEqualTo(index);
+        foundElement = elements.get(index - 1);
+        return self();
+    }
+
     public SELF has_content(String content) {
         assertThat(foundElement.getText()).isEqualTo(content);
         return self();

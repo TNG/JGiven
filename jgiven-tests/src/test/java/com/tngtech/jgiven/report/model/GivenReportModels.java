@@ -160,7 +160,19 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
         return self();
     }
 
-    public SELF step_$_of_scenario_$_has_an_image_attachment_$(int stepNr, int scenarioNr, @Format( value = PrintfFormatter.class, args = { "base64 data: %.10s..." } ) String base64image){
+    public SELF scenario_took_$_nanos(long durationInNanos) {
+        givenReportModel.the_scenario_has_a_duration_of_$_nano_seconds(durationInNanos);
+        return self();
+    }
+
+    public SELF step_$_of_scenario_took_$_nanos(int step, long durationInNanos){
+        givenReportModel.the_step_$_has_a_duration_of_$_nano_seconds(step, durationInNanos);
+        return self();
+    }
+
+    public SELF step_$_of_scenario_$_has_an_image_attachment_$(int stepNr, int scenarioNr,
+                                                               @Format(value = PrintfFormatter.class, args = {
+                                                                   "base64 data: %.10s..."}) String base64image) {
         givenReportModel.step_$_of_scenario_$_has_an_image_attachment(stepNr, scenarioNr, base64image);
         return self();
     }

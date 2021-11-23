@@ -358,4 +358,16 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
             then().$_attachment_icons_exist(1);
         }
     }
+
+    @Test
+    @Issue("#755")
+    public void timings_greater_than_10_millis_are_displayed() throws IOException{
+        given().a_report_model().and().step_$_of_scenario_took_$_nanos(0, 11_000_000);
+
+        jsonReports.the_report_exist_as_JSON_file();
+        whenReport.when().the_HTML_Report_Generator_is_executed();
+        when().the_page_of_scenario_$_is_opened(1);
+        then().the_$_th_element_with_a_$_class_exists(2,"duration").has_content("(11ms)");
+
+    }
 }
