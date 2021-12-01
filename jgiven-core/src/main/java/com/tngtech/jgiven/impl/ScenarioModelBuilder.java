@@ -76,6 +76,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
         this.reportModel = reportModel;
     }
 
+    private Stack<Integer> discrepancyOnLayer = new Stack<>();
+
     @Override
     public void scenarioStarted(String description) {
         scenarioStartedNanos = System.nanoTime();
@@ -93,6 +95,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         scenarioModel.addCase(scenarioCaseModel);
         scenarioModel.setDescription(readableDescription);
         this.tagCreator = new TagCreator(configuration);
+        discrepancyOnLayer.push(0);
     }
 
     @Override
@@ -115,7 +118,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     private void addStepMethod(Method paramMethod, List<NamedArgument> arguments, InvocationMode mode,
-                              boolean hasNestedSteps) {
+                               boolean hasNestedSteps) {
         StepModel stepModel = createStepModel(paramMethod, arguments, mode);
 
         if (parentSteps.empty()) {
@@ -126,6 +129,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
         if (hasNestedSteps) {
             parentSteps.push(stepModel);
+            discrepancyOnLayer.push(0);
         }
         currentStep = stepModel;
     }
@@ -213,16 +217,31 @@ public class ScenarioModelBuilder implements ScenarioListener {
         return scenarioCaseModel;
     }
 
+    private void incrementDiscrepancy() {
+        int discrepancyOnCurrentLayer = discrepancyOnLayer.pop();
+        discrepancyOnCurrentLayer++;
+        discrepancyOnLayer.push(discrepancyOnCurrentLayer);
+    }
+
+    private void decrementDiscrepancy() {
+        int discrepancyOnCurrentLayer = discrepancyOnLayer.pop();
+        discrepancyOnCurrentLayer--;
+        discrepancyOnLayer.push(discrepancyOnCurrentLayer);
+    }
+
     @Override
     public void stepMethodInvoked(Method method, List<NamedArgument> arguments, InvocationMode mode,
                                   boolean hasNestedSteps) {
         if (method.isAnnotationPresent(IntroWord.class)) {
             introWordAdded(getDescription(method));
+            incrementDiscrepancy();
         } else if (method.isAnnotationPresent(FillerWord.class)) {
             FillerWord fillerWord = method.getAnnotation(FillerWord.class);
             addToSentence(getDescription(method), fillerWord.joinToPreviousWord(), fillerWord.joinToNextWord());
+            incrementDiscrepancy();
         } else if (method.isAnnotationPresent(StepComment.class)) {
             addStepComment(arguments);
+            incrementDiscrepancy();
         } else {
             addTags(method.getAnnotations());
             addTags(method.getDeclaringClass().getAnnotations());
@@ -272,7 +291,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         scenarioCaseModel.setStatus(status);
     }
 
-    public void setException(Throwable throwable) {
+    private void setException(Throwable throwable) {
         scenarioCaseModel.setErrorMessage(throwable.getClass().getName() + ": " + throwable.getMessage());
         scenarioCaseModel.setStackTrace(getStackTrace(throwable, FILTER_STACK_TRACE));
     }
@@ -309,17 +328,24 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
 
         if (currentStep != null) {
-            currentStep.setDurationInNanos(durationInNanos);
+            if (discrepancyOnLayer.empty() || discrepancyOnLayer.peek() == 0) {
+                currentStep.setDurationInNanos(durationInNanos);
+            }
             if (hasNestedSteps) {
                 if (currentStep.getStatus() != StepStatus.FAILED) {
                     currentStep.setStatus(getStatusFromNestedSteps(currentStep.getNestedSteps()));
                 }
                 parentSteps.pop();
+                discrepancyOnLayer.pop();
             }
         }
 
         if (!hasNestedSteps && !parentSteps.isEmpty()) {
             currentStep = parentSteps.peek();
+        }
+
+        if (discrepancyOnLayer.peek() > 0) {
+            decrementDiscrepancy();
         }
     }
 
@@ -346,7 +372,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         setException(e);
     }
 
-        private void setCaseDescription(Class<?> testClass, Method method, List<NamedArgument> namedArguments) {
+    private void setCaseDescription(Class<?> testClass, Method method, List<NamedArgument> namedArguments) {
 
         CaseAs annotation = null;
         if (method.isAnnotationPresent(CaseAs.class)) {
