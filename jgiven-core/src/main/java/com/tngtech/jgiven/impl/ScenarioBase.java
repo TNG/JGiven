@@ -87,7 +87,7 @@ public class ScenarioBase {
             throw new IllegalStateException( "modelBuilder must be set before Scenario can be initalized." );
         }
         if( !initialized ) {
-            executor.setListener( modelBuilder );
+            executor.setListener( new ScenarioModelMapper(modelBuilder));
             initialize();
             initialized = true;
         }
