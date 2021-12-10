@@ -14,7 +14,7 @@ public class ProxyClassPerformanceTest {
 
     private static final int NUMBER_OF_RUNS = 10000;
     private static final int PROBE_INTERVAL = 100;
-    private static final double GROWTH_EXPECTED_IF_LAST_REPORTED_GROWTH_IS_POSITIVE = 0.11;
+    private static final double GROWTH_EXPECTED_IF_LAST_REPORTED_GROWTH_IS_POSITIVE = 0.011;
 
 
     @Test
