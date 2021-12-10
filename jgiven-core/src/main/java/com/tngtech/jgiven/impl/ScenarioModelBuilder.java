@@ -58,11 +58,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
     private StepModel currentStep;
     private final Stack<StepModel> parentSteps = new Stack<>();
 
-    /**
-     * In case the current step is a step with nested steps, this list contains these steps.
-     */
-    private List<StepModel> nestedSteps;
-
     private final SentenceBuilder sentenceBuilder = new SentenceBuilder();
 
     private long scenarioStartedNanos;
@@ -224,9 +219,11 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     private void decrementDiscrepancy() {
-        int discrepancyOnCurrentLayer = discrepancyOnLayer.pop();
-        discrepancyOnCurrentLayer--;
-        discrepancyOnLayer.push(discrepancyOnCurrentLayer);
+        if (discrepancyOnLayer.peek() > 0) {
+            int discrepancyOnCurrentLayer = discrepancyOnLayer.pop();
+            discrepancyOnCurrentLayer--;
+            discrepancyOnLayer.push(discrepancyOnCurrentLayer);
+        }
     }
 
     @Override
@@ -344,9 +341,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
             currentStep = parentSteps.peek();
         }
 
-        if (discrepancyOnLayer.peek() > 0) {
-            decrementDiscrepancy();
-        }
+        decrementDiscrepancy();
+
     }
 
     private StepStatus getStatusFromNestedSteps(List<StepModel> nestedSteps) {
