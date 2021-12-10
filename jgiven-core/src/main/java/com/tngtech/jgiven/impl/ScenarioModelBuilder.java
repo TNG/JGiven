@@ -44,11 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ScenarioModelBuilder implements ScenarioListener {
-    private static final Logger log = LoggerFactory.getLogger(ScenarioModelBuilder.class);
 
     private static final Set<String> STACK_TRACE_FILTER = ImmutableSet
         .of("sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept",
@@ -60,11 +57,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
     private ScenarioCaseModel scenarioCaseModel;
     private StepModel currentStep;
     private final Stack<StepModel> parentSteps = new Stack<>();
-
-    /**
-     * In case the current step is a step with nested steps, this list contains these steps.
-     */
-    private List<StepModel> nestedSteps;
 
     private final SentenceBuilder sentenceBuilder = new SentenceBuilder();
 
@@ -78,6 +70,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
     public void setReportModel(ReportModel reportModel) {
         this.reportModel = reportModel;
     }
+
+    private Stack<Integer> discrepancyOnLayer = new Stack<>();
 
     @Override
     public void scenarioStarted(String description) {
@@ -96,10 +90,30 @@ public class ScenarioModelBuilder implements ScenarioListener {
         scenarioModel.addCase(scenarioCaseModel);
         scenarioModel.setDescription(readableDescription);
         this.tagCreator = new TagCreator(configuration);
+        discrepancyOnLayer.push(0);
     }
 
-    public void addStepMethod(Method paramMethod, List<NamedArgument> arguments, InvocationMode mode,
-                              boolean hasNestedSteps) {
+    @Override
+    public void scenarioStarted(Class<?> testClass, Method method, List<NamedArgument> namedArguments) {
+        readConfiguration(testClass);
+        readAnnotations(testClass, method);
+        scenarioModel.setClassName(testClass.getName());
+        setParameterNames(getNames(namedArguments));
+
+        // must come at last
+        setMethodName(method.getName());
+
+        ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil(configuration);
+        List<ObjectFormatter<?>> formatter =
+            parameterFormattingUtil.getFormatter(method.getParameterTypes(), getNames(namedArguments),
+                method.getParameterAnnotations());
+
+        setArguments(parameterFormattingUtil.toStringList(formatter, getValues(namedArguments)));
+        setCaseDescription(testClass, method, namedArguments);
+    }
+
+    private void addStepMethod(Method paramMethod, List<NamedArgument> arguments, InvocationMode mode,
+                               boolean hasNestedSteps) {
         StepModel stepModel = createStepModel(paramMethod, arguments, mode);
 
         if (parentSteps.empty()) {
@@ -110,6 +124,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
         if (hasNestedSteps) {
             parentSteps.push(stepModel);
+            discrepancyOnLayer.push(0);
         }
         currentStep = stepModel;
     }
@@ -197,16 +212,33 @@ public class ScenarioModelBuilder implements ScenarioListener {
         return scenarioCaseModel;
     }
 
+    private void incrementDiscrepancy() {
+        int discrepancyOnCurrentLayer = discrepancyOnLayer.pop();
+        discrepancyOnCurrentLayer++;
+        discrepancyOnLayer.push(discrepancyOnCurrentLayer);
+    }
+
+    private void decrementDiscrepancy() {
+        if (discrepancyOnLayer.peek() > 0) {
+            int discrepancyOnCurrentLayer = discrepancyOnLayer.pop();
+            discrepancyOnCurrentLayer--;
+            discrepancyOnLayer.push(discrepancyOnCurrentLayer);
+        }
+    }
+
     @Override
     public void stepMethodInvoked(Method method, List<NamedArgument> arguments, InvocationMode mode,
                                   boolean hasNestedSteps) {
         if (method.isAnnotationPresent(IntroWord.class)) {
             introWordAdded(getDescription(method));
+            incrementDiscrepancy();
         } else if (method.isAnnotationPresent(FillerWord.class)) {
             FillerWord fillerWord = method.getAnnotation(FillerWord.class);
             addToSentence(getDescription(method), fillerWord.joinToPreviousWord(), fillerWord.joinToNextWord());
+            incrementDiscrepancy();
         } else if (method.isAnnotationPresent(StepComment.class)) {
             addStepComment(arguments);
+            incrementDiscrepancy();
         } else {
             addTags(method.getAnnotations());
             addTags(method.getDeclaringClass().getAnnotations());
@@ -256,7 +288,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         scenarioCaseModel.setStatus(status);
     }
 
-    public void setException(Throwable throwable) {
+    private void setException(Throwable throwable) {
         scenarioCaseModel.setErrorMessage(throwable.getClass().getName() + ": " + throwable.getMessage());
         scenarioCaseModel.setStackTrace(getStackTrace(throwable, FILTER_STACK_TRACE));
     }
@@ -293,18 +325,24 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
 
         if (currentStep != null) {
-            currentStep.setDurationInNanos(durationInNanos);
+            if (discrepancyOnLayer.empty() || discrepancyOnLayer.peek() == 0) {
+                currentStep.setDurationInNanos(durationInNanos);
+            }
             if (hasNestedSteps) {
                 if (currentStep.getStatus() != StepStatus.FAILED) {
                     currentStep.setStatus(getStatusFromNestedSteps(currentStep.getNestedSteps()));
                 }
                 parentSteps.pop();
+                discrepancyOnLayer.pop();
             }
         }
 
         if (!hasNestedSteps && !parentSteps.isEmpty()) {
             currentStep = parentSteps.peek();
         }
+
+        decrementDiscrepancy();
+
     }
 
     private StepStatus getStatusFromNestedSteps(List<StepModel> nestedSteps) {
@@ -328,25 +366,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
     public void scenarioFailed(Throwable e) {
         setStatus(ExecutionStatus.FAILED);
         setException(e);
-    }
-
-    @Override
-    public void scenarioStarted(Class<?> testClass, Method method, List<NamedArgument> namedArguments) {
-        readConfiguration(testClass);
-        readAnnotations(testClass, method);
-        scenarioModel.setClassName(testClass.getName());
-        setParameterNames(getNames(namedArguments));
-
-        // must come at last
-        setMethodName(method.getName());
-
-        ParameterFormattingUtil parameterFormattingUtil = new ParameterFormattingUtil(configuration);
-        List<ObjectFormatter<?>> formatter =
-            parameterFormattingUtil.getFormatter(method.getParameterTypes(), getNames(namedArguments),
-                method.getParameterAnnotations());
-
-        setArguments(parameterFormattingUtil.toStringList(formatter, getValues(namedArguments)));
-        setCaseDescription(testClass, method, namedArguments);
     }
 
     private void setCaseDescription(Class<?> testClass, Method method, List<NamedArgument> namedArguments) {
@@ -421,8 +440,6 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
     }
 
-
-
     @Override
     public void scenarioFinished() {
         AssertionUtil.assertTrue(scenarioStartedNanos > 0, "Scenario has no start time");
@@ -473,13 +490,13 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
 
-    public void addTags(Annotation... annotations) {
+    private void addTags(Annotation... annotations) {
         for (Annotation annotation : annotations) {
             addTags(tagCreator.toTags(annotation));
         }
     }
 
-    public void addTags(List<Tag> tags) {
+    private void addTags(List<Tag> tags) {
         if (tags.isEmpty()) {
             return;
         }

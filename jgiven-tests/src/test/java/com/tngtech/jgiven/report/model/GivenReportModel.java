@@ -1,17 +1,21 @@
 package com.tngtech.jgiven.report.model;
 
+import static java.util.Arrays.asList;
+
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.ExtendedDescription;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.Quoted;
+import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.report.analysis.CaseArgumentAnalyser;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.Arrays.asList;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
 
@@ -27,7 +31,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     @ExpectedScenarioState
     protected List<Attachment> attachments;
 
-    @ExtendedDescription( "A report model where the analysers have not been executed on" )
+    @ExtendedDescription("A report model where the analysers have not been executed on")
     public SELF an_unanalyzed_report_model_with_one_scenario() {
         analyze = false;
         return a_report_model_with_one_scenario();
@@ -39,55 +43,55 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
 
     public SELF a_report_model() {
         reportModel = new ReportModel();
-        reportModel.setClassName( "Test Class" );
+        reportModel.setClassName("Test Class");
 
-        createScenarioModel( "something should happen", "something_should_happen" );
+        createScenarioModel("something should happen", "something_should_happen");
 
         return self();
     }
 
-    private void createScenarioModel( String description, String testMethodName ) {
+    private void createScenarioModel(String description, String testMethodName) {
         ScenarioModel scenarioModel = new ScenarioModel();
-        scenarioModel.setClassName( reportModel.getClassName() );
-        scenarioModel.setDescription( description );
-        scenarioModel.setTestMethodName( testMethodName );
+        scenarioModel.setClassName(reportModel.getClassName());
+        scenarioModel.setDescription(description);
+        scenarioModel.setTestMethodName(testMethodName);
 
-        addDefaultCase( scenarioModel );
+        addDefaultCase(scenarioModel);
 
-        reportModel.getScenarios().add( scenarioModel );
+        reportModel.getScenarios().add(scenarioModel);
     }
 
-    private void addDefaultCase( ScenarioModel scenarioModel ) {
+    private void addDefaultCase(ScenarioModel scenarioModel) {
         ScenarioCaseModel scenarioCaseModel = new ScenarioCaseModel();
-        scenarioModel.addCase( scenarioCaseModel );
+        scenarioModel.addCase(scenarioCaseModel);
         int i = 0;
-        for( String param : scenarioModel.getExplicitParameters() ) {
-            scenarioCaseModel.addExplicitArguments( "arg" + scenarioCaseModel.getCaseNr() + i++ );
+        for (String param : scenarioModel.getExplicitParameters()) {
+            scenarioCaseModel.addExplicitArguments("arg" + scenarioCaseModel.getCaseNr() + i++);
         }
 
         scenarioCaseModel
-            .addStep( new StepModel( "something_happens", Arrays.asList( Word.introWord( "given" ), new Word( "something" ) ) ) );
+            .addStep(new StepModel("something_happens", Arrays.asList(Word.introWord("given"), new Word("something"))));
         i = 0;
-        for( String arg : scenarioCaseModel.getExplicitArguments() ) {
+        for (String arg : scenarioCaseModel.getExplicitArguments()) {
             String argumentName = "stepArg" + i++;
-            scenarioCaseModel.addStep( new StepModel( "something_happens", asList( Word.introWord( "when" ),
-                Word.argWord( argumentName, arg, (String) null ) ) ) );
+            scenarioCaseModel.addStep(new StepModel("something_happens", asList(Word.introWord("when"),
+                Word.argWord(argumentName, arg, (String) null))));
         }
     }
 
-    public SELF a_report_model_with_name( String name ) {
+    public SELF a_report_model_with_name(String name) {
         a_report_model();
-        reportModel.setClassName( name );
-        for( ScenarioModel model : reportModel.getScenarios() ) {
-            model.setClassName( name );
+        reportModel.setClassName(name);
+        for (ScenarioModel model : reportModel.getScenarios()) {
+            model.setClassName(name);
         }
         return self();
     }
 
-    public SELF the_report_has_$_scenarios( int n ) {
+    public SELF the_report_has_$_scenarios(int n) {
         reportModel.getScenarios().clear();
-        for( int i = 0; i < n; i++ ) {
-            createScenarioModel( "something should happen " + i, "something_should_happen_" + i );
+        for (int i = 0; i < n; i++) {
+            createScenarioModel("something should happen " + i, "something_should_happen_" + i);
         }
         return self();
     }
@@ -96,220 +100,229 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return reportModel;
     }
 
-    public SELF parameters( String... params ) {
-        return the_scenario_has_parameters( params );
+    public SELF parameters(String... params) {
+        return the_scenario_has_parameters(params);
     }
 
-    public SELF the_scenario_has_parameters( String... params ) {
-        reportModel.getLastScenarioModel().addParameterNames( params );
+    public SELF the_scenario_has_parameters(String... params) {
+        reportModel.getLastScenarioModel().addParameterNames(params);
         return self();
     }
 
-    public SELF the_scenario_has_a_duration_of_$_nano_seconds( long durationInNanos ) {
-        reportModel.getLastScenarioModel().setDurationInNanos( durationInNanos );
+    public SELF the_scenario_has_a_duration_of_$_nano_seconds(long durationInNanos) {
+        reportModel.getLastScenarioModel().setDurationInNanos(durationInNanos);
         return self();
     }
 
-    public SELF the_scenario_has_$_cases( int ncases ) {
+    public SELF the_step_$_has_a_duration_of_$_nano_seconds(int step, long durationInNanos) {
+        reportModel.getLastScenarioModel().getCase(0).getStep(step).setDurationInNanos(durationInNanos);
+        return self();
+    }
+
+
+    public SELF the_scenario_has_$_cases(int ncases) {
         ScenarioModel scenarioModel = reportModel.getLastScenarioModel();
         scenarioModel.clearCases();
-        for( int i = 0; i < ncases; i++ ) {
-            scenarioModel.addCase( new ScenarioCaseModel() );
+        for (int i = 0; i < ncases; i++) {
+            scenarioModel.addCase(new ScenarioCaseModel());
         }
         return self();
     }
 
-    public SELF the_scenario_has_$_default_cases( int ncases ) {
+    public SELF the_scenario_has_$_default_cases(int ncases) {
         reportModel.getLastScenarioModel().clearCases();
-        for( int i = 0; i < ncases; i++ ) {
-            addDefaultCase( reportModel.getLastScenarioModel() );
+        for (int i = 0; i < ncases; i++) {
+            addDefaultCase(reportModel.getLastScenarioModel());
         }
         return self();
     }
 
-    public SELF case_$_of_scenario_$_has_failed( int caseNr, int scenarioNr ) {
-        getCase( scenarioNr, caseNr ).setStatus( ExecutionStatus.FAILED );
+    public SELF case_$_of_scenario_$_has_failed(int caseNr, int scenarioNr) {
+        getCase(scenarioNr, caseNr).setStatus(ExecutionStatus.FAILED);
         return self();
     }
 
-    public SELF case_$_fails_with_error_message( int ncase, String errorMessage ) {
-        getCase( ncase ).setErrorMessage( errorMessage );
-        getCase( ncase ).setStatus( ExecutionStatus.FAILED );
+    public SELF case_$_fails_with_error_message(int ncase, String errorMessage) {
+        getCase(ncase).setErrorMessage(errorMessage);
+        getCase(ncase).setStatus(ExecutionStatus.FAILED);
         return self();
     }
 
-    public SELF case_$_has_arguments( int ncase, String... args ) {
-        getCase( ncase ).setExplicitArguments( Arrays.asList( args ) );
+    public SELF case_$_has_arguments(int ncase, String... args) {
+        getCase(ncase).setExplicitArguments(Arrays.asList(args));
         return self();
     }
 
-    public SELF case_$_has_description( int ncase, String description ) {
-        getCase( ncase ).setDescription( description );
+    public SELF case_$_has_description(int ncase, String description) {
+        getCase(ncase).setDescription(description);
         return self();
     }
 
-    public SELF all_cases_have_a_step_$_with_argument( String name, String arg ) {
+    public SELF all_cases_have_a_step_$_with_argument(String name, String arg) {
         int i = 1;
-        for( ScenarioCaseModel caseModel : reportModel.getLastScenarioModel().getScenarioCases() ) {
-            case_$_has_a_step_$_with_argument( i++, name, arg );
+        for (ScenarioCaseModel caseModel : reportModel.getLastScenarioModel().getScenarioCases()) {
+            case_$_has_a_step_$_with_argument(i++, name, arg);
         }
         return self();
     }
 
-    public SELF case_$_has_step_$( int ncase, String name ) {
-        getCase( ncase ).addStep( new StepModel( name, Arrays.asList( Word.introWord( "when" ), new Word( name ) ) ) );
+    public SELF case_$_has_step_$(int ncase, String name) {
+        getCase(ncase).addStep(new StepModel(name, Arrays.asList(Word.introWord("when"), new Word(name))));
         return self();
     }
 
-    public SELF case_$_has_a_step_$_with_argument( int i, String name, String arg ) {
-        return case_$_has_a_when_step_$_with_argument( i, name, arg );
+    public SELF case_$_has_a_step_$_with_argument(int i, String name, String arg) {
+        return case_$_has_a_when_step_$_with_argument(i, name, arg);
     }
 
-    private ScenarioCaseModel getCase( int scenarioNr, int caseNr ) {
-        return reportModel.getScenarios().get( scenarioNr - 1 ).getCase( caseNr - 1 );
+    private ScenarioCaseModel getCase(int scenarioNr, int caseNr) {
+        return reportModel.getScenarios().get(scenarioNr - 1).getCase(caseNr - 1);
     }
 
-    private ScenarioCaseModel getCase( int ncase ) {
-        return reportModel.getLastScenarioModel().getScenarioCases().get( ncase - 1 );
+    private ScenarioCaseModel getCase(int ncase) {
+        return reportModel.getLastScenarioModel().getScenarioCases().get(ncase - 1);
     }
 
-    public SELF step_$_is_named( int i, String name ) {
-        getCase( 1 ).getStep( i - 1 ).getWords().get( 1 ).setValue( name );
+    public SELF step_$_is_named(int i, String name) {
+        getCase(1).getStep(i - 1).getWords().get(1).setValue(name);
         return self();
     }
 
-    public SELF step_$_of_case_$_has_status( int stepNr, int caseNr, StepStatus status ) {
-        getCase( caseNr ).getStep( stepNr - 1 ).setStatus( status );
+    public SELF step_$_of_case_$_has_status(int stepNr, int caseNr, StepStatus status) {
+        getCase(caseNr).getStep(stepNr - 1).setStatus(status);
         return self();
     }
 
-    public SELF step_$_has_status( int stepNr, StepStatus status ) {
-        return step_$_of_case_$_has_status( stepNr, 1, status );
+    public SELF step_$_has_status(int stepNr, StepStatus status) {
+        return step_$_of_case_$_has_status(stepNr, 1, status);
     }
 
-    public SELF step_$_has_a_duration_of_$_nano_seconds( int i, long durationInNanos ) {
-        getCase( 1 ).getStep( i - 1 ).setDurationInNanos( durationInNanos );
+    public SELF step_$_has_a_duration_of_$_nano_seconds(int i, long durationInNanos) {
+        getCase(1).getStep(i - 1).setDurationInNanos(durationInNanos);
         return self();
     }
 
-    public SELF case_$_has_a_when_step_$_with_argument( int ncase, String name, String arg ) {
-        return case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( ncase, name, arg, "argName" );
+    public SELF case_$_has_a_when_step_$_with_argument(int ncase, String name, String arg) {
+        return case_$_has_a_when_step_$_with_argument_$_and_argument_name_$(ncase, name, arg, "argName");
     }
 
-    public SELF case_$_has_a_when_step_$_with_argument_$_and_argument_name_$( int ncase, @Quoted String name, @Quoted String arg,
-            @Quoted String argName ) {
-        lastArgWord = Word.argWord( argName, arg, arg );
-        getCase( ncase )
+    public SELF case_$_has_a_when_step_$_with_argument_$_and_argument_name_$(int ncase, @Quoted String name,
+                                                                             @Quoted String arg,
+                                                                             @Quoted String argName) {
+        lastArgWord = Word.argWord(argName, arg, arg);
+        getCase(ncase)
             .addStep(
-                new StepModel( name,
-                    Arrays.asList( Word.introWord( "when" ), new Word( name ), lastArgWord ) ) );
+                new StepModel(name,
+                    Arrays.asList(Word.introWord("when"), new Word(name), lastArgWord)));
         return self();
     }
 
-    public SELF formatted_value( @Quoted String formattedValue ) {
-        lastArgWord.getArgumentInfo().setFormattedValue( formattedValue );
+    public SELF formatted_value(@Quoted String formattedValue) {
+        lastArgWord.getArgumentInfo().setFormattedValue(formattedValue);
         return self();
     }
 
-    public SELF the_first_scenario_has_tag( @Quoted String name ) {
-        return scenario_$_has_tag_$_with_value_$( 1, name, null );
+    public SELF the_first_scenario_has_tag(@Quoted String name) {
+        return scenario_$_has_tag_$_with_value_$(1, name, null);
     }
 
-    public SELF scenario_$_has_tag_$_with_value_$( int i, String name, String value ) {
-        latestTag = new Tag( name, value ).setPrependType( true );
-        latestTag.setType( name );
-        reportModel.getScenarios().get( i - 1 ).addTag( latestTag );
-        reportModel.addTag( latestTag );
+    public SELF scenario_$_has_tag_$_with_value_$(int i, String name, String value) {
+        latestTag = new Tag(name, value).setPrependType(true);
+        latestTag.setType(name);
+        reportModel.getScenarios().get(i - 1).addTag(latestTag);
+        reportModel.addTag(latestTag);
         return self();
     }
 
-    public void the_tag_has_prependTpe_set_to( boolean prependType ) {
-        latestTag.setPrependType( prependType );
+    public void the_tag_has_prependTpe_set_to(boolean prependType) {
+        latestTag.setPrependType(prependType);
     }
 
-    public SELF the_tag_has_style( String style ) {
-        latestTag.setStyle( style );
+    public SELF the_tag_has_style(String style) {
+        latestTag.setStyle(style);
         return self();
     }
 
     @AfterStage
     public void analyzeReport() {
-        if( analyze ) {
-            new CaseArgumentAnalyser().analyze( reportModel );
+        if (analyze) {
+            new CaseArgumentAnalyser().analyze(reportModel);
         }
     }
 
-    public void transpose_set_to( boolean b ) {}
+    public void transpose_set_to(boolean b) {
+    }
 
-    public SELF header_type_set_to( Table.HeaderType headerType ) {
-        latestWord.getArgumentInfo().getDataTable().setHeaderType( headerType );
+    public SELF header_type_set_to(Table.HeaderType headerType) {
+        latestWord.getArgumentInfo().getDataTable().setHeaderType(headerType);
         return self();
     }
 
-    public SELF step_$_of_scenario_$_has_an_attachment_with_content( int stepNr, int scenarioNr, String content ) {
-        StepModel step = getStep( stepNr, scenarioNr );
-        step.addAttachment( Attachment.fromText( content, MediaType.PLAIN_TEXT_UTF_8 ) );
+    public SELF step_$_of_scenario_$_has_an_attachment_with_content(int stepNr, int scenarioNr, String content) {
+        StepModel step = getStep(stepNr, scenarioNr);
+        step.addAttachment(Attachment.fromText(content, MediaType.PLAIN_TEXT_UTF_8));
         return self();
     }
 
-    public SELF step_$_of_case_$_has_an_attachment_with_content_and_media_type( int stepNr, int caseNr, String content ) {
-        return step_$_of_case_$_has_an_attachment_with_content_and_media_type( stepNr, caseNr, content, MediaType.PLAIN_TEXT_UTF_8 );
+    public SELF step_$_of_case_$_has_an_attachment_with_content_and_media_type(int stepNr, int caseNr, String content) {
+        return step_$_of_case_$_has_an_attachment_with_content_and_media_type(stepNr, caseNr, content,
+            MediaType.PLAIN_TEXT_UTF_8);
     }
 
-    public SELF step_$_of_case_$_has_an_attachment_with_content_and_media_type( int stepNr, int caseNr, String content,
-            MediaType mediaType ) {
-        StepModel step = getStep( stepNr, 1, caseNr );
-        step.addAttachment( Attachment.fromText( content, mediaType ) );
+    public SELF step_$_of_case_$_has_an_attachment_with_content_and_media_type(int stepNr, int caseNr, String content,
+                                                                               MediaType mediaType) {
+        StepModel step = getStep(stepNr, 1, caseNr);
+        step.addAttachment(Attachment.fromText(content, mediaType));
         return self();
     }
 
-    public SELF step_$_of_scenario_$_has_another_attachment_with_content( int stepNr, int scenarioNr, String content ) {
-        return step_$_of_scenario_$_has_an_attachment_with_content( stepNr, scenarioNr, content );
+    public SELF step_$_of_scenario_$_has_another_attachment_with_content(int stepNr, int scenarioNr, String content) {
+        return step_$_of_scenario_$_has_an_attachment_with_content(stepNr, scenarioNr, content);
     }
 
-    private StepModel getStep( int stepNr, int scenarioNr ) {
-        return getStep( stepNr, scenarioNr, 1 );
+    private StepModel getStep(int stepNr, int scenarioNr) {
+        return getStep(stepNr, scenarioNr, 1);
     }
 
-    private StepModel getStep( int stepNr, int scenarioNr, int caseNr ) {
-        return reportModel.getScenarios().get( scenarioNr - 1 ).getScenarioCases().get( caseNr - 1 ).getStep( stepNr - 1 );
+    private StepModel getStep(int stepNr, int scenarioNr, int caseNr) {
+        return reportModel.getScenarios().get(scenarioNr - 1).getScenarioCases().get(caseNr - 1).getStep(stepNr - 1);
     }
 
-    public SELF a_step_has_a_data_table_with_following_values( @Table List<List<String>> dataTable ) {
-        return step_$_of_scenario_$_has_a_data_table_as_parameter( dataTable );
+    public SELF a_step_has_a_data_table_with_following_values(@Table List<List<String>> dataTable) {
+        return step_$_of_scenario_$_has_a_data_table_as_parameter(dataTable);
     }
 
-    public SELF step_$_of_scenario_$_has_a_data_table_as_parameter( @Table List<List<String>> dataTable ) {
-        StepModel step = getStep( 1, 1 );
-        Word word = Word.argWord( "a", "b", new DataTable( Table.HeaderType.HORIZONTAL, dataTable ) );
-        step.addWords( word );
+    public SELF step_$_of_scenario_$_has_a_data_table_as_parameter(@Table List<List<String>> dataTable) {
+        StepModel step = getStep(1, 1);
+        Word word = Word.argWord("a", "b", new DataTable(Table.HeaderType.HORIZONTAL, dataTable));
+        step.addWords(word);
         latestWord = word;
         return self();
     }
 
-    public SELF case_$_has_no_steps( int caseNr ) {
-        reportModel.getLastScenarioModel().getCase( caseNr - 1 ).setSteps( Collections.<StepModel>emptyList() );
+    public SELF case_$_has_no_steps(int caseNr) {
+        reportModel.getLastScenarioModel().getCase(caseNr - 1).setSteps(Collections.<StepModel>emptyList());
         return self();
     }
 
-    public SELF scenario_$_has_no_steps( int i ) {
+    public SELF scenario_$_has_no_steps(int i) {
         ScenarioModel scenarioModel = reportModel.getLastScenarioModel();
-        for( ScenarioCaseModel caseModel : scenarioModel.getScenarioCases() ) {
-            caseModel.setSteps( Collections.<StepModel>emptyList() );
+        for (ScenarioCaseModel caseModel : scenarioModel.getScenarioCases()) {
+            caseModel.setSteps(Collections.<StepModel>emptyList());
         }
         return self();
     }
 
-    public SELF step_$_of_case_$_has_a_formatted_value_$_as_parameter( int stepNr, int caseNr, String formattedValue ) {
-        StepModel step = getStep( stepNr, 1, caseNr );
-        Word word = Word.argWord( "a", "dummy value", formattedValue );
-        step.addWords( word );
+    public SELF step_$_of_case_$_has_a_formatted_value_$_as_parameter(int stepNr, int caseNr, String formattedValue) {
+        StepModel step = getStep(stepNr, 1, caseNr);
+        Word word = Word.argWord("a", "dummy value", formattedValue);
+        step.addWords(word);
         latestWord = word;
         return self();
     }
 
-    public SELF the_attachment_is_added_to_step_$_of_case_$( int stepNr, int caseNr ) {
-        getStep( stepNr, 1, caseNr ).addAttachment( attachments.get( attachments.size() - 1 ) );
+    public SELF the_attachment_is_added_to_step_$_of_case_$(int stepNr, int caseNr) {
+        getStep(stepNr, 1, caseNr).addAttachment(attachments.get(attachments.size() - 1));
         return self();
     }
 
@@ -320,19 +333,21 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
-    public SELF step_$_of_scenario_$_has_extended_description_with_arguments(int stepNr, int scenarioNr, String description, Map<String, String> argumentMap){
-        StepModel stepModel = getStep( stepNr, scenarioNr );
-        stepModel.setExtendedDescription( description );
-        for (Map.Entry<String, String> entry : argumentMap.entrySet()){
-            Word word = Word.argWord( entry.getKey(), entry.getValue(), entry.getValue() );
-            stepModel.addWords( word );
+    public SELF step_$_of_scenario_$_has_extended_description_with_arguments(int stepNr, int scenarioNr,
+                                                                             String description,
+                                                                             Map<String, String> argumentMap) {
+        StepModel stepModel = getStep(stepNr, scenarioNr);
+        stepModel.setExtendedDescription(description);
+        for (Map.Entry<String, String> entry : argumentMap.entrySet()) {
+            Word word = Word.argWord(entry.getKey(), entry.getValue(), entry.getValue());
+            stepModel.addWords(word);
         }
         return self();
     }
 
-    public SELF step_$_of_scenario_$_has_an_image_attachment(int stepNr, int scenarioNr, String base64img){
-        StepModel stepModel = getStep( stepNr, scenarioNr );
-        stepModel.addAttachment( Attachment.fromBase64( base64img, MediaType.PNG ).withTitle( "Screenshot" ) );
+    public SELF step_$_of_scenario_$_has_an_image_attachment(int stepNr, int scenarioNr, String base64img) {
+        StepModel stepModel = getStep(stepNr, scenarioNr);
+        stepModel.addAttachment(Attachment.fromBase64(base64img, MediaType.PNG).withTitle("Screenshot"));
         return self();
     }
 }
