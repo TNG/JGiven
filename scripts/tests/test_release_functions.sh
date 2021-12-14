@@ -2,7 +2,7 @@
 
 SCRIPT_LOCATION=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
 # shellcheck source=./release_functions.sh
-source "${SCRIPT_LOCATION}/release_functions.sh"
+source "${SCRIPT_LOCATION}/../source_files/release_functions.sh"
 source "${SCRIPT_LOCATION}/test_runner.sh"
 
 test_find_gradle_property_check_fails_if_variable_is_undeclared(){

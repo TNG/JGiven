@@ -8,11 +8,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run release functions test
-        run: "bash scripts/test_release_functions.sh"
+        run: "bash scripts/tests/test_release_functions.sh"
   validateHelperFunctions:
     name: "validate helper functions"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Run helper functions test
-        run: "bash scripts/test_helper_functions.sh"
+        run: "bash scripts/tests/test_helper_functions.sh"

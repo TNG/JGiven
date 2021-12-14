@@ -9,8 +9,8 @@
 
 SCRIPT_LOCATION=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
 # shellcheck source=./release_functions.sh
-source "${SCRIPT_LOCATION}/release_functions.sh"
-source "${SCRIPT_LOCATION}/helper_functions.sh"
+source "${SCRIPT_LOCATION}/source_files/release_functions.sh"
+source "${SCRIPT_LOCATION}/source_files/helper_functions.sh"
 
 set -e
 
