@@ -28,3 +28,27 @@ function releaseRepositoryAndPushVersion()
   git push
   git push "$(git config --get remote.origin.url)" "${VERSION_PREFIXED}" || return 25
 }
+
+function verify_version_present_and_formatted(){
+  if [ $# -ne 1 ];then
+    printf "Error parsing version, version does not seem to be set\n" 1>&2
+    return 11
+  elif [[ ! $1 =~ ^[0-9]*\.[0-9]*\.[0-9]*(-[A-Z0-9]*)?$ ]]; then
+    printf  "You have to provide a version as first parameter (without v-prefix, e.g. 0.14.0)\n" 1>&2
+    return 12
+  fi
+  return 0
+}
+
+function replace_single_by_double_quotes(){
+  sed -e "s/'/\"/g" <<< "$1"
+  return $?
+}
+
+function determine_is_draft(){
+  if [ "$1" == "true" ];then
+    echo "false"
+  else
+    echo "true"
+  fi
+}

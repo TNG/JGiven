@@ -25,10 +25,7 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
-if [[ ! $1 =~ ^[0-9]*\.[0-9]*\.[0-9]*(-[A-Z0-9]*)?$ ]]; then
-    echo "You have to provide a version as first parameter (without v-prefix, e.g. 0.14.0)"
-    exit 1
-fi
+verify_version_present_and_formatted "$1" || exit $?
 
 if [ -z "${ANDROID_SDK_ROOT}" ]; then
     echo "Variable 'ANDROID_SDK_ROOT' not set. Will not continue release because the android package can't be built."

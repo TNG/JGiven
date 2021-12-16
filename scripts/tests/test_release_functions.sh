@@ -56,10 +56,92 @@ test_properties_are_passed_on_correctly(){
 
 }
 
+test_single_quote_replacer_replaces_single_quotes(){
+  local actual=$(replace_single_by_double_quotes "{'a':'b',
+  'c':'d'}")
+  local expected='{"a":"b",
+  "c":"d"}'
+  printf "Expected string'%s', got %s" "${expected}" "${actual}"
+  [ "${actual}" == "${expected}" ] || return 1 && return 0
+}
+
+test_single_quote_replacer_does_not_touch_string_without_single_quotes(){
+  local actual=$(replace_single_by_double_quotes 'this is a "test" string')
+  local expected='this is a "test" string'
+  printf "Expected string '%s', got '%s'" "${expected}" "${actual}"
+  [ "${actual}" == "${expected}" ] || return 1 && return 0
+}
+
+test_determine_is_draft_prints_false_if_input_is_true(){
+  local actual=$(determine_is_draft "true")
+  local expected="false"
+  printf "Expected string '%s', got '%s'" "${expected}" "${actual}"
+  [ "${actual}" == "${expected}" ] || return 1 && return 0
+}
+
+test_determine_is_draft_prints_true_if_input_is_false(){
+  local actual=$(determine_is_draft "false")
+  local expected="true"
+  printf "Expected string '%s', got '%s'" "${expected}" "${actual}"
+  [ "${actual}" == "${expected}" ] || return 1 && return 0
+}
+
+test_determine_is_draft_prints_true_if_input_is_empty(){
+  local actual=$(determine_is_draft "")
+  local expected="true"
+  printf "Expected string '%s', got '%s'" "${expected}" "${actual}"
+  [ "${actual}" == "${expected}" ] || return 1 && return 0
+}
+
+test_missing_version_fails_check(){
+ verify_version_present_and_formatted
+ local actual_return_value=$?
+ printf "Expected return value to be greater than zero, got '%d'" "${actual_return_value}"
+ [ ${actual_return_value} -gt 0 ] || return 1 && return 0
+}
+
+test_malformed_version_fails_check(){
+ verify_version_present_and_formatted "01.0X.1"
+ local actual_return_value=$?
+ printf "Expected return value to be greater than zero, got '%d'" "${actual_return_value}"
+ [ ${actual_return_value} -gt 0 ] || return 1 && return 0
+}
+
+test_shortened_version_fails_check(){
+ verify_version_present_and_formatted "1.1"
+ local actual_return_value=$?
+ printf "Expected return value to be greater than zero, got '%d'" "${actual_return_value}"
+ [ ${actual_return_value} -gt 0 ] || return 1 && return 0
+}
+
+test_well_formed_version_passes_check(){
+ verify_version_present_and_formatted "1.00.1-Whatever"
+ local actual_return_value=$?
+ printf "Expected return value to be zero, got '%d'" "${actual_return_value}"
+ [ ${actual_return_value} -gt 0 ] || return 1 && return 0
+}
+
+test_a_release_version_passes_check(){
+ verify_version_present_and_formatted "1.1.1"
+ local actual_return_value=$?
+ printf "Expected return value to be zero, got '%d'" "${actual_return_value}"
+ [ ${actual_return_value} -eq 0 ] || return 1 && return 0
+}
+
 run_tests "test_find_gradle_property_extracts_property" \
 "test_find_gradle_property_handles_spaces" \
 "test_properties_are_passed_on_correctly" \
 "test_find_gradle_property_check_fails_if_variable_is_undeclared" \
 "test_find_gradle_property_check_fails_if_variable_is_not_an_array" \
-"test_find_gradle_property_writes_to_array_variable"
+"test_find_gradle_property_writes_to_array_variable" \
+"test_single_quote_replacer_does_not_touch_string_without_single_quotes" \
+"test_single_quote_replacer_replaces_single_quotes" \
+"test_determine_is_draft_prints_false_if_input_is_true" \
+"test_determine_is_draft_prints_true_if_input_is_false" \
+"test_determine_is_draft_prints_true_if_input_is_empty" \
+"test_missing_version_fails_check" \
+"test_malformed_version_fails_check" \
+"test_shortened_version_fails_check" \
+"test_well_formed_version_passes_check" \
+"test_a_release_version_passes_check"
 exit $?
