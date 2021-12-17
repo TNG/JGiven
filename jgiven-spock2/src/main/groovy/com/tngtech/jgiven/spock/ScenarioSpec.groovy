@@ -15,6 +15,11 @@ import org.junit.Rule
 import spock.lang.Shared
 import spock.lang.Specification
 
+/**
+ * ScenarioSpec to use JGiven with Spock2 Framework
+ *
+ * @since 1.2.0
+ */
 class ScenarioSpec<GIVEN, WHEN, THEN> extends Specification {
     @ClassRule @Shared JGivenClassRule writerRule = new JGivenClassRule()
     @Rule JGivenSpockMethodRule scenarioRule = new JGivenSpockMethodRule(createScenario())
