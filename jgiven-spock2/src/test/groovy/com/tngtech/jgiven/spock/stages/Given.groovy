@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.spock.stages
 
 import com.tngtech.jgiven.Stage
+import com.tngtech.jgiven.annotation.As
 
 class Given extends Stage<Given> {
 
@@ -12,3 +13,5 @@ class Given extends Stage<Given> {
         self()
     }
 }
+
+

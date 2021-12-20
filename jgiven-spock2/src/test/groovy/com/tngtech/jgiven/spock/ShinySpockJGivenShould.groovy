@@ -4,9 +4,8 @@ import com.tngtech.jgiven.annotation.ExtendedDescription
 import com.tngtech.jgiven.spock.stages.Given
 import com.tngtech.jgiven.spock.stages.Then
 import com.tngtech.jgiven.spock.stages.When
-import spock.lang.Unroll
 
-class MyShinyJGivenShould extends ScenarioSpec<Given, When, Then> {
+class ShinySpockJGivenShould extends ScenarioSpec<Given, When, Then> {
 
     def "something should happen"() {
         expect:
@@ -15,10 +14,10 @@ class MyShinyJGivenShould extends ScenarioSpec<Given, When, Then> {
         when().some_action()
         then().some_outcome()
 
-        assert getScenario().getScenarioModel().getDescription() == "something should happen"
+        assert scenario.scenarioModel.description == "something should happen"
     }
 
-    def "be able to use params"() {
+    def "be some able to use params"() {
         expect:
 
         given().some_state_$("param")
@@ -36,17 +35,16 @@ class MyShinyJGivenShould extends ScenarioSpec<Given, When, Then> {
         when().some_action()
         then().some_outcome()
 
-        assert getScenario().getScenarioModel().extendedDescription == "more details"
+        assert scenario.scenarioModel.extendedDescription == "more details"
     }
 
-    @Unroll
     def "be able to use tables #param"() {
         expect:
         given().some_state_$(param)
         when().some_action()
         then().some_outcome()
 
-        assert getScenario().getScenarioModel().description == "be able to use tables #param"
+        assert scenario.scenarioModel.getDescription() == "be able to use tables #param"
 
         where:
         param        | _

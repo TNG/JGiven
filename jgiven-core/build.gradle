@@ -8,7 +8,7 @@ dependencies {
     api "com.google.guava:guava:$guavaVersion"
     api "com.google.code.gson:gson:$gsonVersion"
     implementation "com.thoughtworks.paranamer:paranamer:$paranamerVersion"
-    implementation "net.bytebuddy:byte-buddy:$bytebuddyVersion"
+    implementation "net.bytebuddy:byte-buddy:$byteBuddyVersion"
     implementation "org.fusesource.jansi:jansi:$jansiVersion"
 
     testImplementation 'com.github.stefanbirkner:system-rules:1.19.0'

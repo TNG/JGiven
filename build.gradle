@@ -64,7 +64,6 @@ subprojects {
         testngVersion = '7.4.0'
         assertjVersion = '3.20.2'
         slf4jVersion = '1.7.32'
-        bytebuddyVersion = '1.11.13'
         paranamerVersion = '2.8'
         jansiVersion = '1.18'
         gsonVersion = '2.8.8'
@@ -74,7 +73,7 @@ subprojects {
         jacocoVersion = '0.8.5'
         quickcheckVersion = '0.6'
         hsqldbVersion = '2.3.2'
-        byteBuddyVersion = '1.10.2'
+        byteBuddyVersion = '1.12.3'
         androidGradleVersion = '3.1.0'
         androidCompileSdkVersion = 27
         androidBuildToolsVersion = '27.0.2'
