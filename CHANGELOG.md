@@ -1,3 +1,9 @@
+# v1.2
+## New features
+* JGiven now supports Spock 2 [#784](https://github.com/TNG/JGiven/pull/784) (thanks to jsalinaspolo)
+## Fixed issues
+* JGiven now records step timings correctly if there are intro or filler words in a step [#755](https://github.com/TNG/JGiven/issues/755)
+
 # v1.1
 ## New features
 * The lifecycle method annotations `@BeforeStage` and `@AfterStage` have an option to make the associated methods be invoked repeatedly if the stage class is invoked multiple times. Note that the duration of a stage is denoted by the change of the stage class, thus multiple invocations (no matter the form) on the same stage class count as one stage.
