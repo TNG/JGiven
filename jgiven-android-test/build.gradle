@@ -17,7 +17,7 @@ repositories {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.tngtech.jgiven.android.example"
         minSdkVersion 29
