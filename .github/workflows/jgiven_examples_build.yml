@@ -19,22 +19,22 @@ jobs:
       - name: Load the bash script
         run: source scripts/local_release_with_version.sh
       - name: Test Kotlin Example Project
-        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/kotlin/build.gradle 1.1-t
+        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/kotlin/build.gradle 1.1-t
       - name: Test JUnit5 Example Project
-        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/junit5/build.gradle 1.1-t
+        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/junit5/build.gradle 1.1-t
       - uses: olafurpg/setup-scala@v13
       - name: Test Scala Example Project
-        run: source scripts/helper_functions.sh && runScalaTest
+        run: source scripts/source_files/helper_functions.sh && runScalaTest
       - name: Test Selenium Example Project
-        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/selenium/build.gradle 1.1-t
+        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/selenium/build.gradle 1.1-t
       - name: Test Spock Example Project
-        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/spock/build.gradle 1.1-t
+        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/spock/build.gradle 1.1-t
       - name: Test Spring-Boot Example Project
-        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/spring-boot/build.gradle 1.1-t
+        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/spring-boot/build.gradle 1.1-t
       - name: Test TestNG Example Project
-        run: source scripts/helper_functions.sh && runGradleTestOnGivenProject example-projects/testng/build.gradle 1.1-t
+        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/testng/build.gradle 1.1-t
       - name: Test Maven Example Project
-        run: source scripts/helper_functions.sh && runMavenTestOnGivenProject example-projects/maven/pom.xml 1.1-t
+        run: source scripts/source_files/helper_functions.sh && runMavenTestOnGivenProject example-projects/maven/pom.xml 1.1-t
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
@@ -58,7 +58,7 @@ jobs:
       - name: Load the bash script
         run: source scripts/local_release_with_version.sh
       - name: Test Java 11 Project
-        run: source scripts/helper_functions.sh && runMavenTestOnGivenProject example-projects/java11/pom.xml 1.1-t
+        run: source scripts/source_files/helper_functions.sh && runMavenTestOnGivenProject example-projects/java11/pom.xml 1.1-t
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}

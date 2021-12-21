@@ -4,7 +4,7 @@
 
 SCRIPT_LOCATION=$PWD/scripts #compatibile with macos
 
-source ${SCRIPT_LOCATION}/helper_functions.sh
+source ${SCRIPT_LOCATION}/source_files/helper_functions.sh
 
 set -e
 
