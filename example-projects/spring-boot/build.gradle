@@ -38,7 +38,7 @@ ext {
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     testImplementation 'junit:junit:4.13.2'
-    implementation 'com.h2database:h2:2.0.202'
+    implementation 'com.h2database:h2:2.0.204'
     testImplementation "com.tngtech.jgiven:jgiven-spring-junit4:$jgivenVersion"
     testImplementation "org.assertj:assertj-core:$assertjVersion"
     testImplementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
