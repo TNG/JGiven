@@ -27,7 +27,7 @@ repositories {
 
 dependencies {
     testImplementation "com.tngtech.jgiven:jgiven-testng:${version}"
-    testImplementation 'org.testng:testng:7.4.0'
+    testImplementation 'org.testng:testng:7.5'
 }
 
 test.useTestNG() {
