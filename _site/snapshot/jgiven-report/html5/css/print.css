@@ -1,0 +1,65 @@
+
+.tab-bar, .top-bar, .breadcrumbs, #sidebar, .caret-column, .page-icon-bar, .duration, .case-count, .statistics-chart, .scenario-link-icon {
+    display: none !important;
+}
+
+.has-tip {
+    border-bottom: none;
+}
+
+.off-canvas-wrap, .inner-wrap {
+    height: initial !important;
+}
+
+.scenario-content {
+    opacity: 1 !important;
+}
+
+#scenario-container {
+    margin-left: 10px;
+    margin-top: 0;
+    border-left: none;
+}
+
+h3.scenario-group-header {
+    font-size: 1.4rem;
+    padding-left: 0;
+}
+
+.group-count {
+    display: none;
+}
+
+.scenario-title, .scenario-extended-description {
+    margin-left: 0rem !important;
+}
+
+.scenario {
+    margin-top: 2rem;
+    page-break-inside: avoid;
+    page-break-after: auto;
+}
+
+.scenario-expand-icon, .case-expand-icon, .nav-show-icon, .scenario-extended-description-icon {
+    display: none !important;
+}
+
+.scenario-list-button-bar {
+    display: none !important;
+}
+
+.steps, h5 {
+    margin-left: 0;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.word {
+    color: #000;
+}
+
+@page {
+    margin-top: 1.5cm;
+}

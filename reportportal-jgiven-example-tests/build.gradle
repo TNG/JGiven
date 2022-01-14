@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group 'com.ysoft.test'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 8
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "https://dl.bintray.com/epam/reportportal" }
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.4.2")
+    testImplementation('com.epam.reportportal:agent-java-junit5:4.0.1')
+    testImplementation('com.tngtech.jgiven:jgiven-junit5:0.17.1')
+}
+
+test {
+    ignoreFailures = true
+    useJUnitPlatform()
+    systemProperty 'junit.jupiter.extensions.autodetection.enabled', true
+}

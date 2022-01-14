@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JGiven</title>
+    <description>A developer-friendly BDD tool for Java</description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Version 1.0.0 Released</title>
+        <description>&lt;p&gt;Released Version 1.0.0 of JGiven. For details see the &lt;a href=&quot;https://github.com/TNG/JGiven/releases/tag/v1.0.0&quot;&gt;release notes&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 05 Mar 2021 07:54:07 +0100</pubDate>
+        <link>http://localhost:4000/news/2021/03/05/v1.0.0-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/news/2021/03/05/v1.0.0-released/</guid>
+      </item>
+    
+      <item>
+        <title>Version 1.0.0-RC7 Released</title>
+        <description>&lt;p&gt;Released Version 1.0.0-RC7 of JGiven. For details see the &lt;a href=&quot;https://github.com/TNG/JGiven/releases/tag/v1.0.0-RC7&quot;&gt;release notes&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 26 Nov 2020 08:03:08 +0100</pubDate>
+        <link>http://localhost:4000/news/2020/11/26/v1.0.0-RC7-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/news/2020/11/26/v1.0.0-RC7-released/</guid>
+      </item>
+    
+      <item>
+        <title>Version 1.0.0-RC6 Released</title>
+        <description>&lt;p&gt;Released Version 1.0.0-RC6 of JGiven. For details see the &lt;a href=&quot;https://github.com/TNG/JGiven/releases/tag/v1.0.0-RC6&quot;&gt;release notes&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 09 Nov 2020 17:27:17 +0100</pubDate>
+        <link>http://localhost:4000/news/2020/11/09/v1.0.0-RC6-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/news/2020/11/09/v1.0.0-RC6-released/</guid>
+      </item>
+    
+      <item>
+        <title>Version 0.18.2 Released</title>
+        <description>&lt;p&gt;Released Version 0.18.2 of JGiven. For details see the &lt;a href=&quot;https://github.com/TNG/JGiven/releases/tag/v0.18.2&quot;&gt;release notes&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 07 Sep 2019 14:16:48 +0200</pubDate>
+        <link>http://localhost:4000/news/2019/09/07/v0.18.2-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/news/2019/09/07/v0.18.2-released/</guid>
+      </item>
+    
+      <item>
+        <title>Version 0.18.1 Released</title>
+        <description>&lt;p&gt;Released Version 0.18.1 of JGiven. For details see the &lt;a href=&quot;https://github.com/TNG/JGiven/releases/tag/v0.18.1&quot;&gt;release notes&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 04 Sep 2019 12:41:43 +0200</pubDate>
+        <link>http://localhost:4000/news/2019/09/04/v0.18.1-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/news/2019/09/04/v0.18.1-released/</guid>
+      </item>
+    
+      <item>
+        <title>Version 0.18.0 Released</title>
+        <description>&lt;p&gt;Released Version 0.18.0 of JGiven. For details see the &lt;a href=&quot;https://github.com/TNG/JGiven/releases/tag/v0.18.0&quot;&gt;release notes&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 30 Aug 2019 18:43:14 +0200</pubDate>
+        <link>http://localhost:4000/news/2019/08/30/v0.18.0-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/news/2019/08/30/v0.18.0-released/</guid>
+      </item>
+    
+      <item>
+        <title>Version 0.17.1 Released</title>
+        <description>&lt;p&gt;Released Version 0.17.1 of JGiven. For details see the &lt;a href=&quot;https://github.com/TNG/JGiven/releases/tag/v0.17.1&quot;&gt;release notes&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 20 Jan 2019 15:02:55 +0100</pubDate>
+        <link>http://localhost:4000/news/2019/01/20/v0.17.1-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/news/2019/01/20/v0.17.1-released/</guid>
+      </item>
+    
+      <item>
+        <title>JGiven at Twitter</title>
+        <description>&lt;p&gt;JGiven has an official Twitter handle now! Follow &lt;a href=&quot;https://twitter.com/JGivenBDD&quot;&gt;@JGivenBDD&lt;/a&gt; to never miss any JGiven updates anymore.&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 20 Jan 2019 13:44:25 +0100</pubDate>
+        <link>http://localhost:4000/news/2019/01/20/twitter/</link>
+        <guid isPermaLink="true">http://localhost:4000/news/2019/01/20/twitter/</guid>
+      </item>
+    
+      <item>
+        <title>Version 0.17.0 Released</title>
+        <description>&lt;p&gt;Released Version 0.17.0 of JGiven. For details see the &lt;a href=&quot;https://github.com/TNG/JGiven/releases/tag/v0.17.0&quot;&gt;release notes&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 10 Nov 2018 13:44:25 +0100</pubDate>
+        <link>http://localhost:4000/news/2018/11/10/v0.17.0-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/news/2018/11/10/v0.17.0-released/</guid>
+      </item>
+    
+      <item>
+        <title>Version 0.16.1 Released</title>
+        <description>&lt;p&gt;Released Version 0.16.1 of JGiven. For details see the &lt;a href=&quot;https://github.com/TNG/JGiven/releases/tag/v0.16.1&quot;&gt;release notes&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 22 Sep 2018 15:37:14 +0200</pubDate>
+        <link>http://localhost:4000/news/2018/09/22/v0.16.1-released/</link>
+        <guid isPermaLink="true">http://localhost:4000/news/2018/09/22/v0.16.1-released/</guid>
+      </item>
+    
+  </channel>
+</rss>

@@ -1,7 +1,7 @@
 name := """hello-jgiven-scala"""
 
 version := "1.0"
-val jgivenVersion = "1.0.0"
+val jgivenVersion = "0.0.0"
 
 scalaVersion := "2.13.5"
 

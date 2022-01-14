@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Command line suite]">
+  <test thread-count="5" name="Command line test(failed)">
+    <classes>
+      <class name="com.tngtech.jgiven.tests.FailingCasesTestNgTest">
+        <methods>
+          <include name="failing_cases_do_not_lead_to_ignored_following_cases" invocation-numbers="0"/>
+        </methods>
+      </class> <!-- com.tngtech.jgiven.tests.FailingCasesTestNgTest -->
+    </classes>
+  </test> <!-- Command line test(failed) -->
+</suite> <!-- Failed suite [Command line suite] -->

@@ -1,0 +1,687 @@
+<!doctype html>
+<html class="no-js" lang="en" ng-app="jgivenReportApp" xmlns="http://www.w3.org/1999/html" ng-controller="JGivenReportCtrl as appCtrl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title ng-bind="metaData.title">Loading...</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="css/custom.css"/>
+
+</head>
+<body>
+
+
+<!-- General Tree Template -->
+
+<script type="text/ng-template" id="tree_template.html">
+  <div ng-if="node.hasChildren()" class="tree-node">
+    <a ng-click="toggleTreeNode(node)">
+      <i class="fa fa-caret-right toggle {{node.expanded ? 'fa-rotate-90' : ''}}"></i>
+      &nbsp;{{node.nodeName()}}
+    </a>
+    <a href="{{node.url()}}" class="show-tree-node-link">
+      <i class="fa fa-chevron-circle-right open-tree-node-icon"></i>
+    </a>
+  </div>
+  <ul ng-if="node.expanded">
+    <li ng-repeat="leaf in node.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
+      <i class="fa fa-caret-right transparent"></i>
+      &nbsp;{{leaf.nodeName()}}
+    </a></li>
+    <li ng-repeat="node in node.childNodes() | orderBy : orderNodes" ng-include="'tree_template.html'"></li>
+  </ul>
+  <div ng-if="!node.hasChildren()">
+    <a href="{{node.url()}}">
+      <i class="fa fa-caret-right transparent"></i>
+      &nbsp;{{node.nodeName()}}
+    </a>
+  </div>
+
+</script>
+
+<script type="text/ng-template" id="tree_mobile_template.html">
+  <a href="">{{node.nodeName()}}</a>
+  <ul class="left-submenu">
+    <li class="back off-canvas-back"><a href="#">Back</a></li>
+    <li class="off-canvas-close off-canvas-label"><a href="{{node.url()}}">{{node.nodeName()}}</a></li>
+    <li class="off-canvas-close" ng-repeat="leaf in node.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
+      {{leaf.nodeName()}}
+    </a></li>
+    <li class="has-submenu" ng-repeat="node in node.childNodes() | orderBy : orderNodes"
+        ng-include="'tree_mobile_template.html'"></li>
+  </ul>
+
+</script>
+
+
+<script type="text/ng-template" id="step_template.html">
+  <span aria-haspopup="{{ ::(step.extendedDescription || step.comment) ? 'true' : 'false'"
+        class="{{ ::(step.extendedDescription || step.comment) ? 'has-tip' : '' }}"
+        tooltip-html-unsafe="{{ ::replaceStepExtendedDescription(step) }}{{ ::(step.extendedDescription && step.comment) ? '<br />' : '' }}{{ ::step.comment }}"
+        tooltip-popup-delay="250">
+    <span
+        class="word {{ ::scenario.executionStatus !== 'SUCCESS' ? step.status : ''}} {{ ::word.isDifferent ? 'diff' : ''}}"
+        bindonce ng-repeat-start="word in (nestedStep ? step.words : getNonIntroWords(step.words))">
+      <span ng-if="scenario.casesAsTable && word.argumentInfo.parameterName">
+        <strong>&lt;{{::word.argumentInfo.parameterName}}&gt;</strong>
+      </span>
+
+      <span
+          ng-if="!(scenario.casesAsTable && word.argumentInfo.parameterName) && !word.argumentInfo.dataTable"
+          class="{{word.argumentInfo ? 'argument' : ''}} {{ getWordValue(word).indexOf('\n') > -1 ? 'multiline' : ''}}"
+      >{{ ::getWordValue(word) }}</span>
+      <!-- do not change formatting here, it is important for multiline values -->
+      <table class="table-value" ng-if="word.argumentInfo.dataTable">
+        <tr bindonce ng-repeat="row in word.argumentInfo.dataTable.data">
+          <td class="{{ isHeaderCell($parent.$index, $index, word.argumentInfo.dataTable.headerType) ? 'header-cell' : '' }}"
+              bindonce ng-repeat="value in row track by $index">{{ ::value }}
+          </td>
+        </tr>
+      </table>
+
+    </span>
+      <span ng-repeat-end></span>
+    <span bindonce ng-repeat="attachment in step.attachments">
+      <div ng-if="attachment.showDirectly">
+        <img class="direct-image" ng-src="data/{{ attachment.value }}"
+             alt="{{ attachment.title }}"/>
+      </div>
+    </span>
+  </span>
+  <span bindonce ng-repeat="scenarioCase in scenario.scenarioCases"
+        ng-init="step = scenarioCase.steps[$parent.$index]">
+          <span bindonce ng-repeat="attachment in step.attachments">
+            <span ng-if="!attachment.showDirectly && (scenario.casesAsTable || scenarioCase.caseNr === case.caseNr )">
+              <span aria-haspopup="{{ attachment.title ? 'true' : 'false'"
+                    class="{{ attachment.title ? 'has-tip' : '' }}"
+                    tooltip-html-unsafe="{{ attachment.title }}"
+                    tooltip-popup-delay="250">
+                <a target="_blank" href="data/{{ attachment.value }}">
+                  <span ng-if="isImage(attachment) && metaData.showThumbnails">
+                    <img class="jgiven-html-thumbnail" src="data/{{ ::toThumbnailPath(attachment.value) }}" alt="{{ attachment.title }}">
+                    <span class="attachment-index"
+                          ng-if="scenario.scenarioCases.length > 1 && scenario.casesAsTable">{{ scenarioCase.caseNr }}</span>
+                  </span>
+                  <span ng-if="!isImage(attachment) || !metaData.showThumbnails">
+                    <i class="fa fa-paperclip"><span class="attachment-index"
+                                                     ng-if="scenario.scenarioCases.length > 1 && scenario.casesAsTable">{{ scenarioCase.caseNr }}</span></i>
+                  </span>
+                </a>
+              </span>
+            </span>
+          </span>
+  </span>
+  <span ng-if="scenario.executionStatus !== 'SUCCESS'">
+          <i ng-if="step.status === 'PASSED'" class="small-check fa fa-check-square"></i>
+          <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-exclamation-circle"></i>
+          <i ng-if="step.status === 'SKIPPED'" class="skipped fa fa-ban"></i>
+          <i ng-if="step.status === 'PENDING'" title="Pending"
+             class="skipped fa fa-ban"></i>
+        </span>
+  <span ng-if="step.durationInNanos > 10000000"
+        class="duration"> ({{ ::nanosToReadableUnit(step.durationInNanos) }})</span>
+
+  <div ng-if="step.nestedSteps && step.expanded" ng-init="nestedStep=true">
+    <div class="nested-step {{::step.nestedSteps ? 'toggle' : ''}}" ng-repeat="step in step.nestedSteps track by $index"
+         ng-click="step.expanded = !step.expanded; $event.stopPropagation();">
+      <i ng-if="::step.nestedSteps"
+         class="fa {{step.expanded ? 'fa-angle-down' : 'fa-angle-right'}} step-expand-icon"></i>
+
+      <span ng-include="'step_template.html'"/>
+    </div>
+  </div>
+
+</script>
+
+<div class="off-canvas-wrap off-canvas-wrap-fix-resize" data-offcanvas>
+
+  <div class="inner-wrap">
+
+
+    <!-- DESKTOP HEADER -->
+
+    <div class="fixed header-fixed" ng-if="!currentPage.embed">
+
+      <nav class="top-bar" data-topbar role="navigation" data-options="">
+        <ul class="title-area">
+          <li class="name">
+            <h1 id="title"><a href="#/" ng-bind="::metaData.title">Loading...</a></h1>
+          </li>
+        </ul>
+
+        <section class="top-bar-section">
+          <ul class="right">
+            <li>
+              <div class="small-12 columns">
+                <form ng-submit="searchSubmit()">
+                  <input id="nav-search" class="search" type="text" placeholder="search in scenarios"
+                         ng-model="nav.search">
+                  <i class="fa fa-search search-icon"></i>
+                  </input>
+                </form>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </nav>
+
+      <nav class="breadcrumbs">
+        <a ng-hide="currentPage.breadcrumbs" href="#" class="current">/</a>
+        <a ng-cloak ng-repeat="b in currentPage.breadcrumbs track by $index" href="#"
+           class="{{$last ? 'current' : 'unavailable'}}">{{b}}</a>
+      </nav>
+
+    </div>
+
+
+    <!-- MOBILE TOP BAR -->
+
+    <nav class="tab-bar">
+      <section class="left-small">
+        <a class="left-off-canvas-toggle menu-icon" href="#{{currentPath()}}"><span></span></a>
+      </section>
+
+      <section class="middle tab-bar-section">
+        <h1 class="title">JGiven Report</h1>
+      </section>
+    </nav>
+
+    <!-- MOBILE NAVIGATION BAR -->
+
+    <aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list off-canvas-list-fixed" ng-controller="JGivenNavigationCtrl as navigationCtrl">
+
+        <li class="off-canvas-close-on-submit">
+          <form ng-submit="searchSubmit()">
+            <input id="nav-search-mobile" class="search" type="text" placeholder="search in scenarios"
+                   ng-model="nav.search">
+            <i class="fa fa-search search-icon"></i>
+            </input>
+          </form>
+        </li>
+
+        <li><label>Summary</label></li>
+        <li class="off-canvas-close"><a href="#all">All Scenarios</a></li>
+        <li class="off-canvas-close"><a href="#failed">Failed Scenarios</a></li>
+        <li class="off-canvas-close"><a href="#pending">Pending Scenarios</a></li>
+
+        <li><label>Tags</label></li>
+        <li class="has-submenu" ng-repeat="node in rootTags" ng-include="'tree_mobile_template.html'">
+
+        <li><label>Classes</label></li>
+        <li class="off-canvas-close" ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a
+            href="{{leaf.url()}}">
+          {{leaf.nodeName()}}
+        </a></li>
+        <li class="has-submenu" ng-repeat="node in rootPackage.childNodes() | orderBy : orderNodes"
+            ng-include="'tree_mobile_template.html'"></li>
+
+        <li ng-repeat="link in ::customNavigationLinks"><label>
+          <a href="{{::link.href}}" target="{{::link.target}}">{{::link.text}}</a></label>
+        </li>
+      </ul>
+    </aside>
+
+
+    <div class="row content">
+
+      <div id="loading-modal" ng-hide="currentPage"><h1>Loading <i class="fa fa-circle-o-notch fa-spin"></i></h1>
+      </div>
+
+
+      <!-- LEFT NAVIGATION BAR -->
+
+      <div ng-controller="JGivenNavigationCtrl as navigationCtrl" class="" style="padding-left:0px;"
+           ng-if="!currentPage.embed">
+        <div class="hide-for-small" ng-if="navHidden">
+          <i class="fa fa-angle-double-right nav-show-icon" ng-click="showNav()"></i>
+        </div>
+
+        <div class="hide-for-small" ng-show="!navHidden">
+          <div id="sidebar">
+            <nav>
+              <i class="fa fa-angle-double-left nav-hide-icon" ng-click="hideNav()"></i>
+
+              <div id="nav-move-icon-container"><i id="nav-move-icon" class="fa fa-bars fa-rotate-90"
+                                                   ng-mousedown="startResizeNav($event)"></i></div>
+
+              <ul ng-cloak class=" side-nav">
+                <li class="heading">
+                  <a ng-click="summaryExpanded = !summaryExpanded">Summary</a>
+                  <ul ng-if="summaryExpanded">
+                    <li><a href="#all">All Scenarios<span
+                        class="label secondary round nav-count">{{::getTotalStatistics().count}}</span></a></li>
+                    <li><a href="#failed">Failed Scenarios<span
+                        class="label secondary round nav-count {{::getTotalStatistics().failed > 0 ? 'failed' : ''}}">{{::getTotalStatistics().failed}}</span></a>
+                    </li>
+                    <li><a href="#pending">Pending Scenarios<span
+                        class="label secondary round nav-count {{::getTotalStatistics().pending > 0 ? 'pending' : ''}}">{{::getTotalStatistics().pending}}</span></a>
+                    </li>
+                  </ul>
+                </li>
+
+
+                <!-- TAGS -->
+
+                <li class="heading">
+                  <a class="toggle" ng-click="tagsExpanded = !tagsExpanded">Tags</a>
+                  <ul ng-if="tagsExpanded">
+                    <li ng-repeat="node in rootTags" ng-include="'tree_template.html'">
+                  </ul>
+                </li>
+
+
+                <!-- CLASSES -->
+
+                <li class="heading">
+                  <a class="toggle" ng-click="classesExpanded = !classesExpanded">Classes</a>
+                  <ul ng-if="classesExpanded">
+                    <li ng-repeat="leaf in rootPackage.leafs() | orderBy : orderNodes"><a href="{{leaf.url()}}">
+                      {{leaf.nodeName()}}
+                    </a></li>
+                    <li ng-repeat="node in rootPackage.childNodes() | orderBy : orderNodes"
+                        ng-include="'tree_template.html'"></li>
+                  </ul>
+                </li>
+
+
+                <!-- BOOKMARKS -->
+
+                <li class="heading" ng-if="bookmarks.length > 0">
+                  <a class="toggle" ng-click="bookmarks.expanded = !bookmarks.expanded">Bookmarks
+                    <span class="label secondary round nav-count">{{bookmarks.length}}</span>
+                  </a>
+                  <ul ng-if="bookmarks.expanded">
+                    <li ng-repeat="bookmark in bookmarks"><a href="{{bookmark.url}}">
+                      {{bookmark.name}}
+                      <i ng-click="removeBookmark($index)" title="Delete Bookmark"
+                         class="fa fa-times remove-bookmark-icon toggle"></i>
+                    </a></li>
+                  </ul>
+                </li>
+
+                <!-- CUSTOM LINKS -->
+                <li ng-repeat="link in ::customNavigationLinks" class="heading">
+                  <a href="{{::link.href}}" target="{{::link.target}}">{{::link.text}}</a>
+                </li>
+
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- RIGHT SCENARIO PAGE -->
+
+      <div ng-cloak id="scenario-container" class="{{currentPage.embed ? 'embed' : ''}}">
+
+
+        <!-- PAGE TITLE -->
+
+        <div class="row title" ng-cloak="currentPage.title">
+          <div class="small-12 large-8 column title-column">
+            <h2 class="subtitle">{{currentPage.subtitle}}</h2>
+
+            <h2 id="page-title">{{currentPage.title}}</h2>
+
+            <h3 class="description" ng-bind-html="currentPage.description"></h3>
+          </div>
+
+          <!-- CHART -->
+
+          <div class="small-12 large-4 column statistics-chart-column clearfix show-for-large-up"
+               ng-if="!currentPage.embed">
+            <div class="statistics-chart right" ng-controller="ChartCtrl">
+              <canvas class="chart chart-doughnut toggle"
+                      chart-data="currentPage.statistics.chartData"
+                      chart-labels="labels"
+                      chart-click="click"
+                      chart-colors="colors"
+                      chart-options="options"></canvas>
+            </div>
+          </div>
+
+          <div class="page-icon-bar" ng-if="!currentPage.embed">
+            <a ng-click="collapseAll()" title="Collapse All"><i
+                class="fa fa-minus-square-o collapse-icon toggle"></i></a>
+            <a ng-click="expandAll()" title="Expand All"><i
+                class="fa fa-plus-square-o expand-icon toggle"></i></a>
+            <a ng-click="printCurrentPage()" title="Print Page"><i
+                class="fa fa-print print-icon toggle"></i></a>
+            <a ng-click="toggleBookmark()" title="Add Bookmark"><i
+                class="fa fa-bookmark add-bookmark-icon toggle {{isBookmarked() ? 'bookmarked' : ''}}"></i></a>
+          </div>
+        </div>
+
+        <h4 ng-hide="!currentPage.loading">Loading <i class="fa fa-circle-o-notch fa-spin"></i></h4>
+
+        <!-- SCENARIO BUTTON BAR -->
+
+        <div class="scenario-list-button-bar row">
+
+          <!-- STATISTICS -->
+
+          <div id="statistics" class="small-12 large-6 columns no-pad-left" ng-if="currentPage.statistics">
+                <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}} toggle" ng-click="showSuccessful()">
+                  <i class="fa fa-check-square {{currentPage.statistics.failed + currentPage.statistics.pending === 0 && currentPage.statistics.success > 0 ? 'check' : 'gray'}}"></i> {{currentPage.statistics.success}} Successful</span>,
+                        <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}} toggle" ng-click="showFailed()"><i
+                            class=" fa fa-exclamation-circle"></i> {{currentPage.statistics.failed}} Failed</span>,
+            <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}} toggle" ng-click="showPending()"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
+            <span class="{{currentPage.statistics.count === 0 ? 'gray' : ''}}">{{currentPage.statistics.count}} Total ({{nanosToReadableUnit(currentPage.statistics.totalNanos)}})</span>
+            <span ng-if="currentPage.filtered > 0" class="bold toggle" ng-click="clearFilter()">({{ currentPage.filtered }} Filtered)</span>
+          </div>
+
+          <!-- DROP DOWNS -->
+
+          <div class="small-12 large-6 columns" ng-if="showOptions">
+            <ul class="button-group radius right">
+              <li><a class="button dropdown small secondary" dropdown-toggle="#group-drop-down">Group
+                By</a>
+                <ul id="group-drop-down" class="f-dropdown">
+                  <li ng-repeat="groupOption in currentPage.options.groupOptions">
+                    <a ng-click="groupOptionSelected(groupOption)"><i
+                        class="fa fa-check {{groupOption.selected ? 'selected' : ''}}"></i>
+                      {{groupOption.name}}</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a class="button dropdown small secondary" dropdown-toggle="#sort-drop-down">Sort By</a>
+                <ul id="sort-drop-down" class="f-dropdown">
+                  <li ng-repeat="sortOption in currentPage.options.sortOptions">
+                    <a ng-click="sortOptionSelected(sortOption)"><i
+                        class="fa fa-check {{sortOption.selected ? 'selected' : ''}}"></i>
+                      {{sortOption.name}}</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a class="button dropdown small secondary"
+                     dropdown-toggle="#status-drop-down">Status</a>
+                <ul id="status-drop-down" class="f-dropdown tiny left">
+                  <li ng-repeat="option in currentPage.options.statusOptions">
+                    <a ng-click="filterOptionSelected(option)"><i
+                        class="fa fa-check {{option.selected ? 'selected' : ''}}"></i>
+                      {{option.name}}</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a class="button dropdown small secondary" dropdown-toggle="#tag-drop-down">Tags</a>
+                <ul id="tag-drop-down" class="f-dropdown tiny left">
+                  <li ng-repeat="option in currentPage.options.tagOptions track by $index">
+                    <a ng-click="filterOptionSelected(option)"><i
+                        class="fa fa-check {{option.selected ? 'selected' : ''}}"></i>
+                      {{option.name}}</a>
+                  </li>
+                </ul>
+              </li>
+              <li><a class="button dropdown small secondary"
+                     dropdown-toggle="#class-drop-down">Classes</a>
+                <ul id="class-drop-down" class="f-dropdown tiny left">
+                  <li ng-repeat="option in currentPage.options.classOptions track by $index">
+                    <a ng-click="filterOptionSelected(option)"><i
+                        class="fa fa-check {{option.selected ? 'selected' : ''}}"></i>
+                      {{option.name}}</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pagination-centered pagination-top" ng-if="pagination && !currentPage.print">
+          <pagination boundary-links="true" items-per-page="itemsPerPage" total-items="totalItems"
+                      page="currentPageNr" class="pagination-sm"
+                      on-select-page="setPage(page)" max-size="10" rotate="false"
+                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                      last-text="&raquo;"></pagination>
+        </div>
+
+        <!-- SCENARIO GROUP -->
+
+        <div ng-if="currentPage.groupedScenarios.length > 0">
+
+          <div class="scenario-group-row" ng-repeat="scenarioGroup in currentPage.groupedScenarios">
+
+            <div class="row" ng-if="scenarioGroup.name !== 'all' ">
+              <div class="small-12 column no-pad-left">
+                <h3 class="scenario-group-header toggle"
+                    ng-click="scenarioGroup.expanded= !scenarioGroup.expanded">
+                  <span class="scenario-group-header-name {{::scenarioGroup.counts.failed > 0 ? 'failed' : ''}}">{{::scenarioGroup.name}}
+                  <span class="secondary radius label group-count total">{{::scenarioGroup.values.length}}</span>
+                  <span class="radius label group-count alert failed" ng-if="scenarioGroup.counts.failed > 0"><i
+                      class="fa fa-exclamation-circle"></i> {{::scenarioGroup.counts.failed}} FAILED</span>
+                  <span class="secondary radius label group-count pending" ng-if="scenarioGroup.counts.pending > 0">
+                    <i class="fa fa-ban"></i> {{::scenarioGroup.counts.pending}} PENDING</span>
+                    <span class="duration"> ({{ ::nanosToReadableUnit(scenarioGroup.counts.durationInNanos) }})</span>
+                    </span>
+                </h3>
+              </div>
+            </div>
+
+
+            <!-- SCENARIO LIST -->
+
+            <div class="scenario {{$last ? 'last' : ''}}"
+                 bindonce ng-repeat="scenario in scenarioGroup.values"
+                 ng-if="scenarioGroup.expanded || currentPage.print || currentPage.embed">
+
+              <div class="row">
+                <div class="small-12 large-8 xlarge-6 column scenario-column">
+
+
+                  <!-- Scenario Title -->
+                  <h4 class="toggle scenario-title {{getScenarioTitleStatusClass(scenario)}}"
+                      ng-click="toggleScenario(scenario)">
+                    <i class="fa {{scenario.expanded ? 'fa-angle-down' : 'fa-angle-right'}} scenario-expand-icon"></i>
+                    <span class="scenario-group-name"
+                          ng-if="::scenario.classTitle && scenarioGroup.name !== scenario.classTitle && scenario.classTitle !== currentPage.title">{{::scenario.classTitle}}</span>
+                    {{::scenario.description.capitalize()}}
+                    <span ng-if="scenario.scenarioCases.length > 1"
+                          class="secondary radius label case-count">{{::scenario.scenarioCases.length}}</span>
+
+                    <i class="scenario-extended-description-icon fa fa-question-circle"
+                       title="Extended description available"
+                       ng-if="scenario.extendedDescription"></i>
+
+                    <i ng-if="scenario.executionStatus === 'SUCCESS'"
+                       class="check fa fa-check-square"></i>
+                    <span ng-if="scenario.executionStatus === 'FAILED'"
+                          class="failed label radius alert"><i class="fa fa-exclamation-circle"></i>{{getNumberOfFailedCases(scenario)}} FAILED</span>
+                    <span
+                        ng-if="scenario.executionStatus === 'SCENARIO_PENDING' || scenario.executionStatus === 'SOME_STEPS_PENDING'"
+                        class="pending label radius secondary"><i class="fa fa-ban"></i> PENDING</span>
+
+                    <span class="duration"> ({{ ::nanosToReadableUnit(scenario.durationInNanos) }})</span>
+                  </h4>
+
+
+                  <!-- Scenario Content -->
+
+                  <div ng-if="scenario.expanded || currentPage.print || currentPage.embed"
+                       id="scenario-{{$index}}" class="scenario-content">
+
+                    {{scenarioIndex=$index;""}}
+
+                    <div class="scenario-extended-description"
+                         ng-if="scenario.extendedDescription && !scenario.extendedDescriptionExpanded"
+                         ng-bind-html="::scenario.extendedDescription">
+                    </div>
+
+                    <div bindonce
+                         ng-repeat="case in scenario.casesAsTable ? [scenario.scenarioCases[0]] : scenario.scenarioCases">
+                      <h5 class="scenario-case-title toggle {{getScenarioCaseTitleStatusClass(case)}}"
+                          ng-click="case.expanded = !case.expanded"
+                          ng-if="scenario.scenarioCases.length > 1 && !scenario.casesAsTable">
+                        <i class="fa {{case.expanded ? 'fa-angle-down' : 'fa-angle-right'}} case-expand-icon"></i>Case
+                        {{case.caseNr}}:
+                        <span ng-if="case.description">
+                          {{case.description}}
+                        </span>
+                        <span ng-if="!case.description">
+                          <span ng-repeat="param in scenario.explicitParameters">
+                            {{param}} = {{case.explicitArguments[$index]}}<span
+                              ng-if="$index != scenario.explicitParameters.length - 1">, </span>
+                          </span>
+                        </span>
+                         <span ng-if="case.status === 'FAILED'"
+                               class="failed label radius alert"><i class="fa fa-exclamation-circle"></i> FAILED</span>
+
+                         <span ng-if="case.durationInNanos > 10000000"
+                               class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
+
+                      </h5>
+
+                      <div ng-if="scenario.scenarioCases.length === 1 || scenario.casesAsTable || case.expanded"
+                           class="steps">
+                        <table class="steps">
+                          <tr class="steps {{::step.nestedSteps ? 'toggle' : ''}}" bindonce ng-repeat="step in case.steps"
+                              ng-click="step.expanded = !step.expanded">
+                            <td class="steps {{::step.isSectionTitle ? 'section-title' : 'intro-word'}} {{::scenario.executionStatus !== 'SUCCESS' ? step.status : ''}}"
+                                colspan="{{::step.isSectionTitle ? '2' : '1'}}">
+                              <i ng-if="::step.nestedSteps"
+                                 class="fa {{step.expanded ? 'fa-angle-down' : 'fa-angle-right'}} step-expand-icon"></i>
+
+                              {{::(step.words[0].isIntroWord || step.isSectionTitle) ?
+                              step.words[0].value.capitalize() : ''}}
+                            </td>
+                            <td class="steps" ng-if="!step.isSectionTitle">
+                              <span ng-include="'step_template.html'"/>
+                            </td>
+                          </tr>
+                        </table>
+                        <div ng-if="!scenario.casesAsTable">
+                          <div ng-if="case.status === 'FAILED'" data-alert class="alert-box alert">
+                            <pre class="exception" ><span class="toggle" ng-click="case.stackTrace.expanded = !case.stackTrace.expanded"><i class="fa fa-fws fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i> FAILED:</span> {{::case.errorMessage}}<span ng-if="case.stackTrace.expanded">{{ ::('\n'+case.stackTrace.join('\n')) }}</span></pre>
+                          </div>
+                        </div>
+
+
+                        <!-- Cases Table -->
+
+                        <div>
+                          <div ng-if="scenario.casesAsTable" ng-controller="CasesTableCtrl as casesTableCtrl">
+                            <p></p>
+                            <h6 class="cases-table-header">Cases
+                              <ul ng-if="scenario.scenarioCases.length > 2" class="button-group radius right">
+                                <li><a class="button dropdown small secondary group-by"
+                                       dropdown-toggle="#select-case-group-{{scenarioIndex}}">Group by <b>{{groupColumn ? groupColumn.name
+                                  : ''}}</b></a>
+                                  <ul id="select-case-group-{{scenarioIndex}}" class="f-dropdown">
+                                    <li ng-repeat="col in groupColumns">
+                                      <a ng-click="changeGrouping(col)"><i
+                                          class="fa fa-check {{col.grouping ? 'selected' : 'unselected'}}"></i>
+                                        {{col.name}}</a>
+                                    </li>
+                                  </ul>
+                                </li>
+                                <li>
+                                  <a title="Expand Groups" ng-click="expandGroups()" class="button small secondary icon-button"><i
+                                      class="fa fa-expand"></i></a>
+                                </li>
+                                <li>
+                                  <a title="Collapse Groups" ng-click="collapseGroups()" class="button small secondary icon-button"><i
+                                      class="fa fa-compress"></i></a>
+                                </li>
+                              </ul>
+                            </h6>
+                            <table class="data-table" style="width:100%">
+                              <thead>
+                              <tr>
+                                <th ng-hide="col.grouping && !col.isStatus" ng-click="changeSorting(col)" nowrap class="toggle"
+                                    ng-repeat="col in columns track by $index">
+                                  {{col.name}}<span class="fa-stack fa-lg sort-icon">
+                                <i ng-hide="col.sorting === 'asc'" class="fa fa-caret-up sort-icon fa-stack-1x"></i>
+                                <i ng-hide="col.sorting === 'desc'" class="fa fa-caret-down sort-icon fa-stack-1x"></i>
+                                </span>
+                                </th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr ng-hide="group.hide" ng-repeat-start="group in groups">
+                                <td colspan="{{columns.length}}" class="cases-group-header toggle"
+                                    ng-click="group.expanded = !group.expanded">
+                                  <b><i class="fa fa-fw {{group.expanded ? 'fa-angle-down' : 'fa-angle-right'}}"></i></b>
+
+                                  <span ng-if="!groupColumn.isStatus"><b>{{group.name}}</b></span>
+                                  <span ng-if="groupColumn.isStatus"><b>{{group.name === true ? 'Success' : 'Failed'}}</b></span>
+                                </td>
+                              </tr>
+                              <tr ng-show="group.expanded" ng-repeat="case in group.cases track by $index" ng-repeat-end>
+                                <td ng-hide="col.grouping && !col.isStatus" ng-repeat="col in columns track by $index">
+                                  <div ng-if="!col.isStatus">{{col.getValue(case)}}</div>
+                                  <div ng-if="col.isStatus">
+                                    <div ng-if="case.status !== 'FAILED'"><i class="check fa fa-check-square"></i>
+                                    <span ng-if="case.durationInNanos > 10000000"
+                                          class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
+                                    </div>
+
+                                    <div ng-if="case.status === 'FAILED'" data-alert class="alert-box alert">
+                                      <pre class="toggle" ng-click="case.stackTrace.expanded = !case.stackTrace.expanded"><i class="fa fa-caret-right toggle {{case.stackTrace.expanded ? 'fa-rotate-90' : ''}}"></i> FAILED: {{::case.errorMessage}}<span ng-if="case.stackTrace.expanded">{{ ::('\n'+case.stackTrace.join('\n')) }}</span></pre>
+                                      <span ng-if="case.durationInNanos > 10000000"
+                                          class="duration"> ({{ nanosToReadableUnit(case.durationInNanos) }})</span>
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="class-name"><a href="#class/{{::scenario.className}}">{{scenario.className}}</a>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!-- TAGS -->
+
+                <div class="small-12 large-4 xlarge-6 column tag-column">
+                  <span ng-repeat="tagId in scenario.tagIds">
+                    <a href="{{getUrlFromTagId(tagId)}}"><span
+                        class="{{getCssClassOfTag(tagId)}} radius label tag"
+                        style='{{getStyleOfTag(tagId)}}'>{{tagIdToString(tagId)}}</span></a>
+                  </span>
+
+                  <!-- Scenario anchor -->
+                  <a href="#scenario/{{::scenario.className}}/{{::scenario.testMethodName}}"><i
+                      class="fa fa-link scenario-link-icon"
+                      title="Direct link to this scenario"></i></a>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- grouped scenarios -->
+
+        <div class="pagination-centered pagination-bottom" ng-if="pagination && !currentPage.print">
+          <pagination boundary-links="true" items-per-page="itemsPerPage" total-items="totalItems"
+                      page="currentPageNr" class="pagination-sm"
+                      on-select-page="setPage(page)" max-size="10" rotate="false"
+                      previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;"
+                      last-text="&raquo;"></pagination>
+        </div>
+
+        <div class="footer-bottom" ng-if="!currentPage.embed">
+          <div class="small-12 columns">
+            <a href="http://jgiven.org">JGiven</a> HTML App 1.0.0. Data generated by <a href="http://jgiven.org">JGiven</a> {{metaData.version}} on
+            {{metaData.created}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <a class="exit-off-canvas"></a>
+
+  </div>
+</div>
+<script type="text/javascript" src="app.bundle.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/custom.js" charset="utf-8"></script>
+<script type="text/javascript" src="data/metaData.js" charset="utf-8"></script>
+<script type="text/javascript" src="data/tags.js" charset="utf-8"></script>
+</body>
+</html>
