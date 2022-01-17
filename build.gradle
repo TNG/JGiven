@@ -74,6 +74,9 @@ subprojects {
         quickcheckVersion = '0.6'
         hsqldbVersion = '2.3.2'
         byteBuddyVersion = '1.12.3'
+        androidCompileSdkVersion = 31
+        androidMinSdkVersion = 29
+        androidTargetSdkVersion = 31
 
         publishVariant = { String variant ->
             publishing {

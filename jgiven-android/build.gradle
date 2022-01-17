@@ -19,7 +19,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion androidCompileSdkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -27,10 +27,10 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 29
-        targetSdkVersion 29
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
         versionCode 1
-        versionName "1.1"
+        versionName "${version}"
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 

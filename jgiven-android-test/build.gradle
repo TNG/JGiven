@@ -17,13 +17,13 @@ repositories {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion androidCompileSdkVersion
     defaultConfig {
         applicationId "com.tngtech.jgiven.android.example"
-        minSdkVersion 29
-        targetSdkVersion 29
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "${version}"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
