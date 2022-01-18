@@ -5,7 +5,7 @@ dependencies {
     implementation project(':jgiven-core')
     implementation project(':jgiven-html5-report')
     implementation "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.6.2"
-    implementation "org.apache.maven.plugin-tools:maven-plugin-annotations:3.6.2"
+    implementation "org.apache.maven.plugin-tools:maven-plugin-annotations:3.6.4"
 }
 
 task copyClasses(type: Copy, dependsOn: compileJava) {
