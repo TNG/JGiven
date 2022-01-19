@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
 import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
@@ -53,10 +54,12 @@ public class JGivenExtension implements
         }
         context.getStore( NAMESPACE ).put( REPORT_MODEL, reportModel );
 
-        ConfigurationUtil.getConfiguration( context.getTestClass().get() )
-            .configureTag( Tag.class )
-            .description( "JUnit 5 Tag" )
-            .color( "orange" );
+        AbstractJGivenConfiguration configuration = ConfigurationUtil.getConfiguration( context.getTestClass().get() );
+        if( configuration.getTagConfiguration( Tag.class ) == null ) {
+            configuration.configureTag( Tag.class )
+                .description( "JUnit 5 Tag" )
+                .color( "orange" );
+        }
     }
 
     @Override
