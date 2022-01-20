@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true">
-        <activity android:name="com.tngtech.jgiven.android.example.MainActivity">
+        <activity android:name="com.tngtech.jgiven.android.example.MainActivity" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,3 +1,4 @@
+//file:noinspection GroovyAssignabilityCheck
 buildscript {
     repositories {
         google()
@@ -18,13 +19,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
     defaultConfig {
         applicationId "com.tngtech.jgiven.android.example"
         minSdkVersion 29
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 1
-        versionName "1.0"
+        versionName "${version}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -45,7 +46,7 @@ configurations {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
 
     androidTestImplementation('androidx.test.espresso:espresso-core:3.4.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -97,7 +98,8 @@ task cleanJGivenHtmlReport(type: Delete) {
 }
 
 task jgivenHtml5Report(type: JavaExec, dependsOn: cleanJGivenHtmlReport) {
-    main = 'com.tngtech.jgiven.report.ReportGenerator'
+    //noinspection GroovyAccessibility
+    mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
     args '--sourceDir=build/reports/jgiven/json',
             '--targetDir=build/reports/jgiven/html',
             '--format=html5',
