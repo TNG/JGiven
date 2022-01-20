@@ -1,3 +1,4 @@
+//file:noinspection GroovyAssignabilityCheck
 buildscript {
     repositories {
         mavenLocal()
@@ -76,7 +77,7 @@ task pullJGivenReports(type: Exec, dependsOn: cleanJGivenReports) {
     commandLine adb, 'pull', reportsDir, targetDir
 
     doLast {
-        println("Pulled "+reportsDir+" to "+targetDir);
+        println("Pulled "+reportsDir+" to "+targetDir)
     }
 }
 
@@ -95,7 +96,8 @@ task cleanJGivenHtmlReport(type: Delete) {
 }
 
 task jgivenHtml5Report(type: JavaExec, dependsOn: cleanJGivenHtmlReport) {
-    main = 'com.tngtech.jgiven.report.ReportGenerator'
+    //noinspection GroovyAccessibility
+    mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
     args '--sourceDir=build/reports/jgiven/json',
          '--targetDir=build/reports/jgiven/html',
          '--format=html5',

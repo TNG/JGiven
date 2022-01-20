@@ -1,3 +1,4 @@
+//file:noinspection GroovyAssignabilityCheck
 buildscript {
     repositories {
         google()
@@ -97,7 +98,8 @@ task cleanJGivenHtmlReport(type: Delete) {
 }
 
 task jgivenHtml5Report(type: JavaExec, dependsOn: cleanJGivenHtmlReport) {
-    main = 'com.tngtech.jgiven.report.ReportGenerator'
+    //noinspection GroovyAccessibility
+    mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
     args '--sourceDir=build/reports/jgiven/json',
             '--targetDir=build/reports/jgiven/html',
             '--format=html5',
