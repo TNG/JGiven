@@ -12,6 +12,7 @@ import com.tngtech.jgiven.testng.ScenarioTestListener;
 public class TestClassWithDescription extends ScenarioTest<GivenTestStage, WhenTestStage, ThenTestStage> {
 
     @Test
+    @org.junit.jupiter.api.Test
     @org.testng.annotations.Test
     public void some_test() {
         given().nothing();

@@ -9,6 +9,7 @@ import org.junit.Test;
 public class GuaranteedFieldRealTest extends ScenarioTest<GuaranteedFieldRealTest.RealGiven, GuaranteedFieldRealTest.RealWhen, GuaranteedFieldRealTest.RealThen> {
 
     @Test
+    @org.junit.jupiter.api.Test
     public void a_sample_test() {
         given().a_sample_uninitialized_stage();
         when().I_do_something();
@@ -16,6 +17,7 @@ public class GuaranteedFieldRealTest extends ScenarioTest<GuaranteedFieldRealTes
     }
 
     @Test
+    @org.junit.jupiter.api.Test
     public void a_sample_initialized_test() {
         given().a_sample_initialized_stage();
         when().I_do_something();

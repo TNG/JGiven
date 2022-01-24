@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 public class PendingDataProviderTests extends ScenarioTestForTesting<GivenTestStage, WhenTestStage, ThenTestStage> {
 
     @Test
+    @org.junit.jupiter.api.Test
     @Pending
     @DataProvider({"1", "2"})
     public void pending_scenario(int i) {
