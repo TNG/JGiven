@@ -39,7 +39,7 @@ public class JGivenExtension implements
     BeforeAllCallback,
     AfterAllCallback,
     BeforeEachCallback,
-    AfterEachCallback {
+    AfterTestExecutionCallback {
 
     private static final Namespace NAMESPACE = Namespace.create("com.tngtech.jgiven");
 
@@ -75,7 +75,7 @@ public class JGivenExtension implements
     }
 
     @Override
-    public void afterEach(ExtensionContext context) throws Exception {
+    public void afterTestExecution(ExtensionContext context) throws Exception {
         ScenarioBase scenario = getScenario();
         try {
             if (context.getExecutionException().isPresent()) {

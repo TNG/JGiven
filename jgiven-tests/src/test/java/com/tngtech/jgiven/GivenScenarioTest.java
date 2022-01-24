@@ -40,12 +40,12 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         return self();
     }
 
-    public SELF the_test_has_$_failing_stages( int n ) {
+    public SELF the_test_has_$_failing_stages(int n) {
         criteria.numberOfFailingStages = n;
         return self();
     }
 
-    public SELF stage_$_has_a_failing_after_stage_method( int i ) {
+    public SELF stage_$_has_a_failing_after_stage_method(int i) {
         criteria.stageWithFailingAfterStageMethod = i;
         return self();
     }
@@ -65,35 +65,35 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         return self();
     }
 
-    public SELF the_test_has_a_tag_annotation_named( String name ) {
-        assertThat( name ).isEqualTo( "TestTag" );
+    public SELF the_test_has_a_tag_annotation_named(String name) {
+        assertThat(name).isEqualTo("TestTag");
         criteria.tagAnnotation = true;
         return self();
     }
 
     @AfterStage
     public void findScenario() {
-        if( testScenario == null ) {
-            testScenario = TestScenarioRepository.findScenario( criteria );
+        if (testScenario == null) {
+            testScenario = TestScenarioRepository.findScenario(criteria);
         }
     }
 
-    public SELF a_failing_test_with_$_steps( int n ) {
+    public SELF a_failing_test_with_$_steps(int n) {
         a_failing_test();
-        return a_test_with_$_steps( n );
+        return a_test_with_$_steps(n);
     }
 
-    public SELF a_test_with_$_steps( int n ) {
+    public SELF a_test_with_$_steps(int n) {
         criteria.numberOfSteps = n;
         return self();
     }
 
-    public SELF step_$_fails( int i ) {
+    public SELF step_$_fails(int i) {
         criteria.failingStep = i;
         return self();
     }
 
-    public SELF the_test_class_has_a_description_annotation_with_value( String value ) {
+    public SELF the_test_class_has_a_description_annotation_with_value(String value) {
         criteria.testClassDescription = value;
         return self();
     }
@@ -103,7 +103,7 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         return self();
     }
 
-    public SELF the_test_class_has_$_parameters( int nParameters ) {
+    public SELF the_test_class_has_$_parameters(int nParameters) {
         criteria.numberOfParameters = nParameters;
         return self();
     }
@@ -126,5 +126,10 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
 
     public void a_pending_scenario_with_a_data_provider() {
         testScenario = new TestScenario(PendingDataProviderTests.class);
+    }
+
+    public SELF junit5_tests_with_scenario_modifications_in_after_method() {
+        testScenario = TestScenarioRepository.junit5TestsWithModificationsInAfterMethod();
+        return self();
     }
 }
