@@ -1,12 +1,14 @@
 package com.tngtech.jgiven.tests;
 
-import org.junit.Test;
-import org.testng.annotations.Listeners;
-
+import com.tngtech.jgiven.JGivenReportExtractingExtension;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.testng.ScenarioTestListener;
+import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testng.annotations.Listeners;
 
 @Listeners( ScenarioTestListener.class )
+@ExtendWith(JGivenReportExtractingExtension.class)
 public class TestScenarios extends ScenarioTestForTesting<GivenTestStage, WhenTestStage, ThenTestStage> {
 
     @Test
