@@ -16,18 +16,18 @@ public class JUnit5Executor extends TestExecutor {
         LauncherDiscoveryRequest launcherRequest = LauncherDiscoveryRequestBuilder.request()
             .selectors(DiscoverySelectors.selectMethod(testClass, testMethod))
             .build();
-        return run(launcherRequest, new MethodSourceFilter());
+        return run(launcherRequest);
     }
 
     @Override
     public TestExecutionResult execute(Class<?> testClass) {
         LauncherDiscoveryRequest launcherRequest =
             LauncherDiscoveryRequestBuilder.request().selectors(DiscoverySelectors.selectClass(testClass)).build();
-        return run(launcherRequest, new ClassSourceFilter());
+        return run(launcherRequest);
     }
 
-    private TestExecutionResult run(LauncherDiscoveryRequest launchRequest, SourceFilter filter) {
-        TestExecutionResultProvider listener = new TestExecutionResultProvider(filter);
+    private TestExecutionResult run(LauncherDiscoveryRequest launchRequest) {
+        TestExecutionResultProvider listener = new TestExecutionResultProvider();
 
         try (LauncherSession session = LauncherFactory.openSession()) {
             Launcher launcher = session.getLauncher();

@@ -2,13 +2,16 @@ package com.tngtech.jgiven.junit5;
 
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.testframework.TestExecutionResult;
+import java.lang.reflect.Method;
+import java.util.Map;
 
 class Junit5TestExecutionResult extends TestExecutionResult {
 
     private final ReportModel report;
-    private final org.junit.platform.engine.TestExecutionResult result;
+    private final Map<Method, org.junit.platform.engine.TestExecutionResult> result;
 
-    public Junit5TestExecutionResult(ReportModel report, org.junit.platform.engine.TestExecutionResult result) {
+    public Junit5TestExecutionResult(ReportModel report,
+                                     Map<Method, org.junit.platform.engine.TestExecutionResult> result) {
         this.report = report;
         this.result = result;
     }
@@ -16,15 +19,25 @@ class Junit5TestExecutionResult extends TestExecutionResult {
 
     @Override
     public int getFailureCount() {
-        return result.getStatus()
-            == org.junit.platform.engine.TestExecutionResult.Status.FAILED ? 1 : 0;
+        return (int) result.values().stream()
+            .filter(result -> result.getStatus() == org.junit.platform.engine.TestExecutionResult.Status.FAILED)
+            .count();
     }
 
     @Override
     public String getFailureMessage(int i) {
-        return result.getThrowable()
-            .map(Throwable::getMessage)
-            .orElseThrow(() -> new IndexOutOfBoundsException("No failure for index"));
+        if (i >= result.size()) {
+            throw new IndexOutOfBoundsException("No result for index");
+        } else if (result.size() == 1 && i == 0) {
+            return result.values().stream()
+                .findFirst()
+                .flatMap(org.junit.platform.engine.TestExecutionResult::getThrowable)
+                .map(Throwable::getMessage)
+                .orElse("");
+
+        } else {
+            throw new UnsupportedOperationException("cannot index map");
+        }
     }
 
     @Override

@@ -45,7 +45,7 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
 
     public SELF the_test_fails_with_message(String expectedMessage) {
         the_test_fails();
-        assertThat(result.getFailureMessage(0)).as("failure message").isEqualTo(expectedMessage);
+        assertThat(result.getFailureMessage(0)).as("failure message").contains(expectedMessage);
         return self();
     }
 

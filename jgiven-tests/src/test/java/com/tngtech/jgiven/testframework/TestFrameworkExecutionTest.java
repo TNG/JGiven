@@ -3,6 +3,7 @@ package com.tngtech.jgiven.testframework;
 import com.tngtech.jgiven.GivenScenarioTest;
 import com.tngtech.jgiven.JGivenScenarioTest;
 import com.tngtech.jgiven.tags.FeatureJUnit;
+import com.tngtech.jgiven.tags.FeatureJUnit5;
 import com.tngtech.jgiven.tags.FeaturePending;
 import com.tngtech.jgiven.tags.FeatureTags;
 import com.tngtech.jgiven.tags.FeatureTestNg;
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+@FeatureJUnit5
 @FeatureJUnit
 @FeatureTestNg
 @RunWith(Parameterized.class)
@@ -25,7 +27,6 @@ public class TestFrameworkExecutionTest
     @Parameters
     public static Iterable<Object[]> testFrameworks() {
         return Arrays.stream(TestFramework.values())
-            .filter(value -> value == TestFramework.JUnit5) //TODO: remove this
             .map(value -> new Object[] {value})
             .collect(Collectors.toList());
     }
