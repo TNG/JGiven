@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.junit;
+package com.tngtech.jgiven.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,6 +9,7 @@ import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.annotation.ScenarioState;
+import com.tngtech.jgiven.junit.ScenarioTest;
 import org.junit.Test;
 
 public class RepeatedStageUseTest extends ScenarioTest<

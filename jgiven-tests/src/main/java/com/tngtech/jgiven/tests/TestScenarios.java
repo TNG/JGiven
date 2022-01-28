@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.tests;
 
-import com.tngtech.jgiven.JGivenReportExtractingExtension;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.testng.ScenarioTestListener;
 import org.junit.Test;

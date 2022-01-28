@@ -41,7 +41,7 @@ public class JUnitExecutor extends TestExecutor {
     }
 
     @Override
-    public TestExecutionResult execute( final Class<?> testClass ) {
+    public TestExecutionResult execute(final Class<?> testClass ) {
         return execute( new RequestSupplier() {
             @Override
             public Request supply() {

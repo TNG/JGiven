@@ -5,8 +5,11 @@ import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.junit.ScenarioTest;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-public class GuaranteedFieldRealTest extends ScenarioTest<GuaranteedFieldRealTest.RealGiven, GuaranteedFieldRealTest.RealWhen, GuaranteedFieldRealTest.RealThen> {
+@ExtendWith(JGivenReportExtractingExtension.class)
+public class GuaranteedFieldRealTest extends
+    ScenarioTest<GuaranteedFieldRealTest.RealGiven, GuaranteedFieldRealTest.RealWhen, GuaranteedFieldRealTest.RealThen> {
 
     @Test
     @org.junit.jupiter.api.Test
