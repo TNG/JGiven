@@ -1,3 +1,7 @@
+# v1.2x
+##New features
+ * The `@Tag` annotation configuration can now be set differently from the JGiven defaults. [#806](https://github.com/TNG/JGiven/issues/806)
+##Backward incompatible changes
 # v1.2
 ## New features
 * JGiven now supports Spock 2 [#784](https://github.com/TNG/JGiven/pull/784) (thanks to jsalinaspolo)

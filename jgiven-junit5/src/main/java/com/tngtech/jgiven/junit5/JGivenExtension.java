@@ -35,61 +35,62 @@ import com.tngtech.jgiven.report.model.ReportModel;
  * @see SimpleScenarioTest
  */
 public class JGivenExtension implements
-        TestInstancePostProcessor,
-        BeforeAllCallback,
-        AfterAllCallback,
-        BeforeEachCallback,
-        AfterEachCallback {
+    TestInstancePostProcessor,
+    BeforeAllCallback,
+    AfterAllCallback,
+    BeforeEachCallback,
+    AfterEachCallback {
 
-    private static final Namespace NAMESPACE = Namespace.create( "com.tngtech.jgiven" );
+    private static final Namespace NAMESPACE = Namespace.create("com.tngtech.jgiven");
 
     private static final String REPORT_MODEL = "report-model";
 
     @Override
-    public void beforeAll( ExtensionContext context ) throws Exception {
+    public void beforeAll(ExtensionContext context) {
         ReportModel reportModel = new ReportModel();
-        reportModel.setTestClass( context.getTestClass().get() );
-        if( !context.getDisplayName().equals( context.getTestClass().get().getSimpleName() ) ) {
-            reportModel.setName( context.getDisplayName() );
+        reportModel.setTestClass(context.getTestClass().get());
+        if (!context.getDisplayName().equals(context.getTestClass().get().getSimpleName())) {
+            reportModel.setName(context.getDisplayName());
         }
-        context.getStore( NAMESPACE ).put( REPORT_MODEL, reportModel );
+        context.getStore(NAMESPACE).put(REPORT_MODEL, reportModel);
 
-        AbstractJGivenConfiguration configuration = ConfigurationUtil.getConfiguration( context.getTestClass().get() );
-        if( configuration.getTagConfiguration( Tag.class ) == null ) {
-            configuration.configureTag( Tag.class )
-                .description( "JUnit 5 Tag" )
-                .color( "orange" );
+        AbstractJGivenConfiguration configuration = ConfigurationUtil.getConfiguration(context.getTestClass().get());
+        if (configuration.getTagConfiguration(Tag.class) == null) {
+            configuration.configureTag(Tag.class)
+                .description("JUnit 5 Tag")
+                .color("orange");
         }
     }
 
     @Override
-    public void afterAll( ExtensionContext context ) throws Exception {
+    public void afterAll(ExtensionContext context) {
         ScenarioHolder.get().removeScenarioOfCurrentThread();
-        new CommonReportHelper().finishReport( (ReportModel) context.getStore( NAMESPACE ).get( REPORT_MODEL ) );
+        new CommonReportHelper().finishReport((ReportModel) context.getStore(NAMESPACE).get(REPORT_MODEL));
     }
 
     @Override
-    public void beforeEach( ExtensionContext context ) throws Exception {
-        getScenario().startScenario( context.getTestClass().get(), context.getTestMethod().get(),
-            ArgumentReflectionUtil.getNamedArgs( context ) );
+    public void beforeEach(ExtensionContext context) {
+        getScenario().startScenario(context.getTestClass().get(), context.getTestMethod().get(),
+            ArgumentReflectionUtil.getNamedArgs(context));
     }
 
     @Override
-    public void afterEach( ExtensionContext context ) throws Exception {
+    public void afterEach(ExtensionContext context) throws Exception {
         ScenarioBase scenario = getScenario();
         try {
-            if( context.getExecutionException().isPresent() ) {
-                scenario.getExecutor().failed( context.getExecutionException().get() );
+            if (context.getExecutionException().isPresent()) {
+                scenario.getExecutor().failed(context.getExecutionException().get());
             }
             scenario.finished();
 
             // ignore test when scenario is not implemented
-            Assumptions.assumeTrue( EnumSet.of( SUCCESS, FAILED ).contains( scenario.getScenarioModel().getExecutionStatus() ) );
+            Assumptions.assumeTrue(
+                EnumSet.of(SUCCESS, FAILED).contains(scenario.getScenarioModel().getExecutionStatus()));
 
-        } catch( Exception e ) {
+        } catch (Exception e) {
             throw e;
-        } catch( Throwable e ) {
-            throw new RuntimeException( e );
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
         } finally {
             ScenarioHolder.get().removeScenarioOfCurrentThread();
         }
@@ -100,14 +101,14 @@ public class JGivenExtension implements
     }
 
     @Override
-    public void postProcessTestInstance( Object testInstance, ExtensionContext context ) throws Exception {
+    public void postProcessTestInstance(Object testInstance, ExtensionContext context) {
         ScenarioBase currentScenario = ScenarioHolder.get().getScenarioOfCurrentThread();
 
         ScenarioBase scenario;
-        if( testInstance instanceof ScenarioTestBase ) {
-            scenario = ((ScenarioTestBase) testInstance).getScenario();
+        if (testInstance instanceof ScenarioTestBase) {
+            scenario = ((ScenarioTestBase<?, ?, ?>) testInstance).getScenario();
         } else {
-            if( currentScenario == null ) {
+            if (currentScenario == null) {
                 scenario = new ScenarioBase();
             } else {
                 scenario = currentScenario;
@@ -120,8 +121,8 @@ public class JGivenExtension implements
             ScenarioHolder.get().setScenarioOfCurrentThread(scenario);
         }
 
-        scenario.getExecutor().injectStages( testInstance );
-        scenario.getExecutor().readScenarioState( testInstance );
+        scenario.getExecutor().injectStages(testInstance);
+        scenario.getExecutor().readScenarioState(testInstance);
     }
 
 }
