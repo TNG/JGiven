@@ -274,6 +274,10 @@ public class TestScenarioRepository {
         return new TestScenario( TestWithTwoCasesAndAFailingOne.class );
     }
 
+    public static TestScenario junit5TestsWithModificationsInAfterMethod(){
+        return new TestScenario(JUnit5AfterMethodTests.class);
+    }
+
     public static TestScenario testNgTestWithAFailingCase() {
         return new TestScenario( FailingCasesTestNgTest.class );
     }

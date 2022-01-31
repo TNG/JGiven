@@ -6,20 +6,18 @@ import com.tngtech.jgiven.tags.FeatureJUnit5;
 import com.tngtech.jgiven.tags.Issue;
 import com.tngtech.jgiven.testframework.ThenTestFramework;
 import com.tngtech.jgiven.testframework.WhenTestFramework;
-import org.junit.Ignore;
 import org.junit.Test;
 
 @FeatureJUnit5
-public class JUnit5ExecutorTest extends JGivenScenarioTest<GivenScenarioTest<?>, WhenTestFramework<?>, ThenTestFramework<?>> {
+public class JUnit5ExecutorTest
+    extends JGivenScenarioTest<GivenScenarioTest<?>, WhenTestFramework<?>, ThenTestFramework<?>> {
+
 
     @Test
-    @Ignore
-    public void the_JUnit_Parametrized_runner_creates_correct_cases() {
-        given().a_JUnit_test_class_with_the_Parameterized_Runner()
-            .and().the_test_class_has_$_parameters(2);
-        //when().the_test_is_executed_with_JUnit5()
-        then().the_report_model_contains_one_scenario_for_each_test_method()
-            .and().each_scenario_contains_$_cases(2);
+    public void tests_with_scenario_modifications_in_after_method() {
+        given().junit5_tests_with_scenario_modifications_in_after_method();
+        when().the_test_class_is_executed_with_JUnit5();
+        then().each_scenario_contains_$_cases(2);
     }
 
     @Test
