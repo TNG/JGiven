@@ -136,6 +136,8 @@ public class TagCreator {
         try {
             Method method = annotation.annotationType().getMethod("value");
             return Optional.ofNullable(method.invoke(annotation));
+        } catch (NoSuchMethodException ignoreAnnotationsThatAreNotTags) {
+            return Optional.empty();
         } catch (Exception e) {
             log.error("Error while getting 'value' method of annotation " + annotation, e);
             return Optional.empty();

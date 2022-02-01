@@ -4,21 +4,36 @@ package com.tngtech.jgiven.impl.tag;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tngtech.jgiven.config.DefaultConfiguration;
+import com.tngtech.jgiven.impl.TestUtil.JGivenLogHandler;
 import com.tngtech.jgiven.report.model.Tag;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+import org.junit.Before;
 import org.junit.Test;
 
 public class TagCreatorTest {
 
     private final TagCreator underTest = new TagCreator(new DefaultConfiguration());
+    private final JGivenLogHandler interceptor = new JGivenLogHandler();
+
+    @Before
+    public void addLogInterceptor() {
+        Logger testLogger = LogManager.getLogManager().getLogger(TagCreator.class.getName());
+        testLogger.addHandler(interceptor);
+    }
 
     @Test
     public void testAnnotationParsing() {
         Tag tag = getOnlyTagFor(AnnotationTestClass.class.getAnnotations()[0]);
         assertThat(tag.getName()).isEqualTo("AnnotationWithoutValue");
         assertThat(tag.getValues()).isEmpty();
+        assertThat(interceptor.containsLoggingEvent(record -> record.getLevel() == Level.SEVERE))
+            .as("Attempt to convert an annotation without value method results in an error log")
+            .isFalse();
     }
 
     @Test

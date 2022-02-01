@@ -1,6 +1,8 @@
 # v1.2x
 ##New features
  * The `@Tag` annotation configuration can now be set differently from the JGiven defaults. [#806](https://github.com/TNG/JGiven/issues/806)
+##Fixed issues
+ * JGiven no longer prints errors while scanning annotations that are not tags. [#821](https://github.com/TNG/JGiven/issues/821)
 ##Backward incompatible changes
 # v1.2
 ## New features
