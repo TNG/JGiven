@@ -47,10 +47,9 @@ public class ConfigTest {
     public void disabledReportsLogAMessage() {
         setSystemProperty("jgiven.report.enabled", "false");
 
-        JGivenLogHandler.resetEvents();
         Config.logReportEnabled();
 
-        assertThat(JGivenLogHandler.containsLoggingEvent("Please note that the report generation is turned off.",
+        assertThat(handler.containsLoggingEvent("Please note that the report generation is turned off.",
                                                                 Level.INFO)).isTrue();
     }
 
@@ -58,10 +57,9 @@ public class ConfigTest {
     public void enabledReportsDontLogAMessage() {
         setSystemProperty("jgiven.report.enabled", "true");
 
-        JGivenLogHandler.resetEvents();
         Config.logReportEnabled();
 
-        assertThat(JGivenLogHandler.containsLoggingEvent("Please note that the report generation is turned off.",
+        assertThat(handler.containsLoggingEvent("Please note that the report generation is turned off.",
                                                             Level.INFO)).isFalse();
     }
 
@@ -69,10 +67,9 @@ public class ConfigTest {
     public void dryRunEnabledLogsAMessage() {
         setSystemProperty("jgiven.report.dry-run", "true");
 
-        JGivenLogHandler.resetEvents();
         Config.logDryRunEnabled();
 
-        assertThat(JGivenLogHandler.containsLoggingEvent("Dry Run enabled.",
+        assertThat(handler.containsLoggingEvent("Dry Run enabled.",
                 Level.INFO)).isTrue();
     }
 
@@ -80,10 +77,9 @@ public class ConfigTest {
     public void dryRunDisabledDoesntLogAMessage() {
         setSystemProperty("jgiven.report.dry-run", "false");
 
-        JGivenLogHandler.resetEvents();
         Config.logDryRunEnabled();
 
-        assertThat(JGivenLogHandler.containsLoggingEvent("Dry Run enabled.",
+        assertThat(handler.containsLoggingEvent("Dry Run enabled.",
                 Level.INFO)).isFalse();
     }
 
