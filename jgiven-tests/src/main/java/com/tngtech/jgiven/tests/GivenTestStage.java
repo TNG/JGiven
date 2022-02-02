@@ -7,13 +7,15 @@ public class GivenTestStage extends Stage<GivenTestStage> {
         throw new RuntimeException("Some Exception");
     }
 
-    public void nothing() {
+    public GivenTestStage nothing() {
+        return this;
     }
 
-    public void a_failed_step(boolean fail) {
+    public GivenTestStage a_failed_step(boolean fail) {
         if (fail) {
             throw new IllegalArgumentException();
         }
+        return this;
     }
 
 
