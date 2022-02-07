@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        if (project.hasProperty('staging')) {
+            maven { url "https://oss.sonatype.org/content/repositories/staging/" }
+        }
+        gradlePluginPortal()
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.tngtech.jgiven:jgiven-gradle-plugin:${version}"
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+apply plugin: 'com.tngtech.jgiven.gradle-plugin'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    options.compilerArgs += '-parameters'
+    options.encoding = 'UTF-8'
+}
+
+ext {
+    junit5Version = '5.8.2'
+    jgivenVersion = version
+}
+
+repositories {
+    if (project.hasProperty('staging')) {
+        maven { url "https://oss.sonatype.org/content/repositories/staging/" }
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation "com.tngtech.jgiven:jgiven-junit5:${jgivenVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
+    testImplementation "com.epam.reportportal:agent-java-junit5:5.1.1",{
+        exclude group: "org.junit.jupiter", module: "junit-jupiter-api"
+    }
+    testImplementation "org.slf4j:slf4j-jdk14:1.7.35"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+test.finalizedBy(jgivenTestReport)
