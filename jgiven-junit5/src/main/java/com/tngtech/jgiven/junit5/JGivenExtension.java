@@ -3,13 +3,6 @@ package com.tngtech.jgiven.junit5;
 import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
 import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
 
-import java.util.EnumSet;
-
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.extension.*;
-import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
@@ -17,6 +10,16 @@ import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
+import java.util.EnumSet;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
+import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 
 /**
  * This extension enables JGiven for JUnit 5 Tests.
