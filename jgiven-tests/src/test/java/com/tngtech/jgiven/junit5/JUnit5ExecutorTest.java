@@ -21,6 +21,13 @@ public class JUnit5ExecutorTest
     }
 
     @Test
+    public void tests_with_a_per_class_lifecycle() {
+        given().junit5_test_class_with_a_per_class_lifecycle();
+        when().the_test_class_is_executed_with_JUnit5();
+        then().the_test_fails_with_message("JGiven does not support keeping a test instance over multiple scenarios");
+    }
+
+    @Test
     @Issue("#25")
     public void a_valid_report_is_generated_for_classes_that_are_disabled() {
         given().a_test_class_with_all_tests_ignored();

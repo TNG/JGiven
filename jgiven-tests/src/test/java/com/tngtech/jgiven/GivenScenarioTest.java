@@ -132,4 +132,9 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         testScenario = TestScenarioRepository.junit5TestsWithModificationsInAfterMethod();
         return self();
     }
+
+    public SELF junit5_test_class_with_a_per_class_lifecycle(){
+        testScenario = TestScenarioRepository.junit5TestClassWithPerClassLifecycle();
+        return self();
+    }
 }

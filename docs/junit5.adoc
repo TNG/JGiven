@@ -74,6 +74,7 @@ public class JGiven5ScenarioTest
     }
 }
 ----
+Please note that JGiven is built around each scenario, i.e. test method, having its own test instance. Therefore, we cannot support JUnit's per-class test instance lifecycle. An exception will be thrown if any such attempt is made.
 
 === Example Project
 

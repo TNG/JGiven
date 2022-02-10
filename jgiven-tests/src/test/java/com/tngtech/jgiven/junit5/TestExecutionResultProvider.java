@@ -14,7 +14,8 @@ import org.junit.platform.launcher.TestIdentifier;
 
 class TestExecutionResultProvider implements TestExecutionListener {
 
-    private Map<Method, org.junit.platform.engine.TestExecutionResult> executionResults = new HashMap<>();
+    private final Map<Method, org.junit.platform.engine.TestExecutionResult> methodExecutionResults = new HashMap<>();
+    private final Map<Class<?>, org.junit.platform.engine.TestExecutionResult> classExecutionResults = new HashMap<>();
 
 
     private ReportModel reportModel;
@@ -26,22 +27,32 @@ class TestExecutionResultProvider implements TestExecutionListener {
         if (testSource instanceof MethodSource) {
             handleTestMethodFinished((MethodSource) testSource, testExecutionResult);
         } else if (testSource instanceof ClassSource) {
-            handleTestClassFinished((ClassSource) testSource);
+            handleTestClassFinished((ClassSource) testSource, testExecutionResult);
         }
     }
 
-    private void handleTestClassFinished(ClassSource testSource) {
-        this.reportModel = JGivenReportExtractingExtension.getReportModelFor(testSource.getJavaClass())
-            .orElseThrow(() -> new IllegalStateException("Failed to obtain report model for tested class."));
+    private void handleTestClassFinished(ClassSource testSource,
+                                         org.junit.platform.engine.TestExecutionResult testExecutionResult) {
+        classExecutionResults.put(testSource.getJavaClass(), testExecutionResult);
+        setReportModel(testSource);
+    }
+
+    private void setReportModel(ClassSource testSource) {
+        if (methodExecutionResults.size() == 0) {
+            this.reportModel = null;
+        } else {
+            this.reportModel = JGivenReportExtractingExtension.getReportModelFor(testSource.getJavaClass())
+                .orElseThrow(() -> new IllegalStateException("Failed to obtain report model for tested class."));
+        }
     }
 
     private void handleTestMethodFinished(MethodSource testSource,
                                           org.junit.platform.engine.TestExecutionResult testExecutionResult) {
-        executionResults.put(testSource.getJavaMethod(), testExecutionResult);
+        methodExecutionResults.put(testSource.getJavaMethod(), testExecutionResult);
     }
 
 
     public TestExecutionResult getExecutionResult() {
-        return new Junit5TestExecutionResult(reportModel, executionResults);
+        return new Junit5TestExecutionResult(reportModel, methodExecutionResults, classExecutionResults);
     }
 }

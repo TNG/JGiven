@@ -7,6 +7,7 @@ import com.tngtech.jgiven.annotation.Description;
 
 public class TestScenarioRepository {
 
+
     public static class SearchCriteria {
         public boolean pending = false;
         public boolean failing = false;
@@ -21,53 +22,53 @@ public class TestScenarioRepository {
         public Integer numberOfParameters;
         public String testClassDescription;
 
-        public boolean matches( ScenarioCriteria criteria ) {
-            if( pending != criteria.pending) {
+        public boolean matches(ScenarioCriteria criteria) {
+            if (pending != criteria.pending) {
                 return false;
             }
 
-            if( failIfPassed != null && !failIfPassed.equals( criteria.failIfPassed ) ) {
+            if (failIfPassed != null && !failIfPassed.equals(criteria.failIfPassed)) {
                 return false;
             }
 
-            if( executeSteps != null && !executeSteps.equals( criteria.executeSteps ) ) {
+            if (executeSteps != null && !executeSteps.equals(criteria.executeSteps)) {
                 return false;
             }
 
-            if( failing != criteria.failing ) {
+            if (failing != criteria.failing) {
                 return false;
             }
 
-            if( numberOfSteps != null && !numberOfSteps.equals( criteria.numberOfSteps ) ) {
+            if (numberOfSteps != null && !numberOfSteps.equals(criteria.numberOfSteps)) {
                 return false;
             }
 
-            if( numberOfFailingStages != null && !numberOfFailingStages.equals( criteria.numberOfFailingStages ) ) {
+            if (numberOfFailingStages != null && !numberOfFailingStages.equals(criteria.numberOfFailingStages)) {
                 return false;
             }
 
-            if( failingStep != null && !failingStep.equals( criteria.failingStep ) ) {
+            if (failingStep != null && !failingStep.equals(criteria.failingStep)) {
                 return false;
             }
 
-            if( stageWithFailingAfterStageMethod != null
-                    && !stageWithFailingAfterStageMethod.equals( criteria.stageWithFailingAfterStageMethod ) ) {
+            if (stageWithFailingAfterStageMethod != null
+                && !stageWithFailingAfterStageMethod.equals(criteria.stageWithFailingAfterStageMethod)) {
                 return false;
             }
 
-            if( tagAnnotation != null && !tagAnnotation.equals( criteria.tagAnnotation ) ) {
+            if (tagAnnotation != null && !tagAnnotation.equals(criteria.tagAnnotation)) {
                 return false;
             }
 
-            if( parameterizedRunner != null && !parameterizedRunner.equals( criteria.parameterizedRunner ) ) {
+            if (parameterizedRunner != null && !parameterizedRunner.equals(criteria.parameterizedRunner)) {
                 return false;
             }
 
-            if( numberOfParameters != null && !numberOfParameters.equals(criteria.numberOfParameters) ) {
+            if (numberOfParameters != null && !numberOfParameters.equals(criteria.numberOfParameters)) {
                 return false;
             }
 
-            if( testClassDescription != null && !testClassDescription.equals( criteria.testClassDescription ) ) {
+            if (testClassDescription != null && !testClassDescription.equals(criteria.testClassDescription)) {
                 return false;
             }
 
@@ -109,13 +110,13 @@ public class TestScenarioRepository {
             return this;
         }
 
-        public ScenarioCriteria failingStep( int i ) {
+        public ScenarioCriteria failingStep(int i) {
             failing();
             failingStep = i;
             return this;
         }
 
-        public ScenarioCriteria numberOfSteps( int n ) {
+        public ScenarioCriteria numberOfSteps(int n) {
             numberOfSteps = n;
             return this;
         }
@@ -125,17 +126,17 @@ public class TestScenarioRepository {
             return this;
         }
 
-        public ScenarioCriteria numberOfFailingStages( int i ) {
+        public ScenarioCriteria numberOfFailingStages(int i) {
             numberOfFailingStages = i;
             return this;
         }
 
-        public ScenarioCriteria stageWithFailingAfterStageMethod( Integer stageWithFailingAfterStageMethod ) {
+        public ScenarioCriteria stageWithFailingAfterStageMethod(Integer stageWithFailingAfterStageMethod) {
             this.stageWithFailingAfterStageMethod = stageWithFailingAfterStageMethod;
             return this;
         }
 
-        public ScenarioCriteria numberOfParameters( int n ) {
+        public ScenarioCriteria numberOfParameters(int n) {
             this.numberOfParameters = n;
             return this;
         }
@@ -145,7 +146,7 @@ public class TestScenarioRepository {
             return this;
         }
 
-        public ScenarioCriteria testClassDescription( String value ) {
+        public ScenarioCriteria testClassDescription(String value) {
             this.testClassDescription = value;
             return this;
         }
@@ -156,16 +157,16 @@ public class TestScenarioRepository {
         public String testMethod;
         public ScenarioCriteria criteria = new ScenarioCriteria();
 
-        public TestScenario( Class<?> testClass ) {
+        public TestScenario(Class<?> testClass) {
             this.testClass = testClass;
         }
 
-        public TestScenario( String testMethod ) {
+        public TestScenario(String testMethod) {
             this.testMethod = testMethod;
             this.testClass = TestScenarios.class;
         }
 
-        public TestScenario( Class<?> testClass, String testMethod ) {
+        public TestScenario(Class<?> testClass, String testMethod) {
             this.testClass = testClass;
             this.testMethod = testMethod;
         }
@@ -173,113 +174,116 @@ public class TestScenarioRepository {
 
     final static List<TestScenario> testScenarios = setupTestScenarios();
 
-    public static TestScenario findScenario( SearchCriteria searchCriteria ) {
-        for( TestScenario scenario : testScenarios ) {
-            if( searchCriteria.matches( scenario.criteria ) ) {
+    public static TestScenario findScenario(SearchCriteria searchCriteria) {
+        for (TestScenario scenario : testScenarios) {
+            if (searchCriteria.matches(scenario.criteria)) {
                 return scenario;
             }
         }
-        throw new IllegalArgumentException( "No matching scenario found" );
+        throw new IllegalArgumentException("No matching scenario found");
     }
 
-    private static ScenarioCriteria addTestScenario( List<TestScenario> list, Class<?> testClass ) {
-        TestScenario testScenario = new TestScenario( testClass );
-        list.add( testScenario );
+    private static ScenarioCriteria addTestScenario(List<TestScenario> list, Class<?> testClass) {
+        TestScenario testScenario = new TestScenario(testClass);
+        list.add(testScenario);
         return testScenario.criteria;
     }
 
-    private static ScenarioCriteria addTestScenario( List<TestScenario> list, String testMethod ) {
-        TestScenario testScenario = new TestScenario( testMethod );
-        list.add( testScenario );
+    private static ScenarioCriteria addTestScenario(List<TestScenario> list, String testMethod) {
+        TestScenario testScenario = new TestScenario(testMethod);
+        list.add(testScenario);
         return testScenario.criteria;
     }
 
-    private static ScenarioCriteria addTestScenario( List<TestScenario> list, Class<?> testClass, String testMethod ) {
-        TestScenario testScenario = new TestScenario( testClass );
+    private static ScenarioCriteria addTestScenario(List<TestScenario> list, Class<?> testClass, String testMethod) {
+        TestScenario testScenario = new TestScenario(testClass);
         testScenario.testMethod = testMethod;
-        list.add( testScenario );
+        list.add(testScenario);
         return testScenario.criteria;
     }
 
     private static List<TestScenario> setupTestScenarios() {
         List<TestScenario> result = Lists.newArrayList();
 
-        addTestScenario( result, "failing_test_with_two_steps" )
-            .numberOfSteps( 2 )
-            .failingStep( 1 );
+        addTestScenario(result, "failing_test_with_two_steps")
+            .numberOfSteps(2)
+            .failingStep(1);
 
-        addTestScenario( result, "failing_test_with_three_steps" )
-            .numberOfSteps( 3 )
-            .failingStep( 1 );
+        addTestScenario(result, "failing_test_with_three_steps")
+            .numberOfSteps(3)
+            .failingStep(1);
 
-        addTestScenario( result, "failing_test_with_two_steps_and_second_step_fails" )
-            .numberOfSteps( 2 )
-            .failingStep( 2 );
+        addTestScenario(result, "failing_test_with_two_steps_and_second_step_fails")
+            .numberOfSteps(2)
+            .failingStep(2);
 
-        addTestScenario( result, "failing_test_with_two_failing_stages" )
-            .numberOfSteps( 2 )
-            .numberOfFailingStages( 2 )
-            .failingStep( 1 );
+        addTestScenario(result, "failing_test_with_two_failing_stages")
+            .numberOfSteps(2)
+            .numberOfFailingStages(2)
+            .failingStep(1);
 
-        addTestScenario( result, "failing_test_where_second_stage_has_a_failing_after_stage_method" )
-            .numberOfSteps( 2 )
-            .numberOfFailingStages( 2 )
-            .stageWithFailingAfterStageMethod( 2 )
-            .failingStep( 1 );
+        addTestScenario(result, "failing_test_where_second_stage_has_a_failing_after_stage_method")
+            .numberOfSteps(2)
+            .numberOfFailingStages(2)
+            .stageWithFailingAfterStageMethod(2)
+            .failingStep(1);
 
-        addTestScenario( result, "failing_test_with_Pending_annotation" )
+        addTestScenario(result, "failing_test_with_Pending_annotation")
             .pending()
-            .numberOfSteps( 2 )
-            .failingStep( 1 );
+            .numberOfSteps(2)
+            .failingStep(1);
 
-        addTestScenario( result, "passing_test_with_Pending_annotation" )
+        addTestScenario(result, "passing_test_with_Pending_annotation")
             .pending();
 
-        addTestScenario( result, "passing_test_with_Pending_annotation_and_failIfPassed_set_to_true" )
+        addTestScenario(result, "passing_test_with_Pending_annotation_and_failIfPassed_set_to_true")
             .pending()
             .failIfPassed();
 
-        addTestScenario( result, "failing_test_with_Pending_annotation_and_failIfPassed_set_to_true" )
+        addTestScenario(result, "failing_test_with_Pending_annotation_and_failIfPassed_set_to_true")
             .pending()
             .failIfPassed()
-            .failingStep( 1 );
+            .failingStep(1);
 
-        addTestScenario( result, "failing_test_with_Pending_annotation_and_executeSteps_set_to_true" )
+        addTestScenario(result, "failing_test_with_Pending_annotation_and_executeSteps_set_to_true")
             .pending()
             .executeSteps()
-            .failingStep( 1 );
+            .failingStep(1);
 
-        addTestScenario( result, "test_with_tag_annotation" )
+        addTestScenario(result, "test_with_tag_annotation")
             .tagAnnotation();
 
-        addTestScenario( result, TestClassWithParameterizedRunner.class )
+        addTestScenario(result, TestClassWithParameterizedRunner.class)
             .parameterizedRunner()
-            .numberOfParameters( 2 );
+            .numberOfParameters(2);
 
-        addTestScenario( result, TestClassWithDescription.class, "some_test" )
-            .testClassDescription( TestClassWithDescription.class.getAnnotation( Description.class ).value() );
+        addTestScenario(result, TestClassWithDescription.class, "some_test")
+            .testClassDescription(TestClassWithDescription.class.getAnnotation(Description.class).value());
 
         return result;
     }
 
     public static TestScenario testClassWithOnlyIgnoredTests() {
-        return new TestScenario( TestClassWithOnlyIgnoredTests.class );
+        return new TestScenario(TestClassWithOnlyIgnoredTests.class);
     }
 
     public static TestScenario testClassWithAFailingScenarioAndAFailingAfterStage() {
-        return new TestScenario( TestWithExceptionsInAfterMethod.class );
+        return new TestScenario(TestWithExceptionsInAfterMethod.class);
     }
 
     public static TestScenario testWithTwoCasesAndTheFirstOneFails() {
-        return new TestScenario( TestWithTwoCasesAndAFailingOne.class );
+        return new TestScenario(TestWithTwoCasesAndAFailingOne.class);
     }
 
-    public static TestScenario junit5TestsWithModificationsInAfterMethod(){
+    public static TestScenario junit5TestsWithModificationsInAfterMethod() {
         return new TestScenario(JUnit5AfterMethodTests.class);
     }
 
     public static TestScenario testNgTestWithAFailingCase() {
-        return new TestScenario( FailingCasesTestNgTest.class );
+        return new TestScenario(FailingCasesTestNgTest.class);
     }
 
+    public static TestScenario junit5TestClassWithPerClassLifecycle() {
+        return new TestScenario(TestWithPerClassLifecycle.class);
+    }
 }
