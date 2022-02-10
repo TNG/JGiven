@@ -69,7 +69,6 @@ public class JGivenExtension implements
         }
     }
 
-
     @Override
     public void afterAll(ExtensionContext context) {
         ScenarioHolder.get().removeScenarioOfCurrentThread();
