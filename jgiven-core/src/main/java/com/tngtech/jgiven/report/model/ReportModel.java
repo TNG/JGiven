@@ -38,57 +38,61 @@ public class ReportModel {
 
     private Map<String, Tag> tagMap = Maps.newLinkedHashMap();
 
-    public void accept( ReportModelVisitor visitor ) {
-        visitor.visit( this );
+    public void accept(ReportModelVisitor visitor) {
+        visitor.visit(this);
         List<ScenarioModel> sorted = sortByDescription();
-        for( ScenarioModel m : sorted ) {
-            m.accept( visitor );
+        for (ScenarioModel m : sorted) {
+            m.accept(visitor);
         }
-        visitor.visitEnd( this );
+        visitor.visitEnd(this);
 
     }
 
     private List<ScenarioModel> sortByDescription() {
-        List<ScenarioModel> sorted = Lists.newArrayList( getScenarios() );
-        Collections.sort( sorted, new Comparator<ScenarioModel>() {
+        List<ScenarioModel> sorted = Lists.newArrayList(getScenarios());
+        Collections.sort(sorted, new Comparator<ScenarioModel>() {
             @Override
-            public int compare( ScenarioModel o1, ScenarioModel o2 ) {
-                return o1.getDescription().toLowerCase().compareTo( o2.getDescription().toLowerCase() );
+            public int compare(ScenarioModel o1, ScenarioModel o2) {
+                return o1.getDescription().toLowerCase().compareTo(o2.getDescription().toLowerCase());
             }
-        } );
+        });
         return sorted;
     }
 
     public ScenarioModel getLastScenarioModel() {
-        return getScenarios().get( getScenarios().size() - 1 );
+        return getScenarios().get(getScenarios().size() - 1);
     }
 
-    public Optional<ScenarioModel> findScenarioModel( String scenarioDescription ) {
-        for( ScenarioModel model : getScenarios() ) {
-            if( model.getDescription().equals( scenarioDescription ) ) {
-                return Optional.of( model );
+    public Optional<ScenarioModel> findScenarioModel(String scenarioDescription) {
+        for (ScenarioModel model : getScenarios()) {
+            if (model.getDescription().equals(scenarioDescription)) {
+                return Optional.of(model);
             }
         }
         return Optional.empty();
     }
 
     public StepModel getFirstStepModelOfLastScenario() {
-        return getLastScenarioModel().getCase( 0 ).getStep( 0 );
+        return getLastScenarioModel().getCase(0).getStep(0);
     }
 
-    public synchronized void addScenarioModel( ScenarioModel currentScenarioModel ) {
-        scenarios.add( currentScenarioModel );
+    public synchronized void addScenarioModel(ScenarioModel currentScenarioModel) {
+        scenarios.add(copyModelToKeepOriginalIsolatedInItsThread(currentScenarioModel));
+    }
+
+    private ScenarioModel copyModelToKeepOriginalIsolatedInItsThread(ScenarioModel currentScenarioModel) {
+        return new ScenarioModel(currentScenarioModel);
     }
 
     public String getSimpleClassName() {
-        return Iterables.getLast( Splitter.on( '.' ).split( getClassName() ) );
+        return Iterables.getLast(Splitter.on('.').split(getClassName()));
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription( String description ) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -96,7 +100,7 @@ public class ReportModel {
         return className;
     }
 
-    public void setClassName( String className ) {
+    public void setClassName(String className) {
         this.className = className;
     }
 
@@ -104,51 +108,51 @@ public class ReportModel {
         return scenarios;
     }
 
-    public void setScenarios( List<ScenarioModel> scenarios ) {
+    public void setScenarios(List<ScenarioModel> scenarios) {
         this.scenarios = scenarios;
     }
 
     public String getPackageName() {
-        int index = this.className.lastIndexOf( '.' );
-        if( index == -1 ) {
+        int index = this.className.lastIndexOf('.');
+        if (index == -1) {
             return "";
         }
-        return this.className.substring( 0, index );
+        return this.className.substring(0, index);
     }
 
     public List<ScenarioModel> getFailedScenarios() {
-        return getScenariosWithStatus( ExecutionStatus.FAILED );
+        return getScenariosWithStatus(ExecutionStatus.FAILED);
     }
 
     public List<ScenarioModel> getPendingScenarios() {
-        return getScenariosWithStatus( ExecutionStatus.SCENARIO_PENDING, ExecutionStatus.SOME_STEPS_PENDING );
+        return getScenariosWithStatus(ExecutionStatus.SCENARIO_PENDING, ExecutionStatus.SOME_STEPS_PENDING);
     }
 
-    public List<ScenarioModel> getScenariosWithStatus( ExecutionStatus first, ExecutionStatus... rest ) {
-        EnumSet<ExecutionStatus> stati = EnumSet.of( first, rest );
+    public List<ScenarioModel> getScenariosWithStatus(ExecutionStatus first, ExecutionStatus... rest) {
+        EnumSet<ExecutionStatus> stati = EnumSet.of(first, rest);
         List<ScenarioModel> result = Lists.newArrayList();
-        for( ScenarioModel m : scenarios ) {
+        for (ScenarioModel m : scenarios) {
             ExecutionStatus executionStatus = m.getExecutionStatus();
-            if( stati.contains( executionStatus ) ) {
-                result.add( m );
+            if (stati.contains(executionStatus)) {
+                result.add(m);
             }
         }
         return result;
     }
 
-    public synchronized void addTag( Tag tag ) {
-        this.tagMap.put( tag.toIdString(), tag );
+    public synchronized void addTag(Tag tag) {
+        this.tagMap.put(tag.toIdString(), tag);
     }
 
-    public synchronized void addTags( List<Tag> tags ) {
-        for( Tag tag : tags ) {
-            addTag( tag );
+    public synchronized void addTags(List<Tag> tags) {
+        for (Tag tag : tags) {
+            addTag(tag);
         }
     }
 
-    public synchronized Tag getTagWithId( String tagId ) {
-        Tag tag = this.tagMap.get( tagId );
-        AssertionUtil.assertNotNull( tag, "Could not find tag with id " + tagId );
+    public synchronized Tag getTagWithId(String tagId) {
+        Tag tag = this.tagMap.get(tagId);
+        AssertionUtil.assertNotNull(tag, "Could not find tag with id " + tagId);
         return tag;
     }
 
@@ -156,43 +160,44 @@ public class ReportModel {
         return tagMap;
     }
 
-    public synchronized void setTagMap( Map<String, Tag> tagMap ) {
+    public synchronized void setTagMap(Map<String, Tag> tagMap) {
         this.tagMap = tagMap;
     }
 
-    public synchronized void addScenarioModelOrMergeWithExistingOne( ScenarioModel scenarioModel ) {
-        Optional<ScenarioModel> existingScenarioModel = findScenarioModel( scenarioModel.getDescription() );
+    public synchronized void addScenarioModelOrMergeWithExistingOne(ScenarioModel scenarioModel) {
+        Optional<ScenarioModel> existingScenarioModel = findScenarioModel(scenarioModel.getDescription());
 
-        if( existingScenarioModel.isPresent() ) {
-            AssertionUtil.assertTrue( scenarioModel.getScenarioCases().size() == 1, "ScenarioModel has more than one case" );
-            existingScenarioModel.get().addCase( scenarioModel.getCase( 0 ) );
-            existingScenarioModel.get().addDurationInNanos( scenarioModel.getDurationInNanos() );
+        if (existingScenarioModel.isPresent()) {
+            AssertionUtil.assertTrue(scenarioModel.getScenarioCases().size() == 1,
+                "ScenarioModel has more than one case");
+            existingScenarioModel.get().addCase(scenarioModel.getCase(0));
+            existingScenarioModel.get().addDurationInNanos(scenarioModel.getDurationInNanos());
         } else {
-            addScenarioModel( scenarioModel );
+            addScenarioModel(scenarioModel);
         }
     }
 
-    public synchronized void setTestClass( Class<?> testClass ) {
-        AssertionUtil.assertTrue( className == null || testClass.getName().equals( className ),
+    public synchronized void setTestClass(Class<?> testClass) {
+        AssertionUtil.assertTrue(className == null || testClass.getName().equals(className),
             "Test class of the same report model was set to different values. 1st value: " + className +
-                    ", 2nd value: " + testClass.getName() );
-        setClassName( testClass.getName() );
-        if( testClass.isAnnotationPresent( Description.class ) ) {
-            setDescription( testClass.getAnnotation( Description.class ).value() );
+                ", 2nd value: " + testClass.getName());
+        setClassName(testClass.getName());
+        if (testClass.isAnnotationPresent(Description.class)) {
+            setDescription(testClass.getAnnotation(Description.class).value());
         }
 
-        As as = testClass.getAnnotation( As.class );
+        As as = testClass.getAnnotation(As.class);
         AsProvider provider = as != null
-                ? ReflectionUtil.newInstance( as.provider() )
-                : new DefaultAsProvider();
-        name = provider.as( as, testClass );
+            ? ReflectionUtil.newInstance(as.provider())
+            : new DefaultAsProvider();
+        name = provider.as(as, testClass);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
 }
