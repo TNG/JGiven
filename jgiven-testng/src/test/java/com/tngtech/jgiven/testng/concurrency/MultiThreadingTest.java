@@ -1,10 +1,11 @@
-package com.tngtech.jgiven.testng;
-
-import com.tngtech.jgiven.annotation.ScenarioState;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+package com.tngtech.jgiven.testng.concurrency;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.tngtech.jgiven.annotation.ScenarioState;
+import com.tngtech.jgiven.testng.ScenarioTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 
 @Test(singleThreaded=false)
