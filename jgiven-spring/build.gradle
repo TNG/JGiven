@@ -9,6 +9,6 @@ dependencies {
     testImplementation "org.springframework:spring-test:$springVersion"
     testImplementation "org.springframework:spring-jdbc:$springVersion"
     testImplementation "org.hsqldb:hsqldb:$hsqldbVersion"
-    testImplementation "org.aspectj:aspectjrt:1.9.7"
+    testImplementation "org.aspectj:aspectjrt:1.9.8"
     testImplementation "org.aspectj:aspectjweaver:1.9.7"
 }
