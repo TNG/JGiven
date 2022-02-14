@@ -10,8 +10,6 @@ import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
-
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -50,12 +48,7 @@ public class ReportModel {
 
     private List<ScenarioModel> sortByDescription() {
         List<ScenarioModel> sorted = Lists.newArrayList(getScenarios());
-        Collections.sort(sorted, new Comparator<ScenarioModel>() {
-            @Override
-            public int compare(ScenarioModel o1, ScenarioModel o2) {
-                return o1.getDescription().toLowerCase().compareTo(o2.getDescription().toLowerCase());
-            }
-        });
+        sorted.sort(Comparator.comparing(self -> self.getDescription().toLowerCase()));
         return sorted;
     }
 
@@ -179,8 +172,8 @@ public class ReportModel {
 
     public synchronized void setTestClass(Class<?> testClass) {
         AssertionUtil.assertTrue(className == null || testClass.getName().equals(className),
-            "Test class of the same report model was set to different values. 1st value: " + className +
-                ", 2nd value: " + testClass.getName());
+            "Test class of the same report model was set to different values. 1st value: " + className
+                + ", 2nd value: " + testClass.getName());
         setClassName(testClass.getName());
         if (testClass.isAnnotationPresent(Description.class)) {
             setDescription(testClass.getAnnotation(Description.class).value());
