@@ -14,7 +14,7 @@ import com.tngtech.jgiven.annotation.ScenarioStage;
  * Example of how inject state from test classes into stages
  */
 @Listeners(ScenarioTestListener.class)
-public class SateInjectionTest {
+public class StateInjectionTest {
 
     @ProvidedScenarioState
     int value = 21;
