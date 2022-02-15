@@ -4,6 +4,7 @@
 ##Fixed issues
  * JGiven no longer prints errors while scanning annotations that are not tags. [#821](https://github.com/TNG/JGiven/issues/821)
 ##Backward incompatible changes
+ * Removed explicit support for PowerMock in JGiven-JUnit4 package, because the powermock project appears to be abandoned.
 # v1.2
 ## New features
 * JGiven now supports Spock 2 [#784](https://github.com/TNG/JGiven/pull/784) (thanks to jsalinaspolo)
