@@ -37,7 +37,7 @@ public class TestNgExecutor extends TestExecutor {
     }
 
     @Override
-    public TestExecutionResult execute( Class<?> testClass ) {
+    public TestExecutionResult execute(Class<?> testClass ) {
         return execute( testClass, null );
     }
 

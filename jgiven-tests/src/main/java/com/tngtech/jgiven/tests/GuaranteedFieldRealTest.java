@@ -6,7 +6,8 @@ import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.junit.ScenarioTest;
 import org.junit.Test;
 
-public class GuaranteedFieldRealTest extends ScenarioTest<GuaranteedFieldRealTest.RealGiven, GuaranteedFieldRealTest.RealWhen, GuaranteedFieldRealTest.RealThen> {
+public class GuaranteedFieldRealTest extends
+    ScenarioTest<GuaranteedFieldRealTest.RealGiven, GuaranteedFieldRealTest.RealWhen, GuaranteedFieldRealTest.RealThen> {
 
     @Test
     public void a_sample_test() {

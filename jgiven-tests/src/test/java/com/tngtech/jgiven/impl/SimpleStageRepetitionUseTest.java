@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.junit;
+package com.tngtech.jgiven.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,6 +6,7 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.BeforeStage;
 import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import org.junit.Ignore;
 import org.junit.Test;
 

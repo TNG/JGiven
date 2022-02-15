@@ -3,20 +3,25 @@ package com.tngtech.jgiven.junit5;
 import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
 import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
 
-import java.util.EnumSet;
-
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.extension.*;
-import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
+import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
+import java.util.EnumSet;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
+import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 
 /**
  * This extension enables JGiven for JUnit 5 Tests.
@@ -39,7 +44,7 @@ public class JGivenExtension implements
     BeforeAllCallback,
     AfterAllCallback,
     BeforeEachCallback,
-    AfterEachCallback {
+    AfterTestExecutionCallback {
 
     private static final Namespace NAMESPACE = Namespace.create("com.tngtech.jgiven");
 
@@ -47,6 +52,8 @@ public class JGivenExtension implements
 
     @Override
     public void beforeAll(ExtensionContext context) {
+        validatePerMethodLifecycle(context);
+
         ReportModel reportModel = new ReportModel();
         reportModel.setTestClass(context.getTestClass().get());
         if (!context.getDisplayName().equals(context.getTestClass().get().getSimpleName())) {
@@ -62,6 +69,7 @@ public class JGivenExtension implements
         }
     }
 
+
     @Override
     public void afterAll(ExtensionContext context) {
         ScenarioHolder.get().removeScenarioOfCurrentThread();
@@ -75,7 +83,7 @@ public class JGivenExtension implements
     }
 
     @Override
-    public void afterEach(ExtensionContext context) throws Exception {
+    public void afterTestExecution(ExtensionContext context) throws Exception {
         ScenarioBase scenario = getScenario();
         try {
             if (context.getExecutionException().isPresent()) {
@@ -94,10 +102,6 @@ public class JGivenExtension implements
         } finally {
             ScenarioHolder.get().removeScenarioOfCurrentThread();
         }
-    }
-
-    private ScenarioBase getScenario() {
-        return ScenarioHolder.get().getScenarioOfCurrentThread();
     }
 
     @Override
@@ -125,4 +129,21 @@ public class JGivenExtension implements
         scenario.getExecutor().readScenarioState(testInstance);
     }
 
+    private void validatePerMethodLifecycle(ExtensionContext context) {
+        if (isPerClassLifecycle(context)) {
+            throw new JGivenWrongUsageException(
+                "JGiven does not support keeping a test instance over multiple scenarios. Please use Lifecycle '"
+                    + TestInstance.Lifecycle.PER_METHOD + "'.");
+        }
+    }
+
+    private boolean isPerClassLifecycle(ExtensionContext context) {
+        return context.getTestInstanceLifecycle()
+            .filter(lifecycle -> TestInstance.Lifecycle.PER_CLASS == lifecycle)
+            .isPresent();
+    }
+
+    private ScenarioBase getScenario() {
+        return ScenarioHolder.get().getScenarioOfCurrentThread();
+    }
 }
