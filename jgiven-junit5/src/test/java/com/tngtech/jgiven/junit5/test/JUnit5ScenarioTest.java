@@ -1,9 +1,7 @@
 package com.tngtech.jgiven.junit5.test;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import com.tngtech.jgiven.junit5.ScenarioTest;
+import org.junit.jupiter.api.Test;
 
 public class JUnit5ScenarioTest extends ScenarioTest<GivenStage, WhenStage, ThenStage> {
 
