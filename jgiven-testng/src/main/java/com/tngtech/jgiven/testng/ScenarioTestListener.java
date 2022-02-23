@@ -106,7 +106,7 @@ public class ScenarioTestListener implements ITestListener {
             testResult.setStatus(ITestResult.FAILURE);
             testResult.setThrowable(ex);
             testResult.getTestContext().getPassedTests().removeResult(testResult);
-            testResult.getTestContext().getFailedTests().addResult(testResult, testResult.getMethod());
+            testResult.getTestContext().getFailedTests().addResult(testResult);
         }
         catch( Throwable throwable ) {
             throw new RuntimeException(throwable);
