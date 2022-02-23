@@ -17,6 +17,7 @@ dependencies {
     implementation "org.codehaus.groovy:groovy:$groovy_version"
     implementation "org.spockframework:spock-core:$spock2_version"
     implementation "org.spockframework:spock-junit4:$spock2_version"
+    implementation "net.bytebuddy:byte-buddy:$byteBuddyVersion"
 
     testImplementation project(':jgiven-html5-report')
 }
