@@ -2,6 +2,7 @@ package com.tngtech.jgiven.report.html5;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -75,7 +76,7 @@ public class WhenHtml5App<SELF extends WhenHtml5App<?>> extends Html5AppStage<SE
         Actions builder = new Actions(webDriver);
         WebElement webElement = webDriver.findElement( By.xpath( "//span[@class='has-tip']" ));
         builder.moveToElement( webElement ).clickAndHold().build().perform();
-        WebDriverWait wait = new WebDriverWait( webDriver, 251);
+        WebDriverWait wait = new WebDriverWait( webDriver, Duration.ofSeconds(251));
         wait.until( ExpectedConditions.presenceOfElementLocated( By.xpath( "//span[@is-open]" )));
         // https://github.com/pineconellc/angular-foundation/blob/master/src/tooltip/tooltip.js - Line 98: var template
         return self();
