@@ -3,6 +3,7 @@
  * The `@Tag` annotation configuration can now be set differently from the JGiven defaults. [#806](https://github.com/TNG/JGiven/issues/806)
 ##Fixed issues
  * JGiven no longer prints errors while scanning annotations that are not tags. [#821](https://github.com/TNG/JGiven/issues/821)
+ * The JGiven maven plugin did not declare itsself as thread-safe, even though it is. [#829](https://github.com/TNG/JGiven/issues/829) (thanks to Hatzen for pointing it out and fixing it.)
 ##Backward incompatible changes
  * Removed explicit support for PowerMock in JGiven-JUnit4 package, because the powermock project appears to be abandoned.
 # v1.2
