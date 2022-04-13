@@ -126,5 +126,12 @@ class AnnotationWithDescriptionAndIgnoreValue {
 
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 @TagWithParentTags
+@IsTag
+@Retention(RetentionPolicy.RUNTIME)
+@interface TagWithGrandparentTags {
+}
+
+@SuppressWarnings("checkstyle:OneTopLevelClass")
+@TagWithParentTags
 class AnnotationWithParentTag {
 }

@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,21 +37,25 @@ public class TagCreator {
      * Turns an annotation class and a manually supplied set of annotation values into tags.
      * Permits the programmatic creation of tags.
      */
-    public List<Tag> toTags(Class<? extends Annotation> annotationClass, String... values) {
+    public ResolvedTags toTags(Class<? extends Annotation> annotationClass, String... values) {
         TagConfiguration tagConfig = toTagConfiguration(annotationClass);
         if (tagConfig == null) {
-            return Collections.emptyList();
+            return new ResolvedTags();
         }
 
         List<Tag> tags = processConfiguredAnnotation(tagConfig);
         if (tags.isEmpty()) {
-            return Collections.emptyList();
+            return new ResolvedTags();
         }
 
+        List<Tag> parents = getTags(annotationClass);
         if (values.length > 0) {
-            return getExplodedTags(Iterables.getOnlyElement(tags), values, null, tagConfig);
+            List<Tag> explodedTags = getExplodedTags(Iterables.getOnlyElement(tags), values, null, tagConfig);
+            return explodedTags.stream()
+                .map(tag -> new ResolvedTags.ResolvedTag(tag, parents))
+                .collect(new TagCollector());
         } else {
-            return tags;
+            return ResolvedTags.from(new ResolvedTags.ResolvedTag(Iterables.getOnlyElement(tags), parents));
         }
     }
 
@@ -57,14 +63,18 @@ public class TagCreator {
      * Turns an annotation defined on a class or method into tags.
      * Permits the declarative creation of tags
      */
-    public List<Tag> toTags(Annotation annotation) {
+    public ResolvedTags toTags(Annotation annotation) {
         Class<? extends Annotation> annotationType = annotation.annotationType();
         TagConfiguration tagConfig = toTagConfiguration(annotationType);
         if (tagConfig == null) {
-            return Collections.emptyList();
+            return new ResolvedTags();
         }
 
-        return processConfiguredAnnotation(tagConfig, annotation);
+        List<Tag> tags = processConfiguredAnnotation(tagConfig, annotation);
+        List<Tag> parents = getTags(annotationType);
+        return tags.stream()
+            .map(tag -> new ResolvedTags.ResolvedTag(tag, parents))
+            .collect(new TagCollector());
     }
 
     private List<Tag> processConfiguredAnnotation(TagConfiguration tagConfig, Annotation annotation) {
@@ -188,7 +198,12 @@ public class TagCreator {
 
         for (Annotation annotation : annotationType.getAnnotations()) {
             if (annotation.annotationType().isAnnotationPresent(IsTag.class)) {
-                allTags.addAll(toTags(annotation));
+                allTags.addAll(toTags(annotation).resolvedTags.stream()
+                    .flatMap(tag -> {
+                        Stream<Tag> tagStream = Stream.of(tag.tag);
+                        return Stream.concat(tagStream, tag.parents.stream());
+                    })
+                    .collect(Collectors.toList()));
             }
         }
 
@@ -242,4 +257,5 @@ public class TagCreator {
         }
         return result;
     }
+
 }

@@ -91,7 +91,8 @@ public class TagCreatorTest {
 
     @Test
     public void testAnnotationWithArrayParsing() {
-        List<Tag> tags = underTest.toTags(AnnotationWithArrayValueTestClass.class.getAnnotations()[0]);
+        List<Tag> tags =
+            underTest.toTags(AnnotationWithArrayValueTestClass.class.getAnnotations()[0]).getDeclaredTags();
         assertThat(tags).hasSize(2);
         assertThat(tags.get(0).getName()).isEqualTo("AnnotationWithArray");
         assertThat(tags.get(0).getValues()).containsExactly("foo");
@@ -99,8 +100,19 @@ public class TagCreatorTest {
         assertThat(tags.get(1).getValues()).containsExactly("bar");
     }
 
+    @Test
+    public void testAllParentsOfTagAreResolved() {
+        ResolvedTags resolvedTags = underTest.toTags(TagWithGrandparentTags.class);
+        assertThat(resolvedTags.getDeclaredTags())
+            .extracting(Tag::getName)
+            .containsExactly("TagWithGrandparentTags");
+        assertThat(resolvedTags.getParents())
+            .extracting(Tag::getName)
+            .containsExactlyInAnyOrder("TagWithParentTags", "ParentTag", "ParentTagWithValue");
+    }
+
     private Tag getOnlyTagFor(Annotation annotation) {
-        List<Tag> tags = underTest.toTags(annotation);
+        List<Tag> tags = underTest.toTags(annotation).getDeclaredTags();
         assertThat(tags).hasSize(1);
         return tags.get(0);
     }
