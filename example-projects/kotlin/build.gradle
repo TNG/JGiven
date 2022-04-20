@@ -1,5 +1,5 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.6.20"
+    id "org.jetbrains.kotlin.jvm" version "1.6.21"
     id "com.tngtech.jgiven.gradle-plugin" version "1.2.0"
 }
 
