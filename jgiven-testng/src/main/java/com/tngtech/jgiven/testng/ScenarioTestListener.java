@@ -28,6 +28,7 @@ public class ScenarioTestListener implements ITestListener {
 
     @Override
     public void onTestStart( ITestResult paramITestResult ) {
+        new IncompatibleMultithreadingChecker().checkIncompatibleMultiThreading(paramITestResult);
         Object instance = paramITestResult.getInstance();
 
         ScenarioBase scenario;
