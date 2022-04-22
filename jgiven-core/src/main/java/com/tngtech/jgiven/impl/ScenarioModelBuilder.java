@@ -22,6 +22,7 @@ import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.impl.format.ParameterFormattingUtil;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
 import com.tngtech.jgiven.impl.params.DefaultAsProvider;
+import com.tngtech.jgiven.impl.tag.ResolvedTags;
 import com.tngtech.jgiven.impl.tag.TagCreator;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
@@ -36,7 +37,6 @@ import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepFormatter;
 import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.StepStatus;
-import com.tngtech.jgiven.report.model.Tag;
 import com.tngtech.jgiven.report.model.Word;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -496,17 +496,19 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
     }
 
-    private void addTags(List<Tag> tags) {
+    private void addTags(ResolvedTags tags) {
         if (tags.isEmpty()) {
             return;
         }
 
         if (reportModel != null) {
-            this.reportModel.addTags(tags);
+            this.reportModel.addTags(tags.getDeclaredTags());
+            //The report model needs to declare the parent tags in a tag map, or the tags cannot be displayed.
+            this.reportModel.addTags(tags.getParents());
         }
 
         if (scenarioModel != null) {
-            this.scenarioModel.addTags(tags);
+            this.scenarioModel.addTags(tags.getDeclaredTags());
         }
     }
 
