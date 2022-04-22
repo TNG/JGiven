@@ -27,6 +27,17 @@ test_update_version_replaces_version_property_in_scala_files(){
   return ${output_variable}
 }
 
+test_update_version_replaces_version_in_pom(){
+  local test_file="properties.tmp"
+  trap "rm -f '${test_file}';exit" SIGTERM SIGINT
+  echo "<jgiven.version>0.x</jgiven.version>" > "${test_file}"
+  update_maven_version '1.0' "${test_file}"
+  grep '<jgiven.version>1.0</jgiven.version>' "${test_file}"
+  local output_variable=$?
+  rm -f "${test_file}"
+  return ${output_variable}
+}
+
 test_update_version_fails_if_property_not_in_file() {
   local test_file="properties.tmp"
   trap "rm -f '${test_file}';exit" SIGTERM SIGINT
@@ -39,5 +50,6 @@ test_update_version_fails_if_property_not_in_file() {
 
 run_tests "test_update_version_fails_if_property_not_in_file" \
 "test_update_version_replaces_version_property_in_file" \
-"test_update_version_replaces_version_property_in_scala_files"
+"test_update_version_replaces_version_property_in_scala_files" \
+"test_update_version_replaces_version_in_pom"
 exit $?

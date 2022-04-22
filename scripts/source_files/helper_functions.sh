@@ -16,6 +16,21 @@ function update_version(){
   return 0
 }
 
+function update_maven_version() {
+  [ $# -eq 2 ] || return 11
+  local target_version="$1"
+  local target_file="$2"
+  local version_property="jgiven.version"
+  local version_matcher="<${version_property}>.*<\/${version_property}>"
+  if grep -E "${version_matcher}" "${target_file}" ;then
+    sed -i -e "s/${version_matcher}/<${version_property}>${target_version}<\/${version_property}>/" "${target_file}" || return 12
+  else
+    printf "Could not find version property to replace in file %s\n" "${target_file}"
+    return 13
+  fi
+  return 0
+}
+
 #Update the version property in an sbt file, which requires the version to be quoted
 function update_scala_version() {
   [ $# -eq 2 ] || return 21
@@ -50,6 +65,10 @@ function updateAllVersionInformation() {
   done
 
   update_scala_version "${VERSION}" "example-projects/scala/build.sbt" || exit $?
+
+  for file in "example-projects/java11/pom.xml" "example-projects/maven/pom.xml"; do
+    update_maven_version "${VERSION}" "${file}"
+  done
 }
 
 function runGradleTestOnGivenProject() {
