@@ -137,4 +137,9 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         testScenario = TestScenarioRepository.junit5TestClassWithPerClassLifecycle();
         return self();
     }
+
+    public SELF a_testNG_class_with_parallel_tests_and_injected_stages(){
+        testScenario = TestScenarioRepository.testNgClassWithParallelTestsAndInjectedStages();
+        return self();
+    }
 }

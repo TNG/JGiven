@@ -19,8 +19,9 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 /**
- * TestNG Test listener to enable JGiven for a test class
+ * TestNG Test listener to enable JGiven for a test class.
  */
+@SuppressWarnings("checkstyle:AbbreviationAsWordInName")
 public class ScenarioTestListener implements ITestListener {
 
     public static final String SCENARIO_ATTRIBUTE = "jgiven::scenario";
@@ -28,7 +29,6 @@ public class ScenarioTestListener implements ITestListener {
 
     @Override
     public void onTestStart( ITestResult paramITestResult ) {
-        new IncompatibleMultithreadingChecker().checkIncompatibleMultiThreading(paramITestResult);
         Object instance = paramITestResult.getInstance();
 
         ScenarioBase scenario;
@@ -45,6 +45,10 @@ public class ScenarioTestListener implements ITestListener {
 
         ReportModel reportModel = getReportModel( paramITestResult, instance.getClass() );
         scenario.setModel( reportModel );
+
+        //TestNG cannot run in parallel if stages are to be injected, because then multiple scenarios
+        //will attempt to inject into a single test instance at the same time.
+        new IncompatibleMultithreadingChecker().checkIncompatibleMultiThreading(paramITestResult);
 
         // TestNG does not work well when catching step exceptions, so we have to disable that feature
         // this mainly means that steps following a failing step are not reported in JGiven

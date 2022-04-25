@@ -247,6 +247,8 @@ In many cases three stages are typically enough to write a scenario. However, so
 
 Additional stages can be injected into a test class by declaring a field with the additional stage and annotate it with `@ScenarioStage`.
 
+Please note that a lifecyle model that reuses the same instance to execute multiple test methods is only partially compatible with JGiven. In particular, in such a model stages for different scenarios will be injected into the same field. This can lead to errors when attempting to run tests in parallel.
+
 ===== Example
 
 In the following example we inject an additional stage `GivenAdditionalState` into the test class and use it in the test.

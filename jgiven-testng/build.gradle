@@ -10,6 +10,7 @@ dependencies {
     compileOnly "org.testng:testng:$testngVersion"
 
     testImplementation "org.testng:testng:$testngVersion"
+    testImplementation "org.mockito:mockito-core:4.3.0"
 }
 
 test.useTestNG() {

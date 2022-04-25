@@ -286,4 +286,9 @@ public class TestScenarioRepository {
     public static TestScenario junit5TestClassWithPerClassLifecycle() {
         return new TestScenario(TestWithPerClassLifecycle.class);
     }
+
+    public static TestScenario testNgClassWithParallelTestsAndInjectedStages() {
+        return new TestScenario(TestNgFailingParallelTest.class);
+    }
+
 }
