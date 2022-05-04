@@ -864,6 +864,9 @@ JGiven will then validate that a previous stage had provided the value and will 
 <div class="paragraph">
 <p>Additional stages can be injected into a test class by declaring a field with the additional stage and annotate it with <code>@ScenarioStage</code>.</p>
 </div>
+<div class="paragraph">
+<p>Please note that a lifecyle model that reuses the same instance to execute multiple test methods is only partially compatible with JGiven. In particular, in such a model stages for different scenarios will be injected into the same field. This can lead to errors when attempting to run tests in parallel.</p>
+</div>
 <div class="sect4">
 <h5 id="_example">Example</h5>
 <div class="paragraph">
@@ -1023,8 +1026,8 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.2.0<br>
-Last updated 2022-01-11 16:00:27 UTC
+Version 1.2.1<br>
+Last updated 2022-05-04 14:57:51 UTC
 </div>
 </div>
 </body>
