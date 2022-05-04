@@ -18,27 +18,27 @@ public class TestNgExecutor extends TestExecutor {
     public static String methodName;
 
     @Override
-    public TestExecutionResult execute( Class<?> testClass, String testMethod ) {
+    public TestExecutionResult execute(Class<?> testClass, String testMethod) {
         TestNgExecutionResult result = new TestNgExecutionResult();
         ScenarioTestListenerAdapter testListenerAdapter = new ScenarioTestListenerAdapter();
         TestNG testng = new TestNG();
-        testng.setTestClasses( new Class<?>[] { testClass } );
-        if( testMethod != null ) {
+        testng.setTestClasses(new Class<?>[] {testClass});
+        if (testMethod != null) {
             methodName = testMethod;
-            testng.addMethodSelector( MethodSelector.class.getName(), 175 );
+            testng.addMethodSelector(MethodSelector.class.getName(), 175);
         }
-        testng.addListener( testListenerAdapter );
-        Config.config().setReportEnabled( false );
+        testng.addListener(testListenerAdapter);
+        Config.config().setReportEnabled(false);
         testng.run();
-        Config.config().setReportEnabled( true );
+        Config.config().setReportEnabled(true);
         result.reportModel = testListenerAdapter.reportModel;
         result.testResults = testListenerAdapter.testResults;
         return result;
     }
 
     @Override
-    public TestExecutionResult execute(Class<?> testClass ) {
-        return execute( testClass, null );
+    public TestExecutionResult execute(Class<?> testClass) {
+        return execute(testClass, null);
     }
 
     static class ScenarioTestListenerAdapter extends TestListenerAdapter {
@@ -46,23 +46,23 @@ public class TestNgExecutor extends TestExecutor {
         List<ITestResult> testResults = Lists.newArrayList();
 
         @Override
-        public void onTestSuccess( ITestResult tr ) {
-            setTestResult( tr );
+        public void onTestSuccess(ITestResult tr) {
+            setTestResult(tr);
         }
 
         @Override
-        public void onTestFailure( ITestResult tr ) {
-            setTestResult( tr );
+        public void onTestFailure(ITestResult tr) {
+            setTestResult(tr);
         }
 
         @Override
-        public void onTestSkipped( ITestResult tr ) {
-            setTestResult( tr );
+        public void onTestSkipped(ITestResult tr) {
+            setTestResult(tr);
         }
 
-        private void setTestResult( ITestResult tr ) {
-            testResults.add( tr );
-            reportModel = ((ScenarioBase)tr.getAttribute (SCENARIO_ATTRIBUTE)).getModel();
+        private void setTestResult(ITestResult tr) {
+            testResults.add(tr);
+            reportModel = ((ScenarioBase) tr.getAttribute(SCENARIO_ATTRIBUTE)).getModel();
         }
     }
 
