@@ -27,17 +27,16 @@
       "groupName": "junit5"
     },
     {
-      "packagePatterns": [
-        "powermock"
-      ],
-      "groupName": "powermock"
-    },
-    {
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     }
   ],
+  "maven":{
+    "fileMatch": [
+      "jgiven-maven-plugin/src/main/maven/pom.xml"
+    ]
+  },
   "schedule": [
     "after 10pm every weekday",
     "before 5am every weekday",
