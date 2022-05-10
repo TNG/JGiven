@@ -40,16 +40,31 @@ test_update_version_replaces_version_in_pom(){
 
 test_update_version_fails_if_property_not_in_file() {
   local test_file="properties.tmp"
-  trap "rm -f '${test_file}';exit" SIGTERM SIGINT
+  trap "rm -f '${test_file}';exit" SIGTERM SIGINT EXIT
   echo 'venison=0.x' > "${test_file}"
   update_version '1.0' "${test_file}"
   local output_variable=$?
-  rm -f "${test_file}"
   return $( [ ${output_variable} -ge 1 ]; echo $?)
+}
+
+test_hardcode_gradle_plugin_version_for_example_tests(){
+  local properties_file="properties.tmp"
+  local build_file="build.tmp"
+  trap "rm '${build_file}' '${properties_file}';exit" SIGINT SIGTERM EXIT
+  echo "version=1.2.1" > "${properties_file}"
+  echo 'id "com.tngtech.jgiven.gradle-plugin" version "${version}"' > "${build_file}"
+  hardcodeCurrentPublicVersionForGradlePlugin "${build_file}" "${properties_file}"
+  if grep -q 'version "1.2.1"' "${build_file}";then
+    return 0
+  else
+    echo 'Expected to find "version 1.2.1" in build file, but did not.'
+    return 1
+  fi
 }
 
 run_tests "test_update_version_fails_if_property_not_in_file" \
 "test_update_version_replaces_version_property_in_file" \
 "test_update_version_replaces_version_property_in_scala_files" \
-"test_update_version_replaces_version_in_pom"
+"test_update_version_replaces_version_in_pom" \
+"test_hardcode_gradle_plugin_version_for_example_tests"
 exit $?

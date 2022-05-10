@@ -22,7 +22,7 @@ function update_maven_version() {
   local target_file="$2"
   local version_property="jgiven.version"
   local version_matcher="<${version_property}>.*<\/${version_property}>"
-  if grep -E "${version_matcher}" "${target_file}" >/dev/null;then
+  if grep -E -q "${version_matcher}" "${target_file}" ;then
     sed -i -e "s/${version_matcher}/<${version_property}>${target_version}<\/${version_property}>/" "${target_file}" || return 12
   else
     printf "Could not find version property to replace in file %s\n" "${target_file}"
@@ -104,4 +104,14 @@ function runMavenTestOnGivenProject() {
     local VERSION="$2"
 
     mvn -U -f $givenProject clean test -Djgiven.version=$VERSION
+}
+
+function hardcodeCurrentPublicVersionForGradlePlugin(){
+  [ $# -eq 2 ] || return 71
+  local build_file="$1"
+  local version_information="$2"
+  local version=$(grep -E "version\s*=\s*([0-9.]+)" "${version_information}"| grep -oE "([0-9.]+)")
+  local source_expression='id "com.tngtech.jgiven.gradle-plugin" version "${version}"'
+  local replacement='id "com.tngtech.jgiven.gradle-plugin" version "'"${version}"'"'
+  sed -i  "s/${source_expression}/${replacement}/"  "${build_file}"
 }
