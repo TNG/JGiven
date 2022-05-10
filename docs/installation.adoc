@@ -13,7 +13,7 @@ to use different dependencies.
 If you are using JUnit, you must depend on the `jgiven-junit` artifact.
 Note that `jgiven-junit` does not directly depend on JUnit,
 thus you also must have a dependency to JUnit itself.
-JGiven requires at least JUnit 4.9, while the recommended version is 4.12.
+JGiven requires at least JUnit 4.9, while the recommended version is 4.13.2.
 
 ==== Maven Dependency
 [source,maven,subs="verbatim,attributes"]
