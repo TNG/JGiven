@@ -58,8 +58,6 @@ subprojects {
         junitDataproviderVersion = '1.13.1'
         // set default junit version if not set via command line
         junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.13.2'
-        junit5Version = '5.8.2'
-        junit5PlatformRunnerVersion = '1.8.2'
         junitParamsVersion = '1.1.1'
         testngVersion = '7.5'
         assertjVersion = '3.22.0'
