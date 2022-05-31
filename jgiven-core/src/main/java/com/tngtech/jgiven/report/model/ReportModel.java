@@ -137,10 +137,8 @@ public class ReportModel {
         this.tagMap.put(tag.toIdString(), tag);
     }
 
-    public synchronized void addTags(List<Tag> tags) {
-        for (Tag tag : tags) {
-            addTag(tag);
-        }
+    public synchronized void addTags(Iterable<Tag> tags) {
+        tags.forEach(this::addTag);
     }
 
     public synchronized Tag getTagWithId(String tagId) {

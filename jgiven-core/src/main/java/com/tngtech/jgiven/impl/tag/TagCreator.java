@@ -10,6 +10,7 @@ import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.report.model.Tag;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -48,14 +49,14 @@ public class TagCreator {
             return new ResolvedTags();
         }
 
-        List<Tag> parents = getTags(annotationClass);
+        List<Tag> ancestors = getAllAncestorTags(annotationClass);
         if (values.length > 0) {
             List<Tag> explodedTags = getExplodedTags(Iterables.getOnlyElement(tags), values, null, tagConfig);
             return explodedTags.stream()
-                .map(tag -> new ResolvedTags.ResolvedTag(tag, parents))
+                .map(tag -> new ResolvedTags.ResolvedTag(tag, ancestors))
                 .collect(new TagCollector());
         } else {
-            return ResolvedTags.from(new ResolvedTags.ResolvedTag(Iterables.getOnlyElement(tags), parents));
+            return ResolvedTags.from(new ResolvedTags.ResolvedTag(Iterables.getOnlyElement(tags), ancestors));
         }
     }
 
@@ -71,7 +72,7 @@ public class TagCreator {
         }
 
         List<Tag> tags = processConfiguredAnnotation(tagConfig, annotation);
-        List<Tag> parents = getTags(annotationType);
+        List<Tag> parents = getAllAncestorTags(annotationType);
         return tags.stream()
             .map(tag -> new ResolvedTags.ResolvedTag(tag, parents))
             .collect(new TagCollector());
@@ -177,37 +178,34 @@ public class TagCreator {
             .cssClass(isTag.cssClass())
             .color(isTag.color())
             .style(isTag.style())
-            .tags(getTagNames(annotationType))
+            .tags(getNamesOfParentTags(annotationType))
             .href(isTag.href())
             .hrefGenerator(isTag.hrefGenerator())
             .showInNavigation(isTag.showInNavigation())
             .build();
     }
 
-    private List<String> getTagNames(Class<? extends Annotation> annotationType) {
-        List<Tag> tags = getTags(annotationType);
-        List<String> tagNames = Lists.newArrayList();
-        for (Tag tag : tags) {
-            tagNames.add(tag.toIdString());
-        }
-        return tagNames;
+    private List<String> getNamesOfParentTags(Class<? extends Annotation> annotationType) {
+        return getTagAnnotationsOn(annotationType)
+            .flatMap(resolvedTags -> resolvedTags.getDeclaredTags().stream())
+            .map(Tag::toIdString)
+            .collect(Collectors.toList());
     }
 
-    private List<Tag> getTags(Class<? extends Annotation> annotationType) {
-        List<Tag> allTags = Lists.newArrayList();
+    private List<Tag> getAllAncestorTags(Class<? extends Annotation> annotationType) {
+        return getTagAnnotationsOn(annotationType)
+            .flatMap(resolvedTags -> resolvedTags.resolvedTags.stream())
+            .flatMap(tag -> {
+                Stream<Tag> tagStream = Stream.of(tag.tag);
+                return Stream.concat(tagStream, tag.ancestors.stream());
+            })
+            .collect(Collectors.toList());
+    }
 
-        for (Annotation annotation : annotationType.getAnnotations()) {
-            if (annotation.annotationType().isAnnotationPresent(IsTag.class)) {
-                allTags.addAll(toTags(annotation).resolvedTags.stream()
-                    .flatMap(tag -> {
-                        Stream<Tag> tagStream = Stream.of(tag.tag);
-                        return Stream.concat(tagStream, tag.parents.stream());
-                    })
-                    .collect(Collectors.toList()));
-            }
-        }
-
-        return allTags;
+    private Stream<ResolvedTags> getTagAnnotationsOn(Class<? extends Annotation> annotationType) {
+        return Arrays.stream(annotationType.getAnnotations())
+            .filter(a -> a.annotationType().isAnnotationPresent(IsTag.class))
+            .map(this::toTags);
     }
 
     private List<String> toStringList(Object[] value) {

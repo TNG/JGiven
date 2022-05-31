@@ -504,7 +504,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         if (reportModel != null) {
             this.reportModel.addTags(tags.getDeclaredTags());
             //The report model needs to declare the parent tags in a tag map, or the tags cannot be displayed.
-            this.reportModel.addTags(tags.getParents());
+            this.reportModel.addTags(tags.getAncestors());
         }
 
         if (scenarioModel != null) {
