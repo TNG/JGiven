@@ -31,8 +31,6 @@ jobs:
         run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/spock/build.gradle 1.1-t
       - name: Test Spring-Boot Example Project
         run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/spring-boot/build.gradle 1.1-t
-      - name: Test TestNG Example Project
-        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/testng/build.gradle 1.1-t
       - name: Test Maven Example Project
         run: source scripts/source_files/helper_functions.sh && runMavenTestOnGivenProject example-projects/maven/pom.xml 1.1-t
       - name: Upload test results html files
@@ -59,6 +57,8 @@ jobs:
         run: source scripts/local_release_with_version.sh
       - name: Test Java 11 Project
         run: source scripts/source_files/helper_functions.sh && runMavenTestOnGivenProject example-projects/java11/pom.xml 1.1-t
+      - name: Test TestNG Example Project
+        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/testng/build.gradle 1.1-t
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
