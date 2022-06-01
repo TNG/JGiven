@@ -63,7 +63,7 @@ dependencies {
     api "com.google.guava:guava:$guavaAndroidVersion"
     api("net.bytebuddy:byte-buddy-android:$byteBuddyVersion")
     api "junit:junit:$junitVersion"
-    implementation "androidx.appcompat:appcompat:1.4.1"
+    implementation "androidx.appcompat:appcompat:1.4.2"
     implementation('androidx.test:core:1.4.0')
     implementation('androidx.test:rules:1.4.0') {
         exclude group: "junit"
