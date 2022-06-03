@@ -7,7 +7,7 @@ function update_version(){
   local target_file="$2"
   local version_property="version"
   local version_matcher="${version_property}=.*"
-  if grep -E "${version_matcher}" "${target_file}" ;then
+  if grep -E "${version_matcher}" "${target_file}">/dev/null ;then
     sed -i -e "s/${version_matcher}/${version_property}=${target_version}/" "${target_file}" || return 12
   else
     printf "Could not find version property to replace in file %s\n" "${target_file}"
@@ -22,7 +22,7 @@ function update_maven_version() {
   local target_file="$2"
   local version_property="jgiven.version"
   local version_matcher="<${version_property}>.*<\/${version_property}>"
-  if grep -E "${version_matcher}" "${target_file}" ;then
+  if grep -E -q "${version_matcher}" "${target_file}" ;then
     sed -i -e "s/${version_matcher}/<${version_property}>${target_version}<\/${version_property}>/" "${target_file}" || return 12
   else
     printf "Could not find version property to replace in file %s\n" "${target_file}"
@@ -38,7 +38,7 @@ function update_scala_version() {
   local target_file="$2"
   local version_property="jgivenVersion"
   local version_matcher="${version_property} = .*"
-  if grep -E "${version_matcher}" "${target_file}" ;then
+  if grep -E "${version_matcher}" "${target_file}" >/dev/null ;then
     sed -i -e "s/${version_matcher}/${version_property} = \"${target_version}\"/" "${target_file}" || return 22
   else
     printf "Could not find version property to replace in file %s\n" "${target_file}"
@@ -51,7 +51,7 @@ function updateAllVersionInformation() {
   [ $# -eq 1 ] || return 31
   local VERSION="$1"
 
-  echo Updating version in gradle.properties...
+  printf "Updating version in gradle.properties..."
   for file in "gradle.properties" \
   "example-projects/junit5/gradle.properties" \
   "example-projects/spock/gradle.properties" \
@@ -63,12 +63,17 @@ function updateAllVersionInformation() {
   do
     update_version "${VERSION}" "${file}" || exit $?
   done
+  printf "Done.\n"
 
+  printf "Updating version in scala files..."
   update_scala_version "${VERSION}" "example-projects/scala/build.sbt" || exit $?
+  printf "Done.\n"
 
+  printf "Updating version in maven files..."
   for file in "example-projects/java11/pom.xml" "example-projects/maven/pom.xml"; do
     update_maven_version "${VERSION}" "${file}"
   done
+  printf "Done.\n"
 }
 
 function runGradleTestOnGivenProject() {

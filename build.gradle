@@ -58,8 +58,6 @@ subprojects {
         junitDataproviderVersion = '1.13.1'
         // set default junit version if not set via command line
         junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.13.2'
-        junit5Version = '5.8.2'
-        junit5PlatformRunnerVersion = '1.8.2'
         junitParamsVersion = '1.1.1'
         testngVersion = '7.5'
         assertjVersion = '3.22.0'
@@ -69,7 +67,7 @@ subprojects {
         gsonVersion = '2.8.8'
         guavaVersion = '30.1.1-jre'
         guavaAndroidVersion = '28.1-android'
-        springVersion = '5.3.9'
+        springVersion = '5.3.19'
         jacocoVersion = '0.8.5'
         quickcheckVersion = '0.6'
         hsqldbVersion = '2.3.2'

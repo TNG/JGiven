@@ -40,11 +40,10 @@ test_update_version_replaces_version_in_pom(){
 
 test_update_version_fails_if_property_not_in_file() {
   local test_file="properties.tmp"
-  trap "rm -f '${test_file}';exit" SIGTERM SIGINT
+  trap "rm -f '${test_file}';exit" SIGTERM SIGINT EXIT
   echo 'venison=0.x' > "${test_file}"
   update_version '1.0' "${test_file}"
   local output_variable=$?
-  rm -f "${test_file}"
   return $( [ ${output_variable} -ge 1 ]; echo $?)
 }
 

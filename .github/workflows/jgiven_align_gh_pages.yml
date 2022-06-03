@@ -1,0 +1,18 @@
+name: Align gh-pages branch
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    name: Rebase gh-pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Checkout gh-pages
+        run:  git checkout -f gh-pages
+      - name: Rebase on master
+        run:  git rebase origin/master
+      - name: Replace version on origin
+        run:  git push --force-with-lease

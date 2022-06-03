@@ -26,7 +26,6 @@ compileJava {
 }
 
 ext {
-    junit5Version = '5.8.2'
     jgivenVersion = version
 }
 
@@ -40,8 +39,8 @@ repositories {
 
 dependencies {
     testImplementation "com.tngtech.jgiven:jgiven-junit5:${jgivenVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit5Version}"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junit5Version}"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
 test {

@@ -9,11 +9,11 @@ dependencies {
     api project(':jgiven-junit5')
     compileOnly "org.springframework:spring-context:$springVersion"
     compileOnly "org.springframework:spring-test:$springVersion"
-    compileOnly "org.junit.jupiter:junit-jupiter-api:$junit5Version"
+    compileOnly 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation project(':jgiven-html5-report')
-    testImplementation "org.junit.jupiter:junit-jupiter-engine:$junit5Version"
-    testImplementation "org.junit.platform:junit-platform-runner:$junit5PlatformRunnerVersion"
-    testImplementation "org.junit.jupiter:junit-jupiter-params:$junit5Version"
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.junit.platform:junit-platform-runner:1.8.2'
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.8.2"
     testImplementation "org.springframework:spring-tx:$springVersion"
     testImplementation "org.springframework:spring-context:$springVersion"
     testImplementation "org.springframework:spring-test:$springVersion"
