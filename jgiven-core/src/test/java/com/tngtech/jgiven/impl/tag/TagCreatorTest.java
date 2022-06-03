@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,7 +30,7 @@ public class TagCreatorTest {
     @Test
     public void testAnnotationParsing() {
         Tag tag = getOnlyTagFor(AnnotationTestClass.class.getAnnotations()[0]);
-        assertThat(tag.getName()).isEqualTo("AnnotationWithoutValue");
+        assertThat(tag.getName()).isEqualTo(AnnotationWithoutValue.class.getSimpleName());
         assertThat(tag.getValues()).isEmpty();
         assertThat(interceptor.containsLoggingEvent(record -> record.getLevel() == Level.SEVERE))
             .as("Attempt to convert an annotation without value method results in an error log")
@@ -39,7 +40,7 @@ public class TagCreatorTest {
     @Test
     public void testAnnotationWithValueParsing() {
         Tag tag = getOnlyTagFor(AnnotationWithSingleValueTestClass.class.getAnnotations()[0]);
-        assertThat(tag.getName()).isEqualTo("AnnotationWithSingleValue");
+        assertThat(tag.getName()).isEqualTo(AnnotationWithSingleValue.class.getSimpleName());
         assertThat(tag.getValues()).containsExactly("testvalue");
     }
 
@@ -54,7 +55,7 @@ public class TagCreatorTest {
     @Test
     public void testAnnotationWithIgnoredValueParsing() {
         Tag tag = getOnlyTagFor(AnnotationWithIgnoredValueTestClass.class.getAnnotations()[0]);
-        assertThat(tag.getName()).isEqualTo("AnnotationWithIgnoredValue");
+        assertThat(tag.getName()).isEqualTo(AnnotationWithIgnoredValue.class.getSimpleName());
         assertThat(tag.getValues()).isEmpty();
         assertThat(tag.toIdString()).isEqualTo(AnnotationWithIgnoredValue.class.getName());
     }
@@ -62,7 +63,7 @@ public class TagCreatorTest {
     @Test
     public void testAnnotationWithoutExplodedArrayParsing() {
         Tag tag = getOnlyTagFor(AnnotationWithoutExplodedArrayValueTestClass.class.getAnnotations()[0]);
-        assertThat(tag.getName()).isEqualTo("AnnotationWithoutExplodedArray");
+        assertThat(tag.getName()).isEqualTo(AnnotationWithoutExplodedArray.class.getSimpleName());
         assertThat(tag.getValues()).containsExactly("foo", "bar");
     }
 
@@ -85,7 +86,7 @@ public class TagCreatorTest {
         Tag tag = getOnlyTagFor(AnnotationWithParentTag.class.getAnnotations()[0]);
         assertThat(tag.getTags()).containsAll(Arrays.asList(
             ParentTag.class.getName(),
-            ParentTagWithValue.class.getPackage().getName() + ".ParentTagWithValue-SomeValue")
+            ParentTagWithValue.class.getName() + "-SomeValue")
         );
     }
 
@@ -102,13 +103,35 @@ public class TagCreatorTest {
 
     @Test
     public void testAllParentsOfTagAreResolved() {
+        String[] expectedNames = Stream.of(TagWithParentTags.class, ParentTag.class, ParentTagWithValue.class)
+            .map(Class::getSimpleName).toArray(String[]::new);
+
         ResolvedTags resolvedTags = underTest.toTags(TagWithGrandparentTags.class);
-        assertThat(resolvedTags.getDeclaredTags())
-            .extracting(Tag::getName)
-            .containsExactly("TagWithGrandparentTags");
-        assertThat(resolvedTags.getParents())
-            .extracting(Tag::getName)
-            .containsExactlyInAnyOrder("TagWithParentTags", "ParentTag", "ParentTagWithValue");
+
+        assertThat(resolvedTags.getAncestors()).extracting(Tag::getName).containsExactlyInAnyOrder(expectedNames);
+        assertThat(resolvedTags.getDeclaredTags()).extracting(Tag::getName)
+            .containsExactly(TagWithGrandparentTags.class.getSimpleName());
+    }
+
+    @Test
+    public void testTagConfigurationOnlyRefersToTheTagsSingleParent() {
+        ResolvedTags resolvedTags = underTest.toTags(TagWithGrandparentTags.class);
+        assertThat(resolveParentNames(resolvedTags)).containsExactly(TagWithParentTags.class.getName());
+    }
+
+    @Test
+    public void testTagConfigurationRefersToBothParentTags() {
+        ResolvedTags resolvedTags = underTest.toTags(TagWithParentTags.class);
+        assertThat(resolveParentNames(resolvedTags)).containsExactlyInAnyOrder(
+            ParentTag.class.getName(),
+            ParentTagWithValue.class.getName() + "-SomeValue"
+        );
+    }
+
+    private Stream<String> resolveParentNames(ResolvedTags resolvedTags) {
+        return resolvedTags.getDeclaredTags().stream()
+            .map(Tag::getTags)
+            .flatMap(List::stream);
     }
 
     private Tag getOnlyTagFor(Annotation annotation) {
