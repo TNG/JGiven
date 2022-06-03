@@ -131,7 +131,11 @@ class AnnotationWithDescriptionAndIgnoreValue {
 @interface TagWithGrandparentTags {
 }
 
+
+
 @SuppressWarnings("checkstyle:OneTopLevelClass")
 @TagWithParentTags
 class AnnotationWithParentTag {
 }
+
+
