@@ -1,11 +1,21 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.tngtech.jgiven:jgiven-gradle-plugin:${version}"
+    }
+}
+
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.6.21"
-    id "com.tngtech.jgiven.gradle-plugin" version "${version}"
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
+apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 compileJava {
     sourceCompatibility = 1.8

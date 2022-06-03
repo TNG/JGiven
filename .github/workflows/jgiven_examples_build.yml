@@ -16,10 +16,6 @@ jobs:
         uses: android-actions/setup-android@v2
       - name: Grant execute permission for bash script
         run: chmod +x scripts/local_release_with_version.sh
-      - name: Hardcode gradle plugin version in kotlin example project
-        run: >
-           source scripts/source_files/helper_functions.sh
-           && hardcodeCurrentPublicVersionForGradlePlugin example-projects/kotlin/build.gradle example-projects/kotlin/gradle.properties
       - name: Produce a local release with version 1.1-t
         run: source scripts/local_release_with_version.sh
       - name: Test Kotlin Example Project
@@ -27,20 +23,32 @@ jobs:
           source scripts/source_files/helper_functions.sh
           && runGradleTestOnGivenProject example-projects/kotlin/build.gradle 1.1-t
       - name: Test JUnit5 Example Project
-        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/junit5/build.gradle 1.1-t
+        run: >
+          source scripts/source_files/helper_functions.sh
+          && runGradleTestOnGivenProject example-projects/junit5/build.gradle 1.1-t
       - uses: olafurpg/setup-scala@v13
       - name: Test Scala Example Project
         run: source scripts/source_files/helper_functions.sh && runScalaTest
       - name: Test Selenium Example Project
-        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/selenium/build.gradle 1.1-t
+        run: >
+          source scripts/source_files/helper_functions.sh
+          && runGradleTestOnGivenProject example-projects/selenium/build.gradle 1.1-t
       - name: Test Spock Example Project
-        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/spock/build.gradle 1.1-t
+        run: >
+          source scripts/source_files/helper_functions.sh
+          && runGradleTestOnGivenProject example-projects/spock/build.gradle 1.1-t
       - name: Test Spring-Boot Example Project
-        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/spring-boot/build.gradle 1.1-t
+        run: >
+          source scripts/source_files/helper_functions.sh
+          && runGradleTestOnGivenProject example-projects/spring-boot/build.gradle 1.1-t
       - name: Test TestNG Example Project
-        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/testng/build.gradle 1.1-t
+        run: >
+          source scripts/source_files/helper_functions.sh
+          && runGradleTestOnGivenProject example-projects/testng/build.gradle 1.1-t
       - name: Test Maven Example Project
-        run: source scripts/source_files/helper_functions.sh && runMavenTestOnGivenProject example-projects/maven/pom.xml 1.1-t
+        run: >
+          source scripts/source_files/helper_functions.sh
+          && runMavenTestOnGivenProject example-projects/maven/pom.xml 1.1-t
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}

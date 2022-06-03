@@ -105,13 +105,3 @@ function runMavenTestOnGivenProject() {
 
     mvn -U -f $givenProject clean test -Djgiven.version=$VERSION
 }
-
-function hardcodeCurrentPublicVersionForGradlePlugin(){
-  [ $# -eq 2 ] || return 71
-  local build_file="$1"
-  local version_information="$2"
-  local version=$(grep -E "version\s*=\s*([0-9.]+)" "${version_information}"| grep -oE "([0-9.]+)")
-  local source_expression='id "com.tngtech.jgiven.gradle-plugin" version "${version}"'
-  local replacement='id "com.tngtech.jgiven.gradle-plugin" version "'"${version}"'"'
-  sed -i  "s/${source_expression}/${replacement}/"  "${build_file}"
-}
