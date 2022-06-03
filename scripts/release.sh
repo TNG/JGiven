@@ -43,8 +43,7 @@ updateAllVersionInformation $VERSION
 
 if [ -n "$(git status --porcelain)" ]; then
     echo Commiting version change
-    git add gradle.properties
-    git commit -m "Update version to $VERSION"
+    git commit -a -m "Update version to $VERSION"
 fi
 
 echo Building, Testing, and Uploading Archives...
