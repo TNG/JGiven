@@ -1,3 +1,6 @@
+# v1.2.2
+##Fixed issues
+* Fixed issue where tags listed all of their ancestors as direct parents [#868](https://github.com/TNG/JGiven/issues/868) (thanks to jadhindieh for reporting)
 # v1.2.1
 ##New features
  * JGiven-JUnit5 now reports its test outcomes back to JUnit5 before the `@After` methods, not after them. This should make it easier to run extensions like ReportPortal alongside JUnit5.
