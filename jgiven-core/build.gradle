@@ -6,7 +6,7 @@ description = "JGiven core module"
 
 dependencies {
     api "com.google.guava:guava:$guavaVersion"
-    api "com.google.code.gson:gson:$gsonVersion"
+    api 'com.google.code.gson:gson:2.9.0'
     implementation "com.thoughtworks.paranamer:paranamer:$paranamerVersion"
     implementation "net.bytebuddy:byte-buddy:$byteBuddyVersion"
     implementation "org.fusesource.jansi:jansi:$jansiVersion"
