@@ -60,7 +60,7 @@ configurations.all {
 }
 
 dependencies {
-    api 'com.google.guava:guava:28.1-android'
+    api 'com.google.guava:guava:28.2-jre'
     api("net.bytebuddy:byte-buddy-android:$byteBuddyVersion")
     api "junit:junit:$junitVersion"
     implementation "androidx.appcompat:appcompat:1.4.2"
