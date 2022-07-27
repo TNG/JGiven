@@ -6,8 +6,8 @@ dependencies {
     implementation project(':jgiven-junit5')
     implementation project(':jgiven-html5-report')
     implementation "junit:junit:$junitVersion"
-    implementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
-    implementation "org.junit.jupiter:junit-jupiter-engine:5.8.2"
+    implementation "org.junit.jupiter:junit-jupiter-api:5.9.0"
+    implementation "org.junit.jupiter:junit-jupiter-engine:5.9.0"
     implementation "org.junit.platform:junit-platform-runner:1.9.0"
     implementation "org.testng:testng:$testngVersion"
     implementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
