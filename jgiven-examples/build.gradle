@@ -6,7 +6,7 @@ dependencies {
     testImplementation project(':jgiven-tests')
     testImplementation project(':jgiven-html5-report')
     testImplementation project(':jgiven-testng')
-    testImplementation "org.seleniumhq.selenium:htmlunit-driver:3.62.0"
+    testImplementation "org.seleniumhq.selenium:htmlunit-driver:3.63.0"
     testImplementation "org.springframework:spring-context:$springVersion"
     testImplementation "org.springframework:spring-test:$springVersion"
     testImplementation "pl.pragmatists:JUnitParams:$junitParamsVersion"
