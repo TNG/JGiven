@@ -234,6 +234,9 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
         ZipEntry entry;
         while( ( entry = zipInputStream.getNextEntry() ) != null ) {
             File file = new File( toDir, entry.getName() );
+            if(!file.toPath().normalize().startsWith(toDir.toPath().normalize())) {
+                throw new RuntimeException("Bad zip entry");
+            }
 
             if( entry.isDirectory() ) {
                 if( !file.exists() ) {
