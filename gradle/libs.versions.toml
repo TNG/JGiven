@@ -1,0 +1,35 @@
+[versions]
+aspectj-version = "1.9.9.1"
+byteBuddy-version = "1.12.8"
+junit4-version = "4.13.2"
+slf4j-version = "1.7.35"
+spring-version = "5.3.19"
+
+[libraries]
+assertj = { module = "org.assertj:assertj-core", version = "3.22.0" }
+aspectj-jrt = { module = "org.aspectj:aspectjrt", version.ref = "aspectj-version" }
+aspectj-jweaver = { module = "org.aspectj:aspectjweaver", version.ref = "aspectj-version" }
+byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy-version" }
+byteBuddy-agent = { module = "net.bytebuddy:byte-buddy-agent", version.ref = "byteBuddy-version" }
+hypersql-database = { module = "org.hsqldb:hsqldb", version = "2.3.2" }
+junit-bom = { module = "org.junit:junit-bom", version = "5.9.0" }
+junit4 = { module = "junit:junit", version.ref = "junit4-version" }
+junit4-dataprovider = { module = "com.tngtech.java:junit-dataprovider", version = "1.13.1" }
+junit4-params = { module = "pl.pragmatists:JUnitParams", version = "1.1.1" }
+quickcheck = { module = "net.java.quickcheck:quickcheck", version = "0.6" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-version" }
+slf4j-java-util-logging = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j-version" }
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring-version" }
+spring-test = { module = "org.springframework:spring-test", version.ref = "spring-version" }
+spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring-version" }
+spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring-version" }
+testng = { module = "org.testng:testng", version="7.5" }
+
+[bundles]
+junit4 = [ "junit4", "junit4-dataprovider", "junit4-params" ]
+spring-test = [ "spring-context", "spring-test", "spring-tx", "spring-jdbc" ]
+spring-compile = [ "spring-context", "spring-test" ]
+aspectj-spring-test = [ "aspectj-jrt", "aspectj-jweaver" ]
+
+[plugins]
+byteBuddy-plugin = { id = "net.bytebuddy:byte-buddy-gradle-plugin", version.ref = "byteBuddy-version" }

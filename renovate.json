@@ -4,6 +4,7 @@
     "group:springBoot",
     "group:springCore"
   ],
+  "enabledManagers": [ "gradle", "maven", "github-actions" ],
   "ignorePaths": [
     "**/example-projects/scala/**"
   ],

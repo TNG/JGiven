@@ -61,8 +61,8 @@ configurations.all {
 
 dependencies {
     api 'com.google.guava:guava:31.1-jre'
-    api("net.bytebuddy:byte-buddy-android:$byteBuddyVersion")
-    api "junit:junit:$junitVersion"
+    api("net.bytebuddy:byte-buddy-android:${libs.versions.byteBuddy.version.get()}")
+    api junitVariableVersionLibs.junit4
     implementation "androidx.appcompat:appcompat:1.5.1"
     implementation('androidx.test:core:1.4.0')
     implementation('androidx.test:rules:1.4.0') {

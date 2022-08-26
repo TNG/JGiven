@@ -7,10 +7,9 @@ dependencies {
     testImplementation project(':jgiven-html5-report')
     testImplementation project(':jgiven-testng')
     testImplementation "org.seleniumhq.selenium:htmlunit-driver:3.64.0"
-    testImplementation "org.springframework:spring-context:$springVersion"
-    testImplementation "org.springframework:spring-test:$springVersion"
-    testImplementation "pl.pragmatists:JUnitParams:$junitParamsVersion"
-    testImplementation "org.testng:testng:$testngVersion"
+    testImplementation libs.bundles.spring.compile
+    testImplementation junitVariableVersionLibs.junit4.params
+    testImplementation libs.testng
 }
 
 test.finalizedBy jgivenHtml5Report

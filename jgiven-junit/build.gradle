@@ -6,11 +6,10 @@ description = "Module for writing JGiven tests with JUnit"
 
 dependencies {
     api project(':jgiven-core')
-    compileOnly "junit:junit:$junitVersion"
+    compileOnly junitVariableVersionLibs.junit4
     implementation project(':jgiven-html5-report')
 
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "pl.pragmatists:JUnitParams:$junitParamsVersion"
+    testImplementation libs.bundles.junit4
     testImplementation "com.googlecode.junit-toolbox:junit-toolbox:2.4"
     testImplementation "org.mockito:mockito-core:4.8.0"
 }
