@@ -1,3 +1,6 @@
+# v1.2.3
+##Fixed issues
+* Fixed build error when JGiven is used in conjuntion with openapi. [#947](https://github.com/TNG/JGiven/issues/947)
 # v1.2.2
 ##Fixed issues
 * Fixed issue where tags listed all of their ancestors as direct parents [#868](https://github.com/TNG/JGiven/issues/868) (thanks to jadhindieh for reporting)
