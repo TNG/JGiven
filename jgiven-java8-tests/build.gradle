@@ -4,7 +4,7 @@ dependencies {
     implementation project(':jgiven-junit')
     implementation project(':jgiven-html5-report')
 
-    testImplementation "junit:junit:$junitVersion"
+    testImplementation 'junit:junit'
 }
 
 test.finalizedBy jgivenHtml5Report

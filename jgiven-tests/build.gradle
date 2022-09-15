@@ -5,14 +5,14 @@ dependencies {
     implementation project(':jgiven-testng')
     implementation project(':jgiven-junit5')
     implementation project(':jgiven-html5-report')
-    implementation "junit:junit:$junitVersion"
-    implementation "org.junit.jupiter:junit-jupiter-api:5.9.0"
-    implementation "org.junit.jupiter:junit-jupiter-engine:5.9.0"
-    implementation "org.junit.platform:junit-platform-runner:1.9.0"
-    implementation "org.testng:testng:$testngVersion"
-    implementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
+    implementation libs.bundles.junit4
+    implementation platform(libs.junit.bom)
+    implementation 'org.junit.jupiter:junit-jupiter-api'
+    implementation 'org.junit.jupiter:junit-jupiter-engine'
+    implementation 'org.junit.platform:junit-platform-runner'
+    implementation libs.testng
     implementation 'com.beust:jcommander:1.82'
-    implementation "org.assertj:assertj-core:$assertjVersion"
+    implementation libs.assertj
 
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.4.0'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.3.0'

@@ -8,16 +8,28 @@ pluginManagement {
         gradlePluginPortal()
         google()
         maven {
-           url "https://oss.sonatype.org/content/repositories/snapshots/"
+            url "https://oss.sonatype.org/content/repositories/snapshots/"
         }
         maven {
-           url "https://oss.sonatype.org/content/repositories/staging/"
+            url "https://oss.sonatype.org/content/repositories/staging/"
         }
     }
 }
 
 plugins {
     id 'com.gradle.enterprise' version '3.11.1'
+}
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        junitVariableVersionLibs {
+            from(files('gradle/libs.versions.toml'))
+            def junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : null
+            if (junitVersion != null) {
+                version("junit4-version", junitVersion)
+            }
+        }
+    }
 }
 
 gradleEnterprise {
@@ -54,7 +66,7 @@ if (timingEnabled) {
 
 def release = System.env.RELEASE == "true"
 def android = System.env.ANDROID == "true"
-boolean hasAndroidSourcePath = ( System.env.ANDROID_SDK_ROOT )
+boolean hasAndroidSourcePath = (System.env.ANDROID_SDK_ROOT)
 
 if (JavaVersion.current().isJava9Compatible()) {
     include ':jgiven-java9-tests'

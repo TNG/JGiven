@@ -8,6 +8,8 @@ plugins {
     id 'com.github.node-gradle.node' version '3.4.0' apply false
 }
 
+
+
 apply plugin: 'project-report'
 
 description = 'JGiven - BDD in plain Java'
@@ -45,6 +47,7 @@ asciidoctor {
     attributes 'version': version
 }
 
+
 nexusStaging {
     stagingProfileId = stagingProfileId // stagingProfileId must be defined externally
     packageGroup = 'com.tngtech'
@@ -55,23 +58,10 @@ nexusStaging {
 
 subprojects {
     ext {
-        junitDataproviderVersion = '1.13.1'
-        // set default junit version if not set via command line
-        junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : '4.13.2'
-        junitParamsVersion = '1.1.1'
-        testngVersion = '7.5'
-        assertjVersion = '3.22.0'
-        slf4jVersion = '1.7.35'
-        paranamerVersion = '2.8'
-        jansiVersion = '1.18'
-        springVersion = '5.3.19'
-        jacocoVersion = '0.8.5'
-        quickcheckVersion = '0.6'
-        hsqldbVersion = '2.3.2'
-        byteBuddyVersion = '1.12.8'
         androidCompileSdkVersion = 32
         androidMinSdkVersion = 29
         androidTargetSdkVersion = 32
+
 
         publishVariant = { String variant ->
             publishing {
@@ -149,13 +139,12 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     sourceCompatibility = targetCompatibility = 1.8
 
     dependencies {
-        implementation "org.slf4j:slf4j-api:$slf4jVersion"
+        implementation libs.slf4j.api
 
-        testImplementation "org.slf4j:slf4j-jdk14:$slf4jVersion"
-        testImplementation "junit:junit:$junitVersion"
-        testImplementation "org.assertj:assertj-core:$assertjVersion"
-        testImplementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"
-        testImplementation "net.java.quickcheck:quickcheck:$quickcheckVersion"
+        testImplementation libs.bundles.junit4
+        testImplementation libs.slf4j.java.util.logging
+        testImplementation libs.assertj
+        testImplementation libs.quickcheck
     }
 
     if (timingEnabled) {
