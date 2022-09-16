@@ -2,7 +2,7 @@
 aspectj-version = "1.9.9.1"
 byteBuddy-version = "1.12.16"
 junit4-version = "4.13.2"
-slf4j-version = "1.7.35"
+slf4j-version = "1.7.36"
 spring-version = "5.3.19"
 
 [libraries]
