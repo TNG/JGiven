@@ -10,11 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: get all git data
-        run: git fetch
-      - name: Checkout gh-pages
-        run:  git checkout -f gh-pages
+        with:
+          fetch-depth: '0' #fetch all history
+          ref: 'gh-pages'
+      - name: Configure git user
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
       - name: Rebase on master
         run:  git rebase origin/master
       - name: Replace version on origin
-        run:  git push --force-with-lease
+        run: git push --force-with-lease
