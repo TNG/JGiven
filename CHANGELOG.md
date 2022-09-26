@@ -1,6 +1,7 @@
 # v1.2.3
 ## Fixed issues
 * Fixed build error when JGiven is used in conjuntion with openapi. [#947](https://github.com/TNG/JGiven/issues/947) (thanks to manoj-fd for reporting)
+* Improved robustness of the html-apps zip file processing. [#929] (https://github.com/TNG/JGiven/pull/929) (thanks to JLLeitschuh)
 
 # v1.2.2
 ## Fixed issues
