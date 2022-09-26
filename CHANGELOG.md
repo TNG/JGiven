@@ -1,13 +1,15 @@
 # v1.2.3
-##Fixed issues
-* Fixed build error when JGiven is used in conjuntion with openapi. [#947](https://github.com/TNG/JGiven/issues/947)
+## Fixed issues
+* Fixed build error when JGiven is used in conjuntion with openapi. [#947](https://github.com/TNG/JGiven/issues/947) (thanks to manoj-fd for reporting)
+
 # v1.2.2
-##Fixed issues
+## Fixed issues
 * Fixed issue where tags listed all of their ancestors as direct parents [#868](https://github.com/TNG/JGiven/issues/868) (thanks to jadhindieh for reporting)
+
 # v1.2.1
-##New features
+## New features
  * JGiven-JUnit5 now reports its test outcomes back to JUnit5 before the `@After` methods, not after them. This should make it easier to run extensions like ReportPortal alongside JUnit5.
-##Fixed issues
+## Fixed issues
  * The `@Tag` annotation configuration can now be set differently from the JGiven defaults. [#806](https://github.com/TNG/JGiven/issues/806) (thanks to sebphil)
  * JGiven no longer prints errors while scanning annotations that are not tags. [#821](https://github.com/TNG/JGiven/issues/821)
  * Fixed issue where parents of tags where not declared in the tag list, making the JGiven app unusable. [#868](https://github.com/TNG/JGiven/issues/868) (thanks to jadhindieh for reporting)
@@ -15,7 +17,7 @@
  * JGiven now openly reports incompatability to the JUnit5 per-class lifecyle[#829](https://github.com/TNG/JGiven/issues/829)
  * Fixed issue where aggregation of reports would lead to an exception when running in parallel with JUnit5.[#829](https://github.com/TNG/JGiven/issues/829)
  * The JGiven maven plugin did not declare itsself as thread-safe, even though it conceptually is. [#829](https://github.com/TNG/JGiven/issues/829) (thanks to Hatzen for pointing it out and fixing it.)
-##Backward incompatible changes
+## Backward incompatible changes
  * Removed explicit support for PowerMock in JGiven-JUnit4 package, because the powermock project appears to be abandoned.
 
 # v1.2
