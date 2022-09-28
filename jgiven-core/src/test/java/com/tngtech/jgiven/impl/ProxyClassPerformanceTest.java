@@ -50,8 +50,8 @@ public class ProxyClassPerformanceTest {
     private double average(List<Long> data) {
         return data.stream()
             .mapToDouble(Double::valueOf)
-            .reduce((currentAverage, dataPoint) -> currentAverage + dataPoint / data.size())
-            .orElse(0.0);
+            .map(dataPoint -> dataPoint / data.size())
+            .sum();
     }
 
     private long calculateMemoryUsageRoundedDownToMebibytes() {
