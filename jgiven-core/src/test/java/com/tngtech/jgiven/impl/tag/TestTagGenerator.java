@@ -18,7 +18,6 @@ class TestTagGenerator implements Iterator<ResolvedTag> {
     @Override
     public ResolvedTag next() {
         count++;
-        System.out.println("Generating Tag No. " + count);
         return new ResolvedTag(
             new Tag("tag" + count),
             Collections.singletonList(new Tag("parent" + count))
