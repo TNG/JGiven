@@ -47,7 +47,7 @@ final class Stages {
     }
 
     private static void logState(Stage<?> stage, ThreadLocal<?> stageState) {
-        LoggerFactory.getLogger(stage.getClass()).info("Object {} on thread {} with state {} and thread local value {}",
+        LoggerFactory.getLogger(stage.getClass()).trace("Object {} on thread {} with state {} and thread local value {}",
             stage, Thread.currentThread().getId(), stageState, stageState.get());
     }
 
