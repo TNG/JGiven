@@ -21,28 +21,25 @@ task generatePom(type: Copy, dependsOn: copyClasses) {
     }
 }
 
-task generateMavenPlugin(type: CrossPlatformExec, dependsOn: generatePom){
+Set<Task> findPublishTask(String projectName){
+    project.rootProject.findProject(projectName).getTasks().findAll {it instanceof PublishToMavenLocal}
+}
+
+task generateMavenPlugin(type: CrossPlatformExec, dependsOn: [generatePom, findPublishTask("jgiven-core"), findPublishTask("jgiven-html5-report")]){
     // currenlty it seems to be the more or less only clean solution
     // to generate a plugin.xml file to use maven directly
     // if anyone has a better solution please let us know!
     buildCommand 'mvn', '-nsu', '-U', '-f', 'build/maven/pom.xml', 'plugin:descriptor'
 }
 
-Set<Task> findPublishTask(String projectName){
-    rootProject.findProject(projectName).getTasks().findAll {it instanceof PublishToMavenLocal}
-}
-
 generateMavenPlugin.onlyIf {
    // as the generateMavenPlugin task requires mvn, it is only executed
    // when actually uploading the archives
    // that way the standard build stays maven-free
-    boolean shallGeneratePlugin = gradle.taskGraph.getAllTasks().any{it instanceof AbstractPublishToMaven}
-    if(shallGeneratePlugin){
-       generateMavenPlugin.dependsOn += findPublishTask("jgiven-core")
-       generateMavenPlugin.dependsOn += findPublishTask("jgiven-html5-report")
-    }
-    return shallGeneratePlugin
-
+   gradle.taskGraph.getAllTasks()
+           .findAll{task -> !findPublishTask("jgiven-core").contains(task)}
+           .findAll{ task -> !findPublishTask("jgiven-html5-report").contains(task) }
+           .any{it instanceof AbstractPublishToMaven}
 }
 
 task copyMavenPlugin(type: Copy, dependsOn: generateMavenPlugin) {
