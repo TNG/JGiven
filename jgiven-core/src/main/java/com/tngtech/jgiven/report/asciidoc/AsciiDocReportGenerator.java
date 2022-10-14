@@ -49,10 +49,11 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     private void generateIndexFile() {
         PrintWriter printWriter = PrintWriterUtil.getPrintWriter( new File( config.getTargetDir(), "index.asciidoc" ) );
         try {
-            printWriter.println( "= JGiven Documentation =\n" );
-            printWriter.println( ":toc: left\n" );
+            printWriter.println( "= JGiven Documentation =" );
+            printWriter.println( ":toc: left" );
+            printWriter.println( ":toclevels: 5" );
+            printWriter.println( "" );
             printWriter.println( "== Scenarios ==\n" );
-            printWriter.println( "=== Classes ===\n" );
             printWriter.println( "include::allClasses.asciidoc[]" );
         } finally {
             ResourceUtil.close( printWriter );

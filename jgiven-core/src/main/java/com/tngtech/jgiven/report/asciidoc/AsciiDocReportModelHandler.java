@@ -22,7 +22,7 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
 
     @Override
     public void className(String className) {
-        writer.println("==== " + className + " ====\n");
+        writer.println("=== " + className + " ===\n");
     }
 
     @Override
@@ -43,16 +43,16 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
 
     @Override
     public void scenarioTitle(String title) {
-        writer.println("===== " + WordUtil.capitalize(title) + " =====\n");
+        writer.println("==== " + WordUtil.capitalize(title) + " ====\n");
     }
 
     @Override
     public void caseHeader(int caseNr, List<String> parameterNames, List<String> caseArguments) {
-        writer.print("====== Case " + caseNr + ": ");
+        writer.print("===== Case " + caseNr + ": ");
         for (int i = 0; i < parameterNames.size(); i++) {
             writer.print(parameterNames.get(i) + " = " + caseArguments.get(i));
         }
-        writer.println(" ======\n");
+        writer.println(" =====\n");
     }
 
     @Override
