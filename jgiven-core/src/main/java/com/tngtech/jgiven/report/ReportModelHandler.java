@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.tngtech.jgiven.report.AbstractReportModelHandler.ScenarioDataTable;
 import com.tngtech.jgiven.report.model.DataTable;
+import com.tngtech.jgiven.report.model.ExecutionStatus;
 
 public interface ReportModelHandler {
     void className( String className );
@@ -26,9 +27,11 @@ public interface ReportModelHandler {
      * The title corresponds to the test method name
      * </p>
      *
-     * @param title the title of the scenario
+     * @param title           the title of the scenario
+     * @param executionStatus
+     * @param duration
      */
-    void scenarioTitle( String title );
+    void scenarioTitle(String title, ExecutionStatus executionStatus, Duration duration);
 
     /**
      * Is invoked when a scenario has multiple cases, but no data table.

@@ -4,6 +4,7 @@ import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.AbstractReportModelHandler;
 import com.tngtech.jgiven.report.ReportModelHandler;
 import com.tngtech.jgiven.report.model.DataTable;
+import com.tngtech.jgiven.report.model.ExecutionStatus;
 
 import java.io.PrintWriter;
 import java.time.Duration;
@@ -42,8 +43,10 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     }
 
     @Override
-    public void scenarioTitle(String title) {
-        writer.println("==== " + WordUtil.capitalize(title) + " ====\n");
+    public void scenarioTitle(String title, ExecutionStatus executionStatus, Duration duration) {
+        writer.print("==== " + WordUtil.capitalize(title) + " ");
+        writer.print("[" + executionStatus + "] ");
+        writer.println("(" + duration.getSeconds() + "s "+duration.getNano()/1000000 + "ms) ====\n");
     }
 
     @Override
