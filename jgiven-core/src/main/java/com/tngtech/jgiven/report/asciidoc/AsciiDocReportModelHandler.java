@@ -5,6 +5,7 @@ import com.tngtech.jgiven.report.AbstractReportModelHandler;
 import com.tngtech.jgiven.report.ReportModelHandler;
 import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
+import com.tngtech.jgiven.report.model.StepStatus;
 
 import java.io.PrintWriter;
 import java.time.Duration;
@@ -38,7 +39,7 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
         writer.print(failedScenarios + " Failed, ");
         writer.print(pendingScenarios + " Pending, ");
         writer.print(totalScenarios + " Total ");
-        writer.println("(" + duration.getSeconds() + "s "+duration.getNano()/1000000 + "ms)");
+        writer.println(humanReadableDuration(duration));
         writer.println();
     }
 
@@ -46,7 +47,8 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     public void scenarioTitle(String title, ExecutionStatus executionStatus, Duration duration) {
         writer.print("==== " + WordUtil.capitalize(title) + " ");
         writer.print("[" + executionStatus + "] ");
-        writer.println("(" + duration.getSeconds() + "s "+duration.getNano()/1000000 + "ms) ====\n");
+        String s = humanReadableDuration(duration);
+        writer.println(s + " ====\n");
     }
 
     @Override
@@ -92,9 +94,12 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     }
 
     @Override
-    public void stepEnd(boolean lastWordWasDataTable) {
-        if (!lastWordWasDataTable) {
-            writer.println("+");
+    public void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration) {
+        writer.print("[" + status + "] " + humanReadableDuration(duration));
+        if (lastWordWasDataTable) {
+            writer.println();
+        } else {
+            writer.println(" +");
         }
     }
 
@@ -170,4 +175,8 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
         return "pass:[" + argumentValue + "]";
     }
 
+
+    private static String humanReadableDuration(Duration duration) {
+        return "(" + duration.getSeconds() + "s " + duration.getNano() / 1000000 + "ms)";
+    }
 }

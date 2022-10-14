@@ -6,6 +6,7 @@ import java.util.List;
 import com.tngtech.jgiven.report.AbstractReportModelHandler.ScenarioDataTable;
 import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
+import com.tngtech.jgiven.report.model.StepStatus;
 
 public interface ReportModelHandler {
     void className( String className );
@@ -67,7 +68,7 @@ public interface ReportModelHandler {
     /**
      * Invoked when a step is finished
      */
-    void stepEnd(boolean lastWordWasDataTable);
+    void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration);
 
     /**
      * Invoked for intro words like given, when, then

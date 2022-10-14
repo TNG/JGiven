@@ -111,7 +111,7 @@ public class AbstractReportModelHandler {
                 }
             }
 
-            handler.stepEnd(lastWordWasDataTable);
+            handler.stepEnd(lastWordWasDataTable, stepModel.getStatus(), Duration.ofNanos(stepModel.getDurationInNanos()));
         }
 
         private static class ScenarioDataTableImpl implements ScenarioDataTable {
