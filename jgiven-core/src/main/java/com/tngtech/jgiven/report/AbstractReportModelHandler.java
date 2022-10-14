@@ -70,8 +70,10 @@ public class AbstractReportModelHandler {
             }
 
             handler.stepStart();
+            boolean lastWordWasDataTable = false;
 
             for( Word word : stepModel.getWords() ) {
+                lastWordWasDataTable = false;
                 if( word.isIntroWord() ) {
                     handler.introWord( word.getValue() );
                 } else {
@@ -85,6 +87,7 @@ public class AbstractReportModelHandler {
                         } else {
                             if( word.getArgumentInfo().isDataTable() ) {
                                 handler.stepDataTableArgument( word.getArgumentInfo().getDataTable() );
+                                lastWordWasDataTable = true;
                             } else {
                                 handler.stepArgument( word.getFormattedValue(), word.isDifferent() );
                             }
@@ -95,7 +98,7 @@ public class AbstractReportModelHandler {
                 }
             }
 
-            handler.stepEnd();
+            handler.stepEnd(lastWordWasDataTable);
         }
 
         private static class ScenarioDataTableImpl implements ScenarioDataTable {
@@ -107,7 +110,7 @@ public class AbstractReportModelHandler {
 
             @Override
             public List<String> placeHolders() {
-                List<String> placeHoldersList = new ArrayList<String>( scenarioModel.getDerivedParameters() );
+                List<String> placeHoldersList = new ArrayList<>(scenarioModel.getDerivedParameters());
                 List<ScenarioCaseModel> scenarioCases = scenarioModel.getScenarioCases();
                 if ( !scenarioCases.isEmpty() && scenarioCases.get(0).hasDescription() ){
                     placeHoldersList.add( 0, "Description" );
@@ -144,7 +147,7 @@ public class AbstractReportModelHandler {
 
                 @Override
                 public List<String> arguments() {
-                    List<String> arguments = new ArrayList<String>(caseModel.getDerivedArguments());
+                    List<String> arguments = new ArrayList<>(caseModel.getDerivedArguments());
                     if ( caseModel.hasDescription() ) {
                         arguments.add(0, caseModel.getDescription());
                     }
@@ -168,7 +171,7 @@ public class AbstractReportModelHandler {
         /**
          * Represents one case of a scenario
          */
-        public interface Row {
+        interface Row {
             /**
              * The row number starting from 1
              */

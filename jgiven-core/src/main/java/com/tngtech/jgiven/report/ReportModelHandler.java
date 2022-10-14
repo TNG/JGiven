@@ -61,7 +61,7 @@ public interface ReportModelHandler {
     /**
      * Invoked when a step is finished
      */
-    void stepEnd();
+    void stepEnd(boolean lastWordWasDataTable);
 
     /**
      * Invoked for intro words like given, when, then
