@@ -127,6 +127,10 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     @Override
     public void stepDataTableArgument(DataTable dataTable) {
         List<List<String>> rows = dataTable.getData();
+        if (rows.isEmpty()) {
+           return;
+        }
+
         String colsSpec;
         if (dataTable.hasVerticalHeader()) {
             colsSpec = "h," + generate(() -> "1").limit(dataTable.getColumnCount() - 1).collect(joining(","));
