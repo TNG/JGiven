@@ -6,6 +6,7 @@ import com.tngtech.jgiven.report.ReportModelHandler;
 import com.tngtech.jgiven.report.model.DataTable;
 
 import java.io.PrintWriter;
+import java.time.Duration;
 import java.util.List;
 
 import static java.util.stream.Collectors.joining;
@@ -27,6 +28,16 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     @Override
     public void reportDescription(String description) {
         writer.println(description);
+        writer.println();
+    }
+
+    @Override
+    public void reportSummary(int successfulScenarios, int failedScenarios, int pendingScenarios, int totalScenarios, Duration duration) {
+        writer.print(successfulScenarios + " Successful, ");
+        writer.print(failedScenarios + " Failed, ");
+        writer.print(pendingScenarios + " Pending, ");
+        writer.print(totalScenarios + " Total ");
+        writer.println("(" + duration.getSeconds() + "s "+duration.getNano()/1000000 + "ms)");
         writer.println();
     }
 
@@ -66,7 +77,6 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
             writer.println(" | " + row.status());
         }
         writer.println("|===");
-
     }
 
     @Override
@@ -87,43 +97,50 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
 
     @Override
     public void introWord(String value) {
-        writer.print("*" + value + "* ");
+        writer.print("[.introWord]*" + value + "* ");
     }
 
     @Override
     public void stepArgumentPlaceHolder(String placeHolderValue) {
-        writer.print("*<" + placeHolderValue + ">* ");
+        writer.print("[.stepArgument]*<" + placeHolderValue + ">* ");
     }
 
     @Override
     public void stepCaseArgument(String caseArgumentValue) {
-        writer.print("*" + escapeArgument(caseArgumentValue) + "* ");
+        writer.print("[.stepArgument]*" + escapeArgument(caseArgumentValue) + "* ");
     }
 
     @Override
     public void stepArgument(String argumentValue, boolean differs) {
         if (argumentValue.contains("\n")) {
             writer.println("\n");
+            writer.println("[.stepArgument]");
             writer.println("....");
             writer.println(argumentValue);
             writer.println("....");
             writer.println();
         } else {
-            writer.print(escapeArgument(argumentValue) + " ");
+            writer.print("[.stepArgument]_" + escapeArgument(argumentValue) + "_ ");
         }
     }
 
     @Override
     public void stepDataTableArgument(DataTable dataTable) {
         List<List<String>> rows = dataTable.getData();
-        String colsSpec = generate(() -> "1").limit(dataTable.getColumnCount()).collect(joining(","));
+        String colsSpec;
+        if (dataTable.hasVerticalHeader()) {
+            colsSpec = "h," + generate(() -> "1").limit(dataTable.getColumnCount() - 1).collect(joining(","));
+        } else {
+            colsSpec = generate(() -> "1").limit(dataTable.getColumnCount()).collect(joining(","));
+        }
 
         writer.println();
         if (dataTable.hasHorizontalHeader()) {
-            writer.println("[%header,cols=\"" + colsSpec + "\"]");
+            writer.println("[.stepArgument%header,cols=\"" + colsSpec + "\"]");
         } else {
-            writer.println("[cols=\"" + colsSpec + "\"]");
+            writer.println("[.stepArgument,cols=\"" + colsSpec + "\"]");
         }
+
         writer.println("|===");
         rows.forEach(row -> {
             row.forEach(cell -> writer.println("|" + cell));

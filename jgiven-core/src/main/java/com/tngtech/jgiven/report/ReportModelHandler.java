@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.report;
 
+import java.time.Duration;
 import java.util.List;
 
 import com.tngtech.jgiven.report.AbstractReportModelHandler.ScenarioDataTable;
@@ -16,6 +17,8 @@ public interface ReportModelHandler {
      * @param description the description, is never {@code null}
      */
     void reportDescription( String description );
+
+    void reportSummary(int successfulScenarios, int failedScenarios, int pendingScenarios, int totalScenarios, Duration duration);
 
     /**
      * Is invoked for the title of the scenario.

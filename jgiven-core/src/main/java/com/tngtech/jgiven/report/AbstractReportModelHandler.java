@@ -1,7 +1,9 @@
 package com.tngtech.jgiven.report;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.report.model.*;
@@ -26,10 +28,21 @@ public class AbstractReportModelHandler {
 
         @Override
         public void visit( ReportModel reportModel ) {
-            handler.className( reportModel.getClassName() );
+            Optional<String> maybeName = Optional.ofNullable(reportModel.getName());
+            handler.className(maybeName.filter(name -> !name.isBlank()).orElse(reportModel.getClassName()));
+
             if( reportModel.getDescription() != null ) {
                 handler.reportDescription( reportModel.getDescription() );
             }
+
+            int totalScenarioCount = reportModel.getScenarios().size();
+            int failedScenarioCount = reportModel.getFailedScenarios().size();
+            int pendingScenarioCount = reportModel.getPendingScenarios().size();
+            int successfulScenarioCount = totalScenarioCount - failedScenarioCount - pendingScenarioCount;
+
+            long durationInNanos = reportModel.getScenarios().stream().mapToLong(ScenarioModel::getDurationInNanos).sum();
+
+            handler.reportSummary(successfulScenarioCount, failedScenarioCount, pendingScenarioCount, totalScenarioCount, Duration.ofNanos(durationInNanos));
         }
 
         @Override
