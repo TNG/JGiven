@@ -43,9 +43,13 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     }
 
     @Override
-    public void scenarioTitle(String title, ExecutionStatus executionStatus, Duration duration) {
+    public void scenarioTitle(String title, String extendedDescription, ExecutionStatus executionStatus, Duration duration) {
         writer.println("\n==== " + WordUtil.capitalize(title) + " ====\n");
         writer.println("[" + executionStatus + "] " + humanReadableDuration(duration) + "\n");
+        if (extendedDescription != null && !extendedDescription.isEmpty()) {
+            writer.println(extendedDescription);
+            writer.println();
+        }
     }
 
     @Override

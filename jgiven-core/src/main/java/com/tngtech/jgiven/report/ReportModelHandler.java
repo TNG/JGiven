@@ -28,11 +28,12 @@ public interface ReportModelHandler {
      * The title corresponds to the test method name
      * </p>
      *
-     * @param title           the title of the scenario
+     * @param title               the title of the scenario
+     * @param extendedDescription
      * @param executionStatus
      * @param duration
      */
-    void scenarioTitle(String title, ExecutionStatus executionStatus, Duration duration);
+    void scenarioTitle(String title, String extendedDescription, ExecutionStatus executionStatus, Duration duration);
 
     /**
      * Is invoked when a scenario has multiple cases, but no data table.

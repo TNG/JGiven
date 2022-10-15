@@ -46,7 +46,8 @@ public class AbstractReportModelHandler {
 
         @Override
         public void visit( ScenarioModel scenarioModel ) {
-            handler.scenarioTitle( scenarioModel.getDescription(), scenarioModel.getExecutionStatus(), Duration.ofNanos(scenarioModel.getDurationInNanos()));
+            handler.scenarioTitle( scenarioModel.getDescription(), scenarioModel.getExtendedDescription(),
+                    scenarioModel.getExecutionStatus(), Duration.ofNanos(scenarioModel.getDurationInNanos()));
 
             this.currentScenarioModel = scenarioModel;
             this.isMultiCase = scenarioModel.getScenarioCases().size() > 1;
