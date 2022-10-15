@@ -40,6 +40,7 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
         writer.print(pendingScenarios + " Pending, ");
         writer.print(totalScenarios + " Total ");
         writer.println(humanReadableDuration(duration));
+        writer.println();
     }
 
     @Override
