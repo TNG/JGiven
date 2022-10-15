@@ -40,19 +40,17 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
         writer.print(pendingScenarios + " Pending, ");
         writer.print(totalScenarios + " Total ");
         writer.println(humanReadableDuration(duration));
-        writer.println();
     }
 
     @Override
     public void scenarioTitle(String title, ExecutionStatus executionStatus, Duration duration) {
-        writer.println("==== " + WordUtil.capitalize(title) + " ====\n");
-
+        writer.println("\n==== " + WordUtil.capitalize(title) + " ====\n");
         writer.println("[" + executionStatus + "] " + humanReadableDuration(duration) + "\n");
     }
 
     @Override
     public void caseHeader(int caseNr, List<String> parameterNames, List<String> caseArguments) {
-        writer.print("===== Case " + caseNr + ": ");
+        writer.print("\n===== Case " + caseNr + ": ");
         for (int i = 0; i < parameterNames.size(); i++) {
             writer.print(parameterNames.get(i) + " = " + caseArguments.get(i));
         }
@@ -85,7 +83,6 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
 
     @Override
     public void scenarioEnd() {
-        writer.println();
     }
 
     @Override

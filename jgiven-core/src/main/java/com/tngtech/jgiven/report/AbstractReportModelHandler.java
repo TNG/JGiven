@@ -31,18 +31,17 @@ public class AbstractReportModelHandler {
             Optional<String> maybeName = Optional.ofNullable(reportModel.getName());
             handler.className(maybeName.filter(name -> !name.isEmpty()).orElse(reportModel.getClassName()));
 
+            final int totalScenarioCount = reportModel.getScenarios().size();
+            final int failedScenarioCount = reportModel.getFailedScenarios().size();
+            final int pendingScenarioCount = reportModel.getPendingScenarios().size();
+            final int successfulScenarioCount = totalScenarioCount - failedScenarioCount - pendingScenarioCount;
+            final Duration duration = Duration.ofNanos(reportModel.getScenarios().stream().mapToLong(ScenarioModel::getDurationInNanos).sum());
+            handler.reportSummary(successfulScenarioCount, failedScenarioCount, pendingScenarioCount,
+                    totalScenarioCount, duration);
+
             if( reportModel.getDescription() != null ) {
                 handler.reportDescription( reportModel.getDescription() );
             }
-
-            int totalScenarioCount = reportModel.getScenarios().size();
-            int failedScenarioCount = reportModel.getFailedScenarios().size();
-            int pendingScenarioCount = reportModel.getPendingScenarios().size();
-            int successfulScenarioCount = totalScenarioCount - failedScenarioCount - pendingScenarioCount;
-
-            long durationInNanos = reportModel.getScenarios().stream().mapToLong(ScenarioModel::getDurationInNanos).sum();
-
-            handler.reportSummary(successfulScenarioCount, failedScenarioCount, pendingScenarioCount, totalScenarioCount, Duration.ofNanos(durationInNanos));
         }
 
         @Override
