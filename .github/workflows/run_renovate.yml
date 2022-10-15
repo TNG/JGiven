@@ -18,7 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Renovate-dry-run
-        uses: renovatebot/github-action@v32.238.2
+        uses: renovatebot/github-action@v32.238.3
         with:
           configurationFile: renovate.json
           token: ${{secrets.$inputs.pac_to_use}}
