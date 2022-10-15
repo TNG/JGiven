@@ -45,10 +45,9 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
 
     @Override
     public void scenarioTitle(String title, ExecutionStatus executionStatus, Duration duration) {
-        writer.print("==== " + WordUtil.capitalize(title) + " ");
-        writer.print("[" + executionStatus + "] ");
-        String s = humanReadableDuration(duration);
-        writer.println(s + " ====\n");
+        writer.println("==== " + WordUtil.capitalize(title) + " ====\n");
+
+        writer.println("[" + executionStatus + "] " + humanReadableDuration(duration) + "\n");
     }
 
     @Override
@@ -95,7 +94,7 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
 
     @Override
     public void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration) {
-        writer.print("[" + status + "] " + humanReadableDuration(duration));
+        writer.print("[.right]#[" + status + "] " + humanReadableDuration(duration) + "#");
         if (lastWordWasDataTable) {
             writer.println();
         } else {

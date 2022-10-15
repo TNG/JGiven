@@ -29,7 +29,7 @@ public class AbstractReportModelHandler {
         @Override
         public void visit( ReportModel reportModel ) {
             Optional<String> maybeName = Optional.ofNullable(reportModel.getName());
-            handler.className(maybeName.filter(name -> !name.isBlank()).orElse(reportModel.getClassName()));
+            handler.className(maybeName.filter(name -> !name.isEmpty()).orElse(reportModel.getClassName()));
 
             if( reportModel.getDescription() != null ) {
                 handler.reportDescription( reportModel.getDescription() );
