@@ -134,7 +134,7 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     @Override
     public void stepEnd(boolean lastWordWasDataTable, String extendedDescription) {
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
-            writer.println("+");
+            writer.println(" +");
             writer.println("_" + extendedDescription + "_");
         } else {
             writer.println();
