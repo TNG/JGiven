@@ -2,6 +2,7 @@ package com.tngtech.jgiven.report;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 import com.tngtech.jgiven.report.AbstractReportModelHandler.ScenarioDataTable;
 import com.tngtech.jgiven.report.model.DataTable;
@@ -32,8 +33,9 @@ public interface ReportModelHandler {
      * @param extendedDescription
      * @param executionStatus
      * @param duration
+     * @param tagNames
      */
-    void scenarioTitle(String title, String extendedDescription, ExecutionStatus executionStatus, Duration duration);
+    void scenarioTitle(String title, String extendedDescription, ExecutionStatus executionStatus, Duration duration, Set<String> tagNames);
 
     /**
      * Is invoked when a scenario has multiple cases, but no data table.

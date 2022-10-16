@@ -10,6 +10,7 @@ import com.tngtech.jgiven.report.model.StepStatus;
 import java.io.PrintWriter;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.generate;
@@ -44,11 +45,19 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     }
 
     @Override
-    public void scenarioTitle(String title, String extendedDescription, ExecutionStatus executionStatus, Duration duration) {
+    public void scenarioTitle(String title, String extendedDescription,
+              ExecutionStatus executionStatus, Duration duration,
+              Set<String> tagNames) {
         writer.println("\n==== " + WordUtil.capitalize(title) + " ====\n");
         writer.println("[" + executionStatus + "] " + humanReadableDuration(duration) + "\n");
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
             writer.println(extendedDescription);
+            writer.println();
+        }
+
+        if (!tagNames.isEmpty()) {
+            writer.print("Tags: ");
+            writer.println(tagNames.stream().map(tag -> "_" + tag + "_").collect(joining(", ")));
             writer.println();
         }
     }

@@ -1,12 +1,11 @@
 package com.tngtech.jgiven.report;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.report.model.*;
+
+import java.time.Duration;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AbstractReportModelHandler {
 
@@ -21,6 +20,7 @@ public class AbstractReportModelHandler {
         private boolean hasDataTable;
         private ScenarioModel currentScenarioModel;
         private boolean skipCase;
+        private Map<String, Tag> reportModelTagMap;
 
         public ReportModelHandlerVisitor( ReportModelHandler handler ) {
             this.handler = handler;
@@ -42,12 +42,19 @@ public class AbstractReportModelHandler {
             if( reportModel.getDescription() != null ) {
                 handler.reportDescription( reportModel.getDescription() );
             }
+
+            reportModelTagMap = reportModel.getTagMap();
         }
 
         @Override
         public void visit( ScenarioModel scenarioModel ) {
+            Set<String> tagNames = scenarioModel.getTagIds().stream()
+                    .map(this.reportModelTagMap::get)
+                    .map(Tag::getName).collect(Collectors.toSet());
+
             handler.scenarioTitle( scenarioModel.getDescription(), scenarioModel.getExtendedDescription(),
-                    scenarioModel.getExecutionStatus(), Duration.ofNanos(scenarioModel.getDurationInNanos()));
+                    scenarioModel.getExecutionStatus(), Duration.ofNanos(scenarioModel.getDurationInNanos()),
+                    tagNames);
 
             this.currentScenarioModel = scenarioModel;
             this.isMultiCase = scenarioModel.getScenarioCases().size() > 1;
