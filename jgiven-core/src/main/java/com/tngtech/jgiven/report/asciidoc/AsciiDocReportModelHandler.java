@@ -25,7 +25,8 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
 
     @Override
     public void className(String className) {
-        writer.println("=== " + className + " ===\n");
+        writer.println("=== " + className);
+        writer.println();
     }
 
     @Override
@@ -48,8 +49,12 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     public void scenarioTitle(String title, String extendedDescription,
                               ExecutionStatus executionStatus, Duration duration,
                               Set<String> tagNames) {
-        writer.println("\n==== " + WordUtil.capitalize(title) + " ====\n");
-        writer.println("[" + executionStatus + "] " + humanReadableDuration(duration) + "\n");
+        writer.println();
+        writer.println("==== " + WordUtil.capitalize(title));
+        writer.println();
+        writer.println("[" + executionStatus + "] " + humanReadableDuration(duration));
+        writer.println();
+
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
             writer.println(extendedDescription);
             writer.println();
@@ -64,16 +69,19 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
 
     @Override
     public void caseHeader(int caseNr, List<String> parameterNames, List<String> caseArguments) {
-        writer.print("\n===== Case " + caseNr + ": ");
+        writer.println();
+        writer.print("===== Case " + caseNr + ": ");
         for (int i = 0; i < parameterNames.size(); i++) {
-            writer.print(parameterNames.get(i) + " = " + caseArguments.get(i));
+            writer.print(parameterNames.get(i) + " = " + caseArguments.get(i) + ", ");
         }
-        writer.println(" =====\n");
+        writer.println("");
+        writer.println("");
     }
 
     @Override
     public void dataTable(AbstractReportModelHandler.ScenarioDataTable scenarioDataTable) {
-        writer.println("\n.Cases");
+        writer.println();
+        writer.println(".Cases");
         writer.println("[options=\"header\"]");
         writer.println("|===");
 
