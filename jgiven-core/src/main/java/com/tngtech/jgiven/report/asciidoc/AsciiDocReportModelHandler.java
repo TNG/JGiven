@@ -127,13 +127,18 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     }
 
     @Override
-    public void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration) {
+    public void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration, String extendedDescription) {
         writer.print("[.right]#[" + status + "] " + humanReadableDuration(duration) + "#");
-        stepEnd(lastWordWasDataTable);
+        stepEnd(lastWordWasDataTable, extendedDescription);
     }
     @Override
-    public void stepEnd(boolean lastWordWasDataTable) {
-        writer.println();
+    public void stepEnd(boolean lastWordWasDataTable, String extendedDescription) {
+        if (extendedDescription != null && !extendedDescription.isEmpty()) {
+            writer.println("+");
+            writer.println("_" + extendedDescription + "_");
+        } else {
+            writer.println();
+        }
     }
 
     @Override
@@ -198,7 +203,11 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
 
     @Override
     public void stepWord(String value, boolean differs) {
-        writer.print(value + " ");
+        if (differs) {
+            writer.print("#" + value + "# ");
+        } else{
+            writer.print(value + " ");
+        }
     }
 
     private String escapeTableValue(String value) {

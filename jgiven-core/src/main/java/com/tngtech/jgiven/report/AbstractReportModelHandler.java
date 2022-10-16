@@ -124,9 +124,9 @@ public class AbstractReportModelHandler {
                 }
             }
             if (this.unsuccesfulCase) {
-                handler.stepEnd(lastWordWasDataTable, stepModel.getStatus(), Duration.ofNanos(stepModel.getDurationInNanos()));
+                handler.stepEnd(lastWordWasDataTable, stepModel.getStatus(), Duration.ofNanos(stepModel.getDurationInNanos()), stepModel.getExtendedDescription());
             } else {
-                handler.stepEnd(lastWordWasDataTable);
+                handler.stepEnd(lastWordWasDataTable, stepModel.getExtendedDescription());
             }
 
         }

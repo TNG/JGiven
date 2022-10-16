@@ -68,12 +68,12 @@ public interface ReportModelHandler {
      */
     void stepStart(int depth);
 
-    void stepEnd(boolean lastWordWasDataTable);
+    void stepEnd(boolean lastWordWasDataTable, String extendedDescription);
 
     /**
      * Invoked when a step is finished
      */
-    void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration);
+    void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration, String extendedDescription);
 
     /**
      * Invoked for intro words like given, when, then
