@@ -79,6 +79,11 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     }
 
     @Override
+    public void caseHeader() {
+        writer.println("[.steps]");
+    }
+
+    @Override
     public void dataTable(AbstractReportModelHandler.ScenarioDataTable scenarioDataTable) {
         writer.println();
         writer.println(".Cases");
@@ -114,7 +119,11 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     }
 
     @Override
-    public void stepStart() {
+    public void stepStart(int depth) {
+        for (int i = 0; i <= depth; i++) {
+            writer.print("*");
+        }
+        writer.print(" ");
     }
 
     @Override
@@ -124,11 +133,7 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     }
     @Override
     public void stepEnd(boolean lastWordWasDataTable) {
-        if (lastWordWasDataTable) {
-            writer.println();
-        } else {
-            writer.println("+");
-        }
+        writer.println();
     }
 
     @Override
@@ -175,6 +180,7 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
         }
 
         writer.println();
+        writer.println("+");
         if (dataTable.hasHorizontalHeader()) {
             writer.println("[.stepArgument%header,cols=\"" + colsSpec + "\"]");
         } else {

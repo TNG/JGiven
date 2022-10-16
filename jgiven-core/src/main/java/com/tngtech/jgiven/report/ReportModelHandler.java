@@ -66,7 +66,7 @@ public interface ReportModelHandler {
     /**
      * Invoked when a step starts
      */
-    void stepStart();
+    void stepStart(int depth);
 
     void stepEnd(boolean lastWordWasDataTable);
 
@@ -120,4 +120,6 @@ public interface ReportModelHandler {
     void stepWord( String value, boolean differs );
 
     void sectionTitle(String title);
+
+    void caseHeader();
 }

@@ -81,6 +81,7 @@ public class AbstractReportModelHandler {
                 handler.caseHeader( scenarioCase.getCaseNr(),
                     currentScenarioModel.getExplicitParameters(), scenarioCase.getExplicitArguments() );
             }
+            handler.caseHeader();
         }
 
         @Override
@@ -94,7 +95,7 @@ public class AbstractReportModelHandler {
                 return;
             }
 
-            handler.stepStart();
+            handler.stepStart(stepModel.getDepth());
 
             boolean lastWordWasDataTable = false;
             for( Word word : stepModel.getWords() ) {
