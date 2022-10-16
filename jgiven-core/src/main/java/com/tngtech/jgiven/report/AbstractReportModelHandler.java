@@ -21,6 +21,7 @@ public class AbstractReportModelHandler {
         private ScenarioModel currentScenarioModel;
         private boolean skipCase;
         private Map<String, Tag> reportModelTagMap;
+        private boolean unsuccesfulCase;
 
         public ReportModelHandlerVisitor( ReportModelHandler handler ) {
             this.handler = handler;
@@ -76,6 +77,7 @@ public class AbstractReportModelHandler {
                 return;
             }
             this.skipCase = false;
+            this.unsuccesfulCase = scenarioCase.getExecutionStatus() != ExecutionStatus.SUCCESS;
 
             if( isMultiCase && !hasDataTable ) {
                 handler.caseHeader( scenarioCase.getCaseNr(),
@@ -121,7 +123,7 @@ public class AbstractReportModelHandler {
                     handler.stepWord(word.getFormattedValue(), word.isDifferent());
                 }
             }
-            if (stepModel.isParentFailed()) {
+            if (this.unsuccesfulCase) {
                 handler.stepEnd(lastWordWasDataTable, stepModel.getStatus(), Duration.ofNanos(stepModel.getDurationInNanos()));
             } else {
                 handler.stepEnd(lastWordWasDataTable);
