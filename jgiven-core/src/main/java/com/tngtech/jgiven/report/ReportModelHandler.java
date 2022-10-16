@@ -68,6 +68,8 @@ public interface ReportModelHandler {
      */
     void stepStart();
 
+    void stepEnd(boolean lastWordWasDataTable);
+
     /**
      * Invoked when a step is finished
      */

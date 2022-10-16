@@ -120,8 +120,12 @@ public class AbstractReportModelHandler {
                     handler.stepWord(word.getFormattedValue(), word.isDifferent());
                 }
             }
+            if (stepModel.isParentFailed()) {
+                handler.stepEnd(lastWordWasDataTable, stepModel.getStatus(), Duration.ofNanos(stepModel.getDurationInNanos()));
+            } else {
+                handler.stepEnd(lastWordWasDataTable);
+            }
 
-            handler.stepEnd(lastWordWasDataTable, stepModel.getStatus(), Duration.ofNanos(stepModel.getDurationInNanos()));
         }
 
         private static class ScenarioDataTableImpl implements ScenarioDataTable {

@@ -120,10 +120,14 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     @Override
     public void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration) {
         writer.print("[.right]#[" + status + "] " + humanReadableDuration(duration) + "#");
+        stepEnd(lastWordWasDataTable);
+    }
+    @Override
+    public void stepEnd(boolean lastWordWasDataTable) {
         if (lastWordWasDataTable) {
             writer.println();
         } else {
-            writer.println(" +");
+            writer.println("+");
         }
     }
 
