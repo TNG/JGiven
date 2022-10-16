@@ -89,32 +89,35 @@ public class AbstractReportModelHandler {
                 return;
             }
 
-            handler.stepStart();
-            boolean lastWordWasDataTable = false;
+            if (stepModel.isSectionTitle()) {
+                handler.sectionTitle(stepModel.getName());
+                return;
+            }
 
+            handler.stepStart();
+
+            boolean lastWordWasDataTable = false;
             for( Word word : stepModel.getWords() ) {
                 lastWordWasDataTable = false;
                 if( word.isIntroWord() ) {
                     handler.introWord( word.getValue() );
-                } else {
-                    if( word.isArg() ) {
-                        if( word.getArgumentInfo().isParameter() ) {
-                            if( hasDataTable ) {
-                                handler.stepArgumentPlaceHolder( word.getArgumentInfo().getParameterName() );
-                            } else {
-                                handler.stepCaseArgument( word.getFormattedValue() );
-                            }
+                } else if (word.isArg()) {
+                    if (word.getArgumentInfo().isParameter()) {
+                        if (hasDataTable) {
+                            handler.stepArgumentPlaceHolder(word.getArgumentInfo().getParameterName());
                         } else {
-                            if( word.getArgumentInfo().isDataTable() ) {
-                                handler.stepDataTableArgument( word.getArgumentInfo().getDataTable() );
-                                lastWordWasDataTable = true;
-                            } else {
-                                handler.stepArgument( word.getFormattedValue(), word.isDifferent() );
-                            }
+                            handler.stepCaseArgument(word.getFormattedValue());
                         }
                     } else {
-                        handler.stepWord( word.getFormattedValue(), word.isDifferent() );
+                        if (word.getArgumentInfo().isDataTable()) {
+                            handler.stepDataTableArgument(word.getArgumentInfo().getDataTable());
+                            lastWordWasDataTable = true;
+                        } else {
+                            handler.stepArgument(word.getFormattedValue(), word.isDifferent());
+                        }
                     }
+                } else {
+                    handler.stepWord(word.getFormattedValue(), word.isDifferent());
                 }
             }
 

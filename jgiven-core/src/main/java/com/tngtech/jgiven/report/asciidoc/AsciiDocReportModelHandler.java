@@ -46,8 +46,8 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
 
     @Override
     public void scenarioTitle(String title, String extendedDescription,
-              ExecutionStatus executionStatus, Duration duration,
-              Set<String> tagNames) {
+                              ExecutionStatus executionStatus, Duration duration,
+                              Set<String> tagNames) {
         writer.println("\n==== " + WordUtil.capitalize(title) + " ====\n");
         writer.println("[" + executionStatus + "] " + humanReadableDuration(duration) + "\n");
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
@@ -100,6 +100,12 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     }
 
     @Override
+    public void sectionTitle(String title) {
+        writer.println();
+        writer.println("." + title);
+    }
+
+    @Override
     public void stepStart() {
     }
 
@@ -146,7 +152,7 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     public void stepDataTableArgument(DataTable dataTable) {
         List<List<String>> rows = dataTable.getData();
         if (rows.isEmpty()) {
-           return;
+            return;
         }
 
         String colsSpec;

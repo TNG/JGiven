@@ -116,4 +116,6 @@ public interface ReportModelHandler {
      * @param differs whether this word differs compared to other cases of the same scenario
      */
     void stepWord( String value, boolean differs );
+
+    void sectionTitle(String title);
 }
