@@ -80,7 +80,9 @@ subprojects {
                                     asNode().dependencies[0].appendNode('dependency').with {
                                         it.appendNode('groupId', dep.group)
                                         it.appendNode('artifactId', dep.name)
-                                        it.appendNode('version', dep.version)
+                                        if (dep.version != null && dep.version.trim() != "") {
+                                            it.appendNode('version', dep.version)
+                                        }
                                         it.appendNode('scope', 'provided')
                                     }
                                 }
