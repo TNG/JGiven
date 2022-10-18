@@ -8,9 +8,7 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
-import com.tngtech.jgiven.report.AbstractReportConfig;
-import com.tngtech.jgiven.report.AbstractReportGenerator;
-import com.tngtech.jgiven.report.AbstractReportModelHandler;
+import com.tngtech.jgiven.report.*;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 
@@ -40,7 +38,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         PrintWriter printWriter = PrintWriterUtil.getPrintWriter( targetFile );
 
         try {
-            new AbstractReportModelHandler().handle( model, new AsciiDocReportModelHandler( printWriter ) );
+            ReportModelHandlerVisitor visitor = new ReportModelHandlerVisitor(new AsciiDocReportModelHandler(printWriter));
+            model.accept(visitor);
         } finally {
             ResourceUtil.close( printWriter );
         }

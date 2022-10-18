@@ -4,7 +4,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 
-import com.tngtech.jgiven.report.AbstractReportModelHandler.ScenarioDataTable;
 import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.StepStatus;

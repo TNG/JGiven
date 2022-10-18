@@ -1,8 +1,8 @@
 package com.tngtech.jgiven.report.asciidoc;
 
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.AbstractReportModelHandler;
 import com.tngtech.jgiven.report.ReportModelHandler;
+import com.tngtech.jgiven.report.ScenarioDataTable;
 import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.StepStatus;
@@ -84,7 +84,7 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
     }
 
     @Override
-    public void dataTable(AbstractReportModelHandler.ScenarioDataTable scenarioDataTable) {
+    public void dataTable(ScenarioDataTable scenarioDataTable) {
         writer.println();
         writer.println(".Cases");
         writer.println("[options=\"header\"]");
@@ -96,7 +96,7 @@ class AsciiDocReportModelHandler implements ReportModelHandler {
         }
         writer.println(" | Status");
 
-        for (AbstractReportModelHandler.ScenarioDataTable.Row row : scenarioDataTable.rows()) {
+        for (ScenarioDataTable.Row row : scenarioDataTable.rows()) {
             writer.print("| " + row.nr());
 
             for (String value : row.arguments()) {
