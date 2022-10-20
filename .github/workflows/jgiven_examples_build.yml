@@ -1,9 +1,9 @@
-name: "Test example projects"
+name: "Test published JGiven"
 on: [push, pull_request]
 
 jobs:
   build_java8:
-    name: Build the examples on Java 8
+    name: Test the examples on Java 8
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -79,3 +79,13 @@ jobs:
           name: test-report-example-projects
           path: /home/runner/work/JGiven/JGiven/example-projects/*/build/reports/tests
           if-no-files-found: ignore
+  validate_publication_poms:
+    name: Validate the format of the published poms
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Load the bash script
+        run: scripts/local_release_with_version.sh
+      - name: Run validation
+        run: scripts/validate_poms.sh
+
