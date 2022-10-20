@@ -14,8 +14,6 @@ jobs:
           distribution: 'adopt'
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
-      - name: Grant execute permission for bash script
-        run: chmod +x scripts/local_release_with_version.sh
       - name: Produce a local release with version 1.1-t
         run: source scripts/local_release_with_version.sh
       - name: Test Kotlin Example Project
@@ -63,8 +61,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Grant execute permission for bash script
-        run: chmod +x scripts/local_release_with_version.sh
       - name: Load the bash script
         run: source scripts/local_release_with_version.sh
       - name: Test Java 11 Project
