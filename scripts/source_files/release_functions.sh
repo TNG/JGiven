@@ -10,6 +10,18 @@ function find_gradle_property(){
     done
 }
 
+function push_version(){
+  echo Pushing version and tag to GitHub repository...
+  git push && push_result="success" || push_result="failure"
+  if [ push_result != "success" ];then
+   branch_name="release/${VERSION_PREFIXED}"
+   git checkout -b "${branch_name}"
+   echo "Failed to push release to master directly, will push to branch ${branch_name}" 1>&2
+   git push --set-upstream origin "${branch_name}"
+  fi
+  git push "$(git config --get remote.origin.url)" "${VERSION_PREFIXED}" || return 25
+}
+
 function releaseRepositoryAndPushVersion()
 {
   echo Releasing the repository...
@@ -24,10 +36,9 @@ function releaseRepositoryAndPushVersion()
   echo Testing Gradle Plugin from Gradle Plugin repository...
   ./gradlew -b example-projects/junit5/build.gradle clean test -Pversion="${VERSION}" || return 24
 
-  echo Pushing version and tag to GitHub repository...
-  git push
-  git push "$(git config --get remote.origin.url)" "${VERSION_PREFIXED}" || return 25
+  push_version
 }
+
 
 function verify_version_present_and_formatted(){
   if [ $# -ne 1 ];then
