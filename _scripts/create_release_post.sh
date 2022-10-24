@@ -3,15 +3,15 @@
 echo Version $1
 
 if [ -z "$1" ]; then
-    echo "No version provided"
-    exit 1
+  echo "No version provided"
+  exit 1
 fi
 
 echo "Creating release post for version $1"
 
 cp _drafts/released.md _publish/$1
 
-if [ "${RELEASE}" == "true" ];then
+if [ "${RELEASE}" == "true" ]; then
   jekyll build
 else
   jekyll serve --watch
