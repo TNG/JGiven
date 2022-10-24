@@ -31,7 +31,7 @@ repositories {
 dependencies {
     testImplementation "com.tngtech.jgiven:jgiven-junit:${version}"
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.5.0'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.5.2'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.3.0'
     testImplementation 'org.assertj:assertj-core:3.23.1'
 
