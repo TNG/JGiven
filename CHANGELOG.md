@@ -1,6 +1,6 @@
 # v1.2.4
 ## Fixed issues
-* Fixed incorrect POM that was published because our manual pom transcription writes a version tag even when none is required [#1013](https://github.com/TNG/JGiven/issues/1013) (thanks to jangalanski for reporting)
+* Fixed incorrect POM that was published because our manual pom transcription writes a version tag even when none is required. [#1013](https://github.com/TNG/JGiven/issues/1013) (thanks to jangalanski for reporting)
 
 # v1.2.3
 ## Fixed issues
