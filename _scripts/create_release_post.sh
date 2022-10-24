@@ -11,4 +11,8 @@ echo "Creating release post for version $1"
 
 cp _drafts/released.md _publish/$1
 
-jekyll serve --watch
+if [ "${RELEASE}" == "true" ];then
+  jekyll build
+else
+  jekyll serve --watch
+fi
