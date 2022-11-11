@@ -65,7 +65,7 @@ dependencies {
     api junitVariableVersionLibs.junit4
     implementation "androidx.appcompat:appcompat:1.5.1"
     implementation('androidx.test:core:1.5.0')
-    implementation('androidx.test:rules:1.4.0') {
+    implementation('androidx.test:rules:1.5.0') {
         exclude group: "junit"
     }
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
