@@ -40,7 +40,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
 
         try {
-            ReportModelHandlerVisitor visitor = new ReportModelHandlerVisitor(new AsciiDocReportModelHandler(printWriter));
+            AsciiDocWriter visitor = new AsciiDocWriter(new AsciiDocReportModelHandler(printWriter));
             model.accept(visitor);
         } finally {
             ResourceUtil.close(printWriter);

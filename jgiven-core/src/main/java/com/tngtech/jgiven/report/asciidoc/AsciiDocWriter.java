@@ -1,13 +1,15 @@
-package com.tngtech.jgiven.report;
+package com.tngtech.jgiven.report.asciidoc;
 
 import com.google.common.collect.Lists;
+import com.tngtech.jgiven.report.ReportModelHandler;
+import com.tngtech.jgiven.report.ScenarioDataTable;
 import com.tngtech.jgiven.report.model.*;
 
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ReportModelHandlerVisitor extends ReportModelVisitor {
+public class AsciiDocWriter extends ReportModelVisitor {
 
     private final ReportModelHandler handler;
     private boolean isMultiCase;
@@ -17,7 +19,7 @@ public class ReportModelHandlerVisitor extends ReportModelVisitor {
     private Map<String, Tag> reportModelTagMap;
     private boolean unsuccesfulCase;
 
-    public ReportModelHandlerVisitor(ReportModelHandler handler) {
+    public AsciiDocWriter(ReportModelHandler handler) {
         this.handler = handler;
     }
 
