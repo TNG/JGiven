@@ -58,7 +58,7 @@ dependencies {
     androidTestImplementation('com.tngtech.jgiven:jgiven-android:' + version)
 
     jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:' + version
-    jgivenReport 'org.slf4j:slf4j-simple:2.0.5'
+    jgivenReport 'org.slf4j:slf4j-simple:2.0.6'
 }
 
 def targetDir = 'build/reports/jgiven/json'
