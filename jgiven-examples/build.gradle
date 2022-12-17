@@ -6,7 +6,7 @@ dependencies {
     testImplementation project(':jgiven-tests')
     testImplementation project(':jgiven-html5-report')
     testImplementation project(':jgiven-testng')
-    testImplementation "org.seleniumhq.selenium:htmlunit-driver:4.7.0"
+    testImplementation "org.seleniumhq.selenium:htmlunit-driver:4.7.2"
     testImplementation libs.bundles.spring.compile
     testImplementation junitVariableVersionLibs.junit4.params
     testImplementation libs.testng
