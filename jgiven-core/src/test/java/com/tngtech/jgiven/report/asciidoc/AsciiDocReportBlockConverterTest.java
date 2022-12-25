@@ -3,6 +3,7 @@ package com.tngtech.jgiven.report.asciidoc;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -138,6 +139,49 @@ public class AsciiDocReportBlockConverterTest {
                 "Best scenario ever!!!\n",
                 "\n",
                 "Tags: _Best Tag_");
+    }
+
+    @Test
+    public void convert_case_header_without_parameters() {
+        // arrange
+        List<String> parameterNames = Collections.emptyList();
+        List<String> parameterValues = Collections.emptyList();
+
+        // act
+        String block = converter.convertCaseHeaderBlock(1, parameterNames, parameterValues);
+
+        // assert
+        Assertions.assertThat(block).isEqualTo("===== Case 1");
+    }
+
+    @Test
+    public void convert_case_header_with_one_parameter() {
+        // arrange
+        List<String> parameterNames = Collections.singletonList("foo");
+        List<String> parameterValues = Collections.singletonList("42");
+
+        // act
+        String block = converter.convertCaseHeaderBlock(2, parameterNames, parameterValues);
+
+        // assert
+        Assertions.assertThat(block).isEqualTo("===== Case 2 foo = 42");
+    }
+
+    @Test
+    public void convert_case_header_with_two_parameters() {
+        // arrange
+        List<String> parameterNames = new ArrayList<>();
+        parameterNames.add("foo");
+        parameterNames.add("bar");
+        List<String> parameterValues = new ArrayList<>();
+        parameterValues.add("42");
+        parameterValues.add("on");
+
+        // act
+        String block = converter.convertCaseHeaderBlock(2, parameterNames, parameterValues);
+
+        // assert
+        Assertions.assertThat(block).isEqualTo("===== Case 2 foo = 42, bar = on");
     }
 
     @Test

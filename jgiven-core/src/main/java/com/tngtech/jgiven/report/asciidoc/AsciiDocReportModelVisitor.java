@@ -12,12 +12,11 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     private final ReportStatistics statistics;
     private final ReportBlockConverter blockConverter;
     private final List<String> asciiDocBlocks;
-    private boolean scenarioIsMultiCase;
+    private Map<String, Tag> featureTagMap;
     private boolean scenarioHasDataTable;
-    private boolean skipCase;
-    private Map<String, Tag> currentTagMap;
-    private boolean unsuccesfulCase;
-    private List<String> scenarioParameters;
+    private List<String> explicitScenarioParameters;
+    private boolean skipCurrentCase;
+    private boolean caseIsUnsuccessful;
 
     public AsciiDocReportModelVisitor(ReportStatistics statistics, ReportBlockConverter blockConverter) {
         this.statistics = statistics;
@@ -34,43 +33,41 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         asciiDocBlocks.add(
             blockConverter.convertFeatureHeaderBlock(featureName, statistics, reportModel.getDescription()));
 
-        currentTagMap = reportModel.getTagMap();
+        featureTagMap = reportModel.getTagMap();
     }
 
     @Override
     public void visit(ScenarioModel scenarioModel) {
         final List<String> tagNames = scenarioModel.getTagIds().stream()
-            .map(this.currentTagMap::get)
+            .map(this.featureTagMap::get)
             .map(Tag::getName).collect(Collectors.toList());
 
         asciiDocBlocks.add(blockConverter.convertScenarioHeaderBlock(scenarioModel.getDescription(),
             scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tagNames,
             scenarioModel.getExtendedDescription()));
 
-        this.scenarioParameters = scenarioModel.getExplicitParameters();
-        this.scenarioIsMultiCase = scenarioModel.getScenarioCases().size() > 1;
-        this.scenarioHasDataTable = scenarioModel.isCasesAsTable();
+        scenarioHasDataTable = scenarioModel.isCasesAsTable();
+        explicitScenarioParameters = scenarioModel.getExplicitParameters();
     }
 
     @Override
     public void visit(ScenarioCaseModel scenarioCase) {
-        if (scenarioCase.getCaseNr() > 1 && scenarioHasDataTable) {
-            this.skipCase = true;
+        skipCurrentCase = scenarioHasDataTable && scenarioCase.getCaseNr() > 1;
+        if (skipCurrentCase) {
             return;
         }
-        this.skipCase = false;
-        this.unsuccesfulCase = scenarioCase.getExecutionStatus() != ExecutionStatus.SUCCESS;
 
-        if (scenarioIsMultiCase && !scenarioHasDataTable) {
-            blockConverter.caseHeader(scenarioCase.getCaseNr(),
-                scenarioParameters, scenarioCase.getExplicitArguments());
+        if (!scenarioHasDataTable) {
+            asciiDocBlocks.add(blockConverter.convertCaseHeaderBlock(
+                scenarioCase.getCaseNr(), explicitScenarioParameters, scenarioCase.getExplicitArguments()));
         }
-        blockConverter.caseHeader();
+
+        caseIsUnsuccessful = scenarioCase.getExecutionStatus() != ExecutionStatus.SUCCESS;
     }
 
     @Override
     public void visit(StepModel stepModel) {
-        if (skipCase) {
+        if (skipCurrentCase) {
             return;
         }
 
@@ -105,7 +102,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
                 blockConverter.stepWord(word.getFormattedValue(), word.isDifferent());
             }
         }
-        if (this.unsuccesfulCase) {
+        if (this.caseIsUnsuccessful) {
             blockConverter.stepEnd(lastWordWasDataTable, stepModel.getStatus(),
                 Duration.ofNanos(stepModel.getDurationInNanos()), stepModel.getExtendedDescription());
         } else {

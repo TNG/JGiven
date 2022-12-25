@@ -80,19 +80,20 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     @Override
-    public void caseHeader(int caseNr, List<String> parameterNames, List<String> caseArguments) {
-        writer.println();
-        writer.print("===== Case " + caseNr + ": ");
-        for (int i = 0; i < parameterNames.size(); i++) {
-            writer.print(parameterNames.get(i) + " = " + caseArguments.get(i) + ", ");
-        }
-        writer.println("");
-        writer.println("");
-    }
+    public String convertCaseHeaderBlock(int caseNr, List<String> parameterNames, List<String> parameterValues) {
+        StringBuilder blockContent = new StringBuilder();
 
-    @Override
-    public void caseHeader() {
-        writer.println("[.steps]");
+        blockContent.append("===== Case ").append(caseNr);
+
+        if (parameterNames.size() >= 1) {
+            blockContent.append(" ").append(parameterNames.get(0)).append(" = ").append(parameterValues.get(0));
+        }
+
+        for (int i = 1; i < parameterNames.size(); i++) {
+            blockContent.append(", ").append(parameterNames.get(i)).append(" = ").append(parameterValues.get(i));
+        }
+
+        return blockContent.toString();
     }
 
     @Override

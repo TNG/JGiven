@@ -43,11 +43,11 @@ public interface ReportBlockConverter {
      * </pre>
      * It is guaranteed that {@code parameterNames.size() == caseArgument.size()}
      *
-     * @param caseNr         the number of the case, starting from 0
-     * @param parameterNames the parameter names of the scenario
-     * @param caseArguments  the arguments of the case
+     * @param caseNr          the number of the case, starting from 1
+     * @param parameterNames  the parameter names of the scenario
+     * @param parameterValues the arguments of the case
      */
-    void caseHeader(int caseNr, List<String> parameterNames, List<String> caseArguments);
+    String convertCaseHeaderBlock(int caseNr, List<String> parameterNames, List<String> parameterValues);
 
     /**
      * Is invoked at the end of a scenario, when the scenario has multiple case and a data table.
@@ -121,7 +121,5 @@ public interface ReportBlockConverter {
     void stepWord(String value, boolean differs);
 
     String sectionTitle(String title);
-
-    void caseHeader();
 
 }
