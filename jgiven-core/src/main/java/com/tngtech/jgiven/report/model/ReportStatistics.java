@@ -4,12 +4,12 @@ public class ReportStatistics {
     public int numClasses;
     public int numScenarios;
     public int numFailedScenarios;
+    public int numPendingScenarios;
+    public int numSuccessfulScenarios;
     public int numCases;
     public int numFailedCases;
     public int numSteps;
     public long durationInNanos;
-    public int numPendingScenarios;
-    public int numSuccessfulScenarios;
 
     public ReportStatistics add( ReportStatistics statistics ) {
         ReportStatistics copy = new ReportStatistics();

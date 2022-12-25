@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
-    private static final Logger log = LoggerFactory.getLogger( AsciiDocReportGenerator.class );
+    private static final Logger log = LoggerFactory.getLogger(AsciiDocReportGenerator.class);
 
     private final List<String> features = Lists.newArrayList();
 
@@ -33,13 +33,14 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         }
 
         for (ReportModelFile reportModelFile : completeReportModel.getAllReportModels()) {
-            writeReportModelToFile(reportModelFile.model, reportModelFile.file);
+            writeReportModelToFile(
+                    reportModelFile.model, reportModelFile.file, completeReportModel.getStatistics(reportModelFile));
         }
 
         generateIndexFile();
     }
 
-    private void writeReportModelToFile(ReportModel model, File file) {
+    private void writeReportModelToFile(ReportModel model, File file, ReportStatistics statistics) {
         String featureFileName = Files.getNameWithoutExtension(file.getName()) + ".asciidoc";
 
         features.add(featureFileName);
@@ -47,8 +48,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         PrintWriter printWriter = PrintWriterUtil.getPrintWriter(targetFile);
 
         try {
-            AsciiDocReportBlockConverter handler = new AsciiDocReportBlockConverter(printWriter);
-            AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(handler);
+            AsciiDocReportBlockConverter blockConverter = new AsciiDocReportBlockConverter(printWriter);
+            AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(statistics, blockConverter);
             model.accept(visitor);
         } finally {
             ResourceUtil.close(printWriter);
@@ -56,7 +57,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void generateIndexFile() {
-        try(PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(config.getTargetDir(), "index.asciidoc"))) {
+        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(config.getTargetDir(), "index.asciidoc"))) {
             convertIndex(printWriter);
         }
 

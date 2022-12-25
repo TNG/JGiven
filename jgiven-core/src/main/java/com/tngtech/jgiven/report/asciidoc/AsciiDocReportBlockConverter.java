@@ -5,6 +5,7 @@ import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.ScenarioDataTable;
 import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
+import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.StepStatus;
 
 import java.io.PrintWriter;
@@ -17,32 +18,36 @@ import static java.util.stream.Stream.generate;
 
 class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
+    public static final String NEW_LINE = System.getProperty("line.separator");
     private final PrintWriter writer;
 
     AsciiDocReportBlockConverter(PrintWriter printWriter) {
         this.writer = printWriter;
     }
 
-    @Override
-    public void className(String className) {
-        writer.println("=== " + className);
-        writer.println();
-    }
 
     @Override
-    public void reportDescription(String description) {
-        writer.println(description);
-        writer.println();
-    }
+    public String convertFeatureHeader(String featureName, ReportStatistics statistics, String description) {
+        StringBuilder blockContent = new StringBuilder();
+        blockContent.append("=== ").append(featureName).append(NEW_LINE);
 
-    @Override
-    public void reportSummary(int successfulScenarios, int failedScenarios, int pendingScenarios, int totalScenarios, Duration duration) {
-        writer.print(successfulScenarios + " Successful, ");
-        writer.print(failedScenarios + " Failed, ");
-        writer.print(pendingScenarios + " Pending, ");
-        writer.print(totalScenarios + " Total ");
-        writer.println(humanReadableDuration(duration));
-        writer.println();
+        blockContent.append(NEW_LINE);
+
+        blockContent.append(statistics.numSuccessfulScenarios).append(" Successful, ");
+        blockContent.append(statistics.numFailedScenarios).append(" Failed, ");
+        blockContent.append(statistics.numPendingScenarios).append(" Pending, ");
+        blockContent.append(statistics.numScenarios).append(" Total ");
+        blockContent.append(humanReadableDuration(statistics.durationInNanos));
+
+
+        if (description != null) {
+            blockContent.append(NEW_LINE);
+            blockContent.append(NEW_LINE);
+
+            blockContent.append(description);
+        }
+
+        return blockContent.toString();
     }
 
     @Override
@@ -52,7 +57,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         writer.println();
         writer.println("==== " + WordUtil.capitalize(title));
         writer.println();
-        writer.println("[" + executionStatus + "] " + humanReadableDuration(duration));
+        writer.println("[" + executionStatus + "] " + humanReadableDuration(duration.toNanos()));
         writer.println();
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
@@ -113,9 +118,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     @Override
-    public void sectionTitle(String title) {
-        writer.println();
-        writer.println("." + title);
+    public String sectionTitle(String title) {
+        return "." + title;
     }
 
     @Override
@@ -128,7 +132,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration, String extendedDescription) {
-        writer.print("[.right]#[" + status + "] " + humanReadableDuration(duration) + "#");
+        writer.print("[.right]#[" + status + "] " + humanReadableDuration(duration.toNanos()) + "#");
         stepEnd(lastWordWasDataTable, extendedDescription);
     }
     @Override
@@ -219,7 +223,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
 
-    private static String humanReadableDuration(Duration duration) {
+    private static String humanReadableDuration(long nanos) {
+        Duration duration = Duration.ofNanos(nanos);
         return "(" + duration.getSeconds() + "s " + duration.getNano() / 1000000 + "ms)";
     }
 }

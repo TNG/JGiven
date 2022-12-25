@@ -4,52 +4,45 @@ import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.*;
 
 import java.time.Duration;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
-    private final ReportBlockConverter handler;
+    private final ReportStatistics statistics;
+    private final ReportBlockConverter blockConverter;
+    private final List<String> asciiDocBlocks;
     private boolean isMultiCase;
     private boolean hasDataTable;
     private ScenarioModel currentScenarioModel;
     private boolean skipCase;
-    private Map<String, Tag> reportModelTagMap;
+    private Map<String, Tag> currentTagMap;
     private boolean unsuccesfulCase;
 
-    public AsciiDocReportModelVisitor(ReportBlockConverter handler) {
-        this.handler = handler;
+    public AsciiDocReportModelVisitor(ReportStatistics statistics, ReportBlockConverter blockConverter) {
+        this.statistics = statistics;
+        this.blockConverter = blockConverter;
+        this.asciiDocBlocks = new ArrayList<>();
     }
 
     @Override
     public void visit(ReportModel reportModel) {
-        Optional<String> maybeName = Optional.ofNullable(reportModel.getName());
-        handler.className(maybeName.filter(name -> !name.isEmpty()).orElse(reportModel.getClassName()));
+        String featureName = Optional.ofNullable(reportModel.getName())
+                .filter(name -> !name.isEmpty())
+                .orElse(reportModel.getClassName());
 
-        final int totalScenarioCount = reportModel.getScenarios().size();
-        final int failedScenarioCount = reportModel.getFailedScenarios().size();
-        final int pendingScenarioCount = reportModel.getPendingScenarios().size();
-        final int successfulScenarioCount = totalScenarioCount - failedScenarioCount - pendingScenarioCount;
-        final Duration duration = Duration.ofNanos(reportModel.getScenarios().stream().mapToLong(ScenarioModel::getDurationInNanos).sum());
-        handler.reportSummary(successfulScenarioCount, failedScenarioCount, pendingScenarioCount,
-                totalScenarioCount, duration);
+        asciiDocBlocks.add(blockConverter.convertFeatureHeader(featureName, statistics, reportModel.getDescription()));
 
-        if (reportModel.getDescription() != null) {
-            handler.reportDescription(reportModel.getDescription());
-        }
-
-        reportModelTagMap = reportModel.getTagMap();
+        currentTagMap = reportModel.getTagMap();
     }
 
     @Override
     public void visit(ScenarioModel scenarioModel) {
         Set<String> tagNames = scenarioModel.getTagIds().stream()
-                .map(this.reportModelTagMap::get)
+                .map(this.currentTagMap::get)
                 .map(Tag::getName).collect(Collectors.toSet());
 
-        handler.scenarioTitle(scenarioModel.getDescription(), scenarioModel.getExtendedDescription(),
+        blockConverter.scenarioTitle(scenarioModel.getDescription(), scenarioModel.getExtendedDescription(),
                 scenarioModel.getExecutionStatus(), Duration.ofNanos(scenarioModel.getDurationInNanos()),
                 tagNames);
 
@@ -68,10 +61,10 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         this.unsuccesfulCase = scenarioCase.getExecutionStatus() != ExecutionStatus.SUCCESS;
 
         if (isMultiCase && !hasDataTable) {
-            handler.caseHeader(scenarioCase.getCaseNr(),
+            blockConverter.caseHeader(scenarioCase.getCaseNr(),
                     currentScenarioModel.getExplicitParameters(), scenarioCase.getExplicitArguments());
         }
-        handler.caseHeader();
+        blockConverter.caseHeader();
     }
 
     @Override
@@ -81,40 +74,40 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         }
 
         if (stepModel.isSectionTitle()) {
-            handler.sectionTitle(stepModel.getName());
+            asciiDocBlocks.add(blockConverter.sectionTitle(stepModel.getName()));
             return;
         }
 
-        handler.stepStart(stepModel.getDepth());
+        blockConverter.stepStart(stepModel.getDepth());
 
         boolean lastWordWasDataTable = false;
         for (Word word : stepModel.getWords()) {
             lastWordWasDataTable = false;
             if (word.isIntroWord()) {
-                handler.introWord(word.getValue());
+                blockConverter.introWord(word.getValue());
             } else if (word.isArg()) {
                 if (word.getArgumentInfo().isParameter()) {
                     if (hasDataTable) {
-                        handler.stepArgumentPlaceHolder(word.getArgumentInfo().getParameterName());
+                        blockConverter.stepArgumentPlaceHolder(word.getArgumentInfo().getParameterName());
                     } else {
-                        handler.stepCaseArgument(word.getFormattedValue());
+                        blockConverter.stepCaseArgument(word.getFormattedValue());
                     }
                 } else {
                     if (word.getArgumentInfo().isDataTable()) {
-                        handler.stepDataTableArgument(word.getArgumentInfo().getDataTable());
+                        blockConverter.stepDataTableArgument(word.getArgumentInfo().getDataTable());
                         lastWordWasDataTable = true;
                     } else {
-                        handler.stepArgument(word.getFormattedValue(), word.isDifferent());
+                        blockConverter.stepArgument(word.getFormattedValue(), word.isDifferent());
                     }
                 }
             } else {
-                handler.stepWord(word.getFormattedValue(), word.isDifferent());
+                blockConverter.stepWord(word.getFormattedValue(), word.isDifferent());
             }
         }
         if (this.unsuccesfulCase) {
-            handler.stepEnd(lastWordWasDataTable, stepModel.getStatus(), Duration.ofNanos(stepModel.getDurationInNanos()), stepModel.getExtendedDescription());
+            blockConverter.stepEnd(lastWordWasDataTable, stepModel.getStatus(), Duration.ofNanos(stepModel.getDurationInNanos()), stepModel.getExtendedDescription());
         } else {
-            handler.stepEnd(lastWordWasDataTable, stepModel.getExtendedDescription());
+            blockConverter.stepEnd(lastWordWasDataTable, stepModel.getExtendedDescription());
         }
 
     }
@@ -127,9 +120,9 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     @Override
     public void visitEnd(ScenarioModel scenarioModel) {
         if (hasDataTable) {
-            handler.dataTable(new ScenarioDataTableImpl(scenarioModel));
+            blockConverter.dataTable(new ScenarioDataTableImpl(scenarioModel));
         }
-        handler.scenarioEnd();
+        blockConverter.scenarioEnd();
     }
 
     @Override
