@@ -47,7 +47,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         PrintWriter printWriter = PrintWriterUtil.getPrintWriter(targetFile);
 
         try {
-            AsciiDocReportModelHandler handler = new AsciiDocReportModelHandler(printWriter);
+            AsciiDocReportBlockConverter handler = new AsciiDocReportBlockConverter(printWriter);
             AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(handler);
             model.accept(visitor);
         } finally {

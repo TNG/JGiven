@@ -8,7 +8,7 @@ import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.StepStatus;
 
-public interface ReportModelHandler {
+public interface ReportBlockConverter {
     void className( String className );
 
     /**

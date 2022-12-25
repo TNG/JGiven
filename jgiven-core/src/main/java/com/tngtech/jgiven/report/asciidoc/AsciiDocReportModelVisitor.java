@@ -1,6 +1,6 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import com.tngtech.jgiven.report.ReportModelHandler;
+import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.*;
 
 import java.time.Duration;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
-    private final ReportModelHandler handler;
+    private final ReportBlockConverter handler;
     private boolean isMultiCase;
     private boolean hasDataTable;
     private ScenarioModel currentScenarioModel;
@@ -19,7 +19,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     private Map<String, Tag> reportModelTagMap;
     private boolean unsuccesfulCase;
 
-    public AsciiDocReportModelVisitor(ReportModelHandler handler) {
+    public AsciiDocReportModelVisitor(ReportBlockConverter handler) {
         this.handler = handler;
     }
 

@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.report.asciidoc;
 
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.ReportModelHandler;
+import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.ScenarioDataTable;
 import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
@@ -15,11 +15,11 @@ import java.util.Set;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.generate;
 
-class AsciiDocReportModelHandler implements ReportModelHandler {
+class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     private final PrintWriter writer;
 
-    AsciiDocReportModelHandler(PrintWriter printWriter) {
+    AsciiDocReportBlockConverter(PrintWriter printWriter) {
         this.writer = printWriter;
     }
 
