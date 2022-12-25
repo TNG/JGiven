@@ -12,12 +12,12 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     private final ReportStatistics statistics;
     private final ReportBlockConverter blockConverter;
     private final List<String> asciiDocBlocks;
-    private boolean isMultiCase;
-    private boolean hasDataTable;
-    private ScenarioModel currentScenarioModel;
+    private boolean scenarioIsMultiCase;
+    private boolean scenarioHasDataTable;
     private boolean skipCase;
     private Map<String, Tag> currentTagMap;
     private boolean unsuccesfulCase;
+    private List<String> scenarioParameters;
 
     public AsciiDocReportModelVisitor(ReportStatistics statistics, ReportBlockConverter blockConverter) {
         this.statistics = statistics;
@@ -28,41 +28,42 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     @Override
     public void visit(ReportModel reportModel) {
         String featureName = Optional.ofNullable(reportModel.getName())
-                .filter(name -> !name.isEmpty())
-                .orElse(reportModel.getClassName());
+            .filter(name -> !name.isEmpty())
+            .orElse(reportModel.getClassName());
 
-        asciiDocBlocks.add(blockConverter.convertFeatureHeader(featureName, statistics, reportModel.getDescription()));
+        asciiDocBlocks.add(
+            blockConverter.convertFeatureHeaderBlock(featureName, statistics, reportModel.getDescription()));
 
         currentTagMap = reportModel.getTagMap();
     }
 
     @Override
     public void visit(ScenarioModel scenarioModel) {
-        Set<String> tagNames = scenarioModel.getTagIds().stream()
-                .map(this.currentTagMap::get)
-                .map(Tag::getName).collect(Collectors.toSet());
+        final List<String> tagNames = scenarioModel.getTagIds().stream()
+            .map(this.currentTagMap::get)
+            .map(Tag::getName).collect(Collectors.toList());
 
-        blockConverter.scenarioTitle(scenarioModel.getDescription(), scenarioModel.getExtendedDescription(),
-                scenarioModel.getExecutionStatus(), Duration.ofNanos(scenarioModel.getDurationInNanos()),
-                tagNames);
+        asciiDocBlocks.add(blockConverter.convertScenarioHeaderBlock(scenarioModel.getDescription(),
+            scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tagNames,
+            scenarioModel.getExtendedDescription()));
 
-        this.currentScenarioModel = scenarioModel;
-        this.isMultiCase = scenarioModel.getScenarioCases().size() > 1;
-        this.hasDataTable = scenarioModel.isCasesAsTable();
+        this.scenarioParameters = scenarioModel.getExplicitParameters();
+        this.scenarioIsMultiCase = scenarioModel.getScenarioCases().size() > 1;
+        this.scenarioHasDataTable = scenarioModel.isCasesAsTable();
     }
 
     @Override
     public void visit(ScenarioCaseModel scenarioCase) {
-        if (scenarioCase.getCaseNr() > 1 && hasDataTable) {
+        if (scenarioCase.getCaseNr() > 1 && scenarioHasDataTable) {
             this.skipCase = true;
             return;
         }
         this.skipCase = false;
         this.unsuccesfulCase = scenarioCase.getExecutionStatus() != ExecutionStatus.SUCCESS;
 
-        if (isMultiCase && !hasDataTable) {
+        if (scenarioIsMultiCase && !scenarioHasDataTable) {
             blockConverter.caseHeader(scenarioCase.getCaseNr(),
-                    currentScenarioModel.getExplicitParameters(), scenarioCase.getExplicitArguments());
+                scenarioParameters, scenarioCase.getExplicitArguments());
         }
         blockConverter.caseHeader();
     }
@@ -87,7 +88,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
                 blockConverter.introWord(word.getValue());
             } else if (word.isArg()) {
                 if (word.getArgumentInfo().isParameter()) {
-                    if (hasDataTable) {
+                    if (scenarioHasDataTable) {
                         blockConverter.stepArgumentPlaceHolder(word.getArgumentInfo().getParameterName());
                     } else {
                         blockConverter.stepCaseArgument(word.getFormattedValue());
@@ -105,7 +106,8 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
             }
         }
         if (this.unsuccesfulCase) {
-            blockConverter.stepEnd(lastWordWasDataTable, stepModel.getStatus(), Duration.ofNanos(stepModel.getDurationInNanos()), stepModel.getExtendedDescription());
+            blockConverter.stepEnd(lastWordWasDataTable, stepModel.getStatus(),
+                Duration.ofNanos(stepModel.getDurationInNanos()), stepModel.getExtendedDescription());
         } else {
             blockConverter.stepEnd(lastWordWasDataTable, stepModel.getExtendedDescription());
         }
@@ -119,7 +121,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
     @Override
     public void visitEnd(ScenarioModel scenarioModel) {
-        if (hasDataTable) {
+        if (scenarioHasDataTable) {
             blockConverter.dataTable(new ScenarioDataTableImpl(scenarioModel));
         }
         blockConverter.scenarioEnd();

@@ -1,5 +1,8 @@
 package com.tngtech.jgiven.report.asciidoc;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Stream.generate;
+
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.ScenarioDataTable;
@@ -7,14 +10,9 @@ import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.StepStatus;
-
 import java.io.PrintWriter;
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
-
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Stream.generate;
 
 class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
@@ -27,8 +25,10 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
 
     @Override
-    public String convertFeatureHeader(String featureName, ReportStatistics statistics, String description) {
+    public String convertFeatureHeaderBlock(final String featureName, final ReportStatistics statistics,
+                                            final String description) {
         StringBuilder blockContent = new StringBuilder();
+
         blockContent.append("=== ").append(featureName).append(NEW_LINE);
 
         blockContent.append(NEW_LINE);
@@ -37,8 +37,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         blockContent.append(statistics.numFailedScenarios).append(" Failed, ");
         blockContent.append(statistics.numPendingScenarios).append(" Pending, ");
         blockContent.append(statistics.numScenarios).append(" Total ");
-        blockContent.append(humanReadableDuration(statistics.durationInNanos));
-
+        blockContent.append(toHumanReadableDuration(statistics.durationInNanos));
 
         if (description != null) {
             blockContent.append(NEW_LINE);
@@ -51,25 +50,33 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     @Override
-    public void scenarioTitle(String title, String extendedDescription,
-                              ExecutionStatus executionStatus, Duration duration,
-                              Set<String> tagNames) {
-        writer.println();
-        writer.println("==== " + WordUtil.capitalize(title));
-        writer.println();
-        writer.println("[" + executionStatus + "] " + humanReadableDuration(duration.toNanos()));
-        writer.println();
+    public String convertScenarioHeaderBlock(final String name, final ExecutionStatus executionStatus,
+                                             final long duration, final List<String> tagNames,
+                                             final String extendedDescription) {
+        StringBuilder blockContent = new StringBuilder();
+
+        blockContent.append("==== ").append(WordUtil.capitalize(name)).append(NEW_LINE);
+
+        blockContent.append(NEW_LINE);
+
+        blockContent.append("[").append(toHumanReadableStatus(executionStatus)).append("] ")
+            .append(toHumanReadableDuration(duration));
+
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
-            writer.println(extendedDescription);
-            writer.println();
+            blockContent.append(NEW_LINE);
+            blockContent.append(NEW_LINE);
+            blockContent.append(extendedDescription);
         }
 
         if (!tagNames.isEmpty()) {
-            writer.print("Tags: ");
-            writer.println(tagNames.stream().map(tag -> "_" + tag + "_").collect(joining(", ")));
-            writer.println();
+            blockContent.append(NEW_LINE);
+            blockContent.append(NEW_LINE);
+            blockContent.append("Tags: ");
+            blockContent.append(tagNames.stream().map(tag -> "_" + tag + "_").collect(joining(", ")));
         }
+
+        return blockContent.toString();
     }
 
     @Override
@@ -131,10 +138,12 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     @Override
-    public void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration, String extendedDescription) {
-        writer.print("[.right]#[" + status + "] " + humanReadableDuration(duration.toNanos()) + "#");
+    public void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration,
+                        String extendedDescription) {
+        writer.print("[.right]#[" + status + "] " + toHumanReadableDuration(duration.toNanos()) + "#");
         stepEnd(lastWordWasDataTable, extendedDescription);
     }
+
     @Override
     public void stepEnd(boolean lastWordWasDataTable, String extendedDescription) {
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
@@ -209,7 +218,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     public void stepWord(String value, boolean differs) {
         if (differs) {
             writer.print("#" + value + "# ");
-        } else{
+        } else {
             writer.print(value + " ");
         }
     }
@@ -222,8 +231,22 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         return "pass:[" + argumentValue + "]";
     }
 
+    private static String toHumanReadableStatus(ExecutionStatus executionStatus) {
+        switch (executionStatus) {
+            case SCENARIO_PENDING:
+                // fall through
+            case SOME_STEPS_PENDING:
+                return "PENDING";
+            case SUCCESS:
+                // fall through
+            case FAILED:
+                // fall through
+            default:
+                return executionStatus.toString();
+        }
+    }
 
-    private static String humanReadableDuration(long nanos) {
+    private static String toHumanReadableDuration(long nanos) {
         Duration duration = Duration.ofNanos(nanos);
         return "(" + duration.getSeconds() + "s " + duration.getNano() / 1000000 + "ms)";
     }

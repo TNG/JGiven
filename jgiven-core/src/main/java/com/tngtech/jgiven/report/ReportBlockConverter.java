@@ -7,7 +7,6 @@ import com.tngtech.jgiven.report.model.StepStatus;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
 
 public interface ReportBlockConverter {
 
@@ -18,21 +17,22 @@ public interface ReportBlockConverter {
      * @param statistics  the execution statistics for the feature
      * @param description the description, may be {@code null}
      */
-    String convertFeatureHeader(String featureName, ReportStatistics statistics, String description);
+    String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics, String description);
 
     /**
-     * Is invoked for the title of the scenario.
+     * Convert scenario name and more meta information into scenario header.
      * <p>
-     * The title corresponds to the test method name
+     * The name corresponds to the test method name
      * </p>
      *
-     * @param title               the title of the scenario
-     * @param extendedDescription
-     * @param executionStatus
-     * @param duration
-     * @param tagNames
+     * @param name                the name of the scenario
+     * @param executionStatus     was the scenario successful
+     * @param duration            how long did the scenario run
+     * @param tagNames            names of the tags if scenario is tagged
+     * @param extendedDescription detailed description of the scenario, may be {@code null}
      */
-    void scenarioTitle(String title, String extendedDescription, ExecutionStatus executionStatus, Duration duration, Set<String> tagNames);
+    String convertScenarioHeaderBlock(String name, ExecutionStatus executionStatus, long duration,
+                                      List<String> tagNames, String extendedDescription);
 
     /**
      * Is invoked when a scenario has multiple cases, but no data table.
