@@ -118,7 +118,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
             blockContent.append(" | ").append(row.status()).append(NEW_LINE);
         }
-        blockContent.append("|===").append(NEW_LINE);
+        blockContent.append("|===");
         return blockContent.toString();
     }
 
