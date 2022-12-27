@@ -50,7 +50,7 @@ public interface ReportBlockConverter {
     /**
      * Is invoked at the end of a scenario, when the scenario has multiple case and a data table.
      *
-     * @param scenarioDataTable the data table of the scenario
+     * @param casesTable the data table of the scenario
      */
-    void dataTable(ScenarioDataTable scenarioDataTable);
+    String convertCasesTableBlock(CasesTable casesTable);
 }

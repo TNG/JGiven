@@ -4,7 +4,7 @@ import com.tngtech.jgiven.report.model.ExecutionStatus;
 
 import java.util.List;
 
-public interface ScenarioDataTable {
+public interface CasesTable {
     /**
      * The place holders of the data table
      */

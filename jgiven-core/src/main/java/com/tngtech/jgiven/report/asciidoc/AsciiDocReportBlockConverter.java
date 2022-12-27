@@ -5,7 +5,7 @@ import static java.util.stream.Stream.generate;
 
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.ReportBlockConverter;
-import com.tngtech.jgiven.report.ScenarioDataTable;
+import com.tngtech.jgiven.report.CasesTable;
 import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
@@ -98,6 +98,35 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     @Override
+    public String convertCasesTableBlock(CasesTable casesTable) {
+        StringBuilder blockContent = new StringBuilder();
+
+        blockContent.append(".Cases").append(NEW_LINE);
+        blockContent.append("[.jg-casesTable%header,cols=\"")
+            .append(generateTableColSpec(true, casesTable.placeHolders().size() + 1))
+            .append(",>1\"]").append(NEW_LINE);
+        blockContent.append("|===").append(NEW_LINE);
+
+        blockContent.append("| #");
+        for (String placeHolder : casesTable.placeHolders()) {
+            blockContent.append(" | ").append(placeHolder);
+        }
+        blockContent.append(" | Status").append(NEW_LINE);
+
+        for (CasesTable.Row row : casesTable.rows()) {
+            blockContent.append("| ").append(row.nr());
+
+            for (String value : row.arguments()) {
+                blockContent.append(" | ").append(escapeTableValue(value));
+            }
+
+            blockContent.append(" | ").append(row.status()).append(NEW_LINE);
+        }
+        blockContent.append("|===").append(NEW_LINE);
+        return blockContent.toString();
+    }
+
+    @Override
     public String convertStepBlock(final int depth, final List<Word> words, final StepStatus status,
                                    final long durationInNanos, final String extendedDescription,
                                    final boolean caseIsUnsuccessful, final String currentSectionTitle,
@@ -164,9 +193,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     private String buildDataTableHead(DataTable dataTable) {
-        final String colSpec = dataTable.hasVerticalHeader()
-            ? "h," + generate(() -> "1").limit(dataTable.getColumnCount() - 1).collect(joining(","))
-            : generate(() -> "1").limit(dataTable.getColumnCount()).collect(joining(","));
+        final String colSpec = generateTableColSpec(dataTable.hasVerticalHeader(), dataTable.getColumnCount());
 
         return "[.jg-argumentTable"
             + (dataTable.hasHorizontalHeader() ? "%header" : "")
@@ -213,31 +240,6 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
     }
 
-    @Override
-    public void dataTable(ScenarioDataTable scenarioDataTable) {
-        writer.println();
-        writer.println(".Cases");
-        writer.println("[options=\"header\"]");
-        writer.println("|===");
-
-        writer.print("| # ");
-        for (String placeHolder : scenarioDataTable.placeHolders()) {
-            writer.print(" | " + placeHolder);
-        }
-        writer.println(" | Status");
-
-        for (ScenarioDataTable.Row row : scenarioDataTable.rows()) {
-            writer.print("| " + row.nr());
-
-            for (String value : row.arguments()) {
-                writer.print(" | " + escapeTableValue(value));
-            }
-
-            writer.println(" | " + row.status());
-        }
-        writer.println("|===");
-    }
-
     private String escapeTableValue(String value) {
         return escapeArgumentValue(value.replace("|", "\\|"));
     }
@@ -246,6 +248,12 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         // TODO Is this really necessary?
         //return "+" + value + "+";
         return value;
+    }
+
+    private static String generateTableColSpec(boolean withVerticalHeader, int columnCount) {
+        return withVerticalHeader
+            ? "h," + generate(() -> "1").limit(columnCount - 1).collect(joining(","))
+            : generate(() -> "1").limit(columnCount).collect(joining(","));
     }
 
     private static String toHumanReadableStatus(ExecutionStatus executionStatus) {

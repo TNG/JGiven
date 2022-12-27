@@ -1,9 +1,19 @@
 package com.tngtech.jgiven.report.asciidoc;
 
 import com.tngtech.jgiven.report.ReportBlockConverter;
-import com.tngtech.jgiven.report.model.*;
-
-import java.util.*;
+import com.tngtech.jgiven.report.model.ExecutionStatus;
+import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ReportModelVisitor;
+import com.tngtech.jgiven.report.model.ReportStatistics;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.StepModel;
+import com.tngtech.jgiven.report.model.Tag;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 class AsciiDocReportModelVisitor extends ReportModelVisitor {
@@ -80,15 +90,14 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
             stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
             stepModel.getExtendedDescription(), this.caseIsUnsuccessful, currentSectionTitle, scenarioHasDataTable));
 
-        // clear section title after first step
+        // clear section title after first step in section
         currentSectionTitle = null;
     }
 
     @Override
     public void visitEnd(ScenarioModel scenarioModel) {
-        if (scenarioHasDataTable) {
-            ScenarioDataTableImpl scenarioDataTable = new ScenarioDataTableImpl(scenarioModel);
-            blockConverter.dataTable(scenarioDataTable);
+        if (scenarioModel.isCasesAsTable()) {
+            asciiDocBlocks.add(blockConverter.convertCasesTableBlock(new CasesTableImpl(scenarioModel)));
         }
     }
 

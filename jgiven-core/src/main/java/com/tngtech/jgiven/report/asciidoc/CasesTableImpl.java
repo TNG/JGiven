@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.report.asciidoc;
 
 import com.google.common.collect.Lists;
-import com.tngtech.jgiven.report.ScenarioDataTable;
+import com.tngtech.jgiven.report.CasesTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
@@ -9,10 +9,10 @@ import com.tngtech.jgiven.report.model.ScenarioModel;
 import java.util.ArrayList;
 import java.util.List;
 
-class ScenarioDataTableImpl implements ScenarioDataTable {
+class CasesTableImpl implements CasesTable {
     private final ScenarioModel scenarioModel;
 
-    ScenarioDataTableImpl(ScenarioModel scenarioModel) {
+    CasesTableImpl(ScenarioModel scenarioModel) {
         this.scenarioModel = scenarioModel;
     }
 
