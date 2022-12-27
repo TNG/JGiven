@@ -3,25 +3,25 @@ package com.tngtech.jgiven.report.asciidoc;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.*;
 
-import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
 class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
-    private final ReportStatistics statistics;
     private final ReportBlockConverter blockConverter;
     private final List<String> asciiDocBlocks;
+    private final ReportStatistics featureStatistics;
     private Map<String, Tag> featureTagMap;
     private boolean scenarioHasDataTable;
     private List<String> explicitScenarioParameters;
     private boolean skipCurrentCase;
     private boolean caseIsUnsuccessful;
+    private String currentSectionTitle;
 
-    public AsciiDocReportModelVisitor(ReportStatistics statistics, ReportBlockConverter blockConverter) {
-        this.statistics = statistics;
+    public AsciiDocReportModelVisitor(ReportBlockConverter blockConverter, ReportStatistics featureStatistics) {
         this.blockConverter = blockConverter;
         this.asciiDocBlocks = new ArrayList<>();
+        this.featureStatistics = featureStatistics;
     }
 
     @Override
@@ -31,7 +31,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
             .orElse(reportModel.getClassName());
 
         asciiDocBlocks.add(
-            blockConverter.convertFeatureHeaderBlock(featureName, statistics, reportModel.getDescription()));
+            blockConverter.convertFeatureHeaderBlock(featureName, featureStatistics, reportModel.getDescription()));
 
         featureTagMap = reportModel.getTagMap();
     }
@@ -72,61 +72,27 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         }
 
         if (stepModel.isSectionTitle()) {
-            asciiDocBlocks.add(blockConverter.sectionTitle(stepModel.getName()));
+            currentSectionTitle = stepModel.getName();
             return;
         }
 
-        blockConverter.stepStart(stepModel.getDepth());
+        asciiDocBlocks.add(blockConverter.convertStepBlock(
+            stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
+            stepModel.getExtendedDescription(), this.caseIsUnsuccessful, currentSectionTitle, scenarioHasDataTable));
 
-        boolean lastWordWasDataTable = false;
-        for (Word word : stepModel.getWords()) {
-            lastWordWasDataTable = false;
-            if (word.isIntroWord()) {
-                blockConverter.introWord(word.getValue());
-            } else if (word.isArg()) {
-                if (word.getArgumentInfo().isParameter()) {
-                    if (scenarioHasDataTable) {
-                        blockConverter.stepArgumentPlaceHolder(word.getArgumentInfo().getParameterName());
-                    } else {
-                        blockConverter.stepCaseArgument(word.getFormattedValue());
-                    }
-                } else {
-                    if (word.getArgumentInfo().isDataTable()) {
-                        blockConverter.stepDataTableArgument(word.getArgumentInfo().getDataTable());
-                        lastWordWasDataTable = true;
-                    } else {
-                        blockConverter.stepArgument(word.getFormattedValue(), word.isDifferent());
-                    }
-                }
-            } else {
-                blockConverter.stepWord(word.getFormattedValue(), word.isDifferent());
-            }
-        }
-        if (this.caseIsUnsuccessful) {
-            blockConverter.stepEnd(lastWordWasDataTable, stepModel.getStatus(),
-                Duration.ofNanos(stepModel.getDurationInNanos()), stepModel.getExtendedDescription());
-        } else {
-            blockConverter.stepEnd(lastWordWasDataTable, stepModel.getExtendedDescription());
-        }
-
-    }
-
-    @Override
-    public void visitEnd(ScenarioCaseModel scenarioCase) {
-        super.visitEnd(scenarioCase);
+        // clear section title after first step
+        currentSectionTitle = null;
     }
 
     @Override
     public void visitEnd(ScenarioModel scenarioModel) {
         if (scenarioHasDataTable) {
-            blockConverter.dataTable(new ScenarioDataTableImpl(scenarioModel));
+            ScenarioDataTableImpl scenarioDataTable = new ScenarioDataTableImpl(scenarioModel);
+            blockConverter.dataTable(scenarioDataTable);
         }
-        blockConverter.scenarioEnd();
     }
 
-    @Override
-    public void visitEnd(ReportModel testCaseModel) {
-        super.visitEnd(testCaseModel);
+    public List<String> getResult() {
+        return Collections.unmodifiableList(asciiDocBlocks);
     }
-
 }

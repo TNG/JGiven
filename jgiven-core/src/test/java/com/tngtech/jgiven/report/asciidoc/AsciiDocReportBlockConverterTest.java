@@ -1,7 +1,12 @@
 package com.tngtech.jgiven.report.asciidoc;
 
+import com.google.common.collect.ImmutableList;
+import com.tngtech.jgiven.annotation.Table;
+import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
+import com.tngtech.jgiven.report.model.StepStatus;
+import com.tngtech.jgiven.report.model.Word;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -70,7 +75,7 @@ public class AsciiDocReportBlockConverterTest {
 
         // act
         String block = converter.convertScenarioHeaderBlock("my first scenario", ExecutionStatus.FAILED,
-                1000300000L, tagNames, null);
+            1000300000L, tagNames, null);
 
         // assert
         Assertions.assertThat(block).hasLineCount(3)
@@ -185,13 +190,196 @@ public class AsciiDocReportBlockConverterTest {
     }
 
     @Test
-    public void sectionTitle() {
+    public void convert_step_without_description() {
         // arrange
+        List<Word> words = ImmutableList.of(
+            Word.introWord("given"),
+            new Word("a coffee machine"));
 
         // act
-        final String block = converter.sectionTitle("first section of scenario");
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null,
+            false, null, false);
 
         // assert
-        Assertions.assertThat(block).isEqualTo(".first section of scenario");
+        Assertions.assertThat(block).isEqualTo("* [.jg-introWord]*Given* a coffee machine");
+    }
+
+    @Test
+    public void convert_step_with_description() {
+        // arrange
+        List<Word> words = ImmutableList.of(
+            Word.introWord("given"),
+            new Word("a coffee machine"));
+
+        // act
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899,
+            "It is a brand new machine.", false, null, false);
+
+        // assert
+        Assertions.assertThat(block).hasLineCount(2).containsSequence(
+            "* [.jg-introWord]*Given* a coffee machine +\n",
+            "_It is a brand new machine._");
+    }
+
+    @Test
+    public void convert_failed_step_without_description() {
+        // arrange
+        List<Word> words = Collections.singletonList(Word.introWord("given"));
+
+        // act
+        String block = converter.convertStepBlock(0, words, StepStatus.FAILED, 3000899,
+            null, true, null, false);
+
+        // assert
+        Assertions.assertThat(block).isEqualTo("* [.jg-introWord]*Given*[.right]#[FAILED] (0s 3ms)#");
+    }
+
+    @Test
+    public void convert_first_step_in_section() {
+        // arrange
+        List<Word> words = Collections.singletonList(Word.introWord("given"));
+
+        // act
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899,
+            null, false, "First section", false);
+
+        // assert
+        Assertions.assertThat(block).isEqualTo(".First section\n" +
+            "* [.jg-introWord]*Given*");
+    }
+
+
+    @Test
+    public void convert_step_with_simple_argument() {
+        // arrange
+        List<Word> words = ImmutableList.of(
+            Word.introWord("given"),
+            new Word("a coffee machine with"),
+            Word.argWord("ncoffees", "0", "0"),
+            new Word("coffees"));
+
+        // act
+        String block =
+            converter.convertStepBlock(0, words, StepStatus.PASSED, 3899,
+                null,
+                false, null, false);
+
+        // assert
+        Assertions.assertThat(block).isEqualTo(
+            "* [.jg-introWord]*Given* a coffee machine with [.jg-argument]_0_ coffees");
+    }
+
+    @Test
+    public void convert_step_with_multiline_argument() {
+        // arrange
+        List<Word> words = ImmutableList.of(
+            Word.introWord("given"),
+            new Word("a coffee machine with"),
+            Word.argWord("description", "0", "very nice text\nand also more text"));
+
+        // act
+        String block =
+            converter.convertStepBlock(0, words, StepStatus.PASSED, 3899,
+                null,
+                false, null, false);
+
+        // assert
+        Assertions.assertThat(block).hasLineCount(7)
+            .containsSequence(
+                "* [.jg-introWord]*Given* a coffee machine with\n",
+                "+\n",
+                "[.jg-argument]\n",
+                "....\n",
+                "very nice text\n",
+                "and also more text\n",
+                "....");
+    }
+
+    @Test
+    public void convert_step_with_parameter() {
+        // arrange
+        Word ncoffees = Word.argWord("coffee count", "0", "0");
+        ncoffees.getArgumentInfo().setParameterName("coffee count");
+
+        List<Word> words = ImmutableList.of(
+            Word.introWord("given"),
+            new Word("a coffee machine with"),
+            ncoffees,
+            new Word("coffees"));
+
+        // act
+        String block =
+            converter.convertStepBlock(0, words, StepStatus.PASSED, 3899,
+                null,
+                false, null, false);
+
+        // assert
+        Assertions.assertThat(block).isEqualTo(
+            "* [.jg-introWord]*Given* a coffee machine with [.jg-argument]*<coffee count>* coffees");
+    }
+
+    @Test
+    public void convert_step_with_data_table_with_horizontal_header() {
+        // arrange
+        ImmutableList<List<String>> productsTable = ImmutableList.of(
+            ImmutableList.of("product", "price"),
+            ImmutableList.of("apples", "23"),
+            ImmutableList.of("pears", "42")
+        );
+        List<Word> words = ImmutableList.of(
+            Word.introWord("given"),
+            new Word("the products"),
+            Word.argWord("products", productsTable.toString(),
+                new DataTable(Table.HeaderType.HORIZONTAL, productsTable)));
+
+        // act
+        String block =
+            converter.convertStepBlock(0, words, StepStatus.PASSED, 3899,
+                null,
+                false, null, false);
+
+        // assert
+        Assertions.assertThat(block).hasLineCount(8)
+            .containsSequence(
+                "* [.jg-introWord]*Given* the products\n",
+                "+\n",
+                "[.jg-argumentTable%header,cols=\"1,1\"]\n",
+                "|===\n",
+                "|product|price\n",
+                "|apples|23\n",
+                "|pears|42\n",
+                "|===");
+    }
+
+    @Test
+    public void convert_step_with_data_table_vertical_header() {
+        // arrange
+        ImmutableList<List<String>> productsTable = ImmutableList.of(
+            ImmutableList.of("product", "apples", "pears"),
+            ImmutableList.of("price", "23", "42")
+        );
+        List<Word> words = ImmutableList.of(
+            Word.introWord("given"),
+            new Word("the products"),
+            Word.argWord("products", productsTable.toString(),
+                new DataTable(Table.HeaderType.VERTICAL, productsTable)));
+
+        // act
+        String block =
+            converter.convertStepBlock(0, words, StepStatus.PASSED, 3899,
+                null,
+                false, null, false);
+
+        // assert
+
+        Assertions.assertThat(block).hasLineCount(7)
+            .containsSequence(
+                "* [.jg-introWord]*Given* the products\n",
+                "+\n",
+                "[.jg-argumentTable,cols=\"h,1,1\"]\n",
+                "|===\n",
+                "|product|apples|pears\n",
+                "|price|23|42\n",
+                "|===");
     }
 }

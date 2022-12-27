@@ -10,13 +10,14 @@ import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.StepStatus;
+import com.tngtech.jgiven.report.model.Word;
 import java.io.PrintWriter;
 import java.time.Duration;
 import java.util.List;
 
 class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
-    public static final String NEW_LINE = System.getProperty("line.separator");
+    private static final String NEW_LINE = System.getProperty("line.separator");
     private final PrintWriter writer;
 
     AsciiDocReportBlockConverter(PrintWriter printWriter) {
@@ -97,6 +98,122 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     @Override
+    public String convertStepBlock(final int depth, final List<Word> words, final StepStatus status,
+                                   final long durationInNanos, final String extendedDescription,
+                                   final boolean caseIsUnsuccessful, final String currentSectionTitle,
+                                   boolean scenarioHasDataTable) {
+
+        StringBuilder blockContent = new StringBuilder();
+
+        if (currentSectionTitle != null && !currentSectionTitle.isEmpty()) {
+            blockContent.append(".").append(currentSectionTitle).append(NEW_LINE);
+        }
+
+        for (int i = 0; i <= depth; i++) {
+            blockContent.append("*");
+        }
+        blockContent.append(" ");
+
+        appendWordFragments(blockContent, words);
+
+        blockContent.append(buildStepEndFragment(caseIsUnsuccessful, status, durationInNanos, extendedDescription));
+        return blockContent.toString();
+    }
+
+    private void appendWordFragments(final StringBuilder blockContent, final List<Word> words) {
+        for (Word word : words) {
+            if (word.isIntroWord()) {
+                blockContent.append(buildIntroWordFragment(word.getFormattedValue()));
+            } else if (word.isDataTable()) {
+                blockContent.append(buildDataTableFragment(word.getArgumentInfo().getDataTable()));
+            } else if (word.isArg() && word.getArgumentInfo().isParameter()) {
+                blockContent.append(buildParameterWordFragment(word.getArgumentInfo().getParameterName()));
+            } else if (word.isArg()) {
+                blockContent.append(buildArgumentWordFragment(word.getFormattedValue()));
+            } else {
+                blockContent.append(buildOtherWordFragment(word.getFormattedValue(), word.isDifferent()));
+            }
+        }
+    }
+
+    private String buildIntroWordFragment(String word) {
+        return "[.jg-introWord]*" + WordUtil.capitalize(word) + "*";
+    }
+
+
+    private String buildDataTableFragment(DataTable dataTable) {
+        final List<List<String>> rows = dataTable.getData();
+        if (rows.isEmpty()) {
+            return "";
+        }
+
+        final StringBuilder fragmentContent = new StringBuilder();
+
+        fragmentContent.append(NEW_LINE).append("+").append(NEW_LINE);
+        fragmentContent.append(buildDataTableHead(dataTable)).append(NEW_LINE);
+
+        fragmentContent.append("|===").append(NEW_LINE);
+        for (List<String> row : rows) {
+            for (String cell : row) {
+                fragmentContent.append("|").append(cell);
+            }
+            fragmentContent.append(NEW_LINE);
+        }
+        fragmentContent.append("|===");
+        return fragmentContent.toString();
+    }
+
+    private String buildDataTableHead(DataTable dataTable) {
+        final String colSpec = dataTable.hasVerticalHeader()
+            ? "h," + generate(() -> "1").limit(dataTable.getColumnCount() - 1).collect(joining(","))
+            : generate(() -> "1").limit(dataTable.getColumnCount()).collect(joining(","));
+
+        return "[.jg-argumentTable"
+            + (dataTable.hasHorizontalHeader() ? "%header" : "")
+            + ",cols=\"" + colSpec + "\"]";
+    }
+
+    private String buildParameterWordFragment(String placeHolderValue) {
+        return " [.jg-argument]*<" + placeHolderValue + ">*";
+    }
+
+    private String buildArgumentWordFragment(String argumentValue) {
+        if (argumentValue.contains("\n")) {
+            return "\n"
+                + "+\n"
+                + "[.jg-argument]\n"
+                + "....\n"
+                + argumentValue + "\n"
+                + "....\n";
+        } else {
+            return " [.jg-argument]_" + escapeArgumentValue(argumentValue) + "_";
+        }
+    }
+
+    private String buildOtherWordFragment(String word, boolean differs) {
+        if (differs) {
+            return " #" + word + "#";
+        } else {
+            return " " + word;
+        }
+    }
+
+    private String buildStepEndFragment(final boolean caseIsUnsuccessful, final StepStatus status, final long duration,
+                                        final String extendedDescription) {
+        final String stepStatus = caseIsUnsuccessful
+            ? "[.right]#[" + status + "] " + toHumanReadableDuration(duration) + "#"
+            : "";
+
+
+        if (extendedDescription != null && !extendedDescription.isEmpty()) {
+            return stepStatus + " +\n"
+                + "_" + extendedDescription + "_";
+        } else {
+            return stepStatus;
+        }
+    }
+
+    @Override
     public void dataTable(ScenarioDataTable scenarioDataTable) {
         writer.println();
         writer.println(".Cases");
@@ -121,115 +238,14 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         writer.println("|===");
     }
 
-    @Override
-    public void scenarioEnd() {
-    }
-
-    @Override
-    public String sectionTitle(String title) {
-        return "." + title;
-    }
-
-    @Override
-    public void stepStart(int depth) {
-        for (int i = 0; i <= depth; i++) {
-            writer.print("*");
-        }
-        writer.print(" ");
-    }
-
-    @Override
-    public void stepEnd(boolean lastWordWasDataTable, StepStatus status, Duration duration,
-                        String extendedDescription) {
-        writer.print("[.right]#[" + status + "] " + toHumanReadableDuration(duration.toNanos()) + "#");
-        stepEnd(lastWordWasDataTable, extendedDescription);
-    }
-
-    @Override
-    public void stepEnd(boolean lastWordWasDataTable, String extendedDescription) {
-        if (extendedDescription != null && !extendedDescription.isEmpty()) {
-            writer.println(" +");
-            writer.println("_" + extendedDescription + "_");
-        } else {
-            writer.println();
-        }
-    }
-
-    @Override
-    public void introWord(String value) {
-        writer.print("[.introWord]*" + value + "* ");
-    }
-
-    @Override
-    public void stepArgumentPlaceHolder(String placeHolderValue) {
-        writer.print("[.stepArgument]*<" + placeHolderValue + ">* ");
-    }
-
-    @Override
-    public void stepCaseArgument(String caseArgumentValue) {
-        writer.print("[.stepArgument]*" + escapeArgument(caseArgumentValue) + "* ");
-    }
-
-    @Override
-    public void stepArgument(String argumentValue, boolean differs) {
-        if (argumentValue.contains("\n")) {
-            writer.println("\n");
-            writer.println("[.stepArgument]");
-            writer.println("....");
-            writer.println(argumentValue);
-            writer.println("....");
-            writer.println();
-        } else {
-            writer.print("[.stepArgument]_" + escapeArgument(argumentValue) + "_ ");
-        }
-    }
-
-    @Override
-    public void stepDataTableArgument(DataTable dataTable) {
-        List<List<String>> rows = dataTable.getData();
-        if (rows.isEmpty()) {
-            return;
-        }
-
-        String colsSpec;
-        if (dataTable.hasVerticalHeader()) {
-            colsSpec = "h," + generate(() -> "1").limit(dataTable.getColumnCount() - 1).collect(joining(","));
-        } else {
-            colsSpec = generate(() -> "1").limit(dataTable.getColumnCount()).collect(joining(","));
-        }
-
-        writer.println();
-        writer.println("+");
-        if (dataTable.hasHorizontalHeader()) {
-            writer.println("[.stepArgument%header,cols=\"" + colsSpec + "\"]");
-        } else {
-            writer.println("[.stepArgument,cols=\"" + colsSpec + "\"]");
-        }
-
-        writer.println("|===");
-        rows.forEach(row -> {
-            row.forEach(cell -> writer.println("|" + cell));
-            writer.println();
-        });
-        writer.println("|===");
-        writer.println();
-    }
-
-    @Override
-    public void stepWord(String value, boolean differs) {
-        if (differs) {
-            writer.print("#" + value + "# ");
-        } else {
-            writer.print(value + " ");
-        }
-    }
-
     private String escapeTableValue(String value) {
-        return escapeArgument(value.replace("|", "\\|"));
+        return escapeArgumentValue(value.replace("|", "\\|"));
     }
 
-    private String escapeArgument(String argumentValue) {
-        return "pass:[" + argumentValue + "]";
+    private String escapeArgumentValue(String value) {
+        // TODO Is this really necessary?
+        //return "+" + value + "+";
+        return value;
     }
 
     private static String toHumanReadableStatus(ExecutionStatus executionStatus) {
@@ -251,4 +267,5 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         Duration duration = Duration.ofNanos(nanos);
         return "(" + duration.getSeconds() + "s " + duration.getNano() / 1000000 + "ms)";
     }
+
 }

@@ -49,7 +49,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         try {
             AsciiDocReportBlockConverter blockConverter = new AsciiDocReportBlockConverter(printWriter);
-            AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(statistics, blockConverter);
+            AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
             model.accept(visitor);
         } finally {
             ResourceUtil.close(printWriter);
