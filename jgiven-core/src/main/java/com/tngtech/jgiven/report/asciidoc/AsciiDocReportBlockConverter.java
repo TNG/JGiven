@@ -33,11 +33,12 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         blockContent.append(statistics.numScenarios).append(" Total ");
         blockContent.append(toHumanReadableDuration(statistics.durationInNanos));
 
-        if (description != null) {
+        if (description != null && !description.isEmpty()) {
             blockContent.append(NEW_LINE);
             blockContent.append(NEW_LINE);
-
-            blockContent.append(description);
+            blockContent.append("++++").append(NEW_LINE);
+            blockContent.append(description).append(NEW_LINE);
+            blockContent.append("++++");
         }
 
         return blockContent.toString();
@@ -60,7 +61,9 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
             blockContent.append(NEW_LINE);
             blockContent.append(NEW_LINE);
-            blockContent.append(extendedDescription);
+            blockContent.append("++++").append(NEW_LINE);
+            blockContent.append(extendedDescription).append(NEW_LINE);
+            blockContent.append("++++");
         }
 
         if (!tagNames.isEmpty()) {
@@ -131,14 +134,12 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
             blockContent.append(".").append(currentSectionTitle).append(NEW_LINE);
         }
 
-        for (int i = 0; i <= depth; i++) {
-            blockContent.append("*");
-        }
-        blockContent.append(" ");
+        blockContent.append(buildIndentationFragment(depth, "*"));
 
         appendWordFragments(blockContent, words);
 
-        blockContent.append(buildStepEndFragment(caseIsUnsuccessful, status, durationInNanos, extendedDescription));
+        blockContent.append(buildStepEndFragment(
+            depth, caseIsUnsuccessful, status, durationInNanos, extendedDescription));
         return blockContent.toString();
     }
 
@@ -218,16 +219,17 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
     }
 
-    private String buildStepEndFragment(final boolean caseIsUnsuccessful, final StepStatus status, final long duration,
+    private String buildStepEndFragment(int depth, final boolean caseIsUnsuccessful, final StepStatus status,
+                                        final long duration,
                                         final String extendedDescription) {
         final String stepStatus = caseIsUnsuccessful
-            ? "[.right]#[" + status + "] " + toHumanReadableDuration(duration) + "#"
+            ? " [.right]#[" + status + "] " + toHumanReadableDuration(duration) + "#"
             : "";
 
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
             return stepStatus + " +\n"
-                + "_" + extendedDescription + "_";
+                + buildIndentationFragment(depth, " ") + "_+++" + extendedDescription + "+++_";
         } else {
             return stepStatus;
         }
@@ -241,6 +243,10 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         // TODO Is this really necessary?
         //return "+" + value + "+";
         return value;
+    }
+
+    private static String buildIndentationFragment(int depth, String symbol) {
+        return generate(() -> symbol).limit(depth + 1).collect(joining()) + " ";
     }
 
     private static String generateTableColSpec(boolean withVerticalHeader, int columnCount) {

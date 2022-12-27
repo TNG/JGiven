@@ -63,13 +63,15 @@ public class AsciiDocReportBlockConverterTest {
             "My first feature", statistics, "A very nice feature.");
 
         // assert
-        assertThat(block).hasLineCount(5)
+        assertThat(block).hasLineCount(7)
             .containsSequence(
                 "=== My first feature\n",
                 "\n",
                 "8 Successful, 21 Failed, 13 Pending, 42 Total (0s 0ms)\n",
                 "\n",
-                "A very nice feature");
+                "++++\n",
+                "A very nice feature.\n",
+                "++++");
     }
 
     @Test
@@ -119,13 +121,15 @@ public class AsciiDocReportBlockConverterTest {
             2005000000L, tagNames, "Best scenario ever!!!");
 
         // assert
-        assertThat(block).hasLineCount(5)
+        assertThat(block).hasLineCount(7)
             .containsSequence(
                 "=== My first scenario\n",
                 "\n",
                 "[PENDING] (2s 5ms)\n",
                 "\n",
-                "Best scenario ever!!!");
+                "++++\n",
+                "Best scenario ever!!!\n",
+                "++++");
     }
 
     @Test
@@ -139,13 +143,15 @@ public class AsciiDocReportBlockConverterTest {
             3000000000L, tagNames, "Best scenario ever!!!");
 
         // assert
-        assertThat(block).hasLineCount(7)
+        assertThat(block).hasLineCount(9)
             .containsSequence(
                 "=== My first scenario\n",
                 "\n",
                 "[SUCCESS] (3s 0ms)\n",
                 "\n",
+                "++++\n",
                 "Best scenario ever!!!\n",
+                "++++\n",
                 "\n",
                 "Tags: _Best Tag_");
     }
@@ -222,7 +228,7 @@ public class AsciiDocReportBlockConverterTest {
         // assert
         assertThat(block).hasLineCount(2).containsSequence(
             "* [.jg-introWord]*Given* a coffee machine +\n",
-            "_It is a brand new machine._");
+            "  _+++It is a brand new machine.+++_");
     }
 
     @Test
@@ -235,7 +241,7 @@ public class AsciiDocReportBlockConverterTest {
             null, true, null, false);
 
         // assert
-        assertThat(block).isEqualTo("* [.jg-introWord]*Given*[.right]#[FAILED] (0s 3ms)#");
+        assertThat(block).isEqualTo("* [.jg-introWord]*Given* [.right]#[FAILED] (0s 3ms)#");
     }
 
     @Test
