@@ -25,7 +25,7 @@ public class AsciiDocReportBlockConverterTest {
 
     @Before
     public void setUp() {
-        converter = new AsciiDocReportBlockConverter(null);
+        converter = new AsciiDocReportBlockConverter();
     }
 
     @Test

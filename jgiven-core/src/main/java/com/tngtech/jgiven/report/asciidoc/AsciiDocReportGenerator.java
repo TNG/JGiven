@@ -1,17 +1,16 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.List;
-
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
-import com.tngtech.jgiven.impl.util.ResourceUtil;
-import com.tngtech.jgiven.report.*;
+import com.tngtech.jgiven.report.AbstractReportConfig;
+import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 import com.tngtech.jgiven.report.model.ReportStatistics;
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +19,11 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     private static final Logger log = LoggerFactory.getLogger(AsciiDocReportGenerator.class);
 
     private final List<String> features = Lists.newArrayList();
+    private final AsciiDocReportBlockConverter blockConverter;
+
+    public AsciiDocReportGenerator() {
+        blockConverter = new AsciiDocReportBlockConverter();
+    }
 
     public AbstractReportConfig createReportConfig(String... args) {
         return new AsciiDocReportConfig(args);
@@ -33,39 +37,41 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         }
 
         for (ReportModelFile reportModelFile : completeReportModel.getAllReportModels()) {
-            writeReportModelToFile(
-                    reportModelFile.model, reportModelFile.file, completeReportModel.getStatistics(reportModelFile));
+            writeFeatureToFile(reportModelFile.model, reportModelFile.file,
+                completeReportModel.getStatistics(reportModelFile));
         }
 
         generateIndexFile();
     }
 
-    private void writeReportModelToFile(ReportModel model, File file, ReportStatistics statistics) {
+    private void writeFeatureToFile(final ReportModel model, final File file, final ReportStatistics statistics) {
         String featureFileName = Files.getNameWithoutExtension(file.getName()) + ".asciidoc";
-
         features.add(featureFileName);
-        File targetFile = new File(config.getTargetDir(), featureFileName);
-        PrintWriter printWriter = PrintWriterUtil.getPrintWriter(targetFile);
 
-        try {
-            AsciiDocReportBlockConverter blockConverter = new AsciiDocReportBlockConverter(printWriter);
+        File targetFile = new File(config.getTargetDir(), featureFileName);
+        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(targetFile)) {
             AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
             model.accept(visitor);
-        } finally {
-            ResourceUtil.close(printWriter);
+
+            String fileContent = String.join("\n\n", visitor.getResult());
+
+            printWriter.println(fileContent);
         }
     }
 
     private void generateIndexFile() {
-        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(config.getTargetDir(), "index.asciidoc"))) {
+        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(
+            new File(config.getTargetDir(), "index.asciidoc"))) {
             convertIndex(printWriter);
         }
 
-        try (PrintWriter writer = PrintWriterUtil.getPrintWriter(new File(config.getTargetDir(), "totalStatistics.asciidoc"))) {
+        try (PrintWriter writer = PrintWriterUtil.getPrintWriter(
+            new File(config.getTargetDir(), "totalStatistics.asciidoc"))) {
             generateStatistics(writer);
         }
 
-        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(config.getTargetDir(), "allClasses.asciidoc"))) {
+        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(
+            new File(config.getTargetDir(), "allClasses.asciidoc"))) {
             generateIncludes(printWriter);
         }
     }

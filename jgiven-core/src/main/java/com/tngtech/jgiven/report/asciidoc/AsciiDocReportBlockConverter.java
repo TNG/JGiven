@@ -4,26 +4,19 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.generate;
 
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.CasesTable;
+import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Word;
-import java.io.PrintWriter;
 import java.time.Duration;
 import java.util.List;
 
 class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     private static final String NEW_LINE = System.getProperty("line.separator");
-    private final PrintWriter writer;
-
-    AsciiDocReportBlockConverter(PrintWriter printWriter) {
-        this.writer = printWriter;
-    }
-
 
     @Override
     public String convertFeatureHeaderBlock(final String featureName, final ReportStatistics statistics,
