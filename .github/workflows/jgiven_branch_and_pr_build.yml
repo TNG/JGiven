@@ -9,8 +9,8 @@ jobs:
       ANDROID: true
     strategy:
       matrix:
-        java: [ '8', '11', '13']
-        junit: [ '4.9', '4.13' ]
+        java: [ '11', '13', '18']
+        junit: ['4.12','4.13']
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{matrix.java}}
@@ -25,7 +25,7 @@ jobs:
           JUNIT_VERSION: ${{matrix.junit}}
         run:   "./gradlew -i -s check -DjunitVersion=${JUNIT_VERSION}"
       - name: Run Jacoco
-        if: ${{matrix.java == '8' && github.ref == 'refs/heads/master' && github.head_ref == null}}
+        if: ${{matrix.java == '11' && github.ref == 'refs/heads/master' && github.head_ref == null}}
         run: ./gradlew overallJacocoReport coveralls
       - name: Upload test results html files
         continue-on-error: true
