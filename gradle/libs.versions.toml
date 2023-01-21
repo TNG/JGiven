@@ -6,7 +6,7 @@ slf4j-version = "2.0.6"
 spring-version = "5.3.25"
 
 [libraries]
-assertj = { module = "org.assertj:assertj-core", version = "3.24.1" }
+assertj = { module = "org.assertj:assertj-core", version = "3.24.2" }
 aspectj-jrt = { module = "org.aspectj:aspectjrt", version.ref = "aspectj-version" }
 aspectj-jweaver = { module = "org.aspectj:aspectjweaver", version.ref = "aspectj-version" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy-version" }
