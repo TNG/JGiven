@@ -287,6 +287,10 @@ public class TestScenarioRepository {
         return new TestScenario(TestWithPerClassLifecycle.class);
     }
 
+    public static TestScenario attachmentRenderingTest(){
+        return new TestScenario(AttachmentRenderingTest.class);
+    }
+
     public static TestScenario testNgClassWithParallelTestsAndInjectedStages() {
         return new TestScenario(TestNgFailingParallelTest.class);
     }
