@@ -77,24 +77,33 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     @Override
-    public String convertCaseHeaderBlock(int caseNr, List<String> parameterNames, List<String> parameterValues) {
+    public String convertCaseHeaderBlock(final int caseNr, final List<String> parameterNames,
+                                         final List<String> parameterValues, final String description) {
         StringBuilder blockContent = new StringBuilder();
 
         blockContent.append("===== Case ").append(caseNr);
 
-        if (parameterNames.size() >= 1) {
-            blockContent.append(" ").append(parameterNames.get(0)).append(" = ").append(parameterValues.get(0));
+        if (description != null && !description.isEmpty()) {
+            blockContent.append(" ").append(description);
         }
 
-        for (int i = 1; i < parameterNames.size(); i++) {
-            blockContent.append(", ").append(parameterNames.get(i)).append(" = ").append(parameterValues.get(i));
+        if (parameterNames.size() >= 1) {
+            blockContent.append(NEW_LINE).append(NEW_LINE);
+
+            blockContent.append("====").append(NEW_LINE);
+            blockContent.append(parameterNames.get(0)).append(" = ").append(parameterValues.get(0));
+
+            for (int i = 1; i < parameterNames.size(); i++) {
+                blockContent.append(", ").append(parameterNames.get(i)).append(" = ").append(parameterValues.get(i));
+            }
+            blockContent.append(NEW_LINE).append("====");
         }
 
         return blockContent.toString();
     }
 
     @Override
-    public String convertCasesTableBlock(CasesTable casesTable) {
+    public String convertCasesTableBlock(final CasesTable casesTable) {
         StringBuilder blockContent = new StringBuilder();
 
         blockContent.append(".Cases").append(NEW_LINE);
@@ -159,12 +168,12 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
     }
 
-    private String buildIntroWordFragment(String word) {
+    private String buildIntroWordFragment(final String word) {
         return "[.jg-introWord]*" + WordUtil.capitalize(word) + "*";
     }
 
 
-    private String buildDataTableFragment(DataTable dataTable) {
+    private String buildDataTableFragment(final DataTable dataTable) {
         final List<List<String>> rows = dataTable.getData();
         if (rows.isEmpty()) {
             return "";
@@ -186,32 +195,32 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         return fragmentContent.toString();
     }
 
-    private String buildDataTableHead(DataTable dataTable) {
+    private String buildDataTableHead(final DataTable dataTable) {
         final String colSpec = generateTableColSpec(dataTable.hasVerticalHeader(), dataTable.getColumnCount());
 
         return "[.jg-argumentTable"
-            + (dataTable.hasHorizontalHeader() ? "%header" : "")
-            + ",cols=\"" + colSpec + "\"]";
+               + (dataTable.hasHorizontalHeader() ? "%header" : "")
+               + ",cols=\"" + colSpec + "\"]";
     }
 
-    private String buildParameterWordFragment(String placeHolderValue) {
+    private String buildParameterWordFragment(final String placeHolderValue) {
         return " [.jg-argument]*<" + placeHolderValue + ">*";
     }
 
-    private String buildArgumentWordFragment(String argumentValue) {
+    private String buildArgumentWordFragment(final String argumentValue) {
         if (argumentValue.contains("\n")) {
             return "\n"
-                + "+\n"
-                + "[.jg-argument]\n"
-                + "....\n"
-                + argumentValue + "\n"
-                + "....\n";
+                   + "+\n"
+                   + "[.jg-argument]\n"
+                   + "....\n"
+                   + argumentValue + "\n"
+                   + "....\n";
         } else {
             return " [.jg-argument]_" + escapeArgumentValue(argumentValue) + "_";
         }
     }
 
-    private String buildOtherWordFragment(String word, boolean differs) {
+    private String buildOtherWordFragment(final String word, final boolean differs) {
         if (differs) {
             return " #" + word + "#";
         } else {
@@ -219,7 +228,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
     }
 
-    private String buildStepEndFragment(int depth, final boolean caseIsUnsuccessful, final StepStatus status,
+    private String buildStepEndFragment(final int depth, final boolean caseIsUnsuccessful, final StepStatus status,
                                         final long duration,
                                         final String extendedDescription) {
         final String stepStatus = caseIsUnsuccessful
@@ -229,33 +238,33 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
             return stepStatus + " +\n"
-                + buildIndentationFragment(depth, " ") + "_+++" + extendedDescription + "+++_";
+                   + buildIndentationFragment(depth, " ") + "_+++" + extendedDescription + "+++_";
         } else {
             return stepStatus;
         }
     }
 
-    private String escapeTableValue(String value) {
+    private String escapeTableValue(final String value) {
         return escapeArgumentValue(value.replace("|", "\\|"));
     }
 
-    private String escapeArgumentValue(String value) {
+    private String escapeArgumentValue(final String value) {
         // TODO Is this really necessary?
         //return "+" + value + "+";
         return value;
     }
 
-    private static String buildIndentationFragment(int depth, String symbol) {
+    private static String buildIndentationFragment(final int depth, final String symbol) {
         return generate(() -> symbol).limit(depth + 1).collect(joining()) + " ";
     }
 
-    private static String generateTableColSpec(boolean withVerticalHeader, int columnCount) {
+    private static String generateTableColSpec(final boolean withVerticalHeader, final int columnCount) {
         return withVerticalHeader
             ? "h," + generate(() -> "1").limit(columnCount - 1).collect(joining(","))
             : generate(() -> "1").limit(columnCount).collect(joining(","));
     }
 
-    private static String toHumanReadableStatus(ExecutionStatus executionStatus) {
+    private static String toHumanReadableStatus(final ExecutionStatus executionStatus) {
         switch (executionStatus) {
             case SCENARIO_PENDING:
                 // fall through
@@ -270,7 +279,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
     }
 
-    private static String toHumanReadableDuration(long nanos) {
+    private static String toHumanReadableDuration(final long nanos) {
         Duration duration = Duration.ofNanos(nanos);
         return "(" + duration.getSeconds() + "s " + duration.getNano() / 1000000 + "ms)";
     }

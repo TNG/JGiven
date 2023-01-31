@@ -40,8 +40,10 @@ public interface ReportBlockConverter {
      * @param caseNr          the number of the case, starting from 1
      * @param parameterNames  the parameter names of the scenario
      * @param parameterValues the arguments of the case
+     * @param description     a short description of this case, may be {@code null}
      */
-    String convertCaseHeaderBlock(int caseNr, List<String> parameterNames, List<String> parameterValues);
+    String convertCaseHeaderBlock(int caseNr, List<String> parameterNames, List<String> parameterValues,
+                                  String description);
 
     String convertStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
                             String extendedDescription, boolean caseIsUnsuccessful, String currentSectionTitle,

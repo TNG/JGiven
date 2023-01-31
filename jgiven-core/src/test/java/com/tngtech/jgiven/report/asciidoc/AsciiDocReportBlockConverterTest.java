@@ -157,16 +157,34 @@ public class AsciiDocReportBlockConverterTest {
     }
 
     @Test
-    public void convert_case_header_without_parameters() {
+    public void convert_case_header_without_parameters_and_description() {
         // arrange
         List<String> parameterNames = Collections.emptyList();
         List<String> parameterValues = Collections.emptyList();
 
         // act
-        String block = converter.convertCaseHeaderBlock(1, parameterNames, parameterValues);
+        String block = converter.convertCaseHeaderBlock(1, parameterNames, parameterValues, null);
 
         // assert
         assertThat(block).isEqualTo("===== Case 1");
+    }
+
+    @Test
+    public void convert_case_header_with_description_and_without_parameters() {
+        // arrange
+        List<String> parameterNames = Collections.singletonList("description");
+        List<String> parameterValues = Collections.singletonList("First case");
+
+        // act
+        String block = converter.convertCaseHeaderBlock(1, parameterNames, parameterValues, "First case");
+
+        // assert
+        assertThat(block).hasLineCount(5).containsSequence(
+            "===== Case 1 First case\n",
+            "\n",
+            "====\n",
+            "description = First case\n",
+            "====");
     }
 
     @Test
@@ -176,10 +194,15 @@ public class AsciiDocReportBlockConverterTest {
         List<String> parameterValues = Collections.singletonList("42");
 
         // act
-        String block = converter.convertCaseHeaderBlock(2, parameterNames, parameterValues);
+        String block = converter.convertCaseHeaderBlock(2, parameterNames, parameterValues, null);
 
         // assert
-        assertThat(block).isEqualTo("===== Case 2 foo = 42");
+        assertThat(block).hasLineCount(5).containsSequence(
+            "===== Case 2\n",
+            "\n",
+            "====\n",
+            "foo = 42\n",
+            "====");
     }
 
     @Test
@@ -193,10 +216,15 @@ public class AsciiDocReportBlockConverterTest {
         parameterValues.add("on");
 
         // act
-        String block = converter.convertCaseHeaderBlock(2, parameterNames, parameterValues);
+        String block = converter.convertCaseHeaderBlock(2, parameterNames, parameterValues, null);
 
         // assert
-        assertThat(block).isEqualTo("===== Case 2 foo = 42, bar = on");
+        assertThat(block).hasLineCount(5).containsSequence(
+            "===== Case 2\n",
+            "\n",
+            "====\n",
+            "foo = 42, bar = on\n",
+            "====");
     }
 
     @Test
@@ -376,8 +404,8 @@ public class AsciiDocReportBlockConverterTest {
 
         // act
         String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899,
-                null,
-                false, null, false);
+            null,
+            false, null, false);
 
         // assert
 
@@ -427,6 +455,7 @@ public class AsciiDocReportBlockConverterTest {
                 "| 2 | 3 | 4 | FAILED\n",
                 "|===");
     }
+
     @Test
     public void convert_cases_table_with_descriptions() {
         // arrange
