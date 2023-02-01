@@ -58,7 +58,7 @@ nexusStaging {
 
 subprojects {
     ext {
-        androidCompileSdkVersion = 32
+        androidCompileSdkVersion = 33
         androidMinSdkVersion = 29
         androidTargetSdkVersion = 32
 

@@ -6,7 +6,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.2.2"
+        classpath libs.androidGradlePlugin
     }
 }
 
@@ -45,13 +45,13 @@ configurations {
 }
 
 dependencies {
-  implementation 'androidx.appcompat:appcompat:1.5.1'
+  implementation libs.androidx.appcompat
 
   androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1', {
     exclude group: 'com.android.support', module: 'support-annotations'
   })
-  androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-  androidTestImplementation('androidx.test:rules:1.5.0') {
+  androidTestImplementation libs.androidx.test.junit
+  androidTestImplementation(libs.androidx.test.rules) {
     exclude group: "junit"
   }
   androidTestImplementation(project(':jgiven-android'))

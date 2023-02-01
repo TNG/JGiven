@@ -5,18 +5,18 @@ buildscript {
         google()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.2.2"
+        classpath libs.androidGradlePlugin
     }
 }
+
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 repositories {
     mavenLocal()
     mavenCentral()
     google()
 }
-
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion androidCompileSdkVersion
@@ -63,11 +63,11 @@ dependencies {
     api 'com.google.guava:guava:31.1-jre'
     api("net.bytebuddy:byte-buddy-android:${libs.versions.byteBuddy.version.get()}")
     api junitVariableVersionLibs.junit4
-    implementation "androidx.appcompat:appcompat:1.5.1"
-    implementation('androidx.test:core:1.5.0')
-    implementation('androidx.test:rules:1.5.0') {
+    implementation libs.androidx.appcompat
+    implementation(libs.androidx.test.core)
+    implementation(libs.androidx.test.rules) {
         exclude group: "junit"
     }
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation libs.androidx.test.junit
     api project(":jgiven-junit")
 }
