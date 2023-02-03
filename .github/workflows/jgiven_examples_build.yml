@@ -24,9 +24,7 @@ jobs:
         run: >
           source scripts/source_files/helper_functions.sh
           && runGradleTestOnGivenProject example-projects/junit5/build.gradle 1.1-t
-      - uses: olafurpg/setup-scala@v13
-      - name: Test Scala Example Project
-        run: source scripts/source_files/helper_functions.sh && runScalaTest
+
       - name: Test Selenium Example Project
         run: >
           source scripts/source_files/helper_functions.sh
@@ -55,6 +53,11 @@ jobs:
         run: source scripts/source_files/helper_functions.sh && runMavenTestOnGivenProject example-projects/java11/pom.xml 1.1-t
       - name: Test TestNG Example Project
         run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/testng/build.gradle 1.1-t
+      - uses: olafurpg/setup-scala@v13
+        with:
+          java-version: adopt@1.11
+      - name: Test Scala Example Project
+        run: source scripts/source_files/helper_functions.sh && runScalaTest
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
