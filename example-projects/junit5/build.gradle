@@ -19,8 +19,8 @@ plugins {
 apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
     options.compilerArgs += '-parameters'
     options.encoding = 'UTF-8'
 }
