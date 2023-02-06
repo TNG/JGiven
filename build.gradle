@@ -13,7 +13,7 @@ plugins {
 apply plugin: 'project-report'
 
 description = 'JGiven - BDD in plain Java'
-def jacocoEnabled = !JavaVersion.current().isJava11Compatible()
+def jacocoEnabled = !JavaVersion.current().isJava12Compatible()
 def timingEnabled = System.getenv("JGivenTiming")
 
 allprojects {
@@ -58,7 +58,7 @@ nexusStaging {
 
 subprojects {
     ext {
-        androidCompileSdkVersion = 32
+        androidCompileSdkVersion = 33
         androidMinSdkVersion = 29
         androidTargetSdkVersion = 32
 
@@ -138,7 +138,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     apply plugin: 'org.asciidoctor.jvm.convert'
     apply plugin: 'maven-publish'
 
-    sourceCompatibility = targetCompatibility = 1.8
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
 
     dependencies {
         implementation libs.slf4j.api

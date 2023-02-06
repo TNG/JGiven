@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.tests.java8;
+package com.tngtech.jgiven.lambdas;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import com.tngtech.jgiven.report.model.StepModel;
 
-public class Java8Test extends SimpleScenarioTest<LambdaSteps<?>> {
+public class LambdaGeneratingStepTest extends SimpleScenarioTest<LambdaSteps<?>> {
 
     @Test
     public void lambda_steps_work() {
