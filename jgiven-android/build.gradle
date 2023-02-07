@@ -45,17 +45,13 @@ android {
         abortOnError false
     }
 
-    dexOptions {
-        additionalParameters '--debug'
-    }
-
     afterEvaluate {
         project.ext.publishVariant('release')
     }
 
 }
 
-configurations.all {
+configurations.configureEach {
     exclude group: 'xml-apis', module: 'xml-apis-ext'
 }
 
