@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.tngtech.jgiven.annotation.BeforeStage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -62,7 +63,7 @@ public class ThenHtml5App<SELF extends ThenHtml5App<?>> extends Html5AppStage<SE
     public SELF the_content_of_the_attachment_referenced_by_icon_$_is(int iconNr, String content)
         throws IOException, URISyntaxException {
         String href = attachmentIcons.get(iconNr - 1).findElement(By.xpath("../..")).getAttribute("href");
-        String foundContent = Files.readFile(new File(new URL(href).toURI())).trim();
+        String foundContent = Files.readFile(new FileInputStream(new File(new URL(href).toURI()))).trim();
         assertThat(content).isEqualTo(foundContent);
         return self();
     }
