@@ -20,6 +20,7 @@ repositories {
 
 android {
     compileSdkVersion androidCompileSdkVersion
+    namespace 'jgiven.tngtech.com.jgiven_android'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
@@ -45,15 +46,18 @@ android {
         abortOnError false
     }
 
-    afterEvaluate {
-        project.ext.publishVariant('release')
+    publishing {
+        singleVariant('release'){
+            withSourcesJar()
+        }
     }
-
 }
 
 configurations.configureEach {
     exclude group: 'xml-apis', module: 'xml-apis-ext'
+
 }
+afterEvaluate {project.ext.publishVariant('release')}
 
 dependencies {
     api 'com.google.guava:guava:31.1-jre'
