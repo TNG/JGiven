@@ -54,6 +54,9 @@ files { file("src/main/translations").listFiles() }.collect {
         filteringCharset = 'UTF-8'
     }
     compileJava.dependsOn += taskName
+    jar.dependsOn += taskName
+    sourcesJar.dependsOn += taskName
+    javadoc.dependsOn += taskName
 }
 
 /**
