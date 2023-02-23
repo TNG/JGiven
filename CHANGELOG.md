@@ -1,3 +1,7 @@
+# v1.2.5
+## Fixed issues
+* Fixed incompatibility of Gradle plugin with Gradle 8, due to the use of a deprecated method [#1200](https://github.com/TNG/JGiven/issues/1200) (thanks to AistisTaraskevicius for reporting)
+
 # v1.2.4
 ## Fixed issues
 * Fixed incorrect POM that was published because our manual pom transcription writes a version tag even when none is required. [#1013](https://github.com/TNG/JGiven/issues/1013) (thanks to jangalanski for reporting)
