@@ -1,3 +1,7 @@
+# v1.3
+## Breaking changes
+* Increased minimum supported version to Java 11
+
 # v1.2.5
 ## Fixed issues
 * Fixed incompatibility of Gradle plugin with Gradle 8, due to the use of a deprecated method [#1200](https://github.com/TNG/JGiven/issues/1200) (thanks to AistisTaraskevicius for reporting)
