@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "Version 1.2.5 Released"
+date:  2023-02-24 07:52:57
+categories: news
+---
+
+Released Version 1.2.5 of JGiven. For details see the [release notes](https://github.com/TNG/JGiven/releases/tag/v1.2.5).
+
+[jgiven-gh]: https://github.com/TNG/JGiven
+[jgiven]:    https://jgiven.org
