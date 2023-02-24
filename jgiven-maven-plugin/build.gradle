@@ -24,7 +24,7 @@ task generatePom(type: Copy, dependsOn: copyClasses) {
 }
 
 task generateMavenPlugin(type: CrossPlatformExec, dependsOn: generatePom) {
-    // currenlty it seems to be the more or less only clean solution
+    // currently it seems to be the more or less only clean solution
     // to generate a plugin.xml file to use maven directly
     // if anyone has a better solution please let us know!
     buildCommand 'mvn', '-nsu', '-U', '-f', 'build/maven/pom.xml', 'plugin:descriptor'
@@ -43,14 +43,20 @@ generateMavenPlugin.configure {
     }
 }
 
-task copyMavenPlugin(type: Copy, dependsOn: generateMavenPlugin) {
+tasks.register("copyMavenPlugin", Copy){it->
+    it.dependsOn += generateMavenPlugin
+
     from('build/maven/target/classes') {
         include '**/*.xml'
+        exclude '**/*.class'
     }
     into 'build/classes/java/main'
+    javadoc.dependsOn += it
+    checkstyleMain.mustRunAfter(it)
 }
 
-task copyPom(type: Copy, dependsOn: generatePom) {
+tasks.register("copyPom", Copy){it ->
+    it.dependsOn += generatePom
     from('build/maven') {
         include '**/pom.*'
         filter { line ->
