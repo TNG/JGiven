@@ -27,6 +27,8 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
         super( name, task, relativeEntryPath );
     }
 
+
+
     public AbstractReportGenerator createGenerator() {
         AbstractReportConfig conf;
         AbstractReportGenerator generator;
@@ -57,7 +59,8 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
         if( getTitle() != null ) {
             conf.setTitle( getTitle() );
         }
-        conf.setTargetDir( getDestination() );
+
+        conf.setTargetDir( getOutputLocation().getAsFile().get() );
         conf.setExcludeEmptyScenarios( isExcludeEmptyScenarios() );
         generator.setConfig( conf );
         return generator;
