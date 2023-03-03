@@ -192,6 +192,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
                 'Specification-Title': project.name,
                 'Specification-Version': project.version,
                 'Specification-Vendor': 'TNG Technology Consulting GmbH',
+                'Automatic-Module-Name' : "com.tngtech.jgiven.${project.name}"
         )
     }
 
