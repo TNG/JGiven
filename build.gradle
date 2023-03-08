@@ -1,6 +1,6 @@
 //file:noinspection GroovyAssignabilityCheck
 plugins {
-    id 'com.github.kt3k.coveralls' version '2.12.0'
+    id 'com.github.kt3k.coveralls' version '2.12.2'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'io.codearte.nexus-staging' version '0.30.0'
     id 'com.github.ben-manes.versions' version '0.46.0'
