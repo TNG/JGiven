@@ -14,7 +14,7 @@ dependencies {
     implementation libs.plugins.byteBuddy.plugin
     implementation libs.byteBuddy.agent
     testImplementation("com.google.guava:guava-testlib:31.1-jre")
-    testImplementation 'org.mockito:mockito-inline:5.1.1'
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
 }
 
 def generatedSourceDir = "generatedSrc/java"
