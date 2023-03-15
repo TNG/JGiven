@@ -13,6 +13,7 @@ import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Word;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
@@ -31,7 +32,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         blockContent.append(statistics.numFailedScenarios).append(" Failed, ");
         blockContent.append(statistics.numPendingScenarios).append(" Pending, ");
         blockContent.append(statistics.numScenarios).append(" Total ");
-        blockContent.append(toHumanReadableDuration(statistics.durationInNanos));
+        blockContent.append("(").append(toHumanReadableDuration(statistics.durationInNanos)).append(")");
 
         if (description != null && !description.isEmpty()) {
             blockContent.append(NEW_LINE);
@@ -58,7 +59,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         blockContent.append(NEW_LINE);
 
         blockContent.append("[").append(toHumanReadableStatus(executionStatus)).append("] ")
-            .append(toHumanReadableDuration(duration));
+            .append("(").append(toHumanReadableDuration(duration)).append(")");
 
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
@@ -105,6 +106,28 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         return blockContent.toString();
     }
 
+
+    @Override
+    public String convertStepBlock(final int depth, final List<Word> words, final StepStatus status,
+                                   final long durationInNanos, final String extendedDescription,
+                                   final boolean caseIsUnsuccessful, final String currentSectionTitle,
+                                   boolean scenarioHasDataTable) {
+
+        StringBuilder blockContent = new StringBuilder();
+
+        if (currentSectionTitle != null && !currentSectionTitle.isEmpty()) {
+            blockContent.append(".").append(currentSectionTitle).append(NEW_LINE);
+        }
+
+        blockContent.append(buildIndentationFragment(depth, "*"));
+
+        appendWordFragments(blockContent, words);
+
+        blockContent.append(buildStepEndFragment(
+            depth, caseIsUnsuccessful, status, durationInNanos, extendedDescription));
+        return blockContent.toString();
+    }
+
     @Override
     public String convertCasesTableBlock(final CasesTable casesTable) {
         StringBuilder blockContent = new StringBuilder();
@@ -137,27 +160,6 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     @Override
     public String convertScenarioFooterBlock(ExecutionStatus executionStatus) {
         return "// end::" + toAsciiDocTag(executionStatus) + "[]";
-    }
-
-    @Override
-    public String convertStepBlock(final int depth, final List<Word> words, final StepStatus status,
-                                   final long durationInNanos, final String extendedDescription,
-                                   final boolean caseIsUnsuccessful, final String currentSectionTitle,
-                                   boolean scenarioHasDataTable) {
-
-        StringBuilder blockContent = new StringBuilder();
-
-        if (currentSectionTitle != null && !currentSectionTitle.isEmpty()) {
-            blockContent.append(".").append(currentSectionTitle).append(NEW_LINE);
-        }
-
-        blockContent.append(buildIndentationFragment(depth, "*"));
-
-        appendWordFragments(blockContent, words);
-
-        blockContent.append(buildStepEndFragment(
-            depth, caseIsUnsuccessful, status, durationInNanos, extendedDescription));
-        return blockContent.toString();
     }
 
     private void appendWordFragments(final StringBuilder blockContent, final List<Word> words) {
@@ -240,7 +242,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
                                         final long duration,
                                         final String extendedDescription) {
         final String stepStatus = caseIsUnsuccessful
-            ? " [.right]#[" + status + "] " + toHumanReadableDuration(duration) + "#"
+            ? " [.right]#[" + status + "] (" + toHumanReadableDuration(duration) + ")#"
             : "";
 
 
@@ -281,7 +283,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
             case SUCCESS:
                 return "scenario-successful";
             case FAILED:
-                return "scenario-failing";
+                return "scenario-failed";
             default:
                 return "scenario-unknown";
         }
@@ -304,7 +306,51 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     private static String toHumanReadableDuration(final long nanos) {
         Duration duration = Duration.ofNanos(nanos);
-        return "(" + duration.getSeconds() + "s " + duration.getNano() / 1000000 + "ms)";
+        return duration.getSeconds() + "s " + duration.getNano() / 1000000 + "ms";
     }
 
+    public String generateStatistics(final Map<String, ReportStatistics> featureStatistics,
+                                     final ReportStatistics totalStatistics) {
+        final StringBuilder statisticsTable = new StringBuilder();
+
+        statisticsTable.append(".Total Statistics").append(NEW_LINE);
+        statisticsTable.append("[options=\"header,footer\"]").append(NEW_LINE);
+        statisticsTable.append("|===").append(NEW_LINE);
+
+        statisticsTable.append("| feature ");
+        statisticsTable.append("| total classes ");
+        statisticsTable.append("| successful scenarios ");
+        statisticsTable.append("| failed scenarios ");
+        statisticsTable.append("| pending scenarios ");
+        statisticsTable.append("| total scenarios ");
+        statisticsTable.append("| failed cases ");
+        statisticsTable.append("| total cases ");
+        statisticsTable.append("| total steps ");
+        statisticsTable.append("| duration").append(NEW_LINE);
+        statisticsTable.append(NEW_LINE);
+
+
+        for (Map.Entry<String, ReportStatistics> entry : featureStatistics.entrySet()) {
+            printStatisticsRow(statisticsTable, entry.getKey(), entry.getValue());
+            statisticsTable.append(NEW_LINE);
+        }
+
+        printStatisticsRow(statisticsTable, "sum", totalStatistics);
+
+        statisticsTable.append("|===");
+        return statisticsTable.toString();
+    }
+
+    private static void printStatisticsRow(StringBuilder builder, String name, ReportStatistics statistics) {
+        builder.append("| ").append(name);
+        builder.append(" | ").append(statistics.numClasses);
+        builder.append(" | ").append(statistics.numSuccessfulScenarios);
+        builder.append(" | ").append(statistics.numFailedScenarios);
+        builder.append(" | ").append(statistics.numPendingScenarios);
+        builder.append(" | ").append(statistics.numScenarios);
+        builder.append(" | ").append(statistics.numFailedCases);
+        builder.append(" | ").append(statistics.numCases);
+        builder.append(" | ").append(statistics.numSteps);
+        builder.append(" | ").append(toHumanReadableDuration(statistics.durationInNanos)).append(NEW_LINE);
+    }
 }

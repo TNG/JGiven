@@ -80,7 +80,7 @@ public class AsciiDocReportBlockConverterTest {
 
     @DataProvider({
         "SUCCESS, successful, SUCCESS",
-        "FAILED, failing, FAILED",
+        "FAILED, failed, FAILED",
         "SCENARIO_PENDING, pending, PENDING",
         "SOME_STEPS_PENDING, pending, PENDING"
     })
@@ -516,7 +516,7 @@ public class AsciiDocReportBlockConverterTest {
 
     @DataProvider({
         "SUCCESS, successful",
-        "FAILED, failing",
+        "FAILED, failed",
         "SCENARIO_PENDING, pending",
         "SOME_STEPS_PENDING, pending"
     })

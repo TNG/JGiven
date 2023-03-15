@@ -1,6 +1,5 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import com.google.common.collect.Lists;
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.report.AbstractReportConfig;
@@ -10,7 +9,10 @@ import com.tngtech.jgiven.report.model.ReportModelFile;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +20,9 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(AsciiDocReportGenerator.class);
 
-    private final List<String> features = Lists.newArrayList();
+    private final List<String> featureFiles = new ArrayList<>();
+    private final List<String> failedScenarioFiles = new ArrayList<>();
+    private final List<String> pendingScenarioFiles = new ArrayList<>();
     private final AsciiDocReportBlockConverter blockConverter;
 
     public AsciiDocReportGenerator() {
@@ -41,98 +45,96 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
                 completeReportModel.getStatistics(reportModelFile));
         }
 
-        generateIndexFile();
-    }
-
-    private void writeFeatureToFile(final ReportModel model, final File file, final ReportStatistics statistics) {
-        String featureFileName = Files.getNameWithoutExtension(file.getName()) + ".asciidoc";
-        features.add(featureFileName);
-
-        File targetFile = new File(config.getTargetDir(), featureFileName);
-        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(targetFile)) {
-            AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
-            model.accept(visitor);
-
-            String fileContent = String.join("\n\n", visitor.getResult());
-
-            printWriter.println(fileContent);
+        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(
+            new File(config.getTargetDir(), "allScenarios.asciidoc"))) {
+            generateFeatureIncludes(printWriter, featureFiles, "");
         }
-    }
 
-    private void generateIndexFile() {
+        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(
+            new File(config.getTargetDir(), "failedScenarios.asciidoc"))) {
+            generateFeatureIncludes(printWriter, failedScenarioFiles, "tag=scenario-failed");
+        }
+
+        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(
+            new File(config.getTargetDir(), "pendingScenarios.asciidoc"))) {
+            generateFeatureIncludes(printWriter, pendingScenarioFiles, "tag=scenario-pending");
+        }
+
+        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(
+            new File(config.getTargetDir(), "totalStatistics.asciidoc"))) {
+
+            Map<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels().stream()
+                .collect(Collectors.toMap(
+                    reportModelFile -> reportModelFile.model.getName(),
+                    reportModelFile -> completeReportModel.getStatistics(reportModelFile)));
+
+            printWriter.println(
+                blockConverter.generateStatistics(featureStatistics, completeReportModel.getTotalStatistics()));
+        }
+
+
         try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(
             new File(config.getTargetDir(), "index.asciidoc"))) {
             convertIndex(printWriter);
         }
 
-        try (PrintWriter writer = PrintWriterUtil.getPrintWriter(
-            new File(config.getTargetDir(), "totalStatistics.asciidoc"))) {
-            generateStatistics(writer);
+    }
+
+    private void writeFeatureToFile(final ReportModel model, final File file, final ReportStatistics statistics) {
+        String featureFileName = Files.getNameWithoutExtension(file.getName()) + ".asciidoc";
+        featureFiles.add(featureFileName);
+
+        if (statistics.numFailedScenarios > 0) {
+            failedScenarioFiles.add(featureFileName);
+        }
+
+        if (statistics.numPendingScenarios > 0) {
+            pendingScenarioFiles.add(featureFileName);
         }
 
         try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(
-            new File(config.getTargetDir(), "allClasses.asciidoc"))) {
-            generateIncludes(printWriter);
+            new File(config.getTargetDir(), featureFileName))) {
+
+            AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
+            model.accept(visitor);
+
+            for (String block : visitor.getResult()) {
+                printWriter.println(block);
+                printWriter.println();
+            }
         }
     }
 
-    private void generateStatistics(PrintWriter writer) {
-        writer.println();
-        writer.println(".Total Statistics");
-        writer.println("[options=\"header,footer\"]");
-        writer.println("|===");
-
-        writer.print("| feature ");
-        writer.print("| total classes ");
-        writer.print("| successful scenarios ");
-        writer.print("| failed scenarios ");
-        writer.print("| pending scenarios ");
-        writer.print("| total scenarios ");
-        writer.print("| failed cases ");
-        writer.print("| total cases ");
-        writer.print("| total steps ");
-        writer.println("| duration");
-
-
-        completeReportModel.getAllReportModels().forEach(reportModelFile -> {
-            ReportStatistics statistics = completeReportModel.getStatistics(reportModelFile);
-            extracted(writer, reportModelFile.model.getName(), statistics);
-        });
-
-        extracted(writer, "sum", completeReportModel.getTotalStatistics());
-
-        writer.println("|===");
-    }
-
-    private void generateIncludes(PrintWriter printWriter) {
-        for (String fileName : features) {
-            printWriter.println("include::" + fileName + "[]\n");
+    private void generateFeatureIncludes(final PrintWriter printWriter, final List<String> fileNames,
+                                         final String tagSpec) {
+        for (String fileName : fileNames) {
+            printWriter.println("include::" + fileName + "[" + tagSpec + "]\n");
         }
     }
+
 
     private static void convertIndex(PrintWriter printWriter) {
         printWriter.println("= JGiven Documentation");
         printWriter.println(":toc: left");
         printWriter.println(":toclevels: 5");
-        printWriter.println("");
+        printWriter.println();
         printWriter.println("include::totalStatistics.asciidoc[]");
-        printWriter.println("");
+        printWriter.println();
+
         printWriter.println("== All Scenarios");
-        printWriter.println("");
+        printWriter.println();
+        printWriter.println("include::allScenarios.asciidoc[]");
+        printWriter.println();
 
-        printWriter.println("include::allClasses.asciidoc[]");
+        printWriter.println("== Failed Scenarios");
+        printWriter.println();
+        printWriter.println("include::failedScenarios.asciidoc[leveloffset=-1]");
+        printWriter.println();
+
+        printWriter.println("== Pending Scenarios");
+        printWriter.println();
+        printWriter.println("include::pendingScenarios.asciidoc[leveloffset=-1]");
+        printWriter.println();
     }
 
-    private static void extracted(PrintWriter writer, String name, ReportStatistics statistics) {
-        writer.print("| " + name);
-        writer.print(" | " + statistics.numClasses);
-        writer.print(" | " + statistics.numSuccessfulScenarios);
-        writer.print(" | " + statistics.numFailedScenarios);
-        writer.print(" | " + statistics.numPendingScenarios);
-        writer.print(" | " + statistics.numScenarios);
-        writer.print(" | " + statistics.numFailedCases);
-        writer.print(" | " + statistics.numCases);
-        writer.print(" | " + statistics.numSteps);
-        writer.println(" | " + statistics.durationInNanos);
-    }
 }

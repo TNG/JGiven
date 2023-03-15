@@ -45,6 +45,18 @@ public interface ReportBlockConverter {
     String convertCaseHeaderBlock(int caseNr, List<String> parameterNames, List<String> parameterValues,
                                   String description);
 
+    /**
+     * Convert the words that make up a step into a block.
+     *
+     * @param depth                the depth of the step
+     * @param words                the words to be converted
+     * @param status               was the step executed successfully
+     * @param durationInNanos      how long did the step take
+     * @param extendedDescription  detailed description of the step, may be {@code null}
+     * @param caseIsUnsuccessful   was the scenario case executed successfully
+     * @param currentSectionTitle  the current section's title, may be {@code null}
+     * @param scenarioHasDataTable has the current scenario a data table
+     */
     String convertStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
                             String extendedDescription, boolean caseIsUnsuccessful, String currentSectionTitle,
                             boolean scenarioHasDataTable);
