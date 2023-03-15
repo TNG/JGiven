@@ -50,6 +50,9 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
                                              final String extendedDescription) {
         StringBuilder blockContent = new StringBuilder();
 
+        blockContent.append("// tag::").append(toAsciiDocTag(executionStatus)).append("[]").append(NEW_LINE);
+        blockContent.append(NEW_LINE);
+
         blockContent.append("==== ").append(WordUtil.capitalize(name)).append(NEW_LINE);
 
         blockContent.append(NEW_LINE);
@@ -129,6 +132,11 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
         blockContent.append("|===");
         return blockContent.toString();
+    }
+
+    @Override
+    public String convertScenarioFooterBlock(ExecutionStatus executionStatus) {
+        return "// end::" + toAsciiDocTag(executionStatus) + "[]";
     }
 
     @Override
@@ -262,6 +270,21 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         return withVerticalHeader
             ? "h," + generate(() -> "1").limit(columnCount - 1).collect(joining(","))
             : generate(() -> "1").limit(columnCount).collect(joining(","));
+    }
+
+    private String toAsciiDocTag(final ExecutionStatus executionStatus) {
+        switch (executionStatus) {
+            case SCENARIO_PENDING:
+                // fall through
+            case SOME_STEPS_PENDING:
+                return "scenario-pending";
+            case SUCCESS:
+                return "scenario-successful";
+            case FAILED:
+                return "scenario-failing";
+            default:
+                return "scenario-unknown";
+        }
     }
 
     private static String toHumanReadableStatus(final ExecutionStatus executionStatus) {

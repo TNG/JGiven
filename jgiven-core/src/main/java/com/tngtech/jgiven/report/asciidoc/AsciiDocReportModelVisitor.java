@@ -29,14 +29,14 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     private String currentSectionTitle;
     private boolean scenarioHasMultipleCases;
 
-    public AsciiDocReportModelVisitor(ReportBlockConverter blockConverter, ReportStatistics featureStatistics) {
+    public AsciiDocReportModelVisitor(final ReportBlockConverter blockConverter, final ReportStatistics featureStatistics) {
         this.blockConverter = blockConverter;
         this.asciiDocBlocks = new ArrayList<>();
         this.featureStatistics = featureStatistics;
     }
 
     @Override
-    public void visit(ReportModel reportModel) {
+    public void visit(final ReportModel reportModel) {
         String featureName = Optional.ofNullable(reportModel.getName())
             .filter(name -> !name.isEmpty())
             .orElse(reportModel.getClassName());
@@ -49,7 +49,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     }
 
     @Override
-    public void visit(ScenarioModel scenarioModel) {
+    public void visit(final ScenarioModel scenarioModel) {
         final List<String> tagNames = scenarioModel.getTagIds().stream()
             .map(this.featureTagMap::get)
             .map(Tag::getName).collect(Collectors.toList());
@@ -65,7 +65,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     }
 
     @Override
-    public void visit(ScenarioCaseModel scenarioCase) {
+    public void visit(final ScenarioCaseModel scenarioCase) {
         skipCurrentCase = scenarioHasDataTable && scenarioCase.getCaseNr() > 1;
         if (skipCurrentCase) {
             return;
@@ -82,7 +82,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     }
 
     @Override
-    public void visit(StepModel stepModel) {
+    public void visit(final StepModel stepModel) {
         if (skipCurrentCase) {
             return;
         }
@@ -102,11 +102,13 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     }
 
     @Override
-    public void visitEnd(ScenarioModel scenarioModel) {
+    public void visitEnd(final ScenarioModel scenarioModel) {
         if (scenarioModel.isCasesAsTable()) {
             String casesTable = blockConverter.convertCasesTableBlock(new CasesTableImpl(scenarioModel));
             asciiDocBlocks.add(casesTable);
         }
+
+        asciiDocBlocks.add(blockConverter.convertScenarioFooterBlock(scenarioModel.getExecutionStatus()));
     }
 
     public List<String> getResult() {

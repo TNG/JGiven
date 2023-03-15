@@ -3,6 +3,8 @@ package com.tngtech.jgiven.report.asciidoc;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.ImmutableList;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.report.CasesTable;
 import com.tngtech.jgiven.report.model.DataTable;
@@ -17,7 +19,9 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(DataProviderRunner.class)
 public class AsciiDocReportBlockConverterTest {
 
     private AsciiDocReportBlockConverter converter;
@@ -74,21 +78,31 @@ public class AsciiDocReportBlockConverterTest {
                 "++++");
     }
 
+    @DataProvider({
+        "SUCCESS, successful, SUCCESS",
+        "FAILED, failing, FAILED",
+        "SCENARIO_PENDING, pending, PENDING",
+        "SOME_STEPS_PENDING, pending, PENDING"
+    })
     @Test
-    public void convert_scenario_header_without_tags_or_description() {
+    public void convert_scenario_header_without_tags_or_description(final ExecutionStatus status,
+                                                                    final String scenarioTag,
+                                                                    final String humanStatus) {
         // arrange
         List<String> tagNames = new ArrayList<>();
 
         // act
-        String block = converter.convertScenarioHeaderBlock("my first scenario", ExecutionStatus.FAILED,
+        String block = converter.convertScenarioHeaderBlock("my first scenario", status,
             1000300000L, tagNames, null);
 
         // assert
-        assertThat(block).hasLineCount(3)
+        assertThat(block).hasLineCount(5)
             .containsSequence(
-                "=== My first scenario\n",
+                "// tag::scenario-" + scenarioTag + "[]\n",
                 "\n",
-                "[FAILED] (1s 0ms)");
+                "==== My first scenario\n",
+                "\n",
+                "[" + humanStatus + "] (1s 0ms)");
     }
 
     @Test
@@ -102,9 +116,11 @@ public class AsciiDocReportBlockConverterTest {
             9000000L, tagNames, "");
 
         // assert
-        assertThat(block).hasLineCount(5)
+        assertThat(block).hasLineCount(7)
             .containsSequence(
-                "=== My first scenario\n",
+                "// tag::scenario-pending[]\n",
+                "\n",
+                "==== My first scenario\n",
                 "\n",
                 "[PENDING] (0s 9ms)\n",
                 "\n",
@@ -121,9 +137,11 @@ public class AsciiDocReportBlockConverterTest {
             2005000000L, tagNames, "Best scenario ever!!!");
 
         // assert
-        assertThat(block).hasLineCount(7)
+        assertThat(block).hasLineCount(9)
             .containsSequence(
-                "=== My first scenario\n",
+                "// tag::scenario-pending[]\n",
+                "\n",
+                "==== My first scenario\n",
                 "\n",
                 "[PENDING] (2s 5ms)\n",
                 "\n",
@@ -143,9 +161,11 @@ public class AsciiDocReportBlockConverterTest {
             3000000000L, tagNames, "Best scenario ever!!!");
 
         // assert
-        assertThat(block).hasLineCount(9)
+        assertThat(block).hasLineCount(11)
             .containsSequence(
-                "=== My first scenario\n",
+                "// tag::scenario-successful[]\n",
+                "\n",
+                "==== My first scenario\n",
                 "\n",
                 "[SUCCESS] (3s 0ms)\n",
                 "\n",
@@ -283,7 +303,7 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThat(block).isEqualTo(".First section\n" +
-            "* [.jg-introWord]*Given*");
+                                    "* [.jg-introWord]*Given*");
     }
 
 
@@ -492,5 +512,23 @@ public class AsciiDocReportBlockConverterTest {
                 "| 1 | First case | 1 | 2 | SUCCESS\n",
                 "| 2 | Second case | 3 | 4 | FAILED\n",
                 "|===");
+    }
+
+    @DataProvider({
+        "SUCCESS, successful",
+        "FAILED, failing",
+        "SCENARIO_PENDING, pending",
+        "SOME_STEPS_PENDING, pending"
+    })
+    @Test
+    public void convert_scenario_footer(final ExecutionStatus status,
+                                        final String scenarioTag) {
+        // arrange
+
+        // act
+        String block = converter.convertScenarioFooterBlock(status);
+
+        // assert
+        assertThat(block).isEqualTo("// end::scenario-" + scenarioTag + "[]");
     }
 }

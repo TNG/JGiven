@@ -55,4 +55,11 @@ public interface ReportBlockConverter {
      * @param casesTable the data table of the scenario
      */
     String convertCasesTableBlock(CasesTable casesTable);
+
+    /**
+     * Is invoked at the end of a scenario.
+     *
+     * @param executionStatus was the scenario successful
+     */
+    String convertScenarioFooterBlock(ExecutionStatus executionStatus);
 }
