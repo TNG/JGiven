@@ -19,16 +19,7 @@ public class IndexHtmlTest extends SimpleScenarioTest<IndexStage> {
 
     @BeforeClass
     public static void setupWebDriver() {
-        WebDriverManager.chromedriver().setup();
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("window-size=1280x768");
-
-        webDriver = new ChromeDriver(options);
-
-        webDriver.manage().window().setSize( new Dimension( 1280, 768 ) );
+        webDriver = new WebdriverSelectionUtil().setupAnyWebDriver();
     }
 
     @AfterClass
