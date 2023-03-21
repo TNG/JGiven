@@ -4,37 +4,26 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.JGivenScenarioTest;
-import com.tngtech.jgiven.annotation.As;
-import com.tngtech.jgiven.annotation.CaseAs;
-import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.report.json.GivenJsonReports;
 import com.tngtech.jgiven.report.model.GivenReportModels;
 import com.tngtech.jgiven.report.model.StepStatus;
-import com.tngtech.jgiven.tags.BrowserTest;
-import com.tngtech.jgiven.tags.FeatureAttachments;
-import com.tngtech.jgiven.tags.FeatureHtml5Report;
-import com.tngtech.jgiven.tags.FeatureTags;
-import com.tngtech.jgiven.tags.FeatureTagsWithCustomStyle;
-import com.tngtech.jgiven.tags.Issue;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import com.tngtech.jgiven.tags.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Arrays.asList;
 
 @BrowserTest
 @FeatureHtml5Report
@@ -54,16 +43,7 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
 
     @BeforeClass
     public static void setupWebDriver() {
-        WebDriverManager.chromedriver().setup();
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--disable-gpu");
-        options.addArguments("window-size=1280x768");
-
-        webDriver = new ChromeDriver(options);
-
-        webDriver.manage().window().setSize(new Dimension(1280, 768));
+        webDriver = new WebdriverSelectionUtil().setupAnyWebDriver();
     }
 
     @AfterClass
@@ -258,35 +238,35 @@ public class Html5AppTest extends JGivenScenarioTest<GivenReportModels<?>, WhenH
     @DataProvider
     public static Object[][] parserTestData() {
         return new Object[][] {
-            {"Placeholder with index", "$1", Arrays.asList("a", "b"), Arrays.asList(1, 2), "1"},
-            {"Placeholder without index", "$", Arrays.asList("a", "b"), Arrays.asList(1, 2), "1"},
-            {"Escaped placeholder", "$$", Arrays.asList("a", "b"), Arrays.asList(1, 2), "$"},
-            {"Multiple placeholders with switch order", "$2 + $1", Arrays.asList("a", "b"), Arrays.asList(1, 2),
+            {"Placeholder with index", "$1", asList("a", "b"), asList(1, 2), "1"},
+            {"Placeholder without index", "$", asList("a", "b"), asList(1, 2), "1"},
+            {"Escaped placeholder", "$$", asList("a", "b"), asList(1, 2), "$"},
+            {"Multiple placeholders with switch order", "$2 + $1", asList("a", "b"), asList(1, 2),
                 "2 + 1"},
-            {"Placeholders with additional text", "a = $1 and b = $2", Arrays.asList("a", "b"), Arrays.asList(1, 2),
+            {"Placeholders with additional text", "a = $1 and b = $2", asList("a", "b"), asList(1, 2),
                 "a = 1 and b = 2"},
             {"Placeholders references by argument names in order", "int = $int and str = $str and bool = $bool",
-                Arrays.asList("int", "str", "bool"), Arrays.asList(1, "some string", true),
+                asList("int", "str", "bool"), asList(1, "some string", true),
                 "int = 1 and str = some string and bool = true"},
             {"Placeholders references by argument names in mixed order", "str = $str and int = $int and bool = $bool",
-                Arrays.asList("int", "str", "bool"), Arrays.asList(1, "some string", true),
+                asList("int", "str", "bool"), asList(1, "some string", true),
                 "str = some string and int = 1 and bool = true"},
             {"Placeholders references by argument names and enumeration", "str = $str and int = $1 and bool = $bool",
-                Arrays.asList("int", "str", "bool"), Arrays.asList(1, "some string", true),
+                asList("int", "str", "bool"), asList(1, "some string", true),
                 "str = some string and int = 1 and bool = true"},
             {"Placeholders references by argument names and enumerations ", "bool = $3 and str = $2 and int = $int",
-                Arrays.asList("int", "str", "bool"), Arrays.asList(1, "some string", true),
+                asList("int", "str", "bool"), asList(1, "some string", true),
                 "bool = true and str = some string and int = 1"},
             {"Placeholder without index mixed with names", "bool = $bool and int = $ and str = $",
-                Arrays.asList("int", "str", "bool"), Arrays.asList(1, "some string", true),
+                asList("int", "str", "bool"), asList(1, "some string", true),
                 "bool = true and int = 1 and str = some string"},
             {"Placeholder without index mixed with names and index",
                 "bool = $bool and str = $2 and int = $ and str = $ and bool = $3",
-                Arrays.asList("int", "str", "bool"), Arrays.asList(1, "some string", true),
+                asList("int", "str", "bool"), asList(1, "some string", true),
                 "bool = true and str = some string and int = 1 and str = some string and bool = true"},
             {"Placeholder with unknown argument names get erased",
                 "bool = $bool and not known = $unknown and unknown = $10",
-                Arrays.asList("int", "str", "bool"), Arrays.asList(1, "some string", true),
+                asList("int", "str", "bool"), asList(1, "some string", true),
                 "bool = true and not known = 1 and unknown = some string"},
             {"Non-Java-Identifier char does trigger a space after a placeholder", "$]",
                 Collections.singletonList("int"), Collections.singletonList(1), "1 ]"},

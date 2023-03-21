@@ -22,7 +22,8 @@ jobs:
           && runGradleTestOnGivenProject example-projects/kotlin/build.gradle 1.1-t
       - name: Test JUnit5 Example Project
         run: >
-          source scripts/source_files/helper_functions.sh
+          sudo apt-get install firefox
+          && source scripts/source_files/helper_functions.sh
           && runGradleTestOnGivenProject example-projects/junit5/build.gradle 1.1-t
       - name: Test Selenium Example Project
         run: >
