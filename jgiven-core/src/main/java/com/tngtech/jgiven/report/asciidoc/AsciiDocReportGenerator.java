@@ -39,10 +39,15 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             log.error("Could not ensure target directory exists {}", targetDir);
             return;
         }
+        File featuresDir = new File(targetDir.getPath() + "/features");
+        if (!featuresDir.exists() && !featuresDir.mkdirs()) {
+            log.error("Could not ensure target directory exists {}", targetDir);
+            return;
+        }
 
         for (ReportModelFile reportModelFile : completeReportModel.getAllReportModels()) {
             writeFeatureToFile(reportModelFile.model, reportModelFile.file,
-                completeReportModel.getStatistics(reportModelFile));
+                completeReportModel.getStatistics(reportModelFile), featuresDir);
         }
 
         try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(
@@ -111,7 +116,6 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             printWriter.println("include::" + fileName + "[" + tagSpec + "]\n");
         }
     }
-
 
     private static void convertIndex(PrintWriter printWriter) {
         printWriter.println("= JGiven Documentation");
