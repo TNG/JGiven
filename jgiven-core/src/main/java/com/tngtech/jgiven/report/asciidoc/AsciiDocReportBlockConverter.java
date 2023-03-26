@@ -197,7 +197,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         fragmentContent.append("|===").append(NEW_LINE);
         for (List<String> row : rows) {
             for (String cell : row) {
-                fragmentContent.append("|").append(cell);
+                fragmentContent.append("| ").append(cell).append(" ");
             }
             fragmentContent.append(NEW_LINE);
         }
@@ -327,21 +327,17 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         statisticsTable.append("| total cases ");
         statisticsTable.append("| total steps ");
         statisticsTable.append("| duration").append(NEW_LINE);
-        statisticsTable.append(NEW_LINE);
 
+        featureStatistics.entrySet().stream().sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> convertStatisticsRow(statisticsTable, entry.getKey(), entry.getValue()));
 
-        featureStatistics.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> {
-            printStatisticsRow(statisticsTable, entry.getKey(), entry.getValue());
-            statisticsTable.append(NEW_LINE);
-        });
-
-        printStatisticsRow(statisticsTable, "sum", totalStatistics);
+        convertStatisticsRow(statisticsTable, "sum", totalStatistics);
 
         statisticsTable.append("|===");
         return statisticsTable.toString();
     }
 
-    private static void printStatisticsRow(StringBuilder builder, String name, ReportStatistics statistics) {
+    private static void convertStatisticsRow(StringBuilder builder, String name, ReportStatistics statistics) {
         builder.append("| ").append(name);
         builder.append(" | ").append(statistics.numClasses);
         builder.append(" | ").append(statistics.numSuccessfulScenarios);
