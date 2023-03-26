@@ -14,10 +14,14 @@ import com.tngtech.jgiven.report.model.Word;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     private static final String NEW_LINE = System.getProperty("line.separator");
+    private static final String ICON_CHECK_MARK = "icon:check-square[role=green]";
+    private static final String ICON_EXCLAMATION_MARK = "icon:exclamation-circle[role=red]";
+    private static final String ICON_BANNED = "icon:ban[role=silver]";
 
     @Override
     public String convertFeatureHeaderBlock(final String featureName, final ReportStatistics statistics,
@@ -28,11 +32,11 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
         blockContent.append(NEW_LINE);
 
-        blockContent.append(statistics.numSuccessfulScenarios).append(" Successful, ");
-        blockContent.append(statistics.numFailedScenarios).append(" Failed, ");
-        blockContent.append(statistics.numPendingScenarios).append(" Pending, ");
-        blockContent.append(statistics.numScenarios).append(" Total ");
-        blockContent.append("(").append(toHumanReadableDuration(statistics.durationInNanos)).append(")");
+        blockContent.append(ICON_CHECK_MARK).append(" ").append(statistics.numSuccessfulScenarios).append(" Successful, ");
+        blockContent.append(ICON_EXCLAMATION_MARK).append(" ").append(statistics.numFailedScenarios).append(" Failed, ");
+        blockContent.append(ICON_BANNED).append(" ").append(statistics.numPendingScenarios).append(" Pending, ");
+        blockContent.append(statistics.numScenarios).append(" Total");
+        blockContent.append(" (").append(toHumanReadableDuration(statistics.durationInNanos).orElse("0ms")).append(")");
 
         if (description != null && !description.isEmpty()) {
             blockContent.append(NEW_LINE);
@@ -58,8 +62,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
         blockContent.append(NEW_LINE);
 
-        blockContent.append("[").append(toHumanReadableStatus(executionStatus)).append("] ")
-            .append("(").append(toHumanReadableDuration(duration)).append(")");
+        blockContent.append(toHumanReadableStatus(executionStatus));
+        toHumanReadableDuration(duration).ifPresent(dur -> blockContent.append(" (").append(dur).append(")"));
 
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
@@ -262,8 +266,9 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     private String buildStepEndFragment(final int depth, final boolean caseIsUnsuccessful, final StepStatus status,
                                         final long duration,
                                         final String extendedDescription) {
+        final String humanDuration = toHumanReadableDuration(duration).map(dur -> " (" + dur + ")").orElse("");
         final String stepStatus = caseIsUnsuccessful
-            ? " [.right]#[" + status + "] (" + toHumanReadableDuration(duration) + ")#"
+            ? " " + toHumanReadableStatus(status) + humanDuration
             : "";
 
 
@@ -273,6 +278,47 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         } else {
             return stepStatus;
         }
+    }
+
+    public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
+            final ReportStatistics totalStatistics) {
+        final StringBuilder statisticsTable = new StringBuilder();
+
+        statisticsTable.append(".Total Statistics").append(NEW_LINE);
+        statisticsTable.append("[options=\"header,footer\"]").append(NEW_LINE);
+        statisticsTable.append("|===").append(NEW_LINE);
+
+        statisticsTable.append("| feature ");
+        statisticsTable.append("| total classes ");
+        statisticsTable.append("| successful scenarios ");
+        statisticsTable.append("| failed scenarios ");
+        statisticsTable.append("| pending scenarios ");
+        statisticsTable.append("| total scenarios ");
+        statisticsTable.append("| failed cases ");
+        statisticsTable.append("| total cases ");
+        statisticsTable.append("| total steps ");
+        statisticsTable.append("| duration").append(NEW_LINE);
+
+        featureStatistics.entrySet().stream().sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> convertStatisticsRow(statisticsTable, entry.getKey(), entry.getValue()));
+
+        convertStatisticsRow(statisticsTable, "sum", totalStatistics);
+
+        statisticsTable.append("|===");
+        return statisticsTable.toString();
+    }
+
+    private static void convertStatisticsRow(StringBuilder builder, String name, ReportStatistics statistics) {
+        builder.append("| ").append(name);
+        builder.append(" | ").append(statistics.numClasses);
+        builder.append(" | ").append(statistics.numSuccessfulScenarios);
+        builder.append(" | ").append(statistics.numFailedScenarios);
+        builder.append(" | ").append(statistics.numPendingScenarios);
+        builder.append(" | ").append(statistics.numScenarios);
+        builder.append(" | ").append(statistics.numFailedCases);
+        builder.append(" | ").append(statistics.numCases);
+        builder.append(" | ").append(statistics.numSteps);
+        builder.append(" | ").append(toHumanReadableDuration(statistics.durationInNanos).orElse("0ms")).append(NEW_LINE);
     }
 
     private String escapeTableValue(final String value) {
@@ -315,59 +361,42 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
             case SCENARIO_PENDING:
                 // fall through
             case SOME_STEPS_PENDING:
-                return "PENDING";
+                return ICON_BANNED;
             case SUCCESS:
-                // fall through
+                return ICON_CHECK_MARK;
             case FAILED:
-                // fall through
+                return ICON_EXCLAMATION_MARK;
             default:
                 return executionStatus.toString();
         }
     }
 
-    private static String toHumanReadableDuration(final long nanos) {
-        Duration duration = Duration.ofNanos(nanos);
-        return duration.getSeconds() + "s " + duration.getNano() / 1000000 + "ms";
+    private String toHumanReadableStatus(final StepStatus status) {
+        switch (status) {
+            case PASSED:
+                return ICON_CHECK_MARK;
+            case FAILED:
+                return ICON_EXCLAMATION_MARK;
+            case SKIPPED:
+                // fall through
+            case PENDING:
+                return ICON_BANNED;
+            default:
+                return status.toString();
+        }
     }
 
-    public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
-                                     final ReportStatistics totalStatistics) {
-        final StringBuilder statisticsTable = new StringBuilder();
-
-        statisticsTable.append(".Total Statistics").append(NEW_LINE);
-        statisticsTable.append("[options=\"header,footer\"]").append(NEW_LINE);
-        statisticsTable.append("|===").append(NEW_LINE);
-
-        statisticsTable.append("| feature ");
-        statisticsTable.append("| total classes ");
-        statisticsTable.append("| successful scenarios ");
-        statisticsTable.append("| failed scenarios ");
-        statisticsTable.append("| pending scenarios ");
-        statisticsTable.append("| total scenarios ");
-        statisticsTable.append("| failed cases ");
-        statisticsTable.append("| total cases ");
-        statisticsTable.append("| total steps ");
-        statisticsTable.append("| duration").append(NEW_LINE);
-
-        featureStatistics.entrySet().stream().sorted(Map.Entry.comparingByKey())
-                .forEach(entry -> convertStatisticsRow(statisticsTable, entry.getKey(), entry.getValue()));
-
-        convertStatisticsRow(statisticsTable, "sum", totalStatistics);
-
-        statisticsTable.append("|===");
-        return statisticsTable.toString();
-    }
-
-    private static void convertStatisticsRow(StringBuilder builder, String name, ReportStatistics statistics) {
-        builder.append("| ").append(name);
-        builder.append(" | ").append(statistics.numClasses);
-        builder.append(" | ").append(statistics.numSuccessfulScenarios);
-        builder.append(" | ").append(statistics.numFailedScenarios);
-        builder.append(" | ").append(statistics.numPendingScenarios);
-        builder.append(" | ").append(statistics.numScenarios);
-        builder.append(" | ").append(statistics.numFailedCases);
-        builder.append(" | ").append(statistics.numCases);
-        builder.append(" | ").append(statistics.numSteps);
-        builder.append(" | ").append(toHumanReadableDuration(statistics.durationInNanos)).append(NEW_LINE);
+    private static Optional<String> toHumanReadableDuration(final long nanos) {
+        if (nanos > 1000000) {
+            final Duration duration = Duration.ofNanos(nanos);
+            final long seconds = duration.getSeconds();
+            if (seconds > 0) {
+                return Optional.of(seconds + "s " + duration.getNano() / 1000000 + "ms");
+            } else {
+                return Optional.of(duration.getNano() / 1000000 + "ms");
+            }
+        } else {
+            return Optional.empty();
+        }
     }
 }

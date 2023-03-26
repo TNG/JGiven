@@ -51,7 +51,7 @@ public class AsciiDocReportBlockConverterTest {
         assertThatBlockContainsLines(block,
                 "=== My first feature",
                 "",
-                "8 Successful, 21 Failed, 13 Pending, 42 Total (0s 0ms)");
+                "icon:check-square[role=green] 8 Successful, icon:exclamation-circle[role=red] 21 Failed, icon:ban[role=silver] 13 Pending, 42 Total (0ms)");
     }
 
     @Test
@@ -70,7 +70,7 @@ public class AsciiDocReportBlockConverterTest {
         assertThatBlockContainsLines(block,
                 "=== My first feature",
                 "",
-                "8 Successful, 21 Failed, 13 Pending, 42 Total (0s 0ms)",
+                "icon:check-square[role=green] 8 Successful, icon:exclamation-circle[role=red] 21 Failed, icon:ban[role=silver] 13 Pending, 42 Total (0ms)",
                 "",
                 "++++",
                 "A very nice feature.",
@@ -78,8 +78,10 @@ public class AsciiDocReportBlockConverterTest {
     }
 
     @Test
-    @DataProvider({"SUCCESS, successful, SUCCESS", "FAILED, failed, FAILED", "SCENARIO_PENDING, pending, PENDING",
-            "SOME_STEPS_PENDING, pending, PENDING"})
+    @DataProvider({"SUCCESS, successful, icon:check-square[role=green]",
+            "FAILED, failed, icon:exclamation-circle[role=red]",
+            "SCENARIO_PENDING, pending, icon:ban[role=silver]",
+            "SOME_STEPS_PENDING, pending, icon:ban[role=silver]"})
     public void convert_scenario_header_without_tags_or_description(final ExecutionStatus status, final String scenarioTag,
             final String humanStatus) {
         // arrange
@@ -94,7 +96,7 @@ public class AsciiDocReportBlockConverterTest {
                 "",
                 "==== My first scenario",
                 "",
-                "[" + humanStatus + "] (1s 0ms)");
+                humanStatus + " (1s 0ms)");
     }
 
     @Test
@@ -113,7 +115,7 @@ public class AsciiDocReportBlockConverterTest {
                 "",
                 "==== My first scenario",
                 "",
-                "[PENDING] (0s 9ms)",
+                "icon:ban[role=silver] (9ms)",
                 "",
                 "Tags: _Best Tag_");
     }
@@ -133,7 +135,7 @@ public class AsciiDocReportBlockConverterTest {
                 "",
                 "==== My first scenario",
                 "",
-                "[PENDING] (2s 5ms)",
+                "icon:ban[role=silver] (2s 5ms)",
                 "",
                 "++++",
                 "Best scenario ever!!!",
@@ -156,7 +158,7 @@ public class AsciiDocReportBlockConverterTest {
                 "",
                 "==== My first scenario",
                 "",
-                "[SUCCESS] (3s 0ms)",
+                "icon:check-square[role=green] (3s 0ms)",
                 "",
                 "++++",
                 "Best scenario ever!!!",
@@ -272,7 +274,7 @@ public class AsciiDocReportBlockConverterTest {
         String block = converter.convertStepBlock(0, words, StepStatus.FAILED, 3000899, null, true, null, false);
 
         // assert
-        assertThat(block).isEqualTo("* [.jg-introWord]*Given* [.right]#[FAILED] (0s 3ms)#");
+        assertThat(block).isEqualTo("* [.jg-introWord]*Given* icon:exclamation-circle[role=red] (3ms)");
     }
 
     @Test
@@ -552,9 +554,9 @@ public class AsciiDocReportBlockConverterTest {
                 "[options=\"header,footer\"]",
                 "|===",
                 "| feature | total classes | successful scenarios | failed scenarios | pending scenarios | total scenarios | failed cases | total cases | total steps | duration",
-                "| Feature One | 1 | 2 | 1 | 0 | 3 | 1 | 3 | 13 | 0s 0ms",
-                "| Feature Two | 1 | 1 | 0 | 1 | 2 | 1 | 2 | 8 | 0s 0ms",
-                "| sum | 2 | 3 | 1 | 1 | 5 | 1 | 5 | 21 | 0s 0ms",
+                "| Feature One | 1 | 2 | 1 | 0 | 3 | 1 | 3 | 13 | 0ms",
+                "| Feature Two | 1 | 1 | 0 | 1 | 2 | 1 | 2 | 8 | 0ms",
+                "| sum | 2 | 3 | 1 | 1 | 5 | 1 | 5 | 21 | 0ms",
                 "|===");
     }
 

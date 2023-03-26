@@ -137,7 +137,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         printWriter.println(title);
 
         printWriter.println(":toc: left");
-        printWriter.println(":toclevels: 5");
+        printWriter.println(":toclevels: 3");
+        printWriter.println(":icons: font");
         printWriter.println();
         printWriter.println("include::totalStatistics.asciidoc[]");
         printWriter.println();
