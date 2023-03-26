@@ -158,6 +158,27 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     @Override
+    public String convertCaseFooterBlock(final String errorMessage, final List<String> stackTraceLines) {
+        StringBuilder blockContent = new StringBuilder();
+
+        blockContent.append(".").append(errorMessage).append(NEW_LINE);
+        blockContent.append("[.jg-exception%collapsible]").append(NEW_LINE);
+        blockContent.append("====").append(NEW_LINE);
+
+        if (stackTraceLines != null && !stackTraceLines.isEmpty()) {
+            blockContent.append("....").append(NEW_LINE);
+            stackTraceLines.forEach(line -> blockContent.append(line).append(NEW_LINE));
+            blockContent.append("....").append(NEW_LINE);
+        } else {
+            blockContent.append("No stacktrace provided").append(NEW_LINE);
+        }
+
+        blockContent.append("====").append(NEW_LINE);
+
+        return blockContent.toString();
+    }
+
+    @Override
     public String convertScenarioFooterBlock(ExecutionStatus executionStatus) {
         return "// end::" + toAsciiDocTag(executionStatus) + "[]";
     }

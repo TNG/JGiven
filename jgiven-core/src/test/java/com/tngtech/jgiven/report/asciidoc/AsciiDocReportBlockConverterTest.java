@@ -460,6 +460,44 @@ public class AsciiDocReportBlockConverterTest {
     }
 
     @Test
+    public void convert_scenario_case_footer() {
+        // arrange
+        final ImmutableList<String> stackTraceLines = ImmutableList.of("broken line 1", "broken line 2");
+
+        // act
+        final String block =
+                converter.convertCaseFooterBlock("Something is broken", stackTraceLines);
+
+        // assess
+        assertThatBlockContainsLines(block,
+                ".Something is broken",
+                "[.jg-exception%collapsible]",
+                "====",
+                "....",
+                "broken line 1",
+                "broken line 2",
+                "....",
+                "====");
+    }
+
+    @Test
+    public void convert_scenario_case_footer_without_stacktrace() {
+        // arrange
+
+        // act
+        final String block =
+                converter.convertCaseFooterBlock("Something is broken", null);
+
+        // assess
+        assertThatBlockContainsLines(block,
+                ".Something is broken",
+                "[.jg-exception%collapsible]",
+                "====",
+                "No stacktrace provided",
+                "====");
+    }
+
+    @Test
     @DataProvider({"SUCCESS, successful", "FAILED, failed", "SCENARIO_PENDING, pending", "SOME_STEPS_PENDING, pending"})
     public void convert_scenario_footer(final ExecutionStatus status, final String scenarioTag) {
         // arrange

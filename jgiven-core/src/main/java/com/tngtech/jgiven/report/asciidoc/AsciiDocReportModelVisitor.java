@@ -87,7 +87,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
             return;
         }
 
-        if (stepModel.isSectionTitle()) {
+        if (Boolean.TRUE.equals(stepModel.isSectionTitle())) {
             currentSectionTitle = stepModel.getName();
             return;
         }
@@ -99,6 +99,14 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
         // clear section title after first step in section
         currentSectionTitle = null;
+    }
+
+    @Override
+    public void visitEnd(final ScenarioCaseModel scenarioCase) {
+        final String errorMessage = scenarioCase.getErrorMessage();
+        if (errorMessage != null) {
+            asciiDocBlocks.add(blockConverter.convertCaseFooterBlock(errorMessage, scenarioCase.getStackTrace()));
+        }
     }
 
     @Override

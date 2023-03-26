@@ -69,6 +69,13 @@ public interface ReportBlockConverter {
     String convertCasesTableBlock(CasesTable casesTable);
 
     /**
+     * Is invoked if the case failed with an exception.
+     * @param errorMessage the message describing the error
+     * @param stackTraceLines the stacktrace lines if present
+     */
+    String convertCaseFooterBlock(String errorMessage, List<String> stackTraceLines);
+
+    /**
      * Is invoked at the end of a scenario.
      *
      * @param executionStatus was the scenario successful

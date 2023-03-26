@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.report.asciidoc;
 
+import com.google.common.collect.ImmutableList;
 import com.tngtech.jgiven.report.CasesTable;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
@@ -48,7 +49,7 @@ public class AsciiDocReportModelVisitorTest {
 
         // assess
         Assertions.assertThat(reportModelVisitor.getResult())
-            .isEqualTo(List.of(
+            .isEqualTo(ImmutableList.of(
                 "convertFeatureHeaderBlock",
                 "convertScenarioHeaderBlock",
                 "convertCaseHeaderBlock",
@@ -86,6 +87,11 @@ public class AsciiDocReportModelVisitorTest {
         @Override
         public String convertCasesTableBlock(CasesTable casesTable) {
             return "convertCasesTableBlock";
+        }
+
+        @Override
+        public String convertCaseFooterBlock(final String errorMessage, final List<String> stackTraceLines) {
+            return "convertCaseFooterBlock";
         }
 
         @Override
