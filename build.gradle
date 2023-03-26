@@ -238,7 +238,9 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',
                 '--targetDir=build/reports/jgiven/asciidoc',
-                '--format=asciidoc'
+                '--format=asciidoc',
+                '--exclude-empty-scenarios=true',
+                '--title=JGiven Report'
 
         classpath = configurations.testRuntimeClasspath
     }

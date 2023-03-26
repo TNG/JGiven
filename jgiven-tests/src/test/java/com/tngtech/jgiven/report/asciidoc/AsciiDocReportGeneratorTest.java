@@ -27,8 +27,11 @@ public class AsciiDocReportGeneratorTest extends
         jsonReports.and().the_report_exist_as_JSON_file();
         when().the_asciidoc_reporter_is_executed();
         then().a_file_with_name_$_exists("index.asciidoc")
-                .and().a_file_with_name_$_exists("allClasses.asciidoc")
-                .and().a_file_with_name_$_exists("Test.asciidoc");
+            .and().a_file_with_name_$_exists("totalStatistics.asciidoc")
+            .and().a_file_with_name_$_exists("allScenarios.asciidoc")
+            .and().a_file_with_name_$_exists("failedScenarios.asciidoc")
+            .and().a_file_with_name_$_exists("pendingScenarios.asciidoc")
+            .and().a_file_with_name_$_exists("features/Test.asciidoc");
     }
 
     @Test
@@ -40,7 +43,7 @@ public class AsciiDocReportGeneratorTest extends
                 .and().the_report_exist_as_JSON_file();
 
         when().the_asciidoc_reporter_is_executed();
-        then().the_asciidoc_reporte_$_exists("Test.asciidoc")
+        then().the_asciidoc_reporte_$_exists("features/Test.asciidoc")
                 .and().the_literal_block_is_added_$(
                 "...." + System.lineSeparator() +
                         content + System.lineSeparator() +

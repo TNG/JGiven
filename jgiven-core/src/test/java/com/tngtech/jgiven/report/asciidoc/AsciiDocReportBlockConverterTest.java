@@ -3,6 +3,7 @@ package com.tngtech.jgiven.report.asciidoc;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.annotation.Table;
@@ -17,6 +18,7 @@ import com.tngtech.jgiven.report.model.Word;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,13 +80,13 @@ public class AsciiDocReportBlockConverterTest {
                 "++++");
     }
 
+    @Test
     @DataProvider({
         "SUCCESS, successful, SUCCESS",
         "FAILED, failed, FAILED",
         "SCENARIO_PENDING, pending, PENDING",
         "SOME_STEPS_PENDING, pending, PENDING"
     })
-    @Test
     public void convert_scenario_header_without_tags_or_description(final ExecutionStatus status,
                                                                     final String scenarioTag,
                                                                     final String humanStatus) {
@@ -514,13 +516,13 @@ public class AsciiDocReportBlockConverterTest {
                 "|===");
     }
 
+    @Test
     @DataProvider({
         "SUCCESS, successful",
         "FAILED, failed",
         "SCENARIO_PENDING, pending",
         "SOME_STEPS_PENDING, pending"
     })
-    @Test
     public void convert_scenario_footer(final ExecutionStatus status,
                                         final String scenarioTag) {
         // arrange
@@ -530,5 +532,63 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThat(block).isEqualTo("// end::scenario-" + scenarioTag + "[]");
+    }
+
+    @Test
+    public void convert_statistics() {
+        // arrange
+        final ReportStatistics statisticsOne = new ReportStatistics();
+        statisticsOne.numClasses = 1;
+        statisticsOne.numScenarios = 3;
+        statisticsOne.numSuccessfulScenarios = 2;
+        statisticsOne.numFailedScenarios = 1;
+        statisticsOne.numCases = 3;
+        statisticsOne.numFailedCases = 1;
+        statisticsOne.numSteps = 13;
+
+        final ReportStatistics statisticsTwo = new ReportStatistics();
+        statisticsTwo.numClasses = 1;
+        statisticsTwo.numScenarios = 2;
+        statisticsTwo.numSuccessfulScenarios = 1;
+        statisticsTwo.numPendingScenarios = 1;
+        statisticsTwo.numCases = 2;
+        statisticsTwo.numFailedCases = 1;
+        statisticsTwo.numSteps = 8;
+
+        final ReportStatistics totalStatistics = new ReportStatistics();
+        totalStatistics.numClasses = 2;
+        totalStatistics.numScenarios = 5;
+        totalStatistics.numSuccessfulScenarios = 3;
+        totalStatistics.numPendingScenarios = 1;
+        totalStatistics.numFailedScenarios = 1;
+        totalStatistics.numCases = 5;
+        totalStatistics.numFailedCases = 1;
+        totalStatistics.numSteps = 21;
+
+        final ImmutableMap<String, ReportStatistics> featureStatistics =
+                ImmutableMap.of("Feature One", statisticsOne, "Feature Two", statisticsTwo);
+
+        // act
+        final String block = converter.convertStatisticsBlock(featureStatistics, totalStatistics);
+
+        // assess
+        assertThatBlockContainsLines(block,
+                ".Total Statistics",
+                "[options=\"header,footer\"]",
+                "|===",
+                "| feature | total classes | successful scenarios | failed scenarios | pending scenarios | total scenarios | failed cases | total cases | total steps | duration",
+                "",
+                "| Feature One | 1 | 2 | 1 | 0 | 3 | 1 | 3 | 13 | 0s 0ms",
+                "",
+                "| Feature Two | 1 | 1 | 0 | 1 | 2 | 1 | 2 | 8 | 0s 0ms",
+                "",
+                "| sum | 2 | 3 | 1 | 1 | 5 | 1 | 5 | 21 | 0s 0ms",
+                "|===");
+    }
+
+    private static void assertThatBlockContainsLines(final String block, final String... expectedLines) {
+        final String[] blockLines = block.split(System.lineSeparator());
+        assertThat(blockLines).hasSize(expectedLines.length)
+                .containsExactly(expectedLines);
     }
 }

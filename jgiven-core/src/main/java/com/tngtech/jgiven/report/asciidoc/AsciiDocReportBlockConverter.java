@@ -91,7 +91,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
             blockContent.append(" ").append(description);
         }
 
-        if (parameterNames.size() >= 1) {
+        if (!parameterNames.isEmpty()) {
             blockContent.append(NEW_LINE).append(NEW_LINE);
 
             blockContent.append("====").append(NEW_LINE);
@@ -260,17 +260,17 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     private String escapeArgumentValue(final String value) {
         // TODO Is this really necessary?
-        //return "+" + value + "+";
+        // return "+" + value + "+";
         return value;
     }
 
     private static String buildIndentationFragment(final int depth, final String symbol) {
-        return generate(() -> symbol).limit(depth + 1).collect(joining()) + " ";
+        return generate(() -> symbol).limit(depth + 1L).collect(joining()) + " ";
     }
 
     private static String generateTableColSpec(final boolean withVerticalHeader, final int columnCount) {
         return withVerticalHeader
-            ? "h," + generate(() -> "1").limit(columnCount - 1).collect(joining(","))
+            ? "h," + generate(() -> "1").limit(columnCount - 1L).collect(joining(","))
             : generate(() -> "1").limit(columnCount).collect(joining(","));
     }
 
@@ -309,7 +309,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         return duration.getSeconds() + "s " + duration.getNano() / 1000000 + "ms";
     }
 
-    public String generateStatistics(final Map<String, ReportStatistics> featureStatistics,
+    public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
                                      final ReportStatistics totalStatistics) {
         final StringBuilder statisticsTable = new StringBuilder();
 
@@ -330,10 +330,10 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         statisticsTable.append(NEW_LINE);
 
 
-        for (Map.Entry<String, ReportStatistics> entry : featureStatistics.entrySet()) {
+        featureStatistics.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> {
             printStatisticsRow(statisticsTable, entry.getKey(), entry.getValue());
             statisticsTable.append(NEW_LINE);
-        }
+        });
 
         printStatisticsRow(statisticsTable, "sum", totalStatistics);
 
