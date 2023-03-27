@@ -70,7 +70,11 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             } else {
                 printWriter.println("There are " + completeReportModel.getTotalStatistics().numFailedScenarios + " failed scenarios");
                 printWriter.println();
+                printWriter.println(":leveloffset: -1");
+                printWriter.println();
                 generateFeatureIncludes(printWriter, failedScenarioFiles, "tag=scenario-failed");
+                printWriter.println();
+                printWriter.println(":leveloffset: +1");
             }
         }
 
@@ -82,7 +86,11 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             } else {
                 printWriter.println("There are " + completeReportModel.getTotalStatistics().numPendingScenarios + " pending scenarios");
                 printWriter.println();
+                printWriter.println(":leveloffset: -1");
+                printWriter.println();
                 generateFeatureIncludes(printWriter, pendingScenarioFiles, "tag=scenario-pending");
+                printWriter.println();
+                printWriter.println(":leveloffset: +1");
             }
         }
 
@@ -146,10 +154,10 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         printWriter.println("include::allScenarios.asciidoc[]");
         printWriter.println();
 
-        printWriter.println("include::failedScenarios.asciidoc[leveloffset=-1]");
+        printWriter.println("include::failedScenarios.asciidoc[]");
         printWriter.println();
 
-        printWriter.println("include::pendingScenarios.asciidoc[leveloffset=-1]");
+        printWriter.println("include::pendingScenarios.asciidoc[]");
         printWriter.println();
     }
 
