@@ -28,6 +28,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     private boolean caseIsUnsuccessful;
     private String currentSectionTitle;
     private boolean scenarioHasMultipleCases;
+    private boolean isFirstStepInCase;
 
     public AsciiDocReportModelVisitor(final ReportBlockConverter blockConverter, final ReportStatistics featureStatistics) {
         this.blockConverter = blockConverter;
@@ -79,6 +80,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         }
 
         caseIsUnsuccessful = scenarioCase.getExecutionStatus() != ExecutionStatus.SUCCESS;
+        isFirstStepInCase = true;
     }
 
     @Override
@@ -92,13 +94,21 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
             return;
         }
 
-        String stepBlock = blockConverter.convertStepBlock(
-            stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
-            stepModel.getExtendedDescription(), this.caseIsUnsuccessful, currentSectionTitle, scenarioHasDataTable);
+        String stepBlock;
+        if (isFirstStepInCase) {
+            stepBlock = blockConverter.convertFirstStepBlock(
+                    stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
+                    stepModel.getExtendedDescription(), this.caseIsUnsuccessful, scenarioHasDataTable, currentSectionTitle);
+        } else {
+            stepBlock = blockConverter.convertStepBlock(
+                    stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
+                    stepModel.getExtendedDescription(), this.caseIsUnsuccessful, scenarioHasDataTable);
+        }
         asciiDocBlocks.add(stepBlock);
 
         // clear section title after first step in section
         currentSectionTitle = null;
+        isFirstStepInCase = false;
     }
 
     @Override

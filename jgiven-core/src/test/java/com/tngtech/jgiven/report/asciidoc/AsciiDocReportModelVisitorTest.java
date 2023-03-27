@@ -53,7 +53,7 @@ public class AsciiDocReportModelVisitorTest {
                 "convertFeatureHeaderBlock",
                 "convertScenarioHeaderBlock",
                 "convertCaseHeaderBlock",
-                "convertStepBlock",
+                "convertFirstStepBlock",
                 "convertCaseHeaderBlock",
                 "convertScenarioFooterBlock"));
     }
@@ -78,9 +78,15 @@ public class AsciiDocReportModelVisitorTest {
         }
 
         @Override
+        public String convertFirstStepBlock(final int depth, final List<Word> words, final StepStatus status,
+                final long durationInNanos, final String extendedDescription, final boolean caseIsUnsuccessful,
+                final boolean scenarioHasDataTable, final String currentSectionTitle) {
+            return "convertFirstStepBlock";
+        }
+
+        @Override
         public String convertStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-                                       String extendedDescription, boolean caseIsUnsuccessful,
-                                       String currentSectionTitle, boolean scenarioHasDataTable) {
+                                       String extendedDescription, boolean caseIsUnsuccessful, boolean scenarioHasDataTable) {
             return "convertStepBlock";
         }
 

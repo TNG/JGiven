@@ -110,18 +110,28 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         return blockContent.toString();
     }
 
-
     @Override
-    public String convertStepBlock(final int depth, final List<Word> words, final StepStatus status,
-                                   final long durationInNanos, final String extendedDescription,
-                                   final boolean caseIsUnsuccessful, final String currentSectionTitle,
-                                   boolean scenarioHasDataTable) {
+    public String convertFirstStepBlock(final int depth, final List<Word> words, final StepStatus status, final long durationInNanos,
+            final String extendedDescription, final boolean caseIsUnsuccessful, boolean scenarioHasDataTable,
+            final String currentSectionTitle) {
 
         StringBuilder blockContent = new StringBuilder();
 
         if (currentSectionTitle != null && !currentSectionTitle.isEmpty()) {
             blockContent.append(".").append(currentSectionTitle).append(NEW_LINE);
         }
+
+        blockContent.append("[unstyled.jg-step-list]").append(NEW_LINE);
+        blockContent.append(convertStepBlock(depth, words, status, durationInNanos, extendedDescription, caseIsUnsuccessful, scenarioHasDataTable));
+
+        return blockContent.toString();
+    }
+
+    @Override
+    public String convertStepBlock(final int depth, final List<Word> words, final StepStatus status, final long durationInNanos,
+            final String extendedDescription, final boolean caseIsUnsuccessful, boolean scenarioHasDataTable) {
+
+        StringBuilder blockContent = new StringBuilder();
 
         blockContent.append(buildIndentationFragment(depth, "*"));
 
@@ -165,9 +175,17 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     public String convertCaseFooterBlock(final String errorMessage, final List<String> stackTraceLines) {
         StringBuilder blockContent = new StringBuilder();
 
-        blockContent.append(".").append(errorMessage).append(NEW_LINE);
+        final String[] errorMessageLines = errorMessage.split(NEW_LINE, 2);
+
+        blockContent.append(".").append(errorMessageLines[0]).append(NEW_LINE);
         blockContent.append("[.jg-exception%collapsible]").append(NEW_LINE);
         blockContent.append("====").append(NEW_LINE);
+
+        if (errorMessageLines.length > 1 && !errorMessageLines[1].isEmpty()) {
+                blockContent.append(errorMessageLines[1]).append(NEW_LINE);
+                blockContent.append(NEW_LINE);
+
+        }
 
         if (stackTraceLines != null && !stackTraceLines.isEmpty()) {
             blockContent.append("....").append(NEW_LINE);
@@ -190,7 +208,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     private void appendWordFragments(final StringBuilder blockContent, final List<Word> words) {
         for (Word word : words) {
             if (word.isIntroWord()) {
-                blockContent.append(buildIntroWordFragment(word.getFormattedValue()));
+                blockContent.append(" ").append(buildIntroWordFragment(word.getFormattedValue()));
             } else if (word.isDataTable()) {
                 blockContent.append(buildDataTableFragment(word.getArgumentInfo().getDataTable()));
             } else if (word.isArg() && word.getArgumentInfo().isParameter()) {
@@ -204,7 +222,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     private String buildIntroWordFragment(final String word) {
-        return "[.jg-introWord]*" + WordUtil.capitalize(word) + "*";
+        return "[.jg-intro-word]*" + WordUtil.capitalize(word) + "*";
     }
 
 
@@ -274,7 +292,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
             return stepStatus + " +\n"
-                   + buildIndentationFragment(depth, " ") + "_+++" + extendedDescription + "+++_";
+                   + buildIndentationFragment(depth, " ") + " _+++" + extendedDescription + "+++_";
         } else {
             return stepStatus;
         }
@@ -332,7 +350,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     private static String buildIndentationFragment(final int depth, final String symbol) {
-        return generate(() -> symbol).limit(depth + 1L).collect(joining()) + " ";
+        return generate(() -> symbol).limit(depth + 1L).collect(joining());
     }
 
     private static String generateTableColSpec(final boolean withVerticalHeader, final int columnCount) {

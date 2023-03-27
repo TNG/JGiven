@@ -244,10 +244,11 @@ public class AsciiDocReportBlockConverterTest {
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine"));
 
         // act
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false);
 
         // assert
-        assertThat(block).isEqualTo("* [.jg-introWord]*Given* a coffee machine");
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* a coffee machine");
     }
 
     @Test
@@ -257,11 +258,11 @@ public class AsciiDocReportBlockConverterTest {
 
         // act
         String block =
-                converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, "It is a brand new machine.", false, null, false);
+                converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, "It is a brand new machine.", false, false);
 
         // assert
         assertThatBlockContainsLines(block,
-                "* [.jg-introWord]*Given* a coffee machine +",
+                "* [.jg-intro-word]*Given* a coffee machine +",
                 "  _+++It is a brand new machine.+++_");
     }
 
@@ -271,10 +272,11 @@ public class AsciiDocReportBlockConverterTest {
         List<Word> words = Collections.singletonList(Word.introWord("given"));
 
         // act
-        String block = converter.convertStepBlock(0, words, StepStatus.FAILED, 3000899, null, true, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.FAILED, 3000899, null, true, false);
 
         // assert
-        assertThat(block).isEqualTo("* [.jg-introWord]*Given* icon:exclamation-circle[role=red] (3ms)");
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* icon:exclamation-circle[role=red] (3ms)");
     }
 
     @Test
@@ -283,14 +285,28 @@ public class AsciiDocReportBlockConverterTest {
         List<Word> words = Collections.singletonList(Word.introWord("given"));
 
         // act
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, "First section", false);
+        String block = converter.convertFirstStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false, "First section");
 
         // assert
         assertThatBlockContainsLines(block,
                 ".First section",
-                "* [.jg-introWord]*Given*");
+                "[unstyled.jg-step-list]",
+                "* [.jg-intro-word]*Given*");
     }
 
+    @Test
+    public void convert_first_step_without_section() {
+        // arrange
+        List<Word> words = Collections.singletonList(Word.introWord("given"));
+
+        // act
+        String block = converter.convertFirstStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false, null);
+
+        // assert
+        assertThatBlockContainsLines(block,
+                "[unstyled.jg-step-list]",
+                "* [.jg-intro-word]*Given*");
+    }
 
     @Test
     public void convert_step_with_simple_argument() {
@@ -300,10 +316,11 @@ public class AsciiDocReportBlockConverterTest {
                         new Word("coffees"));
 
         // act
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false);
 
         // assert
-        assertThat(block).isEqualTo("* [.jg-introWord]*Given* a coffee machine with [.jg-argument]_0_ coffees");
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* a coffee machine with [.jg-argument]_0_ coffees");
     }
 
     @Test
@@ -313,11 +330,11 @@ public class AsciiDocReportBlockConverterTest {
                 Word.argWord("description", "0", "very nice text\nand also more text"));
 
         // act
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false);
 
         // assert
         assertThatBlockContainsLines(block,
-                "* [.jg-introWord]*Given* a coffee machine with",
+                "* [.jg-intro-word]*Given* a coffee machine with",
                 "+",
                 "[.jg-argument]",
                 "....",
@@ -336,10 +353,11 @@ public class AsciiDocReportBlockConverterTest {
                 ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"), ncoffees, new Word("coffees"));
 
         // act
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false);
 
         // assert
-        assertThat(block).isEqualTo("* [.jg-introWord]*Given* a coffee machine with [.jg-argument]*<coffee count>* coffees");
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* a coffee machine with [.jg-argument]*<coffee count>* coffees");
     }
 
     @Test
@@ -352,11 +370,11 @@ public class AsciiDocReportBlockConverterTest {
                 Word.argWord("products", productsTable.toString(), new DataTable(Table.HeaderType.HORIZONTAL, productsTable)));
 
         // act
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false);
 
         // assert
         assertThatBlockContainsLines(block,
-                "* [.jg-introWord]*Given* the products",
+                "* [.jg-intro-word]*Given* the products",
                 "+",
                 "[.jg-argumentTable%header,cols=\"1,1\"]",
                 "|===",
@@ -375,12 +393,12 @@ public class AsciiDocReportBlockConverterTest {
                 Word.argWord("products", productsTable.toString(), new DataTable(Table.HeaderType.VERTICAL, productsTable)));
 
         // act
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false);
 
         // assert
 
         assertThatBlockContainsLines(block,
-                "* [.jg-introWord]*Given* the products",
+                "* [.jg-intro-word]*Given* the products",
                 "+",
                 "[.jg-argumentTable,cols=\"h,1,1\"]",
                 "|===",
