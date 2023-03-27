@@ -72,9 +72,7 @@ public class AsciiDocReportBlockConverterTest {
                 "",
                 "icon:check-square[role=green] 8 Successful, icon:exclamation-circle[role=red] 21 Failed, icon:ban[role=silver] 13 Pending, 42 Total (0ms)",
                 "",
-                "++++",
-                "A very nice feature.",
-                "++++");
+                "+++A very nice feature.+++");
     }
 
     @Test
@@ -137,9 +135,7 @@ public class AsciiDocReportBlockConverterTest {
                 "",
                 "icon:ban[role=silver] (2s 5ms)",
                 "",
-                "++++",
-                "Best scenario ever!!!",
-                "++++");
+                "+++Best scenario ever!!!+++");
     }
 
     @Test
@@ -160,9 +156,7 @@ public class AsciiDocReportBlockConverterTest {
                 "",
                 "icon:check-square[role=green] (3s 0ms)",
                 "",
-                "++++",
-                "Best scenario ever!!!",
-                "++++",
+                "+++Best scenario ever!!!+++",
                 "",
                 "Tags: _Best Tag_");
     }

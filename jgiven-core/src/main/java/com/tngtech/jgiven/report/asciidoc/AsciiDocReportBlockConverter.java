@@ -41,9 +41,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         if (description != null && !description.isEmpty()) {
             blockContent.append(NEW_LINE);
             blockContent.append(NEW_LINE);
-            blockContent.append("++++").append(NEW_LINE);
-            blockContent.append(description).append(NEW_LINE);
-            blockContent.append("++++");
+            blockContent.append("+++").append(description).append("+++");
         }
 
         return blockContent.toString();
@@ -69,9 +67,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
             blockContent.append(NEW_LINE);
             blockContent.append(NEW_LINE);
-            blockContent.append("++++").append(NEW_LINE);
-            blockContent.append(extendedDescription).append(NEW_LINE);
-            blockContent.append("++++");
+            blockContent.append("+++").append(extendedDescription).append("+++");
         }
 
         if (!tagNames.isEmpty()) {
