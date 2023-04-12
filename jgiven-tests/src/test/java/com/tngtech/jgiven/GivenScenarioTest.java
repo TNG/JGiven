@@ -1,13 +1,13 @@
 package com.tngtech.jgiven;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.tests.PendingDataProviderTests;
 import com.tngtech.jgiven.tests.TestScenarioRepository;
 import com.tngtech.jgiven.tests.TestScenarioRepository.SearchCriteria;
 import com.tngtech.jgiven.tests.TestScenarioRepository.TestScenario;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Note that this is a rather unusual JGiven stage. Usually you would rather build up
@@ -140,6 +140,11 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
 
     public SELF a_testNG_class_with_parallel_tests_and_injected_stages(){
         testScenario = TestScenarioRepository.testNgClassWithParallelTestsAndInjectedStages();
+        return self();
+    }
+
+    public SELF a_test_with_framework_and_JGiven_before_and_after_methods(){
+        testScenario = TestScenarioRepository.lifecycleOrderingTest();
         return self();
     }
 }
