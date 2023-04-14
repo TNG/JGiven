@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.5.1
+        uses: actions/checkout@v3.5.2
       - name: Renovate-dry-run
         uses: renovatebot/github-action@v36.0.2
         with:
