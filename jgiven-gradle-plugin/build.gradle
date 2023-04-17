@@ -23,20 +23,16 @@ test{
     }
 }
 
-pluginBundle {
+gradlePlugin {
     website = 'http://jgiven.org/'
     vcsUrl = 'https://github.com/TNG/JGiven.git'
-    tags = ['jgiven', 'testing','bdd','junit','testng']
-    version = version
-}
-
-gradlePlugin {
     plugins {
         jgivenPlugin {
             id = "com.tngtech.jgiven.gradle-plugin"
             displayName = 'Gradle JGiven Plugin'
             implementationClass = "com.tngtech.jgiven.gradle.JGivenPlugin"
             description = 'JGiven - BDD in plain Java integrated into Gradle builds'
+            tags.set(['jgiven', 'testing','bdd','junit','testng'])
         }
     }
 }
