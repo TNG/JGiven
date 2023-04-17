@@ -4,7 +4,7 @@
     "group:springBoot",
     "group:springCore"
   ],
-  "enabledManagers": [ "gradle", "maven", "github-actions" ],
+  "enabledManagers": [ "gradle", "maven", "github-actions", "gradle-wrapper" ],
   "ignorePaths": [
     "**/example-projects/scala/**"
   ],
@@ -33,7 +33,7 @@
       "automerge": true
     }
   ],
-  "maven":{
+  "maven": {
     "fileMatch": [
       "jgiven-maven-plugin/src/main/maven/pom.xml"
     ]
