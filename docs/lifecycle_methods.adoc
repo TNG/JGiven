@@ -17,13 +17,17 @@ The life-cycle of a scenario is as follows.
 . The `@AfterScenario`-annotated methods of all stages are called.
 . The `after()` methods of all scenario rules of all stages are called.
 
+==== Integration into Test Frameworks' Lifecycles
+The relative ordering of JGiven's lifecycle methods to that of the embedding test framework depends on how JGiven is hooked into it. For JUnit4, JGiven's before and after methods are called later than their respective framework counterparts. Especially the `@After` method is executed ahead of an `@AfterScenario` method or an `after()` method of a scenario rule. For JUnit5 and TestNg, JGiven's `before()` method is executed later than the before method and JGiven's `after()` method is executed ahead of the frameworks' counterparts.
+
+
 === @BeforeScenario / @AfterScenario
 
 ==== @BeforeScenario
 
 Methods annotated with `@BeforeScenario` are executed before any step of any stage of a scenario.
 This is useful for some general scenario setup.
-As an example, you could initialize a WebDriver instance for Selenium tests or setup a database connection.
+As an example, you could initialize a WebDriver instance for Selenium tests or set up a database connection.
 Note that such methods are executed before the injection of values.
 Thus, the annotated code must not depend on scenario state fields.
 
@@ -43,7 +47,7 @@ include::{sourcedir}/userguide/MyWebDriverUsingStage.java[tags=middle,indent=0]
 
 === @ScenarioRule
 
-`@BeforeScenario` and `@AfterScenario` methods are often used to setup and tear down some resource.
+`@BeforeScenario` and `@AfterScenario` methods are often used to set up and tear down some resource.
 If you want to reuse such a resource in another stage, you would have to copy these methods into that stage.
 To avoid that, JGiven offers a concept similar to JUnit rules.
 The idea is to have a separate class that only contains the before and after methods.
@@ -74,7 +78,7 @@ This is useful for setting up code that is required by all or most steps of a st
 ----
 @BeforeStage
 public void setup() {
-  // do something useful to setup the stage
+  // do something useful to set up the stage
 }
 ----
 
@@ -82,7 +86,7 @@ public void setup() {
 
 Analogous to `@BeforeStage` methods, methods can be annotated with `@AfterStage`.
 These methods are executed after all steps of a stage have been executed, but before extracting the values of scenario state fields.
-Thus you can prepare state for following stages in an `@AfterStage` method.
+Thus, you can prepare state for following stages in an `@AfterStage` method.
 A typical use case for this is to apply the builder pattern to build a certain object using step methods and build the final object in an `@AfterStage` method.
 
 ==== Example
@@ -130,3 +134,5 @@ class UseRepeatableStage {
 }
 ----
 Likewise, `@AfterStage` methods in such scenarios will only be executed after the last invocation of the stage.
+
+

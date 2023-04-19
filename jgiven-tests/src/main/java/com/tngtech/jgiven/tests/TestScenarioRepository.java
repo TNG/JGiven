@@ -1,9 +1,9 @@
 package com.tngtech.jgiven.tests;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.Description;
+
+import java.util.List;
 
 public class TestScenarioRepository {
 
@@ -289,6 +289,10 @@ public class TestScenarioRepository {
 
     public static TestScenario testNgClassWithParallelTestsAndInjectedStages() {
         return new TestScenario(TestNgFailingParallelTest.class);
+    }
+
+    public static TestScenario lifecycleOrderingTest(){
+        return new TestScenario(LifecycleOrderingTest.class);
     }
 
 }
