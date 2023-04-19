@@ -2,10 +2,6 @@ name: Renovate-Dry-Run
 on:
   workflow_dispatch:
     inputs:
-      pac_to_use:
-        description: "Name of the workflow secret to use"
-        type: string
-        required: true
       branch:
         description: "Branch that renovate should operate on"
         type: string
@@ -21,7 +17,7 @@ jobs:
         uses: renovatebot/github-action@v36.0.2
         with:
           configurationFile: renovate.json
-          token: ${{secrets.$inputs.pac_to_use}}
+          token: ${{secrets.RENOVATE_TOKEN}}
         env:
           LOG_LEVEL: "debug"
           RENOVATE_DRY_RUN: "full"
