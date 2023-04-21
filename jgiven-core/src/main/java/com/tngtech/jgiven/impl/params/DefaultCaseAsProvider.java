@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.impl.params;
 
-import com.tngtech.jgiven.annotation.CaseAsProvider;
 import com.tngtech.jgiven.annotation.CaseAs;
+import com.tngtech.jgiven.annotation.CaseAsProvider;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -22,27 +22,25 @@ public class DefaultCaseAsProvider implements CaseAsProvider {
         StringBuilder resultingDescription = new StringBuilder();
         for( int i = 0; i < caseDescription.length(); i++ ) {
 
-            boolean dollarMatch = caseDescription.charAt( i ) == '$';
+            final boolean dollarMatch = caseDescription.charAt( i ) == '$';
+            final boolean nextCharExists = ( i + 1 ) < caseDescription.length();
+            final boolean escapedDollarMatch = nextCharExists && caseDescription.charAt( i + 1 ) == '$';
 
-            if( dollarMatch ) {
-                boolean nextCharExists = ( i + 1 ) < caseDescription.length();
-                boolean escapedDollarMatch = nextCharExists && caseDescription.charAt( i + 1 ) == '$';
+            if(dollarMatch && escapedDollarMatch){
+                i+=1;
+            }
+            if( dollarMatch && !escapedDollarMatch) {
 
-                String argumentName = nextCharExists ? nextName( caseDescription.substring( i + 1 ) ) : "";
+                final String argumentName = nextCharExists ? nextName( caseDescription.substring( i + 1 ) ) : "";
 
-                boolean namedArgumentExists = argumentName.length() > 0;
-                boolean namedArgumentMatch = namedArgumentExists && parameterNames.contains( argumentName );
-                boolean enumArgumentMatch =
+                final boolean namedArgumentExists = argumentName.length() > 0;
+                final boolean namedArgumentMatch = namedArgumentExists && parameterNames.contains( argumentName );
+                final boolean enumArgumentMatch =
                         nextCharExists && parameterValues.size() > nextIndex( caseDescription.substring( i + 1 ), parameterValues.size() );
-                boolean singleDollarCountIndexExists = singlePlaceholderCounter < parameterValues.size();
-
-                // e.g $$
-                if( escapedDollarMatch ) {
-                    resultingDescription.append( '$' );
-                    i += 1;
+                final boolean singleDollarCountIndexExists = singlePlaceholderCounter < parameterValues.size();
 
                     // e.g $argument
-                } else if( namedArgumentMatch ) {
+                if( namedArgumentMatch ) {
                     int argumentIndex = parameterNames.indexOf( argumentName );
                     resultingDescription.append( parameterValues.get( argumentIndex ) );
                     i += argumentName.length();

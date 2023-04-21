@@ -1,11 +1,5 @@
 package com.tngtech.jgiven.report.model;
 
-import java.lang.annotation.Annotation;
-import java.util.Set;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.Table;
@@ -13,6 +7,12 @@ import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.*;
 import com.tngtech.jgiven.format.table.TableFormatter;
 import com.tngtech.jgiven.impl.util.WordUtil;
+
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StepFormatter {
     private final String stepDescription;
@@ -165,14 +165,11 @@ public class StepFormatter {
                     nextCharExists && arguments.size() > nextIndex( stepDescription.substring( i + 1 ), arguments.size() );
             boolean singleDollarCountIndexExists = singlePlaceholderCounter < arguments.size();
 
-            if( dollarMatch ) {
-                // e.g $$
-                if( escapedDollarMatch ) {
-                    formattedWords.add( new Word( "$" ) );
-                    i += 1;
-
-                    // e.g $argument
-                } else if( namedArgumentMatch ) {
+            if (dollarMatch && escapedDollarMatch){
+                i+=1;
+            }
+            if( dollarMatch && !escapedDollarMatch) {
+                if( namedArgumentMatch ) {
                     int argumentIndex = getArgumentIndexByName( argumentName, 0 );
                     addArgumentByIndex( argumentIndex, currentWords, formattedWords, usedArguments );
                     i += argumentName.length();
