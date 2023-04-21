@@ -4,7 +4,12 @@
     "group:springBoot",
     "group:springCore"
   ],
-  "enabledManagers": [ "gradle", "maven", "github-actions" ],
+  "enabledManagers": [
+    "gradle",
+    "maven",
+    "github-actions",
+    "gradle-wrapper"
+  ],
   "ignorePaths": [
     "**/example-projects/scala/**"
   ],
@@ -16,24 +21,27 @@
   ],
   "packageRules": [
     {
-      "packagePatterns": [
+      "matchPackagePatterns": [
         "slf4j"
       ],
       "groupName": "slf4j"
     },
     {
-      "packagePatterns": [
+      "matchPackagePatterns": [
         "junit.jupiter"
       ],
       "groupName": "junit5"
     },
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     }
   ],
-  "maven":{
+  "maven": {
     "fileMatch": [
       "jgiven-maven-plugin/src/main/maven/pom.xml"
     ]
