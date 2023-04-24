@@ -11,8 +11,10 @@ import com.tngtech.jgiven.impl.util.WordUtil;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class StepFormatter {
     private final String stepDescription;
@@ -139,13 +141,21 @@ public class StepFormatter {
 
     public List<Word> buildFormattedWords() {
         try {
-            return buildFormattedWordsInternal();
+            return buildFormattedWordsInternal((formattedWords, unusedArguments) -> {formattedWords.addAll(unusedArguments);return formattedWords;});
         } catch( JGivenWrongUsageException e ) {
             throw new JGivenWrongUsageException( e.getMessage() + ". Step definition: " + stepDescription );
         }
     }
 
-    private List<Word> buildFormattedWordsInternal() {
+    public List<Word> buildFormattedWordsIgnoringExtraArguments(){
+        try {
+            return buildFormattedWordsInternal((formattedWords, __) -> formattedWords);
+        } catch( JGivenWrongUsageException e ) {
+            throw new JGivenWrongUsageException( e.getMessage() + ". Step definition: " + stepDescription );
+        }
+    }
+
+    private List<Word> buildFormattedWordsInternal(BiFunction<List<Word>, List<Word>,List<Word>> remainingArgumentHandler) {
         List<Word> formattedWords = Lists.newArrayList();
         Set<String> usedArguments = Sets.newHashSet();
 
@@ -213,9 +223,9 @@ public class StepFormatter {
         }
 
         flushCurrentWord( currentWords, formattedWords, false );
-        formattedWords.addAll( getRemainingArguments( usedArguments ) );
-        return formattedWords;
+        return remainingArgumentHandler.apply(formattedWords, getRemainingArguments(usedArguments));
     }
+
 
     /**
      * Greedy search for the next String from the start in the {@param description}
