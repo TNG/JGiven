@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class StepFormatter {
     private final String stepDescription;
@@ -168,17 +167,17 @@ public class StepFormatter {
             boolean dollarMatch = stepDescription.charAt( i ) == '$';
             boolean nextCharExists = ( i + 1 ) < stepDescription.length();
             boolean escapedDollarMatch = nextCharExists && stepDescription.charAt( i + 1 ) == '$';
-            String argumentName = nextCharExists ? nextName( stepDescription.substring( i + 1 ) ) : "";
-            boolean namedArgumentExists = argumentName.length() > 0;
-            boolean namedArgumentMatch = namedArgumentExists && isArgument( argumentName );
-            boolean enumArgumentMatch =
-                    nextCharExists && arguments.size() > nextIndex( stepDescription.substring( i + 1 ), arguments.size() );
-            boolean singleDollarCountIndexExists = singlePlaceholderCounter < arguments.size();
 
             if (dollarMatch && escapedDollarMatch){
                 i+=1;
             }
             if( dollarMatch && !escapedDollarMatch) {
+                String argumentName = nextCharExists ? nextName( stepDescription.substring( i + 1 ) ) : "";
+                boolean namedArgumentExists = argumentName.length() > 0;
+                boolean namedArgumentMatch = namedArgumentExists && isArgument( argumentName );
+                boolean enumArgumentMatch =
+                        nextCharExists && arguments.size() > nextIndex( stepDescription.substring( i + 1 ), arguments.size() );
+                boolean singleDollarCountIndexExists = singlePlaceholderCounter < arguments.size();
                 if( namedArgumentMatch ) {
                     int argumentIndex = getArgumentIndexByName( argumentName, 0 );
                     addArgumentByIndex( argumentIndex, currentWords, formattedWords, usedArguments );
@@ -226,7 +225,6 @@ public class StepFormatter {
         return remainingArgumentHandler.apply(formattedWords, getRemainingArguments(usedArguments));
     }
 
-
     /**
      * Greedy search for the next String from the start in the {@param description}
      * until a non JavaIdentifierPart or $ is found
@@ -236,8 +234,7 @@ public class StepFormatter {
      */
     private static String nextName( String description ) {
         StringBuilder result = new StringBuilder();
-        for( int i = 0; i < description.length(); i++ ) {
-            char c = description.charAt( i );
+        for(char c : description.toCharArray()) {
             if( Character.isJavaIdentifierPart( c ) && c != '$' ) {
                 result.append( c );
             } else {
