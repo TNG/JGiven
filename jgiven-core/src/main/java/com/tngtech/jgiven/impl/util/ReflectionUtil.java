@@ -70,15 +70,7 @@ public class ReflectionUtil {
 
     @SafeVarargs
     public static FieldPredicate hasAtLeastOneAnnotation(final Class<? extends Annotation>... annotation) {
-        return field -> {
-            for ( Class<? extends Annotation> clazz : annotation ) {
-                if ( field.isAnnotationPresent(clazz) ) {
-                    return true;
-                }
-            }
-
-            return false;
-        };
+        return field -> Arrays.stream(annotation).anyMatch(field::isAnnotationPresent);
     }
 
     public static FieldPredicate allFields() {

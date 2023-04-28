@@ -11,10 +11,12 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.AccessibleObject;
-import java.util.Arrays;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 @RunWith(DataProviderRunner.class)
 public class ReflectionUtilTest {
@@ -31,16 +33,28 @@ public class ReflectionUtilTest {
 
     @DataProvider
     public static List<Object> reflectionPrimitives() {
-        return Arrays.asList("b".getBytes()[0], 1, 1L, 1.2f, 1e300, 'a', true);
+        return List.of("b".getBytes()[0], 1, 1L, 1.2f, 1e300, 'a', true);
     }
 
-    //TODO: define String / BigInt Reflection behavior.
     @Test
     @UseDataProvider("reflectionPrimitives")
     public void wrapper_types_are_returned_as_themselves(Object input) throws Exception {
         List<Object> output = ReflectionUtil.getAllFieldValues(input, ReflectionUtil.getAllNonStaticFields(input.getClass()), "");
 
         assertThat(output).containsExactly(input);
+    }
+
+    @DataProvider
+    public static List<Object> javaInternalComplexDataTypes(){
+        return List.of("you cannot see inside me", new BigInteger(new byte[] {1}), new BigDecimal("1.2"));
+    }
+    @Test
+    @UseDataProvider("javaInternalComplexDataTypes")
+    public void complex_java_datatypes_are_treated_as_inaccessible(Object input){
+        assumeThat(Integer.parseInt(System.getProperty("java.version").split("[.]")[0])).isGreaterThanOrEqualTo(17);
+        assertThat(ReflectionUtil.getAllFieldValues(
+                input,
+                ReflectionUtil.getAllNonStaticFields(input.getClass()),"")).containsOnly((Object) null);
     }
 
     @Test
