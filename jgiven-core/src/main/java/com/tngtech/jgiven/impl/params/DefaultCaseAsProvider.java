@@ -2,6 +2,7 @@ package com.tngtech.jgiven.impl.params;
 
 import com.tngtech.jgiven.annotation.CaseAs;
 import com.tngtech.jgiven.annotation.CaseAsProvider;
+import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.StepFormatter;
 import com.tngtech.jgiven.report.model.Word;
@@ -9,6 +10,7 @@ import com.tngtech.jgiven.report.model.Word;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Default case description provider that uses the value pattern
@@ -22,7 +24,8 @@ public class DefaultCaseAsProvider implements CaseAsProvider {
         }
 
         List<NamedArgument> namedArguments = convertToNamedArguments(parameterNames, parameterValues);
-        return new StepFormatter(caseDescription, namedArguments, List.of(Object::toString))
+        List<ObjectFormatter<?>> formatters = getFormatters(Math.max(parameterNames.size(), parameterValues.size()));
+        return new StepFormatter(caseDescription, namedArguments, formatters)
                 .buildFormattedWordsIgnoringExtraArguments()
                 .stream()
                 .map(Word::getFormattedValue)
@@ -43,7 +46,6 @@ public class DefaultCaseAsProvider implements CaseAsProvider {
         }
         return sb.toString();
     }
-
     private List<NamedArgument> convertToNamedArguments(List<String> parameterNames, List<?> parameterValues){
         List<NamedArgument> namedArguments = new ArrayList<>();
         for (int i =0; i< parameterValues.size();i++){
@@ -51,5 +53,11 @@ public class DefaultCaseAsProvider implements CaseAsProvider {
             namedArguments.add(new NamedArgument(parameterName, parameterValues.get(i)));
         }
         return namedArguments;
+    }
+
+    private List<ObjectFormatter<?>> getFormatters(int amount) {
+        return Stream.generate(() -> (ObjectFormatter<?>) Object::toString)
+                .limit(amount)
+                .collect(Collectors.toList());
     }
 }
