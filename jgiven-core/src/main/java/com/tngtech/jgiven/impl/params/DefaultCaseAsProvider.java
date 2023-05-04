@@ -2,6 +2,7 @@ package com.tngtech.jgiven.impl.params;
 
 import com.tngtech.jgiven.annotation.CaseAs;
 import com.tngtech.jgiven.annotation.CaseAsProvider;
+import com.tngtech.jgiven.format.DefaultFormatter;
 import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.StepFormatter;
@@ -56,7 +57,7 @@ public class DefaultCaseAsProvider implements CaseAsProvider {
     }
 
     private List<ObjectFormatter<?>> getFormatters(int amount) {
-        return Stream.generate(() -> (ObjectFormatter<?>) Object::toString)
+        return Stream.generate(() ->  new DefaultFormatter<>())
                 .limit(amount)
                 .collect(Collectors.toList());
     }
