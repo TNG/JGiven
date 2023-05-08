@@ -114,7 +114,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     @Override
     public void visitEnd(final ScenarioCaseModel scenarioCase) {
         final String errorMessage = scenarioCase.getErrorMessage();
-        if (errorMessage != null) {
+        if (!scenarioHasDataTable && errorMessage != null) {
             asciiDocBlocks.add(blockConverter.convertCaseFooterBlock(errorMessage, scenarioCase.getStackTrace()));
         }
     }
