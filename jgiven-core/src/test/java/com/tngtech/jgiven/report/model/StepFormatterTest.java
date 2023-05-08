@@ -1,28 +1,22 @@
 package com.tngtech.jgiven.report.model;
 
-import static com.google.common.collect.Lists.newArrayList;
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.google.common.base.Joiner;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.ArgumentFormatter;
 import com.tngtech.jgiven.format.NotFormatter;
 import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.format.PrintfFormatter;
 import com.tngtech.jgiven.report.model.StepFormatter.ArgumentFormatting;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import javax.lang.model.element.Name;
+import java.util.Collections;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( DataProviderRunner.class )
 public class StepFormatterTest {
@@ -31,25 +25,28 @@ public class StepFormatterTest {
     public static Object[][] testCases() {
         // @formatter:off
         return new Object[][] {
-                { "a",             asList(),                 asList(),           "a" },
-                { "a b",           asList(),                 asList(),           "a b" },
-                { " a ",           asList(),                 asList(),           " a " },
-                { "",              asList( "strA" ),         asList( "a" ),      "a" },
-                { "foo",           asList( "strA" ),         asList( "a" ),      "foo a" },
-                { "",              asList( "strA", "strB" ), asList( "a", "b" ), "a b" },
-                { "$",             asList( "strA" ),         asList( "a" ),      "a" },
-                { "$foo",          asList( "strA" ),         asList( "a" ),      "a" },
-                { "foo $",         asList( "strA" ),         asList( "a" ),      "foo a" },
-                { "$ foo",         asList( "strA" ),         asList( "a" ),      "a foo" },
-                { "foo $ foo",     asList( "strA" ),         asList( "a" ),      "foo a foo" },
-                { "$ $",           asList( "strA", "strB" ), asList( "a", "b" ), "a b" },
-                { "$foo bar$",     asList( "strA", "strB" ), asList( "a", "b" ), "a bar b" },
-                { "foo$bar$baz x", asList( "strA", "strB" ), asList( "a", "b" ), "foo a b x" },
-                { "$d foo",        asList( "int5" ),         asList( 5 ),        "5 foo" },
-                { "$1 foo $1",     asList( "strA" ),         asList( "a" ),      "a foo a" },
-                { "$2 $1",         asList( "strA", "strB" ), asList("a", "b"),   "b a" },
-                { "$]",            asList( "strA"),          asList( "a" ),      "a ]" },
-                { "foo $]",        asList( "strA" ),         asList( "a" ),      "foo a ]" },
+                { "a",             List.of(),                    List.of(),                   "a" },
+                { "a b",           List.of(),                    List.of(),                   "a b" },
+                { " a ",           List.of(),                    List.of(),                   " a " },
+                { "",              List.of( "strA" ),        List.of( "a" ),           "a" },
+                { "foo",           List.of( "strA" ),        List.of( "a" ),           "foo a" },
+                { "",              List.of( "strA", "strB" ),    List.of( "a", "b" ),         "a b" },
+                { "$",             List.of( "strA" ),         List.of( "a" ),          "a" },
+                { "$foo",          List.of( "strA" ),         List.of( "a" ),          "a" },
+                { "foo $",         List.of( "strA" ),         List.of( "a" ),          "foo a" },
+                { "$ foo",         List.of( "strA" ),         List.of( "a" ),          "a foo" },
+                { "foo $ foo",     List.of( "strA" ),         List.of( "a" ),          "foo a foo" },
+                { "$ $",           List.of( "strA", "strB" ),     List.of( "a", "b" ),        "a b" },
+                { "$foo bar$",     List.of( "strA", "strB" ),     List.of( "a", "b" ),        "a bar b" },
+                { "foo$bar$baz x", List.of( "strA", "strB" ) ,    List.of( "a", "b" ),        "foo a b x" },
+                { "$d foo",        List.of( "int5" ),         List.of( 5 ),            "5 foo" },
+                { "$1 foo $1",     List.of( "strA" ),         List.of( "a" ),          "a foo a" },
+                { "$2 $1",         List.of( "strA", "strB" ),     List.of("a", "b"),          "b a" },
+                { "$]",            List.of( "strA" ),         List.of( "a" ),          "a ]" },
+                { "$ $unknown",    List.of("strA" ),          List.of("a"),            "a \\$unknown" },
+                { "foo $]",        List.of( "strA" ),         List.of( "a" ),          "foo a ]" },
+                { "foo $$b",       List.of( "strA" ),         List.of( "a" ),          "foo \\$b a" },
+                { "foo b $$ c",    List.of( "strA" ),         List.of( "a" ),          "foo b \\$ c a" }
         };
         // @formatter:on
 
@@ -81,21 +78,21 @@ public class StepFormatterTest {
     @DataProvider
     public static Object[][] formatterTestCases() {
         return new Object[][] {
-                { "$", asList( "bool" ), asList( true ), new NotFormatter(), "", "" },
-                { "$", asList( "bool" ), asList( false ), new NotFormatter(), "", "not" },
-                { "$not", asList( "bool" ), asList( false ), new NotFormatter(), "", "not" },
-                { "$", asList( "bool" ), asList( true ), null, "", "true" },
-                { "$$ foo", asList( "bool" ), asList( true ), null, "", "\\$ foo true" },
-                { "$", asList( "int5" ), asList( 5d ), new PrintfFormatter(), "%.2f", "5[.,]00" },
-                { "$", asList( "obj" ), asList( new Object[] { null } ), new EmptyFormatter(), "", "<null>" },
-                { "$", asList( "str" ), asList( "" ), new EmptyFormatter(), "", "<empty>" },
+                { "$", List.of( "bool" ), List.of( true ), new NotFormatter(), "", "" },
+                { "$", List.of( "bool" ), List.of( false ), new NotFormatter(), "", "not" },
+                { "$not", List.of( "bool" ), List.of( false ), new NotFormatter(), "", "not" },
+                { "$", List.of( "bool" ), List.of( true ), null, "", "true" },
+                { "$$ foo", List.of( "bool" ), List.of( true ), null, "", "\\$ foo true" },
+                { "$", List.of( "int5" ), List.of( 5d ), new PrintfFormatter(), "%.2f", "5[.,]00" },
+                { "$", List.of( "obj" ), Collections.singletonList( null ), new EmptyFormatter(), "", "<null>" },
+                { "$", List.of( "str" ), List.of( "" ), new EmptyFormatter(), "", "<empty>" },
         };
     }
 
     @Test
     @UseDataProvider( "formatterTestCases" )
     @SuppressWarnings( { "unchecked", "rawtypes" } )
-    public void testFormatter( String value, List<String> parameterNames, List<? extends Object> parameterValues,
+    public void testFormatter( String value, List<String> parameterNames, List<?> parameterValues,
             ArgumentFormatter<?> formatter,
             String formatterArg,
             String expectedResult ) {
@@ -129,8 +126,8 @@ public class StepFormatterTest {
 
     @DataProvider
     public static Object[][] namedArgumentTestCases() {
-        List<String> nameList = Arrays.asList( "int", "str", "bool" );
-        List<? extends Object> valueList = Arrays.asList( 1, "some string", true );
+        List<String> nameList = List.of( "int", "str", "bool" );
+        List<?> valueList = List.of( 1, "some string", true );
         return new Object[][] {
                 {
                         "$int $str $bool", nameList, valueList, "1 some string true"
@@ -152,7 +149,7 @@ public class StepFormatterTest {
 
     @Test
     @UseDataProvider( "namedArgumentTestCases" )
-    public void namedArgumentTest( String value, List<String> parameterNames, List<? extends Object> parameterValues,
+    public void namedArgumentTest( String value, List<String> parameterNames, List<?> parameterValues,
             String expectedValue ) {
         testFormatter( value, parameterNames, parameterValues, null, null, expectedValue );
     }

@@ -2,6 +2,9 @@
 ## Breaking changes
 * Increased minimum supported version to Java 11
 
+## Fixed issues
+* Escaped dollars ($$) are now treated as a regular $ character.[#1253](https://github.com/TNG/JGiven/issues/1253) (thanks to manoj-fd for reporting) 
+
 # v1.2.5
 ## Fixed issues
 * Fixed incompatibility of Gradle plugin with Gradle 8, due to the use of a deprecated method [#1200](https://github.com/TNG/JGiven/issues/1200) (thanks to AistisTaraskevicius for reporting)
