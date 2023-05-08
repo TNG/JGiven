@@ -1,5 +1,10 @@
 package com.tngtech.jgiven.impl.params;
 
+import static java.util.Collections.singletonList;
+import static net.java.quickcheck.generator.CombinedGenerators.lists;
+import static net.java.quickcheck.generator.PrimitiveGenerators.strings;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -8,11 +13,6 @@ import net.java.quickcheck.junit.SeedInfo;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static java.util.Collections.singletonList;
-import static net.java.quickcheck.generator.CombinedGenerators.lists;
-import static net.java.quickcheck.generator.PrimitiveGenerators.strings;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(value = DataProviderRunner.class)
 public class DefaultCaseAsProviderTest extends TestCase {
@@ -36,10 +36,10 @@ public class DefaultCaseAsProviderTest extends TestCase {
 
     @DataProvider
     public static Object[][] unescapedDollars() {
-        return new Object[][]{
-                {"I have $$ 1 in my pockets", "I have $ 1 in my pockets"},
-                {"Look how much Ca$$h I make", "Look how much Ca$h I make"},
-                {"Over 9000$$", "Over 9000$"},
+        return new Object[][] {
+            {"I have $$ 1 in my pockets", "I have $ 1 in my pockets"},
+            {"Look how much Ca$$h I make", "Look how much Ca$h I make"},
+            {"Over 9000$$", "Over 9000$"},
         };
     }
 
