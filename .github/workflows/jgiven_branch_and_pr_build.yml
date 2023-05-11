@@ -9,8 +9,8 @@ jobs:
       ANDROID: true
     strategy:
       matrix:
-        java: [ '11', '13']
-        junit: ['4.12','4.13']
+        java: [ '11', '17', '19']
+        junit: ['4.13.2']
     steps:
       - name: Ensure firefox is installed
         run: sudo apt-get install firefox
