@@ -1,13 +1,12 @@
 package com.tngtech.jgiven.annotation;
 
+import com.tngtech.jgiven.format.POJOAnnotationFormatter;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import com.tngtech.jgiven.format.POJOAnnotationFormatter;
 
 /**
  * A special format annotation to format POJOs
@@ -26,8 +25,8 @@ public @interface POJOFormat {
      * <li>{@link #PARENTHESES} : <code>(...)</code></li>
      * <li>{@link #SQUARE} : <code>[...]</code></li>
      * <li>{@link #BRACES} : <code>{...}</code></li>
-     * <li>{@link #POINTY} : <code><...></code></li>
-     * <li>{@link #CHEVRONS} : <code><<...>></code></li>
+     * <li>{@link #POINTY} : <code>&lt;...&gt;</code></li>
+     * <li>{@link #CHEVRONS} : <code>&lt;&lt;...&gt;&gt;</code></li>
      * <li>{@link #DOUBLE_QUOTE} : <code>"..."</code></li>
      * <li>{@link #SINGLE_QUOTE} : <code>'...'</code></li>
      * </ul>
