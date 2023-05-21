@@ -45,14 +45,16 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             log.error("Could not ensure target directory exists {}", targetDir);
             return;
         }
+
         featuresDir = new File(targetDir.getPath() + "/features");
         if (!featuresDir.exists() && !featuresDir.mkdirs()) {
             log.error("Could not ensure feature directory exists {}", featuresDir);
             return;
         }
 
-        completeReportModel.getAllReportModels().stream().sorted(byFeatureName).forEach(
-                reportModelFile -> writeFeatureToFile(reportModelFile.model, reportModelFile.file,
+        completeReportModel.getAllReportModels().stream()
+                .sorted(byFeatureName)
+                .forEach(reportModelFile -> writeFeatureToFile(reportModelFile.model, reportModelFile.file,
                         completeReportModel.getStatistics(reportModelFile)));
 
         try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "allScenarios.asciidoc"))) {
@@ -95,9 +97,9 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         }
 
         try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "totalStatistics.asciidoc"))) {
-
-            Map<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels().stream().collect(
-                    Collectors.toMap(reportModelFile -> reportModelFile.model.getName(),
+            Map<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels().stream()
+                    .collect(Collectors.toMap(
+                            reportModelFile -> reportModelFile.model.getName(),
                             reportModelFile -> completeReportModel.getStatistics(reportModelFile)));
 
             printWriter.println(blockConverter.convertStatisticsBlock(featureStatistics, completeReportModel.getTotalStatistics()));
