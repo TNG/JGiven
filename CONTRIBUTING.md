@@ -16,13 +16,15 @@ If you want to contribute code or documentation please follow the following work
 1. Fork the project
 2. Create a new feature branch with your contribution (not needed for documentation improvements)
 3. Implement your great new feature or bug fix
-4. Create a pull request
+4. Provide a DCO for your contribution
+5. Create a pull request
 
 ## System Requirements
 
-* JDK 8 (`JAVA_HOME` and `PATH` should be set accordingly)
-    - Note that JGiven is built and compatible with Java 7, however, because of some test libraries, Java 8 is required for executing the tests in the `jgiven-tests` project
+* JDK 11 (`JAVA_HOME` and `PATH` should be set accordingly)
 * Gradle (is automatically downloaded by the `gradlew` script)
+* Android SDK if you want to build the `jgiven-android module`
+    - Setting `ANDROID_SDK_ROOT` and `ANDROID=true` env variables is required
 
 ## Building and Testing JGiven
 
@@ -35,4 +37,4 @@ After you have cloned the Git repository execute the following command to build 
 ## Code Formatting
 
 Please follow the code format of existing code. Do never reformat a file!
-You can ensure the correct code formatting by using the provided Eclipse formatter `develop/eclipse-formatter.xml`.
+You can ensure the correct code formatting by using the provided checkstyle formatting file ./checkstyle.xml
