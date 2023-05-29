@@ -32,11 +32,14 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
         blockContent.append(NEW_LINE);
 
-        blockContent.append(ICON_CHECK_MARK).append(" ").append(statistics.numSuccessfulScenarios).append(" Successful, ");
-        blockContent.append(ICON_EXCLAMATION_MARK).append(" ").append(statistics.numFailedScenarios).append(" Failed, ");
+        blockContent.append(ICON_CHECK_MARK).append(" ").append(statistics.numSuccessfulScenarios)
+            .append(" Successful, ");
+        blockContent.append(ICON_EXCLAMATION_MARK).append(" ").append(statistics.numFailedScenarios)
+            .append(" Failed, ");
         blockContent.append(ICON_BANNED).append(" ").append(statistics.numPendingScenarios).append(" Pending, ");
         blockContent.append(statistics.numScenarios).append(" Total");
-        blockContent.append(" (").append(toHumanReadableDuration(statistics.durationInNanos).orElse("0ms")).append(")");
+        blockContent.append(" (").append(toHumanReadableDuration(statistics.durationInNanos).orElse("0ms"))
+            .append(")");
 
         if (description != null && !description.isEmpty()) {
             blockContent.append(NEW_LINE);
@@ -107,9 +110,11 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     @Override
-    public String convertFirstStepBlock(final int depth, final List<Word> words, final StepStatus status, final long durationInNanos,
-            final String extendedDescription, final boolean caseIsUnsuccessful, boolean scenarioHasDataTable,
-            final String currentSectionTitle) {
+    public String convertFirstStepBlock(final int depth, final List<Word> words, final StepStatus status,
+                                        final long durationInNanos,
+                                        final String extendedDescription, final boolean caseIsUnsuccessful,
+                                        boolean scenarioHasDataTable,
+                                        final String currentSectionTitle) {
 
         StringBuilder blockContent = new StringBuilder();
 
@@ -118,14 +123,18 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
 
         blockContent.append("[unstyled.jg-step-list]").append(NEW_LINE);
-        blockContent.append(convertStepBlock(depth, words, status, durationInNanos, extendedDescription, caseIsUnsuccessful, scenarioHasDataTable));
+        blockContent.append(
+            convertStepBlock(depth, words, status, durationInNanos, extendedDescription, caseIsUnsuccessful,
+                scenarioHasDataTable));
 
         return blockContent.toString();
     }
 
     @Override
-    public String convertStepBlock(final int depth, final List<Word> words, final StepStatus status, final long durationInNanos,
-            final String extendedDescription, final boolean caseIsUnsuccessful, boolean scenarioHasDataTable) {
+    public String convertStepBlock(final int depth, final List<Word> words, final StepStatus status,
+                                   final long durationInNanos,
+                                   final String extendedDescription, final boolean caseIsUnsuccessful,
+                                   boolean scenarioHasDataTable) {
 
         StringBuilder blockContent = new StringBuilder();
 
@@ -144,12 +153,12 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
         blockContent.append(".Cases").append(NEW_LINE);
         blockContent.append("[.jg-casesTable%header,cols=\"")
-            .append(generateTableColSpec(true, casesTable.placeHolders().size() + 1))
+            .append(generateTableColSpec(true, casesTable.placeholders().size() + 1))
             .append(",>1\"]").append(NEW_LINE);
         blockContent.append("|===").append(NEW_LINE);
 
         blockContent.append("| #");
-        for (String placeHolder : casesTable.placeHolders()) {
+        for (String placeHolder : casesTable.placeholders()) {
             blockContent.append(" | ").append(placeHolder);
         }
         blockContent.append(" | Status").append(NEW_LINE);
@@ -178,9 +187,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         blockContent.append("====").append(NEW_LINE);
 
         if (errorMessageLines.length > 1 && !errorMessageLines[1].isEmpty()) {
-                blockContent.append(errorMessageLines[1]).append(NEW_LINE);
-                blockContent.append(NEW_LINE);
-
+            blockContent.append(errorMessageLines[1]).append(NEW_LINE);
+            blockContent.append(NEW_LINE);
         }
 
         if (stackTraceLines != null && !stackTraceLines.isEmpty()) {
@@ -295,7 +303,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
-            final ReportStatistics totalStatistics) {
+                                         final ReportStatistics totalStatistics) {
         final StringBuilder statisticsTable = new StringBuilder();
 
         statisticsTable.append(".Total Statistics").append(NEW_LINE);
@@ -314,7 +322,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         statisticsTable.append("| duration").append(NEW_LINE);
 
         featureStatistics.entrySet().stream().sorted(Map.Entry.comparingByKey())
-                .forEach(entry -> convertStatisticsRow(statisticsTable, entry.getKey(), entry.getValue()));
+            .forEach(entry -> convertStatisticsRow(statisticsTable, entry.getKey(), entry.getValue()));
 
         convertStatisticsRow(statisticsTable, "sum", totalStatistics);
 
@@ -332,7 +340,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         builder.append(" | ").append(statistics.numFailedCases);
         builder.append(" | ").append(statistics.numCases);
         builder.append(" | ").append(statistics.numSteps);
-        builder.append(" | ").append(toHumanReadableDuration(statistics.durationInNanos).orElse("0ms")).append(NEW_LINE);
+        builder.append(" | ").append(toHumanReadableDuration(statistics.durationInNanos).orElse("0ms"))
+            .append(NEW_LINE);
     }
 
     private String escapeTableValue(final String value) {

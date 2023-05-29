@@ -7,7 +7,6 @@ import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 import com.tngtech.jgiven.report.model.ReportStatistics;
-
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -15,10 +14,22 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This reporter provides the functionality for reading/writing a report in AsciiDoc format.
+ *
+ * <p> The following flags are reused from {@link AbstractReportConfig}:
+ * <ul>
+ *   <li> --format= </li>
+ *   <li> --sourceDir= / --dir= </li>
+ *   <li> --targetDir= / --todir= </li>
+ *   <li> --title= </li>
+ *   <li> --exclude-empty-scenarios=&lt;boolean&gt; </li>
+ *   <li> --help / -h </li>
+ * </ul>
+ */
 public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(AsciiDocReportGenerator.class);
@@ -29,7 +40,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     private final AsciiDocReportBlockConverter blockConverter;
     private File featuresDir;
     private final Comparator<ReportModelFile> byFeatureName = Comparator.comparing(
-            modelFile -> null != modelFile.model.getName() ? modelFile.model.getName() : modelFile.model.getClassName());
+        modelFile -> null != modelFile.model.getName() ? modelFile.model.getName() : modelFile.model.getClassName());
 
     public AsciiDocReportGenerator() {
         blockConverter = new AsciiDocReportBlockConverter();
@@ -39,6 +50,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         return new AsciiDocReportConfig(args);
     }
 
+    @Override
     public void generate() {
         File targetDir = config.getTargetDir();
         if (!targetDir.exists() && !targetDir.mkdirs()) {
@@ -53,9 +65,9 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         }
 
         completeReportModel.getAllReportModels().stream()
-                .sorted(byFeatureName)
-                .forEach(reportModelFile -> writeFeatureToFile(reportModelFile.model, reportModelFile.file,
-                        completeReportModel.getStatistics(reportModelFile)));
+            .sorted(byFeatureName)
+            .forEach(reportModelFile -> writeFeatureToFile(reportModelFile.model, reportModelFile.file,
+                completeReportModel.getStatistics(reportModelFile)));
 
         try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "allScenarios.asciidoc"))) {
             printWriter.println("== All Scenarios");
@@ -64,13 +76,15 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             generateFeatureIncludes(printWriter, featureFiles, "");
         }
 
-        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "failedScenarios.asciidoc"))) {
+        try (
+            PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "failedScenarios.asciidoc"))) {
             printWriter.println("== Failed Scenarios");
             printWriter.println();
             if (failedScenarioFiles.isEmpty()) {
                 printWriter.println("There are no failed scenarios. Keep rocking!");
             } else {
-                printWriter.println("There are " + completeReportModel.getTotalStatistics().numFailedScenarios + " failed scenarios");
+                printWriter.println(
+                    "There are " + completeReportModel.getTotalStatistics().numFailedScenarios + " failed scenarios");
                 printWriter.println();
                 printWriter.println(":leveloffset: -1");
                 printWriter.println();
@@ -80,13 +94,15 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             }
         }
 
-        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "pendingScenarios.asciidoc"))) {
+        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(
+            new File(targetDir, "pendingScenarios.asciidoc"))) {
             printWriter.println("== Pending Scenarios");
             printWriter.println();
             if (pendingScenarioFiles.isEmpty()) {
                 printWriter.println("There are no pending scenarios. Keep rocking!");
             } else {
-                printWriter.println("There are " + completeReportModel.getTotalStatistics().numPendingScenarios + " pending scenarios");
+                printWriter.println(
+                    "There are " + completeReportModel.getTotalStatistics().numPendingScenarios + " pending scenarios");
                 printWriter.println();
                 printWriter.println(":leveloffset: -1");
                 printWriter.println();
@@ -96,13 +112,15 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             }
         }
 
-        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "totalStatistics.asciidoc"))) {
+        try (
+            PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "totalStatistics.asciidoc"))) {
             Map<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels().stream()
-                    .collect(Collectors.toMap(
-                            reportModelFile -> reportModelFile.model.getName(),
-                            reportModelFile -> completeReportModel.getStatistics(reportModelFile)));
+                .collect(Collectors.toMap(
+                    reportModelFile -> reportModelFile.model.getName(),
+                    reportModelFile -> completeReportModel.getStatistics(reportModelFile)));
 
-            printWriter.println(blockConverter.convertStatisticsBlock(featureStatistics, completeReportModel.getTotalStatistics()));
+            printWriter.println(
+                blockConverter.convertStatisticsBlock(featureStatistics, completeReportModel.getTotalStatistics()));
         }
 
 
@@ -136,7 +154,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         }
     }
 
-    private void generateFeatureIncludes(final PrintWriter printWriter, final List<String> fileNames, final String tagSpec) {
+    private void generateFeatureIncludes(final PrintWriter printWriter, final List<String> fileNames,
+                                         final String tagSpec) {
         for (String fileName : fileNames) {
             printWriter.println("include::features/" + fileName + "[" + tagSpec + "]\n");
         }

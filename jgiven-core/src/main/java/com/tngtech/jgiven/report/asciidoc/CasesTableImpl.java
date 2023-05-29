@@ -5,7 +5,6 @@ import com.tngtech.jgiven.report.CasesTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,7 @@ class CasesTableImpl implements CasesTable {
     }
 
     @Override
-    public List<String> placeHolders() {
+    public List<String> placeholders() {
         List<String> placeHoldersList = new ArrayList<>(scenarioModel.getDerivedParameters());
         List<ScenarioCaseModel> scenarioCases = scenarioModel.getScenarioCases();
         if (!scenarioCases.isEmpty() && scenarioCases.get(0).hasDescription()) {

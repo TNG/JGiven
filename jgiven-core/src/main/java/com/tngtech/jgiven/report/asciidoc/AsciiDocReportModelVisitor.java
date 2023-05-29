@@ -9,7 +9,6 @@ import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.Tag;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +30,8 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     private boolean scenarioHasMultipleCases;
     private boolean isFirstStepInCase;
 
-    public AsciiDocReportModelVisitor(final ReportBlockConverter blockConverter, final ReportStatistics featureStatistics) {
+    public AsciiDocReportModelVisitor(final ReportBlockConverter blockConverter,
+                                      final ReportStatistics featureStatistics) {
         this.blockConverter = blockConverter;
         this.asciiDocBlocks = new ArrayList<>();
         this.featureStatistics = featureStatistics;
@@ -40,11 +40,11 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     @Override
     public void visit(final ReportModel reportModel) {
         String featureName = Optional.ofNullable(reportModel.getName())
-                .filter(name -> !name.isEmpty())
-                .orElse(reportModel.getClassName());
+            .filter(name -> !name.isEmpty())
+            .orElse(reportModel.getClassName());
 
         String featureHeader =
-                blockConverter.convertFeatureHeaderBlock(featureName, featureStatistics, reportModel.getDescription());
+            blockConverter.convertFeatureHeaderBlock(featureName, featureStatistics, reportModel.getDescription());
         asciiDocBlocks.add(featureHeader);
 
         featureTagMap = reportModel.getTagMap();
@@ -53,12 +53,12 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     @Override
     public void visit(final ScenarioModel scenarioModel) {
         final List<String> tagNames = scenarioModel.getTagIds().stream()
-                .map(this.featureTagMap::get)
-                .map(Tag::getName).collect(Collectors.toList());
+            .map(this.featureTagMap::get)
+            .map(Tag::getName).collect(Collectors.toList());
 
         String scenarioHeader = blockConverter.convertScenarioHeaderBlock(scenarioModel.getDescription(),
-                scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tagNames,
-                scenarioModel.getExtendedDescription());
+            scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tagNames,
+            scenarioModel.getExtendedDescription());
         asciiDocBlocks.add(scenarioHeader);
 
         scenarioHasDataTable = scenarioModel.isCasesAsTable();
@@ -75,8 +75,8 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
         if (scenarioHasMultipleCases && !scenarioHasDataTable) {
             String caseHeader = blockConverter.convertCaseHeaderBlock(
-                    scenarioCase.getCaseNr(), explicitScenarioParameters, scenarioCase.getExplicitArguments(),
-                    scenarioCase.getDescription());
+                scenarioCase.getCaseNr(), explicitScenarioParameters, scenarioCase.getExplicitArguments(),
+                scenarioCase.getDescription());
             asciiDocBlocks.add(caseHeader);
         }
 
@@ -98,12 +98,12 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         String stepBlock;
         if (isFirstStepInCase) {
             stepBlock = blockConverter.convertFirstStepBlock(
-                    stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
-                    stepModel.getExtendedDescription(), this.caseIsUnsuccessful, scenarioHasDataTable, currentSectionTitle);
+                stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
+                stepModel.getExtendedDescription(), this.caseIsUnsuccessful, scenarioHasDataTable, currentSectionTitle);
         } else {
             stepBlock = blockConverter.convertStepBlock(
-                    stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
-                    stepModel.getExtendedDescription(), this.caseIsUnsuccessful, scenarioHasDataTable);
+                stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
+                stepModel.getExtendedDescription(), this.caseIsUnsuccessful, scenarioHasDataTable);
         }
         asciiDocBlocks.add(stepBlock);
 

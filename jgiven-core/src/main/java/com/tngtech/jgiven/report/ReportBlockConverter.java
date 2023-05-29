@@ -6,6 +6,9 @@ import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
 
+/**
+ * Converts elements of the report model into standalone text blocks.
+ */
 public interface ReportBlockConverter {
 
     /**
@@ -58,7 +61,8 @@ public interface ReportBlockConverter {
      * @param currentSectionTitle  the current section's title, may be {@code null}
      */
     String convertFirstStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-            String extendedDescription, boolean caseIsUnsuccessful, boolean scenarioHasDataTable, String currentSectionTitle);
+                                 String extendedDescription, boolean caseIsUnsuccessful, boolean scenarioHasDataTable,
+                                 String currentSectionTitle);
 
     /**
      * Convert the words that make up a step into a block.
@@ -83,7 +87,8 @@ public interface ReportBlockConverter {
 
     /**
      * Is invoked if the case failed with an exception.
-     * @param errorMessage the message describing the error
+     *
+     * @param errorMessage    the message describing the error
      * @param stackTraceLines the stacktrace lines if present
      */
     String convertCaseFooterBlock(String errorMessage, List<String> stackTraceLines);

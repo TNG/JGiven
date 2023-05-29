@@ -15,11 +15,9 @@ import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Word;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,9 +47,10 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThatBlockContainsLines(block,
-                "=== My first feature",
-                "",
-                "icon:check-square[role=green] 8 Successful, icon:exclamation-circle[role=red] 21 Failed, icon:ban[role=silver] 13 Pending, 42 Total (0ms)");
+            "=== My first feature",
+            "",
+            "icon:check-square[role=green] 8 Successful, icon:exclamation-circle[role=red] 21 Failed, "
+                + "icon:ban[role=silver] 13 Pending, 42 Total (0ms)");
     }
 
     @Test
@@ -64,24 +63,27 @@ public class AsciiDocReportBlockConverterTest {
         statistics.numSuccessfulScenarios = 8;
 
         // act
-        final String block = converter.convertFeatureHeaderBlock("My first feature", statistics, "A very nice feature.");
+        final String block =
+            converter.convertFeatureHeaderBlock("My first feature", statistics, "A very nice feature.");
 
         // assert
         assertThatBlockContainsLines(block,
-                "=== My first feature",
-                "",
-                "icon:check-square[role=green] 8 Successful, icon:exclamation-circle[role=red] 21 Failed, icon:ban[role=silver] 13 Pending, 42 Total (0ms)",
-                "",
-                "+++A very nice feature.+++");
+            "=== My first feature",
+            "",
+            "icon:check-square[role=green] 8 Successful, icon:exclamation-circle[role=red] 21 Failed, "
+                + "icon:ban[role=silver] 13 Pending, 42 Total (0ms)",
+            "",
+            "+++A very nice feature.+++");
     }
 
     @Test
     @DataProvider({"SUCCESS, successful, icon:check-square[role=green]",
-            "FAILED, failed, icon:exclamation-circle[role=red]",
-            "SCENARIO_PENDING, pending, icon:ban[role=silver]",
-            "SOME_STEPS_PENDING, pending, icon:ban[role=silver]"})
-    public void convert_scenario_header_without_tags_or_description(final ExecutionStatus status, final String scenarioTag,
-            final String humanStatus) {
+        "FAILED, failed, icon:exclamation-circle[role=red]",
+        "SCENARIO_PENDING, pending, icon:ban[role=silver]",
+        "SOME_STEPS_PENDING, pending, icon:ban[role=silver]"})
+    public void convert_scenario_header_without_tags_or_description(final ExecutionStatus status,
+                                                                    final String scenarioTag,
+                                                                    final String humanStatus) {
         // arrange
         List<String> tagNames = new ArrayList<>();
 
@@ -90,11 +92,11 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThatBlockContainsLines(block,
-                "// tag::scenario-" + scenarioTag + "[]",
-                "",
-                "==== My first scenario",
-                "",
-                humanStatus + " (1s 0ms)");
+            "// tag::scenario-" + scenarioTag + "[]",
+            "",
+            "==== My first scenario",
+            "",
+            humanStatus + " (1s 0ms)");
     }
 
     @Test
@@ -105,17 +107,17 @@ public class AsciiDocReportBlockConverterTest {
 
         // act
         String block = converter.convertScenarioHeaderBlock("my first scenario",
-                ExecutionStatus.SCENARIO_PENDING, 9000000L, tagNames, "");
+            ExecutionStatus.SCENARIO_PENDING, 9000000L, tagNames, "");
 
         // assert
         assertThatBlockContainsLines(block,
-                "// tag::scenario-pending[]",
-                "",
-                "==== My first scenario",
-                "",
-                "icon:ban[role=silver] (9ms)",
-                "",
-                "Tags: _Best Tag_");
+            "// tag::scenario-pending[]",
+            "",
+            "==== My first scenario",
+            "",
+            "icon:ban[role=silver] (9ms)",
+            "",
+            "Tags: _Best Tag_");
     }
 
     @Test
@@ -125,17 +127,17 @@ public class AsciiDocReportBlockConverterTest {
 
         // act
         String block = converter.convertScenarioHeaderBlock("my first scenario",
-                ExecutionStatus.SOME_STEPS_PENDING, 2005000000L, tagNames, "Best scenario ever!!!");
+            ExecutionStatus.SOME_STEPS_PENDING, 2005000000L, tagNames, "Best scenario ever!!!");
 
         // assert
         assertThatBlockContainsLines(block,
-                "// tag::scenario-pending[]",
-                "",
-                "==== My first scenario",
-                "",
-                "icon:ban[role=silver] (2s 5ms)",
-                "",
-                "+++Best scenario ever!!!+++");
+            "// tag::scenario-pending[]",
+            "",
+            "==== My first scenario",
+            "",
+            "icon:ban[role=silver] (2s 5ms)",
+            "",
+            "+++Best scenario ever!!!+++");
     }
 
     @Test
@@ -145,20 +147,21 @@ public class AsciiDocReportBlockConverterTest {
         tagNames.add("Best Tag");
 
         // act
-        String block = converter.convertScenarioHeaderBlock("my first scenario", ExecutionStatus.SUCCESS, 3000000000L, tagNames,
+        String block =
+            converter.convertScenarioHeaderBlock("my first scenario", ExecutionStatus.SUCCESS, 3000000000L, tagNames,
                 "Best scenario ever!!!");
 
         // assert
         assertThatBlockContainsLines(block,
-                "// tag::scenario-successful[]",
-                "",
-                "==== My first scenario",
-                "",
-                "icon:check-square[role=green] (3s 0ms)",
-                "",
-                "+++Best scenario ever!!!+++",
-                "",
-                "Tags: _Best Tag_");
+            "// tag::scenario-successful[]",
+            "",
+            "==== My first scenario",
+            "",
+            "icon:check-square[role=green] (3s 0ms)",
+            "",
+            "+++Best scenario ever!!!+++",
+            "",
+            "Tags: _Best Tag_");
     }
 
     @Test
@@ -185,11 +188,11 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThatBlockContainsLines(block,
-                "===== Case 1 First case",
-                "",
-                "====",
-                "description = First case",
-                "====");
+            "===== Case 1 First case",
+            "",
+            "====",
+            "description = First case",
+            "====");
     }
 
     @Test
@@ -203,11 +206,11 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThatBlockContainsLines(block,
-                "===== Case 2",
-                "",
-                "====",
-                "foo = 42",
-                "====");
+            "===== Case 2",
+            "",
+            "====",
+            "foo = 42",
+            "====");
     }
 
     @Test
@@ -225,11 +228,11 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThatBlockContainsLines(block,
-                "===== Case 2",
-                "",
-                "====",
-                "foo = 42, bar = on",
-                "====");
+            "===== Case 2",
+            "",
+            "====",
+            "foo = 42, bar = on",
+            "====");
     }
 
     @Test
@@ -242,7 +245,7 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThatBlockContainsLines(block,
-                "* [.jg-intro-word]*Given* a coffee machine");
+            "* [.jg-intro-word]*Given* a coffee machine");
     }
 
     @Test
@@ -252,12 +255,12 @@ public class AsciiDocReportBlockConverterTest {
 
         // act
         String block =
-                converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, "It is a brand new machine.", false, false);
+            converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, "It is a brand new machine.", false, false);
 
         // assert
         assertThatBlockContainsLines(block,
-                "* [.jg-intro-word]*Given* a coffee machine +",
-                "  _+++It is a brand new machine.+++_");
+            "* [.jg-intro-word]*Given* a coffee machine +",
+            "  _+++It is a brand new machine.+++_");
     }
 
     @Test
@@ -270,7 +273,7 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThatBlockContainsLines(block,
-                "* [.jg-intro-word]*Given* icon:exclamation-circle[role=red] (3ms)");
+            "* [.jg-intro-word]*Given* icon:exclamation-circle[role=red] (3ms)");
     }
 
     @Test
@@ -279,13 +282,14 @@ public class AsciiDocReportBlockConverterTest {
         List<Word> words = Collections.singletonList(Word.introWord("given"));
 
         // act
-        String block = converter.convertFirstStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false, "First section");
+        String block =
+            converter.convertFirstStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false, "First section");
 
         // assert
         assertThatBlockContainsLines(block,
-                ".First section",
-                "[unstyled.jg-step-list]",
-                "* [.jg-intro-word]*Given*");
+            ".First section",
+            "[unstyled.jg-step-list]",
+            "* [.jg-intro-word]*Given*");
     }
 
     @Test
@@ -298,43 +302,44 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThatBlockContainsLines(block,
-                "[unstyled.jg-step-list]",
-                "* [.jg-intro-word]*Given*");
+            "[unstyled.jg-step-list]",
+            "* [.jg-intro-word]*Given*");
     }
 
     @Test
     public void convert_step_with_simple_argument() {
         // arrange
         List<Word> words =
-                ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"), Word.argWord("ncoffees", "0", "0"),
-                        new Word("coffees"));
+            ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"),
+                Word.argWord("ncoffees", "0", "0"),
+                new Word("coffees"));
 
         // act
         String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false);
 
         // assert
         assertThatBlockContainsLines(block,
-                "* [.jg-intro-word]*Given* a coffee machine with [.jg-argument]_0_ coffees");
+            "* [.jg-intro-word]*Given* a coffee machine with [.jg-argument]_0_ coffees");
     }
 
     @Test
     public void convert_step_with_multiline_argument() {
         // arrange
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"),
-                Word.argWord("description", "0", "very nice text\nand also more text"));
+            Word.argWord("description", "0", "very nice text\nand also more text"));
 
         // act
         String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false);
 
         // assert
         assertThatBlockContainsLines(block,
-                "* [.jg-intro-word]*Given* a coffee machine with",
-                "+",
-                "[.jg-argument]",
-                "....",
-                "very nice text",
-                "and also more text",
-                "....");
+            "* [.jg-intro-word]*Given* a coffee machine with",
+            "+",
+            "[.jg-argument]",
+            "....",
+            "very nice text",
+            "and also more text",
+            "....");
     }
 
     @Test
@@ -344,47 +349,49 @@ public class AsciiDocReportBlockConverterTest {
         ncoffees.getArgumentInfo().setParameterName("coffee count");
 
         List<Word> words =
-                ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"), ncoffees, new Word("coffees"));
+            ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"), ncoffees, new Word("coffees"));
 
         // act
         String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false);
 
         // assert
         assertThatBlockContainsLines(block,
-                "* [.jg-intro-word]*Given* a coffee machine with [.jg-argument]*<coffee count>* coffees");
+            "* [.jg-intro-word]*Given* a coffee machine with [.jg-argument]*<coffee count>* coffees");
     }
 
     @Test
     public void convert_step_with_data_table_with_horizontal_header() {
         // arrange
         ImmutableList<List<String>> productsTable =
-                ImmutableList.of(ImmutableList.of("product", "price"), ImmutableList.of("apples", "23"),
-                        ImmutableList.of("pears", "42"));
+            ImmutableList.of(ImmutableList.of("product", "price"), ImmutableList.of("apples", "23"),
+                ImmutableList.of("pears", "42"));
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("the products"),
-                Word.argWord("products", productsTable.toString(), new DataTable(Table.HeaderType.HORIZONTAL, productsTable)));
+            Word.argWord("products", productsTable.toString(),
+                new DataTable(Table.HeaderType.HORIZONTAL, productsTable)));
 
         // act
         String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false);
 
         // assert
         assertThatBlockContainsLines(block,
-                "* [.jg-intro-word]*Given* the products",
-                "+",
-                "[.jg-argumentTable%header,cols=\"1,1\"]",
-                "|===",
-                "| product | price ",
-                "| apples | 23 ",
-                "| pears | 42 ",
-                "|===");
+            "* [.jg-intro-word]*Given* the products",
+            "+",
+            "[.jg-argumentTable%header,cols=\"1,1\"]",
+            "|===",
+            "| product | price ",
+            "| apples | 23 ",
+            "| pears | 42 ",
+            "|===");
     }
 
     @Test
     public void convert_step_with_data_table_vertical_header() {
         // arrange
         ImmutableList<List<String>> productsTable =
-                ImmutableList.of(ImmutableList.of("product", "apples", "pears"), ImmutableList.of("price", "23", "42"));
+            ImmutableList.of(ImmutableList.of("product", "apples", "pears"), ImmutableList.of("price", "23", "42"));
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("the products"),
-                Word.argWord("products", productsTable.toString(), new DataTable(Table.HeaderType.VERTICAL, productsTable)));
+            Word.argWord("products", productsTable.toString(),
+                new DataTable(Table.HeaderType.VERTICAL, productsTable)));
 
         // act
         String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false, false);
@@ -392,13 +399,13 @@ public class AsciiDocReportBlockConverterTest {
         // assert
 
         assertThatBlockContainsLines(block,
-                "* [.jg-intro-word]*Given* the products",
-                "+",
-                "[.jg-argumentTable,cols=\"h,1,1\"]",
-                "|===",
-                "| product | apples | pears ",
-                "| price | 23 | 42 ",
-                "|===");
+            "* [.jg-intro-word]*Given* the products",
+            "+",
+            "[.jg-argumentTable,cols=\"h,1,1\"]",
+            "|===",
+            "| product | apples | pears ",
+            "| price | 23 | 42 ",
+            "|===");
     }
 
     @Test
@@ -427,13 +434,13 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThatBlockContainsLines(block,
-                ".Cases",
-                "[.jg-casesTable%header,cols=\"h,1,1,>1\"]",
-                "|===",
-                "| # | foo | bar | Status",
-                "| 1 | 1 | 2 | SUCCESS",
-                "| 2 | 3 | 4 | FAILED",
-                "|===");
+            ".Cases",
+            "[.jg-casesTable%header,cols=\"h,1,1,>1\"]",
+            "|===",
+            "| # | foo | bar | Status",
+            "| 1 | 1 | 2 | SUCCESS",
+            "| 2 | 3 | 4 | FAILED",
+            "|===");
     }
 
     @Test
@@ -464,13 +471,13 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThatBlockContainsLines(block,
-                ".Cases",
-                "[.jg-casesTable%header,cols=\"h,1,1,1,>1\"]",
-                "|===",
-                "| # | Description | foo | bar | Status",
-                "| 1 | First case | 1 | 2 | SUCCESS",
-                "| 2 | Second case | 3 | 4 | FAILED",
-                "|===");
+            ".Cases",
+            "[.jg-casesTable%header,cols=\"h,1,1,1,>1\"]",
+            "|===",
+            "| # | Description | foo | bar | Status",
+            "| 1 | First case | 1 | 2 | SUCCESS",
+            "| 2 | Second case | 3 | 4 | FAILED",
+            "|===");
     }
 
     @Test
@@ -480,18 +487,18 @@ public class AsciiDocReportBlockConverterTest {
 
         // act
         final String block =
-                converter.convertCaseFooterBlock("Something is broken", stackTraceLines);
+            converter.convertCaseFooterBlock("Something is broken", stackTraceLines);
 
         // assess
         assertThatBlockContainsLines(block,
-                ".Something is broken",
-                "[.jg-exception%collapsible]",
-                "====",
-                "....",
-                "broken line 1",
-                "broken line 2",
-                "....",
-                "====");
+            ".Something is broken",
+            "[.jg-exception%collapsible]",
+            "====",
+            "....",
+            "broken line 1",
+            "broken line 2",
+            "....",
+            "====");
     }
 
     @Test
@@ -500,15 +507,15 @@ public class AsciiDocReportBlockConverterTest {
 
         // act
         final String block =
-                converter.convertCaseFooterBlock("Something is broken", null);
+            converter.convertCaseFooterBlock("Something is broken", null);
 
         // assess
         assertThatBlockContainsLines(block,
-                ".Something is broken",
-                "[.jg-exception%collapsible]",
-                "====",
-                "No stacktrace provided",
-                "====");
+            ".Something is broken",
+            "[.jg-exception%collapsible]",
+            "====",
+            "No stacktrace provided",
+            "====");
     }
 
     @Test
@@ -555,21 +562,22 @@ public class AsciiDocReportBlockConverterTest {
         totalStatistics.numSteps = 21;
 
         final ImmutableMap<String, ReportStatistics> featureStatistics =
-                ImmutableMap.of("Feature One", statisticsOne, "Feature Two", statisticsTwo);
+            ImmutableMap.of("Feature One", statisticsOne, "Feature Two", statisticsTwo);
 
         // act
         final String block = converter.convertStatisticsBlock(featureStatistics, totalStatistics);
 
         // assess
         assertThatBlockContainsLines(block,
-                ".Total Statistics",
-                "[options=\"header,footer\"]",
-                "|===",
-                "| feature | total classes | successful scenarios | failed scenarios | pending scenarios | total scenarios | failed cases | total cases | total steps | duration",
-                "| Feature One | 1 | 2 | 1 | 0 | 3 | 1 | 3 | 13 | 0ms",
-                "| Feature Two | 1 | 1 | 0 | 1 | 2 | 1 | 2 | 8 | 0ms",
-                "| sum | 2 | 3 | 1 | 1 | 5 | 1 | 5 | 21 | 0ms",
-                "|===");
+            ".Total Statistics",
+            "[options=\"header,footer\"]",
+            "|===",
+            "| feature | total classes | successful scenarios | failed scenarios | pending scenarios | "
+                + "total scenarios | failed cases | total cases | total steps | duration",
+            "| Feature One | 1 | 2 | 1 | 0 | 3 | 1 | 3 | 13 | 0ms",
+            "| Feature Two | 1 | 1 | 0 | 1 | 2 | 1 | 2 | 8 | 0ms",
+            "| sum | 2 | 3 | 1 | 1 | 5 | 1 | 5 | 21 | 0ms",
+            "|===");
     }
 
     private static void assertThatBlockContainsLines(final String block, final String... expectedLines) {
