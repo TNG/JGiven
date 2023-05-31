@@ -5,11 +5,21 @@ import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Converts elements of the report model into standalone text blocks.
  */
 public interface ReportBlockConverter {
+
+    /**
+     * Convert a set of execution statistics into a statistics table.
+     *
+     * @param featureStatistics a map from feature names to statistics
+     * @param totalStatistics   the total statistics for all features combined
+     */
+    String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
+                                  final ReportStatistics totalStatistics);
 
     /**
      * Convert feature name and execution statistics into feature header.
@@ -57,12 +67,10 @@ public interface ReportBlockConverter {
      * @param durationInNanos      how long did the step take
      * @param extendedDescription  detailed description of the step, may be {@code null}
      * @param caseIsUnsuccessful   was the scenario case executed successfully
-     * @param scenarioHasDataTable has the current scenario a data table
      * @param currentSectionTitle  the current section's title, may be {@code null}
      */
     String convertFirstStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-                                 String extendedDescription, boolean caseIsUnsuccessful, boolean scenarioHasDataTable,
-                                 String currentSectionTitle);
+                                 String extendedDescription, boolean caseIsUnsuccessful, String currentSectionTitle);
 
     /**
      * Convert the words that make up a step into a block.
@@ -73,10 +81,9 @@ public interface ReportBlockConverter {
      * @param durationInNanos      how long did the step take
      * @param extendedDescription  detailed description of the step, may be {@code null}
      * @param caseIsUnsuccessful   was the scenario case executed successfully
-     * @param scenarioHasDataTable has the current scenario a data table
      */
     String convertStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-                            String extendedDescription, boolean caseIsUnsuccessful, boolean scenarioHasDataTable);
+                            String extendedDescription, boolean caseIsUnsuccessful);
 
     /**
      * Is invoked at the end of a scenario, when the scenario has multiple case and a data table.

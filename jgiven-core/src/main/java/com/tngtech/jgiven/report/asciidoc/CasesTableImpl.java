@@ -60,5 +60,15 @@ class CasesTableImpl implements CasesTable {
             }
             return arguments;
         }
+
+        @Override
+        public String errorMessage() {
+            return caseModel.getErrorMessage();
+        }
+
+        @Override
+        public List<String> stackTrace() {
+            return caseModel.getStackTrace();
+        }
     }
 }

@@ -4,6 +4,7 @@ import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.report.AbstractReportConfig;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
+import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 import com.tngtech.jgiven.report.model.ReportStatistics;
@@ -37,7 +38,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     private final List<String> featureFiles = new ArrayList<>();
     private final List<String> failedScenarioFiles = new ArrayList<>();
     private final List<String> pendingScenarioFiles = new ArrayList<>();
-    private final AsciiDocReportBlockConverter blockConverter;
+    private final ReportBlockConverter blockConverter;
     private File featuresDir;
     private final Comparator<ReportModelFile> byFeatureName = Comparator.comparing(
         modelFile -> null != modelFile.model.getName() ? modelFile.model.getName() : modelFile.model.getClassName());
@@ -119,8 +120,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
                     reportModelFile -> reportModelFile.model.getName(),
                     reportModelFile -> completeReportModel.getStatistics(reportModelFile)));
 
-            printWriter.println(
-                blockConverter.convertStatisticsBlock(featureStatistics, completeReportModel.getTotalStatistics()));
+            printWriter.println(blockConverter.convertStatisticsBlock(featureStatistics,
+                    completeReportModel.getTotalStatistics()));
         }
 
 
@@ -154,8 +155,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         }
     }
 
-    private void generateFeatureIncludes(final PrintWriter printWriter, final List<String> fileNames,
-                                         final String tagSpec) {
+    private static void generateFeatureIncludes(final PrintWriter printWriter, final List<String> fileNames,
+                                                final String tagSpec) {
         for (String fileName : fileNames) {
             printWriter.println("include::features/" + fileName + "[" + tagSpec + "]\n");
         }

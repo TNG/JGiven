@@ -12,6 +12,7 @@ import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
+import java.util.Map;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,6 +61,12 @@ public class AsciiDocReportModelVisitorTest {
 
     private static class MyFakeReportBlockConverter implements ReportBlockConverter {
         @Override
+        public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
+                                             final ReportStatistics totalStatistics) {
+            return "convertStatisticsBlock";
+        }
+
+        @Override
         public String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics,
                                                 String description) {
             return "convertFeatureHeaderBlock";
@@ -80,15 +87,13 @@ public class AsciiDocReportModelVisitorTest {
         @Override
         public String convertFirstStepBlock(final int depth, final List<Word> words, final StepStatus status,
                                             final long durationInNanos, final String extendedDescription,
-                                            final boolean caseIsUnsuccessful, final boolean scenarioHasDataTable,
-                                            final String currentSectionTitle) {
+                                            final boolean caseIsUnsuccessful, final String currentSectionTitle) {
             return "convertFirstStepBlock";
         }
 
         @Override
         public String convertStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-                                       String extendedDescription, boolean caseIsUnsuccessful,
-                                       boolean scenarioHasDataTable) {
+                                       String extendedDescription, boolean caseIsUnsuccessful) {
             return "convertStepBlock";
         }
 

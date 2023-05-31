@@ -99,11 +99,11 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         if (isFirstStepInCase) {
             stepBlock = blockConverter.convertFirstStepBlock(
                 stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
-                stepModel.getExtendedDescription(), this.caseIsUnsuccessful, scenarioHasDataTable, currentSectionTitle);
+                stepModel.getExtendedDescription(), this.caseIsUnsuccessful, currentSectionTitle);
         } else {
             stepBlock = blockConverter.convertStepBlock(
                 stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
-                stepModel.getExtendedDescription(), this.caseIsUnsuccessful, scenarioHasDataTable);
+                stepModel.getExtendedDescription(), this.caseIsUnsuccessful);
         }
         asciiDocBlocks.add(stepBlock);
 
@@ -122,12 +122,13 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
     @Override
     public void visitEnd(final ScenarioModel scenarioModel) {
-        if (scenarioModel.isCasesAsTable()) {
+        if (scenarioHasDataTable) {
             String casesTable = blockConverter.convertCasesTableBlock(new CasesTableImpl(scenarioModel));
             asciiDocBlocks.add(casesTable);
         }
 
-        asciiDocBlocks.add(blockConverter.convertScenarioFooterBlock(scenarioModel.getExecutionStatus()));
+        String scenarioFooter = blockConverter.convertScenarioFooterBlock(scenarioModel.getExecutionStatus());
+        asciiDocBlocks.add(scenarioFooter);
     }
 
     public List<String> getResult() {

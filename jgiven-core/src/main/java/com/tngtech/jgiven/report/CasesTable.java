@@ -35,5 +35,13 @@ public interface CasesTable {
          * The argument values of the case.
          */
         List<String> arguments();
+
+        /** The error message of the case if any.
+         */
+        String errorMessage();
+
+        /** The stack trace of the case if any.
+         */
+        List<String> stackTrace();
     }
 }
