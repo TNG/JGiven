@@ -75,8 +75,8 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
         if (scenarioHasMultipleCases && !scenarioHasDataTable) {
             String caseHeader = blockConverter.convertCaseHeaderBlock(
-                scenarioCase.getCaseNr(), explicitScenarioParameters, scenarioCase.getExplicitArguments(),
-                scenarioCase.getDescription());
+                scenarioCase.getCaseNr(), scenarioCase.getExecutionStatus(), explicitScenarioParameters,
+                scenarioCase.getExplicitArguments(), scenarioCase.getDescription());
             asciiDocBlocks.add(caseHeader);
         }
 

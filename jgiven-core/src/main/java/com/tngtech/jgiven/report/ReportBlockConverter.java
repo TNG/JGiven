@@ -18,8 +18,8 @@ public interface ReportBlockConverter {
      * @param featureStatistics a map from feature names to statistics
      * @param totalStatistics   the total statistics for all features combined
      */
-    String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
-                                  final ReportStatistics totalStatistics);
+    String convertStatisticsBlock(Map<String, ReportStatistics> featureStatistics,
+                                  ReportStatistics totalStatistics);
 
     /**
      * Convert feature name and execution statistics into feature header.
@@ -28,7 +28,8 @@ public interface ReportBlockConverter {
      * @param statistics  the execution statistics for the feature
      * @param description the description, may be {@code null}
      */
-    String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics, String description);
+    String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics,
+                                     String description);
 
     /**
      * Convert scenario name and more meta information into scenario header.
@@ -51,12 +52,13 @@ public interface ReportBlockConverter {
      * It is guaranteed that {@code parameterNames.size() == caseArgument.size()}
      *
      * @param caseNr          the number of the case, starting from 1
+     * @param executionStatus whether the case was successful
      * @param parameterNames  the parameter names of the scenario
      * @param parameterValues the arguments of the case
      * @param description     a short description of this case, may be {@code null}
      */
-    String convertCaseHeaderBlock(int caseNr, List<String> parameterNames, List<String> parameterValues,
-                                  String description);
+    String convertCaseHeaderBlock(int caseNr, ExecutionStatus executionStatus, List<String> parameterNames,
+                                  List<String> parameterValues, String description);
 
     /**
      * Convert the words that make up the first step into a block.
