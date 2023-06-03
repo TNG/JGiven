@@ -59,6 +59,54 @@ public class AsciiDocReportModelVisitorTest {
                 "convertScenarioFooterBlock"));
     }
 
+
+    @Test
+    public void visitTheReportModelWithTwoSections() {
+        // arrange
+        final StepModel sectionOne = new StepModel();
+        sectionOne.setIsSectionTitle(true);
+        sectionOne.addWords(new Word("First Section"));
+        StepModel givenStep = new StepModel();
+        givenStep.addIntroWord(Word.introWord("Given"));
+        givenStep.addWords(new Word("some"), new Word("state"));
+
+        final StepModel sectionTwo = new StepModel();
+        sectionTwo.setIsSectionTitle(true);
+        sectionTwo.addWords(new Word("Second Section"));
+        StepModel whenStep = new StepModel();
+        whenStep.addIntroWord(Word.introWord("When"));
+        whenStep.addWords(new Word("some"), new Word("action"));
+
+        ScenarioCaseModel scenarioCaseOne = new ScenarioCaseModel();
+        scenarioCaseOne.addStep(sectionOne);
+        scenarioCaseOne.addStep(givenStep);
+        scenarioCaseOne.addStep(givenStep);
+        scenarioCaseOne.addStep(sectionTwo);
+        scenarioCaseOne.addStep(whenStep);
+
+        ScenarioModel currentScenarioModel = new ScenarioModel();
+        currentScenarioModel.addCase(scenarioCaseOne);
+        currentScenarioModel.addCase(new ScenarioCaseModel());
+
+        ReportModel reportModel = new ReportModel();
+        reportModel.addScenarioModel(currentScenarioModel);
+
+        // act
+        reportModel.accept(reportModelVisitor);
+
+        // assess
+        Assertions.assertThat(reportModelVisitor.getResult())
+            .isEqualTo(ImmutableList.of(
+                "convertFeatureHeaderBlock",
+                "convertScenarioHeaderBlock",
+                "convertCaseHeaderBlock",
+                "convertFirstStepBlock",
+                "convertStepBlock",
+                "convertFirstStepBlock",
+                "convertCaseHeaderBlock",
+                "convertScenarioFooterBlock"));
+    }
+
     private static class MyFakeReportBlockConverter implements ReportBlockConverter {
         @Override
         public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,

@@ -7,8 +7,7 @@ import java.util.Map;
 
 /**
  * Configuration for the AsciiDoc report.
- * The configMap should always be in a valid state and have all possible flags,
- * except the optional ones without a default (like --help).
+ * The config map contains all flags that were specified or have a default.
  */
 public class AsciiDocReportConfig extends AbstractReportConfig {
 

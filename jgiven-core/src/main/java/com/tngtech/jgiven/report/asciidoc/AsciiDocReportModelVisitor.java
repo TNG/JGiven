@@ -92,6 +92,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
         if (Boolean.TRUE.equals(stepModel.isSectionTitle())) {
             currentSectionTitle = stepModel.getName();
+            isFirstStepInCase = true;
             return;
         }
 
