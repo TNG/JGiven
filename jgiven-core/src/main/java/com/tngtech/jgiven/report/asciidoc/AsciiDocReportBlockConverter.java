@@ -93,7 +93,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         blockContent.append(NEW_LINE);
 
         blockContent.append(toHumanReadableStatus(executionStatus));
-        toHumanReadableDuration(duration).ifPresent(dur -> blockContent.append(" (").append(dur).append(")"));
+        blockContent.append(" (").append(toHumanReadableDuration(duration).orElse("0ms")).append(")");
 
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
@@ -322,13 +322,13 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     private static String buildArgumentWordFragment(final String argumentValue) {
-        if (argumentValue.contains("\n")) {
-            return "\n"
-                + "+\n"
-                + "[.jg-argument]\n"
-                + "....\n"
-                + argumentValue + "\n"
-                + "....\n";
+        if (argumentValue.contains(NEW_LINE)) {
+            return NEW_LINE
+                + "+" + NEW_LINE
+                + "[.jg-argument]" + NEW_LINE
+                + "...." + NEW_LINE
+                + argumentValue + NEW_LINE
+                + "...." + NEW_LINE;
         } else {
             return " [.jg-argument]_" + escapeArgumentValue(argumentValue) + "_";
         }
@@ -353,7 +353,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
-            return stepStatus + " +\n"
+            return stepStatus + " +" + NEW_LINE
                 + buildIndentationFragment(depth, " ") + " _+++" + extendedDescription + "+++_";
         } else {
             return stepStatus;

@@ -127,7 +127,7 @@ public class AsciiDocReportBlockConverterTest {
 
         // act
         String block = converter.convertScenarioHeaderBlock("my first scenario",
-            ExecutionStatus.SOME_STEPS_PENDING, 2005000000L, tagNames, "Best scenario ever!!!");
+            ExecutionStatus.SOME_STEPS_PENDING, 500000L, tagNames, "Best scenario ever!!!");
 
         // assert
         assertThatBlockContainsLines(block,
@@ -135,7 +135,7 @@ public class AsciiDocReportBlockConverterTest {
             "",
             "==== My first scenario",
             "",
-            "icon:ban[role=silver] (2s 5ms)",
+            "icon:ban[role=silver] (0ms)",
             "",
             "+++Best scenario ever!!!+++");
     }
