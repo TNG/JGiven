@@ -172,11 +172,9 @@ public class AsciiDocReportBlockConverterTest {
     public void convert_case_header_without_parameters_and_description(final ExecutionStatus executionStatus,
                                                                        final String icon) {
         // arrange
-        List<String> parameterNames = Collections.emptyList();
-        List<String> parameterValues = Collections.emptyList();
 
         // act
-        String block = converter.convertCaseHeaderBlock(1, executionStatus, parameterNames, parameterValues, null);
+        String block = converter.convertCaseHeaderBlock(1, executionStatus, null);
 
         // assert
         assertThatBlockContainsLines(block,
@@ -188,68 +186,46 @@ public class AsciiDocReportBlockConverterTest {
     @Test
     public void convert_case_header_with_description_and_without_parameters() {
         // arrange
-        List<String> parameterNames = Collections.singletonList("description");
-        List<String> parameterValues = Collections.singletonList("First case");
 
         // act
         String block =
-            converter.convertCaseHeaderBlock(1, ExecutionStatus.SUCCESS, parameterNames, parameterValues, "First case");
+            converter.convertCaseHeaderBlock(1, ExecutionStatus.SUCCESS, "First case");
 
         // assert
         assertThatBlockContainsLines(block,
             "===== Case 1 First case",
             "",
-            "icon:check-square[role=green]",
-            "",
-            "====",
-            "description = First case",
-            "====");
+            "icon:check-square[role=green]");
     }
 
     @Test
     public void convert_case_header_with_one_parameter() {
         // arrange
-        List<String> parameterNames = Collections.singletonList("foo");
-        List<String> parameterValues = Collections.singletonList("42");
 
         // act
         String block =
-            converter.convertCaseHeaderBlock(2, ExecutionStatus.SUCCESS, parameterNames, parameterValues, null);
+            converter.convertCaseHeaderBlock(2, ExecutionStatus.SUCCESS, null);
 
         // assert
         assertThatBlockContainsLines(block,
             "===== Case 2",
             "",
-            "icon:check-square[role=green]",
-            "",
-            "====",
-            "foo = 42",
-            "====");
+            "icon:check-square[role=green]");
     }
 
     @Test
     public void convert_case_header_with_two_parameters() {
         // arrange
-        List<String> parameterNames = new ArrayList<>();
-        parameterNames.add("foo");
-        parameterNames.add("bar");
-        List<String> parameterValues = new ArrayList<>();
-        parameterValues.add("42");
-        parameterValues.add("on");
 
         // act
         String block =
-            converter.convertCaseHeaderBlock(2, ExecutionStatus.SUCCESS, parameterNames, parameterValues, null);
+            converter.convertCaseHeaderBlock(2, ExecutionStatus.SUCCESS, null);
 
         // assert
         assertThatBlockContainsLines(block,
             "===== Case 2",
             "",
-            "icon:check-square[role=green]",
-            "",
-            "====",
-            "foo = 42, bar = on",
-            "====");
+            "icon:check-square[role=green]");
     }
 
     @Test

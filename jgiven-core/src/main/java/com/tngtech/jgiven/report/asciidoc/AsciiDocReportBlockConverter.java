@@ -115,7 +115,6 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertCaseHeaderBlock(final int caseNr, final ExecutionStatus executionStatus,
-                                         final List<String> parameterNames, final List<String> parameterValues,
                                          final String description) {
         StringBuilder blockContent = new StringBuilder();
 
@@ -126,18 +125,6 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
 
         blockContent.append(NEW_LINE).append(NEW_LINE).append(toHumanReadableStatus(executionStatus));
-
-        if (!parameterNames.isEmpty()) {
-            blockContent.append(NEW_LINE).append(NEW_LINE);
-
-            blockContent.append("====").append(NEW_LINE);
-            blockContent.append(parameterNames.get(0)).append(" = ").append(parameterValues.get(0));
-
-            for (int i = 1; i < parameterNames.size(); i++) {
-                blockContent.append(", ").append(parameterNames.get(i)).append(" = ").append(parameterValues.get(i));
-            }
-            blockContent.append(NEW_LINE).append("====");
-        }
 
         return blockContent.toString();
     }

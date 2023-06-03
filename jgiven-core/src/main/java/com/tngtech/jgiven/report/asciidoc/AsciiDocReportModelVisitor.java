@@ -23,7 +23,6 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     private final ReportStatistics featureStatistics;
     private Map<String, Tag> featureTagMap;
     private boolean scenarioHasDataTable;
-    private List<String> explicitScenarioParameters;
     private boolean skipCurrentCase;
     private boolean caseIsUnsuccessful;
     private String currentSectionTitle;
@@ -63,7 +62,6 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
         scenarioHasDataTable = scenarioModel.isCasesAsTable();
         scenarioHasMultipleCases = scenarioModel.getScenarioCases().size() > 1;
-        explicitScenarioParameters = scenarioModel.getExplicitParameters();
     }
 
     @Override
@@ -75,8 +73,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
         if (scenarioHasMultipleCases && !scenarioHasDataTable) {
             String caseHeader = blockConverter.convertCaseHeaderBlock(
-                scenarioCase.getCaseNr(), scenarioCase.getExecutionStatus(), explicitScenarioParameters,
-                scenarioCase.getExplicitArguments(), scenarioCase.getDescription());
+                scenarioCase.getCaseNr(), scenarioCase.getExecutionStatus(), scenarioCase.getDescription());
             asciiDocBlocks.add(caseHeader);
         }
 
