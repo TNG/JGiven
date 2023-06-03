@@ -264,16 +264,17 @@ public class AsciiDocReportBlockConverterTest {
     }
 
     @Test
-    public void convert_failed_step_without_description() {
+    @DataProvider({"PASSED, check-square[role=green]", "FAILED, exclamation-circle[role=red]",
+        "SKIPPED, step-forward[role=silver]", "PENDING, ban[role=silver]"})
+    public void convert_step_from_unsuccessful_scenario_case(final StepStatus stepStatus, final String icon) {
         // arrange
         List<Word> words = Collections.singletonList(Word.introWord("given"));
 
         // act
-        String block = converter.convertStepBlock(0, words, StepStatus.FAILED, 3000899, null, true);
+        String block = converter.convertStepBlock(0, words, stepStatus, 3000899, null, true);
 
         // assert
-        assertThatBlockContainsLines(block,
-            "* [.jg-intro-word]*Given* icon:exclamation-circle[role=red] (3ms)");
+        assertThatBlockContainsLines(block, "* [.jg-intro-word]*Given* icon:" + icon + " (3ms)");
     }
 
     @Test
@@ -438,8 +439,8 @@ public class AsciiDocReportBlockConverterTest {
             "[.jg-casesTable%header,cols=\"h,1,1,>1\"]",
             "|===",
             "| # | foo | bar | Status",
-            "| 1 | 1 | 2 | SUCCESS",
-            "| 2 | 3 | 4 | FAILED",
+            "| 1 | 1 | 2 | icon:check-square[role=green]",
+            "| 2 | 3 | 4 | icon:exclamation-circle[role=red]",
             "|===");
     }
 
@@ -475,8 +476,8 @@ public class AsciiDocReportBlockConverterTest {
             "[.jg-casesTable%header,cols=\"h,1,1,1,>1\"]",
             "|===",
             "| # | Description | foo | bar | Status",
-            "| 1 | First case | 1 | 2 | SUCCESS",
-            "| 2 | Second case | 3 | 4 | FAILED",
+            "| 1 | First case | 1 | 2 | icon:check-square[role=green]",
+            "| 2 | Second case | 3 | 4 | icon:exclamation-circle[role=red]",
             "|===");
     }
 
@@ -516,7 +517,7 @@ public class AsciiDocReportBlockConverterTest {
             "[.jg-casesTable%header,cols=\"h,1,1,>1\"]",
             "|===",
             "| # | foo | bar | Status",
-            ".2+| 1 | 1 | 2 | FAILED",
+            ".2+| 1 | 1 | 2 | icon:exclamation-circle[role=red]",
             "3+a|",
             "[.jg-exception]",
             "====",
@@ -533,7 +534,7 @@ public class AsciiDocReportBlockConverterTest {
             "....",
             "=====",
             "====",
-            "| 2 | 3 | 4 | FAILED",
+            "| 2 | 3 | 4 | icon:exclamation-circle[role=red]",
             "|===");
     }
 

@@ -21,6 +21,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     private static final String NEW_LINE = System.getProperty("line.separator");
     private static final String ICON_CHECK_MARK = "icon:check-square[role=green]";
     private static final String ICON_EXCLAMATION_MARK = "icon:exclamation-circle[role=red]";
+    private static final String ICON_STEP_FORWARD = "icon:step-forward[role=silver]";
     private static final String ICON_BANNED = "icon:ban[role=silver]";
 
     @Override
@@ -200,7 +201,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
                 blockContent.append(" | ").append(escapeTableValue(value));
             }
 
-            blockContent.append(" | ").append(row.status()).append(NEW_LINE);
+            blockContent.append(" | ").append(toHumanReadableStatus(row.status())).append(NEW_LINE);
 
             if (errorMessage != null) {
                 List<String> stackTraceLines = row.stackTrace();
@@ -410,18 +411,18 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
     }
 
-    private static String toHumanReadableStatus(final StepStatus status) {
-        switch (status) {
+    private static String toHumanReadableStatus(final StepStatus stepStatus) {
+        switch (stepStatus) {
             case PASSED:
                 return ICON_CHECK_MARK;
             case FAILED:
                 return ICON_EXCLAMATION_MARK;
             case SKIPPED:
-                // fall through
+                return ICON_STEP_FORWARD;
             case PENDING:
                 return ICON_BANNED;
             default:
-                return status.toString();
+                return stepStatus.toString();
         }
     }
 
