@@ -30,7 +30,7 @@ public class AsciiDocReportModelVisitorTest {
 
     @Test
     public void visitTheReportModel() {
-        // arrange
+        // given
         StepModel stepModel = new StepModel();
         stepModel.addIntroWord(Word.introWord("Given"));
         stepModel.addWords(new Word("some"), new Word("state"));
@@ -45,10 +45,10 @@ public class AsciiDocReportModelVisitorTest {
         ReportModel reportModel = new ReportModel();
         reportModel.addScenarioModel(currentScenarioModel);
 
-        // act
+        // when
         reportModel.accept(reportModelVisitor);
 
-        // assess
+        // then
         Assertions.assertThat(reportModelVisitor.getResult())
             .isEqualTo(ImmutableList.of(
                 "convertFeatureHeaderBlock",
@@ -62,7 +62,7 @@ public class AsciiDocReportModelVisitorTest {
 
     @Test
     public void visitTheReportModelWithTwoSections() {
-        // arrange
+        // given
         final StepModel sectionOne = new StepModel();
         sectionOne.setIsSectionTitle(true);
         sectionOne.addWords(new Word("First Section"));
@@ -91,10 +91,10 @@ public class AsciiDocReportModelVisitorTest {
         ReportModel reportModel = new ReportModel();
         reportModel.addScenarioModel(currentScenarioModel);
 
-        // act
+        // when
         reportModel.accept(reportModelVisitor);
 
-        // assess
+        // then
         Assertions.assertThat(reportModelVisitor.getResult())
             .isEqualTo(ImmutableList.of(
                 "convertFeatureHeaderBlock",
