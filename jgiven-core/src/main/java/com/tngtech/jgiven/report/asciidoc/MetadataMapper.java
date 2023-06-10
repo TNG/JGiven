@@ -3,7 +3,6 @@ package com.tngtech.jgiven.report.asciidoc;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.StepStatus;
 import java.time.Duration;
-import java.util.Optional;
 
 class MetadataMapper {
     private static final String ICON_CHECK_MARK = "icon:check-square[role=green]";
@@ -67,17 +66,29 @@ class MetadataMapper {
         }
     }
 
-    static Optional<String> toHumanReadableDuration(final long nanos) {
-        if (nanos >= NANOSECONDS_PER_MILLISECOND) {
-            final Duration duration = Duration.ofNanos(nanos);
-            final String millisFragment = duration.getNano() / NANOSECONDS_PER_MILLISECOND + "ms";
-
-            final long seconds = duration.getSeconds();
-            final String secondsFragment = seconds > 0 ? seconds + "s " : "";
-
-            return Optional.of(secondsFragment + millisFragment);
+    static String toHumanReadableScenarioDuration(final long durationInNanos) {
+        if (durationInNanos >= NANOSECONDS_PER_MILLISECOND) {
+            return toHumanReadableDuration(durationInNanos);
         } else {
-            return Optional.empty();
+            return "0ms";
         }
+    }
+
+    static String toHumanReadableStepDuration(final long durationInNanos) {
+        if (durationInNanos >= NANOSECONDS_PER_MILLISECOND) {
+            return "(" + toHumanReadableDuration(durationInNanos) + ")";
+        } else {
+            return "";
+        }
+    }
+
+    private static String toHumanReadableDuration(final long nanos) {
+        final Duration duration = Duration.ofNanos(nanos);
+        final String millisFragment = duration.getNano() / NANOSECONDS_PER_MILLISECOND + "ms";
+
+        final long seconds = duration.getSeconds();
+        final String secondsFragment = seconds > 0 ? seconds + "s " : "";
+
+        return secondsFragment + millisFragment;
     }
 }

@@ -62,8 +62,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         blockContent.append(MetadataMapper.toHumanReadableStatus(ExecutionStatus.SCENARIO_PENDING)).append(" ")
                 .append(statistics.numPendingScenarios).append(" Pending, ");
         blockContent.append(statistics.numScenarios).append(" Total");
-        blockContent.append(" (").append(MetadataMapper.toHumanReadableDuration(statistics.durationInNanos)
-                .orElse("0ms")).append(")");
+        blockContent.append(" (").append(MetadataMapper.toHumanReadableScenarioDuration(statistics.durationInNanos))
+                .append(")");
 
         if (description != null && !description.isEmpty()) {
             blockContent.append(LINE_BREAK);
@@ -88,7 +88,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         blockContent.append(LINE_BREAK);
 
         blockContent.append(MetadataMapper.toHumanReadableStatus(executionStatus));
-        blockContent.append(" (").append(MetadataMapper.toHumanReadableDuration(duration).orElse("0ms")).append(")");
+        blockContent.append(" (").append(MetadataMapper.toHumanReadableScenarioDuration(duration)).append(")");
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
             blockContent.append(LINE_BREAK);
@@ -262,7 +262,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         builder.append(" | ").append(statistics.numFailedCases);
         builder.append(" | ").append(statistics.numCases);
         builder.append(" | ").append(statistics.numSteps);
-        builder.append(" | ").append(MetadataMapper.toHumanReadableDuration(statistics.durationInNanos).orElse("0ms"))
+        builder.append(" | ").append(MetadataMapper.toHumanReadableScenarioDuration(statistics.durationInNanos))
                 .append(LINE_BREAK);
     }
 
@@ -331,18 +331,17 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
             final StepStatus status,
             final long duration,
             final String extendedDescription) {
-        final String humanDuration = MetadataMapper.toHumanReadableDuration(duration)
-                .map(dur -> " (" + dur + ")").orElse("");
-        final String stepStatus = caseIsUnsuccessful
-                ? " " + MetadataMapper.toHumanReadableStatus(status) + humanDuration
-                : "";
+        String fragment = "";
+        if (caseIsUnsuccessful) {
+            fragment = " " + (MetadataMapper.toHumanReadableStatus(status)
+                    + " " + MetadataMapper.toHumanReadableStepDuration(duration));
+        }
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
-            return stepStatus + " +" + LINE_BREAK
-                    + buildIndentationFragment(depth, " ") + " _+++" + extendedDescription + "+++_";
-        } else {
-            return stepStatus;
+            fragment += " +" + LINE_BREAK;
+            fragment += buildIndentationFragment(depth, " ") + " _+++" + extendedDescription + "+++_";
         }
+        return fragment;
     }
 
     private static String escapeTableValue(final String value) {

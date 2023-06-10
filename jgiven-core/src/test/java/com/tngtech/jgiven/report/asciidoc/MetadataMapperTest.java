@@ -6,7 +6,6 @@ import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.StepStatus;
-import java.util.Optional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -67,10 +66,10 @@ public class MetadataMapperTest {
     }
 
     @Test
-    public void toHumanReadableDurationForDurationBelow1ms() {
-        final Optional<String> actualDuration = MetadataMapper.toHumanReadableDuration(999999);
+    public void toScenarioDurationBelow1ms() {
+        final String actualDuration = MetadataMapper.toHumanReadableScenarioDuration(999999);
 
-        assertThat(actualDuration).isEmpty();
+        assertThat(actualDuration).isEqualTo("0ms");
     }
 
     @Test
@@ -80,9 +79,29 @@ public class MetadataMapperTest {
         "1000000000, 1s 0ms",
         "1000999999, 1s 0ms",
         "1001000000, 1s 1ms"})
-    public void toHumanReadableDurationForDurationOver1ms(final int nanoseconds, final String expectedDuration) {
-        final Optional<String> actualDuration = MetadataMapper.toHumanReadableDuration(nanoseconds);
+    public void toScenarioDurationForDurationOver1ms(final int nanoseconds, final String expectedDuration) {
+        final String actualDuration = MetadataMapper.toHumanReadableScenarioDuration(nanoseconds);
 
-        assertThat(actualDuration).hasValue(expectedDuration);
+        assertThat(actualDuration).isEqualTo(expectedDuration);
+    }
+
+    @Test
+    public void toStepDurationBelow1ms() {
+        final String actualDuration = MetadataMapper.toHumanReadableStepDuration(999999);
+
+        assertThat(actualDuration).isEmpty();
+    }
+
+    @Test
+    @DataProvider({
+        "1000000, (1ms)",
+        "999999999, (999ms)",
+        "1000000000, (1s 0ms)",
+        "1000999999, (1s 0ms)",
+        "1001000000, (1s 1ms)"})
+    public void toStepDurationForDurationOver1ms(final int nanoseconds, final String expectedDuration) {
+        final String actualDuration = MetadataMapper.toHumanReadableStepDuration(nanoseconds);
+
+        assertThat(actualDuration).isEqualTo(expectedDuration);
     }
 }
