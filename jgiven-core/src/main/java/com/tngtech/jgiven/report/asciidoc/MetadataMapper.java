@@ -27,7 +27,6 @@ class MetadataMapper {
     static String toAsciiDocTagName(final ExecutionStatus executionStatus) {
         switch (executionStatus) {
             case SCENARIO_PENDING:
-                // fall through
             case SOME_STEPS_PENDING:
                 return "scenario-pending";
             case SUCCESS:
@@ -42,7 +41,6 @@ class MetadataMapper {
     static String toHumanReadableStatus(final ExecutionStatus executionStatus) {
         switch (executionStatus) {
             case SCENARIO_PENDING:
-                // fall through
             case SOME_STEPS_PENDING:
                 return ICON_BANNED;
             case SUCCESS:
