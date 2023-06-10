@@ -5,7 +5,6 @@ import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.report.AbstractReportConfig;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.ReportBlockConverter;
-import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import java.io.File;
@@ -38,14 +37,10 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     private final List<String> featureFiles = new ArrayList<>();
     private final List<String> failedScenarioFiles = new ArrayList<>();
     private final List<String> pendingScenarioFiles = new ArrayList<>();
-    private final ReportBlockConverter blockConverter;
+    private final ReportBlockConverter blockConverter = new AsciiDocReportBlockConverter();
     private File featuresDir;
-    private final Comparator<ReportModelFile> byFeatureName = Comparator.comparing(
-        modelFile -> null != modelFile.model.getName() ? modelFile.model.getName() : modelFile.model.getClassName());
+    private File targetDir;
 
-    public AsciiDocReportGenerator() {
-        blockConverter = new AsciiDocReportBlockConverter();
-    }
 
     public AbstractReportConfig createReportConfig(String... args) {
         return new AsciiDocReportConfig(args);
@@ -53,134 +48,166 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     @Override
     public void generate() {
-        File targetDir = config.getTargetDir();
+        if (!prepareDirectories()) {
+            return;
+        }
+
+        completeReportModel.getAllReportModels().stream()
+                .sorted(Comparator.comparing(AsciiDocReportGenerator::byFeatureName))
+                .forEach(this::writeFeatureFile);
+
+        writeAllScenariosFile();
+
+        writeFailedScenariosFiled();
+
+        writePendingScenariosFile();
+
+        writeStatisticsFile();
+
+        writeIndexFile(config.getTitle());
+
+    }
+
+    private boolean prepareDirectories() {
+        targetDir = config.getTargetDir();
         if (!targetDir.exists() && !targetDir.mkdirs()) {
             log.error("Could not ensure target directory exists {}", targetDir);
-            return;
+            return false;
         }
 
         featuresDir = new File(targetDir.getPath() + "/features");
         if (!featuresDir.exists() && !featuresDir.mkdirs()) {
             log.error("Could not ensure feature directory exists {}", featuresDir);
-            return;
+            return false;
         }
 
-        completeReportModel.getAllReportModels().stream()
-            .sorted(byFeatureName)
-            .forEach(reportModelFile -> writeFeatureToFile(reportModelFile.model, reportModelFile.file,
-                completeReportModel.getStatistics(reportModelFile)));
-
-        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "allScenarios.asciidoc"))) {
-            printWriter.println("== All Scenarios");
-            printWriter.println();
-
-            generateFeatureIncludes(printWriter, featureFiles, "");
-        }
-
-        try (
-            PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "failedScenarios.asciidoc"))) {
-            printWriter.println("== Failed Scenarios");
-            printWriter.println();
-            if (failedScenarioFiles.isEmpty()) {
-                printWriter.println("There are no failed scenarios. Keep rocking!");
-            } else {
-                printWriter.println(
-                    "There are " + completeReportModel.getTotalStatistics().numFailedScenarios + " failed scenarios");
-                printWriter.println();
-                printWriter.println(":leveloffset: -1");
-                printWriter.println();
-                generateFeatureIncludes(printWriter, failedScenarioFiles, "tag=scenario-failed");
-                printWriter.println();
-                printWriter.println(":leveloffset: +1");
-            }
-        }
-
-        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(
-            new File(targetDir, "pendingScenarios.asciidoc"))) {
-            printWriter.println("== Pending Scenarios");
-            printWriter.println();
-            if (pendingScenarioFiles.isEmpty()) {
-                printWriter.println("There are no pending scenarios. Keep rocking!");
-            } else {
-                printWriter.println(
-                    "There are " + completeReportModel.getTotalStatistics().numPendingScenarios + " pending scenarios");
-                printWriter.println();
-                printWriter.println(":leveloffset: -1");
-                printWriter.println();
-                generateFeatureIncludes(printWriter, pendingScenarioFiles, "tag=scenario-pending");
-                printWriter.println();
-                printWriter.println(":leveloffset: +1");
-            }
-        }
-
-        try (
-            PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "totalStatistics.asciidoc"))) {
-            Map<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels().stream()
-                .collect(Collectors.toMap(
-                    reportModelFile -> reportModelFile.model.getName(),
-                    reportModelFile -> completeReportModel.getStatistics(reportModelFile)));
-
-            printWriter.println(blockConverter.convertStatisticsBlock(featureStatistics,
-                    completeReportModel.getTotalStatistics()));
-        }
-
-
-        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(targetDir, "index.asciidoc"))) {
-            convertIndex(printWriter, config.getTitle());
-        }
-
+        return true;
     }
 
-    private void writeFeatureToFile(final ReportModel model, final File file, final ReportStatistics statistics) {
-        String featureFileName = Files.getNameWithoutExtension(file.getName()) + ".asciidoc";
+    private void writeFeatureFile(ReportModelFile reportModelFile) {
+        String featureFileName = Files.getNameWithoutExtension(reportModelFile.file.getName()) + ".asciidoc";
         featureFiles.add(featureFileName);
 
+        final ReportStatistics statistics = completeReportModel.getStatistics(reportModelFile);
         if (statistics.numFailedScenarios > 0) {
             failedScenarioFiles.add(featureFileName);
         }
-
         if (statistics.numPendingScenarios > 0) {
             pendingScenarioFiles.add(featureFileName);
         }
 
-        try (PrintWriter printWriter = PrintWriterUtil.getPrintWriter(new File(featuresDir, featureFileName))) {
+        final AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
+        reportModelFile.model.accept(visitor);
 
-            AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
-            model.accept(visitor);
+        writeAsciiDocToFile(featureFileName, visitor.getResult());
+    }
 
-            for (String block : visitor.getResult()) {
-                printWriter.println(block);
-                printWriter.println();
+    private void writeAsciiDocToFile(final String fileName, final List<String> asciiDocBlocks) {
+        try (PrintWriter writer = PrintWriterUtil.getPrintWriter(new File(featuresDir, fileName))) {
+
+            for (String block : asciiDocBlocks) {
+                writer.println(block);
+                writer.println();
             }
         }
     }
 
-    private static void generateFeatureIncludes(final PrintWriter printWriter, final List<String> fileNames,
-                                                final String tagSpec) {
-        for (String fileName : fileNames) {
-            printWriter.println("include::features/" + fileName + "[" + tagSpec + "]\n");
+    private void writeAllScenariosFile() {
+        try (PrintWriter writer = PrintWriterUtil.getPrintWriter(new File(targetDir, "allScenarios.asciidoc"))) {
+            writer.println("== All Scenarios");
+            writer.println();
+
+            for (String fileName : featureFiles) {
+                writer.println(includeMacroFor(fileName, ""));
+                writer.println();
+            }
         }
     }
 
-    private static void convertIndex(PrintWriter printWriter, final String title) {
-        printWriter.print("= ");
-        printWriter.println(title);
-
-        printWriter.println(":toc: left");
-        printWriter.println(":toclevels: 3");
-        printWriter.println(":icons: font");
-        printWriter.println();
-        printWriter.println("include::totalStatistics.asciidoc[]");
-        printWriter.println();
-
-        printWriter.println("include::allScenarios.asciidoc[]");
-        printWriter.println();
-
-        printWriter.println("include::failedScenarios.asciidoc[]");
-        printWriter.println();
-
-        printWriter.println("include::pendingScenarios.asciidoc[]");
-        printWriter.println();
+    private void writeFailedScenariosFiled() {
+        try (PrintWriter writer = PrintWriterUtil.getPrintWriter(new File(targetDir, "failedScenarios.asciidoc"))) {
+            writer.println("== Failed Scenarios");
+            writer.println();
+            if (failedScenarioFiles.isEmpty()) {
+                writer.println("There are no failed scenarios. Keep rocking!");
+            } else {
+                writer.println(
+                        "There are " + completeReportModel.getTotalStatistics().numFailedScenarios
+                                + " failed scenarios");
+                writer.println();
+                writer.println(":leveloffset: -1");
+                writer.println();
+                for (String fileName : failedScenarioFiles) {
+                    writer.println(includeMacroFor(fileName, "tag=scenario-failed"));
+                    writer.println();
+                }
+                writer.println(":leveloffset: +1");
+            }
+        }
     }
 
+    private void writePendingScenariosFile() {
+        try (PrintWriter writer = PrintWriterUtil.getPrintWriter(new File(targetDir, "pendingScenarios.asciidoc"))) {
+            writer.println("== Pending Scenarios");
+            writer.println();
+            if (pendingScenarioFiles.isEmpty()) {
+                writer.println("There are no pending scenarios. Keep rocking!");
+            } else {
+                writer.println(
+                        "There are " + completeReportModel.getTotalStatistics().numPendingScenarios
+                                + " pending scenarios");
+                writer.println();
+                writer.println(":leveloffset: -1");
+                writer.println();
+                for (String fileName : pendingScenarioFiles) {
+                    writer.println(includeMacroFor(fileName, "tag=scenario-pending"));
+                    writer.println();
+                }
+                writer.println(":leveloffset: +1");
+            }
+        }
+    }
+
+    private void writeStatisticsFile() {
+        try (PrintWriter writer = PrintWriterUtil.getPrintWriter(new File(targetDir, "totalStatistics.asciidoc"))) {
+            Map<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels().stream()
+                    .collect(Collectors.toMap(
+                            reportModelFile -> reportModelFile.model.getName(),
+                            reportModelFile -> completeReportModel.getStatistics(reportModelFile)));
+
+            writer.println(blockConverter.convertStatisticsBlock(featureStatistics,
+                    completeReportModel.getTotalStatistics()));
+        }
+    }
+
+    private void writeIndexFile(final String reportTitle) {
+        try (PrintWriter writer = PrintWriterUtil.getPrintWriter(new File(targetDir, "index.asciidoc"))) {
+            writer.println("= " + reportTitle);
+            writer.println(":toc: left");
+            writer.println(":toclevels: 3");
+            writer.println(":icons: font");
+            writer.println();
+
+            writer.println("include::totalStatistics.asciidoc[]");
+            writer.println();
+
+            writer.println("include::allScenarios.asciidoc[]");
+            writer.println();
+
+            writer.println("include::failedScenarios.asciidoc[]");
+            writer.println();
+
+            writer.println("include::pendingScenarios.asciidoc[]");
+        }
+    }
+
+    private static String byFeatureName(ReportModelFile modelFile) {
+        return (null != modelFile.model.getName())
+                ? modelFile.model.getName()
+                : modelFile.model.getClassName();
+    }
+
+    private static String includeMacroFor(final String fileName, final String tags) {
+        return "include::features/" + fileName + "[" + tags + "]";
+    }
 }
