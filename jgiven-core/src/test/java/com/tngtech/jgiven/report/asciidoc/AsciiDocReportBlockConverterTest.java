@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
 @RunWith(DataProviderRunner.class)
 public class AsciiDocReportBlockConverterTest {
 
+    private static final int ARBITRARY_DURATION = 3899;
     private final AsciiDocReportBlockConverter converter = new AsciiDocReportBlockConverter();
 
     @Test
@@ -195,7 +196,7 @@ public class AsciiDocReportBlockConverterTest {
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -208,8 +209,8 @@ public class AsciiDocReportBlockConverterTest {
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine"));
 
         // when
-        String block =
-            converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, "It is a brand new machine.", false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION,
+                "It is a brand new machine.", false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -237,8 +238,8 @@ public class AsciiDocReportBlockConverterTest {
         List<Word> words = Collections.singletonList(Word.introWord("given"));
 
         // when
-        String block =
-            converter.convertFirstStepBlock(0, words, StepStatus.PASSED, 3899, null, false, "First section");
+        String block = converter.convertFirstStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION,
+                null, false, "First section");
 
         // then
         assertThatBlockContainsLines(block,
@@ -253,7 +254,8 @@ public class AsciiDocReportBlockConverterTest {
         List<Word> words = Collections.singletonList(Word.introWord("given"));
 
         // when
-        String block = converter.convertFirstStepBlock(0, words, StepStatus.PASSED, 3899, null, false, null);
+        String block = converter.convertFirstStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false,
+                null);
 
         // then
         assertThatBlockContainsLines(block,
@@ -270,7 +272,7 @@ public class AsciiDocReportBlockConverterTest {
                 new Word("coffees"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -286,7 +288,7 @@ public class AsciiDocReportBlockConverterTest {
                         new Word("active"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -300,7 +302,7 @@ public class AsciiDocReportBlockConverterTest {
             Word.argWord("description", "0", "very nice text\nand also more text"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -323,7 +325,7 @@ public class AsciiDocReportBlockConverterTest {
             ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"), ncoffees, new Word("coffees"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -341,7 +343,7 @@ public class AsciiDocReportBlockConverterTest {
                 new DataTable(Table.HeaderType.HORIZONTAL, productsTable)));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -365,7 +367,7 @@ public class AsciiDocReportBlockConverterTest {
                 new DataTable(Table.HeaderType.VERTICAL, productsTable)));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
