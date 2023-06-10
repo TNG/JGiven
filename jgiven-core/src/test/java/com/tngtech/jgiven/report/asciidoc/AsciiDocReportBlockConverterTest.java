@@ -162,8 +162,7 @@ public class AsciiDocReportBlockConverterTest {
         "FAILED, exclamation-circle[role=red]",
         "SCENARIO_PENDING, ban[role=silver]",
         "SOME_STEPS_PENDING, ban[role=silver]"})
-    public void convert_case_header_without_parameters_and_description(final ExecutionStatus executionStatus,
-                                                                       final String icon) {
+    public void convert_case_header_without_description(final ExecutionStatus executionStatus, final String icon) {
         // given
 
         // when
@@ -177,46 +176,15 @@ public class AsciiDocReportBlockConverterTest {
     }
 
     @Test
-    public void convert_case_header_with_description_and_without_parameters() {
+    public void convert_case_header_with_description() {
         // given
 
         // when
-        String block =
-            converter.convertCaseHeaderBlock(1, ExecutionStatus.SUCCESS, "First case");
+        String block = converter.convertCaseHeaderBlock(1, ExecutionStatus.SUCCESS, "First case");
 
         // then
         assertThatBlockContainsLines(block,
-            "===== Case 1 First case",
-            "",
-            "icon:check-square[role=green]");
-    }
-
-    @Test
-    public void convert_case_header_with_one_parameter() {
-        // given
-
-        // when
-        String block =
-            converter.convertCaseHeaderBlock(2, ExecutionStatus.SUCCESS, null);
-
-        // then
-        assertThatBlockContainsLines(block,
-            "===== Case 2",
-            "",
-            "icon:check-square[role=green]");
-    }
-
-    @Test
-    public void convert_case_header_with_two_parameters() {
-        // given
-
-        // when
-        String block =
-            converter.convertCaseHeaderBlock(2, ExecutionStatus.SUCCESS, null);
-
-        // then
-        assertThatBlockContainsLines(block,
-            "===== Case 2",
+            "===== Case 1: First case",
             "",
             "icon:check-square[role=green]");
     }

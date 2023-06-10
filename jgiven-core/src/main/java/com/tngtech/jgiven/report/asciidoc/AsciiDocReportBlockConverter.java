@@ -114,7 +114,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         blockContent.append("===== Case ").append(caseNr);
 
         if (description != null && !description.isEmpty()) {
-            blockContent.append(" ").append(description);
+            blockContent.append(": ").append(description);
         }
 
         blockContent.append(LINE_BREAK).append(LINE_BREAK)
