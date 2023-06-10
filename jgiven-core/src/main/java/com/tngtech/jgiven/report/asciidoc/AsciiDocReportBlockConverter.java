@@ -11,22 +11,16 @@ import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Word;
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     private static final String LINE_BREAK = System.lineSeparator();
-    private static final String ICON_CHECK_MARK = "icon:check-square[role=green]";
-    private static final String ICON_EXCLAMATION_MARK = "icon:exclamation-circle[role=red]";
-    private static final String ICON_STEP_FORWARD = "icon:step-forward[role=silver]";
-    private static final String ICON_BANNED = "icon:ban[role=silver]";
 
     @Override
     public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
-                                         final ReportStatistics totalStatistics) {
+            final ReportStatistics totalStatistics) {
         final StringBuilder statisticsTable = new StringBuilder();
 
         statisticsTable.append(".Total Statistics").append(LINE_BREAK);
@@ -45,7 +39,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         statisticsTable.append("| duration").append(LINE_BREAK);
 
         featureStatistics.entrySet().stream().sorted(Map.Entry.comparingByKey())
-            .forEach(entry -> appendStatisticsRowFragment(statisticsTable, entry.getKey(), entry.getValue()));
+                .forEach(entry -> appendStatisticsRowFragment(statisticsTable, entry.getKey(), entry.getValue()));
 
         appendStatisticsRowFragment(statisticsTable, "sum", totalStatistics);
 
@@ -55,21 +49,21 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertFeatureHeaderBlock(final String featureName, final ReportStatistics statistics,
-                                            final String description) {
+            final String description) {
         StringBuilder blockContent = new StringBuilder();
 
         blockContent.append("=== ").append(featureName).append(LINE_BREAK);
-
         blockContent.append(LINE_BREAK);
 
-        blockContent.append(ICON_CHECK_MARK).append(" ").append(statistics.numSuccessfulScenarios)
-            .append(" Successful, ");
-        blockContent.append(ICON_EXCLAMATION_MARK).append(" ").append(statistics.numFailedScenarios)
-            .append(" Failed, ");
-        blockContent.append(ICON_BANNED).append(" ").append(statistics.numPendingScenarios).append(" Pending, ");
+        blockContent.append(MetadataMapper.toHumanReadableStatus(ExecutionStatus.SUCCESS)).append(" ")
+                .append(statistics.numSuccessfulScenarios).append(" Successful, ");
+        blockContent.append(MetadataMapper.toHumanReadableStatus(ExecutionStatus.FAILED)).append(" ")
+                .append(statistics.numFailedScenarios).append(" Failed, ");
+        blockContent.append(MetadataMapper.toHumanReadableStatus(ExecutionStatus.SCENARIO_PENDING)).append(" ")
+                .append(statistics.numPendingScenarios).append(" Pending, ");
         blockContent.append(statistics.numScenarios).append(" Total");
-        blockContent.append(" (").append(toHumanReadableDuration(statistics.durationInNanos).orElse("0ms"))
-            .append(")");
+        blockContent.append(" (").append(MetadataMapper.toHumanReadableDuration(statistics.durationInNanos)
+                .orElse("0ms")).append(")");
 
         if (description != null && !description.isEmpty()) {
             blockContent.append(LINE_BREAK);
@@ -82,20 +76,19 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertScenarioHeaderBlock(final String name, final ExecutionStatus executionStatus,
-                                             final long duration, final List<String> tagNames,
-                                             final String extendedDescription) {
+            final long duration, final List<String> tagNames,
+            final String extendedDescription) {
         StringBuilder blockContent = new StringBuilder();
 
-        blockContent.append("// tag::").append(toAsciiDocTag(executionStatus)).append("[]").append(LINE_BREAK);
+        blockContent.append(MetadataMapper.toAsciiDocTagStart(executionStatus)).append(LINE_BREAK);
         blockContent.append(LINE_BREAK);
 
         blockContent.append("==== ").append(WordUtil.capitalize(name)).append(LINE_BREAK);
 
         blockContent.append(LINE_BREAK);
 
-        blockContent.append(toHumanReadableStatus(executionStatus));
-        blockContent.append(" (").append(toHumanReadableDuration(duration).orElse("0ms")).append(")");
-
+        blockContent.append(MetadataMapper.toHumanReadableStatus(executionStatus));
+        blockContent.append(" (").append(MetadataMapper.toHumanReadableDuration(duration).orElse("0ms")).append(")");
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
             blockContent.append(LINE_BREAK);
@@ -115,7 +108,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertCaseHeaderBlock(final int caseNr, final ExecutionStatus executionStatus,
-                                         final String description) {
+            final String description) {
         StringBuilder blockContent = new StringBuilder();
 
         blockContent.append("===== Case ").append(caseNr);
@@ -124,16 +117,17 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
             blockContent.append(" ").append(description);
         }
 
-        blockContent.append(LINE_BREAK).append(LINE_BREAK).append(toHumanReadableStatus(executionStatus));
+        blockContent.append(LINE_BREAK).append(LINE_BREAK)
+                .append(MetadataMapper.toHumanReadableStatus(executionStatus));
 
         return blockContent.toString();
     }
 
     @Override
     public String convertFirstStepBlock(final int depth, final List<Word> words, final StepStatus status,
-                                        final long durationInNanos,
-                                        final String extendedDescription, final boolean caseIsUnsuccessful,
-                                        final String currentSectionTitle) {
+            final long durationInNanos,
+            final String extendedDescription, final boolean caseIsUnsuccessful,
+            final String currentSectionTitle) {
 
         StringBuilder blockContent = new StringBuilder();
 
@@ -143,16 +137,16 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
         blockContent.append("[unstyled.jg-step-list]").append(LINE_BREAK);
         blockContent.append(
-            convertStepBlock(depth, words, status, durationInNanos, extendedDescription, caseIsUnsuccessful
-            ));
+                convertStepBlock(depth, words, status, durationInNanos, extendedDescription, caseIsUnsuccessful
+                ));
 
         return blockContent.toString();
     }
 
     @Override
     public String convertStepBlock(final int depth, final List<Word> words, final StepStatus status,
-                                   final long durationInNanos,
-                                   final String extendedDescription, final boolean caseIsUnsuccessful) {
+            final long durationInNanos,
+            final String extendedDescription, final boolean caseIsUnsuccessful) {
 
         StringBuilder blockContent = new StringBuilder();
 
@@ -161,7 +155,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         appendWordFragments(blockContent, words);
 
         blockContent.append(buildStepEndFragment(
-            depth, caseIsUnsuccessful, status, durationInNanos, extendedDescription));
+                depth, caseIsUnsuccessful, status, durationInNanos, extendedDescription));
         return blockContent.toString();
     }
 
@@ -172,8 +166,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
         blockContent.append(".Cases").append(LINE_BREAK);
         blockContent.append("[.jg-casesTable%header,cols=\"")
-            .append(generateTableColSpec(true, tableColumns))
-            .append(",>1\"]").append(LINE_BREAK);
+                .append(generateTableColSpec(true, tableColumns))
+                .append(",>1\"]").append(LINE_BREAK);
         blockContent.append("|===").append(LINE_BREAK);
 
         blockContent.append("| #");
@@ -191,7 +185,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
                 blockContent.append(" | ").append(escapeTableValue(value));
             }
 
-            blockContent.append(" | ").append(toHumanReadableStatus(row.status())).append(LINE_BREAK);
+            blockContent.append(" | ").append(MetadataMapper.toHumanReadableStatus(row.status())).append(LINE_BREAK);
 
             if (errorMessage != null) {
                 List<String> stackTraceLines = row.stackTrace();
@@ -215,7 +209,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertScenarioFooterBlock(final ExecutionStatus executionStatus) {
-        return "// end::" + toAsciiDocTag(executionStatus) + "[]";
+        return MetadataMapper.toAsciiDocTagEnd(executionStatus);
     }
 
     private static void appendWordFragments(final StringBuilder blockContent, final List<Word> words) {
@@ -234,8 +228,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
     }
 
-    private static void appendErrorFragment(final StringBuilder blockContent, final String errorMessage,
-                                            final List<String> stackTraceLines) {
+    private static void appendErrorFragment(
+            final StringBuilder blockContent, final String errorMessage, final List<String> stackTraceLines) {
         blockContent.append("[.jg-exception]").append(LINE_BREAK);
         blockContent.append("====").append(LINE_BREAK);
         blockContent.append("[%hardbreaks]").append(LINE_BREAK);
@@ -258,7 +252,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     private static void appendStatisticsRowFragment(final StringBuilder builder, final String name,
-                                                    final ReportStatistics statistics) {
+            final ReportStatistics statistics) {
         builder.append("| ").append(name);
         builder.append(" | ").append(statistics.numClasses);
         builder.append(" | ").append(statistics.numSuccessfulScenarios);
@@ -268,15 +262,13 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         builder.append(" | ").append(statistics.numFailedCases);
         builder.append(" | ").append(statistics.numCases);
         builder.append(" | ").append(statistics.numSteps);
-        builder.append(" | ").append(toHumanReadableDuration(statistics.durationInNanos).orElse("0ms"))
-            .append(LINE_BREAK);
+        builder.append(" | ").append(MetadataMapper.toHumanReadableDuration(statistics.durationInNanos).orElse("0ms"))
+                .append(LINE_BREAK);
     }
-
 
     private static String buildIntroWordFragment(final String word) {
         return "[.jg-intro-word]*" + WordUtil.capitalize(word) + "*";
     }
-
 
     private static String buildDataTableFragment(final DataTable dataTable) {
         final List<List<String>> rows = dataTable.getData();
@@ -304,8 +296,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         final String colSpec = generateTableColSpec(dataTable.hasVerticalHeader(), dataTable.getColumnCount());
 
         return "[.jg-argumentTable"
-            + (dataTable.hasHorizontalHeader() ? "%header" : "")
-            + ",cols=\"" + colSpec + "\"]";
+                + (dataTable.hasHorizontalHeader() ? "%header" : "")
+                + ",cols=\"" + colSpec + "\"]";
     }
 
     private static String buildParameterWordFragment(final String placeHolderValue) {
@@ -315,11 +307,11 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     private static String buildArgumentWordFragment(final String argumentValue) {
         if (argumentValue.contains(LINE_BREAK)) {
             return LINE_BREAK
-                + "+" + LINE_BREAK
-                + "[.jg-argument]" + LINE_BREAK
-                + "...." + LINE_BREAK
-                + argumentValue + LINE_BREAK
-                + "...." + LINE_BREAK;
+                    + "+" + LINE_BREAK
+                    + "[.jg-argument]" + LINE_BREAK
+                    + "...." + LINE_BREAK
+                    + argumentValue + LINE_BREAK
+                    + "...." + LINE_BREAK;
         } else {
             return " [.jg-argument]_" + escapeArgumentValue(argumentValue) + "_";
         }
@@ -333,19 +325,21 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
     }
 
-    private static String buildStepEndFragment(final int depth, final boolean caseIsUnsuccessful,
-                                               final StepStatus status,
-                                               final long duration,
-                                               final String extendedDescription) {
-        final String humanDuration = toHumanReadableDuration(duration).map(dur -> " (" + dur + ")").orElse("");
+    private static String buildStepEndFragment(
+            final int depth,
+            final boolean caseIsUnsuccessful,
+            final StepStatus status,
+            final long duration,
+            final String extendedDescription) {
+        final String humanDuration = MetadataMapper.toHumanReadableDuration(duration)
+                .map(dur -> " (" + dur + ")").orElse("");
         final String stepStatus = caseIsUnsuccessful
-            ? " " + toHumanReadableStatus(status) + humanDuration
-            : "";
-
+                ? " " + MetadataMapper.toHumanReadableStatus(status) + humanDuration
+                : "";
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
             return stepStatus + " +" + LINE_BREAK
-                + buildIndentationFragment(depth, " ") + " _+++" + extendedDescription + "+++_";
+                    + buildIndentationFragment(depth, " ") + " _+++" + extendedDescription + "+++_";
         } else {
             return stepStatus;
         }
@@ -365,66 +359,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     private static String generateTableColSpec(final boolean withVerticalHeader, final int columnCount) {
         return withVerticalHeader
-            ? "h," + generate(() -> "1").limit(columnCount - 1L).collect(joining(","))
-            : generate(() -> "1").limit(columnCount).collect(joining(","));
+                ? "h," + generate(() -> "1").limit(columnCount - 1L).collect(joining(","))
+                : generate(() -> "1").limit(columnCount).collect(joining(","));
     }
 
-    private static String toAsciiDocTag(final ExecutionStatus executionStatus) {
-        switch (executionStatus) {
-            case SCENARIO_PENDING:
-                // fall through
-            case SOME_STEPS_PENDING:
-                return "scenario-pending";
-            case SUCCESS:
-                return "scenario-successful";
-            case FAILED:
-                return "scenario-failed";
-            default:
-                return "scenario-unknown";
-        }
-    }
-
-    private static String toHumanReadableStatus(final ExecutionStatus executionStatus) {
-        switch (executionStatus) {
-            case SCENARIO_PENDING:
-                // fall through
-            case SOME_STEPS_PENDING:
-                return ICON_BANNED;
-            case SUCCESS:
-                return ICON_CHECK_MARK;
-            case FAILED:
-                return ICON_EXCLAMATION_MARK;
-            default:
-                return executionStatus.toString();
-        }
-    }
-
-    private static String toHumanReadableStatus(final StepStatus stepStatus) {
-        switch (stepStatus) {
-            case PASSED:
-                return ICON_CHECK_MARK;
-            case FAILED:
-                return ICON_EXCLAMATION_MARK;
-            case SKIPPED:
-                return ICON_STEP_FORWARD;
-            case PENDING:
-                return ICON_BANNED;
-            default:
-                return stepStatus.toString();
-        }
-    }
-
-    private static Optional<String> toHumanReadableDuration(final long nanos) {
-        if (nanos > 1000000) {
-            final Duration duration = Duration.ofNanos(nanos);
-            final long seconds = duration.getSeconds();
-            if (seconds > 0) {
-                return Optional.of(seconds + "s " + duration.getNano() / 1000000 + "ms");
-            } else {
-                return Optional.of(duration.getNano() / 1000000 + "ms");
-            }
-        } else {
-            return Optional.empty();
-        }
-    }
 }
