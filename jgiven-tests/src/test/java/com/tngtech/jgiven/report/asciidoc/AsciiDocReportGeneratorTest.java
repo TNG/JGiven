@@ -20,7 +20,7 @@ public class AsciiDocReportGeneratorTest extends
     private GivenJsonReports<?> jsonReports;
 
     @Test
-    public void the_AsciiDoc_reporter_generates_an_index_file_a_classes_file_and_a_test_file_report()
+    public void the_AsciiDoc_reporter_generates_an_index_file_a_test_file_and_multiple_other_asciidoc_files()
         throws IOException {
         given().a_report_model();
         jsonReports.and().the_report_exist_as_JSON_file();
@@ -44,7 +44,7 @@ public class AsciiDocReportGeneratorTest extends
             .and().the_report_exist_as_JSON_file();
 
         when().the_asciidoc_reporter_is_executed();
-        then().the_asciidoc_reporte_$_exists("features/Test.asciidoc")
+        then().the_asciidoc_reporter_$_exists("features/Test.asciidoc")
             .and().the_literal_block_is_added_$(
                 "...." + System.lineSeparator()
                     + content + System.lineSeparator()

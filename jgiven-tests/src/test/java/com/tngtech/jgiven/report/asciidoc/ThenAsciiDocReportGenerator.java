@@ -1,17 +1,16 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import com.google.common.base.Charsets;
-import com.tngtech.jgiven.report.ThenReportGenerator;
-import org.apache.commons.io.FileUtils;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+import com.google.common.base.Charsets;
+import com.tngtech.jgiven.report.ThenReportGenerator;
 import java.io.IOException;
+import org.apache.commons.io.FileUtils;
 
-public class ThenAsciiDocReportGenerator <SELF extends ThenAsciiDocReportGenerator<SELF>> extends ThenReportGenerator<SELF>  {
+public class ThenAsciiDocReportGenerator<SELF extends ThenAsciiDocReportGenerator<SELF>>
+        extends ThenReportGenerator<SELF> {
 
-    public SELF the_asciidoc_reporte_$_exists(String ascidocFile) {
+    public SELF the_asciidoc_reporter_$_exists(String ascidocFile) {
         super.a_file_with_name_$_exists(ascidocFile);
         return self();
     }
