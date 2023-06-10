@@ -18,7 +18,7 @@ import java.util.Optional;
 
 class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
-    private static final String NEW_LINE = System.getProperty("line.separator");
+    private static final String LINE_BREAK = System.lineSeparator();
     private static final String ICON_CHECK_MARK = "icon:check-square[role=green]";
     private static final String ICON_EXCLAMATION_MARK = "icon:exclamation-circle[role=red]";
     private static final String ICON_STEP_FORWARD = "icon:step-forward[role=silver]";
@@ -29,9 +29,9 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
                                          final ReportStatistics totalStatistics) {
         final StringBuilder statisticsTable = new StringBuilder();
 
-        statisticsTable.append(".Total Statistics").append(NEW_LINE);
-        statisticsTable.append("[options=\"header,footer\"]").append(NEW_LINE);
-        statisticsTable.append("|===").append(NEW_LINE);
+        statisticsTable.append(".Total Statistics").append(LINE_BREAK);
+        statisticsTable.append("[options=\"header,footer\"]").append(LINE_BREAK);
+        statisticsTable.append("|===").append(LINE_BREAK);
 
         statisticsTable.append("| feature ");
         statisticsTable.append("| total classes ");
@@ -42,7 +42,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         statisticsTable.append("| failed cases ");
         statisticsTable.append("| total cases ");
         statisticsTable.append("| total steps ");
-        statisticsTable.append("| duration").append(NEW_LINE);
+        statisticsTable.append("| duration").append(LINE_BREAK);
 
         featureStatistics.entrySet().stream().sorted(Map.Entry.comparingByKey())
             .forEach(entry -> appendStatisticsRowFragment(statisticsTable, entry.getKey(), entry.getValue()));
@@ -58,9 +58,9 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
                                             final String description) {
         StringBuilder blockContent = new StringBuilder();
 
-        blockContent.append("=== ").append(featureName).append(NEW_LINE);
+        blockContent.append("=== ").append(featureName).append(LINE_BREAK);
 
-        blockContent.append(NEW_LINE);
+        blockContent.append(LINE_BREAK);
 
         blockContent.append(ICON_CHECK_MARK).append(" ").append(statistics.numSuccessfulScenarios)
             .append(" Successful, ");
@@ -72,8 +72,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
             .append(")");
 
         if (description != null && !description.isEmpty()) {
-            blockContent.append(NEW_LINE);
-            blockContent.append(NEW_LINE);
+            blockContent.append(LINE_BREAK);
+            blockContent.append(LINE_BREAK);
             blockContent.append("+++").append(description).append("+++");
         }
 
@@ -86,26 +86,26 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
                                              final String extendedDescription) {
         StringBuilder blockContent = new StringBuilder();
 
-        blockContent.append("// tag::").append(toAsciiDocTag(executionStatus)).append("[]").append(NEW_LINE);
-        blockContent.append(NEW_LINE);
+        blockContent.append("// tag::").append(toAsciiDocTag(executionStatus)).append("[]").append(LINE_BREAK);
+        blockContent.append(LINE_BREAK);
 
-        blockContent.append("==== ").append(WordUtil.capitalize(name)).append(NEW_LINE);
+        blockContent.append("==== ").append(WordUtil.capitalize(name)).append(LINE_BREAK);
 
-        blockContent.append(NEW_LINE);
+        blockContent.append(LINE_BREAK);
 
         blockContent.append(toHumanReadableStatus(executionStatus));
         blockContent.append(" (").append(toHumanReadableDuration(duration).orElse("0ms")).append(")");
 
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
-            blockContent.append(NEW_LINE);
-            blockContent.append(NEW_LINE);
+            blockContent.append(LINE_BREAK);
+            blockContent.append(LINE_BREAK);
             blockContent.append("+++").append(extendedDescription).append("+++");
         }
 
         if (!tagNames.isEmpty()) {
-            blockContent.append(NEW_LINE);
-            blockContent.append(NEW_LINE);
+            blockContent.append(LINE_BREAK);
+            blockContent.append(LINE_BREAK);
             blockContent.append("Tags: ");
             blockContent.append(tagNames.stream().map(tag -> "_" + tag + "_").collect(joining(", ")));
         }
@@ -124,7 +124,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
             blockContent.append(" ").append(description);
         }
 
-        blockContent.append(NEW_LINE).append(NEW_LINE).append(toHumanReadableStatus(executionStatus));
+        blockContent.append(LINE_BREAK).append(LINE_BREAK).append(toHumanReadableStatus(executionStatus));
 
         return blockContent.toString();
     }
@@ -138,10 +138,10 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         StringBuilder blockContent = new StringBuilder();
 
         if (currentSectionTitle != null && !currentSectionTitle.isEmpty()) {
-            blockContent.append(".").append(currentSectionTitle).append(NEW_LINE);
+            blockContent.append(".").append(currentSectionTitle).append(LINE_BREAK);
         }
 
-        blockContent.append("[unstyled.jg-step-list]").append(NEW_LINE);
+        blockContent.append("[unstyled.jg-step-list]").append(LINE_BREAK);
         blockContent.append(
             convertStepBlock(depth, words, status, durationInNanos, extendedDescription, caseIsUnsuccessful
             ));
@@ -170,17 +170,17 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         int tableColumns = casesTable.placeholders().size() + 1;
         StringBuilder blockContent = new StringBuilder();
 
-        blockContent.append(".Cases").append(NEW_LINE);
+        blockContent.append(".Cases").append(LINE_BREAK);
         blockContent.append("[.jg-casesTable%header,cols=\"")
             .append(generateTableColSpec(true, tableColumns))
-            .append(",>1\"]").append(NEW_LINE);
-        blockContent.append("|===").append(NEW_LINE);
+            .append(",>1\"]").append(LINE_BREAK);
+        blockContent.append("|===").append(LINE_BREAK);
 
         blockContent.append("| #");
         for (String placeHolder : casesTable.placeholders()) {
             blockContent.append(" | ").append(placeHolder);
         }
-        blockContent.append(" | Status").append(NEW_LINE);
+        blockContent.append(" | Status").append(LINE_BREAK);
 
         for (CasesTable.Row row : casesTable.rows()) {
             String errorMessage = row.errorMessage();
@@ -191,12 +191,12 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
                 blockContent.append(" | ").append(escapeTableValue(value));
             }
 
-            blockContent.append(" | ").append(toHumanReadableStatus(row.status())).append(NEW_LINE);
+            blockContent.append(" | ").append(toHumanReadableStatus(row.status())).append(LINE_BREAK);
 
             if (errorMessage != null) {
                 List<String> stackTraceLines = row.stackTrace();
 
-                blockContent.append(tableColumns).append("+a|").append(NEW_LINE);
+                blockContent.append(tableColumns).append("+a|").append(LINE_BREAK);
                 appendErrorFragment(blockContent, errorMessage, stackTraceLines);
             }
         }
@@ -236,25 +236,25 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     private static void appendErrorFragment(final StringBuilder blockContent, final String errorMessage,
                                             final List<String> stackTraceLines) {
-        blockContent.append("[.jg-exception]").append(NEW_LINE);
-        blockContent.append("====").append(NEW_LINE);
-        blockContent.append("[%hardbreaks]").append(NEW_LINE);
-        blockContent.append(errorMessage).append(NEW_LINE);
-        blockContent.append(NEW_LINE);
+        blockContent.append("[.jg-exception]").append(LINE_BREAK);
+        blockContent.append("====").append(LINE_BREAK);
+        blockContent.append("[%hardbreaks]").append(LINE_BREAK);
+        blockContent.append(errorMessage).append(LINE_BREAK);
+        blockContent.append(LINE_BREAK);
 
         if (stackTraceLines != null && !stackTraceLines.isEmpty()) {
-            blockContent.append(".Show stacktrace").append(NEW_LINE);
-            blockContent.append("[%collapsible]").append(NEW_LINE);
-            blockContent.append("=====").append(NEW_LINE);
-            blockContent.append("....").append(NEW_LINE);
-            stackTraceLines.forEach(line -> blockContent.append(line).append(NEW_LINE));
-            blockContent.append("....").append(NEW_LINE);
-            blockContent.append("=====").append(NEW_LINE);
+            blockContent.append(".Show stacktrace").append(LINE_BREAK);
+            blockContent.append("[%collapsible]").append(LINE_BREAK);
+            blockContent.append("=====").append(LINE_BREAK);
+            blockContent.append("....").append(LINE_BREAK);
+            stackTraceLines.forEach(line -> blockContent.append(line).append(LINE_BREAK));
+            blockContent.append("....").append(LINE_BREAK);
+            blockContent.append("=====").append(LINE_BREAK);
         } else {
-            blockContent.append("No stacktrace provided").append(NEW_LINE);
+            blockContent.append("No stacktrace provided").append(LINE_BREAK);
         }
 
-        blockContent.append("====").append(NEW_LINE);
+        blockContent.append("====").append(LINE_BREAK);
     }
 
     private static void appendStatisticsRowFragment(final StringBuilder builder, final String name,
@@ -269,7 +269,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         builder.append(" | ").append(statistics.numCases);
         builder.append(" | ").append(statistics.numSteps);
         builder.append(" | ").append(toHumanReadableDuration(statistics.durationInNanos).orElse("0ms"))
-            .append(NEW_LINE);
+            .append(LINE_BREAK);
     }
 
 
@@ -286,15 +286,15 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
         final StringBuilder fragmentContent = new StringBuilder();
 
-        fragmentContent.append(NEW_LINE).append("+").append(NEW_LINE);
-        fragmentContent.append(buildDataTableHead(dataTable)).append(NEW_LINE);
+        fragmentContent.append(LINE_BREAK).append("+").append(LINE_BREAK);
+        fragmentContent.append(buildDataTableHead(dataTable)).append(LINE_BREAK);
 
-        fragmentContent.append("|===").append(NEW_LINE);
+        fragmentContent.append("|===").append(LINE_BREAK);
         for (List<String> row : rows) {
             for (String cell : row) {
                 fragmentContent.append("| ").append(cell).append(" ");
             }
-            fragmentContent.append(NEW_LINE);
+            fragmentContent.append(LINE_BREAK);
         }
         fragmentContent.append("|===");
         return fragmentContent.toString();
@@ -313,13 +313,13 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     private static String buildArgumentWordFragment(final String argumentValue) {
-        if (argumentValue.contains(NEW_LINE)) {
-            return NEW_LINE
-                + "+" + NEW_LINE
-                + "[.jg-argument]" + NEW_LINE
-                + "...." + NEW_LINE
-                + argumentValue + NEW_LINE
-                + "...." + NEW_LINE;
+        if (argumentValue.contains(LINE_BREAK)) {
+            return LINE_BREAK
+                + "+" + LINE_BREAK
+                + "[.jg-argument]" + LINE_BREAK
+                + "...." + LINE_BREAK
+                + argumentValue + LINE_BREAK
+                + "...." + LINE_BREAK;
         } else {
             return " [.jg-argument]_" + escapeArgumentValue(argumentValue) + "_";
         }
@@ -344,7 +344,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
 
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
-            return stepStatus + " +" + NEW_LINE
+            return stepStatus + " +" + LINE_BREAK
                 + buildIndentationFragment(depth, " ") + " _+++" + extendedDescription + "+++_";
         } else {
             return stepStatus;
