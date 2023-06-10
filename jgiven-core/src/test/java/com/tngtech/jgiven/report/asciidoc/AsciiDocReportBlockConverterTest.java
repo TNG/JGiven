@@ -18,20 +18,13 @@ import com.tngtech.jgiven.report.model.Word;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(DataProviderRunner.class)
 public class AsciiDocReportBlockConverterTest {
 
-    private AsciiDocReportBlockConverter converter;
-
-
-    @Before
-    public void setUp() {
-        converter = new AsciiDocReportBlockConverter();
-    }
+    private final AsciiDocReportBlockConverter converter = new AsciiDocReportBlockConverter();
 
     @Test
     public void convert_feature_header_without_description() {
