@@ -352,13 +352,11 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     private static String escapeTableValue(final String value) {
-        return escapeArgumentValue(value.replace("|", "\\|"));
+        return "+" + value.replace("|", "\\|") + "+";
     }
 
     private static String escapeArgumentValue(final String value) {
-        // TODO Is this really necessary?
-        // return "+" + value + "+";
-        return value;
+        return "++" + value + "++";
     }
 
     private static String buildIndentationFragment(final int depth, final String symbol) {

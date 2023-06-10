@@ -313,7 +313,23 @@ public class AsciiDocReportBlockConverterTest {
 
         // assert
         assertThatBlockContainsLines(block,
-            "* [.jg-intro-word]*Given* a coffee machine with [.jg-argument]_0_ coffees");
+            "* [.jg-intro-word]*Given* a coffee machine with [.jg-argument]_++0++_ coffees");
+    }
+
+    @Test
+    public void convert_step_with_special_argument() {
+        // arrange
+        List<Word> words =
+                ImmutableList.of(Word.introWord("given"), new Word("the coffee machine"),
+                        Word.argWord("state", "false", "is *not*"),
+                        new Word("active"));
+
+        // act
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, 3899, null, false);
+
+        // assert
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* the coffee machine [.jg-argument]_++is *not*++_ active");
     }
 
     @Test
@@ -432,8 +448,8 @@ public class AsciiDocReportBlockConverterTest {
             "[.jg-casesTable%header,cols=\"h,1,1,>1\"]",
             "|===",
             "| # | foo | bar | Status",
-            "| 1 | 1 | 2 | icon:check-square[role=green]",
-            "| 2 | 3 | 4 | icon:exclamation-circle[role=red]",
+            "| 1 | +1+ | +2+ | icon:check-square[role=green]",
+            "| 2 | +3+ | +4+ | icon:exclamation-circle[role=red]",
             "|===");
     }
 
@@ -469,8 +485,8 @@ public class AsciiDocReportBlockConverterTest {
             "[.jg-casesTable%header,cols=\"h,1,1,1,>1\"]",
             "|===",
             "| # | Description | foo | bar | Status",
-            "| 1 | First case | 1 | 2 | icon:check-square[role=green]",
-            "| 2 | Second case | 3 | 4 | icon:exclamation-circle[role=red]",
+            "| 1 | +First case+ | +1+ | +2+ | icon:check-square[role=green]",
+            "| 2 | +Second case+ | +3+ | +4+ | icon:exclamation-circle[role=red]",
             "|===");
     }
 
@@ -510,7 +526,7 @@ public class AsciiDocReportBlockConverterTest {
             "[.jg-casesTable%header,cols=\"h,1,1,>1\"]",
             "|===",
             "| # | foo | bar | Status",
-            ".2+| 1 | 1 | 2 | icon:exclamation-circle[role=red]",
+            ".2+| 1 | +1+ | +2+ | icon:exclamation-circle[role=red]",
             "3+a|",
             "[.jg-exception]",
             "====",
@@ -527,7 +543,7 @@ public class AsciiDocReportBlockConverterTest {
             "....",
             "=====",
             "====",
-            "| 2 | 3 | 4 | icon:exclamation-circle[role=red]",
+            "| 2 | +3+ | +4+ | icon:exclamation-circle[role=red]",
             "|===");
     }
 
