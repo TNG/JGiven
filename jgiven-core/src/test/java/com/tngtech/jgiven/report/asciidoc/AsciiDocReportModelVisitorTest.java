@@ -1,8 +1,8 @@
 package com.tngtech.jgiven.report.asciidoc;
 
 import com.google.common.collect.ImmutableList;
-import com.tngtech.jgiven.report.CasesTable;
 import com.tngtech.jgiven.report.ReportBlockConverter;
+import com.tngtech.jgiven.report.model.CasesTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportStatistics;

@@ -4,8 +4,8 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.generate;
 
 import com.tngtech.jgiven.impl.util.WordUtil;
-import com.tngtech.jgiven.report.CasesTable;
 import com.tngtech.jgiven.report.ReportBlockConverter;
+import com.tngtech.jgiven.report.model.CasesTable;
 import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
@@ -13,6 +13,7 @@ import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
@@ -161,37 +162,43 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertCasesTableBlock(final CasesTable casesTable) {
-        int tableColumns = casesTable.placeholders().size() + 1;
         StringBuilder blockContent = new StringBuilder();
 
+        final int columnCount = (casesTable.hasDescriptions() ? 2 : 1) + casesTable.placeholders().size();
+        final String headerColumns = generateVerticalHeaderColumns(columnCount);
+
         blockContent.append(".Cases").append(LINE_BREAK);
-        blockContent.append("[.jg-casesTable%header,cols=\"")
-                .append(generateTableColSpec(true, tableColumns))
-                .append(",>1\"]").append(LINE_BREAK);
+        blockContent.append("[.jg-casesTable%header,cols=\"").append(headerColumns).append(",>1\"]").append(LINE_BREAK);
         blockContent.append("|===").append(LINE_BREAK);
 
         blockContent.append("| #");
+        if (casesTable.hasDescriptions()) {
+            blockContent.append(" | Description");
+        }
         for (String placeHolder : casesTable.placeholders()) {
             blockContent.append(" | ").append(placeHolder);
         }
         blockContent.append(" | Status").append(LINE_BREAK);
 
-        for (CasesTable.Row row : casesTable.rows()) {
-            String errorMessage = row.errorMessage();
+        for (CasesTable.CaseRow caseRow : casesTable.rows()) {
+            Optional<String> errorMessage = caseRow.errorMessage();
 
-            blockContent.append(errorMessage != null ? ".2+| " : "| ").append(row.nr());
+            blockContent.append(errorMessage.isPresent() ? ".2+| " : "| ").append(caseRow.rowNumber());
 
-            for (String value : row.arguments()) {
+            caseRow.description().ifPresent(description ->
+                    blockContent.append(" | ").append(escapeTableValue(description)));
+            for (String value : caseRow.arguments()) {
                 blockContent.append(" | ").append(escapeTableValue(value));
             }
 
-            blockContent.append(" | ").append(MetadataMapper.toHumanReadableStatus(row.status())).append(LINE_BREAK);
+            blockContent.append(" | ").append(MetadataMapper.toHumanReadableStatus(caseRow.status()))
+                    .append(LINE_BREAK);
 
-            if (errorMessage != null) {
-                List<String> stackTraceLines = row.stackTrace();
+            if (errorMessage.isPresent()) {
+                List<String> stackTraceLines = caseRow.stackTrace();
 
-                blockContent.append(tableColumns).append("+a|").append(LINE_BREAK);
-                appendErrorFragment(blockContent, errorMessage, stackTraceLines);
+                blockContent.append(columnCount).append("+a|").append(LINE_BREAK);
+                appendErrorFragment(blockContent, errorMessage.get(), stackTraceLines);
             }
         }
         blockContent.append("|===");
@@ -293,7 +300,10 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     private static String buildDataTableHead(final DataTable dataTable) {
-        final String colSpec = generateTableColSpec(dataTable.hasVerticalHeader(), dataTable.getColumnCount());
+        final int columnCount = dataTable.getColumnCount();
+        final String colSpec = dataTable.hasVerticalHeader()
+                ? generateVerticalHeaderColumns(columnCount)
+                : generateHorizontalHeaderColumns(columnCount);
 
         return "[.jg-argumentTable"
                 + (dataTable.hasHorizontalHeader() ? "%header" : "")
@@ -356,10 +366,12 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         return generate(() -> symbol).limit(depth + 1L).collect(joining());
     }
 
-    private static String generateTableColSpec(final boolean withVerticalHeader, final int columnCount) {
-        return withVerticalHeader
-                ? "h," + generate(() -> "1").limit(columnCount - 1L).collect(joining(","))
-                : generate(() -> "1").limit(columnCount).collect(joining(","));
+    private static String generateVerticalHeaderColumns(final int tableColumns) {
+        return "h," + generate(() -> "1").limit(tableColumns - 1L).collect(joining(","));
+    }
+
+    private static String generateHorizontalHeaderColumns(final int columnCount) {
+        return generate(() -> "1").limit(columnCount).collect(joining(","));
     }
 
 }

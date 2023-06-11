@@ -1,7 +1,8 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import com.tngtech.jgiven.report.CasesTable;
 import com.tngtech.jgiven.report.ReportBlockConverter;
+import com.tngtech.jgiven.report.model.CasesTable;
+import com.tngtech.jgiven.report.model.CasesTableCalculator;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelVisitor;
@@ -22,6 +23,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     private final ReportBlockConverter blockConverter;
     private final List<String> asciiDocBlocks;
     private final ReportStatistics featureStatistics;
+    private final CasesTableCalculator tableCalculator;
     private Map<String, Tag> featureTagMap;
     private boolean scenarioHasDataTable;
     private boolean skipCurrentCase;
@@ -35,6 +37,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         this.blockConverter = blockConverter;
         this.asciiDocBlocks = new ArrayList<>();
         this.featureStatistics = featureStatistics;
+        this.tableCalculator = new CasesTableCalculator();
     }
 
     @Override
@@ -122,8 +125,9 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     @Override
     public void visitEnd(final ScenarioModel scenarioModel) {
         if (scenarioHasDataTable) {
-            String casesTable = blockConverter.convertCasesTableBlock(new CasesTable(scenarioModel));
-            asciiDocBlocks.add(casesTable);
+            final CasesTable casesTable = tableCalculator.collectCases(scenarioModel);
+            final String casesTableBlock = blockConverter.convertCasesTableBlock(casesTable);
+            asciiDocBlocks.add(casesTableBlock);
         }
 
         String scenarioFooter = blockConverter.convertScenarioFooterBlock(scenarioModel.getExecutionStatus());

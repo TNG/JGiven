@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.report;
 
+import com.tngtech.jgiven.report.model.CasesTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.StepStatus;
