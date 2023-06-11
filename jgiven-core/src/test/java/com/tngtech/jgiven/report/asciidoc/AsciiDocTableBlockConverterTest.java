@@ -40,7 +40,7 @@ public class AsciiDocTableBlockConverterTest {
         scenario.addDerivedParameter("foo");
         scenario.addDerivedParameter("bar");
 
-        CasesTable casesTable = new CasesTableImpl(scenario);
+        CasesTable casesTable = new CasesTable(scenario);
 
         // when
         String block = converter.convertCasesTableBlock(casesTable);
@@ -77,7 +77,7 @@ public class AsciiDocTableBlockConverterTest {
         scenario.addDerivedParameter("foo");
         scenario.addDerivedParameter("bar");
 
-        CasesTable casesTable = new CasesTableImpl(scenario);
+        CasesTable casesTable = new CasesTable(scenario);
 
         // when
         String block = converter.convertCasesTableBlock(casesTable);
@@ -118,7 +118,7 @@ public class AsciiDocTableBlockConverterTest {
         scenario.addDerivedParameter("foo");
         scenario.addDerivedParameter("bar");
 
-        CasesTable casesTable = new CasesTableImpl(scenario);
+        CasesTable casesTable = new CasesTable(scenario);
 
         // when
         String block = converter.convertCasesTableBlock(casesTable);

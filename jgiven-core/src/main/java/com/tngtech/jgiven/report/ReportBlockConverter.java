@@ -19,7 +19,7 @@ public interface ReportBlockConverter {
      * @param totalStatistics   the total statistics for all features combined
      */
     String convertStatisticsBlock(Map<String, ReportStatistics> featureStatistics,
-                                  ReportStatistics totalStatistics);
+            ReportStatistics totalStatistics);
 
     /**
      * Convert feature name and execution statistics into feature header.
@@ -29,7 +29,7 @@ public interface ReportBlockConverter {
      * @param description the description, may be {@code null}
      */
     String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics,
-                                     String description);
+            String description);
 
     /**
      * Convert scenario name and more meta information into scenario header.
@@ -44,7 +44,7 @@ public interface ReportBlockConverter {
      * @param extendedDescription detailed description of the scenario, may be {@code null}
      */
     String convertScenarioHeaderBlock(String name, ExecutionStatus executionStatus, long duration,
-                                      List<String> tagNames, String extendedDescription);
+            List<String> tagNames, String extendedDescription);
 
     /**
      * Convert scenario case number and parameters into case header.
@@ -69,7 +69,7 @@ public interface ReportBlockConverter {
      * @param currentSectionTitle  the current section's title, may be {@code null}
      */
     String convertFirstStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-                                 String extendedDescription, boolean caseIsUnsuccessful, String currentSectionTitle);
+            String extendedDescription, boolean caseIsUnsuccessful, String currentSectionTitle);
 
     /**
      * Convert the words that make up a step into a block.
@@ -82,7 +82,7 @@ public interface ReportBlockConverter {
      * @param caseIsUnsuccessful   was the scenario case executed successfully
      */
     String convertStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-                            String extendedDescription, boolean caseIsUnsuccessful);
+            String extendedDescription, boolean caseIsUnsuccessful);
 
     /**
      * Is invoked at the end of a scenario, when the scenario has multiple case and a data table.

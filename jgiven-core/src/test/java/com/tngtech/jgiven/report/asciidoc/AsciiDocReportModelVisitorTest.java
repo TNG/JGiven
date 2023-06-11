@@ -50,15 +50,14 @@ public class AsciiDocReportModelVisitorTest {
 
         // then
         Assertions.assertThat(reportModelVisitor.getResult())
-            .isEqualTo(ImmutableList.of(
-                "convertFeatureHeaderBlock",
-                "convertScenarioHeaderBlock",
-                "convertCaseHeaderBlock",
-                "convertFirstStepBlock",
-                "convertCaseHeaderBlock",
-                "convertScenarioFooterBlock"));
+                .isEqualTo(ImmutableList.of(
+                        "convertFeatureHeaderBlock",
+                        "convertScenarioHeaderBlock",
+                        "convertCaseHeaderBlock",
+                        "convertFirstStepBlock",
+                        "convertCaseHeaderBlock",
+                        "convertScenarioFooterBlock"));
     }
-
 
     @Test
     public void visitTheReportModelWithTwoSections() {
@@ -96,52 +95,52 @@ public class AsciiDocReportModelVisitorTest {
 
         // then
         Assertions.assertThat(reportModelVisitor.getResult())
-            .isEqualTo(ImmutableList.of(
-                "convertFeatureHeaderBlock",
-                "convertScenarioHeaderBlock",
-                "convertCaseHeaderBlock",
-                "convertFirstStepBlock",
-                "convertStepBlock",
-                "convertFirstStepBlock",
-                "convertCaseHeaderBlock",
-                "convertScenarioFooterBlock"));
+                .isEqualTo(ImmutableList.of(
+                        "convertFeatureHeaderBlock",
+                        "convertScenarioHeaderBlock",
+                        "convertCaseHeaderBlock",
+                        "convertFirstStepBlock",
+                        "convertStepBlock",
+                        "convertFirstStepBlock",
+                        "convertCaseHeaderBlock",
+                        "convertScenarioFooterBlock"));
     }
 
     private static class MyFakeReportBlockConverter implements ReportBlockConverter {
         @Override
         public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
-                                             final ReportStatistics totalStatistics) {
+                final ReportStatistics totalStatistics) {
             return "convertStatisticsBlock";
         }
 
         @Override
         public String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics,
-                                                String description) {
+                String description) {
             return "convertFeatureHeaderBlock";
         }
 
         @Override
         public String convertScenarioHeaderBlock(String name, ExecutionStatus executionStatus, long duration,
-                                                 List<String> tagNames, String extendedDescription) {
+                List<String> tagNames, String extendedDescription) {
             return "convertScenarioHeaderBlock";
         }
 
         @Override
         public String convertCaseHeaderBlock(int caseNr, final ExecutionStatus executionStatus,
-                                             String description) {
+                String description) {
             return "convertCaseHeaderBlock";
         }
 
         @Override
         public String convertFirstStepBlock(final int depth, final List<Word> words, final StepStatus status,
-                                            final long durationInNanos, final String extendedDescription,
-                                            final boolean caseIsUnsuccessful, final String currentSectionTitle) {
+                final long durationInNanos, final String extendedDescription,
+                final boolean caseIsUnsuccessful, final String currentSectionTitle) {
             return "convertFirstStepBlock";
         }
 
         @Override
         public String convertStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-                                       String extendedDescription, boolean caseIsUnsuccessful) {
+                String extendedDescription, boolean caseIsUnsuccessful) {
             return "convertStepBlock";
         }
 

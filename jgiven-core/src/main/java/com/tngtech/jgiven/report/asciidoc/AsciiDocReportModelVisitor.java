@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.report.asciidoc;
 
+import com.tngtech.jgiven.report.CasesTable;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportModel;
@@ -121,7 +122,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     @Override
     public void visitEnd(final ScenarioModel scenarioModel) {
         if (scenarioHasDataTable) {
-            String casesTable = blockConverter.convertCasesTableBlock(new CasesTableImpl(scenarioModel));
+            String casesTable = blockConverter.convertCasesTableBlock(new CasesTable(scenarioModel));
             asciiDocBlocks.add(casesTable);
         }
 
