@@ -78,6 +78,11 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     private boolean prepareDirectories() {
         targetDir = config.getTargetDir();
+        if (targetDir == null) {
+            log.error("Target directory was not configured");
+            return false;
+        }
+
         if (!targetDir.exists() && !targetDir.mkdirs()) {
             log.error("Could not ensure target directory exists {}", targetDir);
             return false;

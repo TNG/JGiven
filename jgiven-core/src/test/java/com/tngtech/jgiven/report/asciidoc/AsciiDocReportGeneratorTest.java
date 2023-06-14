@@ -59,4 +59,18 @@ public class AsciiDocReportGeneratorTest {
         // when
         assertThatNoException().isThrownBy(() -> reportGenerator.generateWithConfig(config));
     }
+
+
+    @Test
+    public void reporterHandlesBadConfigGracefully() throws IOException {
+        // given
+        final AbstractReportConfig config = new AsciiDocReportConfig();
+        config.setSourceDir(null);
+        config.setTargetDir(null);
+
+        reportGenerator.setConfig(config);
+
+        // when
+        assertThatNoException().isThrownBy(reportGenerator::generate);
+    }
 }
