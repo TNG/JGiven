@@ -58,7 +58,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         writeAllScenariosFile();
 
-        writeFailedScenariosFiled();
+        writeFailedScenariosFile();
 
         writePendingScenariosFile();
 
@@ -124,7 +124,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         }
     }
 
-    private void writeFailedScenariosFiled() {
+    private void writeFailedScenariosFile() {
         try (PrintWriter writer = PrintWriterUtil.getPrintWriter(new File(targetDir, "failedScenarios.asciidoc"))) {
             writer.println("== Failed Scenarios");
             writer.println();
