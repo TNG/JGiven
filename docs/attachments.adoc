@@ -1,6 +1,6 @@
 == Attachments
 
-Steps can have attachments. This is useful, for example, to save sceenshots during tests or to refer to larger files that should not be printed inline in the report.
+Steps can have attachments. This is useful, for example, to save screenshots during tests or to refer to larger files that should not be printed inline in the report.
 
 === Creating Attachments
 
