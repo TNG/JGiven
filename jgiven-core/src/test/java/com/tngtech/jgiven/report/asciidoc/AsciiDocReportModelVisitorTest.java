@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.report.asciidoc;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.common.collect.ImmutableList;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.CasesTable;
@@ -13,7 +15,6 @@ import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
 import java.util.Map;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,7 +50,7 @@ public class AsciiDocReportModelVisitorTest {
         reportModel.accept(reportModelVisitor);
 
         // then
-        Assertions.assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getResult())
                 .isEqualTo(ImmutableList.of(
                         "convertFeatureHeaderBlock",
                         "convertScenarioHeaderBlock",
@@ -94,7 +95,7 @@ public class AsciiDocReportModelVisitorTest {
         reportModel.accept(reportModelVisitor);
 
         // then
-        Assertions.assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getResult())
                 .isEqualTo(ImmutableList.of(
                         "convertFeatureHeaderBlock",
                         "convertScenarioHeaderBlock",
