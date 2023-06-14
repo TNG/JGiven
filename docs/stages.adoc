@@ -51,7 +51,7 @@ The step will appear as `10 % are added` in the report, when invoked with `10`.
 If you need full control over the step text you can inject the `CurrentStep` interface into the stage by using the `@ScenarioState` annotation.
 You can then use the `setName` method to change the steps text.
 Note, however, that this does not work well when used within parametrized scenarios, because JGiven will not be able anymore
-to generated data tables. In general, the preferred way to change the step name should be the `@As` annotation.
+to generate data tables. In general, the preferred way to change the step name should be the `@As` annotation.
 
 [source,java]
 ----
@@ -135,7 +135,7 @@ Filler words can be used to build a common and reusable vocabulary for your test
 beautifully fluent tests whilst at the same time keeping your stage methods clear and concise.
 
 The `@FillerWord` annotation can also be added to stage methods where you want to maintain the continuation of
-of sentences in reports.
+sentences in reports.
 
 For example, given the following filler words:
 
@@ -247,7 +247,7 @@ In many cases three stages are typically enough to write a scenario. However, so
 
 Additional stages can be injected into a test class by declaring a field with the additional stage and annotate it with `@ScenarioStage`.
 
-Please note that a lifecyle model that reuses the same instance to execute multiple test methods is only partially compatible with JGiven. In particular, in such a model stages for different scenarios will be injected into the same field. This can lead to errors when attempting to run tests in parallel.
+Please note that a lifecycle model that reuses the same instance to execute multiple test methods is only partially compatible with JGiven. In particular, in such a model stages for different scenarios will be injected into the same field. This can lead to errors when attempting to run tests in parallel.
 
 ===== Example
 

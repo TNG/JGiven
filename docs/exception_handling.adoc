@@ -47,7 +47,7 @@ In this case, the actual verification of the exception is done after JGiven has 
 
 === A better approach
 
-The above example has still the big disadvantage that it will not visible in the report that an exception is actually expected. More helpful would be the following scenario:
+The above example has still the big disadvantage that it will not be visible in the report that an exception is actually expected. More helpful would be the following scenario:
 
 [source,java]
 ----
