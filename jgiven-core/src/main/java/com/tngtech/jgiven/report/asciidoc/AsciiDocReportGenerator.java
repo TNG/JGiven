@@ -41,13 +41,21 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     private File featuresDir;
     private File targetDir;
 
-
-    public AbstractReportConfig createReportConfig(String... args) {
+    @Override
+    public AsciiDocReportConfig createReportConfig(String... args) {
         return new AsciiDocReportConfig(args);
     }
 
     @Override
     public void generate() {
+        if (config == null) {
+            throw new IllegalStateException("AsciiDocReporter must be configured before generating a report.");
+        }
+
+        if (completeReportModel == null) {
+            loadReportModel();
+        }
+
         if (!prepareDirectories()) {
             return;
         }

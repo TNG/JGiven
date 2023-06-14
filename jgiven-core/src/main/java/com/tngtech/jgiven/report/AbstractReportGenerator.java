@@ -43,7 +43,7 @@ public abstract class AbstractReportGenerator {
         generateReport();
     }
 
-    public void generateReport() {
+    private void generateReport() {
         loadReportModel();
         try {
             generate();
