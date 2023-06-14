@@ -59,7 +59,7 @@ Scenario: a pancake can be fried out of an egg milk and flour
     And the cook fries the dough in a pan
    Then the resulting meal is a pancake
 ```
-In addition, you can generate a [HTML Report](https://jgiven.org/jgiven-report/html5/).
+In addition, you can generate an [HTML Report](https://jgiven.org/jgiven-report/html5/).
 
 ## Getting Started
 
