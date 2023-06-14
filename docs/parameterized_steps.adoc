@@ -10,7 +10,7 @@ given().multiple_arguments( 5, 6 ); // Given multiple arguments 5 6
 
 === Parameters within a sentence
 
-To place parameters within a sentence instead the end of the sentence you can use the $ character.
+To place parameters within a sentence instead of the end of the sentence you can use the $ character.
 
 [source,java]
 ----
@@ -211,11 +211,11 @@ Given the coffee price ["Espresso",2.0 EUR] is registered
 For additional options, see the https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/POJOFormat.html[JavaDoc documentation of the `@POJOFormat` annotation]
 
 ==== Reuse a set of @NamedFormat definitions
-When several steps uses the same type of POJO in their parameters, it may be tedious to redefine this POJO fields formats in each of these steps.
+When several steps use the same type of POJO in their parameters, it may be tedious to redefine this POJO fields format in each of these steps.
 
 The solution in this case is to create a custom annotation where POJO fields formats will be declared once and for all. +
-This custom annotation will be itself annotated with the `@NamedFormats` which will wraps as much as `@NamedFormat` as there are fields needing a specific formatting. +
-It can then further be referenced by any `@POJOformat` and `@Table` annotations through their respective `fieldsFormatSetAnnotation` attribute.
+This custom annotation will be itself annotated with the `@NamedFormats` which will wrap as much `@NamedFormat` as there are fields needing a specific formatting. +
+It can then further be referenced by any `@POJOFormat` and `@Table` annotations through their respective `fieldsFormatSetAnnotation` attribute.
 
 Given the following POJO :
 
@@ -367,4 +367,4 @@ Given the prices of the coffees are
 For additional options, see the https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/Table.html[JavaDoc documentation of the `@Table` annotation]
 
 Also note that POJO fields formats can be specified thanks to the `@Table#fieldsFormat` or `@Table#fieldsFormatSetAnnotation` options. +
-See <<_the_pojoformat_annotation>> section for more informations about how to use these two options.
+See <<_the_pojoformat_annotation>> section for more information about how to use these two options.
