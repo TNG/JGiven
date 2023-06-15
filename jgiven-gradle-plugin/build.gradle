@@ -8,7 +8,7 @@ dependencies {
     implementation localGroovy()
     implementation project(':jgiven-core')
     implementation project(':jgiven-html5-report')
-    implementation 'com.google.guava:guava:32.0.0-jre'
+    implementation 'com.google.guava:guava:32.0.1-jre'
     implementation 'com.google.code.gson:gson:2.10.1'
 
     testImplementation project(':jgiven-junit5')
