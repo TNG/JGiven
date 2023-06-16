@@ -1,9 +1,11 @@
 # v1.3
 ## Breaking changes
 * Increased minimum supported version to Java 11
+## New features
 
 ## Fixed issues
-* Escaped dollars ($$) are now treated as a regular $ character.[#1253](https://github.com/TNG/JGiven/issues/1253) (thanks to manoj-fd for reporting) 
+* Escaped dollars ($$) are now treated as a regular $ character.[#1253](https://github.com/TNG/JGiven/issues/1253) (thanks to manoj-fd for reporting)
+* fixed several typos [#1320](https://github.com/TNG/JGiven/pull/1320) (thanks to pikimaco for this)
 
 # v1.2.5
 ## Fixed issues
