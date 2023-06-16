@@ -56,7 +56,7 @@ include::{sourcedir}/coffeemachine/ServeCoffeeTest.java[tags=casedescription]
 The resulting report will then look as follows:
 
 ----
- Coffe making gets better
+ Coffee making gets better
 
    Given a coffee machine
     When I make coffee for the <runNr> time

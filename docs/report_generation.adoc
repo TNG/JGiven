@@ -146,7 +146,7 @@ HTML reports are then generated into the `target/jgiven-reports/html` directory.
 
 ==== Gradle
 
-There also exists a plugin for Gradle to make you life easier.
+There also exists a plugin for Gradle to make your life easier.
 Add the following plugins section to your `build.gradle` file or extend the one you have already accordingly:
 
 [source,gradle,subs="verbatim,attributes"]

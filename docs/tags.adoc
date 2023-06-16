@@ -3,7 +3,7 @@
 
 Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html[`@IsTag`] annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.
 
-Let’s say you want to know which scenarios covers the coffee feature. To do so you define a new Java annotation:
+Let’s say you want to know which scenarios cover the coffee feature. To do so you define a new Java annotation:
 
 [source,java]
 ----
