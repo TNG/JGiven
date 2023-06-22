@@ -6,9 +6,10 @@ import org.gradle.api.Task;
 
 public abstract class JGivenAsciiDocReportImpl extends AbstractJGivenReportImpl implements JGivenReport {
   private static final ReportGenerator.Format SUPPORTED_FORMAT = ReportGenerator.Format.ASCIIDOC;
+  public static final String NAME = SUPPORTED_FORMAT.formatName();
 
   protected JGivenAsciiDocReportImpl(Task task) {
-    super(SUPPORTED_FORMAT.formatName(), task, "index.asciidoc");
+    super(NAME, task, "index.asciidoc");
   }
 
   @Override

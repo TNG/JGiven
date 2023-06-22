@@ -13,6 +13,7 @@ public class JGivenReportsContainerImpl extends TaskReportContainer<JGivenReport
         super( JGivenReport.class, task, NOOP);
         add(JGivenHtmlReportImpl.class, task);
         add(JGivenTextReportImpl.class, task);
+        add(JGivenAsciiDocReportImpl.class, task);
     }
 
     @Override public JGivenHtmlReportImpl getHtml() {
@@ -21,5 +22,10 @@ public class JGivenReportsContainerImpl extends TaskReportContainer<JGivenReport
 
     @Override public JGivenTextReportImpl getText() {
         return (JGivenTextReportImpl) getByName( JGivenTextReportImpl.NAME );
+    }
+
+    @Override
+    public JGivenAsciiDocReportImpl getAsciiDoc() {
+      return (JGivenAsciiDocReportImpl) getByName( JGivenAsciiDocReportImpl.NAME );
     }
 }

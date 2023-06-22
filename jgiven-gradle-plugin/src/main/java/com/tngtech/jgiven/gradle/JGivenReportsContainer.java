@@ -8,4 +8,6 @@ public interface JGivenReportsContainer extends ReportContainer<JGivenReport> {
     JGivenReport getHtml();
     @Nested
     JGivenReport getText();
+    @Nested
+    JGivenReport getAsciiDoc();
 }
