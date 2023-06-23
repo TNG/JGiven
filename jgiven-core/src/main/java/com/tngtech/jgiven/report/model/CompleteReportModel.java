@@ -22,7 +22,7 @@ public class CompleteReportModel {
     protected final Map<String, Tag> tagIdMap = Maps.newLinkedHashMap();
 
     public void addModelFile( ReportModelFile modelFile ) {
-        ReportModel model = modelFile.model;
+        ReportModel model = modelFile.model();
 
         for( ScenarioModel scenario : model.getScenarios() ) {
             for( String tagId : scenario.getTagIds() ) {
@@ -46,12 +46,8 @@ public class CompleteReportModel {
     }
 
     private void addToMap( Tag tag, ScenarioModel scenario ) {
-        List<ScenarioModel> list = tagMap.get( tag );
-        if( list == null ) {
-            list = Lists.newArrayList();
-            tagMap.put( tag, list );
-        }
-        list.add( scenario );
+        List<ScenarioModel> list = tagMap.computeIfAbsent(tag, k -> Lists.newArrayList());
+        list.add(scenario);
     }
 
     public List<ScenarioModel> getFailedScenarios() {

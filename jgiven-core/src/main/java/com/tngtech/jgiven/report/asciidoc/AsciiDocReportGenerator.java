@@ -98,7 +98,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void writeFeatureFile(ReportModelFile reportModelFile) {
-        String featureFileName = Files.getNameWithoutExtension(reportModelFile.file.getName()) + ".asciidoc";
+        String featureFileName = Files.getNameWithoutExtension(reportModelFile.file().getName()) + ".asciidoc";
         featureFiles.add(featureFileName);
 
         final ReportStatistics statistics = completeReportModel.getStatistics(reportModelFile);
@@ -110,7 +110,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         }
 
         final AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
-        reportModelFile.model.accept(visitor);
+        reportModelFile.model().accept(visitor);
 
         writeAsciiDocToFile(featureFileName, visitor.getResult());
     }
@@ -185,7 +185,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         try (PrintWriter writer = PrintWriterUtil.getPrintWriter(new File(targetDir, "totalStatistics.asciidoc"))) {
             Map<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels().stream()
                     .collect(Collectors.toMap(
-                            reportModelFile -> reportModelFile.model.getName(),
+                            reportModelFile -> reportModelFile.model().getName(),
                             reportModelFile -> completeReportModel.getStatistics(reportModelFile)));
 
             writer.println(blockConverter.convertStatisticsBlock(featureStatistics,
@@ -215,9 +215,9 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private static String byFeatureName(ReportModelFile modelFile) {
-        return (null != modelFile.model.getName())
-                ? modelFile.model.getName()
-                : modelFile.model.getClassName();
+        return (null != modelFile.model().getName())
+                ? modelFile.model().getName()
+                : modelFile.model().getClassName();
     }
 
     private static String includeMacroFor(final String fileName, final String tags) {

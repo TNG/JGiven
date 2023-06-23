@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.report.json;
 
 import com.google.common.io.Files;
-
+import com.tngtech.jgiven.report.model.ReportModelFile;
 import java.io.File;
 import java.util.stream.StreamSupport;
 
@@ -17,7 +17,7 @@ public class JsonModelTraverser {
     public void traverseModels(File sourceDirectory, ReportModelFileHandler handler) {
         StreamSupport.stream(Files.fileTraverser().breadthFirst(sourceDirectory).spliterator(), false)
                 .filter(input -> input.getName().endsWith(".json"))
-                .map(new ReportModelFileReader())
+                .map(file -> new ReportModelFile(file, new ScenarioJsonReader().apply(file)))
                 .forEach(handler::handleReportModel);
     }
 }

@@ -88,7 +88,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
 
     private void createDataFiles() throws IOException {
         for( ReportModelFile file : completeReportModel.getAllReportModels() ) {
-            handleReportModel( file.model, file.file );
+            handleReportModel(file.model(), file.file());
         }
         closeWriter();
     }

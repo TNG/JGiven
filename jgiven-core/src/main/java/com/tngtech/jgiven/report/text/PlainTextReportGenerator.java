@@ -2,15 +2,12 @@ package com.tngtech.jgiven.report.text;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.List;
-import java.util.Map;
 
 import com.google.common.io.Files;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.AbstractReportConfig;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
-import com.tngtech.jgiven.report.config.ConfigOption;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 
@@ -22,7 +19,7 @@ public class PlainTextReportGenerator extends AbstractReportGenerator {
 
     public void generate() {
         for( ReportModelFile reportModelFile : completeReportModel.getAllReportModels() ) {
-            handleReportModel( reportModelFile.model, reportModelFile.file );
+            handleReportModel(reportModelFile.model(), reportModelFile.file());
         }
     }
 
