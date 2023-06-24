@@ -47,7 +47,7 @@ public class CasesTableCalculatorTest {
                             assertThat(caseRowOne.description()).isEmpty();
                             assertThat(caseRowOne.arguments()).containsExactly("1", "2");
                             assertThat(caseRowOne.status()).isEqualTo(ExecutionStatus.SUCCESS);
-                            assertThat(caseRowOne.getDurationInNanos()).isEqualTo(ARBITRARY_DURATION);
+                            assertThat(caseRowOne.durationInNanos()).isEqualTo(ARBITRARY_DURATION);
                             assertThat(caseRowOne.errorMessage()).isEmpty();
                             assertThat(caseRowOne.stackTrace()).isEmpty();
                         },
@@ -56,7 +56,7 @@ public class CasesTableCalculatorTest {
                             assertThat(caseRowTwo.description()).isEmpty();
                             assertThat(caseRowTwo.arguments()).containsExactly("3", "4");
                             assertThat(caseRowTwo.status()).isEqualTo(ExecutionStatus.SCENARIO_PENDING);
-                            assertThat(caseRowTwo.getDurationInNanos()).isEqualTo(ARBITRARY_DURATION);
+                            assertThat(caseRowTwo.durationInNanos()).isEqualTo(ARBITRARY_DURATION);
                             assertThat(caseRowTwo.errorMessage()).isEmpty();
                             assertThat(caseRowTwo.stackTrace()).isEmpty();
                         });
@@ -99,7 +99,7 @@ public class CasesTableCalculatorTest {
                             assertThat(caseRowOne.description()).hasValue("First case");
                             assertThat(caseRowOne.arguments()).containsExactly("1", "2");
                             assertThat(caseRowOne.status()).isEqualTo(ExecutionStatus.SUCCESS);
-                            assertThat(caseRowOne.getDurationInNanos()).isEqualTo(ARBITRARY_DURATION);
+                            assertThat(caseRowOne.durationInNanos()).isEqualTo(ARBITRARY_DURATION);
                             assertThat(caseRowOne.errorMessage()).isEmpty();
                             assertThat(caseRowOne.stackTrace()).isEmpty();
                         },
@@ -108,7 +108,7 @@ public class CasesTableCalculatorTest {
                             assertThat(caseRowTwo.description()).hasValue("Second case");
                             assertThat(caseRowTwo.arguments()).containsExactly("3", "4");
                             assertThat(caseRowTwo.status()).isEqualTo(ExecutionStatus.FAILED);
-                            assertThat(caseRowTwo.getDurationInNanos()).isEqualTo(ARBITRARY_DURATION);
+                            assertThat(caseRowTwo.durationInNanos()).isEqualTo(ARBITRARY_DURATION);
                             assertThat(caseRowTwo.errorMessage()).isEmpty();
                             assertThat(caseRowTwo.stackTrace()).isEmpty();
                         });
@@ -156,7 +156,7 @@ public class CasesTableCalculatorTest {
                             assertThat(caseRowOne.description()).isEmpty();
                             assertThat(caseRowOne.arguments()).containsExactly("1", "2");
                             assertThat(caseRowOne.status()).isEqualTo(ExecutionStatus.FAILED);
-                            assertThat(caseRowOne.getDurationInNanos()).isEqualTo(ARBITRARY_DURATION);
+                            assertThat(caseRowOne.durationInNanos()).isEqualTo(ARBITRARY_DURATION);
                             assertThat(caseRowOne.errorMessage()).hasValue(errorMessage);
                             assertThat(caseRowOne.stackTrace()).containsAll(stackTrace);
                         },
@@ -165,7 +165,7 @@ public class CasesTableCalculatorTest {
                             assertThat(caseRowTwo.description()).isEmpty();
                             assertThat(caseRowTwo.arguments()).containsExactly("3", "4");
                             assertThat(caseRowTwo.status()).isEqualTo(ExecutionStatus.FAILED);
-                            assertThat(caseRowTwo.getDurationInNanos()).isEqualTo(ARBITRARY_DURATION);
+                            assertThat(caseRowTwo.durationInNanos()).isEqualTo(ARBITRARY_DURATION);
                             assertThat(caseRowTwo.errorMessage()).isEmpty();
                             assertThat(caseRowTwo.stackTrace()).isEmpty();
                         });

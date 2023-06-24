@@ -115,7 +115,7 @@ public class CasesTable {
         /**
          * The duration of the case.
          */
-        public long getDurationInNanos() {
+        public long durationInNanos() {
             return durationInNanos;
         }
 

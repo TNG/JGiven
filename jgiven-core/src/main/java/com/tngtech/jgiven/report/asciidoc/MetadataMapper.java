@@ -4,7 +4,7 @@ import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.StepStatus;
 import java.time.Duration;
 
-class MetadataMapper {
+final class MetadataMapper {
     private static final String ICON_CHECK_MARK = "icon:check-square[role=green]";
     private static final String ICON_EXCLAMATION_MARK = "icon:exclamation-circle[role=red]";
     private static final String ICON_BANNED = "icon:ban[role=silver]";
@@ -67,7 +67,7 @@ class MetadataMapper {
     }
 
     static String toHumanReadableScenarioDuration(final long durationInNanos) {
-        if (durationInNanos >= NANOSECONDS_PER_MILLISECOND) {
+        if (durationIsOverOneMilliSecond(durationInNanos)) {
             return toHumanReadableDuration(durationInNanos);
         } else {
             return "0ms";
@@ -75,11 +75,15 @@ class MetadataMapper {
     }
 
     static String toHumanReadableStepDuration(final long durationInNanos) {
-        if (durationInNanos >= NANOSECONDS_PER_MILLISECOND) {
+        if (durationIsOverOneMilliSecond(durationInNanos)) {
             return "(" + toHumanReadableDuration(durationInNanos) + ")";
         } else {
             return "";
         }
+    }
+
+    private static boolean durationIsOverOneMilliSecond(final long durationInNanos) {
+        return durationInNanos >= NANOSECONDS_PER_MILLISECOND;
     }
 
     private static String toHumanReadableDuration(final long nanos) {

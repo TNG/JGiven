@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Generate snippets for including feature files via AsciiDoc include macro.
  */
-class AsciiDocSnippetGenerator {
+final class AsciiDocSnippetGenerator {
     private final String title;
     private final String scenarioQualifier;
     private final List<String> featureFiles;
