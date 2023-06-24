@@ -29,7 +29,6 @@ def buildNumber = getGitHash()
 println 'BUILD SHA1: ' + buildNumber
 
 processResources {
-    include "**/jgiven-version.properties"
     expand(
         'version': project.version,
         'buildNumber': buildNumber

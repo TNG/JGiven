@@ -1,0 +1,12 @@
+// Report title is provided via report config.
+:toc: left
+:toclevels: 3
+:icons: font
+
+include::totalStatistics.asciidoc[]
+
+include::allScenarios.asciidoc[]
+
+include::failedScenarios.asciidoc[]
+
+include::pendingScenarios.asciidoc[]
