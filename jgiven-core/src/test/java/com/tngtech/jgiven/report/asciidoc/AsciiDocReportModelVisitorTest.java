@@ -30,134 +30,267 @@ public class AsciiDocReportModelVisitorTest {
     }
 
     @Test
-    public void visitTheReportModel() {
+    public void visits_a_simple_report() {
         // given
-        StepModel stepModel = new StepModel();
-        stepModel.addIntroWord(Word.introWord("Given"));
-        stepModel.addWords(new Word("some"), new Word("state"));
-
-        ScenarioCaseModel scenarioCaseOne = new ScenarioCaseModel();
-        scenarioCaseOne.addStep(stepModel);
-
-        ScenarioModel currentScenarioModel = new ScenarioModel();
-        currentScenarioModel.addCase(scenarioCaseOne);
-        currentScenarioModel.addCase(new ScenarioCaseModel());
-
-        ReportModel reportModel = new ReportModel();
-        reportModel.addScenarioModel(currentScenarioModel);
+        ReportModel report = mkReport(mkScenario("Simple Scenario", false, mkScenarioCase(
+                mkStep("Given", "state"),
+                mkStep("When", "action"),
+                mkStep("Then", "outcome"))));
 
         // when
-        reportModel.accept(reportModelVisitor);
+        report.accept(reportModelVisitor);
 
         // then
         assertThat(reportModelVisitor.getResult())
                 .isEqualTo(ImmutableList.of(
-                        "convertFeatureHeaderBlock",
-                        "convertScenarioHeaderBlock",
-                        "convertCaseHeaderBlock",
-                        "convertFirstStepBlock",
-                        "convertCaseHeaderBlock",
-                        "convertScenarioFooterBlock"));
+                        "FeatureHeaderBlock",
+                        "ScenarioHeaderBlock",
+                        "FirstStepBlock",
+                        "StepBlock",
+                        "StepBlock",
+                        "ScenarioFooterBlock"));
     }
 
     @Test
-    public void visitTheReportModelWithTwoSections() {
+    public void visits_a_report_with_two_scenarios() {
         // given
-        final StepModel sectionOne = new StepModel();
-        sectionOne.setIsSectionTitle(true);
-        sectionOne.addWords(new Word("First Section"));
-        StepModel givenStep = new StepModel();
-        givenStep.addIntroWord(Word.introWord("Given"));
-        givenStep.addWords(new Word("some"), new Word("state"));
 
-        final StepModel sectionTwo = new StepModel();
-        sectionTwo.setIsSectionTitle(true);
-        sectionTwo.addWords(new Word("Second Section"));
-        StepModel whenStep = new StepModel();
-        whenStep.addIntroWord(Word.introWord("When"));
-        whenStep.addWords(new Word("some"), new Word("action"));
-
-        ScenarioCaseModel scenarioCaseOne = new ScenarioCaseModel();
-        scenarioCaseOne.addStep(sectionOne);
-        scenarioCaseOne.addStep(givenStep);
-        scenarioCaseOne.addStep(givenStep);
-        scenarioCaseOne.addStep(sectionTwo);
-        scenarioCaseOne.addStep(whenStep);
-
-        ScenarioModel currentScenarioModel = new ScenarioModel();
-        currentScenarioModel.addCase(scenarioCaseOne);
-        currentScenarioModel.addCase(new ScenarioCaseModel());
-
-        ReportModel reportModel = new ReportModel();
-        reportModel.addScenarioModel(currentScenarioModel);
+        ReportModel report = mkReport(
+                mkScenario("Scenario One", false, mkScenarioCase(
+                        mkStep("Given", "state"),
+                        mkStep("When", "action"),
+                        mkStep("Then", "outcome"))),
+                mkScenario("Scenario Two", false, mkScenarioCase(
+                        mkStep("Given", "state"),
+                        mkStep("When", "action"),
+                        mkStep("Then", "outcome"))));
 
         // when
-        reportModel.accept(reportModelVisitor);
+        report.accept(reportModelVisitor);
 
         // then
         assertThat(reportModelVisitor.getResult())
                 .isEqualTo(ImmutableList.of(
-                        "convertFeatureHeaderBlock",
-                        "convertScenarioHeaderBlock",
-                        "convertCaseHeaderBlock",
-                        "convertFirstStepBlock",
-                        "convertStepBlock",
-                        "convertFirstStepBlock",
-                        "convertCaseHeaderBlock",
-                        "convertScenarioFooterBlock"));
+                        "FeatureHeaderBlock",
+                        "ScenarioHeaderBlock",
+                        "FirstStepBlock",
+                        "StepBlock",
+                        "StepBlock",
+                        "ScenarioFooterBlock",
+                        "ScenarioHeaderBlock",
+                        "FirstStepBlock",
+                        "StepBlock",
+                        "StepBlock",
+                        "ScenarioFooterBlock"));
+    }
+
+    @Test
+    public void visits_a_scenario_with_two_standalone_cases() {
+        // given
+        ReportModel report = mkReport(mkScenario("Simple Scenario", false,
+                mkScenarioCase(
+                        mkStep("Given", "state"),
+                        mkStep("When", "action"),
+                        mkStep("Then", "outcome")),
+                mkScenarioCase(
+                        mkStep("Given", "state"),
+                        mkStep("When", "action"),
+                        mkStep("Then", "outcome"))));
+
+        // when
+        report.accept(reportModelVisitor);
+
+        // then
+        assertThat(reportModelVisitor.getResult())
+                .isEqualTo(ImmutableList.of(
+                        "FeatureHeaderBlock",
+                        "ScenarioHeaderBlock",
+                        "CaseHeaderBlock",
+                        "FirstStepBlock",
+                        "StepBlock",
+                        "StepBlock",
+                        "CaseHeaderBlock",
+                        "FirstStepBlock",
+                        "StepBlock",
+                        "StepBlock",
+                        "ScenarioFooterBlock"));
+    }
+
+    @Test
+    public void visits_a_scenario_with_two_cases_as_table() {
+        // given
+        ReportModel report = mkReport(mkScenario("Simple Scenario", true,
+                mkScenarioCase(
+                        mkStep("Given", "state"),
+                        mkStep("When", "action"),
+                        mkStep("Then", "outcome")),
+                mkScenarioCase(
+                        mkStep("Given", "state"),
+                        mkStep("When", "action"),
+                        mkStep("Then", "outcome"))));
+
+        // when
+        report.accept(reportModelVisitor);
+
+        // then
+        assertThat(reportModelVisitor.getResult())
+                .isEqualTo(ImmutableList.of(
+                        "FeatureHeaderBlock",
+                        "ScenarioHeaderBlock",
+                        "FirstStepBlock",
+                        "StepBlock",
+                        "StepBlock",
+                        "CasesTableBlock",
+                        "ScenarioFooterBlock"));
+    }
+
+    @Test
+    public void visits_a_scenario_with_a_section() {
+        // given
+        ReportModel report = mkReport(mkScenario("Simple Scenario", false, mkScenarioCase(
+                mkSectionTitle("Some Section"),
+                mkStep("Given", "state"),
+                mkStep("When", "action"),
+                mkStep("Then", "outcome"))));
+
+        // when
+        report.accept(reportModelVisitor);
+
+        // then
+        assertThat(reportModelVisitor.getResult())
+                .isEqualTo(ImmutableList.of(
+                        "FeatureHeaderBlock",
+                        "ScenarioHeaderBlock",
+                        "FirstStepBlock",
+                        "StepBlock",
+                        "StepBlock",
+                        "ScenarioFooterBlock"));
+    }
+
+    @Test
+    public void visits_a_scenario_with_two_sections() {
+        // given
+        ReportModel report = mkReport(mkScenario("Simple Scenario", false, mkScenarioCase(
+                mkSectionTitle("First Section"),
+                mkStep("Given", "state"),
+                mkStep("When", "action"),
+                mkStep("Then", "outcome"),
+                mkSectionTitle("Second Section"),
+                mkStep("Given", "other state"),
+                mkStep("When", "other action"),
+                mkStep("Then", "other outcome"))));
+
+        // when
+        report.accept(reportModelVisitor);
+
+        // then
+        assertThat(reportModelVisitor.getResult())
+                .isEqualTo(ImmutableList.of(
+                        "FeatureHeaderBlock",
+                        "ScenarioHeaderBlock",
+                        "FirstStepBlock",
+                        "StepBlock",
+                        "StepBlock",
+                        "FirstStepBlock",
+                        "StepBlock",
+                        "StepBlock",
+                        "ScenarioFooterBlock"));
+    }
+
+    private static ReportModel mkReport(final ScenarioModel... scenarios) {
+        ReportModel report = new ReportModel();
+        for (final ScenarioModel scenarioModel : scenarios) {
+            report.addScenarioModel(scenarioModel);
+
+        }
+        return report;
+    }
+
+    private static ScenarioModel mkScenario(final String description, final boolean casesAsTable,
+                                            final ScenarioCaseModel... cases) {
+        ScenarioModel scenario = new ScenarioModel();
+        scenario.setDescription(description);
+        scenario.setCasesAsTable(casesAsTable);
+        for (final ScenarioCaseModel caseModel : cases) {
+            scenario.addCase(caseModel);
+        }
+        return scenario;
+    }
+
+    private static ScenarioCaseModel mkScenarioCase(final StepModel... steps) {
+        ScenarioCaseModel scenarioCase = new ScenarioCaseModel();
+        for (final StepModel step : steps) {
+            scenarioCase.addStep(step);
+        }
+        return scenarioCase;
+    }
+
+    private static StepModel mkSectionTitle(final String title) {
+        final Word sectionWord = new Word(title);
+        final StepModel stepModel = new StepModel(title, List.of(sectionWord));
+        stepModel.setIsSectionTitle(true);
+        return stepModel;
+    }
+
+    private static StepModel mkStep(final String introWord, final String object) {
+        StepModel step = new StepModel();
+        step.addIntroWord(Word.introWord(introWord));
+        step.addWords(new Word("some"), new Word(object));
+        return step;
     }
 
     private static class MyFakeReportBlockConverter implements ReportBlockConverter {
+
         @Override
         public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
                 final ReportStatistics totalStatistics) {
-            return "convertStatisticsBlock";
+            return "StatisticsBlock";
         }
 
         @Override
         public String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics,
                 String description) {
-            return "convertFeatureHeaderBlock";
+            return "FeatureHeaderBlock";
         }
 
         @Override
         public String convertScenarioHeaderBlock(String name, ExecutionStatus executionStatus, long duration,
                 List<String> tagNames, String extendedDescription) {
-            return "convertScenarioHeaderBlock";
+            return "ScenarioHeaderBlock";
         }
 
         @Override
         public String convertCaseHeaderBlock(int caseNr, final ExecutionStatus executionStatus,
                 String description) {
-            return "convertCaseHeaderBlock";
+            return "CaseHeaderBlock";
         }
 
         @Override
         public String convertFirstStepBlock(final int depth, final List<Word> words, final StepStatus status,
                 final long durationInNanos, final String extendedDescription,
                 final boolean caseIsUnsuccessful, final String currentSectionTitle) {
-            return "convertFirstStepBlock";
+            return "FirstStepBlock";
         }
 
         @Override
         public String convertStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
                 String extendedDescription, boolean caseIsUnsuccessful) {
-            return "convertStepBlock";
+            return "StepBlock";
         }
 
         @Override
         public String convertCasesTableBlock(CasesTable casesTable) {
-            return "convertCasesTableBlock";
+            return "CasesTableBlock";
         }
 
         @Override
         public String convertCaseFooterBlock(final String errorMessage, final List<String> stackTraceLines) {
-            return "convertCaseFooterBlock";
+            return "CaseFooterBlock";
         }
 
         @Override
         public String convertScenarioFooterBlock(ExecutionStatus executionStatus) {
-            return "convertScenarioFooterBlock";
+            return "ScenarioFooterBlock";
         }
     }
 }
