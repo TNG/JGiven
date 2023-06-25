@@ -25,9 +25,10 @@ public class AsciiDocScenarioBlockConverterTest {
                                                                     final String humanStatus) {
         // given
         List<String> tagNames = new ArrayList<>();
+        final long oneSecond = 1_000_000_000L;
 
         // when
-        String block = converter.convertScenarioHeaderBlock("my first scenario", status, 1000300000L, tagNames, null);
+        String block = converter.convertScenarioHeaderBlock("my first scenario", status, oneSecond, tagNames, null);
 
         // then
         assertThatBlockContainsLines(block,
@@ -39,14 +40,15 @@ public class AsciiDocScenarioBlockConverterTest {
     }
 
     @Test
-    public void convert_scenario_header_with_tags_and_no_description() {
+    public void convert_scenario_header_with_a_tag_and_no_description() {
         // given
         List<String> tagNames = new ArrayList<>();
         tagNames.add("Best Tag");
+        final long nineMilliseconds = 9_000_000L;
 
         // when
         String block = converter.convertScenarioHeaderBlock("my first scenario",
-            ExecutionStatus.SCENARIO_PENDING, 9000000L, tagNames, "");
+                ExecutionStatus.SCENARIO_PENDING, nineMilliseconds, tagNames, "");
 
         // then
         assertThatBlockContainsLines(block,
@@ -63,10 +65,11 @@ public class AsciiDocScenarioBlockConverterTest {
     public void convert_scenario_header_with_description_and_no_tags() {
         // given
         List<String> tagNames = new ArrayList<>();
+        final long halfMillisecond = 500_000L;
 
         // when
         String block = converter.convertScenarioHeaderBlock("my first scenario",
-            ExecutionStatus.SOME_STEPS_PENDING, 500000L, tagNames, "Best scenario ever!!!");
+            ExecutionStatus.SOME_STEPS_PENDING, halfMillisecond, tagNames, "Best scenario ever!!!");
 
         // then
         assertThatBlockContainsLines(block,
@@ -80,14 +83,15 @@ public class AsciiDocScenarioBlockConverterTest {
     }
 
     @Test
-    public void convert_scenario_header_with_tags_and_description() {
+    public void convert_scenario_header_with_a_tag_and_description() {
         // given
         List<String> tagNames = new ArrayList<>();
         tagNames.add("Best Tag");
+        final long threeSeconds = 3_000_000_000L;
 
         // when
         String block =
-            converter.convertScenarioHeaderBlock("my first scenario", ExecutionStatus.SUCCESS, 3000000000L, tagNames,
+            converter.convertScenarioHeaderBlock("my first scenario", ExecutionStatus.SUCCESS, threeSeconds, tagNames,
                 "Best scenario ever!!!");
 
         // then
@@ -101,6 +105,31 @@ public class AsciiDocScenarioBlockConverterTest {
             "+++Best scenario ever!!!+++",
             "",
             "Tags: _Best Tag_");
+    }
+
+    @Test
+    public void convert_scenario_header_with_multiple_tags() {
+        // given
+        List<String> tagNames = new ArrayList<>();
+        tagNames.add("Best Tag");
+        tagNames.add("Other Tag");
+        tagNames.add("Nicest Tag");
+        final long threeSeconds = 3_000_000_000L;
+
+        // when
+        String block =
+                converter.convertScenarioHeaderBlock("my first scenario", ExecutionStatus.SUCCESS, threeSeconds,
+                        tagNames, "");
+
+        // then
+        assertThatBlockContainsLines(block,
+                "// tag::scenario-successful[]",
+                "",
+                "==== My first scenario",
+                "",
+                "icon:check-square[role=green] (3s 0ms)",
+                "",
+                "Tags: _Best Tag_, _Other Tag_, _Nicest Tag_");
     }
 
     @Test
