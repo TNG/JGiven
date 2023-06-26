@@ -21,7 +21,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
-            final ReportStatistics totalStatistics) {
+                                         final ReportStatistics totalStatistics) {
         final StringBuilder statisticsTable = new StringBuilder();
 
         statisticsTable.append(".Total Statistics").append(LINE_BREAK);
@@ -50,7 +50,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertFeatureHeaderBlock(final String featureName, final ReportStatistics statistics,
-            final String description) {
+                                            final String description) {
         StringBuilder blockContent = new StringBuilder();
 
         blockContent.append("=== ").append(featureName).append(LINE_BREAK);
@@ -77,8 +77,8 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertScenarioHeaderBlock(final String name, final ExecutionStatus executionStatus,
-            final long duration, final List<String> tagNames,
-            final String extendedDescription) {
+                                             final long duration, final List<String> tagNames,
+                                             final String extendedDescription) {
         StringBuilder blockContent = new StringBuilder();
 
         blockContent.append(MetadataMapper.toAsciiDocTagStart(executionStatus)).append(LINE_BREAK);
@@ -109,7 +109,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertCaseHeaderBlock(final int caseNr, final ExecutionStatus executionStatus,
-            final String description) {
+                                         final String description) {
         StringBuilder blockContent = new StringBuilder();
 
         blockContent.append("===== Case ").append(caseNr);
@@ -126,9 +126,9 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertFirstStepBlock(final int depth, final List<Word> words, final StepStatus status,
-            final long durationInNanos,
-            final String extendedDescription, final boolean caseIsUnsuccessful,
-            final String currentSectionTitle) {
+                                        final long durationInNanos,
+                                        final String extendedDescription, final boolean caseIsUnsuccessful,
+                                        final String currentSectionTitle) {
 
         StringBuilder blockContent = new StringBuilder();
 
@@ -137,26 +137,25 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         }
 
         blockContent.append("[unstyled.jg-step-list]").append(LINE_BREAK);
-        blockContent.append(
-                convertStepBlock(depth, words, status, durationInNanos, extendedDescription, caseIsUnsuccessful
-                ));
+        blockContent.append(convertStepBlock(
+                depth, words, status, durationInNanos, extendedDescription, caseIsUnsuccessful));
 
         return blockContent.toString();
     }
 
     @Override
     public String convertStepBlock(final int depth, final List<Word> words, final StepStatus status,
-            final long durationInNanos,
-            final String extendedDescription, final boolean caseIsUnsuccessful) {
+                                   final long durationInNanos,
+                                   final String extendedDescription, final boolean caseIsUnsuccessful) {
 
         StringBuilder blockContent = new StringBuilder();
 
         blockContent.append(buildIndentationFragment(depth, "*"));
 
-        appendWordFragments(blockContent, words);
+        final boolean lastFragmentIsBlock = appendWordFragments(blockContent, words,
+                buildStepStatusFragment(caseIsUnsuccessful, status, durationInNanos));
 
-        blockContent.append(buildStepEndFragment(
-                depth, caseIsUnsuccessful, status, durationInNanos, extendedDescription));
+        blockContent.append(buildExtendedDescriptionFragment(lastFragmentIsBlock, extendedDescription));
         return blockContent.toString();
     }
 
@@ -219,19 +218,63 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         return MetadataMapper.toAsciiDocTagEnd(executionStatus);
     }
 
-    private static void appendWordFragments(final StringBuilder blockContent, final List<Word> words) {
+    private static boolean appendWordFragments(final StringBuilder blockContent, final List<Word> words,
+                                               final String statusFragment) {
+        boolean statusAppended = false;
+        boolean lastFragmentWasBlockFragment = false;
         for (Word word : words) {
             if (word.isIntroWord()) {
-                blockContent.append(" ").append(buildIntroWordFragment(word.getFormattedValue()));
+                statusAppended |= appendFragment(blockContent, lastFragmentWasBlockFragment, statusFragment,
+                        statusAppended, buildIntroWordFragment(word.getFormattedValue()));
+                lastFragmentWasBlockFragment = false;
             } else if (word.isDataTable()) {
-                blockContent.append(buildDataTableFragment(word.getArgumentInfo().getDataTable()));
+                statusAppended |= appendFragment(blockContent, lastFragmentWasBlockFragment, statusFragment,
+                        statusAppended, buildDataTableFragment(word.getArgumentInfo().getDataTable()));
+                lastFragmentWasBlockFragment = true;
             } else if (word.isArg() && word.getArgumentInfo().isParameter()) {
-                blockContent.append(buildParameterWordFragment(word.getArgumentInfo().getParameterName()));
+                statusAppended |= appendFragment(blockContent, lastFragmentWasBlockFragment, statusFragment,
+                        statusAppended, buildParameterWordFragment(word.getArgumentInfo().getParameterName()));
+                lastFragmentWasBlockFragment = false;
             } else if (word.isArg()) {
-                blockContent.append(buildArgumentWordFragment(word.getFormattedValue()));
+                final String argumentValue = word.getFormattedValue();
+                if (argumentValue.contains(LINE_BREAK)) {
+                    statusAppended |= appendFragment(blockContent, lastFragmentWasBlockFragment, statusFragment,
+                            statusAppended, buildBlockArgumentFragment(argumentValue));
+                    lastFragmentWasBlockFragment = true;
+                } else {
+                    statusAppended |= appendFragment(blockContent, lastFragmentWasBlockFragment, statusFragment,
+                            statusAppended, buildInlineArgumentFragment(argumentValue));
+                    lastFragmentWasBlockFragment = false;
+                }
             } else {
-                blockContent.append(buildOtherWordFragment(word.getFormattedValue(), word.isDifferent()));
+                statusAppended |= appendFragment(blockContent, lastFragmentWasBlockFragment, statusFragment,
+                        statusAppended, buildOtherWordFragment(word.getFormattedValue(), word.isDifferent()));
+                lastFragmentWasBlockFragment = false;
             }
+        }
+        if (!statusAppended) {
+            blockContent.append(statusFragment);
+        }
+
+        return lastFragmentWasBlockFragment;
+    }
+
+    private static boolean appendFragment(final StringBuilder blockContent, final boolean lastFragmentWasBlockFragment,
+                                          final String statusFragment, final boolean statusAlreadyAppended,
+                                          final String fragment) {
+        final String lineContinuation = lastFragmentWasBlockFragment ? "" : " ";
+        if (fragment.contains(LINE_BREAK)) {
+            if (statusAlreadyAppended) {
+                blockContent.append(fragment);
+                return true;
+            } else {
+                blockContent.append(statusFragment);
+                blockContent.append(fragment);
+                return true;
+            }
+        } else {
+            blockContent.append(lineContinuation).append(fragment);
+            return false;
         }
     }
 
@@ -259,7 +302,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     private static void appendStatisticsRowFragment(final StringBuilder builder, final String name,
-            final ReportStatistics statistics) {
+                                                    final ReportStatistics statistics) {
         builder.append("| ").append(name);
         builder.append(" | ").append(statistics.numClasses);
         builder.append(" | ").append(statistics.numSuccessfulScenarios);
@@ -271,6 +314,16 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         builder.append(" | ").append(statistics.numSteps);
         builder.append(" | ").append(MetadataMapper.toHumanReadableScenarioDuration(statistics.durationInNanos))
                 .append(LINE_BREAK);
+    }
+
+    private static String buildStepStatusFragment(final boolean caseIsUnsuccessful, final StepStatus status,
+                                                  final long duration) {
+        if (caseIsUnsuccessful) {
+            return " " + (MetadataMapper.toHumanReadableStatus(status)
+                    + MetadataMapper.toHumanReadableStepDuration(duration));
+        } else {
+            return "";
+        }
     }
 
     private static String buildIntroWordFragment(final String word) {
@@ -311,45 +364,39 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     }
 
     private static String buildParameterWordFragment(final String placeHolderValue) {
-        return " [.jg-argument]*<" + placeHolderValue + ">*";
+        return "[.jg-argument]*<" + placeHolderValue + ">*";
     }
 
-    private static String buildArgumentWordFragment(final String argumentValue) {
-        if (argumentValue.contains(LINE_BREAK)) {
-            return LINE_BREAK
-                    + "+" + LINE_BREAK
-                    + "[.jg-argument]" + LINE_BREAK
-                    + "...." + LINE_BREAK
-                    + argumentValue + LINE_BREAK
-                    + "...." + LINE_BREAK;
-        } else {
-            return " [.jg-argument]_" + escapeArgumentValue(argumentValue) + "_";
-        }
+    private static String buildInlineArgumentFragment(final String argumentValue) {
+        return "[.jg-argument]_" + escapeArgumentValue(argumentValue) + "_";
+    }
+
+    private static String buildBlockArgumentFragment(final String argumentValue) {
+        return LINE_BREAK
+                + "+" + LINE_BREAK
+                + "[.jg-argument]" + LINE_BREAK
+                + "...." + LINE_BREAK
+                + argumentValue + LINE_BREAK
+                + "...." + LINE_BREAK;
     }
 
     private static String buildOtherWordFragment(final String word, final boolean differs) {
         if (differs) {
-            return " #" + word + "#";
+            return "#" + word + "#";
         } else {
-            return " " + word;
+            return word;
         }
     }
 
-    private static String buildStepEndFragment(
-            final int depth,
-            final boolean caseIsUnsuccessful,
-            final StepStatus status,
-            final long duration,
-            final String extendedDescription) {
-        String fragment = "";
-        if (caseIsUnsuccessful) {
-            fragment = " " + (MetadataMapper.toHumanReadableStatus(status)
-                    + " " + MetadataMapper.toHumanReadableStepDuration(duration));
-        }
+    private static String buildExtendedDescriptionFragment(final boolean lastFragmentIsBlock,
+                                                           final String extendedDescription) {
 
+        String fragment = "";
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
-            fragment += " +" + LINE_BREAK;
-            fragment += buildIndentationFragment(depth, " ") + " _+++" + extendedDescription + "+++_";
+            if (!lastFragmentIsBlock) {
+                fragment += " +" + LINE_BREAK;
+            }
+            fragment += "_+++" + extendedDescription + "+++_";
         }
         return fragment;
     }

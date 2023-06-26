@@ -21,6 +21,10 @@ public class AsciiDocStepBlockConverterTest {
     private static final int ARBITRARY_DURATION = 3899;
     private final ReportBlockConverter converter = new AsciiDocReportBlockConverter();
 
+    ////
+    // All step conversations in this section assume, that the containing scenario case was executed successful
+    ////
+
     @Test
     public void convert_step_without_description() {
         // given
@@ -46,21 +50,7 @@ public class AsciiDocStepBlockConverterTest {
         // then
         assertThatBlockContainsLines(block,
             "* [.jg-intro-word]*Given* a coffee machine +",
-            "  _+++It is a brand new machine.+++_");
-    }
-
-    @Test
-    @DataProvider({"PASSED, check-square[role=green]", "FAILED, exclamation-circle[role=red]",
-        "SKIPPED, step-forward[role=silver]", "PENDING, ban[role=silver]"})
-    public void convert_step_from_unsuccessful_scenario_case(final StepStatus stepStatus, final String icon) {
-        // given
-        List<Word> words = Collections.singletonList(Word.introWord("given"));
-
-        // when
-        String block = converter.convertStepBlock(0, words, stepStatus, 3000899, null, true);
-
-        // then
-        assertThatBlockContainsLines(block, "* [.jg-intro-word]*Given* icon:" + icon + " (3ms)");
+            "_+++It is a brand new machine.+++_");
     }
 
     @Test
@@ -209,6 +199,137 @@ public class AsciiDocStepBlockConverterTest {
             "| product | apples | pears ",
             "| price | 23 | 42 ",
             "|===");
+    }
+
+    @Test
+    public void convert_step_with_multiline_argument_and_extended_description() {
+        // given
+        List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"),
+                Word.argWord("description", "0", "very nice text\nand also more text"));
+
+        // when
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION,
+                "It is a brand new machine.", false);
+
+        // then
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* a coffee machine with",
+                "+",
+                "[.jg-argument]",
+                "....",
+                "very nice text",
+                "and also more text",
+                "....",
+                "_+++It is a brand new machine.+++_");
+    }
+
+    @Test
+    public void convert_step_with_multiline_argument_and_data_table() {
+        // given
+        ImmutableList<List<String>> productsTable =
+                ImmutableList.of(ImmutableList.of("product", "price"), ImmutableList.of("apples", "23"));
+        List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"),
+                Word.argWord("description", "0", "very nice text\nand also more text"),
+                new Word("and the products"), Word.argWord("products", productsTable.toString(),
+                        new DataTable(Table.HeaderType.HORIZONTAL, productsTable)));
+
+        // when
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
+
+        // then
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* a coffee machine with",
+                "+",
+                "[.jg-argument]",
+                "....",
+                "very nice text",
+                "and also more text",
+                "....",
+                "and the products",
+                "+",
+                "[.jg-argumentTable%header,cols=\"1,1\"]",
+                "|===",
+                "| product | price ",
+                "| apples | 23 ",
+                "|===");
+    }
+
+    ////
+    // All step conversations in this section assume, that the containing scenario case was not executed successful
+    ////
+
+    @Test
+    @DataProvider({"PASSED, check-square[role=green]", "FAILED, exclamation-circle[role=red]",
+        "SKIPPED, step-forward[role=silver]", "PENDING, ban[role=silver]"})
+    public void convert_step_within_unsuccessful_scenario_case(final StepStatus stepStatus,
+                                                                        final String icon) {
+        // given
+        List<Word> words = Collections.singletonList(Word.introWord("given"));
+        final long threeMilliseconds = 3_000_000L;
+
+        // when
+        String block = converter.convertStepBlock(0, words, stepStatus, threeMilliseconds, null, true);
+
+        // then
+        assertThatBlockContainsLines(block, "* [.jg-intro-word]*Given* icon:" + icon + " (3ms)");
+    }
+
+    @Test
+    public void convert_step_with_description_within_unsuccessful_scenario_case() {
+        // given
+        List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine"));
+
+        // when
+        String block = converter.convertStepBlock(0, words, StepStatus.PENDING, ARBITRARY_DURATION,
+                "It is a brand new machine.", true);
+
+        // then
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* a coffee machine icon:ban[role=silver] +",
+                "_+++It is a brand new machine.+++_");
+    }
+
+    @Test
+    public void convert_step_with_multiline_argument_within_unsuccessful_scenario_case() {
+        // given
+        List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"),
+                Word.argWord("description", "0", "very nice text\nand also more text"));
+
+        // when
+        String block = converter.convertStepBlock(0, words, StepStatus.FAILED, ARBITRARY_DURATION, null, true);
+
+        // then
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* a coffee machine with icon:exclamation-circle[role=red]",
+                "+",
+                "[.jg-argument]",
+                "....",
+                "very nice text",
+                "and also more text",
+                "....");
+    }
+
+    @Test
+    public void convert_step_with_data_table_within_unsuccessful_scenario_case() {
+        // given
+        ImmutableList<List<String>> productsTable =
+                ImmutableList.of(ImmutableList.of("product", "price"), ImmutableList.of("apples", "23"));
+        List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("the products"),
+                Word.argWord("products", productsTable.toString(),
+                        new DataTable(Table.HeaderType.HORIZONTAL, productsTable)));
+
+        // when
+        String block = converter.convertStepBlock(0, words, StepStatus.SKIPPED, ARBITRARY_DURATION, null, true);
+
+        // then
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* the products icon:step-forward[role=silver]",
+                "+",
+                "[.jg-argumentTable%header,cols=\"1,1\"]",
+                "|===",
+                "| product | price ",
+                "| apples | 23 ",
+                "|===");
     }
 
     private static void assertThatBlockContainsLines(final String block, final String... expectedLines) {

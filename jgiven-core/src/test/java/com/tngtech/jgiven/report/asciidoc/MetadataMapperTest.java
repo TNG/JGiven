@@ -102,6 +102,6 @@ public class MetadataMapperTest {
     public void toStepDurationForDurationOver1ms(final int nanoseconds, final String expectedDuration) {
         final String actualDuration = MetadataMapper.toHumanReadableStepDuration(nanoseconds);
 
-        assertThat(actualDuration).isEqualTo(expectedDuration);
+        assertThat(actualDuration).isEqualTo(" " + expectedDuration);
     }
 }

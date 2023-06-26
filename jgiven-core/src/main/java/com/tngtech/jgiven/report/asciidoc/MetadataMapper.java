@@ -76,7 +76,7 @@ final class MetadataMapper {
 
     static String toHumanReadableStepDuration(final long durationInNanos) {
         if (durationIsOverOneMilliSecond(durationInNanos)) {
-            return "(" + toHumanReadableDuration(durationInNanos) + ")";
+            return " (" + toHumanReadableDuration(durationInNanos) + ")";
         } else {
             return "";
         }
