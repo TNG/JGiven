@@ -45,9 +45,7 @@ final class AsciiDocSnippetGenerator {
             result.add(":leveloffset: -1");
         }
 
-        for (final String fileName : featureFiles) {
-            result.add(includeMacroFor(fileName, tags));
-        }
+        featureFiles.forEach(fileName -> result.add(includeMacroFor(fileName, tags)));
 
         if (!Strings.isNullOrEmpty(tags)) {
             result.add(":leveloffset: +1");
