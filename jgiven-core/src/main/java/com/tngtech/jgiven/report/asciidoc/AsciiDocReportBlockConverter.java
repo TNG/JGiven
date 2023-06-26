@@ -181,28 +181,33 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         blockContent.append(" | Status").append(LINE_BREAK);
 
         for (CasesTable.CaseRow caseRow : casesTable.rows()) {
-            Optional<String> errorMessage = caseRow.errorMessage();
-
-            blockContent.append(errorMessage.isPresent() ? ".2+| " : "| ").append(caseRow.rowNumber());
-
-            caseRow.description().ifPresent(description ->
-                    blockContent.append(" | ").append(escapeTableValue(description)));
-            for (String value : caseRow.arguments()) {
-                blockContent.append(" | ").append(escapeTableValue(value));
-            }
-
-            blockContent.append(" | ").append(MetadataMapper.toHumanReadableStatus(caseRow.status()))
-                    .append(LINE_BREAK);
-
-            if (errorMessage.isPresent()) {
-                List<String> stackTraceLines = caseRow.stackTrace();
-
-                blockContent.append(columnCount).append("+a|").append(LINE_BREAK);
-                appendErrorFragment(blockContent, errorMessage.get(), stackTraceLines);
-            }
+            convertCaseRow(blockContent, columnCount, caseRow);
         }
         blockContent.append("|===");
         return blockContent.toString();
+    }
+
+    private static void convertCaseRow(final StringBuilder blockContent, final int columnCount,
+                                       final CasesTable.CaseRow caseRow) {
+        Optional<String> errorMessage = caseRow.errorMessage();
+
+        blockContent.append(errorMessage.isPresent() ? ".2+| " : "| ").append(caseRow.rowNumber());
+
+        caseRow.description().ifPresent(description ->
+                blockContent.append(" | ").append(escapeTableValue(description)));
+        for (String value : caseRow.arguments()) {
+            blockContent.append(" | ").append(escapeTableValue(value));
+        }
+
+        blockContent.append(" | ").append(MetadataMapper.toHumanReadableStatus(caseRow.status()))
+                .append(LINE_BREAK);
+
+        if (errorMessage.isPresent()) {
+            List<String> stackTraceLines = caseRow.stackTrace();
+
+            blockContent.append(columnCount).append("+a|").append(LINE_BREAK);
+            appendErrorFragment(blockContent, errorMessage.get(), stackTraceLines);
+        }
     }
 
     @Override
@@ -397,7 +402,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
             if (!lastFragmentIsBlock) {
                 fragment += " +" + LINE_BREAK;
             }
-            fragment += "_+++" + extendedDescription + "+++_";
+            fragment += "icon:plus-circle[title=Extended Description] _+++" + extendedDescription + "+++_";
         }
         return fragment;
     }

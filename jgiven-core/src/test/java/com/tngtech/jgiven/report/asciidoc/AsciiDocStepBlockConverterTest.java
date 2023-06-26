@@ -50,7 +50,7 @@ public class AsciiDocStepBlockConverterTest {
         // then
         assertThatBlockContainsLines(block,
             "* [.jg-intro-word]*Given* a coffee machine +",
-            "_+++It is a brand new machine.+++_");
+            "icon:plus-circle[title=Extended Description] _+++It is a brand new machine.+++_");
     }
 
     @Test
@@ -220,7 +220,7 @@ public class AsciiDocStepBlockConverterTest {
                 "very nice text",
                 "and also more text",
                 "....",
-                "_+++It is a brand new machine.+++_");
+                "icon:plus-circle[title=Extended Description] _+++It is a brand new machine.+++_");
     }
 
     @Test
@@ -286,7 +286,7 @@ public class AsciiDocStepBlockConverterTest {
         // then
         assertThatBlockContainsLines(block,
                 "* [.jg-intro-word]*Given* a coffee machine icon:ban[role=silver] +",
-                "_+++It is a brand new machine.+++_");
+                "icon:plus-circle[title=Extended Description] _+++It is a brand new machine.+++_");
     }
 
     @Test
