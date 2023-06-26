@@ -3,6 +3,7 @@ package com.tngtech.jgiven.report.asciidoc;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.generate;
 
+import com.google.common.collect.ListMultimap;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.CasesTable;
@@ -20,7 +21,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
     private static final String LINE_BREAK = System.lineSeparator();
 
     @Override
-    public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
+    public String convertStatisticsBlock(final ListMultimap<String, ReportStatistics> featureStatistics,
                                          final ReportStatistics totalStatistics) {
         final StringBuilder statisticsTable = new StringBuilder();
 
@@ -39,7 +40,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
         statisticsTable.append("| total steps ");
         statisticsTable.append("| duration").append(LINE_BREAK);
 
-        featureStatistics.entrySet().stream().sorted(Map.Entry.comparingByKey())
+        featureStatistics.entries().stream().sorted(Map.Entry.comparingByKey())
                 .forEach(entry -> appendStatisticsRowFragment(statisticsTable, entry.getKey(), entry.getValue()));
 
         appendStatisticsRowFragment(statisticsTable, "sum", totalStatistics);

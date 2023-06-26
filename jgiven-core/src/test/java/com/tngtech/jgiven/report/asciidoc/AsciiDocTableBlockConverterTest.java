@@ -3,7 +3,8 @@ package com.tngtech.jgiven.report.asciidoc;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.MultimapBuilder;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.CasesTable;
@@ -151,8 +152,10 @@ public class AsciiDocTableBlockConverterTest {
         totalStatistics.numFailedCases = 1;
         totalStatistics.numSteps = 21;
 
-        final ImmutableMap<String, ReportStatistics> featureStatistics =
-                ImmutableMap.of("Feature One", statisticsOne, "Feature Two", statisticsTwo);
+        final ListMultimap<String, ReportStatistics> featureStatistics = MultimapBuilder
+                .hashKeys().arrayListValues().build();
+        featureStatistics.put("Feature One", statisticsOne);
+        featureStatistics.put("Feature Two", statisticsTwo);
 
         // when
         final String block = converter.convertStatisticsBlock(featureStatistics, totalStatistics);

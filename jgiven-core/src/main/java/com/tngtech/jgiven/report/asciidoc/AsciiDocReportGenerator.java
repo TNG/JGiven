@@ -1,5 +1,8 @@
 package com.tngtech.jgiven.report.asciidoc;
 
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.Multimaps;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
@@ -16,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -151,10 +152,13 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void writeTotalStatisticsFile() {
-        final Map<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels().stream()
-                .collect(Collectors.toMap(
-                        reportModelFile -> reportModelFile.model().getName(),
-                        reportModelFile -> completeReportModel.getStatistics(reportModelFile)));
+
+        final ListMultimap<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels()
+                .stream()
+                .collect(Multimaps.toMultimap(
+                        modelFile -> modelFile.model().getName(),
+                        completeReportModel::getStatistics,
+                        MultimapBuilder.hashKeys().arrayListValues()::build));
 
         final String statisticsBlock = blockConverter.convertStatisticsBlock(
                 featureStatistics, completeReportModel.getTotalStatistics());

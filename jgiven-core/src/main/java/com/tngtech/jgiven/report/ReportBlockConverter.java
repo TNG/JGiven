@@ -1,12 +1,12 @@
 package com.tngtech.jgiven.report;
 
+import com.google.common.collect.ListMultimap;
 import com.tngtech.jgiven.report.model.CasesTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Converts elements of the report model into standalone text blocks.
@@ -19,8 +19,8 @@ public interface ReportBlockConverter {
      * @param featureStatistics a map from feature names to statistics
      * @param totalStatistics   the total statistics for all features combined
      */
-    String convertStatisticsBlock(Map<String, ReportStatistics> featureStatistics,
-            ReportStatistics totalStatistics);
+    String convertStatisticsBlock(ListMultimap<String, ReportStatistics> featureStatistics,
+                                  ReportStatistics totalStatistics);
 
     /**
      * Convert feature name and execution statistics into feature header.

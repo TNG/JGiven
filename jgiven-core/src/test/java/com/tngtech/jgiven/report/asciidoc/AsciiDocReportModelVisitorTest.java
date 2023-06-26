@@ -3,6 +3,7 @@ package com.tngtech.jgiven.report.asciidoc;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ListMultimap;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.CasesTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
@@ -14,7 +15,6 @@ import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -242,7 +242,7 @@ public class AsciiDocReportModelVisitorTest {
     private static class MyFakeReportBlockConverter implements ReportBlockConverter {
 
         @Override
-        public String convertStatisticsBlock(final Map<String, ReportStatistics> featureStatistics,
+        public String convertStatisticsBlock(final ListMultimap<String, ReportStatistics> featureStatistics,
                 final ReportStatistics totalStatistics) {
             return "StatisticsBlock";
         }
