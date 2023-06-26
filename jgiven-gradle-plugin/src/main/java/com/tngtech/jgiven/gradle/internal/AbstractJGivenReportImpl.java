@@ -23,7 +23,7 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
     private boolean excludeEmptyScenarios = false;
     private boolean thumbnailsAreShown = true;
 
-    protected AbstractJGivenReportImpl(String name, Task task, String relativeEntryPath) {
+    public AbstractJGivenReportImpl( String name, Task task, String relativeEntryPath ) {
         super( name, task, relativeEntryPath );
     }
 
@@ -57,6 +57,7 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
         if( getTitle() != null ) {
             conf.setTitle( getTitle() );
         }
+
         conf.setTargetDir( getOutputLocation().getAsFile().get() );
         conf.setExcludeEmptyScenarios( isExcludeEmptyScenarios() );
         generator.setConfig( conf );

@@ -9,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.7.4'
+    id 'org.springframework.boot' version '3.1.1'
 }
 
 apply plugin: 'java'
@@ -19,7 +19,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 wrapper {
-    gradleVersion = '7.0.0'
+    gradleVersion = '8.1.1'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -29,10 +29,10 @@ repositories {
 }
 
 ext {
-    assertjVersion = '3.23.1'
+    assertjVersion = '3.24.2'
     junitDataproviderVersion = '1.13.1'
     jgivenVersion = version
-    hsqldbVersion = '2.7.0'
+    hsqldbVersion = '2.7.2'
 }
 
 dependencies {

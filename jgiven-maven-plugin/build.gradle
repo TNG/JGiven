@@ -1,11 +1,13 @@
+import java.util.stream.Collectors
+
 description = 'JGiven Maven Mojo'
 
 
 dependencies {
     implementation project(':jgiven-core')
     implementation project(':jgiven-html5-report')
-    implementation "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.6.4"
-    implementation "org.apache.maven.plugin-tools:maven-plugin-annotations:3.6.4"
+    implementation "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.9.0"
+    implementation "org.apache.maven.plugin-tools:maven-plugin-annotations:3.9.0"
 }
 
 task copyClasses(type: Copy, dependsOn: compileJava) {
@@ -21,40 +23,45 @@ task generatePom(type: Copy, dependsOn: copyClasses) {
     }
 }
 
-Set<Task> findPublishTask(String projectName){
-    project.rootProject.findProject(projectName).getTasks().findAll {it instanceof PublishToMavenLocal}
-}
-
-task generateMavenPlugin(type: CrossPlatformExec, dependsOn: [generatePom, findPublishTask("jgiven-core"), findPublishTask("jgiven-html5-report")]){
-    // currenlty it seems to be the more or less only clean solution
+task generateMavenPlugin(type: CrossPlatformExec, dependsOn: generatePom) {
+    // currently it seems to be the more or less only clean solution
     // to generate a plugin.xml file to use maven directly
     // if anyone has a better solution please let us know!
     buildCommand 'mvn', '-nsu', '-U', '-f', 'build/maven/pom.xml', 'plugin:descriptor'
 }
 
-generateMavenPlugin.onlyIf {
-   // as the generateMavenPlugin task requires mvn, it is only executed
-   // when actually uploading the archives
-   // that way the standard build stays maven-free
-   gradle.taskGraph.getAllTasks()
-           .findAll{task -> !findPublishTask("jgiven-core").contains(task)}
-           .findAll{ task -> !findPublishTask("jgiven-html5-report").contains(task) }
-           .any{it instanceof AbstractPublishToMaven}
+generateMavenPlugin.configure {
+    List<Task> thisProjectsPublishTasks = getTasks().withType(PublishToMavenLocal).stream().collect(Collectors.toList())
+    mustRunAfter(rootProject.getAllTasks(true).values().stream()
+            .flatMap(Set::stream)
+            .filter(task -> task instanceof PublishToMavenLocal)
+            .filter(task -> !thisProjectsPublishTasks.contains(task))
+            .collect(Collectors.toList())
+    )
+    onlyIf {
+        gradle.taskGraph.getAllTasks().stream().anyMatch(thisProjectsPublishTasks::contains)
+    }
 }
 
-task copyMavenPlugin(type: Copy, dependsOn: generateMavenPlugin) {
+tasks.register("copyMavenPlugin", Copy){it->
+    it.dependsOn += generateMavenPlugin
+
     from('build/maven/target/classes') {
-       include '**/*.xml'
+        include '**/*.xml'
+        exclude '**/*.class'
     }
     into 'build/classes/java/main'
+    javadoc.dependsOn += it
+    checkstyleMain.mustRunAfter(it)
 }
 
-task copyPom(type: Copy, dependsOn: generatePom) {
+tasks.register("copyPom", Copy){it ->
+    it.dependsOn += generatePom
     from('build/maven') {
-       include '**/pom.*'
-       filter { line ->
-           line.replaceAll("<version>.*</version>","")
-       }
+        include '**/pom.*'
+        filter { line ->
+            line.replaceAll("<version>.*</version>", "")
+        }
     }
     into 'build/classes/main/META-INF/maven/com.tngtech.jgiven/jgiven-maven-plugin'
     includeEmptyDirs = false
@@ -65,7 +72,7 @@ jar.dependsOn copyMavenPlugin, copyPom
 
 class CrossPlatformExec extends Exec {
     void buildCommand(String command, String... commandArgs) {
-        if(org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+        if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
             executable = 'cmd'
             args = ['/c', command]
         } else {

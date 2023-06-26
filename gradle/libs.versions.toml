@@ -1,18 +1,24 @@
 [versions]
-aspectj-version = "1.9.9.1"
-byteBuddy-version = "1.12.17"
+aspectj-version = "1.9.19"
+byteBuddy-version = "1.14.5"
 junit4-version = "4.13.2"
-slf4j-version = "1.7.36"
-spring-version = "5.3.23"
+slf4j-version = "2.0.7"
+spring-version = "5.3.28"
+androidx-test-version = "1.5.0"
 
 [libraries]
-assertj = { module = "org.assertj:assertj-core", version = "3.23.1" }
+androidGradlePlugin = { module = "com.android.tools.build:gradle", version = "7.4.2"}
+androidx-appcompat = {module = "androidx.appcompat:appcompat", version = "1.6.1"}
+androidx-test-core = {module = "androidx.test:core", version.ref = "androidx-test-version"}
+androidx-test-rules = {module = "androidx.test:rules", version.ref = "androidx-test-version"}
+androidx-test-junit = {module = "androidx.test.ext:junit", version = "1.1.5"}
+assertj = { module = "org.assertj:assertj-core", version = "3.24.2" }
 aspectj-jrt = { module = "org.aspectj:aspectjrt", version.ref = "aspectj-version" }
 aspectj-jweaver = { module = "org.aspectj:aspectjweaver", version.ref = "aspectj-version" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy-version" }
 byteBuddy-agent = { module = "net.bytebuddy:byte-buddy-agent", version.ref = "byteBuddy-version" }
-hypersql-database = { module = "org.hsqldb:hsqldb", version = "2.3.2" }
-junit-bom = { module = "org.junit:junit-bom", version = "5.9.1" }
+hypersql-database = { module = "org.hsqldb:hsqldb", version = "2.7.2" }
+junit-bom = { module = "org.junit:junit-bom", version = "5.9.3" }
 junit4 = { module = "junit:junit", version.ref = "junit4-version" }
 junit4-dataprovider = { module = "com.tngtech.java:junit-dataprovider", version = "1.13.1" }
 junit4-params = { module = "pl.pragmatists:JUnitParams", version = "1.1.1" }
@@ -23,7 +29,7 @@ spring-context = { module = "org.springframework:spring-context", version.ref = 
 spring-test = { module = "org.springframework:spring-test", version.ref = "spring-version" }
 spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring-version" }
 spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring-version" }
-testng = { module = "org.testng:testng", version="7.5" }
+testng = { module = "org.testng:testng", version="7.8.0" }
 
 [bundles]
 junit4 = [ "junit4", "junit4-dataprovider", "junit4-params" ]

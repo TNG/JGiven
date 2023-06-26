@@ -92,7 +92,7 @@ To use JGiven in JUnit 5 based Spring Tests you should inherit from one of the p
    - `SpringScenarioTest`
    - `SimpleSpringScenarioTest`
 
-Both classes contain all the annotations and methods necessary to run JGiven with Spring. The `SimpleSpringScenarioTest` allows to have all stages in a single stage class, while the `SpringScenario-Test` allows to have a class for each stage.
+Both classes contain all the annotations and methods necessary to run JGiven with Spring. The `SimpleSpringScenarioTest` allows to have all stages in a single stage class, while the `SpringScenarioTest` allows to have a class for each stage.
 
 ===== Example
 

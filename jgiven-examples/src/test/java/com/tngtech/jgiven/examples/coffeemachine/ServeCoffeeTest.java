@@ -218,7 +218,7 @@ public class ServeCoffeeTest extends ScenarioTest<GivenCoffee, WhenCoffee, ThenC
             "And on the second run, 2, well-done"
     } )
     @CaseAs( "$1" )
-    public void coffe_making_gets_better( String description, int runNr, String result ) {
+    public void coffee_making_gets_better( String description, int runNr, String result ) {
         given().a_coffee_machine();
         when().I_make_coffee_for_the_$_time( runNr );
         then().the_result_is( result );

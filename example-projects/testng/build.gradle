@@ -14,8 +14,8 @@ plugins {
 apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
     options.compilerArgs += '-parameters'
     options.encoding = 'UTF-8'
 }
@@ -27,7 +27,7 @@ repositories {
 
 dependencies {
     testImplementation "com.tngtech.jgiven:jgiven-testng:${version}"
-    testImplementation 'org.testng:testng:7.6.1'
+    testImplementation 'org.testng:testng:7.8.0'
 }
 
 test.useTestNG() {

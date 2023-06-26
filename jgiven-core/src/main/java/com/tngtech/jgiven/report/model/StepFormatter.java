@@ -1,11 +1,5 @@
 package com.tngtech.jgiven.report.model;
 
-import java.lang.annotation.Annotation;
-import java.util.Set;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.tngtech.jgiven.annotation.Table;
@@ -13,6 +7,13 @@ import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.*;
 import com.tngtech.jgiven.format.table.TableFormatter;
 import com.tngtech.jgiven.impl.util.WordUtil;
+
+import java.lang.annotation.Annotation;
+import java.util.List;
+import java.util.Set;
+import java.util.function.BiFunction;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StepFormatter {
     private final String stepDescription;
@@ -139,13 +140,21 @@ public class StepFormatter {
 
     public List<Word> buildFormattedWords() {
         try {
-            return buildFormattedWordsInternal();
+            return buildFormattedWordsInternal((formattedWords, unusedArguments) -> {formattedWords.addAll(unusedArguments);return formattedWords;});
         } catch( JGivenWrongUsageException e ) {
             throw new JGivenWrongUsageException( e.getMessage() + ". Step definition: " + stepDescription );
         }
     }
 
-    private List<Word> buildFormattedWordsInternal() {
+    public List<Word> buildFormattedWordsIgnoringExtraArguments(){
+        try {
+            return buildFormattedWordsInternal((formattedWords, __) -> formattedWords);
+        } catch( JGivenWrongUsageException e ) {
+            throw new JGivenWrongUsageException( e.getMessage() + ". Step definition: " + stepDescription );
+        }
+    }
+
+    private List<Word> buildFormattedWordsInternal(BiFunction<List<Word>, List<Word>,List<Word>> remainingArgumentHandler) {
         List<Word> formattedWords = Lists.newArrayList();
         Set<String> usedArguments = Sets.newHashSet();
 
@@ -158,21 +167,18 @@ public class StepFormatter {
             boolean dollarMatch = stepDescription.charAt( i ) == '$';
             boolean nextCharExists = ( i + 1 ) < stepDescription.length();
             boolean escapedDollarMatch = nextCharExists && stepDescription.charAt( i + 1 ) == '$';
-            String argumentName = nextCharExists ? nextName( stepDescription.substring( i + 1 ) ) : "";
-            boolean namedArgumentExists = argumentName.length() > 0;
-            boolean namedArgumentMatch = namedArgumentExists && isArgument( argumentName );
-            boolean enumArgumentMatch =
-                    nextCharExists && arguments.size() > nextIndex( stepDescription.substring( i + 1 ), arguments.size() );
-            boolean singleDollarCountIndexExists = singlePlaceholderCounter < arguments.size();
 
-            if( dollarMatch ) {
-                // e.g $$
-                if( escapedDollarMatch ) {
-                    formattedWords.add( new Word( "$" ) );
-                    i += 1;
-
-                    // e.g $argument
-                } else if( namedArgumentMatch ) {
+            if (dollarMatch && escapedDollarMatch){
+                i+=1;
+            }
+            if( dollarMatch && !escapedDollarMatch) {
+                String argumentName = nextCharExists ? nextName( stepDescription.substring( i + 1 ) ) : "";
+                boolean namedArgumentExists = argumentName.length() > 0;
+                boolean namedArgumentMatch = namedArgumentExists && isArgument( argumentName );
+                boolean enumArgumentMatch =
+                        nextCharExists && arguments.size() > nextIndex( stepDescription.substring( i + 1 ), arguments.size() );
+                boolean singleDollarCountIndexExists = singlePlaceholderCounter < arguments.size();
+                if( namedArgumentMatch ) {
                     int argumentIndex = getArgumentIndexByName( argumentName, 0 );
                     addArgumentByIndex( argumentIndex, currentWords, formattedWords, usedArguments );
                     i += argumentName.length();
@@ -216,8 +222,7 @@ public class StepFormatter {
         }
 
         flushCurrentWord( currentWords, formattedWords, false );
-        formattedWords.addAll( getRemainingArguments( usedArguments ) );
-        return formattedWords;
+        return remainingArgumentHandler.apply(formattedWords, getRemainingArguments(usedArguments));
     }
 
     /**
@@ -229,8 +234,7 @@ public class StepFormatter {
      */
     private static String nextName( String description ) {
         StringBuilder result = new StringBuilder();
-        for( int i = 0; i < description.length(); i++ ) {
-            char c = description.charAt( i );
+        for(char c : description.toCharArray()) {
             if( Character.isJavaIdentifierPart( c ) && c != '$' ) {
                 result.append( c );
             } else {

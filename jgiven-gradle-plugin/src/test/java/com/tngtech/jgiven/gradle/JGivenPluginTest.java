@@ -170,6 +170,7 @@ public class JGivenPluginTest extends
 
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     static class Given extends Stage<Given> {
         @ExpectedScenarioState
         private FileWrapper testProjectDir;
@@ -185,8 +186,8 @@ public class JGivenPluginTest extends
         Given the_plugin_is_applied() throws IOException {
             buildFile.write("plugins { id 'java'; id 'com.tngtech.jgiven.gradle-plugin' }\n");
             buildFile.write("repositories { mavenCentral() }\n");
-            buildFile.write("dependencies { testImplementation 'com.tngtech.jgiven:jgiven-junit:1.0.0' }\n");
-            buildFile.write("dependencies { testImplementation 'junit:junit:4.13' }\n");
+            buildFile.write("dependencies { testImplementation 'com.tngtech.jgiven:jgiven-junit:1.2.5' }\n");
+            buildFile.write("dependencies { testImplementation 'junit:junit:4.13.2' }\n");
             return self();
         }
 
@@ -210,6 +211,7 @@ public class JGivenPluginTest extends
         }
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     static class When extends Stage<When> {
         @ExpectedScenarioState
         private FileWrapper testProjectDir;
@@ -237,6 +239,7 @@ public class JGivenPluginTest extends
         }
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     static class Then extends Stage<Then> {
         @ExpectedScenarioState
         private BuildResult result;

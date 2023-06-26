@@ -10,11 +10,11 @@ description = "Module for injecting automated performance analysis for test meth
 
 dependencies {
     implementation project(":jgiven-core")
-    implementation("com.google.guava:guava:31.1-jre")
+    implementation("com.google.guava:guava:32.0.1-jre")
     implementation libs.plugins.byteBuddy.plugin
     implementation libs.byteBuddy.agent
-    testImplementation("com.google.guava:guava-testlib:31.1-jre")
-    testImplementation 'org.mockito:mockito-inline:4.8.0'
+    testImplementation("com.google.guava:guava-testlib:32.0.1-jre")
+    testImplementation 'org.mockito:mockito-inline:5.2.0'
 }
 
 def generatedSourceDir = "generatedSrc/java"

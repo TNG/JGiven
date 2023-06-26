@@ -2,10 +2,8 @@ package com.tngtech.jgiven.report.config;
 
 import com.tngtech.jgiven.report.config.converter.StringConverter;
 
-import java.util.List;
-
 /**
- * An easier interface to create {@link ConfigOption} for use in {@link com.tngtech.jgiven.report.AbstractReportGenerator#additionalConfigOptions(List)}
+ * An easier interface to create {@link ConfigOption} for use with {@link com.tngtech.jgiven.report.AbstractReportGenerator}
  */
 public class ConfigOptionBuilder {
 

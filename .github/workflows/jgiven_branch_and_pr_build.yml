@@ -9,12 +9,14 @@ jobs:
       ANDROID: true
     strategy:
       matrix:
-        java: [ '8', '11', '13']
-        junit: [ '4.9', '4.13' ]
+        java: [ '11', '17', '19']
+        junit: ['4.13.2']
     steps:
-      - uses: actions/checkout@v3
+      - name: Ensure firefox is installed
+        run: sudo apt-get install firefox
+      - uses: actions/checkout@v3.5.3
       - name: Set up JDK ${{matrix.java}}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v3.11.0
         with:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
@@ -25,12 +27,12 @@ jobs:
           JUNIT_VERSION: ${{matrix.junit}}
         run:   "./gradlew -i -s check -DjunitVersion=${JUNIT_VERSION}"
       - name: Run Jacoco
-        if: ${{matrix.java == '8' && github.ref == 'refs/heads/master' && github.head_ref == null}}
+        if: ${{matrix.java == '11' && github.ref == 'refs/heads/master' && github.head_ref == null}}
         run: ./gradlew overallJacocoReport coveralls
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: test-report_${{matrix.java}}_${{matrix.junit}}
           path: /home/runner/work/JGiven/JGiven/*/build/reports/tests

@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.tests.java8;
+package com.tngtech.jgiven.lambdas;
 
 import com.tngtech.jgiven.Stage;
 

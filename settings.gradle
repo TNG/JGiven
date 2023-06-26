@@ -17,7 +17,7 @@ pluginManagement {
 }
 
 plugins {
-    id 'com.gradle.enterprise' version '3.11.2'
+    id 'com.gradle.enterprise' version '3.13.4'
 }
 
 dependencyResolutionManagement {
@@ -53,7 +53,6 @@ include ':jgiven-core',
         ':jgiven-html5-report',
         ':jgiven-tests',
         ':jgiven-examples',
-        ':jgiven-java8-tests',
         ':jgiven-junit5',
         ':jgiven-spring-junit5',
         ':jgiven-gradle-plugin'
@@ -68,14 +67,14 @@ def release = System.env.RELEASE == "true"
 def android = System.env.ANDROID == "true"
 boolean hasAndroidSourcePath = (System.env.ANDROID_SDK_ROOT)
 
-if (JavaVersion.current().isJava9Compatible()) {
-    include ':jgiven-java9-tests'
-}
-
 if ((android || release) && hasAndroidSourcePath) {
     include ':jgiven-android'
 }
 
 if (android && !release && hasAndroidSourcePath) {
     include ':jgiven-android-test'
+}
+
+if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_19)) {
+    include ':jgiven-future-java-tests'
 }

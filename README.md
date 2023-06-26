@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/github/workflow/status/tng/jgiven/Java%20CI%20with%20Gradle)](https://github.com/TNG/JGiven/actions/workflows/jgiven_branch_and_pr_build.yml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/tng/jgiven/jgiven_branch_and_pr_build.yml?branch=master)](https://github.com/TNG/JGiven/actions/workflows/jgiven_branch_and_pr_build.yml)
 [![Coverage Status](https://img.shields.io/coveralls/TNG/JGiven.svg?style=flat-square)](https://coveralls.io/r/TNG/JGiven?branch=master)
 [![Apache License 2.0](https://img.shields.io/badge/license-apache2-red.svg?style=flat-square)](http://opensource.org/licenses/Apache-2.0)
 [![Maven Central](https://img.shields.io/maven-central/v/com.tngtech.jgiven/jgiven-junit.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.tngtech.jgiven/jgiven-junit)
@@ -59,7 +59,7 @@ Scenario: a pancake can be fried out of an egg milk and flour
     And the cook fries the dough in a pan
    Then the resulting meal is a pancake
 ```
-In addition, you can generate a [HTML Report](https://jgiven.org/jgiven-report/html5/).
+In addition, you can generate an [HTML Report](https://jgiven.org/jgiven-report/html5/).
 
 ## Getting Started
 

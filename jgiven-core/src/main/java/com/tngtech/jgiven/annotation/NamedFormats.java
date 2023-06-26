@@ -31,6 +31,7 @@ import java.util.Date;
  * 			this.lastPriceDate = lastPriceDate;
  * 		}
  * 	}
+ * }
  * </pre>
  *
  * <h4>The Step Method</h4>

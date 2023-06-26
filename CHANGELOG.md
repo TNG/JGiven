@@ -1,3 +1,18 @@
+# v1.3
+## Breaking changes
+* Increased minimum supported version to Java 11
+
+## Fixed issues
+* Escaped dollars ($$) are now treated as a regular $ character.[#1253](https://github.com/TNG/JGiven/issues/1253) (thanks to manoj-fd for reporting) 
+
+# v1.2.5
+## Fixed issues
+* Fixed incompatibility of Gradle plugin with Gradle 8, due to the use of a deprecated method [#1200](https://github.com/TNG/JGiven/issues/1200) (thanks to AistisTaraskevicius for reporting)
+
+# v1.2.4
+## Fixed issues
+* Fixed incorrect POM that was published because our manual pom transcription writes a version tag even when none is required. [#1013](https://github.com/TNG/JGiven/issues/1013) (thanks to jangalanski for reporting)
+
 # v1.2.3
 ## Fixed issues
 * Fixed build error when JGiven is used in conjuntion with openapi. [#947](https://github.com/TNG/JGiven/issues/947) (thanks to manoj-fd for reporting)
