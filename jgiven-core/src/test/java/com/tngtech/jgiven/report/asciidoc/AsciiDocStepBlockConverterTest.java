@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 public class AsciiDocStepBlockConverterTest {
 
     private static final int ARBITRARY_DURATION = 3899;
-    private final ReportBlockConverter converter = new AsciiDocReportBlockConverter();
+    private final ReportBlockConverter converter = new AsciiDocBlockConverter();
 
     ////
     // All step conversations in this section assume, that the containing scenario case was executed successful

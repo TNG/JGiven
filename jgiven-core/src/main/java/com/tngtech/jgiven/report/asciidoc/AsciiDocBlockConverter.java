@@ -11,12 +11,13 @@ import com.tngtech.jgiven.report.model.DataTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.StepStatus;
+import com.tngtech.jgiven.report.model.Tag;
 import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-class AsciiDocReportBlockConverter implements ReportBlockConverter {
+class AsciiDocBlockConverter implements ReportBlockConverter {
 
     private static final String LINE_BREAK = System.lineSeparator();
 
@@ -78,7 +79,7 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertScenarioHeaderBlock(final String name, final ExecutionStatus executionStatus,
-                                             final long duration, final List<String> tagNames,
+                                             final long duration, final List<Tag> tags,
                                              final String extendedDescription) {
         StringBuilder blockContent = new StringBuilder();
 
@@ -98,11 +99,11 @@ class AsciiDocReportBlockConverter implements ReportBlockConverter {
             blockContent.append("+++").append(extendedDescription).append("+++");
         }
 
-        if (!tagNames.isEmpty()) {
+        if (!tags.isEmpty()) {
             blockContent.append(LINE_BREAK);
             blockContent.append(LINE_BREAK);
             blockContent.append("Tags: ");
-            blockContent.append(tagNames.stream().map(tag -> "_" + tag + "_").collect(joining(", ")));
+            blockContent.append(tags.stream().map(tag -> "_" + TagMapper.mapTag(tag) + "_").collect(joining(", ")));
         }
 
         return blockContent.toString();

@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
 public class AsciiDocTableBlockConverterTest {
 
     public static final long ARBITRARY_DURATION = 60_000_000000L;
-    private final ReportBlockConverter converter = new AsciiDocReportBlockConverter();
+    private final ReportBlockConverter converter = new AsciiDocBlockConverter();
 
     @Test
     public void convert_cases_table_without_descriptions() {

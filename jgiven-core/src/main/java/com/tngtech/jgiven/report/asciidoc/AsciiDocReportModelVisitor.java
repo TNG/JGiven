@@ -55,12 +55,12 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
     @Override
     public void visit(final ScenarioModel scenarioModel) {
-        final List<String> tagNames = scenarioModel.getTagIds().stream()
+        final List<Tag> tags = scenarioModel.getTagIds().stream()
             .map(this.featureTagMap::get)
-            .map(Tag::getName).collect(Collectors.toList());
+            .collect(Collectors.toList());
 
         String scenarioHeader = blockConverter.convertScenarioHeaderBlock(scenarioModel.getDescription(),
-            scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tagNames,
+            scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tags,
             scenarioModel.getExtendedDescription());
         asciiDocBlocks.add(scenarioHeader);
 

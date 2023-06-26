@@ -39,7 +39,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(AsciiDocReportGenerator.class);
 
-    private final AsciiDocReportBlockConverter blockConverter = new AsciiDocReportBlockConverter();
+    private final AsciiDocBlockConverter blockConverter = new AsciiDocBlockConverter();
     private final List<String> featureFiles = new ArrayList<>();
     private final List<String> failedScenarioFiles = new ArrayList<>();
     private final List<String> pendingScenarioFiles = new ArrayList<>();

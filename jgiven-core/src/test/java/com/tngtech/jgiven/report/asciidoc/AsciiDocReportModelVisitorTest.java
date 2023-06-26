@@ -13,6 +13,7 @@ import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.StepStatus;
+import com.tngtech.jgiven.report.model.Tag;
 import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
 import org.junit.Before;
@@ -255,7 +256,7 @@ public class AsciiDocReportModelVisitorTest {
 
         @Override
         public String convertScenarioHeaderBlock(String name, ExecutionStatus executionStatus, long duration,
-                List<String> tagNames, String extendedDescription) {
+                                                 List<Tag> tagNames, String extendedDescription) {
             return "ScenarioHeaderBlock";
         }
 

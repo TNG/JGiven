@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 @RunWith(DataProviderRunner.class)
 public class AsciiDocScenarioCaseBlockConverterTest {
 
-    private final ReportBlockConverter converter = new AsciiDocReportBlockConverter();
+    private final ReportBlockConverter converter = new AsciiDocBlockConverter();
 
     @Test
     @DataProvider({"SUCCESS, check-square[role=green]",

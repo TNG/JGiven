@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
+import com.tngtech.jgiven.report.model.Tag;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -13,7 +14,7 @@ import org.junit.runner.RunWith;
 @RunWith(DataProviderRunner.class)
 public class AsciiDocScenarioBlockConverterTest {
 
-    private final AsciiDocReportBlockConverter converter = new AsciiDocReportBlockConverter();
+    private final AsciiDocBlockConverter converter = new AsciiDocBlockConverter();
 
     @Test
     @DataProvider({"SUCCESS, successful, icon:check-square[role=green]",
@@ -24,7 +25,7 @@ public class AsciiDocScenarioBlockConverterTest {
                                                                     final String scenarioTag,
                                                                     final String humanStatus) {
         // given
-        List<String> tagNames = new ArrayList<>();
+        List<Tag> tagNames = new ArrayList<>();
         final long oneSecond = 1_000_000_000L;
 
         // when
@@ -42,8 +43,8 @@ public class AsciiDocScenarioBlockConverterTest {
     @Test
     public void convert_scenario_header_with_a_tag_and_no_description() {
         // given
-        List<String> tagNames = new ArrayList<>();
-        tagNames.add("Best Tag");
+        List<Tag> tagNames = new ArrayList<>();
+        tagNames.add(mkTag("Best Tag"));
         final long nineMilliseconds = 9_000_000L;
 
         // when
@@ -58,13 +59,13 @@ public class AsciiDocScenarioBlockConverterTest {
             "",
             "icon:ban[role=silver] (9ms)",
             "",
-            "Tags: _Best Tag_");
+            "Tags: _[.jg-tag-ArbitraryTag]#Best Tag#_");
     }
 
     @Test
     public void convert_scenario_header_with_description_and_no_tags() {
         // given
-        List<String> tagNames = new ArrayList<>();
+        List<Tag> tagNames = new ArrayList<>();
         final long halfMillisecond = 500_000L;
 
         // when
@@ -85,8 +86,8 @@ public class AsciiDocScenarioBlockConverterTest {
     @Test
     public void convert_scenario_header_with_a_tag_and_description() {
         // given
-        List<String> tagNames = new ArrayList<>();
-        tagNames.add("Best Tag");
+        List<Tag> tagNames = new ArrayList<>();
+        tagNames.add(mkTag("Best Tag"));
         final long threeSeconds = 3_000_000_000L;
 
         // when
@@ -104,16 +105,16 @@ public class AsciiDocScenarioBlockConverterTest {
             "",
             "+++Best scenario ever!!!+++",
             "",
-            "Tags: _Best Tag_");
+            "Tags: _[.jg-tag-ArbitraryTag]#Best Tag#_");
     }
 
     @Test
     public void convert_scenario_header_with_multiple_tags() {
         // given
-        List<String> tagNames = new ArrayList<>();
-        tagNames.add("Best Tag");
-        tagNames.add("Other Tag");
-        tagNames.add("Nicest Tag");
+        List<Tag> tagNames = new ArrayList<>();
+        tagNames.add(mkTag("Best Tag"));
+        tagNames.add(mkTag("Other Tag"));
+        tagNames.add(mkTag("Nicest Tag"));
         final long threeSeconds = 3_000_000_000L;
 
         // when
@@ -129,7 +130,8 @@ public class AsciiDocScenarioBlockConverterTest {
                 "",
                 "icon:check-square[role=green] (3s 0ms)",
                 "",
-                "Tags: _Best Tag_, _Other Tag_, _Nicest Tag_");
+                "Tags: _[.jg-tag-ArbitraryTag]#Best Tag#_, _[.jg-tag-ArbitraryTag]#Other Tag#_, "
+                        + "_[.jg-tag-ArbitraryTag]#Nicest Tag#_");
     }
 
     @Test
@@ -142,6 +144,12 @@ public class AsciiDocScenarioBlockConverterTest {
 
         // then
         assertThat(block).isEqualTo("// end::scenario-" + scenarioTag + "[]");
+    }
+
+    private static Tag mkTag(final String value) {
+        final Tag tag = new Tag("com.jgiven.ArbitraryTag", value);
+        tag.setType("ArbitraryTag");
+        return tag;
     }
 
     private static void assertThatBlockContainsLines(final String block, final String... expectedLines) {

@@ -5,6 +5,7 @@ import com.tngtech.jgiven.report.model.CasesTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.StepStatus;
+import com.tngtech.jgiven.report.model.Tag;
 import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
 
@@ -29,8 +30,7 @@ public interface ReportBlockConverter {
      * @param statistics  the execution statistics for the feature
      * @param description the description, may be {@code null}
      */
-    String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics,
-            String description);
+    String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics, String description);
 
     /**
      * Convert scenario name and more meta information into scenario header.
@@ -45,7 +45,7 @@ public interface ReportBlockConverter {
      * @param extendedDescription detailed description of the scenario, may be {@code null}
      */
     String convertScenarioHeaderBlock(String name, ExecutionStatus executionStatus, long duration,
-            List<String> tagNames, String extendedDescription);
+                                      List<Tag> tagNames, String extendedDescription);
 
     /**
      * Convert scenario case number and parameters into case header.
