@@ -8,7 +8,7 @@ public abstract class JGivenAsciiDocReportImpl extends AbstractJGivenReportImpl 
   private static final ReportGenerator.Format SUPPORTED_FORMAT = ReportGenerator.Format.ASCIIDOC;
   public static final String NAME = SUPPORTED_FORMAT.formatName();
 
-  protected JGivenAsciiDocReportImpl(Task task) {
+  public JGivenAsciiDocReportImpl(Task task) {
     super(NAME, task, "index.asciidoc");
   }
 
