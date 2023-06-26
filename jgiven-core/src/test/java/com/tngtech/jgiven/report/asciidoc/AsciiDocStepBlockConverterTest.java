@@ -136,6 +136,29 @@ public class AsciiDocStepBlockConverterTest {
             "....");
     }
 
+
+    @Test
+    public void convert_step_with_multiline_argument_which_itself_contains_literal_block_delimiter() {
+        // given
+        List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"),
+                Word.argWord("description", "0", "text above\n....\nand text below"));
+
+        // when
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
+
+        // then
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* a coffee machine with",
+                "+",
+                "[.jg-argument]",
+                ".....",
+                "text above",
+                "....",
+                "and text below",
+                ".....");
+    }
+
+
     @Test
     public void convert_step_with_parameter() {
         // given

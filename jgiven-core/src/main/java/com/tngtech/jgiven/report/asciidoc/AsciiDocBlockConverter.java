@@ -379,12 +379,13 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
     }
 
     private static String buildBlockArgumentFragment(final String argumentValue) {
+        final String delimiter = argumentValue.contains("....") ? "....." : "....";
         return LINE_BREAK
                 + "+" + LINE_BREAK
                 + "[.jg-argument]" + LINE_BREAK
-                + "...." + LINE_BREAK
+                + delimiter + LINE_BREAK
                 + argumentValue + LINE_BREAK
-                + "...." + LINE_BREAK;
+                + delimiter + LINE_BREAK;
     }
 
     private static String buildOtherWordFragment(final String word, final boolean differs) {
