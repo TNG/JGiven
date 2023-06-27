@@ -39,7 +39,7 @@ public class AsciiDocTableBlockConverterTest {
         // then
         assertThatBlockContainsLines(block,
                 ".Cases",
-                "[.jg-casesTable%header,cols=\"h,1,1,>1\"]",
+                "[.jg-casesTable%header,cols=\"h,~,~,<11\"]",
                 "|===",
                 "| # | foo | bar | Status",
                 "| 1 | +1+ | +2+ | icon:check-square[role=green] (60s 0ms)",
@@ -65,7 +65,7 @@ public class AsciiDocTableBlockConverterTest {
         // then
         assertThatBlockContainsLines(block,
                 ".Cases",
-                "[.jg-casesTable%header,cols=\"h,1,1,1,>1\"]",
+                "[.jg-casesTable%header,cols=\"h,~,~,~,<11\"]",
                 "|===",
                 "| # | Description | foo | bar | Status",
                 "| 1 | +First case+ | +1+ | +2+ | icon:check-square[role=green] (60s 0ms)",
@@ -97,7 +97,7 @@ public class AsciiDocTableBlockConverterTest {
         // then
         assertThatBlockContainsLines(block,
                 ".Cases",
-                "[.jg-casesTable%header,cols=\"h,1,1,>1\"]",
+                "[.jg-casesTable%header,cols=\"h,~,~,<11\"]",
                 "|===",
                 "| # | foo | bar | Status",
                 ".2+| 1 | +1+ | +2+ | icon:exclamation-circle[role=red] (60s 0ms)",
@@ -163,7 +163,7 @@ public class AsciiDocTableBlockConverterTest {
         // then
         assertThatBlockContainsLines(block,
                 ".Total Statistics",
-                "[options=\"header,footer\"]",
+                "[.jg-statisticsTable%autowidth%header%footer]",
                 "|===",
                 "| feature | total classes | successful scenarios | failed scenarios | pending scenarios | "
                         + "total scenarios | failed cases | total cases | total steps | duration",

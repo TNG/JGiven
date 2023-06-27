@@ -193,7 +193,7 @@ public class AsciiDocStepBlockConverterTest {
         assertThatBlockContainsLines(block,
             "* [.jg-intro-word]*Given* the products",
             "+",
-            "[.jg-argumentTable%header,cols=\"1,1\"]",
+            "[.jg-argumentTable%autowidth%header,cols=\"1,1\"]",
             "|===",
             "| product | price ",
             "| apples | 23 ",
@@ -217,7 +217,7 @@ public class AsciiDocStepBlockConverterTest {
         assertThatBlockContainsLines(block,
             "* [.jg-intro-word]*Given* the products",
             "+",
-            "[.jg-argumentTable,cols=\"h,1,1\"]",
+            "[.jg-argumentTable%autowidth,cols=\"h,1,1\"]",
             "|===",
             "| product | apples | pears ",
             "| price | 23 | 42 ",
@@ -270,7 +270,7 @@ public class AsciiDocStepBlockConverterTest {
                 "....",
                 "and the products",
                 "+",
-                "[.jg-argumentTable%header,cols=\"1,1\"]",
+                "[.jg-argumentTable%autowidth%header,cols=\"1,1\"]",
                 "|===",
                 "| product | price ",
                 "| apples | 23 ",
@@ -285,7 +285,7 @@ public class AsciiDocStepBlockConverterTest {
     @DataProvider({"PASSED, check-square[role=green]", "FAILED, exclamation-circle[role=red]",
         "SKIPPED, step-forward[role=silver]", "PENDING, ban[role=silver]"})
     public void convert_step_within_unsuccessful_scenario_case(final StepStatus stepStatus,
-                                                                        final String icon) {
+            final String icon) {
         // given
         List<Word> words = Collections.singletonList(Word.introWord("given"));
         final long threeMilliseconds = 3_000_000L;
@@ -348,7 +348,7 @@ public class AsciiDocStepBlockConverterTest {
         assertThatBlockContainsLines(block,
                 "* [.jg-intro-word]*Given* the products icon:step-forward[role=silver]",
                 "+",
-                "[.jg-argumentTable%header,cols=\"1,1\"]",
+                "[.jg-argumentTable%autowidth%header,cols=\"1,1\"]",
                 "|===",
                 "| product | price ",
                 "| apples | 23 ",

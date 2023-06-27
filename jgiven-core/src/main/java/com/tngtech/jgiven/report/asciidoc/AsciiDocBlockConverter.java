@@ -27,7 +27,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
         final StringBuilder statisticsTable = new StringBuilder();
 
         statisticsTable.append(".Total Statistics").append(LINE_BREAK);
-        statisticsTable.append("[options=\"header,footer\"]").append(LINE_BREAK);
+        statisticsTable.append("[.jg-statisticsTable%autowidth%header%footer]").append(LINE_BREAK);
         statisticsTable.append("|===").append(LINE_BREAK);
 
         statisticsTable.append("| feature ");
@@ -167,10 +167,11 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
         StringBuilder blockContent = new StringBuilder();
 
         final int columnCount = (casesTable.hasDescriptions() ? 2 : 1) + casesTable.placeholders().size();
-        final String headerColumns = generateVerticalHeaderColumns(columnCount);
+        final String headerColumns = generateVerticalHeaderColumns(columnCount, "~");
 
         blockContent.append(".Cases").append(LINE_BREAK);
-        blockContent.append("[.jg-casesTable%header,cols=\"").append(headerColumns).append(",>1\"]").append(LINE_BREAK);
+        blockContent.append("[.jg-casesTable%header,cols=\"").append(headerColumns).append(",<11\"]")
+                .append(LINE_BREAK);
         blockContent.append("|===").append(LINE_BREAK);
 
         blockContent.append("| #");
@@ -326,7 +327,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
     }
 
     private static String buildStepStatusFragment(final boolean caseIsUnsuccessful, final StepStatus status,
-                                                  final long duration) {
+            final long duration) {
         if (caseIsUnsuccessful) {
             return " " + (MetadataMapper.toHumanReadableStatus(status)
                     + MetadataMapper.toHumanReadableStepDuration(duration));
@@ -364,10 +365,10 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
     private static String buildDataTableHead(final DataTable dataTable) {
         final int columnCount = dataTable.getColumnCount();
         final String colSpec = dataTable.hasVerticalHeader()
-                ? generateVerticalHeaderColumns(columnCount)
+                ? generateVerticalHeaderColumns(columnCount, "1")
                 : generateHorizontalHeaderColumns(columnCount);
 
-        return "[.jg-argumentTable"
+        return "[.jg-argumentTable%autowidth"
                 + (dataTable.hasHorizontalHeader() ? "%header" : "")
                 + ",cols=\"" + colSpec + "\"]";
     }
@@ -399,7 +400,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
     }
 
     private static String buildExtendedDescriptionFragment(final boolean lastFragmentIsBlock,
-                                                           final String extendedDescription) {
+            final String extendedDescription) {
 
         String fragment = "";
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
@@ -423,8 +424,8 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
         return generate(() -> symbol).limit(depth + 1L).collect(joining());
     }
 
-    private static String generateVerticalHeaderColumns(final int tableColumns) {
-        return "h," + generate(() -> "1").limit(tableColumns - 1L).collect(joining(","));
+    private static String generateVerticalHeaderColumns(final int tableColumns, final String columnSpec) {
+        return "h," + generate(() -> columnSpec).limit(tableColumns - 1L).collect(joining(","));
     }
 
     private static String generateHorizontalHeaderColumns(final int columnCount) {
