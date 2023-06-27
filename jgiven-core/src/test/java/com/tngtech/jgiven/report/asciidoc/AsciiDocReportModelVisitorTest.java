@@ -261,8 +261,8 @@ public class AsciiDocReportModelVisitorTest {
         }
 
         @Override
-        public String convertCaseHeaderBlock(int caseNr, final ExecutionStatus executionStatus,
-                String description) {
+        public String convertCaseHeaderBlock(final int caseNr, final ExecutionStatus executionStatus,
+                                             final long duration, final String description) {
             return "CaseHeaderBlock";
         }
 

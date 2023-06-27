@@ -42,8 +42,8 @@ public class AsciiDocTableBlockConverterTest {
                 "[.jg-casesTable%header,cols=\"h,1,1,>1\"]",
                 "|===",
                 "| # | foo | bar | Status",
-                "| 1 | +1+ | +2+ | icon:check-square[role=green]",
-                "| 2 | +3+ | +4+ | icon:exclamation-circle[role=red]",
+                "| 1 | +1+ | +2+ | icon:check-square[role=green] (60s 0ms)",
+                "| 2 | +3+ | +4+ | icon:exclamation-circle[role=red] (60s 0ms)",
                 "|===");
     }
 
@@ -68,8 +68,8 @@ public class AsciiDocTableBlockConverterTest {
                 "[.jg-casesTable%header,cols=\"h,1,1,1,>1\"]",
                 "|===",
                 "| # | Description | foo | bar | Status",
-                "| 1 | +First case+ | +1+ | +2+ | icon:check-square[role=green]",
-                "| 2 | +Second case+ | +3+ | +4+ | icon:exclamation-circle[role=red]",
+                "| 1 | +First case+ | +1+ | +2+ | icon:check-square[role=green] (60s 0ms)",
+                "| 2 | +Second case+ | +3+ | +4+ | icon:exclamation-circle[role=red] (60s 0ms)",
                 "|===");
     }
 
@@ -100,7 +100,7 @@ public class AsciiDocTableBlockConverterTest {
                 "[.jg-casesTable%header,cols=\"h,1,1,>1\"]",
                 "|===",
                 "| # | foo | bar | Status",
-                ".2+| 1 | +1+ | +2+ | icon:exclamation-circle[role=red]",
+                ".2+| 1 | +1+ | +2+ | icon:exclamation-circle[role=red] (60s 0ms)",
                 "3+a|",
                 "[.jg-exception]",
                 "====",
@@ -117,7 +117,7 @@ public class AsciiDocTableBlockConverterTest {
                 "....",
                 "=====",
                 "====",
-                "| 2 | +3+ | +4+ | icon:exclamation-circle[role=red]",
+                "| 2 | +3+ | +4+ | icon:exclamation-circle[role=red] (60s 0ms)",
                 "|===");
     }
 

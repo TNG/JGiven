@@ -111,7 +111,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertCaseHeaderBlock(final int caseNr, final ExecutionStatus executionStatus,
-                                         final String description) {
+                                         final long duration, final String description) {
         StringBuilder blockContent = new StringBuilder();
 
         blockContent.append("===== Case ").append(caseNr);
@@ -121,7 +121,8 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
         }
 
         blockContent.append(LINE_BREAK).append(LINE_BREAK)
-                .append(MetadataMapper.toHumanReadableStatus(executionStatus));
+                .append(MetadataMapper.toHumanReadableStatus(executionStatus))
+                .append(" (").append(MetadataMapper.toHumanReadableScenarioDuration(duration)).append(")");
 
         return blockContent.toString();
     }
@@ -201,7 +202,8 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
         }
 
         blockContent.append(" | ").append(MetadataMapper.toHumanReadableStatus(caseRow.status()))
-                .append(LINE_BREAK);
+                .append(" (").append(MetadataMapper.toHumanReadableScenarioDuration(caseRow.durationInNanos()))
+                .append(")").append(LINE_BREAK);
 
         if (errorMessage.isPresent()) {
             List<String> stackTraceLines = caseRow.stackTrace();

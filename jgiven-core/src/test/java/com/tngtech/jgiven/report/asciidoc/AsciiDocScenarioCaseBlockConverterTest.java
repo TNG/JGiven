@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 @RunWith(DataProviderRunner.class)
 public class AsciiDocScenarioCaseBlockConverterTest {
 
+    public static final long ARBIRTRARY_DURATION = 42_000_000L;
     private final ReportBlockConverter converter = new AsciiDocBlockConverter();
 
     @Test
@@ -23,25 +24,42 @@ public class AsciiDocScenarioCaseBlockConverterTest {
     public void convert_scenario_case_header_without_description(final ExecutionStatus executionStatus,
             final String icon) {
         // when
-        String block = converter.convertCaseHeaderBlock(1, executionStatus, null);
+        String block = converter.convertCaseHeaderBlock(1, executionStatus, ARBIRTRARY_DURATION, null);
 
         // then
         assertThatBlockContainsLines(block,
             "===== Case 1",
             "",
-            "icon:" + icon);
+            "icon:" + icon + " (42ms)");
+    }
+
+    @Test
+    @DataProvider({"SUCCESS, check-square[role=green]",
+        "FAILED, exclamation-circle[role=red]",
+        "SCENARIO_PENDING, ban[role=silver]",
+        "SOME_STEPS_PENDING, ban[role=silver]"})
+    public void convert_scenario_case_header_with_empty_description(final ExecutionStatus executionStatus,
+            final String icon) {
+        // when
+        String block = converter.convertCaseHeaderBlock(2, executionStatus, ARBIRTRARY_DURATION, "");
+
+        // then
+        assertThatBlockContainsLines(block,
+                "===== Case 2",
+                "",
+                "icon:" + icon + " (42ms)");
     }
 
     @Test
     public void convert_scenario_case_header_with_description() {
         // when
-        String block = converter.convertCaseHeaderBlock(1, ExecutionStatus.SUCCESS, "First case");
+        String block = converter.convertCaseHeaderBlock(3, ExecutionStatus.SUCCESS, ARBIRTRARY_DURATION, "First case");
 
         // then
         assertThatBlockContainsLines(block,
-            "===== Case 1: First case",
+            "===== Case 3: First case",
             "",
-            "icon:check-square[role=green]");
+            "icon:check-square[role=green] (42ms)");
     }
 
     @Test

@@ -43,11 +43,11 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     @Override
     public void visit(final ReportModel reportModel) {
         String featureName = Optional.ofNullable(reportModel.getName())
-            .filter(name -> !name.isEmpty())
-            .orElse(reportModel.getClassName());
+                .filter(name -> !name.isEmpty())
+                .orElse(reportModel.getClassName());
 
         String featureHeader =
-            blockConverter.convertFeatureHeaderBlock(featureName, featureStatistics, reportModel.getDescription());
+                blockConverter.convertFeatureHeaderBlock(featureName, featureStatistics, reportModel.getDescription());
         asciiDocBlocks.add(featureHeader);
 
         featureTagMap = reportModel.getTagMap();
@@ -56,12 +56,12 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     @Override
     public void visit(final ScenarioModel scenarioModel) {
         final List<Tag> tags = scenarioModel.getTagIds().stream()
-            .map(this.featureTagMap::get)
-            .collect(Collectors.toList());
+                .map(this.featureTagMap::get)
+                .collect(Collectors.toList());
 
         String scenarioHeader = blockConverter.convertScenarioHeaderBlock(scenarioModel.getDescription(),
-            scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tags,
-            scenarioModel.getExtendedDescription());
+                scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tags,
+                scenarioModel.getExtendedDescription());
         asciiDocBlocks.add(scenarioHeader);
 
         scenarioHasDataTable = scenarioModel.isCasesAsTable();
@@ -76,8 +76,9 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         }
 
         if (scenarioHasMultipleCases && !scenarioHasDataTable) {
-            String caseHeader = blockConverter.convertCaseHeaderBlock(
-                scenarioCase.getCaseNr(), scenarioCase.getExecutionStatus(), scenarioCase.getDescription());
+            String caseHeader = blockConverter.convertCaseHeaderBlock(scenarioCase.getCaseNr(),
+                    scenarioCase.getExecutionStatus(), scenarioCase.getDurationInNanos(),
+                    scenarioCase.getDescription());
             asciiDocBlocks.add(caseHeader);
         }
 
@@ -100,12 +101,12 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         String stepBlock;
         if (isFirstStepInCase) {
             stepBlock = blockConverter.convertFirstStepBlock(
-                stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
-                stepModel.getExtendedDescription(), this.caseIsUnsuccessful, currentSectionTitle);
+                    stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
+                    stepModel.getExtendedDescription(), this.caseIsUnsuccessful, currentSectionTitle);
         } else {
             stepBlock = blockConverter.convertStepBlock(
-                stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
-                stepModel.getExtendedDescription(), this.caseIsUnsuccessful);
+                    stepModel.getDepth(), stepModel.getWords(), stepModel.getStatus(), stepModel.getDurationInNanos(),
+                    stepModel.getExtendedDescription(), this.caseIsUnsuccessful);
         }
         asciiDocBlocks.add(stepBlock);
 

@@ -54,9 +54,10 @@ public interface ReportBlockConverter {
      *
      * @param caseNr          the number of the case, starting from 1
      * @param executionStatus whether the case was successful
+     * @param duration        how long did the scenario case run
      * @param description     a short description of this case, may be {@code null}
      */
-    String convertCaseHeaderBlock(int caseNr, ExecutionStatus executionStatus, String description);
+    String convertCaseHeaderBlock(int caseNr, ExecutionStatus executionStatus, final long duration, String description);
 
     /**
      * Convert the words that make up the first step into a block.
