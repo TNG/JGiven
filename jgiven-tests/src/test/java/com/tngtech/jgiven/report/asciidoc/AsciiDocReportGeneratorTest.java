@@ -44,7 +44,7 @@ public class AsciiDocReportGeneratorTest extends
             .and().the_report_exist_as_JSON_file();
 
         when().the_asciidoc_reporter_is_executed();
-        then().the_asciidoc_reporter_$_exists("features/Test.asciidoc")
+        then().the_asciidoc_report_$_exists("features/Test.asciidoc")
             .and().the_literal_block_is_added_$(
                 "...." + System.lineSeparator()
                     + content + System.lineSeparator()
