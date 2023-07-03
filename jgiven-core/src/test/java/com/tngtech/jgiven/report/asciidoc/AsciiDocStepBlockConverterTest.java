@@ -18,7 +18,9 @@ import org.junit.runner.RunWith;
 @RunWith(DataProviderRunner.class)
 public class AsciiDocStepBlockConverterTest {
 
-    private static final int ARBITRARY_DURATION = 3899;
+    private static final int ARBITRARY_SHORT_DURATION = 3899;
+    private static final long DURATION_JUST_BELOW_THRESHOLD = 9_999_999L;
+    private static final long DURATION_JUST_ABOVE_THRESHOLD = 10_000_000L;
     private static final String LINE_BREAK = System.lineSeparator();
     private final ReportBlockConverter converter = new AsciiDocBlockConverter();
 
@@ -27,16 +29,29 @@ public class AsciiDocStepBlockConverterTest {
     ////
 
     @Test
-    public void convert_step_without_description() {
+    public void convert_fast_step() {
         // given
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, DURATION_JUST_BELOW_THRESHOLD, null, false);
 
         // then
         assertThatBlockContainsLines(block,
             "* [.jg-intro-word]*Given* a coffee machine");
+    }
+
+    @Test
+    public void convert_slow_step() {
+        // given
+        List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine"));
+
+        // when
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, DURATION_JUST_ABOVE_THRESHOLD, null, false);
+
+        // then
+        assertThatBlockContainsLines(block,
+                "* [.jg-intro-word]*Given* a coffee machine (10ms)");
     }
 
     @Test
@@ -45,7 +60,7 @@ public class AsciiDocStepBlockConverterTest {
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION,
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION,
                 "It is a brand new machine.", false);
 
         // then
@@ -60,7 +75,7 @@ public class AsciiDocStepBlockConverterTest {
         List<Word> words = Collections.singletonList(Word.introWord("given"));
 
         // when
-        String block = converter.convertFirstStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION,
+        String block = converter.convertFirstStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION,
                 null, false, "First section");
 
         // then
@@ -76,7 +91,7 @@ public class AsciiDocStepBlockConverterTest {
         List<Word> words = Collections.singletonList(Word.introWord("given"));
 
         // when
-        String block = converter.convertFirstStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false,
+        String block = converter.convertFirstStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION, null, false,
                 null);
 
         // then
@@ -94,7 +109,7 @@ public class AsciiDocStepBlockConverterTest {
                 new Word("coffees"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -110,7 +125,7 @@ public class AsciiDocStepBlockConverterTest {
                         new Word("active"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -124,7 +139,7 @@ public class AsciiDocStepBlockConverterTest {
             Word.argWord("description", "0", "very nice text" + LINE_BREAK + "and also more text"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -145,7 +160,7 @@ public class AsciiDocStepBlockConverterTest {
                 Word.argWord("description", "0", "text above" + LINE_BREAK + "...." + LINE_BREAK + "and text below"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -170,7 +185,7 @@ public class AsciiDocStepBlockConverterTest {
             ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"), ncoffees, new Word("coffees"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -188,7 +203,7 @@ public class AsciiDocStepBlockConverterTest {
                 new DataTable(Table.HeaderType.HORIZONTAL, productsTable)));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -212,7 +227,7 @@ public class AsciiDocStepBlockConverterTest {
                 new DataTable(Table.HeaderType.VERTICAL, productsTable)));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -232,7 +247,7 @@ public class AsciiDocStepBlockConverterTest {
                 Word.argWord("description", "0", "very nice text" + LINE_BREAK + "and also more text"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION,
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION,
                 "It is a brand new machine.", false);
 
         // then
@@ -258,7 +273,7 @@ public class AsciiDocStepBlockConverterTest {
                         new DataTable(Table.HeaderType.HORIZONTAL, productsTable)));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_SHORT_DURATION, null, false);
 
         // then
         assertThatBlockContainsLines(block,
@@ -283,16 +298,26 @@ public class AsciiDocStepBlockConverterTest {
     ////
 
     @Test
-    @DataProvider({"PASSED, check-square[role=green]", "FAILED, exclamation-circle[role=red]",
-        "SKIPPED, step-forward[role=silver]", "PENDING, ban[role=silver]"})
-    public void convert_step_within_unsuccessful_scenario_case(final StepStatus stepStatus,
-            final String icon) {
+    public void convert_fast_step_within_unsuccessful_scenario_case() {
         // given
         List<Word> words = Collections.singletonList(Word.introWord("given"));
-        final long threeMilliseconds = 10_000_000L;
 
         // when
-        String block = converter.convertStepBlock(0, words, stepStatus, threeMilliseconds, null, true);
+        String block = converter.convertStepBlock(0, words, StepStatus.PASSED, DURATION_JUST_BELOW_THRESHOLD, null, true);
+
+        // then
+        assertThatBlockContainsLines(block, "* [.jg-intro-word]*Given* icon:check-square[role=green]");
+    }
+
+    @Test
+    @DataProvider({"PASSED, check-square[role=green]", "FAILED, exclamation-circle[role=red]",
+        "SKIPPED, step-forward[role=silver]", "PENDING, ban[role=silver]"})
+    public void convert_slow_step_within_unsuccessful_scenario_case(final StepStatus stepStatus, final String icon) {
+        // given
+        List<Word> words = Collections.singletonList(Word.introWord("given"));
+
+        // when
+        String block = converter.convertStepBlock(0, words, stepStatus, DURATION_JUST_ABOVE_THRESHOLD, null, true);
 
         // then
         assertThatBlockContainsLines(block, "* [.jg-intro-word]*Given* icon:" + icon + " (10ms)");
@@ -304,7 +329,7 @@ public class AsciiDocStepBlockConverterTest {
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.PENDING, ARBITRARY_DURATION,
+        String block = converter.convertStepBlock(0, words, StepStatus.PENDING, ARBITRARY_SHORT_DURATION,
                 "It is a brand new machine.", true);
 
         // then
@@ -320,7 +345,7 @@ public class AsciiDocStepBlockConverterTest {
                 Word.argWord("description", "0", "very nice text" + LINE_BREAK + "and also more text"));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.FAILED, ARBITRARY_DURATION, null, true);
+        String block = converter.convertStepBlock(0, words, StepStatus.FAILED, ARBITRARY_SHORT_DURATION, null, true);
 
         // then
         assertThatBlockContainsLines(block,
@@ -343,7 +368,7 @@ public class AsciiDocStepBlockConverterTest {
                         new DataTable(Table.HeaderType.HORIZONTAL, productsTable)));
 
         // when
-        String block = converter.convertStepBlock(0, words, StepStatus.SKIPPED, ARBITRARY_DURATION, null, true);
+        String block = converter.convertStepBlock(0, words, StepStatus.SKIPPED, ARBITRARY_SHORT_DURATION, null, true);
 
         // then
         assertThatBlockContainsLines(block,
