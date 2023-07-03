@@ -289,13 +289,13 @@ public class AsciiDocStepBlockConverterTest {
             final String icon) {
         // given
         List<Word> words = Collections.singletonList(Word.introWord("given"));
-        final long threeMilliseconds = 3_000_000L;
+        final long threeMilliseconds = 10_000_000L;
 
         // when
         String block = converter.convertStepBlock(0, words, stepStatus, threeMilliseconds, null, true);
 
         // then
-        assertThatBlockContainsLines(block, "* [.jg-intro-word]*Given* icon:" + icon + " (3ms)");
+        assertThatBlockContainsLines(block, "* [.jg-intro-word]*Given* icon:" + icon + " (10ms)");
     }
 
     @Test

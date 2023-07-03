@@ -45,7 +45,7 @@ public class AsciiDocScenarioBlockConverterTest {
         // given
         List<Tag> tagNames = new ArrayList<>();
         tagNames.add(mkTag("Best Tag"));
-        final long nineMilliseconds = 9_000_000L;
+        final long nineMilliseconds = 10_000_000L;
 
         // when
         String block = converter.convertScenarioHeaderBlock("my first scenario",
@@ -57,7 +57,7 @@ public class AsciiDocScenarioBlockConverterTest {
             "",
             "==== My first scenario",
             "",
-            "icon:ban[role=silver] (9ms)",
+            "icon:ban[role=silver] (10ms)",
             "",
             "Tags: _[.jg-tag-ArbitraryTag]#Best Tag#_");
     }

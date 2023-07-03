@@ -16,7 +16,9 @@ import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 class AsciiDocBlockConverter implements ReportBlockConverter {
 
@@ -155,12 +157,15 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
 
         StringBuilder blockContent = new StringBuilder();
 
-        blockContent.append(buildIndentationFragment(depth, "*"));
+        blockContent.append(buildIndentationFragment(depth));
 
-        final boolean lastFragmentIsBlock = appendWordFragments(blockContent, words,
-                buildStepStatusFragment(caseIsUnsuccessful, status, durationInNanos));
+        final String statusFragment = buildStepStatusFragment(caseIsUnsuccessful, status, durationInNanos);
+        final boolean lastFragmentIsBlock = appendWordFragments(blockContent, words, statusFragment);
 
-        blockContent.append(buildExtendedDescriptionFragment(lastFragmentIsBlock, extendedDescription));
+        final String extendedDescriptionFragment = buildExtendedDescriptionFragment(
+                lastFragmentIsBlock, extendedDescription);
+        blockContent.append(extendedDescriptionFragment);
+
         return blockContent.toString();
     }
 
@@ -264,8 +269,8 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
                 lastFragmentWasBlockFragment = false;
             }
         }
-        if (!statusAppended) {
-            blockContent.append(statusFragment);
+        if (!statusAppended && !statusFragment.isBlank()) {
+            blockContent.append(" ").append(statusFragment);
         }
 
         return lastFragmentWasBlockFragment;
@@ -280,14 +285,11 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
                                           final String fragment) {
         final String lineContinuation = lastFragmentWasBlockFragment ? "" : " ";
         if (fragment.contains(LINE_BREAK)) {
-            if (statusAlreadyAppended) {
-                blockContent.append(fragment);
-                return true;
-            } else {
-                blockContent.append(statusFragment);
-                blockContent.append(fragment);
-                return true;
+            if (!statusAlreadyAppended && !statusFragment.isBlank()){
+                    blockContent.append(" ").append(statusFragment);
             }
+            blockContent.append(fragment);
+            return true;
         } else {
             blockContent.append(lineContinuation).append(fragment);
             return false;
@@ -333,13 +335,13 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
     }
 
     private static String buildStepStatusFragment(final boolean caseIsUnsuccessful, final StepStatus status,
-            final long duration) {
-        if (caseIsUnsuccessful) {
-            return " " + (MetadataMapper.toHumanReadableStatus(status)
-                    + MetadataMapper.toHumanReadableStepDuration(duration));
-        } else {
-            return "";
-        }
+                                                  final long duration) {
+        final String humanReadableStatus = caseIsUnsuccessful ? MetadataMapper.toHumanReadableStatus(status) : "";
+        final String humanReadableStepDuration = MetadataMapper.toHumanReadableStepDuration(duration);
+
+        return Stream.of(humanReadableStatus, humanReadableStepDuration)
+                .filter(Predicate.not(String::isBlank))
+                .collect(joining(" "));
     }
 
     private static String buildIntroWordFragment(final String word) {
@@ -406,7 +408,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
     }
 
     private static String buildExtendedDescriptionFragment(final boolean lastFragmentIsBlock,
-            final String extendedDescription) {
+                                                           final String extendedDescription) {
 
         String fragment = "";
         if (extendedDescription != null && !extendedDescription.isEmpty()) {
@@ -426,8 +428,8 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
         return "++" + value + "++";
     }
 
-    private static String buildIndentationFragment(final int depth, final String symbol) {
-        return generate(() -> symbol).limit(depth + 1L).collect(joining());
+    private static String buildIndentationFragment(final int depth) {
+        return generate(() -> "*").limit(depth + 1L).collect(joining());
     }
 
     private static String generateVerticalHeaderColumns(final int tableColumns, final String columnSpec) {

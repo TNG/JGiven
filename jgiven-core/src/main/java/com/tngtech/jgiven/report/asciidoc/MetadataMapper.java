@@ -67,7 +67,7 @@ final class MetadataMapper {
     }
 
     static String toHumanReadableScenarioDuration(final long durationInNanos) {
-        if (durationIsOverOneMilliSecond(durationInNanos)) {
+        if (durationInNanos >= NANOSECONDS_PER_MILLISECOND) {
             return toHumanReadableDuration(durationInNanos);
         } else {
             return "0ms";
@@ -75,15 +75,11 @@ final class MetadataMapper {
     }
 
     static String toHumanReadableStepDuration(final long durationInNanos) {
-        if (durationIsOverOneMilliSecond(durationInNanos)) {
-            return " (" + toHumanReadableDuration(durationInNanos) + ")";
+        if (durationInNanos >= 10 * NANOSECONDS_PER_MILLISECOND) {
+            return "(" + toHumanReadableDuration(durationInNanos) + ")";
         } else {
             return "";
         }
-    }
-
-    private static boolean durationIsOverOneMilliSecond(final long durationInNanos) {
-        return durationInNanos >= NANOSECONDS_PER_MILLISECOND;
     }
 
     private static String toHumanReadableDuration(final long nanos) {
