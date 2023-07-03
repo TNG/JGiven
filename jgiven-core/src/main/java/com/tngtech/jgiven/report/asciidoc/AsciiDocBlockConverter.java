@@ -16,10 +16,12 @@ import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 class AsciiDocBlockConverter implements ReportBlockConverter {
 
     private static final String LINE_BREAK = System.lineSeparator();
+    private static final Pattern MULTILINE_PATTERN = Pattern.compile("\\R");
 
     @Override
     public String convertStatisticsBlock(final ListMultimap<String, ReportStatistics> featureStatistics,
@@ -247,7 +249,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
                 lastFragmentWasBlockFragment = false;
             } else if (word.isArg()) {
                 final String argumentValue = word.getFormattedValue();
-                if (argumentValue.contains(LINE_BREAK)) {
+                if (argumentContainsLineBreaks(argumentValue)) {
                     statusAppended |= appendFragment(blockContent, lastFragmentWasBlockFragment, statusFragment,
                             statusAppended, buildBlockArgumentFragment(argumentValue));
                     lastFragmentWasBlockFragment = true;
@@ -267,6 +269,10 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
         }
 
         return lastFragmentWasBlockFragment;
+    }
+
+    private static boolean argumentContainsLineBreaks(String argumentValue) {
+        return MULTILINE_PATTERN.matcher(argumentValue).find();
     }
 
     private static boolean appendFragment(final StringBuilder blockContent, final boolean lastFragmentWasBlockFragment,
