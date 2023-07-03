@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 public class AsciiDocStepBlockConverterTest {
 
     private static final int ARBITRARY_DURATION = 3899;
+    private static final String LINE_BREAK = System.lineSeparator();
     private final ReportBlockConverter converter = new AsciiDocBlockConverter();
 
     ////
@@ -120,7 +121,7 @@ public class AsciiDocStepBlockConverterTest {
     public void convert_step_with_multiline_argument() {
         // given
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"),
-            Word.argWord("description", "0", "very nice text\nand also more text"));
+            Word.argWord("description", "0", "very nice text" + LINE_BREAK + "and also more text"));
 
         // when
         String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
@@ -141,7 +142,7 @@ public class AsciiDocStepBlockConverterTest {
     public void convert_step_with_multiline_argument_which_itself_contains_literal_block_delimiter() {
         // given
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"),
-                Word.argWord("description", "0", "text above\n....\nand text below"));
+                Word.argWord("description", "0", "text above" + LINE_BREAK + "...." + LINE_BREAK + "and text below"));
 
         // when
         String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION, null, false);
@@ -228,7 +229,7 @@ public class AsciiDocStepBlockConverterTest {
     public void convert_step_with_multiline_argument_and_extended_description() {
         // given
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"),
-                Word.argWord("description", "0", "very nice text\nand also more text"));
+                Word.argWord("description", "0", "very nice text" + LINE_BREAK + "and also more text"));
 
         // when
         String block = converter.convertStepBlock(0, words, StepStatus.PASSED, ARBITRARY_DURATION,
@@ -252,7 +253,7 @@ public class AsciiDocStepBlockConverterTest {
         ImmutableList<List<String>> productsTable =
                 ImmutableList.of(ImmutableList.of("product", "price"), ImmutableList.of("apples", "23"));
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"),
-                Word.argWord("description", "0", "very nice text\nand also more text"),
+                Word.argWord("description", "0", "very nice text" + LINE_BREAK + "and also more text"),
                 new Word("and the products"), Word.argWord("products", productsTable.toString(),
                         new DataTable(Table.HeaderType.HORIZONTAL, productsTable)));
 
@@ -316,7 +317,7 @@ public class AsciiDocStepBlockConverterTest {
     public void convert_step_with_multiline_argument_within_unsuccessful_scenario_case() {
         // given
         List<Word> words = ImmutableList.of(Word.introWord("given"), new Word("a coffee machine with"),
-                Word.argWord("description", "0", "very nice text\nand also more text"));
+                Word.argWord("description", "0", "very nice text" + LINE_BREAK + "and also more text"));
 
         // when
         String block = converter.convertStepBlock(0, words, StepStatus.FAILED, ARBITRARY_DURATION, null, true);

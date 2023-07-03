@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 public class AsciiDocTableBlockConverterTest {
 
     public static final long ARBITRARY_DURATION = 60_000_000000L;
+    private static final String LINE_BREAK = System.lineSeparator();
     private final ReportBlockConverter converter = new AsciiDocBlockConverter();
 
     @Test
@@ -76,7 +77,7 @@ public class AsciiDocTableBlockConverterTest {
     @Test
     public void convert_cases_table_with_errors() {
         // given
-        final String errorMessage = "java.lang.AssertionError:\nvalue 5 is not 12";
+        final String errorMessage = "java.lang.AssertionError:" + LINE_BREAK + "value 5 is not 12";
 
         final List<String> stackTrace = new ArrayList<>();
         stackTrace.add("exception in line 1");

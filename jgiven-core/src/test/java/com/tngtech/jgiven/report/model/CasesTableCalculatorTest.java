@@ -10,6 +10,7 @@ import org.junit.Test;
 public class CasesTableCalculatorTest {
 
     private static final long ARBITRARY_DURATION = 3278090000L;
+    private static final String LINE_BREAK = System.lineSeparator();
     private final CasesTableCalculator calculator = new CasesTableCalculator();
 
     @Test
@@ -123,7 +124,7 @@ public class CasesTableCalculatorTest {
         case1.setDerivedArguments(ImmutableList.of("1", "2"));
         case1.setStatus(ExecutionStatus.FAILED);
         case1.setDurationInNanos(ARBITRARY_DURATION);
-        final String errorMessage = "java.lang.AssertionError:\nvalue 5 is not 12";
+        final String errorMessage = "java.lang.AssertionError:" + LINE_BREAK + "value 5 is not 12";
         case1.setErrorMessage(errorMessage);
         List<String> stackTrace = new ArrayList<>();
         stackTrace.add("exception in line 1");

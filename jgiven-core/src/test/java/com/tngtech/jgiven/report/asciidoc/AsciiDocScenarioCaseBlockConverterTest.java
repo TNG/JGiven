@@ -13,7 +13,8 @@ import org.junit.runner.RunWith;
 @RunWith(DataProviderRunner.class)
 public class AsciiDocScenarioCaseBlockConverterTest {
 
-    public static final long ARBIRTRARY_DURATION = 42_000_000L;
+    public static final long ARBITRARY_DURATION = 42_000_000L;
+    private static final String LINE_BREAK = System.lineSeparator();
     private final ReportBlockConverter converter = new AsciiDocBlockConverter();
 
     @Test
@@ -24,7 +25,7 @@ public class AsciiDocScenarioCaseBlockConverterTest {
     public void convert_scenario_case_header_without_description(final ExecutionStatus executionStatus,
             final String icon) {
         // when
-        String block = converter.convertCaseHeaderBlock(1, executionStatus, ARBIRTRARY_DURATION, null);
+        String block = converter.convertCaseHeaderBlock(1, executionStatus, ARBITRARY_DURATION, null);
 
         // then
         assertThatBlockContainsLines(block,
@@ -41,7 +42,7 @@ public class AsciiDocScenarioCaseBlockConverterTest {
     public void convert_scenario_case_header_with_empty_description(final ExecutionStatus executionStatus,
             final String icon) {
         // when
-        String block = converter.convertCaseHeaderBlock(2, executionStatus, ARBIRTRARY_DURATION, "");
+        String block = converter.convertCaseHeaderBlock(2, executionStatus, ARBITRARY_DURATION, "");
 
         // then
         assertThatBlockContainsLines(block,
@@ -53,7 +54,7 @@ public class AsciiDocScenarioCaseBlockConverterTest {
     @Test
     public void convert_scenario_case_header_with_description() {
         // when
-        String block = converter.convertCaseHeaderBlock(3, ExecutionStatus.SUCCESS, ARBIRTRARY_DURATION, "First case");
+        String block = converter.convertCaseHeaderBlock(3, ExecutionStatus.SUCCESS, ARBITRARY_DURATION, "First case");
 
         // then
         assertThatBlockContainsLines(block,
@@ -65,7 +66,7 @@ public class AsciiDocScenarioCaseBlockConverterTest {
     @Test
     public void convert_scenario_case_footer_without_stacktrace() {
         // when
-        final String block = converter.convertCaseFooterBlock("Something is broken\ninside me", null);
+        final String block = converter.convertCaseFooterBlock("Something is broken" + LINE_BREAK + "inside me", null);
 
         // then
         assertThatBlockContainsLines(block,
