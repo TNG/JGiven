@@ -21,6 +21,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 @Mojo( name = "report", defaultPhase = LifecyclePhase.VERIFY, threadSafe = true)
 public class JGivenReportMojo extends AbstractMojo {
 
+    public static final String JGIVEN = "JGiven ";
     /**
      * Directory where the reports are generated to
      */
@@ -72,21 +73,21 @@ public class JGivenReportMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
+        ReportGenerator.Format parsedFormat = ReportGenerator.Format.fromStringOrNull( format );
         try {
             if( !outputDirectory.exists() && !outputDirectory.mkdirs() ) {
                 throw new MojoExecutionException( "Error while trying to create output directory " + outputDirectory );
             }
-            getLog().info( "JGiven HTML report source directory: " + sourceDirectory );
-            getLog().info( "JGiven HTML report output directory: " + outputDirectory );
+            getLog().info( JGIVEN + parsedFormat + " report source directory: " + sourceDirectory );
+            getLog().info( JGIVEN + parsedFormat + " report output directory: " + outputDirectory );
             if( customCssFile != null && customCssFile.exists() ) {
-                getLog().info( "JGiven HTML report custom CSS file: " + customCssFile );
+                getLog().info( JGIVEN + parsedFormat + " report custom CSS file: " + customCssFile );
             }
             if( customJsFile != null && customJsFile.exists() ) {
-                getLog().info( "JGiven HTML report custom JS file: " + customJsFile );
+                getLog().info( JGIVEN + parsedFormat + " report custom JS file: " + customJsFile );
             }
-            getLog().info( "Generating HTML reports to " + outputDirectory + "..." );
+            getLog().info( "Generating " + parsedFormat + " reports to " + outputDirectory + "..." );
 
-            ReportGenerator.Format parsedFormat = ReportGenerator.Format.fromStringOrNull( format );
             AbstractReportConfig config;
             AbstractReportGenerator generator;
 
@@ -116,10 +117,10 @@ public class JGivenReportMojo extends AbstractMojo {
             config.setExcludeEmptyScenarios( excludeEmptyScenarios );
             generator.generateWithConfig( config );
             getLog().info( "-------------------------------------------------------------------" );
-            getLog().info( "Generated JGiven HTML reports to directory " + outputDirectory );
+            getLog().info( "Generated JGiven " + parsedFormat + " reports to directory " + outputDirectory );
             getLog().info( "-------------------------------------------------------------------" );
         } catch( Exception e ) {
-            throw new MojoExecutionException( "Error while trying to generate HTML reports", e );
+            throw new MojoExecutionException( "Error while trying to generate " + parsedFormat + " reports", e );
         }
     }
 }

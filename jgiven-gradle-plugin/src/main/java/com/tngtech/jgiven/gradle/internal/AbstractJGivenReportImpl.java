@@ -27,8 +27,6 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
         super( name, task, relativeEntryPath );
     }
 
-
-
     public AbstractReportGenerator createGenerator() {
         AbstractReportConfig conf;
         AbstractReportGenerator generator;
@@ -110,4 +108,3 @@ public abstract class AbstractJGivenReportImpl extends TaskGeneratedSingleDirect
     }
 
 }
-

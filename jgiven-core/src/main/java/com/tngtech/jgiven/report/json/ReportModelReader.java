@@ -41,16 +41,16 @@ public class ReportModelReader implements ReportModelFileHandler {
     }
 
     public void handleReportModel(ReportModelFile modelFile) {
-        if (modelFile.model.getClassName() == null) {
-            log.error("ClassName in report model is null for file " + modelFile.file + ". Skipping.");
+        if (modelFile.model().getClassName() == null) {
+            log.error("ClassName in report model is null for file " + modelFile.file() + ". Skipping.");
             return;
         }
 
-        if (config.getExcludeEmptyScenarios()) {
+        if (Boolean.TRUE.equals(config.getExcludeEmptyScenarios())) {
             log.info("Removing empty scenarios...");
-            removeEmptyScenarios(modelFile.model);
-            if (!modelFile.model.getScenarios().isEmpty()) {
-                log.debug("File " + modelFile.file + " has only empty scenarios. Skipping.");
+            removeEmptyScenarios(modelFile.model());
+            if (!modelFile.model().getScenarios().isEmpty()) {
+                log.debug("File " + modelFile.file() + " has only empty scenarios. Skipping.");
                 completeModelReport.addModelFile(modelFile);
             }
         } else {

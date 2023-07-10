@@ -1,12 +1,9 @@
 package com.tngtech.jgiven.report;
 
-import com.tngtech.jgiven.report.config.ConfigOptionParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.tngtech.jgiven.exception.JGivenInstallationException;
 import com.tngtech.jgiven.exception.JGivenInternalDefectException;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
+import com.tngtech.jgiven.report.config.ConfigOptionParser;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 
 import java.util.Arrays;
@@ -15,30 +12,31 @@ import java.util.Arrays;
  *  This is an interface to create a report based on command line flags
  */
 public class ReportGenerator {
-
-    private static final Logger log = LoggerFactory.getLogger( ReportGenerator.class );
-
-    /**
+  /**
      * to create a custom report, extend this enum with the name of your choice
      */
     public enum Format {
-        HTML( "html" ),
-        TEXT( "text" ),
-        ASCIIDOC( "asciidoc" ),
-        HTML5( "html5" );
+      ASCIIDOC( "asciidoc" ),
+      HTML( "html" ),
+      HTML5( "html5" ),
+      TEXT( "text" );
 
-        private final String text;
+      private final String formatName;
 
-        Format( String text ) {
-            this.text = text;
+        Format( String formatName) {
+            this.formatName = formatName;
         }
 
         public static Format fromStringOrNull( String value ) {
             return Arrays.stream(Format.values())
-                    .filter(format -> format.text.equalsIgnoreCase((value)))
+                    .filter(format -> format.formatName.equalsIgnoreCase((value)))
                     .findFirst()
                     .orElse(null);
         }
+
+      public String formatName() {
+        return formatName;
+      }
     }
 
     /**

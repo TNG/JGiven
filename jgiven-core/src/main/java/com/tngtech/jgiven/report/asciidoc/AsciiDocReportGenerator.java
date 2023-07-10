@@ -1,196 +1,207 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.List;
-
-import com.google.common.collect.Lists;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.Multimaps;
 import com.google.common.io.Files;
+import com.google.common.io.Resources;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
-import com.tngtech.jgiven.impl.util.ResourceUtil;
-import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.AbstractReportConfig;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
-import com.tngtech.jgiven.report.AbstractReportModelHandler;
-import com.tngtech.jgiven.report.AbstractReportModelHandler.ScenarioDataTable;
-import com.tngtech.jgiven.report.ReportModelHandler;
-import com.tngtech.jgiven.report.model.DataTable;
-import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
+import com.tngtech.jgiven.report.model.ReportStatistics;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * This reporter provides the functionality for reading/writing a report in AsciiDoc format.
+ *
+ * <p> The following flags are reused from {@link AbstractReportConfig}:
+ * <ul>
+ *   <li> --format= </li>
+ *   <li> --sourceDir= / --dir= </li>
+ *   <li> --targetDir= / --todir= </li>
+ *   <li> --title= </li>
+ *   <li> --exclude-empty-scenarios=&lt;boolean&gt; </li>
+ *   <li> --help / -h </li>
+ * </ul>
+ */
 public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
-    private List<String> allFiles = Lists.newArrayList();
+    private static final Logger log = LoggerFactory.getLogger(AsciiDocReportGenerator.class);
 
-    public AbstractReportConfig createReportConfig( String... args ) {
-        return new AsciiDocReportConfig( args );
+    private final AsciiDocBlockConverter blockConverter = new AsciiDocBlockConverter();
+    private final List<String> featureFiles = new ArrayList<>();
+    private final List<String> failedScenarioFiles = new ArrayList<>();
+    private final List<String> pendingScenarioFiles = new ArrayList<>();
+    private File targetDir;
+    private File featuresDir;
+
+    @Override
+    public AsciiDocReportConfig createReportConfig(String... args) {
+        return new AsciiDocReportConfig(args);
     }
 
+    @Override
     public void generate() {
-        for( ReportModelFile reportModelFile : completeReportModel.getAllReportModels() ) {
-            writeReportModelToFile( reportModelFile.model, reportModelFile.file );
-        }
-        generateIndexFile();
-    }
-
-    private void writeReportModelToFile( ReportModel model, File file ) {
-        String targetFileName = Files.getNameWithoutExtension( file.getName() ) + ".asciidoc";
-
-        allFiles.add( targetFileName );
-        if( !config.getTargetDir().exists() ) {
-            config.getTargetDir().mkdirs();
-        }
-        File targetFile = new File( config.getTargetDir(), targetFileName );
-        PrintWriter printWriter = PrintWriterUtil.getPrintWriter( targetFile );
-
-        try {
-            new AbstractReportModelHandler().handle( model, new AsciiDocReportModelVisitor( printWriter ) );
-        } finally {
-            ResourceUtil.close( printWriter );
-        }
-    }
-
-    private void generateIndexFile() {
-        PrintWriter printWriter = PrintWriterUtil.getPrintWriter( new File( config.getTargetDir(), "index.asciidoc" ) );
-        try {
-            printWriter.println( "= JGiven Documentation =\n" );
-            printWriter.println( ":toc: left\n" );
-            printWriter.println( "== Scenarios ==\n" );
-            printWriter.println( "=== Classes ===\n" );
-            printWriter.println( "include::allClasses.asciidoc[]" );
-        } finally {
-            ResourceUtil.close( printWriter );
+        if (config == null) {
+            throw new IllegalStateException("AsciiDocReporter must be configured before generating a report.");
         }
 
-        printWriter = PrintWriterUtil.getPrintWriter( new File( config.getTargetDir(), "allClasses.asciidoc" ) );
-        try {
-            for( String fileName : allFiles ) {
-                printWriter.println( "include::" + fileName + "[]\n" );
-            }
-        } finally {
-            ResourceUtil.close( printWriter );
-
+        if (!prepareDirectories(config.getTargetDir())) {
+            return;
         }
+
+        if (completeReportModel == null) {
+            loadReportModel();
+        }
+
+        writeFeatureFiles();
+
+        writeIndexFileForAllScenarios();
+
+        writeIndexFileForFailedScenarios();
+
+        writeIndexFileForPendingScenarios();
+
+        writeTotalStatisticsFile();
+
+        writeIndexFileForFullReport(config.getTitle());
 
     }
 
-    class AsciiDocReportModelVisitor implements ReportModelHandler {
-
-        private final PrintWriter writer;
-
-        AsciiDocReportModelVisitor( PrintWriter printWriter ) {
-            this.writer = printWriter;
+    private boolean prepareDirectories(final File targetDir) {
+        this.targetDir = targetDir;
+        if (this.targetDir == null) {
+            log.error("Target directory was not configured");
+            return false;
         }
 
-        @Override
-        public void className( String className ) {
-            writer.println( "==== " + className + " ====\n" );
+        if (!ensureDirectoryExists(this.targetDir)) {
+            return false;
         }
 
-        @Override
-        public void reportDescription( String description ) {
-            writer.println( description );
-            writer.println();
+        featuresDir = new File(this.targetDir.getPath() + "/features");
+        return ensureDirectoryExists(featuresDir);
+    }
+
+    private void writeFeatureFiles() {
+        completeReportModel.getAllReportModels().stream()
+                .sorted(Comparator.comparing(AsciiDocReportGenerator::byFeatureName))
+                .forEach(reportModelFile -> {
+                    final String featureFileName = Files.getNameWithoutExtension(
+                            reportModelFile.file().getName()) + ".asciidoc";
+                    writeAsciiDocBlocksToFile(new File(featuresDir, featureFileName),
+                            collectReportBlocks(reportModelFile, featureFileName));
+                });
+    }
+
+    private List<String> collectReportBlocks(final ReportModelFile reportModelFile, final String featureFileName) {
+        featureFiles.add(featureFileName);
+
+        final ReportStatistics statistics = completeReportModel.getStatistics(reportModelFile);
+        if (statistics.numFailedScenarios > 0) {
+            failedScenarioFiles.add(featureFileName);
+        }
+        if (statistics.numPendingScenarios > 0) {
+            pendingScenarioFiles.add(featureFileName);
         }
 
-        @Override
-        public void scenarioTitle( String title ) {
-            writer.println( "===== " + WordUtil.capitalize( title ) + " =====\n" );
-        }
+        final AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
+        reportModelFile.model().accept(visitor);
 
-        @Override
-        public void caseHeader( int caseNr, List<String> parameterNames, List<String> caseArguments ) {
-            writer.print( "====== Case " + caseNr + ": " );
-            for( int i = 0; i < parameterNames.size(); i++ ) {
-                writer.print( parameterNames.get( i ) + " = " + caseArguments.get( i ) );
+        return visitor.getResult();
+    }
+
+    private void writeIndexFileForAllScenarios() {
+        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+                "All Scenarios", "scenarios in total", this.featureFiles, "",
+                this.completeReportModel.getTotalStatistics().numScenarios);
+
+        writeAsciiDocBlocksToFile(new File(targetDir, "allScenarios.asciidoc"),
+                snippetGenerator.generateIndexSnippet());
+    }
+
+    private void writeIndexFileForFailedScenarios() {
+        final String scenarioKind = "failed";
+        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+                "Failed Scenarios", "failed scenarios", this.failedScenarioFiles, scenarioKind,
+                this.completeReportModel.getTotalStatistics().numFailedScenarios);
+
+        writeAsciiDocBlocksToFile(new File(targetDir, scenarioKind + "Scenarios.asciidoc"),
+                snippetGenerator.generateIndexSnippet());
+    }
+
+    private void writeIndexFileForPendingScenarios() {
+        final String scenarioKind = "pending";
+        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+                "Pending Scenarios", "pending scenarios", this.pendingScenarioFiles, scenarioKind,
+                this.completeReportModel.getTotalStatistics().numPendingScenarios);
+
+        writeAsciiDocBlocksToFile(new File(targetDir, scenarioKind + "Scenarios.asciidoc"),
+                snippetGenerator.generateIndexSnippet());
+    }
+
+    private void writeTotalStatisticsFile() {
+
+        final ListMultimap<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels()
+                .stream()
+                .collect(Multimaps.toMultimap(
+                        modelFile -> modelFile.model().getName(),
+                        completeReportModel::getStatistics,
+                        MultimapBuilder.hashKeys().arrayListValues()::build));
+
+        final String statisticsBlock = blockConverter.convertStatisticsBlock(
+                featureStatistics, completeReportModel.getTotalStatistics());
+
+        writeAsciiDocBlocksToFile(new File(targetDir, "totalStatistics.asciidoc"),
+                Collections.singletonList(statisticsBlock));
+    }
+
+    private void writeIndexFileForFullReport(final String reportTitle) {
+        final URL resourceUrl = Resources.getResource(this.getClass(), "index.asciidoc");
+        try {
+            final List<String> indexLines = Resources.readLines(resourceUrl, Charset.defaultCharset());
+
+            try (PrintWriter writer = PrintWriterUtil.getPrintWriter(new File(targetDir, "index.asciidoc"))) {
+                writer.println("= " + reportTitle);
+                indexLines.forEach(writer::println);
             }
-            writer.println( " ======\n" );
+        } catch (IOException e) {
+            log.error("Report content could not be read.", e);
         }
+    }
 
-        @Override
-        public void dataTable( ScenarioDataTable scenarioDataTable ) {
-            writer.println( "\n.Cases" );
-            writer.println( "[options=\"header\"]" );
-            writer.println( "|===" );
-
-            writer.print( "| # " );
-            for( String placeHolder : scenarioDataTable.placeHolders() ) {
-                writer.print( " | " + placeHolder );
-            }
-            writer.println( " | Status" );
-
-            for( ScenarioDataTable.Row row : scenarioDataTable.rows() ) {
-                writer.print( "| " + row.nr() );
-
-                for( String value : row.arguments() ) {
-                    writer.print( " | " + escapeTableValue( value ) );
-                }
-
-                writer.println( " | " + row.status() );
-            }
-            writer.println( "|===" );
-
+    private static boolean ensureDirectoryExists(final File directory) {
+        if (!directory.exists() && !directory.mkdirs()) {
+            log.error("Could not ensure directory exists {}", directory);
+            return false;
         }
+        return true;
+    }
 
-        @Override
-        public void scenarioEnd() {
-            writer.println();
-        }
+    private static String byFeatureName(ReportModelFile modelFile) {
+        return (null != modelFile.model().getName())
+                ? modelFile.model().getName()
+                : modelFile.model().getClassName();
+    }
 
-        @Override public void stepStart() {
-        }
-
-        @Override
-        public void stepEnd() {
-            writer.println( "+" );
-        }
-
-        @Override
-        public void introWord( String value ) {
-            writer.print( value + " " );
-        }
-
-        @Override
-        public void stepArgumentPlaceHolder( String placeHolderValue ) {
-            writer.print( "*<" + placeHolderValue + ">* " );
-        }
-
-        @Override
-        public void stepCaseArgument( String caseArgumentValue ) {
-            writer.print( "*" + escapeArgument( caseArgumentValue ) + "* " );
-        }
-
-        @Override
-        public void stepArgument( String argumentValue, boolean differs ) {
-            if( argumentValue.contains( "\n" ) ) {
-                writer.println( "\n" );
-                writer.println( "...." );
-                writer.println( argumentValue );
-                writer.println( "...." );
+    private static void writeAsciiDocBlocksToFile(final File file, final List<String> asciiDocBlocks) {
+        try (final PrintWriter writer = PrintWriterUtil.getPrintWriter(file)) {
+            for (final String block : asciiDocBlocks) {
+                writer.println(block);
                 writer.println();
-            } else {
-                writer.print( escapeArgument( argumentValue ) + " " );
             }
         }
-
-        @Override
-        public void stepDataTableArgument( DataTable dataTable ) {
-            writer.print( "NOT SUPPORTED IN ASCIIDOC YET" );
-        }
-
-        @Override
-        public void stepWord( String value, boolean differs ) {
-            writer.print( value + " " );
-        }
-
-        private String escapeTableValue( String value ) {
-            return escapeArgument( value.replace( "|", "\\|" ) );
-        }
-
-        private String escapeArgument( String argumentValue ) {
-            return "pass:[" + argumentValue + "]";
-        }
-
     }
 
 }
