@@ -46,12 +46,18 @@ configurations {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation('androidx.appcompat:appcompat:1.6.1') {
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
 
     androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+
     })
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation('androidx.test.ext:junit:1.1.5') {
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
     androidTestImplementation('androidx.test:rules:1.5.0') {
         exclude group: "junit"
     }

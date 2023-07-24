@@ -19,7 +19,7 @@ repositories {
 }
 
 android {
-    compileSdkVersion androidCompileSdkVersion
+    compileSdk androidCompileSdkVersion
     namespace 'jgiven.tngtech.com.jgiven_android'
 
     compileOptions {
@@ -60,14 +60,21 @@ configurations.configureEach {
 afterEvaluate {project.ext.publishVariant('release')}
 
 dependencies {
-    api 'com.google.guava:guava:32.1.1-jre'
+    api('com.google.guava:guava:32.1.1-jre')
     api("net.bytebuddy:byte-buddy-android:${libs.versions.byteBuddy.version.get()}")
-    api junitVariableVersionLibs.junit4
-    implementation libs.androidx.appcompat
-    implementation(libs.androidx.test.core)
+    api(junitVariableVersionLibs.junit4)
+    implementation(libs.androidx.appcompat){
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+    implementation(libs.androidx.test.core){
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
     implementation(libs.androidx.test.rules) {
         exclude group: "junit"
     }
-    androidTestImplementation libs.androidx.test.junit
+    androidTestImplementation(libs.androidx.test.junit){
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
     api project(":jgiven-junit")
+
 }
