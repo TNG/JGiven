@@ -1,25 +1,19 @@
 package com.tngtech.jgiven.impl.inject;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-
-import com.google.common.base.Function;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.annotation.ScenarioState.Resolution;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.function.Function;
 
 /**
  * Used internally to avoid repeated annotation lookups.
  */
 final class ScenarioStateField {
 
-    public static Function<Field, ScenarioStateField> fromField = new Function<Field, ScenarioStateField>() {
-        @Override
-        public ScenarioStateField apply( Field field ) {
-            return new ScenarioStateField( field );
-        }
-    };
+    public static Function<Field, ScenarioStateField> fromField = ScenarioStateField::new;
 
     private final Field field;
 
@@ -51,7 +45,7 @@ final class ScenarioStateField {
     }
 
     /**
-     * Returns {@code true} if and only if the {@link Required} annotation is present on this state.
+     * Returns {@code true} if and only if the {@link ScenarioState#required()} option is present on this state.
      */
     public boolean isRequired() {
         return required;
