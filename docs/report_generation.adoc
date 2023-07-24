@@ -2,33 +2,32 @@
 
 === Plain Text Reports
 
-By default JGiven outputs plain text reports to the console when executed. To disable plain text reports set the following Java system property:
+By default, JGiven outputs plain text reports to the console when executed. To disable plain text reports set the following Java system property:
 
-[source,java]
+[source,properties]
 ----
 jgiven.report.text=false
 ----
 
 === JSON Reports
 
-By default JGiven will generate JSON reports into the `jgiven-reports/json` directory. JGiven tries to autodetect when it is executed by the Maven surefire plugin and in that case generates the reports into `target/jgiven-reports/json`. To disable JSON report generation set the following Java system property:
+By default, JGiven will generate JSON reports into the `jgiven-reports/json` directory. JGiven tries to autodetect when it is executed by the Maven surefire plugin and in that case generates the reports into `target/jgiven-reports/json`. To disable JSON report generation set the following Java system property:
 
-[source,java]
+[source,properties]
 ----
 jgiven.report.enabled=false
 ----
 
 [NOTE]
 ====
-In order to generate HTML reports, JSON reports are required.
+In order to generate HTML or AsciiDoc reports, JSON reports are required.
 ====
 
 ==== Change report directory
 
 If you want to change the `jgiven-reports/json` directory, respectively `target/jgiven-reports/json`, set the following Java system property:
 
-
-[source,java]
+[source,properties]
 ----
 jgiven.report.dir=<targetDir>
 ----
@@ -37,15 +36,18 @@ If JGiven is executed by the Maven surefire plugin, this can be done by the syst
 
 [NOTE]
 ====
-In case HTML Reports are being generated, the source directory for the JSON Reports needs to be set accordingly (see "HTML Report" for more).
+In case HTML or AsciiDoc reports are being generated,
+the source directory for the JSON reports needs to be set accordingly
+(see <<HTML Report>> or <<AsciiDoc Report>> for more).
 ====
 
-=== Dry Run
+==== Dry Run
+
 There is a dry run option, which just generates a report without actually
 executing the code. This might be helpful to generate a test report quickly
 without having to wait for the tests to be executed.
 
-[source,java]
+[source,properties]
 ----
 jgiven.report.dry-run=true
 ----
@@ -65,19 +67,36 @@ The report generator can be executed on the command line as
 follows (assuming that the `jgiven-core` and the `jgiven-html5-report` JAR
 and all required dependencies are on the Java CLASSPATH)
 
-
-[source,bash]
+[source,console]
 ----
-java com.tngtech.jgiven.report.ReportGenerator \
-  --format=html \
-  [--sourceDir=<jsonreports>] \
-  [--targetDir=<targetDir>] \
+$ java com.tngtech.jgiven.report.ReportGenerator \
+    --format=html \
+    [--sourceDir=<jsonreports>] \
+    [--targetDir=<targetDir>] \
 ----
 
 To see the HTML report in action you can have a look at the
 https://jgiven.org/jgiven-report/html5/[HTML report of JGiven itself]
 
-==== Maven
+=== AsciiDoc Report
+
+To generate an AsciiDoc report you have to run the JGiven report generator with the `asciidoc` format option.
+The report generator can be executed on the command line as follows
+(assuming that the `jgiven-core` JAR and all required dependencies are on the Java CLASSPATH)
+
+
+[source,console]
+----
+$ java com.tngtech.jgiven.report.ReportGenerator \
+    --format=asciidoc \
+    [--sourceDir=<jsonreports>] \
+    [--targetDir=<targetDir>]
+----
+
+To see the AsciiDoc report in action you can have a look at the
+https://jgiven.org/jgiven-report/asciidoc/[AsciiDoc report of JGiven itself]
+
+=== Maven Plugin
 
 For Maven there exists a plugin that can be used as follows:
 
@@ -113,7 +132,7 @@ All of them are optional.
 |Option |Description
 
 |format
-|The format of the generated report. Can be _html_ or _text_. Default: _html_
+|The format of the generated report. Can be _html_, _text_ or _asciidoc_. Default: _html_
 
 |title
 |The title of the generated report. Default: _JGiven Report_
@@ -137,14 +156,43 @@ All of them are optional.
 
 Now run:
 
-[source,bash]
+[source,console]
 ----
 $ mvn verify
 ----
 
-HTML reports are then generated into the `target/jgiven-reports/html` directory. Note that the plugin relies on the existence of the JSON output, so if the property `jgiven.reports.enabled` was set to `false`, no output will be generated.
+HTML reports are then generated into the `target/jgiven-reports/html` directory.
+Note that the plugin relies on the existence of the JSON output,
+so if the property `jgiven.reports.enabled` was set to `false`,
+no output will be generated.
 
-==== Gradle
+Use the following configuration to generate the AsciiDoc report instead of the HTML report.
+
+[source,xml,subs="verbatim,attributes"]
+----
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.tngtech.jgiven</groupId>
+      <artifactId>jgiven-maven-plugin</artifactId>
+      <version>{version}</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>report</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <format>asciidoc</format>
+        <outputDirectory>${project.build.directory}/jgiven-reports/asciidoc</outputDirectory>
+      </configuration>
+    </plugin>
+ </plugins>
+</build>
+----
+
+=== Gradle Plugin
 
 There also exists a plugin for Gradle to make your life easier.
 Add the following plugins section to your `build.gradle` file or extend the one you have already accordingly:
@@ -173,17 +221,19 @@ buildscript {
 }
 
 apply plugin: "com.tngtech.jgiven.gradle-plugin"
-
 ----
 
 Now run:
 
-[source,bash]
+[source,console]
 ----
 $ gradle test jgivenTestReport
 ----
 
-HTML reports are then generated into the `build/reports/jgiven/test/html/` directory. Note that the plugin relies on the existence of the JSON output, so if the property `jgiven.reports.enabled` was set to `false`, no output will be generated.
+HTML reports are then generated into the `build/reports/jgiven/test/html/` directory.
+Note that the plugin relies on the existence of the JSON output,
+so if the property `jgiven.reports.enabled` was set to `false`,
+no output will be generated.
 
 If you want that the HTML report is always generated after the tests
 have been executed, you can configure the `test` task in your Gradle
@@ -201,19 +251,27 @@ https://plugins.gradle.org/plugin/com.tngtech.jgiven.gradle-plugin
 
 JGiven will optionally load a configuration properties file, defaulting to:
 `jgiven.properties`. The path to the configuration can be customized with the system property:
+
 ----
 jgiven.config.path
 ----
+
 The encoding for the file is assumed to be `UTF-8`, but can be customized with the system property:
+
 ----
 jgiven.config.charset
 ----
+
 The following can be defined in the properties file:
+
+[source,properties]
 ----
 jgiven.report.enabled=false
 jgiven.report.dir=<targetDir>
 jgiven.report.text=false
-jgiven.report.text.color
+jgiven.report.text.color=auto
 jgiven.report.filterStackTrace=true
+jgiven.report.dry-run=false
 ----
+
 Configuration defined via Java system properties will take precedence over values in the configuration file.
