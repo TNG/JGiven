@@ -60,7 +60,7 @@ configurations.configureEach {
 afterEvaluate {project.ext.publishVariant('release')}
 
 dependencies {
-    api('com.google.guava:guava:32.1.1-jre')
+    api('com.google.guava:guava:32.1.2-jre')
     api("net.bytebuddy:byte-buddy-android:${libs.versions.byteBuddy.version.get()}")
     api(junitVariableVersionLibs.junit4)
     implementation(libs.androidx.appcompat){
