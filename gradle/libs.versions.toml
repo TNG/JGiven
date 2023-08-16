@@ -1,5 +1,5 @@
 [versions]
-aspectj-version = "1.9.19"
+aspectj-version = "1.9.20"
 byteBuddy-version = "1.14.5"
 junit4-version = "4.13.2"
 slf4j-version = "2.0.7"
