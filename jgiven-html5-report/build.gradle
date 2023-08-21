@@ -6,5 +6,5 @@ dependencies {
     implementation project(':jgiven-core')
     implementation project(':jgiven-html-app')
     implementation 'org.apache.xmlgraphics:batik-transcoder:1.16'
-    implementation 'org.apache.xmlgraphics:batik-codec:1.16'
+    implementation 'org.apache.xmlgraphics:batik-codec:1.17'
 }
