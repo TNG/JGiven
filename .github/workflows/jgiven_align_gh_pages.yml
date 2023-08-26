@@ -9,7 +9,7 @@ jobs:
     name: Rebase gh-pages
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.5.3
+      - uses: actions/checkout@v3.6.0
         with:
           fetch-depth: '0' #fetch all history
           ref: 'gh-pages'
