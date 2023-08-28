@@ -1,6 +1,6 @@
 [versions]
 aspectj-version = "1.9.20"
-byteBuddy-version = "1.14.6"
+byteBuddy-version = "1.14.7"
 junit4-version = "4.13.2"
 slf4j-version = "2.0.7"
 spring-version = "5.3.29"
