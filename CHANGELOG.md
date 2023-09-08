@@ -1,28 +1,31 @@
-# v1.3
+# Release v1.3.0
 ## Breaking changes
 * Increased minimum supported version to Java 11
 
 ## Fixed issues
-* Escaped dollars ($$) are now treated as a regular $ character.[#1253](https://github.com/TNG/JGiven/issues/1253) (thanks to manoj-fd for reporting) 
+* Escaped dollars ($$) are now treated as a regular $ character.[#1253](https://github.com/TNG/JGiven/issues/1253) (thanks to manoj-fd for reporting)
+* Contribution guidelines are now up to date [#1300](https://github.com/TNG/JGiven/issues/1300)(thanks to johthor for reporting) 
+## Honorable mentions
+* Thanks to johthor for starting (and completing to a large degree) the implementation of an asciidoc reporter [#54](https://github.com/TNG/JGiven/issues/54)
 
-# v1.2.5
+# Release v1.2.5
 ## Fixed issues
 * Fixed incompatibility of Gradle plugin with Gradle 8, due to the use of a deprecated method [#1200](https://github.com/TNG/JGiven/issues/1200) (thanks to AistisTaraskevicius for reporting)
 
-# v1.2.4
+# Release v1.2.4
 ## Fixed issues
 * Fixed incorrect POM that was published because our manual pom transcription writes a version tag even when none is required. [#1013](https://github.com/TNG/JGiven/issues/1013) (thanks to jangalanski for reporting)
 
-# v1.2.3
+# Release v1.2.3
 ## Fixed issues
 * Fixed build error when JGiven is used in conjuntion with openapi. [#947](https://github.com/TNG/JGiven/issues/947) (thanks to manoj-fd for reporting)
 * Improved robustness of the html-apps zip file processing. [#929] (https://github.com/TNG/JGiven/pull/929) (thanks to JLLeitschuh)
 
-# v1.2.2
+# Release v1.2.2
 ## Fixed issues
 * Fixed issue where tags listed all of their ancestors as direct parents [#868](https://github.com/TNG/JGiven/issues/868) (thanks to jadhindieh for reporting)
 
-# v1.2.1
+# Release v1.2.1
 ## New features
  * JGiven-JUnit5 now reports its test outcomes back to JUnit5 before the `@After` methods, not after them. This should make it easier to run extensions like ReportPortal alongside JUnit5.
 ## Fixed issues
@@ -36,13 +39,13 @@
 ## Backward incompatible changes
  * Removed explicit support for PowerMock in JGiven-JUnit4 package, because the powermock project appears to be abandoned.
 
-# v1.2
+# Release v1.2
 ## New features
 * JGiven now supports Spock 2 [#784](https://github.com/TNG/JGiven/pull/784) (thanks to jsalinaspolo)
 ## Fixed issues
 * JGiven now records step timings correctly if there are intro or filler words in a step [#755](https://github.com/TNG/JGiven/issues/755)
 
-# v1.1
+# Release v1.1
 ## New features
 * The lifecycle method annotations `@BeforeStage` and `@AfterStage` have an option to make the associated methods be invoked repeatedly if the stage class is invoked multiple times. Note that the duration of a stage is denoted by the change of the stage class, thus multiple invocations (no matter the form) on the same stage class count as one stage.
 * The field annotations `@ScenarioState` and `@ProvidedScenarioState` can be set to be `guaranteed`. This ensures that the stage that is declaring such field must operate on it during execution and after the stage finishes the field is ensured to be initialized.
@@ -60,7 +63,7 @@
 * JGiven-Spring does not export its dependency on JGiven-Core anymore, because JGiven-Spring should be used with
   of the test packages JGiven-JUnit, JGiven-Spock, JGiven-JUnit5, JGiven-TestNG, where that dependency is exported
 
-# v1.0.0
+# Release v1.0.0
 
 This is the first major version update of JGiven. It does introduce new features, as well as backwards-incompatible changes,
 due to the removal of all deprecated classes and methods and the drop of Java 7 support.
