@@ -489,6 +489,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ol>
 </div>
+<div class="sect3">
+<h4 id="_integration_into_test_frameworks_lifecycles">Integration into Test Frameworks' Lifecycles</h4>
+<div class="paragraph">
+<p>The relative ordering of JGiven&#8217;s lifecycle methods to that of the embedding test framework depends on how JGiven is hooked into it. For JUnit4, JGiven&#8217;s before and after methods are called later than their respective framework counterparts. Especially the <code>@After</code> method is executed ahead of an <code>@AfterScenario</code> method or an <code>after()</code> method of a scenario rule. For JUnit5 and TestNg, JGiven&#8217;s <code>before()</code> method is executed later than the before method and JGiven&#8217;s <code>after()</code> method is executed ahead of the frameworks' counterparts.</p>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_beforescenario_afterscenario">@BeforeScenario / @AfterScenario</h3>
@@ -497,7 +503,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>Methods annotated with <code>@BeforeScenario</code> are executed before any step of any stage of a scenario.
 This is useful for some general scenario setup.
-As an example, you could initialize a WebDriver instance for Selenium tests or setup a database connection.
+As an example, you could initialize a WebDriver instance for Selenium tests or set up a database connection.
 Note that such methods are executed before the injection of values.
 Thus, the annotated code must not depend on scenario state fields.</p>
 </div>
@@ -534,7 +540,7 @@ public void closeBrowser() {
 <div class="sect2">
 <h3 id="_scenariorule">@ScenarioRule</h3>
 <div class="paragraph">
-<p><code>@BeforeScenario</code> and <code>@AfterScenario</code> methods are often used to setup and tear down some resource.
+<p><code>@BeforeScenario</code> and <code>@AfterScenario</code> methods are often used to set up and tear down some resource.
 If you want to reuse such a resource in another stage, you would have to copy these methods into that stage.
 To avoid that, JGiven offers a concept similar to JUnit rules.
 The idea is to have a separate class that only contains the before and after methods.
@@ -582,7 +588,7 @@ This is useful for setting up code that is required by all or most steps of a st
 <div class="content">
 <pre class="highlight"><code class="language-java" data-lang="java">@BeforeStage
 public void setup() {
-  // do something useful to setup the stage
+  // do something useful to set up the stage
 }</code></pre>
 </div>
 </div>
@@ -592,7 +598,7 @@ public void setup() {
 <div class="paragraph">
 <p>Analogous to <code>@BeforeStage</code> methods, methods can be annotated with <code>@AfterStage</code>.
 These methods are executed after all steps of a stage have been executed, but before extracting the values of scenario state fields.
-Thus you can prepare state for following stages in an <code>@AfterStage</code> method.
+Thus, you can prepare state for following stages in an <code>@AfterStage</code> method.
 A typical use case for this is to apply the builder pattern to build a certain object using step methods and build the final object in an <code>@AfterStage</code> method.</p>
 </div>
 </div>
@@ -677,8 +683,8 @@ class UseRepeatableStage {
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.2.5<br>
-Last updated 2021-09-07 06:46:52 +0200
+Version 1.3.0<br>
+Last updated 2023-09-08 14:40:48 UTC
 </div>
 </div>
 </body>
