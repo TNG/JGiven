@@ -445,7 +445,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>JGiven User Guide</h1>
 <div class="details">
 <span id="author" class="author">Jan Schäfer</span><br>
-<span id="revnumber">version 1.2.5</span>
+<span id="revnumber">version 1.3.0</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -675,7 +675,7 @@ JGiven requires at least JUnit 4.9, while the recommended version is 4.13.2.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit&lt;/artifactId&gt;
-   &lt;version&gt;1.2.5&lt;/version&gt;
+   &lt;version&gt;1.3.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -686,7 +686,7 @@ JGiven requires at least JUnit 4.9, while the recommended version is 4.13.2.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-   testImplementation 'com.tngtech.jgiven:jgiven-junit:1.2.5'
+   testImplementation 'com.tngtech.jgiven:jgiven-junit:1.3.0'
 }</code></pre>
 </div>
 </div>
@@ -706,7 +706,7 @@ thus you also must have a dependency to TestNG itself.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-testng&lt;/artifactId&gt;
-   &lt;version&gt;1.2.5&lt;/version&gt;
+   &lt;version&gt;1.3.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -717,7 +717,7 @@ thus you also must have a dependency to TestNG itself.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-   testImplementation 'com.tngtech.jgiven:jgiven-testng:1.2.5'
+   testImplementation 'com.tngtech.jgiven:jgiven-testng:1.3.0'
 }</code></pre>
 </div>
 </div>
@@ -1009,7 +1009,7 @@ and all required dependencies are on the Java CLASSPATH)</p>
     <span class="tag">&lt;plugin&gt;</span>
       <span class="tag">&lt;groupId&gt;</span>com.tngtech.jgiven<span class="tag">&lt;/groupId&gt;</span>
       <span class="tag">&lt;artifactId&gt;</span>jgiven-maven-plugin<span class="tag">&lt;/artifactId&gt;</span>
-      <span class="tag">&lt;version&gt;</span>1.2.5<span class="tag">&lt;/version&gt;</span>
+      <span class="tag">&lt;version&gt;</span>1.3.0<span class="tag">&lt;/version&gt;</span>
       <span class="tag">&lt;executions&gt;</span>
         <span class="tag">&lt;execution&gt;</span>
           <span class="tag">&lt;goals&gt;</span>
@@ -1087,13 +1087,13 @@ All of them are optional.</p>
 <div class="sect3">
 <h4 id="_gradle"><a class="anchor" href="#_gradle"></a>4.4.2. Gradle</h4>
 <div class="paragraph">
-<p>There also exists a plugin for Gradle to make you life easier.
+<p>There also exists a plugin for Gradle to make your life easier.
 Add the following plugins section to your <code>build.gradle</code> file or extend the one you have already accordingly:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">plugins {
-    id &quot;com.tngtech.jgiven.gradle-plugin&quot; version &quot;1.2.5&quot;
+    id &quot;com.tngtech.jgiven.gradle-plugin&quot; version &quot;1.3.0&quot;
 }</code></pre>
 </div>
 </div>
@@ -1111,7 +1111,7 @@ Add the following plugins section to your <code>build.gradle</code> file or exte
     }
 
     dependencies {
-        classpath &quot;com.tngtech.jgiven:jgiven-gradle-plugin:1.2.5&quot;
+        classpath &quot;com.tngtech.jgiven:jgiven-gradle-plugin:1.3.0&quot;
     }
 }
 
@@ -1186,12 +1186,12 @@ jgiven.report.filterStackTrace=<span class="predefined-constant">true</span></co
 <h2 id="_stages_and_state_sharing"><a class="anchor" href="#_stages_and_state_sharing"></a>5. Stages and State Sharing</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A JGiven scenario consists of multiple stages. Typically there is a stage for each phase of a scenario: a given stage, a when stage and a then stage, however, it is also possible to just use one stage or use arbitrary many stages. A stage is implemented by a stage class that contains methods representing the steps that can be used in the scenario. The big advantage of this modular concept is that stages can be easily reused by different scenarios.</p>
+<p>A JGiven scenario consists of multiple stages. Typically, there is a stage for each phase of a scenario: a given stage, a when stage and a then stage, however, it is also possible to just use one stage or use arbitrarily many stages. A stage is implemented by a stage class that contains methods representing the steps that can be used in the scenario. The big advantage of this modular concept is that stages can be easily reused by different scenarios. Stage classes will be proxied by JGiven, therefore, they must neither be final, nor sealed.</p>
 </div>
 <div class="sect2">
 <h3 id="_step_methods"><a class="anchor" href="#_step_methods"></a>5.1. Step Methods</h3>
 <div class="paragraph">
-<p>A stage class contains multiple step methods that can be called in a scenario and that will appear in the report. Every non-private, non-final, non-static method of a stage class can be used as a step method. There are no further requirements. In particular, no annotations are needed. Step methods should return the this reference so that chaining of calls is possible. In addition, a step method should be written in snake_case so that JGiven knows the correct casing of each word of the step.</p>
+<p>A stage class contains multiple step methods that can be called in a scenario and that will appear in the report. Every non-private, non-final, non-static method of a stage class can be used as a step method. There are no further requirements. In particular, no annotations are needed. Step methods should return the <code>this</code> reference so that chaining of calls is possible. In addition, a step method should be written in snake_case so that JGiven knows the correct casing of each word of the step.</p>
 </div>
 <div class="paragraph">
 <p>The following code shows a valid step method of the <code>WhenCook</code> stage:</p>
@@ -1267,7 +1267,7 @@ into a small set of higher order steps. For instance, the code</p>
 <p>If you need full control over the step text you can inject the <code>CurrentStep</code> interface into the stage by using the <code>@ScenarioState</code> annotation.
 You can then use the <code>setName</code> method to change the steps text.
 Note, however, that this does not work well when used within parametrized scenarios, because JGiven will not be able anymore
-to generated data tables. In general, the preferred way to change the step name should be the <code>@As</code> annotation.</p>
+to generate data tables. In general, the preferred way to change the step name should be the <code>@As</code> annotation.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1376,7 +1376,7 @@ beautifully fluent tests whilst at the same time keeping your stage methods clea
 </div>
 <div class="paragraph">
 <p>The <code>@FillerWord</code> annotation can also be added to stage methods where you want to maintain the continuation of
-of sentences in reports.</p>
+sentences in reports.</p>
 </div>
 <div class="paragraph">
 <p>For example, given the following filler words:</p>
@@ -1607,7 +1607,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 <p>Additional stages can be injected into a test class by declaring a field with the additional stage and annotate it with <code>@ScenarioStage</code>.</p>
 </div>
 <div class="paragraph">
-<p>Please note that a lifecyle model that reuses the same instance to execute multiple test methods is only partially compatible with JGiven. In particular, in such a model stages for different scenarios will be injected into the same field. This can lead to errors when attempting to run tests in parallel.</p>
+<p>Please note that a lifecycle model that reuses the same instance to execute multiple test methods is only partially compatible with JGiven. In particular, in such a model stages for different scenarios will be injected into the same field. This can lead to errors when attempting to run tests in parallel.</p>
 </div>
 <div class="sect4">
 <h5 id="_example"><a class="anchor" href="#_example"></a>Example</h5>
@@ -1814,6 +1814,12 @@ JGiven will then validate that a previous stage had provided the value and will 
 </li>
 </ol>
 </div>
+<div class="sect3">
+<h4 id="_integration_into_test_frameworks_lifecycles"><a class="anchor" href="#_integration_into_test_frameworks_lifecycles"></a>6.1.1. Integration into Test Frameworks' Lifecycles</h4>
+<div class="paragraph">
+<p>The relative ordering of JGiven&#8217;s lifecycle methods to that of the embedding test framework depends on how JGiven is hooked into it. For JUnit4, JGiven&#8217;s before and after methods are called later than their respective framework counterparts. Especially the <code>@After</code> method is executed ahead of an <code>@AfterScenario</code> method or an <code>after()</code> method of a scenario rule. For JUnit5 and TestNg, JGiven&#8217;s <code>before()</code> method is executed later than the before method and JGiven&#8217;s <code>after()</code> method is executed ahead of the frameworks' counterparts.</p>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_beforescenario_afterscenario"><a class="anchor" href="#_beforescenario_afterscenario"></a>6.2. @BeforeScenario / @AfterScenario</h3>
@@ -1822,7 +1828,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 <div class="paragraph">
 <p>Methods annotated with <code>@BeforeScenario</code> are executed before any step of any stage of a scenario.
 This is useful for some general scenario setup.
-As an example, you could initialize a WebDriver instance for Selenium tests or setup a database connection.
+As an example, you could initialize a WebDriver instance for Selenium tests or set up a database connection.
 Note that such methods are executed before the injection of values.
 Thus, the annotated code must not depend on scenario state fields.</p>
 </div>
@@ -1859,7 +1865,7 @@ Thus, the annotated code must not depend on scenario state fields.</p>
 <div class="sect2">
 <h3 id="_scenariorule"><a class="anchor" href="#_scenariorule"></a>6.3. @ScenarioRule</h3>
 <div class="paragraph">
-<p><code>@BeforeScenario</code> and <code>@AfterScenario</code> methods are often used to setup and tear down some resource.
+<p><code>@BeforeScenario</code> and <code>@AfterScenario</code> methods are often used to set up and tear down some resource.
 If you want to reuse such a resource in another stage, you would have to copy these methods into that stage.
 To avoid that, JGiven offers a concept similar to JUnit rules.
 The idea is to have a separate class that only contains the before and after methods.
@@ -1907,7 +1913,7 @@ This is useful for setting up code that is required by all or most steps of a st
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="java"><span class="annotation">@BeforeStage</span>
 <span class="directive">public</span> <span class="type">void</span> setup() {
-  <span class="comment">// do something useful to setup the stage</span>
+  <span class="comment">// do something useful to set up the stage</span>
 }</code></pre>
 </div>
 </div>
@@ -1917,7 +1923,7 @@ This is useful for setting up code that is required by all or most steps of a st
 <div class="paragraph">
 <p>Analogous to <code>@BeforeStage</code> methods, methods can be annotated with <code>@AfterStage</code>.
 These methods are executed after all steps of a stage have been executed, but before extracting the values of scenario state fields.
-Thus you can prepare state for following stages in an <code>@AfterStage</code> method.
+Thus, you can prepare state for following stages in an <code>@AfterStage</code> method.
 A typical use case for this is to apply the builder pattern to build a certain object using step methods and build the final object in an <code>@AfterStage</code> method.</p>
 </div>
 </div>
@@ -2014,7 +2020,7 @@ given().multiple_arguments( <span class="integer">5</span>, <span class="integer
 <div class="sect2">
 <h3 id="_parameters_within_a_sentence"><a class="anchor" href="#_parameters_within_a_sentence"></a>7.1. Parameters within a sentence</h3>
 <div class="paragraph">
-<p>To place parameters within a sentence instead the end of the sentence you can use the $ character.</p>
+<p>To place parameters within a sentence instead of the end of the sentence you can use the $ character.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2269,12 +2275,12 @@ CurrentStep currentStep;
 <div class="sect3">
 <h4 id="_reuse_a_set_of_namedformat_definitions"><a class="anchor" href="#_reuse_a_set_of_namedformat_definitions"></a>7.7.1. Reuse a set of @NamedFormat definitions</h4>
 <div class="paragraph">
-<p>When several steps uses the same type of POJO in their parameters, it may be tedious to redefine this POJO fields formats in each of these steps.</p>
+<p>When several steps use the same type of POJO in their parameters, it may be tedious to redefine this POJO fields format in each of these steps.</p>
 </div>
 <div class="paragraph">
 <p>The solution in this case is to create a custom annotation where POJO fields formats will be declared once and for all.<br>
-This custom annotation will be itself annotated with the <code>@NamedFormats</code> which will wraps as much as <code>@NamedFormat</code> as there are fields needing a specific formatting.<br>
-It can then further be referenced by any <code>@POJOformat</code> and <code>@Table</code> annotations through their respective <code>fieldsFormatSetAnnotation</code> attribute.</p>
+This custom annotation will be itself annotated with the <code>@NamedFormats</code> which will wrap as much <code>@NamedFormat</code> as there are fields needing a specific formatting.<br>
+It can then further be referenced by any <code>@POJOFormat</code> and <code>@Table</code> annotations through their respective <code>fieldsFormatSetAnnotation</code> attribute.</p>
 </div>
 <div class="paragraph">
 <p>Given the following POJO :</p>
@@ -2457,7 +2463,7 @@ JGiven will then make use of field-level format annotations within a <code>@POJO
 </div>
 <div class="paragraph">
 <p>Also note that POJO fields formats can be specified thanks to the <code>@Table#fieldsFormat</code> or <code>@Table#fieldsFormatSetAnnotation</code> options.<br>
-See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section for more informations about how to use these two options.</p>
+See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section for more information about how to use these two options.</p>
 </div>
 </div>
 </div>
@@ -2559,7 +2565,7 @@ See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section
             <span class="string"><span class="delimiter">&quot;</span><span class="content">And on the second run, 2, well-done</span><span class="delimiter">&quot;</span></span>
     } )
     <span class="annotation">@CaseAs</span>( <span class="string"><span class="delimiter">&quot;</span><span class="content">$1</span><span class="delimiter">&quot;</span></span> )
-    <span class="directive">public</span> <span class="type">void</span> coffe_making_gets_better( <span class="predefined-type">String</span> description, <span class="type">int</span> runNr, <span class="predefined-type">String</span> result ) {
+    <span class="directive">public</span> <span class="type">void</span> coffee_making_gets_better( <span class="predefined-type">String</span> description, <span class="type">int</span> runNr, <span class="predefined-type">String</span> result ) {
         given().a_coffee_machine();
         when().I_make_coffee_for_the_<span class="error">$</span>_time( runNr );
         then().the_result_is( result );
@@ -2571,7 +2577,7 @@ See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight nowrap"><code data-lang="java"> Coffe making gets better
+<pre class="CodeRay highlight nowrap"><code data-lang="java"> Coffee making gets better
 
    Given a coffee machine
     When I make coffee <span class="keyword">for</span> the &lt;runNr&gt; time
@@ -2595,7 +2601,7 @@ See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section
 <p>Tags are used to organize scenarios. A tag in JGiven is just a Java annotation that is itself annotated with the <a href="https://jgiven.org/javadoc/com/tngtech/jgiven/annotation/IsTag.html"><code>@IsTag</code></a> annotation. You can annotate whole test classes or single test methods with tag annotations. Tags then appear in the resulting report.</p>
 </div>
 <div class="paragraph">
-<p>Let’s say you want to know which scenarios covers the coffee feature. To do so you define a new Java annotation:</p>
+<p>Let’s say you want to know which scenarios cover the coffee feature. To do so you define a new Java annotation:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2799,7 +2805,7 @@ See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section
 <h2 id="_attachments"><a class="anchor" href="#_attachments"></a>10. Attachments</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Steps can have attachments. This is useful, for example, to save sceenshots during tests or to refer to larger files that should not be printed inline in the report.</p>
+<p>Steps can have attachments. This is useful, for example, to save screenshots during tests or to refer to larger files that should not be printed inline in the report.</p>
 </div>
 <div class="sect2">
 <h3 id="_creating_attachments"><a class="anchor" href="#_creating_attachments"></a>10.1. Creating Attachments</h3>
@@ -2944,7 +2950,7 @@ at the end of the scenario is not working well together with the TestNG executio
 <div class="sect2">
 <h3 id="_a_better_approach"><a class="anchor" href="#_a_better_approach"></a>11.2. A better approach</h3>
 <div class="paragraph">
-<p>The above example has still the big disadvantage that it will not visible in the report that an exception is actually expected. More helpful would be the following scenario:</p>
+<p>The above example has still the big disadvantage that it will not be visible in the report that an exception is actually expected. More helpful would be the following scenario:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3023,7 +3029,7 @@ JGiven and Spock features might be supported yet.
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spock&lt;/artifactId&gt;
-   &lt;version&gt;1.2.5&lt;/version&gt;
+   &lt;version&gt;1.3.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -3034,7 +3040,7 @@ JGiven and Spock features might be supported yet.
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    testImplementation &quot;com.tngtech.jgiven:jgiven-spock:1.2.5&quot;
+    testImplementation &quot;com.tngtech.jgiven:jgiven-spock:1.3.0&quot;
 }</code></pre>
 </div>
 </div>
@@ -3095,7 +3101,7 @@ depending on which JUnit version you are using. JUnit 5 is only supported with v
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-spring-junit5&lt;/artifactId&gt;
-   &lt;version&gt;1.2.5&lt;/version&gt;
+   &lt;version&gt;1.3.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -3106,7 +3112,7 @@ depending on which JUnit version you are using. JUnit 5 is only supported with v
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    testImplementation(&quot;com.tngtech.jgiven:jgiven-spring-junit5:1.2.5&quot;)
+    testImplementation(&quot;com.tngtech.jgiven:jgiven-spring-junit5:1.3.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -3122,7 +3128,7 @@ existence of JGiven.</p>
 <h4 id="_annotation_based"><a class="anchor" href="#_annotation_based"></a>13.2.1. Annotation-Based</h4>
 <div class="paragraph">
 <p>If you are using the annotation-based configuration of Spring you can annotate your Spring
-Test Configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/1.2.5/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
+Test Configuration with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/1.3.0/com/tngtech/jgiven/integration/spring/EnableJGiven.html"><code>@EnableJGiven</code></a> annotation.
 This is all you have to do to configure Spring for JGiven.</p>
 </div>
 <div class="sect4">
@@ -3203,7 +3209,7 @@ Spring XML config.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>Both classes contain all the annotations and methods necessary to run JGiven with Spring. The <code>SimpleSpringScenarioTest</code> allows to have all stages in a single stage class, while the <code>SpringScenario-Test</code> allows to have a class for each stage.</p>
+<p>Both classes contain all the annotations and methods necessary to run JGiven with Spring. The <code>SimpleSpringScenarioTest</code> allows to have all stages in a single stage class, while the <code>SpringScenarioTest</code> allows to have a class for each stage.</p>
 </div>
 <div class="sect4">
 <h5 id="_example_10"><a class="anchor" href="#_example_10"></a>Example</h5>
@@ -3227,7 +3233,7 @@ can copy the content of these classes (one method) into one of your test base cl
 <div class="paragraph">
 <p>In order to treat JGiven stages as Spring beans, e.g. if you want to inject
  other Spring beans into your stages, you have to annotate
-the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/1.2.5/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
+the stage class with the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/1.3.0/com/tngtech/jgiven/integration/spring/JGivenStage.html"><code>@JGivenStage</code></a> annotation.</p>
 </div>
 <div class="sect3">
 <h4 id="_example_11"><a class="anchor" href="#_example_11"></a>13.4.1. Example</h4>
@@ -3319,7 +3325,7 @@ the implementation might be changed in a backwards-incompatible way in future ve
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:1.2.5&quot;)
+    androidTestCompile(&quot;com.tngtech.jgiven:jgiven-android:1.3.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -3490,7 +3496,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <pre class="CodeRay highlight nowrap"><code data-lang="maven">&lt;dependency&gt;
    &lt;groupId&gt;com.tngtech.jgiven&lt;/groupId&gt;
    &lt;artifactId&gt;jgiven-junit5&lt;/artifactId&gt;
-   &lt;version&gt;1.2.5&lt;/version&gt;
+   &lt;version&gt;1.3.0&lt;/version&gt;
    &lt;scope&gt;test&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
@@ -3501,7 +3507,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight nowrap"><code data-lang="gradle">dependencies {
-    testImplementation(&quot;com.tngtech.jgiven:jgiven-junit5:1.2.5&quot;)
+    testImplementation(&quot;com.tngtech.jgiven:jgiven-junit5:1.3.0&quot;)
 }</code></pre>
 </div>
 </div>
@@ -3510,7 +3516,7 @@ hooks, it is unclear at the moment, whether JGiven will ever support them.</p>
 <div class="sect2">
 <h3 id="_use_jgiven_with_junit_5"><a class="anchor" href="#_use_jgiven_with_junit_5"></a>16.3. Use JGiven with JUnit 5</h3>
 <div class="paragraph">
-<p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.2.5/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
+<p>JGiven support for JUnit 5 is provided by the <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.3.0/com/tngtech/jgiven/junit5/JGivenExtension.html"><code>JGivenExtension</code></a>
 JUnit 5 extension. You just annotate your JUnit 5 test class with <code>@ExtendWith( JGivenExtension.class )</code>
 and JGiven is enabled.</p>
 </div>
@@ -3538,8 +3544,8 @@ the <code>@ScenarioStage</code> annotation.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Alternatively, you can use one of the test base classes <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.2.5/com/tngtech/jgiven/junit5/ScenarioTest.html"><code>ScenarioTest</code></a>,
-<a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.2.5/com/tngtech/jgiven/junit5/SimpleScenarioTest.html"><code>SimpleScenarioTest</code></a> or <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.2.5/com/tngtech/jgiven/junit5/DualScenarioTest.html"><code>DualScenarioTest</code></a> that provide additional convenience methods
+<p>Alternatively, you can use one of the test base classes <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.3.0/com/tngtech/jgiven/junit5/ScenarioTest.html"><code>ScenarioTest</code></a>,
+<a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.3.0/com/tngtech/jgiven/junit5/SimpleScenarioTest.html"><code>SimpleScenarioTest</code></a> or <a href="http://static.javadoc.io/com.tngtech.jgiven/jgiven-junit5/1.3.0/com/tngtech/jgiven/junit5/DualScenarioTest.html"><code>DualScenarioTest</code></a> that provide additional convenience methods
 and allows you to specify stage classes by using type parameters:</p>
 </div>
 <div class="listingblock">
@@ -3571,8 +3577,8 @@ and allows you to specify stage classes by using type parameters:</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.2.5<br>
-Last updated 2021-09-07 06:46:52 +0200
+Version 1.3.0<br>
+Last updated 2023-09-08 14:40:48 UTC
 </div>
 </div>
 <style>
