@@ -9,4 +9,4 @@ cp -r build/docs/asciidoc/* userguide
 git add userguide
 git commit -m 'added userguide to gh-pages'
 git push
-git checkout -f master
+git checkout -f -

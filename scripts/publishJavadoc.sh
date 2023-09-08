@@ -9,4 +9,4 @@ cp -r jgiven-core/build/docs/javadoc/* javadoc
 git add javadoc
 git commit -m 'added javadoc to gh-pages'
 git push
-git checkout -f master
+git checkout -f -
