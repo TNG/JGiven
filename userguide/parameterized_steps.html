@@ -455,7 +455,7 @@ given().multiple_arguments( 5, 6 ); // Given multiple arguments 5 6</code></pre>
 <div class="sect2">
 <h3 id="_parameters_within_a_sentence">Parameters within a sentence</h3>
 <div class="paragraph">
-<p>To place parameters within a sentence instead the end of the sentence you can use the $ character.</p>
+<p>To place parameters within a sentence instead of the end of the sentence you can use the $ character.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -710,12 +710,12 @@ public @interface Formatf {
 <div class="sect3">
 <h4 id="_reuse_a_set_of_namedformat_definitions">Reuse a set of @NamedFormat definitions</h4>
 <div class="paragraph">
-<p>When several steps uses the same type of POJO in their parameters, it may be tedious to redefine this POJO fields formats in each of these steps.</p>
+<p>When several steps use the same type of POJO in their parameters, it may be tedious to redefine this POJO fields format in each of these steps.</p>
 </div>
 <div class="paragraph">
 <p>The solution in this case is to create a custom annotation where POJO fields formats will be declared once and for all.<br>
-This custom annotation will be itself annotated with the <code>@NamedFormats</code> which will wraps as much as <code>@NamedFormat</code> as there are fields needing a specific formatting.<br>
-It can then further be referenced by any <code>@POJOformat</code> and <code>@Table</code> annotations through their respective <code>fieldsFormatSetAnnotation</code> attribute.</p>
+This custom annotation will be itself annotated with the <code>@NamedFormats</code> which will wrap as much <code>@NamedFormat</code> as there are fields needing a specific formatting.<br>
+It can then further be referenced by any <code>@POJOFormat</code> and <code>@Table</code> annotations through their respective <code>fieldsFormatSetAnnotation</code> attribute.</p>
 </div>
 <div class="paragraph">
 <p>Given the following POJO :</p>
@@ -898,7 +898,7 @@ JGiven will then make use of field-level format annotations within a <code>@POJO
 </div>
 <div class="paragraph">
 <p>Also note that POJO fields formats can be specified thanks to the <code>@Table#fieldsFormat</code> or <code>@Table#fieldsFormatSetAnnotation</code> options.<br>
-See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section for more informations about how to use these two options.</p>
+See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section for more information about how to use these two options.</p>
 </div>
 </div>
 </div>
@@ -907,8 +907,8 @@ See <a href="#_the_pojoformat_annotation">The @POJOFormat annotation</a> section
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.2.5<br>
-Last updated 2021-09-07 06:46:52 +0200
+Version 1.3.0<br>
+Last updated 2023-09-08 14:40:48 UTC
 </div>
 </div>
 </body>
