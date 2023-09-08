@@ -1,19 +1,16 @@
 package com.tngtech.jgiven.maven;
 
-import java.io.File;
-
 import com.tngtech.jgiven.report.AbstractReportConfig;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
+import com.tngtech.jgiven.report.ReportGenerator;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
+import com.tngtech.jgiven.report.html5.Html5ReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
-import com.tngtech.jgiven.report.html5.Html5ReportConfig;
-
+import java.io.File;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-
-import com.tngtech.jgiven.report.ReportGenerator;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -47,7 +44,7 @@ public class JGivenReportMojo extends AbstractMojo {
     private File customJsFile;
 
     /**
-     * The format of the generated report. Can be html or text
+     * The format of the generated report. Can be html, asciidoc or text
      */
     @Parameter( defaultValue = "html" )
     private String format;
