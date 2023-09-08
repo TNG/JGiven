@@ -444,12 +444,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_stages_and_state_sharing">Stages and State Sharing</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A JGiven scenario consists of multiple stages. Typically there is a stage for each phase of a scenario: a given stage, a when stage and a then stage, however, it is also possible to just use one stage or use arbitrary many stages. A stage is implemented by a stage class that contains methods representing the steps that can be used in the scenario. The big advantage of this modular concept is that stages can be easily reused by different scenarios.</p>
+<p>A JGiven scenario consists of multiple stages. Typically, there is a stage for each phase of a scenario: a given stage, a when stage and a then stage, however, it is also possible to just use one stage or use arbitrarily many stages. A stage is implemented by a stage class that contains methods representing the steps that can be used in the scenario. The big advantage of this modular concept is that stages can be easily reused by different scenarios. Stage classes will be proxied by JGiven, therefore, they must neither be final, nor sealed.</p>
 </div>
 <div class="sect2">
 <h3 id="_step_methods">Step Methods</h3>
 <div class="paragraph">
-<p>A stage class contains multiple step methods that can be called in a scenario and that will appear in the report. Every non-private, non-final, non-static method of a stage class can be used as a step method. There are no further requirements. In particular, no annotations are needed. Step methods should return the this reference so that chaining of calls is possible. In addition, a step method should be written in snake_case so that JGiven knows the correct casing of each word of the step.</p>
+<p>A stage class contains multiple step methods that can be called in a scenario and that will appear in the report. Every non-private, non-final, non-static method of a stage class can be used as a step method. There are no further requirements. In particular, no annotations are needed. Step methods should return the <code>this</code> reference so that chaining of calls is possible. In addition, a step method should be written in snake_case so that JGiven knows the correct casing of each word of the step.</p>
 </div>
 <div class="paragraph">
 <p>The following code shows a valid step method of the <code>WhenCook</code> stage:</p>
@@ -525,7 +525,7 @@ public WhenCalculator $_percent_are_added( int percent ) {
 <p>If you need full control over the step text you can inject the <code>CurrentStep</code> interface into the stage by using the <code>@ScenarioState</code> annotation.
 You can then use the <code>setName</code> method to change the steps text.
 Note, however, that this does not work well when used within parametrized scenarios, because JGiven will not be able anymore
-to generated data tables. In general, the preferred way to change the step name should be the <code>@As</code> annotation.</p>
+to generate data tables. In general, the preferred way to change the step name should be the <code>@As</code> annotation.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -634,7 +634,7 @@ beautifully fluent tests whilst at the same time keeping your stage methods clea
 </div>
 <div class="paragraph">
 <p>The <code>@FillerWord</code> annotation can also be added to stage methods where you want to maintain the continuation of
-of sentences in reports.</p>
+sentences in reports.</p>
 </div>
 <div class="paragraph">
 <p>For example, given the following filler words:</p>
@@ -865,7 +865,7 @@ JGiven will then validate that a previous stage had provided the value and will 
 <p>Additional stages can be injected into a test class by declaring a field with the additional stage and annotate it with <code>@ScenarioStage</code>.</p>
 </div>
 <div class="paragraph">
-<p>Please note that a lifecyle model that reuses the same instance to execute multiple test methods is only partially compatible with JGiven. In particular, in such a model stages for different scenarios will be injected into the same field. This can lead to errors when attempting to run tests in parallel.</p>
+<p>Please note that a lifecycle model that reuses the same instance to execute multiple test methods is only partially compatible with JGiven. In particular, in such a model stages for different scenarios will be injected into the same field. This can lead to errors when attempting to run tests in parallel.</p>
 </div>
 <div class="sect4">
 <h5 id="_example">Example</h5>
@@ -1026,8 +1026,8 @@ public void subclassing_of_stages_should_work() {
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.2.5<br>
-Last updated 2022-05-04 07:00:00 +0200
+Version 1.3.0<br>
+Last updated 2023-09-08 14:40:48 UTC
 </div>
 </div>
 </body>
