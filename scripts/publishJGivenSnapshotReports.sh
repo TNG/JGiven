@@ -10,4 +10,4 @@ cp -r jgiven-tests/build/reports/jgiven/html5/ ${TARGET_DIR}
 git add ${TARGET_DIR}
 git commit -m 'added generated snapshot jgiven report to gh-pages'
 git push
-git checkout -f master
+git checkout -f -
