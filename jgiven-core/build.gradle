@@ -5,7 +5,7 @@ plugins {
 description = "JGiven core module"
 
 dependencies {
-    api 'com.google.guava:guava:32.1.2-jre'
+    api 'com.google.guava:guava:32.1.3-jre'
     api 'com.google.code.gson:gson:2.10.1'
     implementation 'com.thoughtworks.paranamer:paranamer:2.8'
     implementation libs.byteBuddy
