@@ -8,6 +8,18 @@ dependencies {
     implementation project(':jgiven-html5-report')
     implementation "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.9.0"
     implementation "org.apache.maven.plugin-tools:maven-plugin-annotations:3.9.0"
+
+    testImplementation project(':jgiven-html5-report')
+
+    testImplementation(platform(libs.junit.bom))
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.junit.platform:junit-platform-runner'
+    testImplementation 'org.apache.maven.shared:maven-invoker:3.2.0'
+}
+
+test {
+    useJUnitPlatform();
 }
 
 task copyClasses(type: Copy, dependsOn: compileJava) {
