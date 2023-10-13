@@ -8,16 +8,13 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
 class BasicMavenMojoTest {
 
@@ -26,7 +23,7 @@ class BasicMavenMojoTest {
     public Path temporaryDirectory;
 
     @BeforeEach
-    void copyResourcesToTemporaryDirectory() throws URISyntaxException, IOException {
+    void copyResourcesToTemporaryDirectory() throws IOException {
         var sourceFolder = Path.of("src/test/resources" , PROJECT_FOLDER);
         copyFolder(sourceFolder, temporaryDirectory);
     }
@@ -34,7 +31,6 @@ class BasicMavenMojoTest {
     @Test
     void testMavenProducesHtmlAndAsciiReport() throws MavenInvocationException {
         var mavenExecutable= this.findMavenExecutable();
-        assumeThat(mavenExecutable).isNotEmpty();
 
         InvocationRequest request = new DefaultInvocationRequest();
         request.setInputStream(InputStream.nullInputStream());
@@ -43,7 +39,7 @@ class BasicMavenMojoTest {
         request.setOutputHandler(System.out::println);
 
         Invoker invoker = new DefaultInvoker();
-        invoker.setMavenExecutable(mavenExecutable.orElseThrow());
+        invoker.setMavenExecutable(mavenExecutable);
         InvocationResult result = invoker.execute(request);
 
         assertThat(result.getExitCode()).isZero();
@@ -65,7 +61,7 @@ class BasicMavenMojoTest {
         }
     }
 
-    private Optional<File> findMavenExecutable(){
+    private File findMavenExecutable(){
         return System.getenv().keySet().stream()
                 .filter(key -> key.equalsIgnoreCase("PATH"))
                 .map(key -> System.getenv().get(key))
@@ -75,7 +71,8 @@ class BasicMavenMojoTest {
                 .map(file -> file.listFiles((__, name) -> name.equals("mvn")))
                 .filter(files -> files != null && files.length > 0)
                 .flatMap(Stream::of)
-                .findFirst();
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("No maven executable found on the system path"));
     }
 
 }
