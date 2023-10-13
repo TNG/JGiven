@@ -13,7 +13,7 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v2.0.10
+        uses: android-actions/setup-android@v3.0.0
       - name: Produce a local release with version 1.1-t
         run: source scripts/local_release_with_version.sh
       - name: Test Kotlin Example Project
