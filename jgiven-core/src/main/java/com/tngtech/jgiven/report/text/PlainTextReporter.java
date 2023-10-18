@@ -1,15 +1,15 @@
 package com.tngtech.jgiven.report.text;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-
 import com.tngtech.jgiven.config.ConfigValue;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.impl.util.ResourceUtil;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Generates a plain text report to a PrintStream.

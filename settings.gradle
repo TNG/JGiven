@@ -39,7 +39,7 @@ gradleEnterprise {
     }
 }
 
-rootProject.name = 'jgiven'
+rootProject.name = 'JGiven'
 
 include ':jgiven-core',
         ':jgiven-maven-plugin',

@@ -9,7 +9,7 @@ dependencies {
     api 'com.google.code.gson:gson:2.10.1'
     implementation 'com.thoughtworks.paranamer:paranamer:2.8'
     implementation libs.byteBuddy
-    implementation 'org.fusesource.jansi:jansi:1.18'
+    implementation 'org.fusesource.jansi:jansi:2.4.1'
 
     testImplementation 'com.github.stefanbirkner:system-rules:1.19.0'
 }
