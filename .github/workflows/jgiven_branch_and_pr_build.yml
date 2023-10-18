@@ -9,7 +9,7 @@ jobs:
       ANDROID: true
     strategy:
       matrix:
-        java: [ '11', '17', '19']
+        java: [ '11', '17', '21']
         junit: ['4.13.2']
     steps:
       - name: Ensure firefox is installed
