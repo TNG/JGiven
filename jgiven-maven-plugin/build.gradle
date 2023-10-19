@@ -1,7 +1,10 @@
 import java.util.stream.Collectors
 
-description = 'JGiven Maven Mojo'
+plugins{
+    id "java-gradle-plugin"
+}
 
+description = 'JGiven Maven Mojo'
 
 dependencies {
     implementation project(':jgiven-core')
@@ -51,6 +54,7 @@ generateMavenPlugin.configure {
             .collect(Collectors.toList())
     )
     onlyIf {
+        println("taskGraph: " + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()));
         gradle.taskGraph.getAllTasks().stream().anyMatch(thisProjectsPublishTasks::contains)
     }
 }

@@ -69,14 +69,33 @@
                 <version>${jgiven.version}</version>
                 <executions>
                     <execution>
+                        <id>html-report</id>
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <format>html</format>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>asciidoc-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <format>asciidoc</format>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>text-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <format>text</format>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <format>html</format>
-                </configuration>
             </plugin>
         </plugins>
     </build>

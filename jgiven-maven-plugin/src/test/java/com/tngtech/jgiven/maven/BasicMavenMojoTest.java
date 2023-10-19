@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.maven;
 
 import org.apache.maven.shared.invoker.*;
+import org.gradle.testkit.runner.GradleRunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -28,6 +29,13 @@ class BasicMavenMojoTest {
         copyFolder(sourceFolder, temporaryDirectory);
     }
 
+    @BeforeEach
+    void publishPluginVersionToMavenLocal()throws IOException {
+        GradleRunner.create().withProjectDir(new File(System.getProperty("user.dir")))
+                .withArguments("publishToMavenLocal", "-x", "test") //don't test, or we'll loop infinitely
+                .build();
+    }
+
     @Test
     void testMavenProducesHtmlAndAsciiReport() throws MavenInvocationException {
         var mavenExecutable= this.findMavenExecutable();
@@ -37,7 +45,7 @@ class BasicMavenMojoTest {
         request.setBatchMode(true);
         request.addArg("-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn");
         request.setPomFile(new File(temporaryDirectory.toFile(),"pom.xml"));
-        request.setGoals(List.of("install"));
+        request.setGoals(List.of("verify"));
         request.setOutputHandler(System.out::println);
 
         Invoker invoker = new DefaultInvoker();
@@ -47,6 +55,7 @@ class BasicMavenMojoTest {
         assertThat(result.getExitCode()).isZero();
         assertThat(new File(temporaryDirectory.toFile(), "target/jgiven-reports/html/index.html")).exists();
         assertThat(new File(temporaryDirectory.toFile(), "target/jgiven-reports/asciidoc/index.asciidoc")).exists();
+        assertThat(new File(temporaryDirectory.toFile(), "target/jgiven-reports/text")).exists();
     }
 
     private void copyFolder(Path src, Path dest) throws IOException {
