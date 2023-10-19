@@ -34,6 +34,8 @@ class BasicMavenMojoTest {
 
         InvocationRequest request = new DefaultInvocationRequest();
         request.setInputStream(InputStream.nullInputStream());
+        request.setBatchMode(true);
+        request.addArg("-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn");
         request.setPomFile(new File(temporaryDirectory.toFile(),"pom.xml"));
         request.setGoals(List.of("install"));
         request.setOutputHandler(System.out::println);
