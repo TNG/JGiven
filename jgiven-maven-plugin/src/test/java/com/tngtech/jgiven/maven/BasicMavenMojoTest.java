@@ -66,7 +66,6 @@ class BasicMavenMojoTest {
                 .filter(key -> key.equalsIgnoreCase("PATH"))
                 .map(key -> System.getenv().get(key))
                 .flatMap(path -> Stream.of(path.split(System.getProperty("path.separator"))))
-                .filter(path -> path.contains("maven"))
                 .map(File::new)
                 .map(file -> file.listFiles((__, name) -> name.equals("mvn")))
                 .filter(files -> files != null && files.length > 0)
