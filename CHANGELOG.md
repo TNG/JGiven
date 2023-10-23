@@ -1,3 +1,6 @@
+# Release v1.3.1
+* TextReportGenerator is now backed by jansi2 not jansi1. [#1420](https://github.com/TNG/JGiven/issues/1420)
+* Further dependency updates.
 # Release v1.3.0
 ## Breaking changes
 * Increased minimum supported version to Java 11
