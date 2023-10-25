@@ -45,7 +45,8 @@ tasks.register('generateMavenPlugin', CrossPlatformExec) {
     // currently it seems to be the more or less only clean solution
     // to generate a plugin.xml file to use maven directly
     // if anyone has a better solution please let us know!
-    buildCommand 'mvn', '-nsu', '-U', '-f', 'build/maven/pom.xml', 'plugin:descriptor'
+    buildCommand 'mvn', '-nsu', '-U', '-f', 'build/maven/pom.xml', 'plugin:descriptor', '--batch-mode',
+            '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 }
 
 generateMavenPlugin.configure {
