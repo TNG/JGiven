@@ -1,6 +1,6 @@
 import java.util.stream.Collectors
 
-plugins{
+plugins {
     id "java-gradle-plugin"
 }
 
@@ -22,15 +22,17 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform();
+    useJUnitPlatform()
 }
 
-task copyClasses(type: Copy, dependsOn: compileJava) {
+tasks.register('copyClasses', Copy) {
+    dependsOn(compileJava)
     from 'build/classes/java/main'
     into 'build/maven/target/classes'
 }
 
-task generatePom(type: Copy, dependsOn: copyClasses) {
+tasks.register('generatePom', Copy) {
+    dependsOn(copyClasses)
     from 'src/main/maven'
     into 'build/maven'
     filesMatching("**/pom.*") {
@@ -38,11 +40,13 @@ task generatePom(type: Copy, dependsOn: copyClasses) {
     }
 }
 
-task generateMavenPlugin(type: CrossPlatformExec, dependsOn: generatePom) {
+tasks.register('generateMavenPlugin', CrossPlatformExec) {
+    dependsOn(generatePom)
     // currently it seems to be the more or less only clean solution
     // to generate a plugin.xml file to use maven directly
     // if anyone has a better solution please let us know!
-    buildCommand 'mvn', '-nsu', '-U', '-f', 'build/maven/pom.xml', 'plugin:descriptor'
+    buildCommand 'mvn', '-nsu', '-U', '-f', 'build/maven/pom.xml', 'plugin:descriptor', '--batch-mode',
+            '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 }
 
 generateMavenPlugin.configure {
@@ -54,37 +58,35 @@ generateMavenPlugin.configure {
             .collect(Collectors.toList())
     )
     onlyIf {
-        println("taskGraph: " + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()));
+        println("taskGraph: " + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
         gradle.taskGraph.getAllTasks().stream().anyMatch(thisProjectsPublishTasks::contains)
     }
 }
 
-tasks.register("copyMavenPlugin", Copy){it->
-    it.dependsOn += generateMavenPlugin
-
-    from('build/maven/target/classes') {
-        include '**/*.xml'
-        exclude '**/*.class'
-    }
-    into 'build/classes/java/main'
+jar.configure {
+    dependsOn(generateMavenPlugin)
+    dependsOn(generatePom)
     javadoc.dependsOn += it
-    checkstyleMain.mustRunAfter(it)
-}
-
-tasks.register("copyPom", Copy){it ->
-    it.dependsOn += generatePom
-    from('build/maven') {
-        include '**/pom.*'
-        filter { line ->
-            line.replaceAll("<version>.*</version>", "")
+    doFirst {
+        copy {
+            from('build/maven') {
+                include '**/pom.*'
+                filter { line ->
+                    line.replaceAll("<version>.*</version>", "")
+                }
+            }
+            into 'build/classes/main/META-INF/maven/com.tngtech.jgiven/jgiven-maven-plugin'
+            includeEmptyDirs = false
+        }
+        copy {
+            from('build/maven/target/classes') {
+                include '**/*.xml'
+                exclude '**/*.class'
+            }
+            into 'build/classes/java/main'
         }
     }
-    into 'build/classes/main/META-INF/maven/com.tngtech.jgiven/jgiven-maven-plugin'
-    includeEmptyDirs = false
-
 }
-
-jar.dependsOn copyMavenPlugin, copyPom
 
 class CrossPlatformExec extends Exec {
     void buildCommand(String command, String... commandArgs) {
