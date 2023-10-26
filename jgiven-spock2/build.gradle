@@ -6,7 +6,7 @@ plugins {
 description = "Module for writing JGiven tests with Spock 2"
 
 ext {
-    spock2_version = '2.1-groovy-3.0'
+    spock2_version = '2.3-groovy-4.0'
     groovy_version = '3.0.19'
 }
 
