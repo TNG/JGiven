@@ -29,7 +29,7 @@ repositories {
 dependencies {
     implementation "org.spockframework:spock-core:2.3-groovy-4.0"
     implementation "org.spockframework:spock-junit4:2.3-groovy-4.0"
-    testImplementation "com.tngtech.jgiven:jgiven-spock:${jGivenVersion}"
+    testImplementation "com.tngtech.jgiven:jgiven-spock2:${jGivenVersion}"
 }
 
 test {
