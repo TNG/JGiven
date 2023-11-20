@@ -33,6 +33,7 @@ class BasicMavenMojoTest {
     void publishPluginVersionToMavenLocal()throws IOException {
         GradleRunner.create().withProjectDir(new File(System.getProperty("user.dir")))
                 .withArguments("publishToMavenLocal", "-x", "test") //don't test, or we'll loop infinitely
+                .withArguments("-x", "signPluginMavenPublication") //may break releases.
                 .build();
     }
 
