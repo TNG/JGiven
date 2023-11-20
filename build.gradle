@@ -77,13 +77,13 @@ subprojects {
                             }
                             withXml {
                                 project.configurations.compileOnly.allDependencies.each { dep ->
-                                    asNode().dependencies[0].appendNode('dependency').with {
-                                        it.appendNode('groupId', dep.group)
-                                        it.appendNode('artifactId', dep.name)
+                                    asNode().dependencies[0].appendNode('dependency').with { dependencyNode ->
+                                        dependencyNode.appendNode('groupId', dep.group)
+                                        dependencyNode.appendNode('artifactId', dep.name)
                                         if (dep.version != null && dep.version.trim() != "") {
-                                            it.appendNode('version', dep.version)
+                                            dependencyNode.appendNode('version', dep.version)
                                         }
-                                        it.appendNode('scope', 'provided')
+                                        dependencyNode.appendNode('scope', 'provided')
                                     }
                                 }
 
@@ -292,6 +292,7 @@ configure(subprojects) {
     // -- build and publish artifacts -------------------------------------------------------------------------------------
 
     signing {
+
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
         required {
             isReleaseVersion && gradle.taskGraph.getAllTasks().any { it instanceof PublishToMavenRepository }
