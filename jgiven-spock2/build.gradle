@@ -1,8 +1,7 @@
 plugins {
     id 'java-library'
+    id 'groovy'
 }
-
-apply plugin: 'groovy'
 
 description = "Module for writing JGiven tests with Spock 2"
 
@@ -20,6 +19,7 @@ dependencies {
     implementation libs.byteBuddy
 
     testImplementation project(':jgiven-html5-report')
+
 }
 
 test {
