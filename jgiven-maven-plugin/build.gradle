@@ -58,7 +58,7 @@ generateMavenPlugin.configure {
             .collect(Collectors.toList())
     )
     onlyIf {
-        println("taskGraph: " + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
+        logger.debug("taskGraph: " + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
         gradle.taskGraph.getAllTasks().stream().anyMatch(thisProjectsPublishTasks::contains)
     }
 }

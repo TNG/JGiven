@@ -30,9 +30,13 @@ class BasicMavenMojoTest {
     }
 
     @BeforeEach
-    void publishPluginVersionToMavenLocal()throws IOException {
-        GradleRunner.create().withProjectDir(new File(System.getProperty("user.dir")))
-                .withArguments("publishToMavenLocal", "-x", "test") //don't test, or we'll loop infinitely
+    void publishPluginVersionToMavenLocal(){
+       GradleRunner.create().withProjectDir(new File(System.getProperty("user.dir")))
+                .withArguments(
+                        "publishToMavenLocal",
+                        "-x", "test", //don't test, or we'll loop infinitely
+                        "-x", "signPluginMavenPublication" //may break releases.
+                )
                 .build();
     }
 
@@ -52,7 +56,7 @@ class BasicMavenMojoTest {
         invoker.setMavenExecutable(mavenExecutable);
         InvocationResult result = invoker.execute(request);
 
-        assertThat(result.getExitCode()).isZero();
+        assertThat(result.getExitCode()).as("Maven exit code").isZero();
         assertThat(new File(temporaryDirectory.toFile(), "target/jgiven-reports/html/index.html")).exists();
         assertThat(new File(temporaryDirectory.toFile(), "target/jgiven-reports/asciidoc/index.asciidoc")).exists();
         assertThat(new File(temporaryDirectory.toFile(), "target/jgiven-reports/text")).exists();
