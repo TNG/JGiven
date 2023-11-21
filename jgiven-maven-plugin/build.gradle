@@ -48,6 +48,7 @@ tasks.register('generateMavenPlugin', CrossPlatformExec) {
     buildCommand 'mvn', '-nsu', '-U', '-f', 'build/maven/pom.xml', 'plugin:descriptor', '--batch-mode',
             '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 }
+println("Env": env)
 
 generateMavenPlugin.configure {
     List<Task> thisProjectsPublishTasks = getTasks().withType(PublishToMavenLocal).stream().collect(Collectors.toList())
@@ -58,7 +59,7 @@ generateMavenPlugin.configure {
             .collect(Collectors.toList())
     )
     onlyIf {
-        logger.debug("taskGraph: " + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
+        logger.warn("taskGraph: " + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
         gradle.taskGraph.getAllTasks().stream().anyMatch(thisProjectsPublishTasks::contains)
     }
 }
