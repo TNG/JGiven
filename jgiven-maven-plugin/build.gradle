@@ -48,7 +48,7 @@ tasks.register('generateMavenPlugin', CrossPlatformExec) {
     buildCommand 'mvn', '-nsu', '-U', '-f', 'build/maven/pom.xml', 'plugin:descriptor', '--batch-mode',
             '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 }
-println("Env": env)
+println("Env": System.getenv())
 
 generateMavenPlugin.configure {
     List<Task> thisProjectsPublishTasks = getTasks().withType(PublishToMavenLocal).stream().collect(Collectors.toList())
