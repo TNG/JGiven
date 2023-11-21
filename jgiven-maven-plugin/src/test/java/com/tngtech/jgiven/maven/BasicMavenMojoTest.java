@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -25,30 +26,32 @@ class BasicMavenMojoTest {
 
     @BeforeEach
     void copyResourcesToTemporaryDirectory() throws IOException {
-        var sourceFolder = Path.of("src/test/resources" , PROJECT_FOLDER);
+        var sourceFolder = Path.of("src/test/resources", PROJECT_FOLDER);
         copyFolder(sourceFolder, temporaryDirectory);
     }
 
     @BeforeEach
-    void publishPluginVersionToMavenLocal(){
-       GradleRunner.create().withProjectDir(new File(System.getProperty("user.dir")))
+    void publishPluginVersionToMavenLocal() {
+        var env = new HashMap<>(System.getenv());
+        env.put("RELEASE", "false");
+        GradleRunner.create().withProjectDir(new File(System.getProperty("user.dir")))
+                .withEnvironment(env)
                 .withArguments(
                         "publishToMavenLocal",
-                        "-x", "test", //don't test, or we'll loop infinitely
-                        "-x", "signPluginMavenPublication" //may break releases.
+                        "-x", "test" //don't test, or we'll loop infinitely
                 )
                 .build();
     }
 
     @Test
     void testMavenProducesHtmlAndAsciiReport() throws MavenInvocationException {
-        var mavenExecutable= this.findMavenExecutable();
+        var mavenExecutable = this.findMavenExecutable();
 
         InvocationRequest request = new DefaultInvocationRequest();
         request.setInputStream(InputStream.nullInputStream());
         request.setBatchMode(true);
         request.addArg("-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn");
-        request.setPomFile(new File(temporaryDirectory.toFile(),"pom.xml"));
+        request.setPomFile(new File(temporaryDirectory.toFile(), "pom.xml"));
         request.setGoals(List.of("verify"));
         request.setOutputHandler(System.out::println);
 
@@ -76,7 +79,7 @@ class BasicMavenMojoTest {
         }
     }
 
-    private File findMavenExecutable(){
+    private File findMavenExecutable() {
         return System.getenv().keySet().stream()
                 .filter(key -> key.equalsIgnoreCase("PATH"))
                 .map(key -> System.getenv().get(key))
