@@ -23,16 +23,17 @@ jobs:
           gpg --quick-gen-key --batch --passphrase "${GPG_PASSWORD}" "${GPG_KEY_ID}"
           gpg --list-keys
       - name: Set up mock server
-        run: ls #haha
-      - name: Set up proxy to route to mock server
-        run: ls
+        run: |
+          wget https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/3.3.1/wiremock-standalone-3.3.1.jar
+          wiremock=$(find ./ -name "wiremock-standalone-*.jar")
+          java -jar ${wiremock} --port 7000 --verbose &
       - name: set an alternate version
         run: "source scripts/source_files/helper_functions.sh && updateAllVersionInformation ${VERSION}"
       - name: Attempt mock release
         run: >
           ./gradlew test publishMavenPublicationToMavenLocal publishMavenPublicationToMavenRepository 
           -PsigningKey="$(gpg --batch --pinentry-mode=loopback --yes --passphrase "${GPG_PASSWORD}" --armor --export-secret-key "${GPG_KEY_ID}")"
-          -PsigningPassword="${GPG_PASSWORD}"
+          -PsigningPassword="${GPG_PASSWORD}" -Ppublishing.releaseUrl=http://localhost:7000
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}

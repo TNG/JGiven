@@ -9,7 +9,6 @@ plugins {
     id 'com.github.node-gradle.node' version '7.0.1' apply false
 }
 
-
 apply plugin: 'project-report'
 
 description = 'JGiven - BDD in plain Java'
@@ -128,8 +127,8 @@ subprojects {
                 }
                 repositories {
                     maven {
-                        String releaseUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-                        String snapshotUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+                        String releaseUrl = project["publishing.releaseUrl"]
+                        String snapshotUrl = project["publishing.releaseUrl"]
                         url = System.env.RELEASE == "true" ? releaseUrl : snapshotUrl
                         credentials {
                             username = sonatypeUsername
