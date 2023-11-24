@@ -1,3 +1,5 @@
+import java.util.stream.Collectors
+
 //file:noinspection GroovyAssignabilityCheck
 plugins {
     id 'com.github.kt3k.coveralls' version '2.12.2'
@@ -294,6 +296,7 @@ configure(subprojects) { subproject ->
     signing {
 
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
+        logger.debug("Task graph at signing:" + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
         required {
             isReleaseVersion && gradle.taskGraph.getAllTasks().any { it instanceof PublishToMavenRepository }
         }
