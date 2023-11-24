@@ -1,77 +1,94 @@
 package com.tngtech.jgiven.maven;
 
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.shared.invoker.*;
-import org.gradle.testkit.runner.GradleRunner;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static java.lang.String.format;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BasicMavenMojoTest {
 
     private static final String PROJECT_FOLDER = "sampleProject"; //name is also used in renovate.json
-    @TempDir
-    public Path temporaryDirectory;
 
-    @BeforeEach
-    void copyResourcesToTemporaryDirectory() throws IOException {
+    private static File projectFile;
+
+    @BeforeAll
+    static void prepareTestProject(@TempDir File temporaryDirectory) throws Exception {
+        projectFile = new File(temporaryDirectory, "project");
+
         var sourceFolder = Path.of("src/test/resources", PROJECT_FOLDER);
-        copyFolder(sourceFolder, temporaryDirectory);
+        copyFolder(sourceFolder, projectFile.toPath());
+
+        buildMavenTestProject();
     }
 
-    @BeforeEach
-    void publishPluginVersionToMavenLocal() {
-        var env = new HashMap<>(System.getenv());
-        env.put("RELEASE", "false");
-        GradleRunner.create().withProjectDir(new File(System.getProperty("user.dir")))
-                .withEnvironment(env)
-                .withArguments(
-                        "publishToMavenLocal",
-                        "-x", "test" //don't test, or we'll loop infinitely
-                )
-                .build();
+    static Stream<Arguments> provideFormatsAndExpectedOutput() {
+        return Stream.of(Arguments.of("html", "index.html"),
+                Arguments.of("asciidoc", "index.asciidoc"),
+                Arguments.of("text", "testpackage.ThingDoerTest.feature")
+        );
     }
 
+    @ParameterizedTest
+    @MethodSource("provideFormatsAndExpectedOutput")
+    void should_determine_output_dir_based_on_format(String format, String expectedOutput) throws MojoExecutionException {
+        var mavenMojo = new JGivenReportMojo(
+                new File(projectFile, "target"),
+                null,
+                new File(projectFile, "target/jgiven-reports/json"),
+                new File(projectFile, "src/test/resources/jgiven/custom.css"),
+                new File(projectFile, "src/test/resources/jgiven/custom.js"),
+                format,
+                "JGiven Report",
+                false,
+                true
+        );
+
+        mavenMojo.execute();
+
+        assertThat(new File(projectFile, format("target/jgiven-reports/%s/%s",format, expectedOutput))).exists();
+    }
     @Test
-    void testMavenProducesHtmlAndAsciiReport() throws MavenInvocationException {
-        var mavenExecutable = this.findMavenExecutable();
+    void should_prefer_writing_to_explicit_output_directory(@TempDir File outputDir) throws MojoExecutionException {
+        var mavenMojo = new JGivenReportMojo(
+                new File(projectFile, "target"),
+                outputDir,
+                new File(projectFile, "target/jgiven-reports/json"),
+                new File(projectFile, "src/test/resources/jgiven/custom.css"),
+                new File(projectFile, "src/test/resources/jgiven/custom.js"),
+                "html",
+                "JGiven Report",
+                false,
+                true
+        );
 
-        InvocationRequest request = new DefaultInvocationRequest();
-        request.setInputStream(InputStream.nullInputStream());
-        request.setBatchMode(true);
-        request.addArg("-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn");
-        request.setPomFile(new File(temporaryDirectory.toFile(), "pom.xml"));
-        request.setGoals(List.of("verify"));
-        request.setOutputHandler(System.out::println);
+        mavenMojo.execute();
 
-        Invoker invoker = new DefaultInvoker();
-        invoker.setMavenExecutable(mavenExecutable);
-        InvocationResult result = invoker.execute(request);
-
-        assertThat(result.getExitCode()).as("Maven exit code").isZero();
-        assertThat(new File(temporaryDirectory.toFile(), "target/jgiven-reports/html/index.html")).exists();
-        assertThat(new File(temporaryDirectory.toFile(), "target/jgiven-reports/asciidoc/index.asciidoc")).exists();
-        assertThat(new File(temporaryDirectory.toFile(), "target/jgiven-reports/text")).exists();
+        assertThat(new File(outputDir, "index.html")).exists();
     }
 
-    private void copyFolder(Path src, Path dest) throws IOException {
+    private static void copyFolder(Path src, Path dest) throws IOException {
         try (Stream<Path> stream = Files.walk(src)) {
             stream.forEach(source -> copy(source, dest.resolve(src.relativize(source))));
         }
     }
 
-    private void copy(Path source, Path dest) {
+    private static void copy(Path source, Path dest) {
         try {
             Files.copy(source, dest, REPLACE_EXISTING);
         } catch (Exception e) {
@@ -79,7 +96,24 @@ class BasicMavenMojoTest {
         }
     }
 
-    private File findMavenExecutable() {
+    private static void buildMavenTestProject() throws MavenInvocationException {
+        var mavenExecutable = findMavenExecutable();
+
+        InvocationRequest request = new DefaultInvocationRequest();
+        request.setInputStream(InputStream.nullInputStream());
+        request.setBatchMode(true);
+        request.addArg("-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn");
+        request.setPomFile(new File(projectFile, "pom.xml"));
+        request.setGoals(List.of("verify"));
+        request.setOutputHandler(System.out::println);
+
+        Invoker invoker = new DefaultInvoker();
+        invoker.setMavenExecutable(mavenExecutable);
+        invoker.execute(request);
+    }
+
+
+    private static File findMavenExecutable() {
         return System.getenv().keySet().stream()
                 .filter(key -> key.equalsIgnoreCase("PATH"))
                 .map(key -> System.getenv().get(key))
