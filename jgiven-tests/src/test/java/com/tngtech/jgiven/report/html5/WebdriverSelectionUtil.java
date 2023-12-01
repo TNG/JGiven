@@ -19,8 +19,8 @@ import java.util.function.Supplier;
 
 public class WebdriverSelectionUtil {
     private final Logger log = LoggerFactory.getLogger(WebdriverSelectionUtil.class);
-    private final List<Supplier<WebDriver>> configuredProvider = Arrays.asList( this::setupFirefoxDriver,
-            this::setupChromeDriver, this::setupEdgeDriver);
+    private final List<Supplier<WebDriver>> configuredProvider = Arrays.asList( this::setupChromeDriver,
+            this::setupEdgeDriver, this::setupFirefoxDriver);
 
     public WebDriver setupAnyWebDriver() {
         WebDriver driver = tryAllWebdrivers();
