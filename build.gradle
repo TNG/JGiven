@@ -9,7 +9,6 @@ plugins {
 }
 
 
-
 apply plugin: 'project-report'
 
 description = 'JGiven - BDD in plain Java'
@@ -29,7 +28,7 @@ allprojects {
         google()
     }
 
-    tasks.withType(Javadoc) {
+    tasks.withType(Javadoc).configureEach {
         options.addStringOption('Xdoclint:none', '-quiet')
     }
 
@@ -39,6 +38,15 @@ allprojects {
     ext.sonatypePassword = (rootProject.hasProperty('sonatypePassword')) ?
             rootProject.sonatypePassword :
             System.getenv().getOrDefault("SONATYPE_PASSWORD", "")
+
+    configurations.configureEach {
+        resolutionStrategy.capabilitiesResolution.withCapability('com.google.collections:google-collections') {
+            def toBeSelected = candidates.find { cvi -> cvi.id instanceof ModuleComponentIdentifier && cvi.id.group == 'com.google.guava' && cvi.id.module == 'guava' }
+            if (toBeSelected != null) {
+                select(toBeSelected)
+            }
+        }
+    }
 }
 
 asciidoctor {
@@ -192,7 +200,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
                 'Specification-Title': project.name,
                 'Specification-Version': project.version,
                 'Specification-Vendor': 'TNG Technology Consulting GmbH',
-                'Automatic-Module-Name' : "com.tngtech.jgiven.${project.name.replaceAll("-",".").replace("jgiven.","")}"
+                'Automatic-Module-Name': "com.tngtech.jgiven.${project.name.replaceAll("-", ".").replace("jgiven.", "")}"
         )
     }
 
