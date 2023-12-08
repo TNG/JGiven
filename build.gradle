@@ -283,7 +283,7 @@ configure(subprojects) {
     }
 
     checkstyle {
-        toolVersion = "10.12.5"
+        toolVersion = "10.12.6"
         configFile = file("${rootProject.projectDir}/checkstyle.xml")
         showViolations = false
         ignoreFailures = true
