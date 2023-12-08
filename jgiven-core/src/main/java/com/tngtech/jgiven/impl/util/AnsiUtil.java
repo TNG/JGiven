@@ -81,8 +81,7 @@ public class AnsiUtil {
                 }
 
                 // These erros happen if the JNI lib is not available for your platform.
-            } catch (NoClassDefFoundError ignore) {
-            } catch (UnsatisfiedLinkError ignore) {
+            } catch (NoClassDefFoundError | UnsatisfiedLinkError ignore) {
             }
         }
 
