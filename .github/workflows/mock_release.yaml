@@ -27,13 +27,20 @@ jobs:
           wget https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/3.3.1/wiremock-standalone-3.3.1.jar
           wiremock=$(find ./ -name "wiremock-standalone-*.jar")
           java -jar ${wiremock} --port 7000 --verbose &
+          while ! nc -z localhost 7000; do   
+            sleep 0.1 # wait for 1/10 of the second before check again
+          done
+      - name: Add mock server mappings
+        run: |
+          curl -X POST  --data '{"request": {"urlPattern": "/com/tngtech/jgiven/[^/]+/[^/]+/[^/]+", "method": "PUT"}, "response": {"status": 200, "body": "OK"}}' http://localhost:7000/__admin/mappings
+          curl -X POST  --data '{"request": {"urlPattern": "/com/tngtech/jgiven/.*?/maven-metadata.xml(?:[.]sha(?:1|512|256)|[.]md5)?", "method": "PUT"}, "response": {"status": 200, "body": "OK"}}' http://localhost:7000/__admin/mappings
       - name: set an alternate version
         run: "source scripts/source_files/helper_functions.sh && updateAllVersionInformation ${VERSION}"
       - name: Attempt mock release
         run: >
           ./gradlew test publishMavenPublicationToMavenLocal publishMavenPublicationToMavenRepository 
           -PsigningKey="$(gpg --batch --pinentry-mode=loopback --yes --passphrase "${GPG_PASSWORD}" --armor --export-secret-key "${GPG_KEY_ID}")"
-          -PsigningPassword="${GPG_PASSWORD}" -Ppublishing.releaseUrl=http://localhost:7000
+          -PsigningPassword="${GPG_PASSWORD}" -Ppublishing.releaseUrl=http://localhost:7000 -Ppublishing.allowInsecureProtocol=true
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
