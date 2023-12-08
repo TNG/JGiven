@@ -12,4 +12,5 @@ public class JUnit5ScenarioTest extends ScenarioTest<GivenStage, WhenStage, Then
         then().some_outcome();
     }
 
+
 }
