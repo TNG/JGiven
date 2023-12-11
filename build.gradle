@@ -4,7 +4,6 @@ plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'io.codearte.nexus-staging' version '0.30.0'
     id 'com.github.ben-manes.versions' version '0.50.0'
-    id 'org.sonarqube' version '4.4.1.3373' apply false
     id 'com.github.node-gradle.node' version '7.0.1' apply false
 }
 
@@ -264,7 +263,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     project.ext.publishVariant('java')
 }
 
-configure(subprojects) {
+configure(subprojects) { subproject ->
     apply plugin: 'checkstyle'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
@@ -272,15 +271,6 @@ configure(subprojects) {
     apply plugin: 'maven-publish'
 
     description "${rootProject.description} - Module ${project.name}"
-
-    if (JavaVersion.current().isJava8Compatible()) {
-        apply plugin: 'org.sonarqube'
-        sonarqube {
-            properties {
-                property "sonar.jacoco.reportPath", "${rootProject.projectDir}/build/jacoco/jacocoTest.exec"
-            }
-        }
-    }
 
     checkstyle {
         toolVersion = "10.12.5"
