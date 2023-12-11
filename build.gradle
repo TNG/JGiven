@@ -222,7 +222,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         }
     }
 
-    task jgivenHtml5Report(type: JavaExec) {
+    tasks.register("jgivenHtml5Report", JavaExec) {
         //noinspection GroovyAccessibility
         mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',
@@ -235,7 +235,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         classpath = configurations.testRuntimeClasspath
     }
 
-    task jgivenAsciiDocReport(type: JavaExec) {
+    tasks.register("jgivenAsciiDocReport",JavaExec) {
         //noinspection GroovyAccessibility
         mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',
@@ -253,7 +253,8 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         attributes toc: ''
     }
 
-    task copyAsciiDoc(type: Copy, dependsOn: jgivenAsciiDocReport) {
+    tasks.register("copyAsciiDoc", Copy, ) {
+        dependsOn += jgivenAsciiDocReport
         from 'src/asciidoc'
         into 'build/reports/jgiven/asciidoc'
     }
@@ -301,7 +302,7 @@ configure(subprojects) { subproject ->
     }
 }
 
-task overallJacocoReport(type: JacocoReport) {
+tasks.register("overallJacocoReport", JacocoReport) {
     getExecutionData().setFrom files("build/jacoco/jacocoTest.exec")
     getSourceDirectories().setFrom files("jgiven-core/src/main/java")
     getClassDirectories().setFrom files("jgiven-core/build/classes/main")
