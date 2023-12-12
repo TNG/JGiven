@@ -1,5 +1,9 @@
-apply plugin: 'java'
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_19
+plugins {
+    id 'java'
+}
+java {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_19
+}
 
 dependencies {
     testImplementation project(':jgiven-core')

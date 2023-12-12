@@ -1,6 +1,9 @@
 # Release v1.3.1
+## Fixed issues
 * TextReportGenerator is now backed by jansi2 not jansi1. [#1420](https://github.com/TNG/JGiven/issues/1420)
+* JUnit 5 assumptions failures don't fail tests anymore  [#1465] (https://github.com/TNG/JGiven/issues/1465) (thanks to j8zdev for the analysis)
 * Further dependency updates.
+
 # Release v1.3.0
 ## Breaking changes
 * Increased minimum supported version to Java 11

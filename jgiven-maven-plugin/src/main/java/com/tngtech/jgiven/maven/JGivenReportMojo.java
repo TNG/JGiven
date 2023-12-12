@@ -21,6 +21,20 @@ public class JGivenReportMojo extends AbstractMojo {
 
     public static final String JGIVEN = "JGiven ";
 
+    public JGivenReportMojo(){}
+
+    public JGivenReportMojo(File buildDirectory, File outputDirectory, File sourceDirectory, File customCssFile, File customJsFile, String format, String title, boolean excludeEmptyScenarios, boolean thumbnailsAreShown) {
+        this.buildDirectory = buildDirectory;
+        this.outputDirectory = outputDirectory;
+        this.sourceDirectory = sourceDirectory;
+        this.customCssFile = customCssFile;
+        this.customJsFile = customJsFile;
+        this.format = format;
+        this.title = title;
+        this.excludeEmptyScenarios = excludeEmptyScenarios;
+        this.thumbnailsAreShown = thumbnailsAreShown;
+    }
+
     @Parameter(defaultValue = "${project.build.directory}", readonly = true, required = true)
     private File buildDirectory;
     /**
@@ -142,4 +156,5 @@ public class JGivenReportMojo extends AbstractMojo {
                 this.outputDirectory = new File(buildDirectory, "/jgiven-reports/text");
         }
     }
+
 }

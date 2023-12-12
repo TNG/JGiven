@@ -1,35 +1,34 @@
-package com.tngtech.jgiven.junit;
+package com.tngtech.jgiven.testng;
 
-import com.tngtech.jgiven.annotation.Description;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.StepStatus;
-import org.junit.Assume;
-import org.junit.Test;
+import org.testng.SkipException;
+import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
-@Description("Scenarios can have sections")
-public class AssumptionTest extends SimpleScenarioTest<AssumptionTest.TestStage> {
+@Test(singleThreaded = true)
+public class AssumptionsTest extends SimpleScenarioTest<AssumptionsTest.TestStage> {
 
 
     @Test
     public void should_pass_on_assertJ_assumptions() throws Throwable {
         assertThatThrownBy(() -> when().I_assume_something_using_assertJ())
-                .isInstanceOf(catchException(AssumptionTest::assertJAssumptionFailure));
+                .isInstanceOf(catchException(AssumptionsTest::assertJAssumptionFailure));
         getScenario().finished();
-        ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase(0);
-        assertThat(aCase.getStep(0).getStatus()).isEqualTo(StepStatus.PASSED);
+        ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase( 0 );
+        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.PASSED );
     }
 
     @Test
     public void should_pass_on_junit5_assumptions() throws Throwable {
         assertThatThrownBy(() -> when().I_assume_something_using_junit5())
-                .isInstanceOf(catchException(AssumptionTest::junitAssumptionFailure));
+                .isInstanceOf(catchException(AssumptionsTest::testNgAssumptionFailure));
         getScenario().finished();
-        ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase(0);
-        assertThat(aCase.getStep(0).getStatus()).isEqualTo(StepStatus.PASSED);
+        ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase( 0 );
+        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.PASSED );
     }
 
     static class TestStage {
@@ -38,19 +37,17 @@ public class AssumptionTest extends SimpleScenarioTest<AssumptionTest.TestStage>
         }
 
         void I_assume_something_using_junit5() {
-            junitAssumptionFailure();
+            testNgAssumptionFailure();
         }
     }
 
-    private static void assertJAssumptionFailure() {
-        assumeThat(true).isFalse();
+    private static void assertJAssumptionFailure(){
+        assumeThat( true ).isFalse();
     }
 
-    @SuppressWarnings("DataFlowIssue")//we want to provoke an assumption failure
-    private static void junitAssumptionFailure() {
-        Assume.assumeTrue(false);
+    private static void testNgAssumptionFailure(){
+        throw new SkipException("TestNG assumption failure");
     }
-
     private Class<? extends Exception> catchException(Runnable runnable) {
         try {
             runnable.run();

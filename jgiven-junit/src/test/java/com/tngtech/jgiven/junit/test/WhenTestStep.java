@@ -1,9 +1,5 @@
 package com.tngtech.jgiven.junit.test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Assume;
-
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
@@ -28,7 +24,4 @@ public class WhenTestStep extends Stage<WhenTestStep> {
 
     public void something() {}
 
-    public void some_assumption_fails() {
-        Assume.assumeTrue( false );
-    }
 }

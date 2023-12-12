@@ -1,10 +1,11 @@
 package com.tngtech.jgiven.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * test that the continued creation of proxy classes does not
@@ -27,16 +28,15 @@ public class ProxyClassPerformanceTest {
             if (i % PROBE_INTERVAL == 0) {
                 System.gc();
                 long usedMemory = calculateMemoryUsageRoundedDownToMebibytes();
-                System.out.println("Used memory: " + usedMemory);
                 memoryUsageRecordInMebibytes.add(usedMemory);
             }
         }
         List<Long> growth = calculateChangeInMemoryConsumption(memoryUsageRecordInMebibytes);
         double averageConsumptionChange = average(growth);
         assertThat(averageConsumptionChange)
-            .as("There is no net increase of memory consumption "
-            + "for the continued creation and discarding of proxy classes.")
-            .isLessThanOrEqualTo(GROWTH_EXPECTED_IF_LAST_REPORTED_GROWTH_IS_POSITIVE);
+                .as("There is no net increase of memory consumption "
+                        + "for the continued creation and discarding of proxy classes.")
+                .isLessThanOrEqualTo(GROWTH_EXPECTED_IF_LAST_REPORTED_GROWTH_IS_POSITIVE);
     }
 
     private List<Long> calculateChangeInMemoryConsumption(List<Long> record) {
@@ -49,9 +49,9 @@ public class ProxyClassPerformanceTest {
 
     private double average(List<Long> data) {
         return data.stream()
-            .mapToDouble(Double::valueOf)
-            .map(dataPoint -> dataPoint / data.size())
-            .sum();
+                .mapToDouble(Double::valueOf)
+                .map(dataPoint -> dataPoint / data.size())
+                .sum();
     }
 
     private long calculateMemoryUsageRoundedDownToMebibytes() {
