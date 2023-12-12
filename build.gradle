@@ -8,7 +8,6 @@ plugins {
 }
 
 
-
 apply plugin: 'project-report'
 
 description = 'JGiven - BDD in plain Java'
@@ -137,8 +136,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     apply plugin: 'org.asciidoctor.jvm.convert'
     apply plugin: 'maven-publish'
 
-    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
-
     dependencies {
         implementation libs.slf4j.api
 
@@ -180,19 +177,23 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
 
     tasks.withType(Jar) {
         def now = new Date()
-        manifest = project.manifest().attributes(
-                'Built-By': "Gradle ${gradle.gradleVersion}",
-                'Build-Date': now.format('yyyy-MM-dd HH:mm:ss.S'),
-                'Copyright': "2013-" + now.format('yyyy') + " TNG Technology Consulting GmbH",
-                'Implementation-Title': project.name,
+        manifest {
+            attributes(
+                'Built-By'              : "Gradle ${gradle.gradleVersion}",
+                'Build-Date'            : now.format('yyyy-MM-dd HH:mm:ss.S'),
+                'Copyright'             : "2013-" + now.format('yyyy') + " TNG Technology Consulting GmbH",
+                'Implementation-Title'  : project.name,
                 'Implementation-Version': project.version,
-                'Implementation-Vendor': 'TNG Technology Consulting GmbH',
-                'License': 'Apache License v2.0, January 2004',
-                'Specification-Title': project.name,
-                'Specification-Version': project.version,
-                'Specification-Vendor': 'TNG Technology Consulting GmbH',
-                'Automatic-Module-Name' : "com.tngtech.jgiven.${project.name.replaceAll("-",".").replace("jgiven.","")}"
-        )
+                'Implementation-Vendor' : 'TNG Technology Consulting GmbH',
+                'License'               : 'Apache License v2.0, January 2004',
+                'Specification-Title'   : project.name,
+                'Specification-Version' : project.version,
+                'Specification-Vendor'  : 'TNG Technology Consulting GmbH',
+                'Automatic-Module-Name' : "com.tngtech.jgiven.${project.name.replaceAll("-", ".").replace("jgiven.", "")}"
+            )
+        }
+
+
     }
 
     normalization {
@@ -210,6 +211,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     }
 
     java {
+        sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
         withJavadocJar()
         withSourcesJar()
     }
