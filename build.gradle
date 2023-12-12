@@ -4,7 +4,6 @@ plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'io.codearte.nexus-staging' version '0.30.0'
     id 'com.github.ben-manes.versions' version '0.50.0'
-    id 'org.sonarqube' version '4.4.1.3373' apply false
     id 'com.github.node-gradle.node' version '7.0.1' apply false
 }
 
@@ -223,7 +222,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         }
     }
 
-    task jgivenHtml5Report(type: JavaExec) {
+    tasks.register("jgivenHtml5Report", JavaExec) {
         //noinspection GroovyAccessibility
         mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',
@@ -236,7 +235,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         classpath = configurations.testRuntimeClasspath
     }
 
-    task jgivenAsciiDocReport(type: JavaExec) {
+    tasks.register("jgivenAsciiDocReport",JavaExec) {
         //noinspection GroovyAccessibility
         mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',
@@ -254,7 +253,8 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         attributes toc: ''
     }
 
-    task copyAsciiDoc(type: Copy, dependsOn: jgivenAsciiDocReport) {
+    tasks.register("copyAsciiDoc", Copy, ) {
+        dependsOn += jgivenAsciiDocReport
         from 'src/asciidoc'
         into 'build/reports/jgiven/asciidoc'
     }
@@ -264,7 +264,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     project.ext.publishVariant('java')
 }
 
-configure(subprojects) {
+configure(subprojects) { subproject ->
     apply plugin: 'checkstyle'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
@@ -272,15 +272,6 @@ configure(subprojects) {
     apply plugin: 'maven-publish'
 
     description "${rootProject.description} - Module ${project.name}"
-
-    if (JavaVersion.current().isJava8Compatible()) {
-        apply plugin: 'org.sonarqube'
-        sonarqube {
-            properties {
-                property "sonar.jacoco.reportPath", "${rootProject.projectDir}/build/jacoco/jacocoTest.exec"
-            }
-        }
-    }
 
     checkstyle {
         toolVersion = "10.12.5"
@@ -311,7 +302,7 @@ configure(subprojects) {
     }
 }
 
-task overallJacocoReport(type: JacocoReport) {
+tasks.register("overallJacocoReport", JacocoReport) {
     getExecutionData().setFrom files("build/jacoco/jacocoTest.exec")
     getSourceDirectories().setFrom files("jgiven-core/src/main/java")
     getClassDirectories().setFrom files("jgiven-core/build/classes/main")
