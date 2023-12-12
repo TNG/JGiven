@@ -40,7 +40,7 @@ public class ParameterFormattingTest extends SimpleScenarioTest<ParameterFormatt
         }
 
         public void another_value( String value ) {
-            assertThat( value ).doesNotContain( "5" );
+            assertThat( value ).as("Fails on purpose").doesNotContain( "5" );
         }
     }
 
