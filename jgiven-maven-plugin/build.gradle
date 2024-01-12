@@ -9,7 +9,7 @@ description = 'JGiven Maven Mojo'
 dependencies {
     implementation project(':jgiven-core')
     implementation project(':jgiven-html5-report')
-    implementation "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.10.2"
+    implementation "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.11.0"
     implementation "org.apache.maven.plugin-tools:maven-plugin-annotations:3.11.0"
 
     testImplementation project(':jgiven-html5-report')
