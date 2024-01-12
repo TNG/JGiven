@@ -1,5 +1,5 @@
-name: "Mock-release JGiven"
-on: [pull_request, push]
+name: "Relase JGiven to Maven Mock"
+on: [pull_request]
 
 jobs:
   mock-release-jgiven:
@@ -52,12 +52,11 @@ jobs:
       - uses: actions/checkout@v4.1.1
       - name: set an alternate version
         run: "source scripts/source_files/helper_functions.sh && updateAllVersionInformation ${VERSION}"
-      - name: Attempt mock release
+      - name: Release JGiven to Mock Repository
         run: >
-          ./gradlew test publishMavenPublicationToMavenLocal publishMavenPublicationToMavenRepository 
+          ./gradlew publishMavenPublicationToMavenRepository 
           -PsigningKey="$(gpg --batch --pinentry-mode=loopback --yes --passphrase "${GPG_PASSWORD}" --armor --export-secret-key "${GPG_KEY_ID}")"
-          -PsigningPassword="${GPG_PASSWORD}" -Ppublishing.releaseUrl=https://localhost:8443 -Ppublishing.allowInsecureProtocol=false
-          --info --stacktrace
+          -PsigningPassword="${GPG_PASSWORD}" -PmavenRepo.releaseUrl=https://localhost:8443
         env:
           RELEASE: TRUE
       - name: Upload test results html files
