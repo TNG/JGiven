@@ -130,7 +130,6 @@ subprojects {
                         String releaseUrl = project["mavenRepo.releaseUrl"]
                         String snapshotUrl = project["mavenRepo.releaseUrl"]
                         url = System.env.RELEASE == "true" ? releaseUrl : snapshotUrl
-                        allowInsecureProtocol = project["mavenRepo.allowInsecureProtocol"] && url.getHost() == "localhost"
                         credentials {
                             username = sonatypeUsername
                             password = sonatypePassword
@@ -302,7 +301,6 @@ configure(subprojects) { subproject ->
         }
         def signingKey = findProperty("signingKey")
         def signingPassword = findProperty("signingPassword")
-        println signingKey
         useInMemoryPgpKeys(signingKey, signingPassword)
         sign publishing.publications
     }
