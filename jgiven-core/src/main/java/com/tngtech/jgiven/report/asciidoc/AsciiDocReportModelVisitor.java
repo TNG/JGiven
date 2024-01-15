@@ -131,7 +131,11 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
             asciiDocBlocks.add(casesTableBlock);
         }
 
-        String scenarioFooter = blockConverter.convertScenarioFooterBlock(scenarioModel.getExecutionStatus());
+        final List<Tag> tags = scenarioModel.getTagIds().stream()
+                .map(this.featureTagMap::get)
+                .collect(Collectors.toList());
+
+        String scenarioFooter = blockConverter.convertScenarioFooterBlock(scenarioModel.getExecutionStatus(), tags);
         asciiDocBlocks.add(scenarioFooter);
     }
 

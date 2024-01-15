@@ -256,7 +256,7 @@ public class AsciiDocReportModelVisitorTest {
 
         @Override
         public String convertScenarioHeaderBlock(String name, ExecutionStatus executionStatus, long duration,
-                                                 List<Tag> tagNames, String extendedDescription) {
+                                                 List<Tag> tags, String extendedDescription) {
             return "ScenarioHeaderBlock";
         }
 
@@ -290,7 +290,7 @@ public class AsciiDocReportModelVisitorTest {
         }
 
         @Override
-        public String convertScenarioFooterBlock(ExecutionStatus executionStatus) {
+        public String convertScenarioFooterBlock(ExecutionStatus executionStatus, final List<Tag> tags) {
             return "ScenarioFooterBlock";
         }
     }
