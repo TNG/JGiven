@@ -1,3 +1,5 @@
+import java.util.stream.Collectors
+
 //file:noinspection GroovyAssignabilityCheck
 plugins {
     id 'com.github.kt3k.coveralls' version '2.12.2'
@@ -6,7 +8,6 @@ plugins {
     id 'com.github.ben-manes.versions' version '0.50.0'
     id 'com.github.node-gradle.node' version '7.0.1' apply false
 }
-
 
 apply plugin: 'project-report'
 
@@ -126,8 +127,8 @@ subprojects {
                 }
                 repositories {
                     maven {
-                        String releaseUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-                        String snapshotUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+                        String releaseUrl = project["mavenRepo.releaseUrl"]
+                        String snapshotUrl = project["mavenRepo.snapshotUrl"]
                         url = System.env.RELEASE == "true" ? releaseUrl : snapshotUrl
                         credentials {
                             username = sonatypeUsername
@@ -294,6 +295,7 @@ configure(subprojects) { subproject ->
     signing {
 
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
+        logger.debug("Task graph at signing:" + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
         required {
             isReleaseVersion && gradle.taskGraph.getAllTasks().any { it instanceof PublishToMavenRepository }
         }
