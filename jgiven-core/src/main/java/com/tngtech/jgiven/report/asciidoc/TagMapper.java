@@ -21,7 +21,7 @@ final class TagMapper {
         return "// end::" + toAsciiDocTagName(tag) + "[]";
     }
 
-    private static String toAsciiDocTagName(final Tag tag) {
+    static String toAsciiDocTagName(final Tag tag) {
         return tag.toIdString();
     }
 }

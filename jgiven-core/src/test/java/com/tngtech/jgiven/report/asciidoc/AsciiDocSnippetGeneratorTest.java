@@ -17,7 +17,7 @@ public class AsciiDocSnippetGeneratorTest {
 
         // when
         AsciiDocSnippetGenerator asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
-                "Failed Scenarios", "failed scenarios", featureFileNames, "failed", 3);
+                "Failed Scenarios", "failed scenarios", 3, "scenario-failed", "features", featureFileNames);
         final List<String> blocks = asciiDocSnippetGenerator.generateIndexSnippet();
 
         // then
@@ -41,7 +41,7 @@ public class AsciiDocSnippetGeneratorTest {
 
         // when
         AsciiDocSnippetGenerator asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
-                "All Scenarios", "scenarios in total", featureFileNames, "", 40);
+                "All Scenarios", "scenarios in total", 40, "", "features", featureFileNames);
         final List<String> blocks = asciiDocSnippetGenerator.generateIndexSnippet();
 
         // then

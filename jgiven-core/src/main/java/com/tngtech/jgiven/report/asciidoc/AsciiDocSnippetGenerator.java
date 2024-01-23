@@ -13,14 +13,21 @@ final class AsciiDocSnippetGenerator {
     private final List<String> featureFiles;
     private final int numScenarios;
     private final String tagSelector;
+    private final String featurePath;
 
-    AsciiDocSnippetGenerator(final String title, final String scenarioQualifier,
-                             final List<String> featureFiles, final String tags, final int numScenarios) {
+    AsciiDocSnippetGenerator(
+            final String title,
+            final String scenarioQualifier,
+            final int numScenarios,
+            final String tags,
+            final String featurePath,
+            final List<String> featureFiles) {
         this.title = title;
         this.scenarioQualifier = scenarioQualifier;
-        this.featureFiles = featureFiles;
-        this.tagSelector = Strings.isNullOrEmpty(tags) ? "" : "tag=scenario-" + tags;
         this.numScenarios = numScenarios;
+        this.tagSelector = Strings.isNullOrEmpty(tags) ? "" : "tag=" + tags;
+        this.featurePath = featurePath;
+        this.featureFiles = featureFiles;
     }
 
     List<String> generateIndexSnippet() {
@@ -45,7 +52,7 @@ final class AsciiDocSnippetGenerator {
             result.add(":leveloffset: -1");
         }
 
-        featureFiles.forEach(fileName -> result.add(includeMacroFor(fileName, tags)));
+        featureFiles.forEach(fileName -> result.add(includeMacroFor(featurePath, fileName, tags)));
 
         if (!Strings.isNullOrEmpty(tags)) {
             result.add(":leveloffset: +1");
@@ -54,7 +61,7 @@ final class AsciiDocSnippetGenerator {
     }
 
 
-    private static String includeMacroFor(final String fileName, final String tags) {
-        return "include::features/" + fileName + "[" + tags + "]";
+    private static String includeMacroFor(final String featurePath, final String fileName, final String tags) {
+        return "include::" + featurePath + "/" + fileName + "[" + tags + "]";
     }
 }
