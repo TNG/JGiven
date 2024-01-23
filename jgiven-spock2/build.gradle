@@ -7,7 +7,7 @@ description = "Module for writing JGiven tests with Spock 2"
 
 ext {
     spock2_version = '2.3-groovy-4.0'
-    groovy_version = '4.0.17'
+    groovy_version = '4.0.18'
 }
 
 dependencies {

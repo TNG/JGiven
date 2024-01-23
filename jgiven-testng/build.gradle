@@ -10,7 +10,7 @@ dependencies {
     compileOnly libs.testng
 
     testImplementation libs.testng
-    testImplementation "org.mockito:mockito-core:5.8.0"
+    testImplementation "org.mockito:mockito-core:5.9.0"
 }
 
 test.useTestNG() {

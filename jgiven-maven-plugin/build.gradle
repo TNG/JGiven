@@ -9,8 +9,8 @@ description = 'JGiven Maven Mojo'
 dependencies {
     implementation project(':jgiven-core')
     implementation project(':jgiven-html5-report')
-    implementation "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.10.2"
-    implementation "org.apache.maven.plugin-tools:maven-plugin-annotations:3.10.2"
+    implementation "org.apache.maven.plugin-tools:maven-plugin-tools-api:3.11.0"
+    implementation "org.apache.maven.plugin-tools:maven-plugin-annotations:3.11.0"
 
     testImplementation project(':jgiven-html5-report')
 
@@ -59,7 +59,7 @@ generateMavenPlugin.configure {
             .collect(Collectors.toList())
     )
     onlyIf {
-        logger.debug("taskGraph: " + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
+        logger.debug("TaskGraph at generateMavenPlugin: " + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
         gradle.taskGraph.getAllTasks().stream().anyMatch(thisProjectsPublishTasks::contains)
     }
 }
