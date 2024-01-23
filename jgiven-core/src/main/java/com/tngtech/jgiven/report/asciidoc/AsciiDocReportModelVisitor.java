@@ -13,6 +13,7 @@ import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,23 +22,26 @@ import java.util.stream.Collectors;
 class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
     private final ReportBlockConverter blockConverter;
-    private final List<String> asciiDocBlocks;
     private final ReportStatistics featureStatistics;
     private final CasesTableCalculator tableCalculator;
+    private final List<String> asciiDocBlocks;
+    private final Map<String, Integer> featureTagIds;
     private Map<String, Tag> featureTagMap;
+    private List<Tag> tagList;
     private boolean scenarioHasDataTable;
+    private boolean scenarioHasMultipleCases;
     private boolean skipCurrentCase;
     private boolean caseIsUnsuccessful;
-    private String currentSectionTitle;
-    private boolean scenarioHasMultipleCases;
     private boolean isFirstStepInCase;
+    private String currentSectionTitle;
 
     public AsciiDocReportModelVisitor(final ReportBlockConverter blockConverter,
                                       final ReportStatistics featureStatistics) {
         this.blockConverter = blockConverter;
-        this.asciiDocBlocks = new ArrayList<>();
         this.featureStatistics = featureStatistics;
         this.tableCalculator = new CasesTableCalculator();
+        this.asciiDocBlocks = new ArrayList<>();
+        this.featureTagIds = new HashMap<>();
     }
 
     @Override
@@ -55,12 +59,14 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
     @Override
     public void visit(final ScenarioModel scenarioModel) {
-        final List<Tag> tags = scenarioModel.getTagIds().stream()
+        scenarioModel.getTagIds().forEach(tagId -> featureTagIds.merge(tagId, 1, Integer::sum));
+
+        tagList = scenarioModel.getTagIds().stream()
                 .map(this.featureTagMap::get)
                 .collect(Collectors.toList());
 
         String scenarioHeader = blockConverter.convertScenarioHeaderBlock(scenarioModel.getDescription(),
-                scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tags,
+                scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tagList,
                 scenarioModel.getExtendedDescription());
         asciiDocBlocks.add(scenarioHeader);
 
@@ -131,15 +137,17 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
             asciiDocBlocks.add(casesTableBlock);
         }
 
-        final List<Tag> tags = scenarioModel.getTagIds().stream()
-                .map(this.featureTagMap::get)
-                .collect(Collectors.toList());
-
-        String scenarioFooter = blockConverter.convertScenarioFooterBlock(scenarioModel.getExecutionStatus(), tags);
+        String scenarioFooter = blockConverter.convertScenarioFooterBlock(scenarioModel.getExecutionStatus(), tagList);
         asciiDocBlocks.add(scenarioFooter);
     }
 
     public List<String> getResult() {
         return Collections.unmodifiableList(asciiDocBlocks);
     }
+
+
+    public Map<String, Integer> getUsedTags() {
+        return Collections.unmodifiableMap(featureTagIds);
+    }
+
 }
