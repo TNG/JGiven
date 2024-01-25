@@ -29,7 +29,7 @@ repositories {
 }
 
 ext {
-    assertjVersion = '3.25.1'
+    assertjVersion = '3.25.2'
     junitDataproviderVersion = '1.13.1'
     jgivenVersion = version
     hsqldbVersion = '2.7.2'
