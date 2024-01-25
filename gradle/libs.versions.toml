@@ -12,7 +12,7 @@ androidx-appcompat = {module = "androidx.appcompat:appcompat", version = "1.6.1"
 androidx-test-core = {module = "androidx.test:core", version.ref = "androidx-test-version"}
 androidx-test-rules = {module = "androidx.test:rules", version.ref = "androidx-test-version"}
 androidx-test-junit = {module = "androidx.test.ext:junit", version = "1.1.5"}
-assertj = { module = "org.assertj:assertj-core", version = "3.25.1" }
+assertj = { module = "org.assertj:assertj-core", version = "3.25.2" }
 aspectj-jrt = { module = "org.aspectj:aspectjrt", version.ref = "aspectj-version" }
 aspectj-jweaver = { module = "org.aspectj:aspectjweaver", version.ref = "aspectj-version" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy-version" }
