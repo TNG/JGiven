@@ -19,7 +19,7 @@ jobs:
       - name: Load the bash script
         run: source scripts/local_android_release_with_version.sh
       - name: Test Android plugin and Android example project
-        uses: reactivecircus/android-emulator-runner@v2.29.0
+        uses: reactivecircus/android-emulator-runner@v2.30.1
         with:
           api-level: 29
           script: source scripts/source_files/helper_functions.sh && runAndroidTestOnGivenProject jgiven-android-test/build.gradle 1.1-t && runAndroidTestOnGivenProject example-projects/android/build.gradle 1.1-t
