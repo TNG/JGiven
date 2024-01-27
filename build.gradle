@@ -3,7 +3,7 @@ import java.util.stream.Collectors
 //file:noinspection GroovyAssignabilityCheck
 plugins {
     id 'com.github.kt3k.coveralls' version '2.12.2'
-    id 'org.asciidoctor.jvm.convert' version '4.0.1'
+    id 'org.asciidoctor.jvm.convert' version '4.0.2'
     id 'io.codearte.nexus-staging' version '0.30.0'
     id 'com.github.ben-manes.versions' version '0.50.0'
     id 'com.github.node-gradle.node' version '7.0.1' apply false
