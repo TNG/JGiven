@@ -20,6 +20,8 @@ The life-cycle of a scenario is as follows.
 ==== Integration into Test Frameworks' Lifecycles
 The relative ordering of JGiven's lifecycle methods to that of the embedding test framework depends on how JGiven is hooked into it. For JUnit4, JGiven's before and after methods are called later than their respective framework counterparts. Especially the `@After` method is executed ahead of an `@AfterScenario` method or an `after()` method of a scenario rule. For JUnit5 and TestNg, JGiven's `before()` method is executed later than the before method and JGiven's `after()` method is executed ahead of the frameworks' counterparts.
 
+JGivens lifecycle is works best with a per-method lifecycle of the test class. For such a model single and parallel execution of scenarios is fully supported. For a per-class lifecycle single-threaded execution is fully supported and parallel execution has been shown to work for Test classes that inherit from scenario classes.
+
 
 === @BeforeScenario / @AfterScenario
 
