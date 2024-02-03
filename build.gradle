@@ -6,7 +6,7 @@ plugins {
     id 'org.asciidoctor.jvm.convert' version '4.0.2'
     id 'io.codearte.nexus-staging' version '0.30.0'
     id 'com.github.ben-manes.versions' version '0.51.0'
-    id 'com.github.node-gradle.node' version '7.0.1' apply false
+    id 'com.github.node-gradle.node' version '7.0.2' apply false
 }
 
 apply plugin: 'project-report'
