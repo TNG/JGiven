@@ -12,18 +12,16 @@ public class AsciiDocSnippetGeneratorTest {
     public void writeIndexFileForFailedScenarios() {
         // given
         final List<String> featureFileNames = new ArrayList<>();
-        featureFileNames.add("com.example.application.FailedScenarioOne.asciidoc");
-        featureFileNames.add("com.example.application.FailedScenarioTwo.asciidoc");
+        featureFileNames.add("com.example.application.FailedScenarioOne");
+        featureFileNames.add("com.example.application.FailedScenarioTwo");
 
         // when
         AsciiDocSnippetGenerator asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
-                "Failed Scenarios", "failed scenarios", 3, "scenario-failed", "features", featureFileNames);
-        final List<String> blocks = asciiDocSnippetGenerator.generateIndexSnippet();
+                "Failed Scenarios", "failed scenarios", 3);
+        final List<String> blocks = asciiDocSnippetGenerator.generateIndexSnippet("features", featureFileNames, "scenario-failed", -1);
 
         // then
         assertThat(blocks).containsExactly(
-                "== Failed Scenarios",
-                "There are 3 failed scenarios.",
                 ":leveloffset: -1",
                 "include::features/com.example.application.FailedScenarioOne.asciidoc[tag=scenario-failed]",
                 "include::features/com.example.application.FailedScenarioTwo.asciidoc[tag=scenario-failed]",
@@ -35,19 +33,17 @@ public class AsciiDocSnippetGeneratorTest {
     public void writeIndexFileForAllScenarios() {
         // given
         final List<String> featureFileNames = new ArrayList<>();
-        featureFileNames.add("com.example.application.BigFeature.asciidoc");
-        featureFileNames.add("com.example.application.OtherFeature.asciidoc");
+        featureFileNames.add("com.example.application.BigFeature");
+        featureFileNames.add("com.example.application.OtherFeature");
 
 
         // when
         AsciiDocSnippetGenerator asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
-                "All Scenarios", "scenarios in total", 40, "", "features", featureFileNames);
-        final List<String> blocks = asciiDocSnippetGenerator.generateIndexSnippet();
+                "All Scenarios", "scenarios in total", 40);
+        final List<String> blocks = asciiDocSnippetGenerator.generateIndexSnippet("features", featureFileNames, "", 0);
 
         // then
         assertThat(blocks).containsExactly(
-                "== All Scenarios",
-                "There are 40 scenarios in total.",
                 "include::features/com.example.application.BigFeature.asciidoc[]",
                 "include::features/com.example.application.OtherFeature.asciidoc[]");
     }
