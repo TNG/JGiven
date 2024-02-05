@@ -144,7 +144,7 @@ public class TagMapperTest {
         final String endSnippet = TagMapper.toAsciiDocEndTag(tag);
 
         // then
-        assertThat(startSnippet).isEqualTo("// tag::com.tngtech.jgiven.tags.Feature-AsciiDoc, Markdown[]");
-        assertThat(endSnippet).isEqualTo("// end::com.tngtech.jgiven.tags.Feature-AsciiDoc, Markdown[]");
+        assertThat(startSnippet).isEqualTo("// tag::com.tngtech.jgiven.tags.Feature-AsciiDoc,_Markdown[]");
+        assertThat(endSnippet).isEqualTo("// end::com.tngtech.jgiven.tags.Feature-AsciiDoc,_Markdown[]");
     }
 }

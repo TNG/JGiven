@@ -42,7 +42,7 @@ public class AsciiDocReportModelVisitorTest {
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
@@ -70,7 +70,7 @@ public class AsciiDocReportModelVisitorTest {
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
@@ -102,7 +102,7 @@ public class AsciiDocReportModelVisitorTest {
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
@@ -134,7 +134,7 @@ public class AsciiDocReportModelVisitorTest {
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
@@ -158,7 +158,7 @@ public class AsciiDocReportModelVisitorTest {
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
@@ -185,7 +185,7 @@ public class AsciiDocReportModelVisitorTest {
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",

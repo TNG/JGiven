@@ -141,10 +141,9 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         asciiDocBlocks.add(scenarioFooter);
     }
 
-    public List<String> getResult() {
+    public List<String> getAsciiDocBlocks() {
         return Collections.unmodifiableList(asciiDocBlocks);
     }
-
 
     public Map<String, Integer> getUsedTags() {
         return Collections.unmodifiableMap(featureTagIds);

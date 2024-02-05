@@ -46,7 +46,8 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
         statisticsTable.append("| total steps ");
         statisticsTable.append("| duration").append(LINE_BREAK);
 
-        featureStatistics.entries().stream().sorted(Map.Entry.comparingByKey())
+        featureStatistics.entries().stream()
+                .sorted(Map.Entry.comparingByKey())
                 .forEach(entry -> appendStatisticsRowFragment(statisticsTable, entry.getKey(), entry.getValue()));
 
         appendStatisticsRowFragment(statisticsTable, "sum", totalStatistics);

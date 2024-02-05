@@ -145,7 +145,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             taggedScenarioFiles.computeIfAbsent(tagId, key -> new ArrayList<>()).add(featureFileName);
         });
 
-        return visitor.getResult();
+        return visitor.getAsciiDocBlocks();
     }
 
     private void writeIndexFileForAllScenarios() {
