@@ -23,6 +23,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +59,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     private File targetDir;
     private File featuresDir;
+    private File tagsDir;
 
 
     @Override
@@ -76,6 +80,14 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         writeIndexFileForFailedScenarios();
 
         writeIndexFileForPendingScenarios();
+
+        final HierarchyCalculator hierarchyCalculator = new HierarchyCalculator(allTags, taggedScenarioFeatures);
+
+        final Map<String, Map<String, List<String>>> groupedTags = hierarchyCalculator.computeGroupedTag();
+
+        groupedTags.forEach(this::writeIndexFileForTaggedScenarios);
+
+        writeIndexFileForAllTags(groupedTags);
 
         writeTotalStatisticsFile();
 
@@ -150,6 +162,76 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         writeAsciiDocBlocksToFile(targetDir, "pendingScenarios", asciiDocBlocks);
     }
 
+    private void writeIndexFileForTaggedScenarios(final String tagType, final Map<String, List<String>> taggedScenarios) {
+        final Optional<Tag> firstTag = taggedScenarios.keySet().stream()
+                .findFirst()
+                .map(allTags::get);
+
+        if (firstTag.isEmpty()) {
+            return;
+        }
+
+        final int numTaggedScenarios = taggedScenarios.keySet().stream().mapToInt(taggedScenarioCounts::get).sum();
+
+        final List<String> asciiDocBlocks = taggedScenarios.keySet().size() == 1
+                ? singleValuedTag(taggedScenarios, firstTag.get(), numTaggedScenarios)
+                : multiValuedTag(taggedScenarios, firstTag.get(), numTaggedScenarios);
+
+        writeAsciiDocBlocksToFile(tagsDir, tagType, asciiDocBlocks);
+    }
+
+    private List<String> multiValuedTag(final Map<String, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
+        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+                tag.getName(), "tagged scenarios", numTaggedScenarios);
+
+        final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet(tag.getDescription());
+        taggedScenarios.forEach((tagId, features) -> {
+            final List<String> snippet = snippetGenerator.generateTagSnippet(
+                    allTags.get(tagId), taggedScenarioCounts.get(tagId), features, 0);
+            asciiDocBlocks.addAll(snippet);
+        });
+        return asciiDocBlocks;
+    }
+
+    private List<String> singleValuedTag(final Map<String, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
+        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+                tag.toString(), "tagged scenarios", numTaggedScenarios);
+
+        final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet(tag.getDescription());
+        taggedScenarios.forEach((tagId, features) -> {
+            final Tag valueTag = allTags.get(tagId);
+            final String tagName = TagMapper.toAsciiDocTagName(valueTag);
+            asciiDocBlocks.add("=== Scenarios");
+            final List<String> snippet = snippetGenerator.generateIndexSnippet("../" + FEATURE_PATH, features, tagName, 0);
+            asciiDocBlocks.addAll(snippet);
+        });
+        return asciiDocBlocks;
+    }
+
+
+    private void writeIndexFileForAllTags(final Map<String, Map<String, List<String>>> strings) {
+
+        final List<String> tagFiles = strings.entrySet().stream()
+                .sorted((o1, o2) -> {
+                    final Tag tag1 = allTags.get(o1.getValue().keySet().stream().findFirst().orElse(""));
+                    final Tag tag2 = allTags.get(o2.getValue().keySet().stream().findFirst().orElse(""));
+                    return Objects.compare(tag1, tag2, Comparator.comparing(Tag::getName));
+
+                })
+                .map(entry -> entry.getKey().replace(' ', '_'))
+                .collect(Collectors.toList());
+        final Integer total = taggedScenarioCounts.values().stream().reduce(Integer::sum).orElse(999);
+        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+                "Tags", "all tags are beautiful", total
+        );
+
+        final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
+        asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet("tags", tagFiles, "", 1));
+        writeAsciiDocBlocksToFile(targetDir, "allTags",
+                asciiDocBlocks);
+
+    }
+
     private void writeTotalStatisticsFile() {
         final ListMultimap<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels()
                 .stream()
@@ -180,7 +262,6 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private boolean prepareDirectories(final File targetDir) {
-        File tagsDir;
         this.targetDir = targetDir;
         if (this.targetDir == null) {
             log.error("Target directory was not configured");
