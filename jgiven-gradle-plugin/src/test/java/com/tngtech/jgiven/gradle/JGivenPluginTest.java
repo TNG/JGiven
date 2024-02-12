@@ -230,9 +230,11 @@ public class JGivenPluginTest extends
         }
 
         When is_successful() {
+            var arguments = new ArrayList<>(tasks);
+            //arguments.add("-Dorg.gradle.debug=true");
             result = GradleRunner.create()
                 .withProjectDir(testProjectDir.get())
-                .withArguments(tasks)
+                .withArguments(arguments)
                 .withPluginClasspath()
                 .build();
             return self();

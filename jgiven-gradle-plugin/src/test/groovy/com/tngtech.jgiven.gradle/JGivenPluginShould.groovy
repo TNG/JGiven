@@ -40,7 +40,7 @@ class JGivenPluginShould extends Specification {
         when:
         def result = GradleRunner.create()
                 .withProjectDir(testProjectDir)
-                .withArguments("--configuration-cache", "test", "jgivenTestReport", "-S", "--info", "--no-daemon", "-Dorg.gradle.debug=true" )
+                .withArguments("--configuration-cache", "test", "jgivenTestReport", "-S", "--info"/*, "-Dorg.gradle.debug=true"*/ )
                 .withPluginClasspath()
                 .build()
 

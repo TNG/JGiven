@@ -1,10 +1,8 @@
 package com.tngtech.jgiven.gradle;
 
-import org.gradle.api.provider.Property;
-
-import java.io.File;
+import org.gradle.api.file.DirectoryProperty;
 
 public interface JGivenTaskExtension {
-    Property<File> getResultsDir();
+    DirectoryProperty getResultsDir();
 
 }
