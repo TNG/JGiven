@@ -3,20 +3,17 @@ package com.tngtech.jgiven.gradle;
 import com.tngtech.jgiven.gradle.internal.JGivenHtmlReportImpl;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.impl.util.WordUtil;
-import java.io.File;
-import java.util.Objects;
-import java.util.concurrent.Callable;
-import org.gradle.api.Action;
-import org.gradle.api.NonNullApi;
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
-import org.gradle.api.Task;
+import org.gradle.api.*;
 import org.gradle.api.internal.ConventionMapping;
 import org.gradle.api.internal.IConventionAware;
 import org.gradle.api.plugins.ReportingBasePlugin;
 import org.gradle.api.reporting.Report;
 import org.gradle.api.reporting.ReportingExtension;
 import org.gradle.api.tasks.testing.Test;
+
+import java.io.File;
+import java.util.Objects;
+import java.util.concurrent.Callable;
 
 @NonNullApi
 public class JGivenPlugin implements Plugin<Project> {
@@ -40,10 +37,8 @@ public class JGivenPlugin implements Plugin<Project> {
         ((IConventionAware) extension).getConventionMapping().map("resultsDir",
             (Callable<File>) () -> project.file(project.getBuildDir() + "/jgiven-results/" + testName));
 
-        File resultsDir = extension.getResultsDir();
-        if (resultsDir != null) {
-            test.getOutputs().dir(resultsDir).withPropertyName("jgiven.resultsDir");
-        }
+        File resultsDir = extension.getResultsDir().get();
+        test.getOutputs().dir(resultsDir).withPropertyName("jgiven.resultsDir");
 
         /* Java lambda classes are created at runtime with a non-deterministic classname.
          * Therefore, the class name does not identify the implementation of the lambda,
@@ -51,10 +46,10 @@ public class JGivenPlugin implements Plugin<Project> {
          * See: https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:how_does_it_work
          */
         //noinspection Convert2Lambda
-        test.prependParallelSafeAction(new Action<Task>() {
+        test.prependParallelSafeAction(new Action<>() {
             @Override
             public void execute(Task task) {
-                ((Test) task).systemProperty(Config.JGIVEN_REPORT_DIR, extension.getResultsDir().getAbsolutePath());
+                ((Test) task).systemProperty(Config.JGIVEN_REPORT_DIR, extension.getResultsDir().get().getAbsolutePath());
             }
         });
     }
@@ -84,7 +79,7 @@ public class JGivenPlugin implements Plugin<Project> {
         ConventionMapping mapping = ((IConventionAware) reportTask).getConventionMapping();
         Callable<File> getResultsDirectory = () -> test.getExtensions()
             .getByType(JGivenTaskExtension.class)
-            .getResultsDir();
+            .getResultsDir().get();
         mapping.map("results", getResultsDirectory);
 
         Objects.requireNonNull(mapping.getConventionValue(reportTask.getReports(), "reports", false))

@@ -1,15 +1,10 @@
 package com.tngtech.jgiven.gradle;
 
+import org.gradle.api.provider.Property;
+
 import java.io.File;
 
-public class JGivenTaskExtension {
-    private File resultsDir;
+public interface JGivenTaskExtension {
+    Property<File> getResultsDir();
 
-    public File getResultsDir() {
-        return resultsDir;
-    }
-
-    public void setResultsDir( File resultsDir ) {
-        this.resultsDir = resultsDir;
-    }
 }
