@@ -39,15 +39,10 @@ public abstract class JGivenPlugin implements Plugin<Project> {
         final String testName = test.getName();
         final Project project = test.getProject();
         final JGivenTaskExtension extension = getObjects().newInstance(JGivenTaskExtension.class);
-        //having this brakes the "test is cacheable" test while not checking whether the extension is configured breaks the "no test no output" test.
-        //also the groovy tests might be ill-configured, because it is not exactly clear to me, why these get away with not ordering a jgiven report.
         test.getExtensions().add("jgiven", extension);
-        var isConfigured = extension.getResultsDir().isPresent();
         extension.getResultsDir().convention(project.getLayout().getBuildDirectory().dir("jgiven-results/" + testName));
         Provider<Directory> resultsDir = extension.getResultsDir();
-        if (isConfigured) {
-            test.getOutputs().dir(resultsDir).withPropertyName("jgiven.resultsDir");
-        }
+        test.getOutputs().dir(resultsDir).withPropertyName("jgiven.resultsDir");
 
         /* Java lambda classes are created at runtime with a non-deterministic classname.
          * Therefore, the class name does not identify the implementation of the lambda,
