@@ -84,11 +84,11 @@ public abstract class JGivenPlugin implements Plugin<Project> {
                 .getByType(JGivenTaskExtension.class)
                 .getResultsDir();
 
-        reportTask.getResults().set(getResultsDirectory);
+        reportTask.getResults().convention(getResultsDirectory); //this line somehow forces the test task to run.
 
         reportTask.getReports().configureEach(report -> {
             String relativeFilePath = "jgiven" + "/" + test.getName() + "/" + report.getName();
-            report.getOutputLocation().set(reportingExtension.getBaseDirectory().dir(relativeFilePath));
+            report.getOutputLocation().convention(reportingExtension.getBaseDirectory().dir(relativeFilePath));
         });
     }
 }
