@@ -162,8 +162,9 @@ public class JGivenPluginTest extends
             .and().there_are_JGiven_tests();
 
         when()
-            .a_build().with()
-            .the_task("jgivenTestReport").is_successful();
+                .a_build().with()
+                .the_task("-x").the_task("test").and()
+                .the_task("jgivenTestReport").is_successful();
 
         then()
             .the_JGiven_reports_are_not_written_to("build/reports/jgiven/test/html");
