@@ -60,7 +60,7 @@ public abstract class JGivenPlugin implements Plugin<Project> {
 
     private void configureJGivenReportDefaults(Project project) {
         project.getTasks()
-                .withType(JGivenReportTask.class).forEach(reportTask ->
+                .withType(JGivenReportTask.class).configureEach(reportTask ->
                         reportTask.getReports().all((Action<Report>) report ->
                                 report.getRequired().convention(report.getName().equals(JGivenHtmlReportImpl.NAME))
                         ));
@@ -84,11 +84,13 @@ public abstract class JGivenPlugin implements Plugin<Project> {
                 .getByType(JGivenTaskExtension.class)
                 .getResultsDir();
 
-        reportTask.getResults().convention(getResultsDirectory); //this line somehow forces the test task to run.
+        reportTask.getResults().set(getResultsDirectory); //this line somehow forces the test task to run.
+
+        String relativeFilePath = "jgiven" + "/" + test.getName() + "/";
+        Provider<Directory> reportOutputLocation= reportingExtension.getBaseDirectory().dir(relativeFilePath);
 
         reportTask.getReports().configureEach(report -> {
-            String relativeFilePath = "jgiven" + "/" + test.getName() + "/" + report.getName();
-            report.getOutputLocation().convention(reportingExtension.getBaseDirectory().dir(relativeFilePath));
+            report.getOutputLocation().set(reportOutputLocation.map(d -> d.dir(report.getName())));
         });
     }
 }
