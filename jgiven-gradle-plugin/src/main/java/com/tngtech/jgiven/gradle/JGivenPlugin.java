@@ -78,13 +78,12 @@ public abstract class JGivenPlugin implements Plugin<Project> {
 
     private void configureDefaultReportTask(final Test test, JGivenReportTask reportTask,
                                             final ReportingExtension reportingExtension) {
-        reportTask.mustRunAfter(test);
 
         Provider<Directory> getResultsDirectory = test.getExtensions()
                 .getByType(JGivenTaskExtension.class)
                 .getResultsDir();
 
-        reportTask.getResults().set(getResultsDirectory); //this line somehow forces the test task to run.
+        reportTask.getResults().set(getResultsDirectory);
 
         String relativeFilePath = "jgiven" + "/" + test.getName() + "/";
         Provider<Directory> reportOutputLocation= reportingExtension.getBaseDirectory().dir(relativeFilePath);
