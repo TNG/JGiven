@@ -1,3 +1,9 @@
+# Release v2.0.0
+## Breaking changes
+* Gradle-Plugin: The jgiven report task now forces execution of test tasks. That is, when the task jgivenTestReport is requested, for instance via the command line, the test tasks it depends on are also executed.
+## Fixed issues:
+* The Gradle-Plugin is now configuration-cache compliant [#1527](https://github.com/TNG/JGiven/issues/1527) (big thanks to @jjohannes for basically doing all the work)
+
 # Release v1.3.1
 ## Fixed issues
 * TextReportGenerator is now backed by jansi2 not jansi1. [#1420](https://github.com/TNG/JGiven/issues/1420)
