@@ -23,7 +23,7 @@ public class ScenarioJsonWriter {
             Files.asCharSink(file, Charsets.UTF_8).write(json);
             log.debug( "Written JSON to file {}, {}", file, json );
         } catch( IOException e ) {
-            Throwables.propagate( e );
+            throw new RuntimeException(e);
         }
     }
 
