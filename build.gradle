@@ -180,7 +180,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         }
     }
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         // needed for DeSzenarioTest.java as it has Umlauts in the code
         options.encoding = 'UTF-8'
     }
