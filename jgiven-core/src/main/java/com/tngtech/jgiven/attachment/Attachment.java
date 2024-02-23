@@ -198,7 +198,7 @@ public class Attachment {
      * @throws java.lang.IllegalArgumentException if mediaType is either binary or has no specified charset
      */
     public static Attachment fromTextFile( File file, MediaType mediaType ) throws IOException {
-        return fromText( Files.toString( file, mediaType.getCharset() ), mediaType );
+        return fromText( Files.asCharSource( file, mediaType.getCharset() ).read(), mediaType );
     }
 
     /**

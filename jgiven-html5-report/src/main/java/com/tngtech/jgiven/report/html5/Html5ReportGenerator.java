@@ -208,7 +208,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
 
         String content = "jgivenReport.setMetaData(" + new Gson().toJson( metaData ) + " );";
 
-        Files.write( content, metaDataFile, Charsets.UTF_8 );
+        Files.asCharSink(metaDataFile, Charsets.UTF_8 ).write( content);
     }
 
     private void generateTagFile() throws IOException {
@@ -219,7 +219,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
         tagFileContent.fill( completeReportModel.getTagIdMap() );
         String content = "jgivenReport.setTags(" + new Gson().toJson( tagFileContent ) + " );";
 
-        Files.write( content, tagFile, Charsets.UTF_8 );
+        Files.asCharSink(tagFile, Charsets.UTF_8 ).write( content);
 
     }
 
