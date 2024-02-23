@@ -19,6 +19,7 @@ import com.tngtech.jgiven.junit5.ScenarioTest;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -164,8 +165,7 @@ public class JGivenPluginTest extends
             .and().there_are_JGiven_tests();
 
         when()
-            .a_build().with()
-            .the_task("-x").the_task("test").and()
+            .a_build().with().the_argument("-x test").and()
             .the_task("jgivenTestReport").is_successful();
 
         then().the_JGiven_reports_are_not_written_to("build/reports/jgiven/test/html");
@@ -260,6 +260,11 @@ public class JGivenPluginTest extends
         }
 
         When a_build() {
+            return self();
+        }
+
+        When the_argument(String argument){
+            tasks.addAll(Arrays.asList(argument.split(" ")));
             return self();
         }
 
