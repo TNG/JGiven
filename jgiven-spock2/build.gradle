@@ -16,6 +16,7 @@ dependencies {
     implementation "org.apache.groovy:groovy:$groovy_version"
     implementation "org.spockframework:spock-core:$spock2_version"
     implementation "org.spockframework:spock-junit4:$spock2_version"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation libs.byteBuddy
 
     testImplementation project(':jgiven-html5-report')
