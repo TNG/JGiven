@@ -30,9 +30,7 @@ public abstract class JGivenReportTask extends DefaultTask implements Reporting<
     }
 
     @Inject
-    protected ObjectFactory getObjects() {
-        throw new UnsupportedOperationException();
-    }
+    protected abstract ObjectFactory getObjects();
 
     @InputDirectory
     @SkipWhenEmpty

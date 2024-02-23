@@ -53,40 +53,41 @@ public abstract class JGivenPlugin implements Plugin<Project> {
         test.doFirst(new Action<>() {
             @Override
             public void execute(Task task) {
-                ((Test) task).systemProperty(Config.JGIVEN_REPORT_DIR, extension.getResultsDir().get().getAsFile().getAbsolutePath());
+                ((Test) task).systemProperty(Config.JGIVEN_REPORT_DIR,
+                    extension.getResultsDir().get().getAsFile().getAbsolutePath());
             }
         });
     }
 
     private void configureJGivenReportDefaults(Project project) {
         project.getTasks()
-                .withType(JGivenReportTask.class).configureEach(reportTask ->
-                        reportTask.getReports().all((Action<Report>) report ->
-                                report.getRequired().convention(report.getName().equals(JGivenHtmlReportImpl.NAME))
-                        ));
+            .withType(JGivenReportTask.class).configureEach(reportTask ->
+                reportTask.getReports().all((Action<Report>) report ->
+                    report.getRequired().convention(report.getName().equals(JGivenHtmlReportImpl.NAME))
+                ));
     }
 
     private void addDefaultReports(final Project project) {
         final ReportingExtension reportingExtension = Objects.requireNonNull(
-                project.getExtensions().findByType(ReportingExtension.class));
+            project.getExtensions().findByType(ReportingExtension.class));
 
         project.getTasks().withType(Test.class).forEach(test -> project.getTasks()
-                .register("jgiven" + WordUtil.capitalize(test.getName()) + "Report", JGivenReportTask.class)
-                .configure(reportTask -> configureDefaultReportTask(test, reportTask, reportingExtension))
+            .register("jgiven" + WordUtil.capitalize(test.getName()) + "Report", JGivenReportTask.class)
+            .configure(reportTask -> configureDefaultReportTask(test, reportTask, reportingExtension))
         );
     }
 
     private void configureDefaultReportTask(final Test test, JGivenReportTask reportTask,
                                             final ReportingExtension reportingExtension) {
 
-        Provider<Directory> getResultsDirectory = test.getExtensions()
-                .getByType(JGivenTaskExtension.class)
-                .getResultsDir();
+        Provider<Directory> resultsDirectory = test.getExtensions()
+            .getByType(JGivenTaskExtension.class)
+            .getResultsDir();
 
-        reportTask.getResults().set(getResultsDirectory);
+        reportTask.getResults().convention(resultsDirectory);
 
         String relativeFilePath = "jgiven" + "/" + test.getName() + "/";
-        Provider<Directory> reportOutputLocation= reportingExtension.getBaseDirectory().dir(relativeFilePath);
+        Provider<Directory> reportOutputLocation = reportingExtension.getBaseDirectory().dir(relativeFilePath);
 
         reportTask.getReports().configureEach(report -> {
             report.getOutputLocation().set(reportOutputLocation.map(d -> d.dir(report.getName())));
