@@ -1,19 +1,22 @@
 package com.tngtech.jgiven.impl;
 
-import com.tngtech.jgiven.annotation.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.DoNotIntercept;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.Pending;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
+import java.util.Collections;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.RestoreSystemProperties;
-import org.junit.rules.ExpectedException;
-
-import java.util.Collections;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class ScenarioExecutorTest {
-    @Rule
-    public final ExpectedException expectedExceptionRule = ExpectedException.none();
 
     @Rule
     public final RestoreSystemProperties restoreSystemProperties = new RestoreSystemProperties();
@@ -111,14 +114,14 @@ public class ScenarioExecutorTest {
 
     @Test
     public void BeforeStage_methods_may_not_have_parameters() {
-        expectedExceptionRule.expect( JGivenExecutionException.class );
-        expectedExceptionRule.expectMessage( "Could not execute method 'setup' of class 'BeforeStageWithParameters'" );
-        expectedExceptionRule.expectMessage( ", because it requires parameters" );
-
         ScenarioExecutor executor = new ScenarioExecutor();
         BeforeStageWithParameters stage = executor.addStage( BeforeStageWithParameters.class );
         executor.startScenario( "Test" );
-        stage.something();
+       assertThatThrownBy(stage::something)
+        .isInstanceOf( JGivenExecutionException.class )
+           .hasMessageContainingAll("Could not execute method 'setup' of class 'BeforeStageWithParameters'",
+               ", because it requires parameters");
+
     }
 
     @Test
