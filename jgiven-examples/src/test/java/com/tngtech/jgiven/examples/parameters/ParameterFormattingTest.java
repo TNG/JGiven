@@ -27,20 +27,28 @@ public class ParameterFormattingTest extends SimpleScenarioTest<ParameterFormatt
 
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static class TestSteps extends Stage<TestSteps> {
 
-        public void a_machine_that_is( @Format( value = BooleanFormatter.class, args = { "on", "off" } ) boolean onOff ) {}
-
-        public void the_power_light_$_on( @Format( value = BooleanFormatter.class, args = { "is", "is not" } ) boolean isOrIsNot ) {}
-
-        public void a_very_long_parameter_value( String x ) {}
-
-        public TestSteps some_group_value( String grouping ) {
-            return this;
+        public TestSteps a_machine_that_is( @Format( value = BooleanFormatter.class, args = { "on", "off" } ) boolean onOff ) {
+            return self();
         }
 
-        public void another_value( String value ) {
+        public TestSteps the_power_light_$_on( @Format( value = BooleanFormatter.class, args = { "is", "is not" } ) boolean isOrIsNot ) {
+            return self();
+        }
+
+        public TestSteps a_very_long_parameter_value( String x ) {
+            return self();
+        }
+
+        public TestSteps some_group_value( String grouping ) {
+            return self();
+        }
+
+        public TestSteps another_value( String value ) {
             assertThat( value ).as("Fails on purpose").doesNotContain( "5" );
+            return self();
         }
     }
 
