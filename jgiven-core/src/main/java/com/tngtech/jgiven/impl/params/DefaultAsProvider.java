@@ -29,6 +29,11 @@ public class DefaultAsProvider implements AsProvider {
     }
 
     String methodNameToReadableText( String methodName ) {
+        // Kotlin mangles the name of some functions; see https://kotlinlang.org/docs/inline-classes.html#mangling
+        if (methodName.contains("-")) {
+            methodName = methodName.substring(0, methodName.lastIndexOf('-'));
+        }
+
         if( methodName.contains( "_" ) ) {
             return WordUtil.fromSnakeCase( methodName );
         }

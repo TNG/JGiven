@@ -17,4 +17,12 @@ open class GivenStage : Stage<GivenStage>() {
         this.message = message
         return self()
     }
+
+    @JvmInline
+    value class Username(val value: String)
+
+    open fun greeting(username: Username): GivenStage {
+        this.message = "Hello ${username.value}"
+        return self()
+    }
 }
