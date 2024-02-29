@@ -15,11 +15,14 @@ import com.tngtech.jgiven.annotation.Quoted;
 import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.junit5.JGivenExtension;
 import com.tngtech.jgiven.junit5.ScenarioTest;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.BuildTask;
 import org.gradle.testkit.runner.GradleRunner;
@@ -162,12 +165,38 @@ public class JGivenPluginTest extends
             .and().there_are_JGiven_tests();
 
         when()
-            .a_build().with()
+            .a_build().with().the_argument("-x test").and()
             .the_task("jgivenTestReport").is_successful();
+
+        then().the_JGiven_reports_are_not_written_to("build/reports/jgiven/test/html");
+
+    }
+
+    @Test
+    void no_report_task_no_report() throws IOException {
+
+        given()
+            .the_plugin_is_applied()
+            .and().there_are_JGiven_tests();
+
+        when()
+            .a_build().with()
+            .the_task("test").is_successful();
 
         then()
             .the_JGiven_reports_are_not_written_to("build/reports/jgiven/test/html");
 
+    }
+
+    @Test
+    void jgiven_reports_can_be_attached_to_test_tasks() throws IOException {
+        given().the_plugin_is_applied()
+            .and().there_are_JGiven_tests()
+            .and().test_tasks_are_finalized_by_JGiven();
+
+        when().the_task("test").is_successful();
+
+        then().the_JGiven_html_reports_are_written_to("build/reports/jgiven/test/html");
     }
 
     @SuppressWarnings("UnusedReturnValue")
@@ -209,6 +238,11 @@ public class JGivenPluginTest extends
             buildFile.write("jgivenTestReport { " + configuration + " } ");
             return self();
         }
+
+        Given test_tasks_are_finalized_by_JGiven() throws IOException{
+            buildFile.write("test.finalizedBy jgivenTestReport\n");
+            return self();
+        }
     }
 
     @SuppressWarnings("UnusedReturnValue")
@@ -226,6 +260,11 @@ public class JGivenPluginTest extends
         }
 
         When a_build() {
+            return self();
+        }
+
+        When the_argument(String argument){
+            tasks.addAll(Arrays.asList(argument.split(" ")));
             return self();
         }
 

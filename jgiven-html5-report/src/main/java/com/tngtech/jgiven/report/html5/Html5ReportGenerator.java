@@ -66,7 +66,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
             copyCustomFile( specializedConfig.getCustomCss(), new File( specializedConfig.getTargetDir(), "css" ), "custom.css" );
             copyCustomFile( specializedConfig.getCustomJs(), new File( specializedConfig.getTargetDir(), "js" ), "custom.js" );
         } catch( IOException e ) {
-            throw Throwables.propagate( e );
+            throw new RuntimeException(e);
         }
     }
 

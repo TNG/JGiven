@@ -1,7 +1,13 @@
+# Release v2.0.0
+## Breaking changes
+* Gradle-Plugin: The jgiven report task now forces execution of test tasks. That is, when the task jgivenTestReport is requested, for instance via the command line, the test tasks it depends on are also executed.
+## Fixed issues:
+* The Gradle-Plugin is now configuration-cache compliant [#1527](https://github.com/TNG/JGiven/issues/1527) (big thanks to @jjohannes for basically doing all the work)
+
 # Release v1.3.1
 ## Fixed issues
 * TextReportGenerator is now backed by jansi2 not jansi1. [#1420](https://github.com/TNG/JGiven/issues/1420)
-* JUnit 5 assumptions failures don't fail tests anymore  [#1465] (https://github.com/TNG/JGiven/issues/1465) (thanks to j8zdev for the analysis)
+* JUnit 5 assumptions failures don't fail tests anymore  [#1465] (https://github.com/TNG/JGiven/issues/1465) (thanks to @j8zdev for the analysis)
 * Further dependency updates.
 
 # Release v1.3.0
@@ -10,9 +16,9 @@
 
 ## Fixed issues
 * Escaped dollars ($$) are now treated as a regular $ character.[#1253](https://github.com/TNG/JGiven/issues/1253) (thanks to manoj-fd for reporting)
-* Contribution guidelines are now up to date [#1300](https://github.com/TNG/JGiven/issues/1300)(thanks to johthor for reporting) 
+* Contribution guidelines are now up to date [#1300](https://github.com/TNG/JGiven/issues/1300)(thanks to @johthor for reporting) 
 ## Honorable mentions
-* Thanks to johthor for starting (and completing to a large degree) the implementation of an asciidoc reporter [#54](https://github.com/TNG/JGiven/issues/54)
+* Thanks to @johthor for starting (and completing to a large degree) the implementation of an asciidoc reporter [#54](https://github.com/TNG/JGiven/issues/54)
 
 # Release v1.2.5
 ## Fixed issues
@@ -20,16 +26,16 @@
 
 # Release v1.2.4
 ## Fixed issues
-* Fixed incorrect POM that was published because our manual pom transcription writes a version tag even when none is required. [#1013](https://github.com/TNG/JGiven/issues/1013) (thanks to jangalanski for reporting)
+* Fixed incorrect POM that was published because our manual pom transcription writes a version tag even when none is required. [#1013](https://github.com/TNG/JGiven/issues/1013) (thanks to @jangalanski for reporting)
 
 # Release v1.2.3
 ## Fixed issues
 * Fixed build error when JGiven is used in conjuntion with openapi. [#947](https://github.com/TNG/JGiven/issues/947) (thanks to manoj-fd for reporting)
-* Improved robustness of the html-apps zip file processing. [#929] (https://github.com/TNG/JGiven/pull/929) (thanks to JLLeitschuh)
+* Improved robustness of the html-apps zip file processing. [#929] (https://github.com/TNG/JGiven/pull/929) (thanks to @JLLeitschuh)
 
 # Release v1.2.2
 ## Fixed issues
-* Fixed issue where tags listed all of their ancestors as direct parents [#868](https://github.com/TNG/JGiven/issues/868) (thanks to jadhindieh for reporting)
+* Fixed issue where tags listed all of their ancestors as direct parents [#868](https://github.com/TNG/JGiven/issues/868) (thanks to @jadhindieh for reporting)
 
 # Release v1.2.1
 ## New features
@@ -37,17 +43,17 @@
 ## Fixed issues
  * The `@Tag` annotation configuration can now be set differently from the JGiven defaults. [#806](https://github.com/TNG/JGiven/issues/806) (thanks to sebphil)
  * JGiven no longer prints errors while scanning annotations that are not tags. [#821](https://github.com/TNG/JGiven/issues/821)
- * Fixed issue where parents of tags where not declared in the tag list, making the JGiven app unusable. [#868](https://github.com/TNG/JGiven/issues/868) (thanks to jadhindieh for reporting)
+ * Fixed issue where parents of tags where not declared in the tag list, making the JGiven app unusable. [#868](https://github.com/TNG/JGiven/issues/868) (thanks to @jadhindieh for reporting)
  * JGiven now openly reports incompatability when running TestNG in multi-threading mode. [#829](https://github.com/TNG/JGiven/issues/829)
  * JGiven now openly reports incompatability to the JUnit5 per-class lifecyle[#829](https://github.com/TNG/JGiven/issues/829)
  * Fixed issue where aggregation of reports would lead to an exception when running in parallel with JUnit5.[#829](https://github.com/TNG/JGiven/issues/829)
- * The JGiven maven plugin did not declare itsself as thread-safe, even though it conceptually is. [#829](https://github.com/TNG/JGiven/issues/829) (thanks to Hatzen for pointing it out and fixing it.)
+ * The JGiven maven plugin did not declare itsself as thread-safe, even though it conceptually is. [#829](https://github.com/TNG/JGiven/issues/829) (thanks to @Hatzen for pointing it out and fixing it.)
 ## Backward incompatible changes
  * Removed explicit support for PowerMock in JGiven-JUnit4 package, because the powermock project appears to be abandoned.
 
 # Release v1.2
 ## New features
-* JGiven now supports Spock 2 [#784](https://github.com/TNG/JGiven/pull/784) (thanks to jsalinaspolo)
+* JGiven now supports Spock 2 [#784](https://github.com/TNG/JGiven/pull/784) (thanks to @jsalinaspolo)
 ## Fixed issues
 * JGiven now records step timings correctly if there are intro or filler words in a step [#755](https://github.com/TNG/JGiven/issues/755)
 
@@ -59,9 +65,9 @@
 * Added an internal module for injecting automated performance analysis for test methods.
 
 ## Fixed Issues
-* Refurbished the jgiven-scala example project [#619](https://github.com/TNG/JGiven/pull/619) (thanks to seblm)
+* Refurbished the jgiven-scala example project [#619](https://github.com/TNG/JGiven/pull/619) (thanks to @seblm)
 * Updated most dependencies in the project
-* Enabled printing of nested stage [#366](https://github.com/TNG/JGiven/pull/619) (thanks to laurinvesely)
+* Enabled printing of nested stage [#366](https://github.com/TNG/JGiven/pull/619) (thanks to @laurinvesely)
 * Fixed SVG thumbnail creation in HTML5 report [#706](https://github.com/TNG/JGiven/pull/706)
 
 ## Backwards Incompatible Changes
@@ -76,16 +82,16 @@ due to the removal of all deprecated classes and methods and the drop of Java 7 
 
 ## New Features
 
-* Additon of `@FillerWords` to prepend scenario stage methods. [#472](https://github.com/TNG/JGiven/pull/472) (thanks to richard-stowe)
-* Java 13 is supported now [#447](https://github.com/TNG/JGiven/pull/447) (thanks to jsalinaspolo)
+* Additon of `@FillerWords` to prepend scenario stage methods. [#472](https://github.com/TNG/JGiven/pull/472) (thanks to @richard-stowe)
+* Java 13 is supported now [#447](https://github.com/TNG/JGiven/pull/447) (thanks to @jsalinaspolo)
 * The `CurrentStep` interface has a new method `setName` to change the name of a step programmatically [#386](https://github.com/TNG/JGiven/issues/386)
 * Updated the Guava dependency to v27.1-jre [#398](https://github.com/TNG/JGiven/pull/398)
-* Added `DualScenarioTest` [#406](https://github.com/TNG/JGiven/pull/406) (thanks to jangalinksi)
-* Upgraded Gradle Plugin to support Gradle 5 and 6 [#381](https://github.com/TNG/JGiven/pull/381) (thanks to jsalinaspolo)
+* Added `DualScenarioTest` [#406](https://github.com/TNG/JGiven/pull/406) (thanks to @jangalinksi)
+* Upgraded Gradle Plugin to support Gradle 5 and 6 [#381](https://github.com/TNG/JGiven/pull/381) (thanks to @jsalinaspolo)
 * `@Pending` can now be added to the test class to make all scenarios of that class pending [#403](https://github.com/TNG/JGiven/issues/403)
-* Added new option 'jgiven.report.dry-run' to generate a report without really executing the tests [#435](https://github.com/TNG/JGiven/issues/435) (thanks to jsalinaspolo)
-* Added Portuguese scenario and stage classes [#423](https://github.com/TNG/JGiven/issues/423) (thanks to gandadil)
-* Added French scenario and stage classes [#488](https://github.com/TNG/JGiven/issues/488) (thanks to ecattez)
+* Added new option 'jgiven.report.dry-run' to generate a report without really executing the tests [#435](https://github.com/TNG/JGiven/issues/435) (thanks to @jsalinaspolo)
+* Added Portuguese scenario and stage classes [#423](https://github.com/TNG/JGiven/issues/423) (thanks to @gandadil)
+* Added French scenario and stage classes [#488](https://github.com/TNG/JGiven/issues/488) (thanks to @ecattez)
 
 ### Spring 5 with JUnit 5
 
@@ -123,10 +129,10 @@ All deprecated methods and classes have been removed. Please adapt your code acc
 ## Fixed Issues
 
 * Make it easier to copy the stack trace from an error message [#380](https://github.com/TNG/JGiven/issues/380)
-* `TestEntitiyManager` now initialized correctly [#415](https://github.com/TNG/JGiven/issues/415) (thanks to leimer)
-* make tasks in the JGiven-gradle plugin cacheable [#450](https://github.com/TNG/JGiven/pull/450) (thanks to jsalinaspolo)
-* make sure the spring-junit-5 plugin is actually tested [#493](https://github.com/TNG/JGiven/pull/493) (thanks to catchin)
-* spring-junit5 tests now initialize spring before JGiven [#494](https://github.com/TNG/JGiven/pull/494) (thanks to catchin)
+* `TestEntitiyManager` now initialized correctly [#415](https://github.com/TNG/JGiven/issues/415) (thanks to @leimer)
+* make tasks in the JGiven-gradle plugin cacheable [#450](https://github.com/TNG/JGiven/pull/450) (thanks to @jsalinaspolo)
+* make sure the spring-junit-5 plugin is actually tested [#493](https://github.com/TNG/JGiven/pull/493) (thanks to @catchin)
+* spring-junit5 tests now initialize spring before JGiven [#494](https://github.com/TNG/JGiven/pull/494) (thanks to @catchin)
 
 # v0.18.2
 
@@ -179,7 +185,7 @@ See [PR #422](https://github.com/TNG/JGiven/pull/422) and [Issue #312](https://g
 
 ## New Features
 
-* First release of the Spock integration [#358](https://github.com/TNG/JGiven/pull/358) (thanks to mustaine)
+* First release of the Spock integration [#358](https://github.com/TNG/JGiven/pull/358) (thanks to @mustaine)
 * TestNG SkipExceptions are now recognized [#355](https://github.com/TNG/JGiven/issues/355)
 
 ## Fixed Issues
@@ -195,7 +201,7 @@ See [PR #422](https://github.com/TNG/JGiven/pull/422) and [Issue #312](https://g
 
 ## Fixed Issues
 
-* Fixed an IllegalArgumentException when creating thumbnails for very small images [#329](https://github.com/TNG/JGiven/issues/329) (thanks to maccluca)
+* Fixed an IllegalArgumentException when creating thumbnails for very small images [#329](https://github.com/TNG/JGiven/issues/329) (thanks to @maccluca)
 * Fixed NPE when using JUnit 5 and one test class has only disabled method [#338](https://github.com/TNG/JGiven/issues/338)
 * Fixed minor issue in JUnit 5 example that did not generate the HTML 5 report [#340](https://github.com/TNG/JGiven/issues/340)
 
@@ -234,7 +240,7 @@ However, the App will also be delivered together with JGiven so for users of JGi
 
 * Thumbnail preview for image attachments added [#299](https://github.com/TNG/JGiven/pull/299)
 * The ReportGenerator now uses the HTML5 report as default, doesn't silently misinterprets wrong arguments and flags and offers suggestions  [#299](https://github.com/TNG/JGiven/pull/299)
-* Formatting POJOs has been greatly improved, by allowing to specify custom formatters for fields [#297](https://github.com/TNG/JGiven/pull/297) (thanks to dgrandemange)
+* Formatting POJOs has been greatly improved, by allowing to specify custom formatters for fields [#297](https://github.com/TNG/JGiven/pull/297) (thanks to @dgrandemange)
 * @ExtendedDescription supports parameter place holders now [#283](https://github.com/TNG/JGiven/pull/283)
 * The HTML App has been extracted into a separate project and has been refactored internally. The functionality should not have been changed. [#287](https://github.com/TNG/JGiven/pull/287)
 
@@ -272,9 +278,9 @@ If you had a custom Spring configuration for JGiven you have to change the follo
 ## New Features
 
 * Experimental support for JUnit 5 has been added [#277](https://github.com/TNG/JGiven/pull/277)
-* Tags with the same name, but different packages are now correctly distinguished [#242](https://github.com/TNG/JGiven/pull/242) (thanks to ahus1)
-* Scenario states can be marked as required to make scenarios fail quickly and with a clear message if the state hasn't been provided [#255](https://github.com/TNG/JGiven/issues/255) (thanks to Airblader)
-* Added prefined Spanish JGiven classes for writing JGiven Scenarios in Spanish [#284](https://github.com/TNG/JGiven/pull/284) (thanks to elenagarcia5)
+* Tags with the same name, but different packages are now correctly distinguished [#242](https://github.com/TNG/JGiven/pull/242) (thanks to @ahus1)
+* Scenario states can be marked as required to make scenarios fail quickly and with a clear message if the state hasn't been provided [#255](https://github.com/TNG/JGiven/issues/255) (thanks to @Airblader)
+* Added prefined Spanish JGiven classes for writing JGiven Scenarios in Spanish [#284](https://github.com/TNG/JGiven/pull/284) (thanks to @elenagarcia5)
 
 ### Experimental JUnit 5 Support
 
@@ -313,7 +319,7 @@ In order to fix issue #239, a backwards incompatible change had to be done:
 ## New Features
 
 * Custom annotations can now also be defined for the `@Table` annotation [#235](https://github.com/TNG/JGiven/issues/235)
-* In addition to text and images, all kinds of media types can now be used as attachments [#228](https://github.com/TNG/JGiven/issues/228) (thanks to ahus1)
+* In addition to text and images, all kinds of media types can now be used as attachments [#228](https://github.com/TNG/JGiven/issues/228) (thanks to @ahus1)
 
 ## Small Improvements
 
@@ -360,7 +366,7 @@ In order to fix issue #239, a backwards incompatible change had to be done:
 
 ## Fixed Issues
 
-* Don't show multiple indexed attachments when cases are not shown as tables [#207](https://github.com/TNG/JGiven/pull/207) (thanks to ahus1)
+* Don't show multiple indexed attachments when cases are not shown as tables [#207](https://github.com/TNG/JGiven/pull/207) (thanks to @ahus1)
 
 # v0.11.3
 
@@ -370,7 +376,7 @@ In order to fix issue #239, a backwards incompatible change had to be done:
 
 ## Fixed Issues
 
-* Fixed an issue introduced with v0.11.1 that made the report generation dependent on the locale of the system instead of using utf-8 [PR#196](https://github.com/TNG/JGiven/pull/196) (thanks to ahus1)
+* Fixed an issue introduced with v0.11.1 that made the report generation dependent on the locale of the system instead of using utf-8 [PR#196](https://github.com/TNG/JGiven/pull/196) (thanks to @ahus1)
 
 # v0.11.2
 
@@ -460,7 +466,7 @@ The `@Table` annotation to format step parameters as tables has been extended wi
 
 ## New Features
 
-* CamelCase in step methods is now supported (thanks to albertofaci) [#164](https://github.com/TNG/JGiven/issues/164), [PR #165](https://github.com/TNG/JGiven/pull/165)
+* CamelCase in step methods is now supported (thanks to @albertofaci) [#164](https://github.com/TNG/JGiven/issues/164), [PR #165](https://github.com/TNG/JGiven/pull/165)
 
 # v0.9.4
 
@@ -472,7 +478,7 @@ The `@Table` annotation to format step parameters as tables has been extended wi
 
 ## New Features
 
-* Spring support has been simplified by a new annotation `@EnableJGiven` and XML element <jgiven:annotation-driven />. Special thanks to TripleNail for this contribution. [#153](https://github.com/TNG/JGiven/pull/153)
+* Spring support has been simplified by a new annotation `@EnableJGiven` and XML element <jgiven:annotation-driven />. Special thanks to @TripleNail for this contribution. [#153](https://github.com/TNG/JGiven/pull/153)
 * Scenarios without steps can now be excluded from the report by using the new `--exclude-empty-scenarios` report generator option [#151](https://github.com/TNG/JGiven/issues/151)
 * Underlines in parameter names are now replaced with spaces in the report [#147](https://github.com/TNG/JGiven/issues/147)
 * HTML Report: highlight failing cases of a scenario [#150](https://github.com/TNG/JGiven/issues/150)
