@@ -70,7 +70,7 @@ public class FormatterCache {
         try {
             return (Formatter<? super T>) cache.get( typeToBeFormatted );
         } catch( ExecutionException e ) {
-            throw Throwables.propagate( e.getCause() );
+            throw new RuntimeException( e.getCause() );
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.report.text;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Retention;
@@ -32,9 +33,6 @@ import com.tngtech.jgiven.report.model.StepModel;
  */
 @RunWith(DataProviderRunner.class)
 public class PlainTextReporterTest extends ScenarioTestBaseForTesting<GivenTestStep, WhenTestStep, ThenTestStep> {
-
-    @Rule
-    public final ExpectedException expected = ExpectedException.none();
 
     @DataProvider
     public static Object[][] testData() {
@@ -337,8 +335,8 @@ public class PlainTextReporterTest extends ScenarioTestBaseForTesting<GivenTestS
         getScenario().startScenario("test");
         FormattedSteps stage = getScenario().addStage(FormattedSteps.class);
 
-        expected.expect(JGivenWrongUsageException.class);
-        stage.argument_$_multiple_wrong_formatters(true);
+        assertThatThrownBy(() ->stage.argument_$_multiple_wrong_formatters(true))
+            .isInstanceOf(JGivenWrongUsageException.class);
     }
 
     @Test

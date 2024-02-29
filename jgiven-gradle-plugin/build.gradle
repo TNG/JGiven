@@ -8,11 +8,13 @@ dependencies {
     implementation localGroovy() //we're a gradle plugin, we want to use the same groovy version as gradle
     implementation project(':jgiven-core')
     implementation project(':jgiven-html5-report')
+    implementation(platform(libs.junit.bom))
     implementation 'com.google.guava:guava:33.0.0-jre'
     implementation 'com.google.code.gson:gson:2.10.1'
 
     testImplementation project(':jgiven-junit5')
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
 }
 

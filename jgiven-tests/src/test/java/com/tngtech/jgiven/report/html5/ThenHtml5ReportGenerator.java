@@ -17,7 +17,9 @@ public class ThenHtml5ReportGenerator<SELF extends ThenHtml5ReportGenerator<SELF
     public static final String META_DATA_PATTERN = "jgivenReport.setMetaData\\((.*)\\);";
 
     public void the_metaData_file_has_title_set_to( String title ) throws IOException {
-        String metaDataContent = Files.toString( new File( new File( targetReportDir, "data" ), "metaData.js" ), Charsets.UTF_8 );
+        String metaDataContent = Files.asCharSource(
+            new File( new File( targetReportDir, "data" ), "metaData.js" ), Charsets.UTF_8
+            ).read();
 
         Matcher matcher = Pattern.compile( META_DATA_PATTERN ).matcher( metaDataContent );
         assertThat( metaDataContent ).matches( META_DATA_PATTERN );

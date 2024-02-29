@@ -24,7 +24,7 @@ public class ReportGeneratorTest {
     public void wrong_json_files_are_handled_gracefully() throws Exception {
         File folder = tmpFolder.newFolder();
 
-        Files.write( "no json", new File( folder, "wrong.json" ), Charsets.UTF_8 );
+        Files.asCharSink( new File( folder, "wrong.json" ), Charsets.UTF_8 ).write( "no json");
 
         AsciiDocReportGenerator asciiReport = new AsciiDocReportGenerator();
 

@@ -70,7 +70,7 @@ public class ParameterFormattingUtil {
                 } else if( annotation instanceof AnnotationFormat ) {
                     AnnotationFormat arg = (AnnotationFormat) annotation;
                     foundFormatting.add( new StepFormatter.ArgumentFormatting(
-                        new StepFormatter.AnnotationBasedFormatter( arg.value().newInstance(), originalAnnotation ) ) );
+                        new StepFormatter.AnnotationBasedFormatter( arg.value().getConstructor().newInstance(), originalAnnotation ) ) );
                 } else {
                     Class<? extends Annotation> annotationType = annotation.annotationType();
                     if( !visitedTypes.contains( annotationType ) ) {
@@ -83,7 +83,7 @@ public class ParameterFormattingUtil {
                     }
                 }
             } catch( Exception e ) {
-                throw Throwables.propagate( e );
+                throw new RuntimeException( e );
             }
         }
 
