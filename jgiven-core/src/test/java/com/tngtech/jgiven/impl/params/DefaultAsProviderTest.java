@@ -18,7 +18,7 @@ public class DefaultAsProviderTest {
             "Foo_Bar, Foo Bar",
             "foo_bar_Baz, foo bar Baz",
             "foo_bar, foo bar",
-            "foo bar-lkjw24dsgf", "foo bar"
+            "foo bar-lkjw24dsgf, foo bar"
     } )
     @Test
     public void test_method_to_readable_text( String methodName, String expectedText ) {
