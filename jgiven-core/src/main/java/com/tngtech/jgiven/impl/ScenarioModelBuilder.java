@@ -21,7 +21,6 @@ import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.impl.format.ParameterFormattingUtil;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
-import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 import com.tngtech.jgiven.impl.tag.ResolvedTags;
 import com.tngtech.jgiven.impl.tag.TagCreator;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
@@ -280,7 +279,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         As as = paramMethod.getAnnotation(As.class);
         AsProvider provider = as != null
             ? ReflectionUtil.newInstance(as.provider())
-            : new DefaultAsProvider();
+            : configuration.getAsProvider();
         return provider.as(as, paramMethod);
     }
 
