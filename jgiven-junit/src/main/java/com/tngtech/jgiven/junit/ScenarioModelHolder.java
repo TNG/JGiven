@@ -26,7 +26,7 @@ public class ScenarioModelHolder {
      * @param testClass the test class to get the report model for
      * @return the report model for the given test class
      */
-    public ReportModel getReportModel( Class<? extends Object> testClass ) {
+    public ReportModel getReportModel( Class<?> testClass ) {
         synchronized( reportModels ) {
             ReportModel reportModel = reportModels.get( testClass.getCanonicalName() );
 
