@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.config;
 
 import com.tngtech.jgiven.annotation.AsProvider;
+import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -102,6 +103,9 @@ public abstract class AbstractJGivenConfiguration implements FormatterConfigurat
     }
 
     public void setAsProvider(AsProvider asProvider) {
+        if(asProvider == null) {
+            throw new JGivenWrongUsageException("A custom AsProvider must not be set to null");
+        }
         this.asProvider = asProvider;
     }
 
