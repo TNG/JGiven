@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 
 /**
- * This annotation can be used to override the default
- * representation for a step method, test method or class name in the report.
+ * This annotation can be used to override the default representation for the items it was annotated with in the report.
+ * Works on step method, test method or class name.
  *
  * <p>
  * Note that the '$' character keeps its special meaning and will be

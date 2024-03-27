@@ -102,6 +102,11 @@ public abstract class AbstractJGivenConfiguration implements FormatterConfigurat
         return testClassSuffixRegEx;
     }
 
+    /**
+     * Set a default interpreter for method names for all items that are subject to this configuration.
+     * Can be overriden by {@link com.tngtech.jgiven.annotation.As} annotation.
+     * @see com.tngtech.jgiven.annotation.As
+     */
     public void setAsProvider(AsProvider asProvider) {
         if (asProvider == null) {
             throw new JGivenWrongUsageException("A custom AsProvider must not be set to null");
