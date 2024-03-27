@@ -1,5 +1,7 @@
 package com.tngtech.jgiven.config;
 
+import com.tngtech.jgiven.annotation.AsProvider;
+import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
@@ -10,6 +12,8 @@ import com.tngtech.jgiven.impl.format.FormatterCache;
 public abstract class AbstractJGivenConfiguration implements FormatterConfiguration {
     private final Map<Class<? extends Annotation>, TagConfiguration> tagConfigurations = Maps.newHashMap();
     private final FormatterCache formatterCache = new FormatterCache();
+
+    private AsProvider asProvider = new DefaultAsProvider();
     private String testClassSuffixRegEx = "Tests?";
 
     /**
@@ -95,5 +99,13 @@ public abstract class AbstractJGivenConfiguration implements FormatterConfigurat
 
     public String getTestClassSuffixRegEx() {
         return testClassSuffixRegEx;
+    }
+
+    public void setAsProvider(AsProvider asProvider) {
+        this.asProvider = asProvider;
+    }
+
+    public AsProvider getAsProvider() {
+        return asProvider;
     }
 }
