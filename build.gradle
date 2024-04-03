@@ -284,7 +284,7 @@ configure(subprojects) { subproject ->
     description "${rootProject.description} - Module ${project.name}"
 
     checkstyle {
-        toolVersion = "10.14.2"
+        toolVersion = "10.15.0"
         configFile = file("${rootProject.projectDir}/checkstyle.xml")
         showViolations = false
         ignoreFailures = true
