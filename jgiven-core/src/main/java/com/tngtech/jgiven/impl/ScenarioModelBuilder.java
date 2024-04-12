@@ -415,11 +415,12 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
         if (method.isAnnotationPresent(Description.class)) {
             scenarioDescription = method.getAnnotation(Description.class).value();
-        } else if (method.isAnnotationPresent(As.class)) {
+        } else {
             As as = method.getAnnotation(As.class);
-
-            AsProvider provider = ReflectionUtil.newInstance(as.provider());
-            scenarioDescription = provider.as(as, method);
+            AsProvider provider = as != null
+                ? ReflectionUtil.newInstance(as.provider())
+                : configuration.getAsProvider();
+                scenarioDescription = provider.as(as, method);
         }
 
         scenarioStarted(scenarioDescription);
