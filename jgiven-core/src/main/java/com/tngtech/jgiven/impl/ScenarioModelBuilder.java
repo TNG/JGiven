@@ -277,10 +277,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
 
         As as = paramMethod.getAnnotation(As.class);
-        AsProvider provider = as != null
-            ? ReflectionUtil.newInstance(as.provider())
-            : configuration.getAsProvider();
-        return provider.as(as, paramMethod);
+        return getAsProvider(as).as(as, paramMethod);
     }
 
     public void setStatus(ExecutionStatus status) {
@@ -417,10 +414,8 @@ public class ScenarioModelBuilder implements ScenarioListener {
             scenarioDescription = method.getAnnotation(Description.class).value();
         } else {
             As as = method.getAnnotation(As.class);
-            AsProvider provider = as != null
-                ? ReflectionUtil.newInstance(as.provider())
-                : configuration.getAsProvider();
-                scenarioDescription = provider.as(as, method);
+            AsProvider provider = getAsProvider(as);
+            scenarioDescription = provider.as(as, method);
         }
 
         scenarioStarted(scenarioDescription);
@@ -522,5 +517,11 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     public ScenarioCaseModel getScenarioCaseModel() {
         return scenarioCaseModel;
+    }
+
+    private AsProvider getAsProvider(As as) {
+        return as != null
+            ? ReflectionUtil.newInstance(as.provider())
+            : configuration.getAsProvider();
     }
 }
