@@ -28,7 +28,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2.30.1
         with:
           api-level: 29
-          script: ". scripts/source_files/helper_functions.sh && runAndroidTestOnGivenProject jgiven-android-test/build.gradle 1.1-t && runAndroidTestOnGivenProject example-projects/android/build.gradle 1.1-t"
+          script: "bash -c 'source scripts/source_files/helper_functions.sh && runAndroidTestOnGivenProject jgiven-android-test/build.gradle 1.1-t && runAndroidTestOnGivenProject example-projects/android/build.gradle 1.1-t'"
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
