@@ -103,7 +103,7 @@ public abstract class AbstractJGivenConfiguration implements FormatterConfigurat
     }
 
     public void setAsProvider(AsProvider asProvider) {
-        if(asProvider == null) {
+        if (asProvider == null) {
             throw new JGivenWrongUsageException("A custom AsProvider must not be set to null");
         }
         this.asProvider = asProvider;
