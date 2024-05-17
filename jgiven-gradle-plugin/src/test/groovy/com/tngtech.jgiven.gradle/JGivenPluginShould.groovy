@@ -28,7 +28,7 @@ class JGivenPluginShould extends Specification {
         
        repositories { mavenCentral() }
        dependencies {
-         testImplementation 'com.tngtech.jgiven:jgiven-junit:1.2.5' 
+         testImplementation 'com.tngtech.jgiven:jgiven-junit:1.3.1' 
          testImplementation 'junit:junit:4.13.2' 
         }
     """
@@ -59,7 +59,7 @@ class JGivenPluginShould extends Specification {
         
        repositories { mavenCentral() }
        dependencies {
-         testImplementation 'com.tngtech.jgiven:jgiven-junit:1.2.5' 
+         testImplementation 'com.tngtech.jgiven:jgiven-junit:1.3.1' 
          testImplementation 'junit:junit:4.13.2' 
         }
     """
