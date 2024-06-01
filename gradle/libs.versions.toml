@@ -17,7 +17,7 @@ aspectj-jrt = { module = "org.aspectj:aspectjrt", version.ref = "aspectj-version
 aspectj-jweaver = { module = "org.aspectj:aspectjweaver", version.ref = "aspectj-version" }
 byteBuddy = { module = "net.bytebuddy:byte-buddy", version.ref = "byteBuddy-version" }
 byteBuddy-agent = { module = "net.bytebuddy:byte-buddy-agent", version.ref = "byteBuddy-version" }
-hypersql-database = { module = "org.hsqldb:hsqldb", version = "2.7.2" }
+hypersql-database = { module = "org.hsqldb:hsqldb", version = "2.7.3" }
 junit-bom = { module = "org.junit:junit-bom", version = "5.10.2" }
 junit4 = { module = "junit:junit", version.ref = "junit4-version" }
 junit4-dataprovider = { module = "com.tngtech.java:junit-dataprovider", version = "1.13.1" }
