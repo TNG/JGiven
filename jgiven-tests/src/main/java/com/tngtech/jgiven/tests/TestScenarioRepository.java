@@ -174,13 +174,10 @@ public class TestScenarioRepository {
 
     final static List<TestScenario> testScenarios = setupTestScenarios();
 
-    public static TestScenario findScenario(SearchCriteria searchCriteria) {
-        for (TestScenario scenario : testScenarios) {
-            if (searchCriteria.matches(scenario.criteria)) {
-                return scenario;
-            }
-        }
-        throw new IllegalArgumentException("No matching scenario found");
+    public static List<TestScenario> findScenario(SearchCriteria searchCriteria) {
+        return testScenarios.stream()
+                .filter(s -> searchCriteria.matches(s.criteria))
+                .collect(Collectors.toList());
     }
 
     private static ScenarioCriteria addTestScenario(List<TestScenario> list, Class<?> testClass) {
