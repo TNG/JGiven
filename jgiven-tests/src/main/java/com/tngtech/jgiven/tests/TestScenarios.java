@@ -3,12 +3,52 @@ package com.tngtech.jgiven.tests;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.testng.ScenarioTestListener;
 import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testng.SkipException;
 import org.testng.annotations.Listeners;
+
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 @Listeners( ScenarioTestListener.class )
 @ExtendWith(JGivenReportExtractingExtension.class)
 public class TestScenarios extends ScenarioTestForTesting<GivenTestStage, WhenTestStage, ThenTestStage> {
+
+    @Test
+    @org.junit.jupiter.api.Test
+    @org.testng.annotations.Test
+    public void test_with_failing_assertJ_assumption() {
+        assumeThat(false).isTrue();
+    }
+
+    @org.testng.annotations.Test
+    public void test_with_failing_testng_assumption() {
+        throw new SkipException("Fail on purpose");
+    }
+    @Test
+    @org.junit.jupiter.api.Test
+    public void test_with_failing_junit_assumption() {
+        Assumptions.assumeFalse(true);
+    }
+
+    @Test
+    @org.junit.jupiter.api.Test
+    @org.testng.annotations.Test
+    public void test_with_failing_assertJ_assumption_in_stage() {
+        given().a_failed_assertJ_assumption();
+    }
+
+    @org.testng.annotations.Test
+    public void test_with_failing_testng_assumption_in_stage() {
+        given().a_failed_testng_assumption();
+    }
+
+    @Test
+    @org.junit.jupiter.api.Test
+    public void test_with_failing_junit_assumption_in_stage() {
+        given().a_failed_junit_assumption();
+    }
+
 
     @Test
     @org.junit.jupiter.api.Test
