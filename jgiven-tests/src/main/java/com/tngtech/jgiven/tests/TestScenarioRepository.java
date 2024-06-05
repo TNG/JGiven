@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.Description;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TestScenarioRepository {
 
@@ -14,6 +15,7 @@ public class TestScenarioRepository {
         public Integer numberOfSteps;
         public Integer failingStep;
         public Integer numberOfFailingStages;
+        public Boolean assumptionFailed;
         public Boolean failIfPassed;
         public Boolean executeSteps;
         public Boolean tagAnnotation;
@@ -23,6 +25,9 @@ public class TestScenarioRepository {
         public String testClassDescription;
 
         public boolean matches(ScenarioCriteria criteria) {
+            if(assumptionFailed != null && assumptionFailed != criteria.assumptionFailed){
+                return false;
+            }
             if (pending != criteria.pending) {
                 return false;
             }
@@ -82,6 +87,7 @@ public class TestScenarioRepository {
         public boolean executeSteps;
         public boolean failing;
         public Integer failingStep;
+        public boolean assumptionFailed;
         public int numberOfSteps = 1;
         public boolean tagAnnotation;
         private int numberOfFailingStages;
@@ -92,6 +98,11 @@ public class TestScenarioRepository {
 
         public ScenarioCriteria pending() {
             pending = true;
+            return this;
+        }
+
+        public ScenarioCriteria assumptionFailed() {
+            assumptionFailed = true;
             return this;
         }
 
@@ -201,6 +212,24 @@ public class TestScenarioRepository {
 
     private static List<TestScenario> setupTestScenarios() {
         List<TestScenario> result = Lists.newArrayList();
+
+        addTestScenario(result, "test_with_failing_assertJ_assumption")
+                .assumptionFailed();
+
+        addTestScenario(result,"test_with_failing_testng_assumption")
+                .assumptionFailed();
+
+        addTestScenario(result, "test_with_failing_junit_assumption")
+                .assumptionFailed();
+
+        addTestScenario(result, "test_with_failing_assertJ_assumption_in_stage")
+                .assumptionFailed();
+
+        addTestScenario(result, "test_with_failing_junit_assumption_in_stage")
+                .assumptionFailed();
+
+        addTestScenario(result, "test_with_failing_testng_assumption_in_stage")
+                .assumptionFailed();
 
         addTestScenario(result, "failing_test_with_two_steps")
             .numberOfSteps(2)
