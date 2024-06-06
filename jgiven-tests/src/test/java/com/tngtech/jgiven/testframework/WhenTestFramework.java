@@ -1,19 +1,16 @@
 package com.tngtech.jgiven.testframework;
 
-import org.assertj.core.api.Assertions;
-
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.tests.TestScenarioRepository.TestScenario;
-
-import java.util.List;
+import org.assertj.core.api.Assertions;
 
 public class WhenTestFramework<SELF extends WhenTestFramework<?>> extends Stage<SELF> {
 
     @ExpectedScenarioState
-    protected List<TestScenario> testScenario;
+    protected TestScenario testScenario;
 
     @ProvidedScenarioState
     protected ReportModel reportModel;
@@ -26,10 +23,9 @@ public class WhenTestFramework<SELF extends WhenTestFramework<?>> extends Stage<
 
     public SELF the_test_is_executed_with(TestFramework framework) {
         Assertions.assertThat(testScenario).as("No matching test scenario found").isNotNull();
-        Assertions.assertThat(testScenario).as("No matching test scenario found").isNotEmpty();
 
         executor = TestExecutor.getExecutor(framework);
-        testExecutionResult = executor.execute(testScenario.getFirst().testClass, testScenario.getFirst().testMethod);
+        testExecutionResult = executor.execute(testScenario.testClass, testScenario.testMethod);
         reportModel = testExecutionResult.getReportModel();
         return self();
     }
@@ -38,7 +34,7 @@ public class WhenTestFramework<SELF extends WhenTestFramework<?>> extends Stage<
         Assertions.assertThat(testScenario).as("No matching test scenario found").isNotNull();
 
         executor = TestExecutor.getExecutor(framework);
-        testExecutionResult = executor.execute(testScenario.getFirst().testClass);
+        testExecutionResult = executor.execute(testScenario.testClass);
         reportModel = testExecutionResult.getReportModel();
         return self();
     }
