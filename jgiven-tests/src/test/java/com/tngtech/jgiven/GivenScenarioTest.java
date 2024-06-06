@@ -7,8 +7,6 @@ import com.tngtech.jgiven.tests.TestScenarioRepository;
 import com.tngtech.jgiven.tests.TestScenarioRepository.SearchCriteria;
 import com.tngtech.jgiven.tests.TestScenarioRepository.TestScenario;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -21,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<SELF> {
 
     @ProvidedScenarioState
-    List<TestScenario> testScenario;
+    TestScenario testScenario;
 
     SearchCriteria criteria = new SearchCriteria();
 
@@ -41,6 +39,13 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         criteria.failing = true;
         return self();
     }
+
+
+    public SELF a_test_named_$(String testName, Class<?> testClass){
+        testScenario = new TestScenario(testClass, testName);
+        return self();
+    }
+
 
     public SELF the_test_has_$_failing_stages(int n) {
         criteria.numberOfFailingStages = n;
@@ -81,7 +86,7 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
     @AfterStage
     public void findScenario() {
         if (testScenario == null) {
-            testScenario = TestScenarioRepository.findScenario(criteria);
+            testScenario = TestScenarioRepository.findScenario(criteria).getFirst();
         }
     }
 
@@ -116,42 +121,42 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
     }
 
     public void a_test_class_with_all_tests_ignored() {
-        testScenario = List.of(TestScenarioRepository.testClassWithOnlyIgnoredTests());
+        testScenario = TestScenarioRepository.testClassWithOnlyIgnoredTests();
     }
 
     public void a_test_class_with_a_failing_scenario_and_a_failing_after_stage() {
-        testScenario = List.of(TestScenarioRepository.testClassWithAFailingScenarioAndAFailingAfterStage());
+        testScenario = TestScenarioRepository.testClassWithAFailingScenarioAndAFailingAfterStage();
     }
 
     public void a_test_with_two_cases_and_the_first_one_fails() {
-        testScenario = List.of(TestScenarioRepository.testWithTwoCasesAndTheFirstOneFails());
+        testScenario = TestScenarioRepository.testWithTwoCasesAndTheFirstOneFails();
     }
 
     public void a_TestNG_test_with_two_cases_and_the_first_one_fails() {
-        testScenario = List.of(TestScenarioRepository.testNgTestWithAFailingCase());
+        testScenario = TestScenarioRepository.testNgTestWithAFailingCase();
     }
 
     public void a_pending_scenario_with_a_data_provider() {
-        testScenario = List.of(new TestScenario(PendingDataProviderTests.class));
+        testScenario = new TestScenario(PendingDataProviderTests.class);
     }
 
     public SELF junit5_tests_with_scenario_modifications_in_after_method() {
-        testScenario = List.of(TestScenarioRepository.junit5TestsWithModificationsInAfterMethod());
+        testScenario = TestScenarioRepository.junit5TestsWithModificationsInAfterMethod();
         return self();
     }
 
     public SELF junit5_test_class_with_a_per_class_lifecycle(){
-        testScenario = List.of(TestScenarioRepository.junit5TestClassWithPerClassLifecycle());
+        testScenario = TestScenarioRepository.junit5TestClassWithPerClassLifecycle();
         return self();
     }
 
     public SELF a_testNG_class_with_parallel_tests_and_injected_stages(){
-        testScenario = List.of(TestScenarioRepository.testNgClassWithParallelTestsAndInjectedStages());
+        testScenario = TestScenarioRepository.testNgClassWithParallelTestsAndInjectedStages();
         return self();
     }
 
     public SELF a_test_with_framework_and_JGiven_before_and_after_methods(){
-        testScenario = List.of(TestScenarioRepository.lifecycleOrderingTest());
+        testScenario = TestScenarioRepository.lifecycleOrderingTest();
         return self();
     }
 }
