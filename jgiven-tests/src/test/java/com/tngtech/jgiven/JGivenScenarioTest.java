@@ -11,10 +11,8 @@ import com.tngtech.jgiven.junit.JGivenClassRule;
 
 /**
  * We do not directly inherit from ScenarioTest to avoid interference with JGiven tests we are testing
- * @deprecated Prefer using JUnit 5 tests
  */
 @JGivenConfiguration( JGivenTestConfiguration.class )
-@Deprecated
 public class JGivenScenarioTest<GIVEN, WHEN, THEN> extends ScenarioTestBase<GIVEN, WHEN, THEN> {
     @ClassRule
     public static final JGivenClassRule writerRule = new JGivenClassRule();
