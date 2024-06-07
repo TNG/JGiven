@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.tests;
 
 import com.tngtech.jgiven.Stage;
+import org.junit.Assume;
 import org.junit.jupiter.api.Assumptions;
 import org.testng.SkipException;
 
@@ -22,19 +23,27 @@ public class GivenTestStage extends Stage<GivenTestStage> {
         return self();
     }
 
+    @SuppressWarnings("DataFlowIssue") //fail on purpose
     public GivenTestStage a_failed_assertJ_assumption() {
         assumeThat(true).isFalse();
         return self();
     }
 
-    public GivenTestStage a_failed_junit_assumption() {
+    @SuppressWarnings("DataFlowIssue") //fail on purpose
+    public GivenTestStage a_failed_junit5_assumption() {
         Assumptions.assumeFalse(true);
         return self();
     }
 
+    @SuppressWarnings("DataFlowIssue") //fail on purpose
     public GivenTestStage a_failed_testng_assumption(){
         throw new SkipException("Fail on purpose");
     }
 
 
+    @SuppressWarnings("DataFlowIssue") //fail on purpose
+    public GivenTestStage a_failed_junit_assumption() {
+        Assume.assumeFalse(true);
+        return self();
+    }
 }

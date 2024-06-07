@@ -4,6 +4,7 @@ import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.testng.ScenarioTestListener;
 import org.junit.Test;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.Assume;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testng.SkipException;
 import org.testng.annotations.Listeners;
@@ -25,10 +26,15 @@ public class TestScenarios extends ScenarioTestForTesting<GivenTestStage, WhenTe
     public void test_with_failing_testng_assumption() {
         throw new SkipException("Fail on purpose");
     }
-    @Test
+
     @org.junit.jupiter.api.Test
-    public void test_with_failing_junit_assumption() {
+    public void test_with_failing_junit5_assumption() {
         Assumptions.assumeFalse(true);
+    }
+
+    @Test
+    public void test_with_failing_junit_assumption(){
+        Assume.assumeFalse(true);
     }
 
     @Test
@@ -43,8 +49,12 @@ public class TestScenarios extends ScenarioTestForTesting<GivenTestStage, WhenTe
         given().a_failed_testng_assumption();
     }
 
-    @Test
     @org.junit.jupiter.api.Test
+    public void test_with_failing_junit5_assumption_in_stage() {
+        given().a_failed_junit5_assumption();
+    }
+
+    @Test
     public void test_with_failing_junit_assumption_in_stage() {
         given().a_failed_junit_assumption();
     }
