@@ -1,16 +1,14 @@
 package com.tngtech.jgiven.junit;
 
-import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
-import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
-import static java.lang.String.format;
-import static org.junit.Assume.assumeTrue;
-
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.util.*;
-
-import org.junit.internal.AssumptionViolatedException;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Lists;
+import com.google.common.primitives.Primitives;
+import com.tngtech.jgiven.impl.ScenarioBase;
+import com.tngtech.jgiven.impl.util.ParameterNameUtil;
+import com.tngtech.jgiven.impl.util.ReflectionUtil;
+import com.tngtech.jgiven.impl.util.ThrowableUtil;
+import com.tngtech.jgiven.report.model.NamedArgument;
+import com.tngtech.jgiven.report.model.ReportModel;
 import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -20,14 +18,15 @@ import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
-import com.google.common.primitives.Primitives;
-import com.tngtech.jgiven.impl.ScenarioBase;
-import com.tngtech.jgiven.impl.util.ParameterNameUtil;
-import com.tngtech.jgiven.impl.util.ReflectionUtil;
-import com.tngtech.jgiven.report.model.NamedArgument;
-import com.tngtech.jgiven.report.model.ReportModel;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.util.*;
+
+import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
+import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
+import static java.lang.String.format;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * JUnit Rule to enable JGiven in a JUnit test
@@ -72,10 +71,10 @@ public class JGivenMethodRule implements MethodRule {
                 try {
                     base.evaluate();
                     succeeded();
-                } catch( AssumptionViolatedException e ) {
-                    throw e;
                 } catch( Throwable t ) {
-                    failed( t );
+                    if(!ThrowableUtil.isAssumptionException(t)) {
+                        failed(t);
+                    }
                     throw t;
                 }
             }
@@ -191,7 +190,7 @@ public class JGivenMethodRule implements MethodRule {
 
     private static List<Object> getTypeMatchingValuesInOrderOf( Class<?>[] expectedClasses, List<Object> values ) {
         List<Object> valuesCopy = Lists.newArrayList( values );
-        List<Object> result = new ArrayList<Object>();
+        List<Object> result = new ArrayList<>();
         for( Class<?> argumentClass : expectedClasses ) {
             for( Iterator<Object> iterator = valuesCopy.iterator(); iterator.hasNext(); ) {
                 Object value = iterator.next();
