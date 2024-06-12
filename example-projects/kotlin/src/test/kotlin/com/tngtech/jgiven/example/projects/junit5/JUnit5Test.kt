@@ -28,4 +28,11 @@ class JUnit5Test {
         whenStage.`when`().handle_message()
         thenStage.then().the_result_is("Hello JUnit 5!")
     }
+
+    @Test
+    fun `test with value class`() {
+        givenStage.given().greeting(GivenStage.Username("Foo"))
+        whenStage.`when`().handle_message()
+        thenStage.then().the_result_is("Hello Foo 5!")
+    }
 }
