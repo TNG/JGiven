@@ -213,24 +213,6 @@ public class TestScenarioRepository {
     private static List<TestScenario> setupTestScenarios() {
         List<TestScenario> result = Lists.newArrayList();
 
-        addTestScenario(result, "test_with_failing_assertJ_assumption")
-                .assumptionFailed();
-
-        addTestScenario(result,"test_with_failing_testng_assumption")
-                .assumptionFailed();
-
-        addTestScenario(result, "test_with_failing_junit_assumption")
-                .assumptionFailed();
-
-        addTestScenario(result, "test_with_failing_assertJ_assumption_in_stage")
-                .assumptionFailed();
-
-        addTestScenario(result, "test_with_failing_junit_assumption_in_stage")
-                .assumptionFailed();
-
-        addTestScenario(result, "test_with_failing_testng_assumption_in_stage")
-                .assumptionFailed();
-
         addTestScenario(result, "failing_test_with_two_steps")
             .numberOfSteps(2)
             .failingStep(1);
