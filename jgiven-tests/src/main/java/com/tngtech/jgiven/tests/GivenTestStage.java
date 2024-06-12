@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.tests;
 
 import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.annotation.NestedSteps;
 import org.junit.Assume;
 import org.junit.jupiter.api.Assumptions;
 import org.testng.SkipException;
@@ -13,19 +14,13 @@ public class GivenTestStage extends Stage<GivenTestStage> {
     }
 
     public GivenTestStage nothing() {
-        return this;
+        return self();
     }
 
     public GivenTestStage a_failed_step(boolean fail) {
         if (fail) {
             throw new IllegalArgumentException();
         }
-        return self();
-    }
-
-    @SuppressWarnings("DataFlowIssue") //fail on purpose
-    public GivenTestStage a_failed_assertJ_assumption() {
-        assumeThat(true).isFalse();
         return self();
     }
 
