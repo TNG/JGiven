@@ -24,12 +24,6 @@ public class GivenTestStage extends Stage<GivenTestStage> {
     }
 
     @SuppressWarnings("DataFlowIssue") //fail on purpose
-    public GivenTestStage a_failed_assertJ_assumption() {
-        assumeThat(true).isFalse();
-        return self();
-    }
-
-    @SuppressWarnings("DataFlowIssue") //fail on purpose
     public GivenTestStage a_failed_junit5_assumption() {
         Assumptions.assumeFalse(true);
         return self();
