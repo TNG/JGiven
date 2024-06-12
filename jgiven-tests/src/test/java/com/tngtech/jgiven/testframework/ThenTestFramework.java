@@ -14,7 +14,7 @@ import com.tngtech.jgiven.tests.TestScenarioRepository.TestScenario;
 
 public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenReportModel<SELF> {
     @ExpectedScenarioState
-    protected List<TestScenario> testScenario;
+    protected TestScenario testScenario;
 
     @ExpectedScenarioState
     TestExecutionResult result;
@@ -50,8 +50,8 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
     }
 
     public SELF the_report_model_contains_one_scenario_for_each_test_method() {
-        Method[] declaredMethods = testScenario.getFirst().testClass.getDeclaredMethods();
-        List<Method> nonStaticMethods = ReflectionUtil.getNonStaticMethod(testScenario.getFirst().testClass.getDeclaredMethods());
+        Method[] declaredMethods = testScenario.testClass.getDeclaredMethods();
+        List<Method> nonStaticMethods = ReflectionUtil.getNonStaticMethod(testScenario.testClass.getDeclaredMethods());
         assertThat(reportModel.getScenarios()).hasSize(nonStaticMethods.size());
         return self();
     }
@@ -71,7 +71,7 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
     }
 
     public SELF the_report_model_has_a_valid_class_name() {
-        assertThat(reportModel.getClassName()).isEqualTo(testScenario.getFirst().testClass.getName());
+        assertThat(reportModel.getClassName()).isEqualTo(testScenario.testClass.getName());
         return self();
     }
 
