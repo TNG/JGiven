@@ -9,6 +9,7 @@ import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
+import com.tngtech.jgiven.impl.util.ThrowableUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
 import java.util.EnumSet;
@@ -85,7 +86,7 @@ public class JGivenExtension implements
     public void afterTestExecution(ExtensionContext context) throws Exception {
         ScenarioBase scenario = getScenario();
         try {
-            if (context.getExecutionException().isPresent()) {
+            if (context.getExecutionException().isPresent() && !ThrowableUtil.isAssumptionException(context.getExecutionException().get())) {
                 scenario.getExecutor().failed(context.getExecutionException().get());
             }
             scenario.finished();
