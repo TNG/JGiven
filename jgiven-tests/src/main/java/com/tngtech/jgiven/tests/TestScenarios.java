@@ -14,52 +14,6 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 @Listeners( ScenarioTestListener.class )
 @ExtendWith(JGivenReportExtractingExtension.class)
 public class TestScenarios extends ScenarioTestForTesting<GivenTestStage, WhenTestStage, ThenTestStage> {
-
-    @Test
-    @org.junit.jupiter.api.Test
-    @org.testng.annotations.Test
-    public void test_with_failing_assertJ_assumption() {
-        assumeThat(false).isTrue();
-    }
-
-    @org.testng.annotations.Test
-    public void test_with_failing_testng_assumption() {
-        throw new SkipException("Fail on purpose");
-    }
-
-    @org.junit.jupiter.api.Test
-    public void test_with_failing_junit5_assumption() {
-        Assumptions.assumeFalse(true);
-    }
-
-    @Test
-    public void test_with_failing_junit_assumption(){
-        Assume.assumeFalse(true);
-    }
-
-    @Test
-    @org.junit.jupiter.api.Test
-    @org.testng.annotations.Test
-    public void test_with_failing_assertJ_assumption_in_stage() {
-        given().a_failed_assertJ_assumption();
-    }
-
-    @org.testng.annotations.Test
-    public void test_with_failing_testng_assumption_in_stage() {
-        given().a_failed_testng_assumption();
-    }
-
-    @org.junit.jupiter.api.Test
-    public void test_with_failing_junit5_assumption_in_stage() {
-        given().a_failed_junit5_assumption();
-    }
-
-    @Test
-    public void test_with_failing_junit_assumption_in_stage() {
-        given().a_failed_junit_assumption();
-    }
-
-
     @Test
     @org.junit.jupiter.api.Test
     @org.testng.annotations.Test
