@@ -1,26 +1,29 @@
 package com.tngtech.jgiven.tests.assumptions;
 
-import com.tngtech.jgiven.testng.ScenarioTestListener;
-import com.tngtech.jgiven.tests.*;
+import com.tngtech.jgiven.tests.GivenTestStage;
+import com.tngtech.jgiven.tests.ScenarioTestForTesting;
+import com.tngtech.jgiven.tests.ThenTestStage;
+import com.tngtech.jgiven.tests.WhenTestStage;
 import org.junit.Assume;
 import org.junit.Test;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.testng.SkipException;
-import org.testng.annotations.Listeners;
 
-import static org.assertj.core.api.Assumptions.assumeThat;
-
-@SuppressWarnings({"NewClassNamingConvention", "JUnit3StyleTestMethodInJUnit4Class", "DataFlowIssue", "JUnitMixedFramework"})
+@SuppressWarnings("NewClassNamingConvention")
 public class JUnitAssumptionTestScenarios extends ScenarioTestForTesting<GivenTestStage, WhenTestStage, ThenTestStage> {
 
+    @SuppressWarnings("DataFlowIssue")
     @Test
-    public void test_with_failing_junit_assumption() {
+    public void test_with_failing_assumption() {
         Assume.assumeFalse(true);
     }
 
     @Test
-    public void test_with_failing_junit_assumption_in_stage() {
+    public void test_with_failing_assumption_in_stage() {
         given().a_failed_junit_assumption();
+    }
+
+    @Test
+    public void test_with_failing_assumption_in_second_stage(){
+        given().nothing()
+                .a_failed_junit_assumption();
     }
 }
