@@ -10,6 +10,7 @@ dependencies {
     implementation 'org.junit.jupiter:junit-jupiter-api'
     implementation 'org.junit.jupiter:junit-jupiter-engine'
     //implementation 'org.junit.vintage:junit-vintage-engine'
+    implementation(libs.slf4j.java.util.logging)
     implementation 'org.junit.platform:junit-platform-runner'
     implementation 'org.junit.jupiter:junit-jupiter-params'
     implementation libs.testng
