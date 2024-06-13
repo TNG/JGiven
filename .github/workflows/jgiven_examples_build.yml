@@ -6,7 +6,7 @@ jobs:
     name: Test that the examples are actually working
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.6
+      - uses: actions/checkout@v4.1.7
       - name: Set up JDK 17
         uses: actions/setup-java@v4.2.1
         with:
@@ -70,7 +70,7 @@ jobs:
     name: Validate the format of the published poms
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.6
+      - uses: actions/checkout@v4.1.7
       - name: Load the bash script
         run: scripts/local_release_with_version.sh
       - name: Run validation
