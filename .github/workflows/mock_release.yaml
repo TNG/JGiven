@@ -49,7 +49,7 @@ jobs:
         run: |
           curl -X POST  --data '{"request": {"urlPattern": "/com/tngtech/jgiven/[^/]+/[^/]+/[^/]+", "method": "PUT"}, "response": {"status": 200, "body": "OK"}}' http://localhost:7000/__admin/mappings
           curl -X POST  --data '{"request": {"urlPattern": "/com/tngtech/jgiven/.*?/maven-metadata.xml(?:[.]sha(?:1|512|256)|[.]md5)?", "method": "PUT"}, "response": {"status": 200, "body": "OK"}}' http://localhost:7000/__admin/mappings
-      - uses: actions/checkout@v4.1.6
+      - uses: actions/checkout@v4.1.7
       - name: set an alternate version
         run: "source scripts/source_files/helper_functions.sh && updateAllVersionInformation ${VERSION}"
       - name: Release JGiven to Mock Repository
