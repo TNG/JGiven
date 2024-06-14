@@ -74,6 +74,8 @@ public class JGivenMethodRule implements MethodRule {
                 } catch( Throwable t ) {
                     if(!ThrowableUtil.isAssumptionException(t)) {
                         failed(t);
+                    }else {
+                        succeeded();
                     }
                     throw t;
                 }
