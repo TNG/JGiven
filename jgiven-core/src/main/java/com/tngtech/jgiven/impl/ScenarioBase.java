@@ -57,6 +57,10 @@ public class ScenarioBase {
         executor.finished();
     }
 
+    public void aborted(Throwable e){
+        executor.aborted(e);
+    }
+
     public ScenarioExecutor getExecutor() {
         return executor;
     }

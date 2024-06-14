@@ -72,10 +72,10 @@ public class JGivenMethodRule implements MethodRule {
                     base.evaluate();
                     succeeded();
                 } catch( Throwable t ) {
-                    if(!ThrowableUtil.isAssumptionException(t)) {
-                        failed(t);
+                    if(ThrowableUtil.isAssumptionException(t)) {
+                        aborted(t);
                     }else {
-                        succeeded();
+                        failed(t);
                     }
                     throw t;
                 }
@@ -99,6 +99,17 @@ public class JGivenMethodRule implements MethodRule {
             scenario.getExecutor().failed( e );
         }
 
+        scenario.finished();
+    }
+
+    protected void aborted( Throwable e) throws Throwable {
+        if( scenario.getExecutor().hasAborted() ) {
+            Throwable failedException = scenario.getExecutor().getAbortedException();
+            List<Throwable> errors = Lists.newArrayList( failedException, e );
+            scenario.getExecutor().setAbortedException( new MultipleFailureException( errors ) );
+        } else {
+            scenario.getExecutor().aborted( e );
+        }
         scenario.finished();
     }
 
