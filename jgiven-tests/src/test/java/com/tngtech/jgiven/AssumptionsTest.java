@@ -28,7 +28,7 @@ public class AssumptionsTest extends JGivenScenarioTest<GivenScenarioTest<?>, Wh
         given().a_test_named_$(testName, TestNgAssumptionTestScenarios.class);
         when().the_test_is_executed_with_TestNG();
         then().the_test_is_ignored()
-                .the_report_model_contains_$_scenarios(0);
+                .the_report_model_contains_$_scenarios(1);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class AssumptionsTest extends JGivenScenarioTest<GivenScenarioTest<?>, Wh
         given().a_test_named_$(testName, JUnitAssumptionTestScenarios.class);
         when().the_test_is_executed_with_JUnit();
         then().the_test_is_ignored()
-                .the_report_model_contains_$_scenarios(0);
+                .the_report_model_contains_$_scenarios(1);
     }
 
     @Test
