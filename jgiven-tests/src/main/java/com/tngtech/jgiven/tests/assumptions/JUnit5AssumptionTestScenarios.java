@@ -22,7 +22,8 @@ public class JUnit5AssumptionTestScenarios {
 
     @Test
     void test_with_failing_assumption_in_stage() {
-        givenTestStage.given().a_failed_junit5_assumption();
+        givenTestStage.given().a_failed_junit5_assumption()
+                .and().nothing();
     }
 
     @Test

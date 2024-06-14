@@ -1,13 +1,9 @@
 package com.tngtech.jgiven.tests.assumptions;
 
 import com.tngtech.jgiven.annotation.ScenarioStage;
-import com.tngtech.jgiven.impl.Scenario;
 import com.tngtech.jgiven.junit.JGivenClassRule;
 import com.tngtech.jgiven.junit.JGivenMethodRule;
 import com.tngtech.jgiven.tests.GivenTestStage;
-import com.tngtech.jgiven.tests.ScenarioTestForTesting;
-import com.tngtech.jgiven.tests.ThenTestStage;
-import com.tngtech.jgiven.tests.WhenTestStage;
 import org.junit.Assume;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -33,12 +29,14 @@ public class JUnitAssumptionTestScenarios {
 
     @Test
     public void test_with_failing_assumption_in_stage() {
-        givenTestStage.given().a_failed_junit_assumption();
+        givenTestStage.given().a_failed_junit_assumption().and()
+                .nothing();
+
     }
 
     @Test
     public void test_with_failing_assumption_in_second_stage(){
-        givenTestStage.given().nothing()
+        givenTestStage.given().nothing().and()
                 .a_failed_junit_assumption();
     }
 }
