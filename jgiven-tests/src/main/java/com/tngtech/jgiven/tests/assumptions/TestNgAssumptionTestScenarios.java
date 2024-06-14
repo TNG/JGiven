@@ -23,12 +23,13 @@ public class TestNgAssumptionTestScenarios {
 
     @Test
     public void test_with_failing_assumption_in_second_stage() {
-        givenTestStage.given().nothing()
+        givenTestStage.given().nothing().and()
                 .a_failed_testng_assumption();
     }
 
     @Test
     public void test_with_failing_assumption_in_stage() {
-        givenTestStage.given().a_failed_testng_assumption();
+        givenTestStage.given().a_failed_testng_assumption().and()
+                .nothing();
     }
 }
