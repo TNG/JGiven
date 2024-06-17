@@ -19,7 +19,7 @@ public class AssumptionsTest extends SimpleScenarioTest<AssumptionsTest.TestStag
                 .isInstanceOf(catchException(AssumptionsTest::assertJAssumptionFailure));
         getScenario().finished();
         ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase( 0 );
-        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.PASSED );
+        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.ABORTED);
     }
 
     @Test
@@ -28,7 +28,7 @@ public class AssumptionsTest extends SimpleScenarioTest<AssumptionsTest.TestStag
                 .isInstanceOf(catchException(AssumptionsTest::testNgAssumptionFailure));
         getScenario().finished();
         ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase( 0 );
-        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.PASSED );
+        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.ABORTED);
     }
 
     static class TestStage {
