@@ -321,7 +321,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     @Override
     public void stepMethodAborted(Throwable t) {
         if (currentStep != null) {
-            currentStep.setStatus(StepStatus.SKIPPED);
+            currentStep.setStatus(StepStatus.ABORTED);
         }
     }
 
@@ -377,7 +377,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     @Override
     public void scenarioAborted(Throwable e){
-        setStatus(ExecutionStatus.SOME_STEPS_PENDING);
+        setStatus(ExecutionStatus.ABORTED);
         setException(e);
     }
 

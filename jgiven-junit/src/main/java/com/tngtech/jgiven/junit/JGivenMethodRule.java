@@ -23,8 +23,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.*;
 
-import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
-import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
+import static com.tngtech.jgiven.report.model.ExecutionStatus.*;
 import static java.lang.String.format;
 import static org.junit.Assume.assumeTrue;
 
@@ -87,7 +86,7 @@ public class JGivenMethodRule implements MethodRule {
         scenario.finished();
 
         // ignore test when scenario is not implemented
-        assumeTrue( EnumSet.of( SUCCESS, FAILED ).contains( scenario.getScenarioModel().getExecutionStatus() ) );
+        assumeTrue( EnumSet.of( SUCCESS, FAILED, ABORTED).contains( scenario.getScenarioModel().getExecutionStatus() ) );
     }
 
     protected void failed( Throwable e ) throws Throwable {
