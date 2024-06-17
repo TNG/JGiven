@@ -21,7 +21,6 @@ import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.format.ObjectFormatter;
 import com.tngtech.jgiven.impl.format.ParameterFormattingUtil;
 import com.tngtech.jgiven.impl.intercept.ScenarioListener;
-import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 import com.tngtech.jgiven.impl.tag.ResolvedTags;
 import com.tngtech.jgiven.impl.tag.TagCreator;
 import com.tngtech.jgiven.impl.util.AnnotationUtil;
@@ -48,7 +47,7 @@ import java.util.Stack;
 public class ScenarioModelBuilder implements ScenarioListener {
 
     private static final Set<String> STACK_TRACE_FILTER = ImmutableSet
-        .of("sun.reflect", "com.tngtech.jgiven.impl.intercept", "com.tngtech.jgiven.impl.intercept",
+        .of("sun.reflect", "com.tngtech.jgiven.impl.intercept",
             "$$EnhancerByCGLIB$$",
             "java.lang.reflect", "net.sf.cglib.proxy", "com.sun.proxy");
     private static final boolean FILTER_STACK_TRACE = Config.config().filterStackTrace();
@@ -71,7 +70,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         this.reportModel = reportModel;
     }
 
-    private Stack<Integer> discrepancyOnLayer = new Stack<>();
+    private final Stack<Integer> discrepancyOnLayer = new Stack<>();
 
     @Override
     public void scenarioStarted(String description) {
@@ -278,10 +277,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
         }
 
         As as = paramMethod.getAnnotation(As.class);
-        AsProvider provider = as != null
-            ? ReflectionUtil.newInstance(as.provider())
-            : new DefaultAsProvider();
-        return provider.as(as, paramMethod);
+        return getAsProvider(as).as(as, paramMethod);
     }
 
     public void setStatus(ExecutionStatus status) {
@@ -412,17 +408,7 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     private void readAnnotations(Class<?> testClass, Method method) {
-        String scenarioDescription = method.getName();
-
-        if (method.isAnnotationPresent(Description.class)) {
-            scenarioDescription = method.getAnnotation(Description.class).value();
-        } else if (method.isAnnotationPresent(As.class)) {
-            As as = method.getAnnotation(As.class);
-
-            AsProvider provider = ReflectionUtil.newInstance(as.provider());
-            scenarioDescription = provider.as(as, method);
-        }
-
+        String scenarioDescription = evaluateMethodForDescription(method);
         scenarioStarted(scenarioDescription);
 
         if (method.isAnnotationPresent(ExtendedDescription.class)) {
@@ -437,6 +423,14 @@ public class ScenarioModelBuilder implements ScenarioListener {
         if (scenarioCaseModel.getCaseNr() == 1) {
             addTags(testClass.getAnnotations());
             addTags(method.getAnnotations());
+        }
+    }
+    private String evaluateMethodForDescription(Method method) {
+        if (method.isAnnotationPresent(Description.class)) {
+            return method.getAnnotation(Description.class).value();
+        } else {
+            As as = method.getAnnotation(As.class);
+            return getAsProvider(as).as(as, method);
         }
     }
 
@@ -522,5 +516,11 @@ public class ScenarioModelBuilder implements ScenarioListener {
 
     public ScenarioCaseModel getScenarioCaseModel() {
         return scenarioCaseModel;
+    }
+
+    private AsProvider getAsProvider(As as) {
+        return as != null
+            ? ReflectionUtil.newInstance(as.provider())
+            : configuration.getAsProvider();
     }
 }
