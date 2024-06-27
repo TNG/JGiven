@@ -55,7 +55,7 @@ dependencies {
         exclude group: 'com.google.guava', module: 'listenablefuture'
 
     })
-    androidTestImplementation('androidx.test.ext:junit:1.1.5') {
+    androidTestImplementation('androidx.test.ext:junit:1.2.1') {
         exclude group: 'com.google.guava', module: 'listenablefuture'
     }
     androidTestImplementation('androidx.test:rules:1.5.0') {
