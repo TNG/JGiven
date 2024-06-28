@@ -1,14 +1,12 @@
 package com.tngtech.jgiven.junit5;
 
-import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
-import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
-
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
+import com.tngtech.jgiven.impl.util.ThrowableUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
 import java.util.EnumSet;
@@ -22,6 +20,8 @@ import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
+
+import static com.tngtech.jgiven.report.model.ExecutionStatus.*;
 
 /**
  * This extension enables JGiven for JUnit 5 Tests.
@@ -85,14 +85,14 @@ public class JGivenExtension implements
     public void afterTestExecution(ExtensionContext context) throws Exception {
         ScenarioBase scenario = getScenario();
         try {
-            if (context.getExecutionException().isPresent()) {
+            if (context.getExecutionException().isPresent() && !ThrowableUtil.isAssumptionException(context.getExecutionException().get())) {
                 scenario.getExecutor().failed(context.getExecutionException().get());
             }
             scenario.finished();
 
             // ignore test when scenario is not implemented
             Assumptions.assumeTrue(
-                EnumSet.of(SUCCESS, FAILED).contains(scenario.getScenarioModel().getExecutionStatus()));
+                EnumSet.of(SUCCESS, FAILED, ABORTED).contains(scenario.getScenarioModel().getExecutionStatus()));
 
         } catch (Exception e) {
             throw e;

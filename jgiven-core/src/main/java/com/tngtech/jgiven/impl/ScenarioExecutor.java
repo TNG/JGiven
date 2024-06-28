@@ -74,6 +74,12 @@ public class ScenarioExecutor {
      */
     private Throwable failedException;
 
+    /**
+     * Set if an exception was thrown during the execution of the scenario and
+     * suppressStepExceptions is true.
+     */
+    private Throwable abortedException;
+
     private boolean failIfPass;
 
     /**
@@ -356,6 +362,7 @@ public class ScenarioExecutor {
         }
     }
 
+
     private void callFinishLifeCycleMethods() throws Throwable {
         Throwable firstThrownException = failedException;
         if (beforeScenarioMethodsExecuted) {
@@ -415,12 +422,24 @@ public class ScenarioExecutor {
         return failedException != null;
     }
 
+    public boolean hasAborted() {
+        return abortedException!= null;
+    }
+
     public Throwable getFailedException() {
         return failedException;
     }
 
     public void setFailedException(Exception e) {
         failedException = e;
+    }
+
+    public Throwable getAbortedException() {
+        return abortedException;
+    }
+
+    public void setAbortedException(Exception e) {
+        abortedException= e;
     }
 
     /**
@@ -435,6 +454,16 @@ public class ScenarioExecutor {
             }
             methodInterceptor.disableMethodExecution();
             failedException = e;
+        }
+    }
+
+    public void aborted(Throwable e) {
+        if (hasAborted()){
+            log.error(e.getMessage(), e);
+        }else {
+            listener.scenarioAborted(e);
+            methodInterceptor.disableMethodExecution();
+            abortedException = e;
         }
     }
 
