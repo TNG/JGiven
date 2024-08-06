@@ -130,6 +130,7 @@ public class AsciiDocTableBlockConverterTest {
         statisticsOne.numScenarios = 3;
         statisticsOne.numSuccessfulScenarios = 2;
         statisticsOne.numFailedScenarios = 1;
+        statisticsOne.numAbortedScenarios = 3;
         statisticsOne.numCases = 3;
         statisticsOne.numFailedCases = 1;
         statisticsOne.numSteps = 13;
@@ -149,6 +150,7 @@ public class AsciiDocTableBlockConverterTest {
         totalStatistics.numSuccessfulScenarios = 3;
         totalStatistics.numPendingScenarios = 1;
         totalStatistics.numFailedScenarios = 1;
+        totalStatistics.numAbortedScenarios = 3;
         totalStatistics.numCases = 5;
         totalStatistics.numFailedCases = 1;
         totalStatistics.numSteps = 21;
@@ -166,11 +168,11 @@ public class AsciiDocTableBlockConverterTest {
                 ".Total Statistics",
                 "[.jg-statisticsTable%autowidth%header%footer]",
                 "|===",
-                "| feature | total classes | successful scenarios | failed scenarios | pending scenarios | "
-                        + "total scenarios | failed cases | total cases | total steps | duration",
-                "| Feature One | 1 | 2 | 1 | 0 | 3 | 1 | 3 | 13 | 0ms",
-                "| Feature Two | 1 | 1 | 0 | 1 | 2 | 1 | 2 | 8 | 0ms",
-                "| sum | 2 | 3 | 1 | 1 | 5 | 1 | 5 | 21 | 0ms",
+                "| feature | total classes | successful scenarios | failed scenarios | pending scenarios | aborted scenarios "
+                        + "| total scenarios | failed cases | total cases | total steps | duration",
+                "| Feature One | 1 | 2 | 1 | 0 | 3 | 3 | 1 | 3 | 13 | 0ms",
+                "| Feature Two | 1 | 1 | 0 | 1 | 0 | 2 | 1 | 2 | 8 | 0ms",
+                "| sum | 2 | 3 | 1 | 1 | 3 | 5 | 1 | 5 | 21 | 0ms",
                 "|===");
     }
 
