@@ -43,6 +43,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     private final List<String> featureFiles = new ArrayList<>();
     private final List<String> failedScenarioFiles = new ArrayList<>();
     private final List<String> pendingScenarioFiles = new ArrayList<>();
+    private final List<String> abortedScenarioFiles = new ArrayList<>();
     private File targetDir;
     private File featuresDir;
 
@@ -72,6 +73,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         writeIndexFileForFailedScenarios();
 
         writeIndexFileForPendingScenarios();
+
+        writeIndexFileForAbortedScenarios();
 
         writeTotalStatisticsFile();
 
@@ -115,6 +118,9 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         if (statistics.numPendingScenarios > 0) {
             pendingScenarioFiles.add(featureFileName);
         }
+        if (statistics.numAbortedScenarios >0){
+            abortedScenarioFiles.add(featureFileName);
+        }
 
         final AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
         reportModelFile.model().accept(visitor);
@@ -146,6 +152,16 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
                 "Pending Scenarios", "pending scenarios", this.pendingScenarioFiles, scenarioKind,
                 this.completeReportModel.getTotalStatistics().numPendingScenarios);
+
+        writeAsciiDocBlocksToFile(new File(targetDir, scenarioKind + "Scenarios.asciidoc"),
+                snippetGenerator.generateIndexSnippet());
+    }
+
+    private void writeIndexFileForAbortedScenarios() {
+        final String scenarioKind = "aborted";
+        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+                "Aborted Scenarios", "aborted scenarios", this.abortedScenarioFiles, scenarioKind,
+                this.completeReportModel.getTotalStatistics().numAbortedScenarios);
 
         writeAsciiDocBlocksToFile(new File(targetDir, scenarioKind + "Scenarios.asciidoc"),
                 snippetGenerator.generateIndexSnippet());

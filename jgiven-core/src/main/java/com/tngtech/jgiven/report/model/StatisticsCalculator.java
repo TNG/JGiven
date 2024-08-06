@@ -29,6 +29,8 @@ public class StatisticsCalculator {
                 statistics.numFailedScenarios += 1;
             } else if( executionStatus == ExecutionStatus.SCENARIO_PENDING || executionStatus == ExecutionStatus.SOME_STEPS_PENDING) {
                 statistics.numPendingScenarios += 1;
+            } else if (executionStatus == ExecutionStatus.ABORTED){
+                statistics.numAbortedScenarios += 1;
             } else {
                 statistics.numSuccessfulScenarios += 1;
             }
