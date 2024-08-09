@@ -111,11 +111,7 @@ public class JGivenExtension implements
         if (testInstance instanceof ScenarioTestBase) {
             scenario = ((ScenarioTestBase<?, ?, ?>) testInstance).getScenario();
         } else {
-            if (currentScenario == null) {
-                scenario = new ScenarioBase();
-            } else {
-                scenario = currentScenario;
-            }
+            scenario = currentScenario == null ? new ScenarioBase() : currentScenario;
         }
 
         if (scenario != currentScenario) {

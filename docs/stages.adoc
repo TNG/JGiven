@@ -36,9 +36,10 @@ I fill out the registration form
 ----
 The nested steps will appear as a collapsible group in the HTML report.
 
+[#_overriding_the_default_reporting]
 === Overriding the Default Reporting
 
-Sometimes it is necessary to override the default way of the step reporting. For example, if you want to use special characters that are not allowed in Java methods names, such as `(`, `+`, or `%`. You can then use the `@As` annotation to specify what JGiven should put into the report.
+Sometimes it is necessary to override the default way of the step reporting. For example, if you want to use special characters that are not allowed in Java methods names, such as `(`, `+`, or `%`, you can then use the `@As` annotation to specify what JGiven should put into the report.
 
 For example, if you define the following step method:
 
@@ -66,6 +67,7 @@ public MyStage some_step() {
     return self();
 }
 ----
+In addition, the `@As` annotation allows declaring an `AsProvider` that handles the step name generation. A default provider can be set via `@JGivenConfiguration` annotation in the class referenced there.
 
 === Completely Hide Steps
 
