@@ -315,6 +315,13 @@ public class ScenarioModelBuilder implements ScenarioListener {
     }
 
     @Override
+    public void stepMethodAborted(Throwable t) {
+        if (currentStep != null) {
+            currentStep.setStatus(StepStatus.ABORTED);
+        }
+    }
+
+    @Override
     public void stepMethodFinished(long durationInNanos, boolean hasNestedSteps) {
         if (hasNestedSteps && !parentSteps.isEmpty()) {
             currentStep = parentSteps.peek();
@@ -361,6 +368,12 @@ public class ScenarioModelBuilder implements ScenarioListener {
     @Override
     public void scenarioFailed(Throwable e) {
         setStatus(ExecutionStatus.FAILED);
+        setException(e);
+    }
+
+    @Override
+    public void scenarioAborted(Throwable e){
+        setStatus(ExecutionStatus.ABORTED);
         setException(e);
     }
 

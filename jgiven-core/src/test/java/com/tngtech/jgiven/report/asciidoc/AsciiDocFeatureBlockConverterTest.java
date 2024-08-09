@@ -17,9 +17,10 @@ public class AsciiDocFeatureBlockConverterTest {
     public void convert_feature_header_without_description() {
         // given
         final ReportStatistics statistics = new ReportStatistics();
-        statistics.numScenarios = 42;
+        statistics.numScenarios = 47;
         statistics.numFailedScenarios = 21;
         statistics.numPendingScenarios = 13;
+        statistics.numAbortedScenarios = 5;
         statistics.numSuccessfulScenarios = 8;
 
         // when
@@ -27,33 +28,34 @@ public class AsciiDocFeatureBlockConverterTest {
 
         // then
         assertThatBlockContainsLines(block,
-            "=== My first feature",
-            "",
-            "icon:check-square[role=green] 8 Successful, icon:exclamation-circle[role=red] 21 Failed, "
-                + "icon:ban[role=silver] 13 Pending, 42 Total (0ms)");
+                "=== My first feature",
+                "",
+                "icon:check-square[role=green] 8 Successful, icon:exclamation-circle[role=red] 21 Failed, "
+                        + "icon:ban[role=silver] 13 Pending, icon:times-circle[role=gray] 5 Aborted, 47 Total (0ms)");
     }
 
     @Test
     public void convert_feature_header_with_description() {
         // given
         final ReportStatistics statistics = new ReportStatistics();
-        statistics.numScenarios = 42;
+        statistics.numScenarios = 47;
         statistics.numFailedScenarios = 21;
         statistics.numPendingScenarios = 13;
+        statistics.numAbortedScenarios = 5;
         statistics.numSuccessfulScenarios = 8;
 
         // when
         final String block =
-            converter.convertFeatureHeaderBlock("My first feature", statistics, "A very nice feature.");
+                converter.convertFeatureHeaderBlock("My first feature", statistics, "A very nice feature.");
 
         // then
         assertThatBlockContainsLines(block,
-            "=== My first feature",
-            "",
-            "icon:check-square[role=green] 8 Successful, icon:exclamation-circle[role=red] 21 Failed, "
-                + "icon:ban[role=silver] 13 Pending, 42 Total (0ms)",
-            "",
-            "+++A very nice feature.+++");
+                "=== My first feature",
+                "",
+                "icon:check-square[role=green] 8 Successful, icon:exclamation-circle[role=red] 21 Failed, "
+                        + "icon:ban[role=silver] 13 Pending, icon:times-circle[role=gray] 5 Aborted, 47 Total (0ms)",
+                "",
+                "+++A very nice feature.+++");
     }
 
     private static void assertThatBlockContainsLines(final String block, final String... expectedLines) {

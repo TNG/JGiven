@@ -3,13 +3,17 @@ package com.tngtech.jgiven.tests;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.testng.ScenarioTestListener;
 import org.junit.Test;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.Assume;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testng.SkipException;
 import org.testng.annotations.Listeners;
+
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 @Listeners( ScenarioTestListener.class )
 @ExtendWith(JGivenReportExtractingExtension.class)
 public class TestScenarios extends ScenarioTestForTesting<GivenTestStage, WhenTestStage, ThenTestStage> {
-
     @Test
     @org.junit.jupiter.api.Test
     @org.testng.annotations.Test

@@ -39,6 +39,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
         statisticsTable.append("| successful scenarios ");
         statisticsTable.append("| failed scenarios ");
         statisticsTable.append("| pending scenarios ");
+        statisticsTable.append("| aborted scenarios ");
         statisticsTable.append("| total scenarios ");
         statisticsTable.append("| failed cases ");
         statisticsTable.append("| total cases ");
@@ -68,6 +69,8 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
                 .append(statistics.numFailedScenarios).append(" Failed, ");
         blockContent.append(MetadataMapper.toHumanReadableStatus(ExecutionStatus.SCENARIO_PENDING)).append(" ")
                 .append(statistics.numPendingScenarios).append(" Pending, ");
+        blockContent.append(MetadataMapper.toHumanReadableStatus(ExecutionStatus.ABORTED)).append(" ")
+                .append(statistics.numAbortedScenarios).append(" Aborted, ");
         blockContent.append(statistics.numScenarios).append(" Total");
         blockContent.append(" (").append(MetadataMapper.toHumanReadableScenarioDuration(statistics.durationInNanos))
                 .append(")");
@@ -326,6 +329,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
         builder.append(" | ").append(statistics.numSuccessfulScenarios);
         builder.append(" | ").append(statistics.numFailedScenarios);
         builder.append(" | ").append(statistics.numPendingScenarios);
+        builder.append(" | ").append(statistics.numAbortedScenarios);
         builder.append(" | ").append(statistics.numScenarios);
         builder.append(" | ").append(statistics.numFailedCases);
         builder.append(" | ").append(statistics.numCases);
