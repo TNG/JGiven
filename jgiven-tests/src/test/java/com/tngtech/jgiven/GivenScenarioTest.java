@@ -86,7 +86,7 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
     @AfterStage
     public void findScenario() {
         if (testScenario == null) {
-            testScenario = TestScenarioRepository.findScenario(criteria).getFirst();
+            testScenario = TestScenarioRepository.findScenario(criteria).stream().findFirst().orElseThrow();
         }
     }
 
