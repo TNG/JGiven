@@ -19,7 +19,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 wrapper {
-    gradleVersion = '8.9'
+    gradleVersion = '8.10'
     distributionType = Wrapper.DistributionType.ALL
 }
 
