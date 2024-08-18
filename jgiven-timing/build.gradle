@@ -10,10 +10,10 @@ description = "Module for injecting automated performance analysis for test meth
 
 dependencies {
     implementation project(":jgiven-core")
-    implementation("com.google.guava:guava:33.2.1-jre")
+    implementation("com.google.guava:guava:33.3.0-jre")
     implementation libs.plugins.byteBuddy.plugin
     implementation libs.byteBuddy.agent
-    testImplementation("com.google.guava:guava-testlib:33.2.1-jre")
+    testImplementation("com.google.guava:guava-testlib:33.3.0-jre")
     testImplementation 'org.mockito:mockito-inline:5.2.0'
 }
 
