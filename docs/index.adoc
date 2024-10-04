@@ -45,3 +45,5 @@ include::selenium.adoc[]
 include::android.adoc[]
 
 include::junit5.adoc[]
+
+include::plugins.adoc[]
