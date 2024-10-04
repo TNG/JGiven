@@ -1,0 +1,23 @@
+== JGiven Ecosystem
+
+JGiven provides a range of plugins and integrations to help you integrate BDD testing into
+your development workflow. At the moment, JGiven plugins exist for IntelliJ and Azure Devops.
+This page provides an overview of the available plugins and how to use them.
+
+=== Azure Devops
+
+The Azure DevOps extension for JGiven enables you to incorporate
+JGiven reports into your pipeline workflow. The extension allows you to add a dedicated step
+to your pipeline that publishes the JGiven HTML report, providing a concise overview of test
+results after pipeline execution.
+
+==== Installation and usage
+
+Install the Azure Devops extension from the
+https://marketplace.visualstudio.com/items?itemName=TNGTechnologyConsultingGmbH.jgivenTestIntegration[Azure Devops Marketplace].
+Follow the instructions there to include the extension into your workflow.
+
+=== IntelliJ
+
+The JGiven IntelliJ Plugin allows you to easily navigate between scenario states. Find the plugin in the
+https://plugins.jetbrains.com/plugin/9670-jgiven[Jetbrains Marketplace].
