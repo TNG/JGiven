@@ -32,22 +32,12 @@ public class JUnitExecutor extends TestExecutor {
 
     @Override
     public TestExecutionResult execute( final Class<?> testClass, final String testMethod ) {
-        return execute( new RequestSupplier() {
-            @Override
-            public Request supply() {
-                return Request.method( testClass, testMethod );
-            }
-        } );
+        return execute(() -> Request.method( testClass, testMethod ));
     }
 
     @Override
     public TestExecutionResult execute(final Class<?> testClass ) {
-        return execute( new RequestSupplier() {
-            @Override
-            public Request supply() {
-                return Request.aClass( testClass );
-            }
-        } );
+        return execute(() -> Request.aClass( testClass ));
     }
 
     static class TestRunListener extends RunListener {

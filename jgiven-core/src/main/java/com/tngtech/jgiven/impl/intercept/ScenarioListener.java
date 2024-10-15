@@ -12,6 +12,8 @@ public interface ScenarioListener {
 
     void scenarioFailed( Throwable e );
 
+    void scenarioAborted(Throwable e);
+
     void scenarioStarted( String string );
 
     void scenarioStarted( Class<?> testClass, Method method, List<NamedArgument> arguments );
@@ -23,6 +25,8 @@ public interface ScenarioListener {
     void stepCommentUpdated(String comment );
 
     void stepMethodFailed( Throwable t );
+
+    void stepMethodAborted( Throwable t );
 
     void stepMethodFinished( long durationInNanos, boolean hasNestedSteps );
 

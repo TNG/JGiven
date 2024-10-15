@@ -4,5 +4,6 @@ public enum ExecutionStatus {
     SCENARIO_PENDING,
     SUCCESS,
     FAILED,
-    SOME_STEPS_PENDING;
+    ABORTED,
+    SOME_STEPS_PENDING
 }

@@ -8,6 +8,7 @@ final class MetadataMapper {
     private static final String ICON_CHECK_MARK = "icon:check-square[role=green]";
     private static final String ICON_EXCLAMATION_MARK = "icon:exclamation-circle[role=red]";
     private static final String ICON_BANNED = "icon:ban[role=silver]";
+    private static final String ICON_TIMES_CIRCLE = "icon:times-circle[role=gray]";
     private static final String ICON_STEP_FORWARD = "icon:step-forward[role=silver]";
     private static final int NANOSECONDS_PER_MILLISECOND = 1000000;
 
@@ -46,6 +47,8 @@ final class MetadataMapper {
                 return ICON_CHECK_MARK;
             case FAILED:
                 return ICON_EXCLAMATION_MARK;
+            case ABORTED:
+                return ICON_TIMES_CIRCLE;
             default:
                 return executionStatus.toString();
         }

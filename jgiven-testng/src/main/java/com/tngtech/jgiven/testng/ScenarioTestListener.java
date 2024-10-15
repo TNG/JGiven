@@ -102,6 +102,7 @@ public class ScenarioTestListener implements ITestListener {
 
     @Override
     public void onTestSkipped(ITestResult testResult) {
+        testFinished(testResult);
     }
 
     private void testFinished(ITestResult testResult) {

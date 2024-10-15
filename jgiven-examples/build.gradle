@@ -12,8 +12,9 @@ dependencies {
     testImplementation libs.testng
 }
 
+test.finalizedBy(jgivenPlainTextReport)
 test.finalizedBy jgivenHtml5Report
 test.finalizedBy jgivenAsciiDocReport
 
-// there is a test that fails on purpose to show a failing test in the report
+// there are  tests that fail on purpose to show a failing test in the report
 test.ignoreFailures = true
