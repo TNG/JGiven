@@ -1,6 +1,7 @@
 # Release v2.0.0
 ## Backward incompatible changes
 * Gradle-Plugin: The jgiven report task now forces execution of test tasks. That is, when the task jgivenTestReport is explicitly requested, for instance via the command line, the test tasks it depends on are also executed. For implementations where the jgiven task is set to finalize a test task (i.e `test.finalizedBy(jgiven)`, the behavior is unchanged.
+* JGiven now requires Java 17 
 ## Fixed issues:
 * The Gradle-Plugin is now configuration-cache compliant [#1527](https://github.com/TNG/JGiven/issues/1527) (big thanks to @jjohannes for basically doing all the work)
 * Various dependency updates.

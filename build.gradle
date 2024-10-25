@@ -219,7 +219,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     }
 
     java {
-        sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
         withJavadocJar()
         withSourcesJar()
     }
