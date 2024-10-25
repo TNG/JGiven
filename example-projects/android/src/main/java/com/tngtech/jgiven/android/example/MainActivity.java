@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import jgiven.tngtech.com.jgiven_android.example.R;
 
 public class MainActivity extends AppCompatActivity {
 
