@@ -9,7 +9,7 @@ jobs:
       ANDROID: true
     strategy:
       matrix:
-        java: [ '17', '21', '22']
+        java: [ '17', '21']
         junit: ['4.13.2']
     steps:
       - name: Ensure chrome is installed
