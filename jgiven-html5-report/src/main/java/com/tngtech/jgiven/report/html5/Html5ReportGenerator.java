@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -161,7 +162,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
             contentStream.flush();
             ResourceUtil.close( contentStream );
             String base64String = BaseEncoding.base64().encode( byteStream.toByteArray() );
-            this.fileStream.append( "'" + base64String + "'" );
+            this.fileStream.append("'").append(base64String).append("'");
             this.fileStream.append( ");" );
             fileStream.flush();
             ResourceUtil.close( fileStream );
@@ -181,10 +182,10 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
             try {
                 this.byteStream = new ByteArrayOutputStream();
                 // pako client side library expects byte stream to be UTF-8 encoded
-                this.contentStream = new PrintStream( new GZIPOutputStream( byteStream ), false, "utf-8" );
+                this.contentStream = new PrintStream( new GZIPOutputStream( byteStream ), false, StandardCharsets.UTF_8);
                 this.contentStream.append( "{\"scenarios\":[" );
 
-                this.fileStream = new PrintStream( new FileOutputStream( targetFile ), false, "utf-8" );
+                this.fileStream = new PrintStream( new FileOutputStream( targetFile ), false, StandardCharsets.UTF_8);
                 this.fileStream.append( "jgivenReport.addZippedScenarios(" );
             } catch( Exception e ) {
                 throw new RuntimeException( "Could not open file " + targetFile + " for writing", e );
