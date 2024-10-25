@@ -70,7 +70,7 @@ function updateAllVersionInformation() {
   printf "Done.\n"
 
   printf "Updating version in maven files..."
-  for file in "example-projects/java11/pom.xml" \
+  for file in "example-projects/java17/pom.xml" \
   "example-projects/maven/pom.xml" \
   "jgiven-maven-plugin/src/test/resources/sampleProject/pom.xml"
   do
