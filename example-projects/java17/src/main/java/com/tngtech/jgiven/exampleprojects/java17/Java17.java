@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.exampleprojects.java11;
+package com.tngtech.jgiven.exampleprojects.java17;
 
 import java.util.function.*;
 
