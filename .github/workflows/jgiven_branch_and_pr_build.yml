@@ -9,7 +9,7 @@ jobs:
       ANDROID: true
     strategy:
       matrix:
-        java: [ '11', '17', '19']
+        java: [ '17', '21']
         junit: ['4.13.2']
     steps:
       - name: Ensure chrome is installed
@@ -27,7 +27,7 @@ jobs:
           JUNIT_VERSION: ${{matrix.junit}}
         run:   "./gradlew -i -s check -DjunitVersion=${JUNIT_VERSION}"
       - name: Run Jacoco
-        if: ${{matrix.java == '11' && github.ref == 'refs/heads/master' && github.head_ref == null}}
+        if: ${{matrix.java == '17' && github.ref == 'refs/heads/master' && github.head_ref == null}}
         run: ./gradlew overallJacocoReport coveralls
       - name: Upload test results html files
         continue-on-error: true
