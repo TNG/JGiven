@@ -67,13 +67,13 @@ def release = System.env.RELEASE == "true"
 def android = System.env.ANDROID == "true"
 boolean hasAndroidSourcePath = (System.env.ANDROID_SDK_ROOT)
 
-//if ((android || release) && hasAndroidSourcePath) {
+if ((android || release) && hasAndroidSourcePath) {
     include ':jgiven-android'
-//}
+}
 
-//if (android && !release && hasAndroidSourcePath) {
+if (android && !release && hasAndroidSourcePath) {
     include ':jgiven-android-test'
-//}
+}
 
 if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_19)) {
     include ':jgiven-future-java-tests'
