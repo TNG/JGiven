@@ -1,6 +1,6 @@
 apply plugin: 'com.github.node-gradle.node'
 
-def htmlAppVersion = '1.1.1'
+def htmlAppVersion = '1.1.2'
 
 node {
     download = true
