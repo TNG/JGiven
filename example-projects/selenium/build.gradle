@@ -29,8 +29,8 @@ repositories {
 }
 
 compileJava {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     options.compilerArgs += '-parameters'
     options.encoding = 'UTF-8'
 }
@@ -38,7 +38,7 @@ compileJava {
 dependencies {
     testImplementation "com.tngtech.jgiven:jgiven-junit:${version}"
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.26.0'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.27.0'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
     testImplementation 'org.assertj:assertj-core:3.26.3'
 

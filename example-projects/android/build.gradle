@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.android.tools.build:gradle:8.5.2'
     }
 }
 
@@ -19,7 +19,8 @@ repositories {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
+    namespace 'jgiven.tngtech.com.jgiven_android.example'
     defaultConfig {
         applicationId "com.tngtech.jgiven.android.example"
         minSdkVersion 29
@@ -36,8 +37,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 
@@ -46,8 +47,9 @@ configurations {
 }
 
 dependencies {
-    implementation('androidx.appcompat:appcompat:1.6.1') {
+    implementation('androidx.appcompat:appcompat:1.7.0') {
         exclude group: 'com.google.guava', module: 'listenablefuture'
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
     }
 
     androidTestImplementation('androidx.test.espresso:espresso-core:3.6.1', {
@@ -64,7 +66,7 @@ dependencies {
     androidTestImplementation('com.tngtech.jgiven:jgiven-android:' + version)
 
     jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:' + version
-    jgivenReport 'org.slf4j:slf4j-simple:2.0.9'
+    jgivenReport 'org.slf4j:slf4j-simple:2.0.16'
 }
 
 def targetDir = 'build/reports/jgiven/json'
