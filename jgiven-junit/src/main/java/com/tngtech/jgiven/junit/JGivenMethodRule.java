@@ -21,7 +21,12 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
 
 import static com.tngtech.jgiven.report.model.ExecutionStatus.*;
 import static java.lang.String.format;
@@ -66,28 +71,40 @@ public class JGivenMethodRule implements MethodRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                //TODO: make this nice!
                 starting(base, method, target);
-                try {
-                    base.evaluate();
-                } catch (Throwable t) {
-                    if (ThrowableUtil.isAssumptionException(t)) {
-                        aborted(t);
-                    } else {
-                        failed(t);
-                    }
-                    throw t;
-                }
-                try {
-                    succeeded();
-                } catch (Throwable t) {
-                    if (!ThrowableUtil.isAssumptionException(t)) {
-                        failed(t);
-                    }
-                    throw t;
-                }
+                evaluateScenario(base);
+                setScenarioState();
             }
         };
+    }
+
+    private void evaluateScenario(Statement base) throws Throwable {
+        try {
+            base.evaluate();
+        } catch (Throwable t) {
+            classifyErroredScenarioState(t);
+            throw t;
+        }
+
+    }
+
+    private void classifyErroredScenarioState(Throwable t) throws Throwable {
+        if (ThrowableUtil.isAssumptionException(t)) {
+            aborted(t);
+        } else {
+            failed(t);
+        }
+    }
+
+    private void setScenarioState() throws Throwable {
+        try {
+            succeeded();
+        } catch (Throwable t) {
+            if (!ThrowableUtil.isAssumptionException(t)) {
+                failed(t);
+            }
+            throw t;
+        }
     }
 
     protected void succeeded() throws Throwable {
