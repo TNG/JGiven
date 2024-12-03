@@ -7,7 +7,7 @@ spring-version = "5.3.39"
 androidx-test-version = "1.6.1"
 
 [libraries]
-androidGradlePlugin = { module = "com.android.tools.build:gradle", version = "8.7.2"}
+androidGradlePlugin = { module = "com.android.tools.build:gradle", version = "8.7.3"}
 androidx-appcompat = {module = "androidx.appcompat:appcompat", version = "1.7.0"}
 androidx-test-core = {module = "androidx.test:core", version.ref = "androidx-test-version"}
 androidx-test-rules = {module = "androidx.test:rules", version.ref = "androidx-test-version"}
