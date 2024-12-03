@@ -109,9 +109,7 @@ public class StepInterceptorImpl implements StepInterceptor {
 
         try {
             return invoker.proceed();
-        } catch( Exception e ) {
-            return handleThrowable( receiver, method, e, System.nanoTime() - started, handleMethod );
-        } catch( AssertionError e ) {
+        } catch(Exception | AssertionError e ) {
             return handleThrowable( receiver, method, e, System.nanoTime() - started, handleMethod );
         } finally {
             if( hasNestedSteps ) {
@@ -217,12 +215,12 @@ public class StepInterceptorImpl implements StepInterceptor {
 
     private void handleThrowable( Throwable t ) throws Throwable {
         if( ThrowableUtil.isAssumptionException(t) ) {
-            throw t;
+            listener.stepMethodAborted(t);
+            scenarioExecutor.aborted(t);
+        }else {
+            listener.stepMethodFailed(t);
+            scenarioExecutor.failed( t );
         }
-
-        listener.stepMethodFailed( t );
-
-        scenarioExecutor.failed( t );
 
         if (!suppressExceptions) {
             throw t;

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.tngtech.jgiven.annotation.Description;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TestScenarioRepository {
 
@@ -14,6 +15,7 @@ public class TestScenarioRepository {
         public Integer numberOfSteps;
         public Integer failingStep;
         public Integer numberOfFailingStages;
+        public Boolean assumptionFailed;
         public Boolean failIfPassed;
         public Boolean executeSteps;
         public Boolean tagAnnotation;
@@ -23,6 +25,9 @@ public class TestScenarioRepository {
         public String testClassDescription;
 
         public boolean matches(ScenarioCriteria criteria) {
+            if(assumptionFailed != null && assumptionFailed != criteria.assumptionFailed){
+                return false;
+            }
             if (pending != criteria.pending) {
                 return false;
             }
@@ -82,6 +87,7 @@ public class TestScenarioRepository {
         public boolean executeSteps;
         public boolean failing;
         public Integer failingStep;
+        public boolean assumptionFailed;
         public int numberOfSteps = 1;
         public boolean tagAnnotation;
         private int numberOfFailingStages;
@@ -92,6 +98,11 @@ public class TestScenarioRepository {
 
         public ScenarioCriteria pending() {
             pending = true;
+            return this;
+        }
+
+        public ScenarioCriteria assumptionFailed() {
+            assumptionFailed = true;
             return this;
         }
 
@@ -174,13 +185,10 @@ public class TestScenarioRepository {
 
     final static List<TestScenario> testScenarios = setupTestScenarios();
 
-    public static TestScenario findScenario(SearchCriteria searchCriteria) {
-        for (TestScenario scenario : testScenarios) {
-            if (searchCriteria.matches(scenario.criteria)) {
-                return scenario;
-            }
-        }
-        throw new IllegalArgumentException("No matching scenario found");
+    public static List<TestScenario> findScenario(SearchCriteria searchCriteria) {
+        return testScenarios.stream()
+                .filter(s -> searchCriteria.matches(s.criteria))
+                .collect(Collectors.toList());
     }
 
     private static ScenarioCriteria addTestScenario(List<TestScenario> list, Class<?> testClass) {

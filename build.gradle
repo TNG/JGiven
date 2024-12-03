@@ -257,6 +257,18 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         classpath = configurations.testRuntimeClasspath
     }
 
+    tasks.register("jgivenPlainTextReport",JavaExec) {
+        //noinspection GroovyAccessibility
+        mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
+        args '--sourceDir=build/reports/jgiven/json',
+                '--targetDir=build/reports/jgiven/text',
+                '--format=text',
+                '--exclude-empty-scenarios=true',
+                '--title=JGiven Report'
+
+        classpath = configurations.testRuntimeClasspath
+    }
+
     asciidoctor {
         sourceDir = new File('build/reports/jgiven/asciidoc')
         outputDir = new File('build/reports/jgiven/htmladoc')

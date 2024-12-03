@@ -14,6 +14,9 @@ public class NoOpScenarioListener implements ScenarioListener {
     public void scenarioFailed( Throwable e ) {}
 
     @Override
+    public void scenarioAborted(Throwable e) {}
+
+    @Override
     public void scenarioStarted( String string ) {}
 
     @Override
@@ -30,6 +33,9 @@ public class NoOpScenarioListener implements ScenarioListener {
 
     @Override
     public void stepMethodFailed( Throwable t ) {}
+
+    @Override
+    public void stepMethodAborted( Throwable t ) {}
 
     @Override
     public void stepMethodFinished( long durationInNanos, boolean hasNestedSteps ) {}
