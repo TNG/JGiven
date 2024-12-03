@@ -243,11 +243,11 @@ JGiven will then validate that a previous stage had provided the value and will 
 
 === Having More Than 3 Stages
 
-In many cases three stages are typically enough to write a scenario. However, sometimes more than three are required. JGiven provides two mechanism for that: stage injection and dynamic adding of stages.
+In many cases three stages are typically enough to write a scenario. However, sometimes more than three are required. JGiven provides two mechanisms for that: stage injection and dynamic adding of stages.
 
 ==== Stage Injection
 
-Additional stages can be injected into a test class by declaring a field with the additional stage and annotate it with `@ScenarioStage`.
+Additional stages can be injected into a test class by declaring a field with the additional stage and annotating it with `@ScenarioStage`.
 
 Please note that a lifecycle model that reuses the same instance to execute multiple test methods is only partially compatible with JGiven. In particular, in such a model stages for different scenarios will be injected into the same field. This can lead to errors when attempting to run tests in parallel.
 
