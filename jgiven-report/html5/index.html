@@ -6,7 +6,6 @@
   <title ng-bind="metaData.title">Loading...</title>
   <link rel="stylesheet" href="styles.css"/>
   <link rel="stylesheet" href="css/custom.css"/>
-
 </head>
 <body>
 
@@ -115,8 +114,8 @@
           <i ng-if="step.status === 'PASSED'" class="small-check fa fa-check-square"></i>
           <i ng-if="step.status === 'FAILED'" class="failed-icon fa fa-exclamation-circle"></i>
           <i ng-if="step.status === 'SKIPPED'" class="skipped fa fa-ban"></i>
-          <i ng-if="step.status === 'PENDING'" title="Pending"
-             class="skipped fa fa-ban"></i>
+          <i ng-if="step.status === 'PENDING'" title="Pending" class="skipped fa fa-ban"></i>
+          <i ng-if="step.status === 'ABORTED'" class="aborted fa fa-fa-ban"></i>
         </span>
   <span ng-if="step.durationInNanos > 10000000"
         class="duration"> ({{ ::nanosToReadableUnit(step.durationInNanos) }})</span>
@@ -204,6 +203,7 @@
         <li class="off-canvas-close"><a href="#all">All Scenarios</a></li>
         <li class="off-canvas-close"><a href="#failed">Failed Scenarios</a></li>
         <li class="off-canvas-close"><a href="#pending">Pending Scenarios</a></li>
+        <li class="off-canvas-close"><a href="#aborted">Aborted Scenarios</a></li>
 
         <li><label>Tags</label></li>
         <li class="has-submenu" ng-repeat="node in rootTags" ng-include="'tree_mobile_template.html'">
@@ -256,6 +256,9 @@
                     </li>
                     <li><a href="#pending">Pending Scenarios<span
                         class="label secondary round nav-count {{::getTotalStatistics().pending > 0 ? 'pending' : ''}}">{{::getTotalStatistics().pending}}</span></a>
+                    </li>
+                    <li><a href="#aborted">Aborted Scenarios<span
+                            class="label secondary round nav-count {{::getTotalStatistics().aborted> 0 ? 'aborted' : ''}}">{{::getTotalStatistics().aborted}}</span></a>
                     </li>
                   </ul>
                 </li>
@@ -364,10 +367,11 @@
 
           <div id="statistics" class="small-12 large-6 columns no-pad-left" ng-if="currentPage.statistics">
                 <span class="{{currentPage.statistics.success === 0 ? 'gray' : ''}} toggle" ng-click="showSuccessful()">
-                  <i class="fa fa-check-square {{currentPage.statistics.failed + currentPage.statistics.pending === 0 && currentPage.statistics.success > 0 ? 'check' : 'gray'}}"></i> {{currentPage.statistics.success}} Successful</span>,
+                  <i class="fa fa-check-square {{currentPage.statistics.aborted + currentPage.statistics.failed + currentPage.statistics.pending === 0 && currentPage.statistics.success > 0 ? 'check' : 'gray'}}"></i> {{currentPage.statistics.success}} Successful</span>,
                         <span class="{{currentPage.statistics.failed > 0 ? 'red' : 'gray'}} toggle" ng-click="showFailed()"><i
                             class=" fa fa-exclamation-circle"></i> {{currentPage.statistics.failed}} Failed</span>,
-            <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'gray'}} toggle" ng-click="showPending()"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
+            <span class="{{currentPage.statistics.pending > 0 ? 'bold' : 'silver'}} toggle" ng-click="showPending()"><i class="fa fa-ban"></i> {{currentPage.statistics.pending}} Pending</span>,
+            <span class="{{currentPage.statistics.aborted > 0 ? 'bold' : 'gray'}} toggle" ng-click="showAborted()"><i class="fa fa-ban"></i> {{currentPage.statistics.aborted}} Aborted</span>,
             <span class="{{currentPage.statistics.count === 0 ? 'gray' : ''}}">{{currentPage.statistics.count}} Total ({{nanosToReadableUnit(currentPage.statistics.totalNanos)}})</span>
             <span ng-if="currentPage.filtered > 0" class="bold toggle" ng-click="clearFilter()">({{ currentPage.filtered }} Filtered)</span>
           </div>
@@ -450,6 +454,8 @@
                   <span class="secondary radius label group-count total">{{::scenarioGroup.values.length}}</span>
                   <span class="radius label group-count alert failed" ng-if="scenarioGroup.counts.failed > 0"><i
                       class="fa fa-exclamation-circle"></i> {{::scenarioGroup.counts.failed}} FAILED</span>
+                  <span class="radius label group-count alert aborted" ng-if="scenarioGroup.counts.aborted > 0"><i
+                          class="fa fa-exclamation-circle"></i> {{::scenarioGroup.counts.aborted}} ABORTED</span>
                   <span class="secondary radius label group-count pending" ng-if="scenarioGroup.counts.pending > 0">
                     <i class="fa fa-ban"></i> {{::scenarioGroup.counts.pending}} PENDING</span>
                     <span class="duration"> ({{ ::nanosToReadableUnit(scenarioGroup.counts.durationInNanos) }})</span>
@@ -487,6 +493,8 @@
                        class="check fa fa-check-square"></i>
                     <span ng-if="scenario.executionStatus === 'FAILED'"
                           class="failed label radius alert"><i class="fa fa-exclamation-circle"></i>{{getNumberOfFailedCases(scenario)}} FAILED</span>
+                    <span ng-if="scenario.executionStatus === 'ABORTED'"
+                          class="aborted label radius secondary"><i class="fa fa-fa-ban"></i>{{getNumberOfAbortedCases(scenario)}} ABORTED</span>
                     <span
                         ng-if="scenario.executionStatus === 'SCENARIO_PENDING' || scenario.executionStatus === 'SOME_STEPS_PENDING'"
                         class="pending label radius secondary"><i class="fa fa-ban"></i> PENDING</span>
@@ -668,7 +676,7 @@
 
         <div class="footer-bottom" ng-if="!currentPage.embed">
           <div class="small-12 columns">
-            <a href="http://jgiven.org">JGiven</a> HTML App 1.0.0. Data generated by <a href="http://jgiven.org">JGiven</a> {{metaData.version}} on
+            <a href="http://jgiven.org">JGiven</a> HTML App 1.1.2. Data generated by <a href="http://jgiven.org">JGiven</a> {{metaData.version}} on
             {{metaData.created}}
           </div>
         </div>
@@ -679,7 +687,7 @@
 
   </div>
 </div>
-<script type="text/javascript" src="app.bundle.js" charset="utf-8"></script>
+<script src="styles.bundle.js"></script><script src="app.bundle.js"></script>
 <script type="text/javascript" src="js/custom.js" charset="utf-8"></script>
 <script type="text/javascript" src="data/metaData.js" charset="utf-8"></script>
 <script type="text/javascript" src="data/tags.js" charset="utf-8"></script>
