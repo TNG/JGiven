@@ -61,7 +61,7 @@ public void an_expected_exception_should_be_thrown() {
 
 Note, that this is scenario is still very technical and you should consider replacing the word ‘exception’ with a more domain specific term.
 
-In order to realize the above scenario you have to explicitly catch the exception in the `doing_some_action` step and store it into a scenario state field.
+In order to implement the above scenario you have to explicitly catch the exception in the `doing_some_action` step and store it into a scenario state field.
 
 
 [source,java]
