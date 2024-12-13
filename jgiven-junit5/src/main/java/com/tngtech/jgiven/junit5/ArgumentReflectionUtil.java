@@ -42,7 +42,7 @@ class ArgumentReflectionUtil {
                                 && invocationContext.getClass().getCanonicalName().equals(PARAMETERIZED_TEST_INVOCATION_CONTEXT)) {
                             Object arguments = ReflectionUtil.getFieldValueOrNull("arguments", invocationContext, ERROR);
                             if (arguments instanceof Arguments) {
-                                List<Object> args = List.of(((Arguments) arguments).get());
+                                List<Object> args = Arrays.asList(((Arguments) arguments).get());
                                 namedArgs = ParameterNameUtil.mapArgumentsWithParameterNames(context.getTestMethod().get(), args);
                             } else {
                                 log.warn(ERROR + " The type of arguments in the invocation context has changed. Please write a bug report.");
