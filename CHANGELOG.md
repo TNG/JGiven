@@ -1,3 +1,8 @@
+# Release v2.0.1
+## Fixed issues
+* Fixed an issue where parameterized tests with null value would not work in JUnit5 [#1801](ttps://github.com/TNG/JGiven/issues/1801) (thanks to sebphil for reporting)
+* Fixed inconsistent color scheme with regards to PENDING and ABORTED states in the HTML report.
+
 # Release v2.0.0
 ## Backward incompatible changes
 * Gradle-Plugin: The jgiven report task now forces execution of test tasks. That is, when the task jgivenTestReport is explicitly requested, for instance via the command line, the test tasks it depends on are also executed. For implementations where the jgiven task is set to finalize a test task (i.e `test.finalizedBy(jgiven)`, the behavior is unchanged.
