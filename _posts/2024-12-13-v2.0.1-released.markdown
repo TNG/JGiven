@@ -1,0 +1,11 @@
+---
+layout: post
+title:  "Version 2.0.1 Released"
+date:  2024-12-13 15:04:53
+categories: news
+---
+
+Released Version 2.0.1 of JGiven. For details see the [release notes](https://github.com/TNG/JGiven/releases/tag/v2.0.1).
+
+[jgiven-gh]: https://github.com/TNG/JGiven
+[jgiven]:    https://jgiven.org
