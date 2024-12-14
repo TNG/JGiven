@@ -3,7 +3,7 @@ aspectj-version = "1.9.22.1"
 byteBuddy-version = "1.15.10"
 junit4-version = "4.13.2"
 slf4j-version = "2.0.16"
-spring-version = "6.2.0"
+spring-version = "6.2.1"
 androidx-test-version = "1.6.1"
 
 [libraries]
