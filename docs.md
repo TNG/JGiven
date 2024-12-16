@@ -16,7 +16,7 @@ permalink: /docs/
 
 ### Conference Talks
 
-* [Behavior-Driven Development in Plain Java](http://www.techcast.com/events/bigtechday8/maffei-1345/), by Jan Schäfer at TNG Big TechDay 8, June 2015
+* [Behavior-Driven Development in Plain Java](https://www.youtube.com/watch?v=gh_yjb3x8Yc), by Jan Schäfer at the TNG Big Techday 8, June 2015
 
 ### Articles
 
