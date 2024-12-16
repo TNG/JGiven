@@ -82,9 +82,9 @@ Marie-Laure Thuret (<a href="https://twitter.com/mlthuret">@mlthuret</a>) and Cl
 
 <iframe class="shadow-frame" width="560" height="315" src="https://www.youtube.com/embed/4oFl4nxoshM" frameborder="0" allowfullscreen></iframe>
 
-### Talk on JGiven at BigTechday 8
+### Talk on JGiven at the TNG Big Techday 8
 
-Jan Schäfer gave a talk on JGiven at the BigTechday 8. It explains the rationale behind JGiven and gives an introduction into the main features of JGiven.
+Jan Schäfer gave a talk on JGiven at the TNG Big Techday 8. It explains the rationale behind JGiven and gives an introduction into the main features of JGiven.
 
 <iframe class="shadow-frame" width="560" height="315" src="https://www.youtube.com/embed/gh_yjb3x8Yc" frameborder="0" allowfullscreen></iframe>
 
