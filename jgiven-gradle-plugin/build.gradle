@@ -15,7 +15,7 @@ dependencies {
     testImplementation project(':jgiven-junit5')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
+    testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
 }
 
 test{
