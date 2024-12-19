@@ -1,6 +1,10 @@
+# Release v2.0.2
+## Fixed issues
+* The java 17 example projects now comes with a basic logger. [#374](https://github.com/TNG/JGiven/issues/374) (thanks to rolfschumacher for reporting)
+
 # Release v2.0.1
 ## Fixed issues
-* Fixed an issue where parameterized tests with null value would not work in JUnit5 [#1801](ttps://github.com/TNG/JGiven/issues/1801) (thanks to sebphil for reporting)
+* Fixed an issue where parameterized tests with null value would not work in JUnit5 [#1801](https://github.com/TNG/JGiven/issues/1801) (thanks to sebphil for reporting)
 * Fixed inconsistent color scheme with regards to PENDING and ABORTED states in the HTML report.
 
 # Release v2.0.0
