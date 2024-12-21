@@ -40,7 +40,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.27.0'
     testImplementation 'io.github.bonigarcia:webdrivermanager:5.9.2'
-    testImplementation 'org.assertj:assertj-core:3.26.3'
+    testImplementation 'org.assertj:assertj-core:3.27.0'
 
 }
 
