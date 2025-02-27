@@ -51,8 +51,8 @@ public class JGivenExtension implements
         validatePerMethodLifecycle(context);
 
         ReportModel reportModel = new ReportModel();
-        reportModel.setTestClass(context.getTestClass().get());
-        if (!context.getDisplayName().equals(context.getTestClass().get().getSimpleName())) {
+        reportModel.setTestClass(context.getTestClass().orElseThrow());
+        if (!context.getDisplayName().equals(context.getTestClass().orElseThrow().getSimpleName())) {
             reportModel.setName(context.getDisplayName());
         }
         context.getStore(NAMESPACE).put(REPORT_MODEL, reportModel);
@@ -73,7 +73,7 @@ public class JGivenExtension implements
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        getScenario().startScenario(context.getTestClass().get(), context.getTestMethod().get(),
+        getScenario().startScenario(context.getTestClass().orElseThrow(), context.getTestMethod().orElseThrow(),
             ArgumentReflectionUtil.getNamedArgs(context));
     }
 

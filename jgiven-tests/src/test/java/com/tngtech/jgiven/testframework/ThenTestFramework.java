@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("UnusedReturnValue") //JGiven style prefers a fluent interface
 public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenReportModel<SELF> {
     @ExpectedScenarioState
     protected TestScenario testScenario;
@@ -52,7 +53,6 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
     }
 
     public SELF the_report_model_contains_one_scenario_for_each_test_method() {
-        Method[] declaredMethods = testScenario.testClass.getDeclaredMethods();
         List<Method> nonStaticMethods = ReflectionUtil.getNonStaticMethod(testScenario.testClass.getDeclaredMethods());
         assertThat(reportModel.getScenarios()).hasSize(nonStaticMethods.size());
         return self();

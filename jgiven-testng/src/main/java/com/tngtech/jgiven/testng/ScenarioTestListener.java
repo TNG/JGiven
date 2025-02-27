@@ -34,8 +34,7 @@ public class ScenarioTestListener implements ITestListener {
 
         ScenarioBase scenario;
 
-        if (instance instanceof ScenarioTestBase<?, ?, ?>) {
-            ScenarioTestBase<?, ?, ?> testInstance = (ScenarioTestBase<?, ?, ?>) instance;
+        if (instance instanceof ScenarioTestBase<?, ?, ?> testInstance) {
             scenario = testInstance.createNewScenario();
         } else {
             scenario = new ScenarioBase();
