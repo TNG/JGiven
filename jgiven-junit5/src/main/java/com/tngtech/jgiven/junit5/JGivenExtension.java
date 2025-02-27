@@ -9,17 +9,13 @@ import com.tngtech.jgiven.impl.ScenarioHolder;
 import com.tngtech.jgiven.impl.util.ThrowableUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
-import java.util.EnumSet;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-import org.junit.jupiter.api.extension.TestInstancePostProcessor;
+
+import java.util.EnumSet;
 
 import static com.tngtech.jgiven.report.model.ExecutionStatus.*;
 
@@ -87,6 +83,8 @@ public class JGivenExtension implements
         try {
             if (context.getExecutionException().isPresent() && !ThrowableUtil.isAssumptionException(context.getExecutionException().get())) {
                 scenario.getExecutor().failed(context.getExecutionException().get());
+            } else if (context.getExecutionException().isPresent() && ThrowableUtil.isAssumptionException(context.getExecutionException().get())) {
+                scenario.getExecutor().aborted(context.getExecutionException().get());
             }
             scenario.finished();
 

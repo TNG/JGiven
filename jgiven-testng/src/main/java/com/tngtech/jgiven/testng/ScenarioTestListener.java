@@ -1,7 +1,5 @@
 package com.tngtech.jgiven.testng;
 
-import static java.util.Arrays.asList;
-
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.exception.FailIfPassedException;
 import com.tngtech.jgiven.impl.ScenarioBase;
@@ -11,12 +9,15 @@ import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.NamedArgument;
 import com.tngtech.jgiven.report.model.ReportModel;
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static java.util.Arrays.asList;
 
 /**
  * TestNG Test listener to enable JGiven for a test class.
@@ -102,6 +103,11 @@ public class ScenarioTestListener implements ITestListener {
 
     @Override
     public void onTestSkipped(ITestResult testResult) {
+        ScenarioBase scenario = getScenario(testResult);
+        if (scenario != null) {
+            scenario.getExecutor().aborted(testResult.getThrowable());
+            testFinished(testResult);
+        }
         testFinished(testResult);
     }
 

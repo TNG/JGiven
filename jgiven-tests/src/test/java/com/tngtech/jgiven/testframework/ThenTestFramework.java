@@ -1,16 +1,16 @@
 package com.tngtech.jgiven.testframework;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.reflect.Method;
-import java.util.List;
-
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.ThenReportModel;
 import com.tngtech.jgiven.tests.TestScenarioRepository.TestScenario;
+
+import java.lang.reflect.Method;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenReportModel<SELF> {
     @ExpectedScenarioState
@@ -25,6 +25,8 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
         // The standard JUnit executor will report the test as passed and not ignored,
         // we thus only test for not failed here
         the_test_passes();
+        assertThat(reportModel.getScenarios().get(0).getExecutionStatus())
+                .isIn(ExecutionStatus.ABORTED, ExecutionStatus.SCENARIO_PENDING, ExecutionStatus.SOME_STEPS_PENDING);
         return self();
     }
 
