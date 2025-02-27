@@ -14,8 +14,8 @@ dependencies {
 }
 
 test.useTestNG() {
-    parallel 'methods'
-    threadCount 10
+    parallel = 'methods'
+    threadCount = 10
 }
 
 test.finalizedBy(jgivenHtml5Report)
