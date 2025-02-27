@@ -1,12 +1,11 @@
 package com.tngtech.jgiven.example.projects.junit5
 
-import org.junit.jupiter.api.Tag
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-
 import com.tngtech.jgiven.annotation.JGivenConfiguration
 import com.tngtech.jgiven.annotation.ScenarioStage
 import com.tngtech.jgiven.junit5.JGivenExtension
+import org.junit.jupiter.api.Tag
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(JGivenExtension::class)
 @JGivenConfiguration(JGivenTestConfiguration::class)
@@ -22,7 +21,7 @@ class JUnit5Test {
     lateinit var thenStage: ThenStage
 
     @Test
-    @Tag("JUnit5 Tag")
+    @Tag("JUnit5_Tag")
     fun scenario_with_JUnit5() {
         givenStage.given().message("Hello JUnit")
         whenStage.`when`().handle_message()

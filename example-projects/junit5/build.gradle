@@ -39,8 +39,10 @@ repositories {
 
 dependencies {
     testImplementation "com.tngtech.jgiven:jgiven-junit5:${jgivenVersion}"
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.4'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.12.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.12.0'
+    testImplementation 'org.junit.platform:junit-platform-runner:1.12.0'
+    testImplementation 'org.slf4j:slf4j-jdk14:2.0.17'
 }
 
 test {
