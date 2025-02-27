@@ -18,15 +18,10 @@ import org.junit.runners.model.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static com.tngtech.jgiven.report.model.ExecutionStatus.*;
 import static java.lang.String.format;
@@ -150,7 +145,7 @@ public class JGivenMethodRule implements MethodRule {
 
     @VisibleForTesting
     static List<NamedArgument> getNamedArguments(Statement base, FrameworkMethod method, Object target) {
-        AccessibleObject constructorOrMethod = method.getMethod();
+        Executable constructorOrMethod = method.getMethod();
 
         List<Object> arguments = Collections.emptyList();
 
