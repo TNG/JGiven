@@ -8,10 +8,10 @@ pluginManagement {
         gradlePluginPortal()
         google()
         maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
         maven {
-            url "https://oss.sonatype.org/content/repositories/staging/"
+            url = "https://oss.sonatype.org/content/repositories/staging/"
         }
     }
 }

@@ -293,7 +293,7 @@ configure(subprojects) { subproject ->
     apply plugin: 'signing'
     apply plugin: 'maven-publish'
 
-    description "${rootProject.description} - Module ${project.name}"
+    description = "${rootProject.description} - Module ${project.name}"
 
     checkstyle {
         toolVersion = "10.21.3"
@@ -308,9 +308,8 @@ configure(subprojects) { subproject ->
 
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
         logger.debug("Task graph at signing:" + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
-        required {
-            isReleaseVersion && gradle.taskGraph.getAllTasks().any { it instanceof PublishToMavenRepository }
-        }
+        required = isReleaseVersion && gradle.taskGraph.getAllTasks().any { it instanceof PublishToMavenRepository }
+
         def signingKey = findProperty("signingKey")
         def signingPassword = findProperty("signingPassword")
         useInMemoryPgpKeys(signingKey, signingPassword)

@@ -17,25 +17,25 @@ repositories {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdk androidCompileSdkVersion
-    namespace 'jgiven.tngtech.com.jgiven_android.example'
+    compileSdk = androidCompileSdkVersion
+    namespace = 'jgiven.tngtech.com.jgiven_android.example'
     defaultConfig {
-        applicationId "com.tngtech.jgiven.android.example"
-        minSdkVersion androidMinSdkVersion
-        targetSdkVersion androidTargetSdkVersion
-        versionCode 1
-        versionName "${version}"
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        applicationId = "com.tngtech.jgiven.android.example"
+        minSdkVersion = androidMinSdkVersion
+        targetSdkVersion = androidTargetSdkVersion
+        versionCode = 1
+        versionName = "${version}"
+        testInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
