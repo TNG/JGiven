@@ -6,7 +6,6 @@ import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
-import com.tngtech.jgiven.impl.util.ThrowableUtil;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
 import org.junit.jupiter.api.Assumptions;
@@ -16,7 +15,9 @@ import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 
 import java.util.EnumSet;
+import java.util.Optional;
 
+import static com.tngtech.jgiven.impl.util.ThrowableUtil.isAssumptionException;
 import static com.tngtech.jgiven.report.model.ExecutionStatus.*;
 
 /**
@@ -81,11 +82,7 @@ public class JGivenExtension implements
     public void afterTestExecution(ExtensionContext context) throws Exception {
         ScenarioBase scenario = getScenario();
         try {
-            if (context.getExecutionException().isPresent() && !ThrowableUtil.isAssumptionException(context.getExecutionException().get())) {
-                scenario.getExecutor().failed(context.getExecutionException().get());
-            } else if (context.getExecutionException().isPresent() && ThrowableUtil.isAssumptionException(context.getExecutionException().get())) {
-                scenario.getExecutor().aborted(context.getExecutionException().get());
-            }
+            reportPotentialExecutionException(scenario, context);
             scenario.finished();
 
             // ignore test when scenario is not implemented
@@ -98,6 +95,18 @@ public class JGivenExtension implements
             throw new RuntimeException(e);
         } finally {
             ScenarioHolder.get().removeScenarioOfCurrentThread();
+        }
+    }
+
+    private void reportPotentialExecutionException(ScenarioBase scenario, ExtensionContext context) {
+        Optional<Throwable> exception = context.getExecutionException();
+        if (exception.isEmpty()) {
+            return;
+        }
+        if (isAssumptionException(exception.get())) {
+            scenario.getExecutor().aborted(exception.get());
+        } else if (!isAssumptionException(exception.get())) {
+            scenario.getExecutor().failed(exception.get());
         }
     }
 
