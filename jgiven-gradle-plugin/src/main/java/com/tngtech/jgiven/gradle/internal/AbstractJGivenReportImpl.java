@@ -10,6 +10,7 @@ import com.tngtech.jgiven.report.html5.Html5ReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 import groovy.lang.Closure;
+import jakarta.annotation.Nullable;
 import org.gradle.api.NonNullApi;
 import org.gradle.api.Task;
 import org.gradle.api.file.DirectoryProperty;
@@ -18,7 +19,6 @@ import org.gradle.api.reporting.Report;
 import org.gradle.api.tasks.Internal;
 import org.gradle.util.internal.ConfigureUtil;
 
-import javax.annotation.Nullable;
 import java.io.File;
 
 @NonNullApi
