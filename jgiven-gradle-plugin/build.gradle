@@ -9,12 +9,13 @@ dependencies {
     implementation project(':jgiven-core')
     implementation project(':jgiven-html5-report')
     implementation(platform(libs.junit.bom))
-    implementation 'com.google.guava:guava:33.4.5-jre'
-    implementation 'com.google.code.gson:gson:2.12.1'
+    implementation(libs.jakarta.annotation)
+    implementation libs.guava
+    implementation libs.gson
 
     testImplementation project(':jgiven-junit5')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation libs.junit.jupiter
+    testRuntimeOnly libs.junit.platform.launcher
     testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
 }
 
