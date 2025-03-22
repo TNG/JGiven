@@ -1,6 +1,6 @@
 [versions]
 aspectj-version = "1.9.23"
-byteBuddy-version = "1.17.2"
+byteBuddy-version = "1.17.3"
 gsonVersion = "2.12.1"
 guavaVersion = "33.4.5-jre"
 jakarta-version = "3.0.0"
