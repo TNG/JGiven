@@ -3,6 +3,7 @@
 [![Apache License 2.0](https://img.shields.io/badge/license-apache2-red.svg?style=flat-square)](http://opensource.org/licenses/Apache-2.0)
 [![Maven Central](https://img.shields.io/maven-central/v/com.tngtech.jgiven/jgiven-junit.svg?style=flat-square)](https://maven-badges.herokuapp.com/maven-central/com.tngtech.jgiven/jgiven-junit)
 [![Join the chat at https://gitter.im/TNG/JGiven](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/TNG/JGiven?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![libs.tech recommends](https://libs.tech/project/18664242/badge.svg)](https://libs.tech/project/18664242/jgiven)
 [![Javadocs](https://javadoc.io/badge/com.tngtech.jgiven/jgiven-core.svg?color=brightgreen)](https://javadoc.io/doc/com.tngtech.jgiven/jgiven-core)
 [![Open Source Helpers](https://www.codetriage.com/tng/jgiven/badges/users.svg)](https://www.codetriage.com/tng/jgiven)
 
