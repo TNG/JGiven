@@ -9,5 +9,5 @@ dependencies {
         exclude group: 'commons-io', module: 'commons-io'
     }
     implementation 'commons-io:commons-io:2.19.0'
-    implementation 'org.apache.xmlgraphics:batik-codec:1.18'
+    implementation 'org.apache.xmlgraphics:batik-codec:1.19'
 }
