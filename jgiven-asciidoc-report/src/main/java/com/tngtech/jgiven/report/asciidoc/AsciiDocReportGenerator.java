@@ -80,7 +80,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     }
 
-    private boolean prepareDirectories(final File targetDir) { // TODO possibly move to parent
+    private boolean prepareDirectories(final File targetDir) {
         this.targetDir = targetDir;
         if (this.targetDir == null) {
             log.error("Target directory was not configured");

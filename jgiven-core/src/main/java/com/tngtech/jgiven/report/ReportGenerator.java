@@ -47,14 +47,14 @@ public class ReportGenerator {
         var format = ConfigOptionParser.getFormat( args );
         switch( format ) {
             case ASCIIDOC:
-				loadReportGenerator( ASCIIDOC_GENERATOR_FQCN ).generateFromCommandLine( args );
+                loadReportGenerator(ASCIIDOC_GENERATOR_FQCN).generateFromCommandLine(args);
                 break;
             case TEXT:
                 new PlainTextReportGenerator().generateFromCommandLine( args );
                 break;
             case HTML, HTML5:
             default:
-				ReportGenerator.loadReportGenerator( HTML5_REPORT_GENERATOR_FQCN ).generateFromCommandLine( args );
+                ReportGenerator.loadReportGenerator(HTML5_REPORT_GENERATOR_FQCN).generateFromCommandLine(args);
                 break;
         }
     }
