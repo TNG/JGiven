@@ -116,15 +116,14 @@ public class JGivenReportMojo extends AbstractMojo {
                     config = new PlainTextReportConfig();
                     generator = new PlainTextReportGenerator();
                     break;
-                case HTML:
-                case HTML5:
+                case HTML, HTML5:
                 default:
                     Html5ReportConfig customConf = new Html5ReportConfig();
                     customConf.setShowThumbnails(thumbnailsAreShown);
                     customConf.setCustomCss(customCssFile);
                     customConf.setCustomJs(customJsFile);
                     config = customConf;
-                    generator = ReportGenerator.generateHtml5Report();
+                    generator = ReportGenerator.loadHtml5ReportGenerator();
                     break;
             }
             config.setTitle(title);
