@@ -12,8 +12,6 @@ import com.tngtech.jgiven.report.model.ReportModelFile;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,7 +80,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     }
 
-    private boolean prepareDirectories(final File targetDir) {
+    private boolean prepareDirectories(final File targetDir) { // TODO possibly move to parent
         this.targetDir = targetDir;
         if (this.targetDir == null) {
             log.error("Target directory was not configured");
@@ -101,7 +99,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         completeReportModel.getAllReportModels().stream()
                 .sorted(Comparator.comparing(AsciiDocReportGenerator::byFeatureName))
                 .forEach(reportModelFile -> {
-                    final String featureFileName = Files.getNameWithoutExtension(
+                    final var featureFileName = Files.getNameWithoutExtension(
                             reportModelFile.file().getName()) + ".asciidoc";
                     writeAsciiDocBlocksToFile(new File(featuresDir, featureFileName),
                             collectReportBlocks(reportModelFile, featureFileName));
@@ -111,7 +109,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     private List<String> collectReportBlocks(final ReportModelFile reportModelFile, final String featureFileName) {
         featureFiles.add(featureFileName);
 
-        final ReportStatistics statistics = completeReportModel.getStatistics(reportModelFile);
+        final var statistics = completeReportModel.getStatistics(reportModelFile);
         if (statistics.numFailedScenarios > 0) {
             failedScenarioFiles.add(featureFileName);
         }
@@ -122,14 +120,14 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             abortedScenarioFiles.add(featureFileName);
         }
 
-        final AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
+        final var visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
         reportModelFile.model().accept(visitor);
 
         return visitor.getResult();
     }
 
     private void writeIndexFileForAllScenarios() {
-        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+        final var snippetGenerator = new AsciiDocSnippetGenerator(
                 "All Scenarios", "scenarios in total", this.featureFiles, "",
                 this.completeReportModel.getTotalStatistics().numScenarios);
 
@@ -138,8 +136,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void writeIndexFileForFailedScenarios() {
-        final String scenarioKind = "failed";
-        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+        final var scenarioKind = "failed";
+        final var snippetGenerator = new AsciiDocSnippetGenerator(
                 "Failed Scenarios", "failed scenarios", this.failedScenarioFiles, scenarioKind,
                 this.completeReportModel.getTotalStatistics().numFailedScenarios);
 
@@ -148,8 +146,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void writeIndexFileForPendingScenarios() {
-        final String scenarioKind = "pending";
-        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+        final var scenarioKind = "pending";
+        final var snippetGenerator = new AsciiDocSnippetGenerator(
                 "Pending Scenarios", "pending scenarios", this.pendingScenarioFiles, scenarioKind,
                 this.completeReportModel.getTotalStatistics().numPendingScenarios);
 
@@ -158,8 +156,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void writeIndexFileForAbortedScenarios() {
-        final String scenarioKind = "aborted";
-        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+        final var scenarioKind = "aborted";
+        final var snippetGenerator = new AsciiDocSnippetGenerator(
                 "Aborted Scenarios", "aborted scenarios", this.abortedScenarioFiles, scenarioKind,
                 this.completeReportModel.getTotalStatistics().numAbortedScenarios);
 
@@ -176,7 +174,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
                         completeReportModel::getStatistics,
                         MultimapBuilder.hashKeys().arrayListValues()::build));
 
-        final String statisticsBlock = blockConverter.convertStatisticsBlock(
+        final var statisticsBlock = blockConverter.convertStatisticsBlock(
                 featureStatistics, completeReportModel.getTotalStatistics());
 
         writeAsciiDocBlocksToFile(new File(targetDir, "totalStatistics.asciidoc"),
@@ -184,11 +182,11 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void writeIndexFileForFullReport(final String reportTitle) {
-        final URL resourceUrl = Resources.getResource(this.getClass(), "index.asciidoc");
+        final var resourceUrl = Resources.getResource(this.getClass(), "index.asciidoc");
         try {
-            final List<String> indexLines = Resources.readLines(resourceUrl, Charset.defaultCharset());
+            final var indexLines = Resources.readLines(resourceUrl, Charset.defaultCharset());
 
-            try (PrintWriter writer = PrintWriterUtil.getPrintWriter(new File(targetDir, "index.asciidoc"))) {
+            try (var writer = PrintWriterUtil.getPrintWriter(new File(targetDir, "index.asciidoc"))) {
                 writer.println("= " + reportTitle);
                 indexLines.forEach(writer::println);
             }
@@ -212,7 +210,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private static void writeAsciiDocBlocksToFile(final File file, final List<String> asciiDocBlocks) {
-        try (final PrintWriter writer = PrintWriterUtil.getPrintWriter(file)) {
+        try (final var writer = PrintWriterUtil.getPrintWriter(file)) {
             for (final String block : asciiDocBlocks) {
                 writer.println(block);
                 writer.println();
