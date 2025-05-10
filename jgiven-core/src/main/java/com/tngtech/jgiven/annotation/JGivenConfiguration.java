@@ -12,6 +12,7 @@ import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
  * <ul>
  *     <li>Tags</li>
  *     <li>Global formatter</li>
+ *     <li>Default {@link As} provider</li>
  * </ul>
  */
 @Retention( RetentionPolicy.RUNTIME )

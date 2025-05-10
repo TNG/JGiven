@@ -23,27 +23,27 @@ android {
     namespace 'jgiven.tngtech.com.jgiven_android'
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     defaultConfig {
-        minSdkVersion androidMinSdkVersion
-        targetSdkVersion androidTargetSdkVersion
-        versionCode 1
-        versionName "${version}"
+        minSdkVersion = androidMinSdkVersion
+        targetSdkVersion = androidTargetSdkVersion
+        versionCode = 1
+        versionName = "${version}"
 
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        testInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
 
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     lintOptions {
-        abortOnError false
+        abortOnError = false
     }
 
     publishing {
@@ -60,7 +60,7 @@ configurations.configureEach {
 afterEvaluate {project.ext.publishVariant('release')}
 
 dependencies {
-    api('com.google.guava:guava:33.0.0-jre')
+    api('com.google.guava:guava:33.4.8-jre')
     api("net.bytebuddy:byte-buddy-android:${libs.versions.byteBuddy.version.get()}")
     api(junitVariableVersionLibs.junit4)
     implementation(libs.androidx.appcompat){

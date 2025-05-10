@@ -5,11 +5,12 @@ plugins {
 description = "JGiven core module"
 
 dependencies {
-    api 'com.google.guava:guava:33.0.0-jre'
-    api 'com.google.code.gson:gson:2.10.1'
-    implementation 'com.thoughtworks.paranamer:paranamer:2.8'
+    api libs.guava
+    api libs.gson
+    implementation(libs.jakarta.annotation)
+    implementation libs.paranamer
     implementation libs.byteBuddy
-    implementation 'org.fusesource.jansi:jansi:2.4.1'
+    implementation 'org.fusesource.jansi:jansi:2.4.2'
 
     testImplementation 'com.github.stefanbirkner:system-rules:1.19.0'
 }
@@ -24,31 +25,32 @@ sourceSets {
     }
 }
 
-def buildNumber = getGitHash()
+def buildNumber = 'git rev-parse --short HEAD'.execute().text.trim()
+
 
 println 'BUILD SHA1: ' + buildNumber
 
 processResources {
     expand(
-        'version': project.version,
-        'buildNumber': buildNumber
+            'version': project.version,
+            'buildNumber': buildNumber
     )
 }
 
 files { file("src/main/translations").listFiles() }.collect {
-    def pkg=it.getName().split("\\.")[0]
+    def pkg = it.getName().split("\\.")[0]
 
     def props = new Properties()
     it.withInputStream { props.load(it) }
-    props.pkg=pkg
-    def taskName = pkg+'Translation'
+    props.pkg = pkg
+    def taskName = pkg + 'Translation'
 
-    tasks.create(name: taskName, type: Copy) {
+    tasks.register(taskName, Copy) {
         from 'src/main/templates'
         into generatedSourceDir + "/com/tngtech/jgiven/lang/" + pkg
-        rename("Stage.template",props.stage_class+".java")
-        rename("SimpleScenarioTestBase.template",props.simple_scenario_test_base_class+".java")
-        rename("ScenarioTestBase.template",props.scenario_test_base_class+".java")
+        rename("Stage.template", props.stage_class + ".java")
+        rename("SimpleScenarioTestBase.template", props.simple_scenario_test_base_class + ".java")
+        rename("ScenarioTestBase.template", props.scenario_test_base_class + ".java")
         expand(props)
         filteringCharset = 'UTF-8'
     }
@@ -58,15 +60,6 @@ files { file("src/main/translations").listFiles() }.collect {
     javadoc.dependsOn += taskName
 }
 
-/**
- * Copied from https://stackoverflow.com/questions/28498688/gradle-script-to-autoversion-and-include-the-commit-hash-in-android
- * Author: Paul
- */
-def getGitHash() {
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine 'git', 'rev-parse', '--short', 'HEAD'
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
+tasks.register("runShellCommand", Exec){
+    commandLine 'git', 'rev-parse', '--short', 'HEAD'
 }

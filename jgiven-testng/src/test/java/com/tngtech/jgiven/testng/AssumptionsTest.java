@@ -19,16 +19,16 @@ public class AssumptionsTest extends SimpleScenarioTest<AssumptionsTest.TestStag
                 .isInstanceOf(catchException(AssumptionsTest::assertJAssumptionFailure));
         getScenario().finished();
         ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase( 0 );
-        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.PASSED );
+        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.ABORTED);
     }
 
     @Test
-    public void should_pass_on_junit5_assumptions() throws Throwable {
+    public void should_pass_on_testng_assumptions() throws Throwable {
         assertThatThrownBy(() -> when().I_assume_something_using_junit5())
                 .isInstanceOf(catchException(AssumptionsTest::testNgAssumptionFailure));
         getScenario().finished();
         ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase( 0 );
-        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.PASSED );
+        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.ABORTED);
     }
 
     static class TestStage {

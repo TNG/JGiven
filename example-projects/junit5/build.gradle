@@ -19,8 +19,8 @@ plugins {
 apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 compileJava {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     options.compilerArgs += '-parameters'
     options.encoding = 'UTF-8'
 }
@@ -39,8 +39,10 @@ repositories {
 
 dependencies {
     testImplementation "com.tngtech.jgiven:jgiven-junit5:${jgivenVersion}"
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.12.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.12.2'
+    testImplementation 'org.junit.platform:junit-platform-runner:1.12.2'
+    testImplementation 'org.slf4j:slf4j-jdk14:2.0.17'
 }
 
 test {

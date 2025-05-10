@@ -10,12 +10,12 @@ dependencies {
     compileOnly libs.testng
 
     testImplementation libs.testng
-    testImplementation "org.mockito:mockito-core:5.9.0"
+    testImplementation "org.mockito:mockito-core:5.17.0"
 }
 
 test.useTestNG() {
-    parallel 'methods'
-    threadCount 10
+    parallel = 'methods'
+    threadCount = 10
 }
 
 test.finalizedBy(jgivenHtml5Report)

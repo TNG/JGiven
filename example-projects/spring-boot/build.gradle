@@ -9,7 +9,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '3.2.2'
+    id 'org.springframework.boot' version '3.4.5'
 }
 
 apply plugin: 'java'
@@ -19,7 +19,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'com.tngtech.jgiven.gradle-plugin'
 
 wrapper {
-    gradleVersion = '8.5'
+    gradleVersion = '8.14'
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -29,16 +29,16 @@ repositories {
 }
 
 ext {
-    assertjVersion = '3.25.1'
+    assertjVersion = '3.27.3'
     junitDataproviderVersion = '1.13.1'
     jgivenVersion = version
-    hsqldbVersion = '2.7.2'
+    hsqldbVersion = '2.7.4'
 }
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     testImplementation 'junit:junit:4.13.2'
-    implementation 'com.h2database:h2:2.2.224'
+    implementation 'com.h2database:h2:2.3.232'
     testImplementation "com.tngtech.jgiven:jgiven-spring-junit4:$jgivenVersion"
     testImplementation "org.assertj:assertj-core:$assertjVersion"
     testImplementation "com.tngtech.java:junit-dataprovider:$junitDataproviderVersion"

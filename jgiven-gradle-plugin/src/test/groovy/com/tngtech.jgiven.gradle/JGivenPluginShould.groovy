@@ -18,6 +18,37 @@ class JGivenPluginShould extends Specification {
         buildFile = new File(testProjectDir,'build.gradle')
     }
 
+    def "configuration is cacheable"() {
+        given:
+        buildFile << """
+        plugins {
+            id 'java'
+            id 'com.tngtech.jgiven.gradle-plugin'
+        }
+        
+       repositories { mavenCentral() }
+       dependencies {
+         testImplementation 'com.tngtech.jgiven:jgiven-junit:1.3.1' 
+         testImplementation 'junit:junit:4.13.2' 
+        }
+    """
+
+        new File(testProjectDir,"src/test/java").mkdirs()
+        File scenario = new File(testProjectDir,"src/test/java/SimpleScenario.java")
+        scenario << Resources.toByteArray(Resources.getResource("SimpleScenario.java"))
+
+        when:
+        def result = GradleRunner.create()
+                .withProjectDir(testProjectDir)
+                .withArguments("--configuration-cache", "test", "jgivenTestReport", "-S", "--info"/*, "-Dorg.gradle.debug=true"*/ )
+                .withPluginClasspath()
+                .build()
+
+        then:
+        result.task(":test").outcome == SUCCESS
+        result.task(":jgivenTestReport").outcome == SUCCESS
+    }
+
     def "test is cacheable"() {
         given:
         buildFile << """
@@ -28,7 +59,7 @@ class JGivenPluginShould extends Specification {
         
        repositories { mavenCentral() }
        dependencies {
-         testImplementation 'com.tngtech.jgiven:jgiven-junit:1.2.5' 
+         testImplementation 'com.tngtech.jgiven:jgiven-junit:1.3.1' 
          testImplementation 'junit:junit:4.13.2' 
         }
     """

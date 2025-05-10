@@ -2,18 +2,15 @@ package com.tngtech.jgiven.report.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.tngtech.jgiven.annotation.CaseAs;
-import com.tngtech.jgiven.impl.params.DefaultCaseAsProvider;
-import org.assertj.core.util.Lists;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.jgiven.annotation.CaseAs;
+import com.tngtech.jgiven.impl.params.DefaultCaseAsProvider;
+import java.util.Arrays;
+import java.util.List;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 @RunWith( DataProviderRunner.class )
 public class CaseAsTest {
@@ -21,7 +18,7 @@ public class CaseAsTest {
     @DataProvider
     public static Object[][] testData() {
         return new Object[][] {
-                { "Empty value", "", Lists.<String>emptyList(), Lists.emptyList(), "" },
+                { "Empty value", "", List.of(), List.of(), "" },
                 { "No value", CaseAs.NO_VALUE, Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "a = 1, b = 2" },
                 { "Placeholder with index", "$1", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "1" },
                 { "Placeholder without index", "$", Arrays.asList( "a", "b" ), Arrays.asList( 1, 2 ), "1" },

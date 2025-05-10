@@ -20,6 +20,8 @@ import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.integration.android.AndroidJGivenTestRule;
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import java.util.List;
+
+import jgiven.tngtech.com.jgiven_android.example.R;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

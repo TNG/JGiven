@@ -1,8 +1,6 @@
 apply plugin: 'com.github.node-gradle.node'
 
-def distDir = "${buildDir}/package/dist"
-
-def htmlAppVersion = '1.0.0'
+def htmlAppVersion = '1.1.3'
 
 node {
     download = true
@@ -14,15 +12,15 @@ task npmPack(type: NpmTask) {
     doLast {
         copy {
             from tarTree(resources.gzip("jgiven-html-app-${htmlAppVersion}.tgz"))
-            into buildDir
+            into layout.buildDirectory
         }
     }
 }
 
 task zipAppDir(type: Zip, dependsOn: npmPack) {
-    from distDir
+    from layout.getBuildDirectory().dir('package/dist')
     archiveFileName = 'app.zip'
-    destinationDirectory = new File(buildDir, 'resources/main/com/tngtech/jgiven/report/html5')
+    destinationDirectory = layout.getBuildDirectory().dir('resources/main/com/tngtech/jgiven/report/html5')
 }
 
 jar.dependsOn zipAppDir

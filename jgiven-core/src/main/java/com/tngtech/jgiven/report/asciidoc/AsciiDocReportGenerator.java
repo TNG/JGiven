@@ -54,6 +54,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     private final List<String> allFeatures = new ArrayList<>();
     private final List<String> failedScenarioFeatures = new ArrayList<>();
     private final List<String> pendingScenarioFeatures = new ArrayList<>();
+    private final List<String> abortedScenarioFeatures = new ArrayList<>();
     private final Map<String, List<String>> taggedScenarioFeatures = new HashMap<>();
     private final Map<String, Integer> taggedScenarioCounts = new HashMap<>();
 
@@ -80,6 +81,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         writeIndexFileForFailedScenarios();
 
         writeIndexFileForPendingScenarios();
+
+        writeIndexFileForAbortedScenarios();
 
         final HierarchyCalculator hierarchyCalculator = new HierarchyCalculator(allTags, taggedScenarioFeatures);
 
@@ -162,6 +165,18 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         writeAsciiDocBlocksToFile(targetDir, "pendingScenarios", asciiDocBlocks);
     }
 
+    private void writeIndexFileForAbortedScenarios() {
+        final int numAbortedScenarios = this.completeReportModel.getTotalStatistics().numAbortedScenarios;
+        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+                "Aborted Scenarios", "aborted scenarios", numAbortedScenarios);
+
+        final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
+        asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
+                FEATURE_PATH, this.abortedScenarioFeatures, SCENARIO_TAG + "aborted", -1));
+
+        writeAsciiDocBlocksToFile(targetDir, "abortedScenarios", asciiDocBlocks);
+    }
+
     private void writeIndexFileForTaggedScenarios(final String tagType, final Map<String, List<String>> taggedScenarios) {
         final Optional<Tag> firstTag = taggedScenarios.keySet().stream()
                 .findFirst()
@@ -208,9 +223,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         return asciiDocBlocks;
     }
 
-
     private void writeIndexFileForAllTags(final Map<String, Map<String, List<String>>> strings) {
-
         final List<String> tagFiles = strings.entrySet().stream()
                 .sorted((o1, o2) -> {
                     final Tag tag1 = allTags.get(o1.getValue().keySet().stream().findFirst().orElse(""));
@@ -229,7 +242,6 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet("tags", tagFiles, "", 1));
         writeAsciiDocBlocksToFile(targetDir, "allTags",
                 asciiDocBlocks);
-
     }
 
     private void writeTotalStatisticsFile() {
@@ -293,6 +305,9 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         }
         if (statistics.numPendingScenarios > 0) {
             pendingScenarioFeatures.add(featureName);
+        }
+        if (statistics.numAbortedScenarios > 0) {
+            abortedScenarioFeatures.add(featureName);
         }
 
         final AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);

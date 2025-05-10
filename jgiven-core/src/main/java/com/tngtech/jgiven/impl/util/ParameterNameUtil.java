@@ -1,20 +1,19 @@
 package com.tngtech.jgiven.impl.util;
 
-import static java.lang.String.format;
-
-import java.lang.reflect.AccessibleObject;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 import com.tngtech.jgiven.report.model.NamedArgument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Executable;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static java.lang.String.format;
 
 public class ParameterNameUtil {
     private static final Logger log = LoggerFactory.getLogger( ParameterNameUtil.class );
@@ -24,7 +23,7 @@ public class ParameterNameUtil {
     /**
      * @throws NullPointerException iif {@code constructorOrMethod} is {@code null}
      */
-    public static List<NamedArgument> mapArgumentsWithParameterNames( AccessibleObject constructorOrMethod, List<Object> arguments ) {
+    public static List<NamedArgument> mapArgumentsWithParameterNames(Executable constructorOrMethod, List<Object> arguments) {
         Preconditions.checkNotNull( constructorOrMethod, "constructorOrMethod must not be null." );
         Preconditions.checkNotNull( arguments, "arguments must not be null" );
 
@@ -49,7 +48,7 @@ public class ParameterNameUtil {
         return result;
     }
 
-    private static List<String> getParameterNamesUsingParanamer( AccessibleObject constructorOrMethod ) {
+    private static List<String> getParameterNamesUsingParanamer(Executable constructorOrMethod) {
         try {
             return Arrays.asList( PARANAMER.lookupParameterNames( constructorOrMethod ) );
 

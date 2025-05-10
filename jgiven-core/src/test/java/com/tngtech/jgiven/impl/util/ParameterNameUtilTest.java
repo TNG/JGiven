@@ -1,21 +1,20 @@
 package com.tngtech.jgiven.impl.util;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.report.model.NamedArgument;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
+import java.lang.reflect.Method;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( DataProviderRunner.class )
 public class ParameterNameUtilTest {
@@ -34,8 +33,8 @@ public class ParameterNameUtilTest {
 
     @Test
     @UseDataProvider( "dataProviderMapArgumentsWithParameterNamesOf" )
-    public void testMapArgumentsWithParameterNamesOf( AccessibleObject contructorOrMethod, List<Object> arguments,
-            List<NamedArgument> expected ) {
+    public void testMapArgumentsWithParameterNamesOf(Executable contructorOrMethod, List<Object> arguments,
+                                                     List<NamedArgument> expected) {
         // When:
         List<NamedArgument> result = ParameterNameUtil.mapArgumentsWithParameterNames( contructorOrMethod, arguments );
 

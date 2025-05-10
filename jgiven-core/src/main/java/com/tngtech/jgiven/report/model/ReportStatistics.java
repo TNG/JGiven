@@ -5,6 +5,7 @@ public class ReportStatistics {
     public int numScenarios;
     public int numFailedScenarios;
     public int numPendingScenarios;
+    public int numAbortedScenarios;
     public int numSuccessfulScenarios;
     public int numCases;
     public int numFailedCases;
@@ -23,6 +24,7 @@ public class ReportStatistics {
         this.numScenarios += statistics.numScenarios;
         this.numFailedScenarios += statistics.numFailedScenarios;
         this.numPendingScenarios += statistics.numPendingScenarios;
+        this.numAbortedScenarios += statistics.numAbortedScenarios;
         this.numSuccessfulScenarios += statistics.numSuccessfulScenarios;
         this.numCases += statistics.numCases;
         this.numFailedCases += statistics.numFailedCases;

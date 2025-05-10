@@ -17,24 +17,25 @@ repositories {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion androidCompileSdkVersion
+    compileSdk = androidCompileSdkVersion
+    namespace = 'jgiven.tngtech.com.jgiven_android.example'
     defaultConfig {
-        applicationId "com.tngtech.jgiven.android.example"
-        minSdkVersion androidMinSdkVersion
-        targetSdkVersion androidTargetSdkVersion
-        versionCode 1
-        versionName "${version}"
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        applicationId = "com.tngtech.jgiven.android.example"
+        minSdkVersion = androidMinSdkVersion
+        targetSdkVersion = androidTargetSdkVersion
+        versionCode = 1
+        versionName = "${version}"
+        testInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled = false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -47,9 +48,9 @@ configurations {
 dependencies {
     implementation(libs.androidx.appcompat) {
         exclude group: 'com.google.guava', module: 'listenablefuture'
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
     }
-
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.6.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.guava', module: 'listenablefuture'
     })
@@ -65,7 +66,7 @@ dependencies {
 }
 
 def targetDir = 'build/reports/jgiven/json'
-def adb = android.getAdbExe().toString()
+def adb = android.adbExecutable.toString()
 def reportsDir = '/storage/emulated/0/Download/jgiven-reports'
 
 task cleanJGivenReports(type: Delete) {

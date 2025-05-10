@@ -1,8 +1,5 @@
 package com.tngtech.jgiven.junit5;
 
-import static com.tngtech.jgiven.report.model.ExecutionStatus.FAILED;
-import static com.tngtech.jgiven.report.model.ExecutionStatus.SUCCESS;
-
 import com.tngtech.jgiven.base.ScenarioTestBase;
 import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.ConfigurationUtil;
@@ -11,17 +8,17 @@ import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
 import com.tngtech.jgiven.report.impl.CommonReportHelper;
 import com.tngtech.jgiven.report.model.ReportModel;
-import java.util.EnumSet;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.*;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-import org.junit.jupiter.api.extension.TestInstancePostProcessor;
+
+import java.util.EnumSet;
+import java.util.Optional;
+
+import static com.tngtech.jgiven.impl.util.ThrowableUtil.isAssumptionException;
+import static com.tngtech.jgiven.report.model.ExecutionStatus.*;
 
 /**
  * This extension enables JGiven for JUnit 5 Tests.
@@ -55,8 +52,8 @@ public class JGivenExtension implements
         validatePerMethodLifecycle(context);
 
         ReportModel reportModel = new ReportModel();
-        reportModel.setTestClass(context.getTestClass().get());
-        if (!context.getDisplayName().equals(context.getTestClass().get().getSimpleName())) {
+        reportModel.setTestClass(context.getTestClass().orElseThrow());
+        if (!context.getDisplayName().equals(context.getTestClass().orElseThrow().getSimpleName())) {
             reportModel.setName(context.getDisplayName());
         }
         context.getStore(NAMESPACE).put(REPORT_MODEL, reportModel);
@@ -77,7 +74,7 @@ public class JGivenExtension implements
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        getScenario().startScenario(context.getTestClass().get(), context.getTestMethod().get(),
+        getScenario().startScenario(context.getTestClass().orElseThrow(), context.getTestMethod().orElseThrow(),
             ArgumentReflectionUtil.getNamedArgs(context));
     }
 
@@ -85,14 +82,12 @@ public class JGivenExtension implements
     public void afterTestExecution(ExtensionContext context) throws Exception {
         ScenarioBase scenario = getScenario();
         try {
-            if (context.getExecutionException().isPresent()) {
-                scenario.getExecutor().failed(context.getExecutionException().get());
-            }
+            reportPotentialExecutionException(scenario, context);
             scenario.finished();
 
             // ignore test when scenario is not implemented
             Assumptions.assumeTrue(
-                EnumSet.of(SUCCESS, FAILED).contains(scenario.getScenarioModel().getExecutionStatus()));
+                EnumSet.of(SUCCESS, FAILED, ABORTED).contains(scenario.getScenarioModel().getExecutionStatus()));
 
         } catch (Exception e) {
             throw e;
@@ -100,6 +95,18 @@ public class JGivenExtension implements
             throw new RuntimeException(e);
         } finally {
             ScenarioHolder.get().removeScenarioOfCurrentThread();
+        }
+    }
+
+    private void reportPotentialExecutionException(ScenarioBase scenario, ExtensionContext context) {
+        Optional<Throwable> exception = context.getExecutionException();
+        if (exception.isEmpty()) {
+            return;
+        }
+        if (isAssumptionException(exception.get())) {
+            scenario.getExecutor().aborted(exception.get());
+        } else if (!isAssumptionException(exception.get())) {
+            scenario.getExecutor().failed(exception.get());
         }
     }
 
@@ -111,11 +118,7 @@ public class JGivenExtension implements
         if (testInstance instanceof ScenarioTestBase) {
             scenario = ((ScenarioTestBase<?, ?, ?>) testInstance).getScenario();
         } else {
-            if (currentScenario == null) {
-                scenario = new ScenarioBase();
-            } else {
-                scenario = currentScenario;
-            }
+            scenario = currentScenario == null ? new ScenarioBase() : currentScenario;
         }
 
         if (scenario != currentScenario) {

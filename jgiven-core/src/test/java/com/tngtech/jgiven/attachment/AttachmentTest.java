@@ -30,7 +30,7 @@ public class AttachmentTest {
         binaryFile = new File( tmpFolder, "binaryfile" );
         Files.write( ARBITRARY_BYTES, binaryFile );
         textFile = new File( tmpFolder, "file.txt" );
-        Files.write( HELLO_JGIVEN, textFile, Charsets.UTF_8 );
+        Files.asCharSink(textFile, Charsets.UTF_8 ).write( HELLO_JGIVEN);
     }
 
     @Test

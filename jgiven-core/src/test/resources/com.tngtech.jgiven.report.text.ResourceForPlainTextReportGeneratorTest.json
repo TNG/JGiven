@@ -1,0 +1,27 @@
+{
+  "className": "com.tngtech.jgiven.report.text.ResourceForPlainTextReportGeneratorTest",
+  "name": "Empty",
+  "scenarios": [
+    {
+      "className": "com.tngtech.jgiven.report.text.ResourceForPlainTextReportGeneratorTest",
+      "testMethodName": "someNonScenario",
+      "description": "some non scenario",
+      "tagIds": [],
+      "explicitParameters": [],
+      "derivedParameters": [],
+      "scenarioCases": [
+        {
+          "caseNr": 1,
+          "steps": [],
+          "explicitArguments": [],
+          "derivedArguments": [],
+          "status": "SUCCESS",
+          "durationInNanos": 352000
+        }
+      ],
+      "casesAsTable": false,
+      "durationInNanos": 352000
+    }
+  ],
+  "tagMap": {}
+}

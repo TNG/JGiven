@@ -7,7 +7,7 @@ import com.google.common.collect.Maps;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.AsProvider;
 import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.impl.params.DefaultAsProvider;
+import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import java.util.Comparator;
@@ -180,7 +180,7 @@ public class ReportModel {
         As as = testClass.getAnnotation(As.class);
         AsProvider provider = as != null
             ? ReflectionUtil.newInstance(as.provider())
-            : new DefaultAsProvider();
+            : ConfigurationUtil.getConfiguration(testClass).getAsProvider();
         name = provider.as(as, testClass);
     }
 

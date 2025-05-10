@@ -8,16 +8,16 @@ pluginManagement {
         gradlePluginPortal()
         google()
         maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
         maven {
-            url "https://oss.sonatype.org/content/repositories/staging/"
+            url = "https://oss.sonatype.org/content/repositories/staging/"
         }
     }
 }
 
 plugins {
-    id 'com.gradle.enterprise' version '3.16.1'
+    id 'com.gradle.develocity' version '4.0.1'
 }
 
 dependencyResolutionManagement {
@@ -32,10 +32,10 @@ dependencyResolutionManagement {
     }
 }
 
-gradleEnterprise {
+develocity{
     buildScan {
-        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-        termsOfServiceAgree = 'yes'
+        termsOfUseUrl = 'https://gradle.com/terms-of-service'
+        termsOfUseAgree = 'yes'
     }
 }
 

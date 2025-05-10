@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +67,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
             copyCustomFile( specializedConfig.getCustomCss(), new File( specializedConfig.getTargetDir(), "css" ), "custom.css" );
             copyCustomFile( specializedConfig.getCustomJs(), new File( specializedConfig.getTargetDir(), "js" ), "custom.js" );
         } catch( IOException e ) {
-            throw Throwables.propagate( e );
+            throw new RuntimeException(e);
         }
     }
 
@@ -161,7 +162,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
             contentStream.flush();
             ResourceUtil.close( contentStream );
             String base64String = BaseEncoding.base64().encode( byteStream.toByteArray() );
-            this.fileStream.append( "'" + base64String + "'" );
+            this.fileStream.append("'").append(base64String).append("'");
             this.fileStream.append( ");" );
             fileStream.flush();
             ResourceUtil.close( fileStream );
@@ -181,10 +182,10 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
             try {
                 this.byteStream = new ByteArrayOutputStream();
                 // pako client side library expects byte stream to be UTF-8 encoded
-                this.contentStream = new PrintStream( new GZIPOutputStream( byteStream ), false, "utf-8" );
+                this.contentStream = new PrintStream( new GZIPOutputStream( byteStream ), false, StandardCharsets.UTF_8);
                 this.contentStream.append( "{\"scenarios\":[" );
 
-                this.fileStream = new PrintStream( new FileOutputStream( targetFile ), false, "utf-8" );
+                this.fileStream = new PrintStream( new FileOutputStream( targetFile ), false, StandardCharsets.UTF_8);
                 this.fileStream.append( "jgivenReport.addZippedScenarios(" );
             } catch( Exception e ) {
                 throw new RuntimeException( "Could not open file " + targetFile + " for writing", e );
@@ -208,7 +209,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
 
         String content = "jgivenReport.setMetaData(" + new Gson().toJson( metaData ) + " );";
 
-        Files.write( content, metaDataFile, Charsets.UTF_8 );
+        Files.asCharSink(metaDataFile, Charsets.UTF_8 ).write( content);
     }
 
     private void generateTagFile() throws IOException {
@@ -219,7 +220,7 @@ public class Html5ReportGenerator extends AbstractReportGenerator {
         tagFileContent.fill( completeReportModel.getTagIdMap() );
         String content = "jgivenReport.setTags(" + new Gson().toJson( tagFileContent ) + " );";
 
-        Files.write( content, tagFile, Charsets.UTF_8 );
+        Files.asCharSink(tagFile, Charsets.UTF_8 ).write( content);
 
     }
 

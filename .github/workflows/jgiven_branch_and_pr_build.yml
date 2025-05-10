@@ -9,14 +9,14 @@ jobs:
       ANDROID: true
     strategy:
       matrix:
-        java: [ '11', '17', '19']
+        java: [ '17', '21']
         junit: ['4.13.2']
     steps:
       - name: Ensure chrome is installed
         run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb && rm *.deb
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4.2.2
       - name: Set up JDK ${{matrix.java}}
-        uses: actions/setup-java@v4.0.0
+        uses: actions/setup-java@v4.7.1
         with:
           java-version: ${{matrix.java}}
           distribution: 'adopt'
@@ -27,12 +27,12 @@ jobs:
           JUNIT_VERSION: ${{matrix.junit}}
         run:   "./gradlew -i -s check -DjunitVersion=${JUNIT_VERSION}"
       - name: Run Jacoco
-        if: ${{matrix.java == '11' && github.ref == 'refs/heads/master' && github.head_ref == null}}
+        if: ${{matrix.java == '17' && github.ref == 'refs/heads/master' && github.head_ref == null}}
         run: ./gradlew overallJacocoReport coveralls
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
-        uses: actions/upload-artifact@v4.2.0
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: test-report_${{matrix.java}}_${{matrix.junit}}
           path: /home/runner/work/JGiven/JGiven/*/build/reports/tests

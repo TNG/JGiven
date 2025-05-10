@@ -17,6 +17,7 @@ dependencies {
     api project(':jgiven-core')
 
     implementation(platform(libs.junit.bom))
+    compileOnly 'org.junit.jupiter:junit-jupiter-params'
     compileOnly 'org.junit.jupiter:junit-jupiter-api'
 
     testImplementation project(':jgiven-html5-report')

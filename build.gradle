@@ -3,10 +3,10 @@ import java.util.stream.Collectors
 //file:noinspection GroovyAssignabilityCheck
 plugins {
     id 'com.github.kt3k.coveralls' version '2.12.2'
-    id 'org.asciidoctor.jvm.convert' version '4.0.1'
+    id 'org.asciidoctor.jvm.convert' version '4.0.4'
     id 'io.codearte.nexus-staging' version '0.30.0'
-    id 'com.github.ben-manes.versions' version '0.50.0'
-    id 'com.github.node-gradle.node' version '7.0.1' apply false
+    id 'com.github.ben-manes.versions' version '0.52.0'
+    id 'com.github.node-gradle.node' version '7.1.0' apply false
 }
 
 apply plugin: 'project-report'
@@ -66,7 +66,7 @@ nexusStaging {
 
 subprojects {
     ext {
-        androidCompileSdkVersion = 33
+        androidCompileSdkVersion = 34
         androidMinSdkVersion = 29
         androidTargetSdkVersion = 32
 
@@ -180,7 +180,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         }
     }
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         // needed for DeSzenarioTest.java as it has Umlauts in the code
         options.encoding = 'UTF-8'
     }
@@ -219,7 +219,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
     }
 
     java {
-        sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
         withJavadocJar()
         withSourcesJar()
     }
@@ -257,6 +257,18 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         classpath = configurations.testRuntimeClasspath
     }
 
+    tasks.register("jgivenPlainTextReport",JavaExec) {
+        //noinspection GroovyAccessibility
+        mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
+        args '--sourceDir=build/reports/jgiven/json',
+                '--targetDir=build/reports/jgiven/text',
+                '--format=text',
+                '--exclude-empty-scenarios=true',
+                '--title=JGiven Report'
+
+        classpath = configurations.testRuntimeClasspath
+    }
+
     asciidoctor {
         sourceDir = new File('build/reports/jgiven/asciidoc')
         outputDir = new File('build/reports/jgiven/htmladoc')
@@ -281,10 +293,10 @@ configure(subprojects) { subproject ->
     apply plugin: 'signing'
     apply plugin: 'maven-publish'
 
-    description "${rootProject.description} - Module ${project.name}"
+    description = "${rootProject.description} - Module ${project.name}"
 
     checkstyle {
-        toolVersion = "10.12.7"
+        toolVersion = "10.23.1"
         configFile = file("${rootProject.projectDir}/checkstyle.xml")
         showViolations = false
         ignoreFailures = true
@@ -296,9 +308,8 @@ configure(subprojects) { subproject ->
 
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
         logger.debug("Task graph at signing:" + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
-        required {
-            isReleaseVersion && gradle.taskGraph.getAllTasks().any { it instanceof PublishToMavenRepository }
-        }
+        required = isReleaseVersion && gradle.taskGraph.getAllTasks().any { it instanceof PublishToMavenRepository }
+
         def signingKey = findProperty("signingKey")
         def signingPassword = findProperty("signingPassword")
         useInMemoryPgpKeys(signingKey, signingPassword)

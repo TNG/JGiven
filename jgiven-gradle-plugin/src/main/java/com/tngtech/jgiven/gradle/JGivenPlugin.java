@@ -3,23 +3,25 @@ package com.tngtech.jgiven.gradle;
 import com.tngtech.jgiven.gradle.internal.JGivenHtmlReportImpl;
 import com.tngtech.jgiven.impl.Config;
 import com.tngtech.jgiven.impl.util.WordUtil;
-import java.io.File;
-import java.util.Objects;
-import java.util.concurrent.Callable;
-import org.gradle.api.Action;
-import org.gradle.api.NonNullApi;
-import org.gradle.api.Plugin;
-import org.gradle.api.Project;
-import org.gradle.api.Task;
-import org.gradle.api.internal.ConventionMapping;
-import org.gradle.api.internal.IConventionAware;
+import org.gradle.api.*;
+import org.gradle.api.file.Directory;
+import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.plugins.ReportingBasePlugin;
+import org.gradle.api.provider.Provider;
 import org.gradle.api.reporting.Report;
 import org.gradle.api.reporting.ReportingExtension;
 import org.gradle.api.tasks.testing.Test;
 
+import javax.inject.Inject;
+import java.util.Objects;
+
+@SuppressWarnings("unused")
 @NonNullApi
-public class JGivenPlugin implements Plugin<Project> {
+public abstract class JGivenPlugin implements Plugin<Project> {
+
+    @Inject
+    protected abstract ObjectFactory getObjects();
+
     @Override
     public void apply(final Project project) {
         project.getPluginManager().apply(ReportingBasePlugin.class);
@@ -35,15 +37,12 @@ public class JGivenPlugin implements Plugin<Project> {
 
     private void applyTo(Test test) {
         final String testName = test.getName();
-        final JGivenTaskExtension extension = test.getExtensions().create("jgiven", JGivenTaskExtension.class);
         final Project project = test.getProject();
-        ((IConventionAware) extension).getConventionMapping().map("resultsDir",
-            (Callable<File>) () -> project.file(project.getBuildDir() + "/jgiven-results/" + testName));
-
-        File resultsDir = extension.getResultsDir();
-        if (resultsDir != null) {
-            test.getOutputs().dir(resultsDir).withPropertyName("jgiven.resultsDir");
-        }
+        final JGivenTaskExtension extension = getObjects().newInstance(JGivenTaskExtension.class);
+        test.getExtensions().add("jgiven", extension);
+        extension.getResultsDir().convention(project.getLayout().getBuildDirectory().dir("jgiven-results/" + testName));
+        Provider<Directory> resultsDir = extension.getResultsDir();
+        test.getOutputs().dir(resultsDir).withPropertyName("jgiven.resultsDir");
 
         /* Java lambda classes are created at runtime with a non-deterministic classname.
          * Therefore, the class name does not identify the implementation of the lambda,
@@ -51,20 +50,21 @@ public class JGivenPlugin implements Plugin<Project> {
          * See: https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:how_does_it_work
          */
         //noinspection Convert2Lambda
-        test.prependParallelSafeAction(new Action<Task>() {
+        test.doFirst(new Action<>() {
             @Override
             public void execute(Task task) {
-                ((Test) task).systemProperty(Config.JGIVEN_REPORT_DIR, extension.getResultsDir().getAbsolutePath());
+                ((Test) task).systemProperty(Config.JGIVEN_REPORT_DIR,
+                    extension.getResultsDir().get().getAsFile().getAbsolutePath());
             }
         });
     }
 
     private void configureJGivenReportDefaults(Project project) {
         project.getTasks()
-            .withType(JGivenReportTask.class).forEach(reportTask ->
-            reportTask.getReports().all((Action<Report>) report ->
-                report.getRequired().convention(report.getName().equals(JGivenHtmlReportImpl.NAME))
-            ));
+            .withType(JGivenReportTask.class).configureEach(reportTask ->
+                reportTask.getReports().all((Action<Report>) report ->
+                    report.getRequired().convention(report.getName().equals(JGivenHtmlReportImpl.NAME))
+                ));
     }
 
     private void addDefaultReports(final Project project) {
@@ -72,27 +72,25 @@ public class JGivenPlugin implements Plugin<Project> {
             project.getExtensions().findByType(ReportingExtension.class));
 
         project.getTasks().withType(Test.class).forEach(test -> project.getTasks()
-                .register("jgiven" + WordUtil.capitalize(test.getName()) + "Report", JGivenReportTask.class)
-                .configure(reportTask -> configureDefaultReportTask(test, reportTask, reportingExtension))
+            .register("jgiven" + WordUtil.capitalize(test.getName()) + "Report", JGivenReportTask.class)
+            .configure(reportTask -> configureDefaultReportTask(test, reportTask, reportingExtension))
         );
     }
 
     private void configureDefaultReportTask(final Test test, JGivenReportTask reportTask,
                                             final ReportingExtension reportingExtension) {
-        reportTask.mustRunAfter(test);
 
-        ConventionMapping mapping = ((IConventionAware) reportTask).getConventionMapping();
-        Callable<File> getResultsDirectory = () -> test.getExtensions()
+        Provider<Directory> resultsDirectory = test.getExtensions()
             .getByType(JGivenTaskExtension.class)
             .getResultsDir();
-        mapping.map("results", getResultsDirectory);
 
-        Objects.requireNonNull(mapping.getConventionValue(reportTask.getReports(), "reports", false))
-            .all(report -> {
-                ConventionMapping reportMapping = ((IConventionAware) report).getConventionMapping();
-                String relativeFilePath = "jgiven" + "/" + test.getName() + "/" + report.getName();
-                Callable<File> getDestination = () -> reportingExtension.file(relativeFilePath);
-                reportMapping.map("destination", getDestination);
-            });
+        reportTask.getResults().convention(resultsDirectory);
+
+        String relativeFilePath = "jgiven" + "/" + test.getName() + "/";
+        Provider<Directory> reportOutputLocation = reportingExtension.getBaseDirectory().dir(relativeFilePath);
+
+        reportTask.getReports().configureEach(report -> {
+            report.getOutputLocation().set(reportOutputLocation.map(d -> d.dir(report.getName())));
+        });
     }
 }

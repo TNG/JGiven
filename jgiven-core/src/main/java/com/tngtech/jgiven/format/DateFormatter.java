@@ -28,13 +28,13 @@ public class DateFormatter implements ArgumentFormatter<Date> {
         }
 
         if( args.length == 0 ) {
-            throw new JGivenWrongUsageException( String.format( "A SimpleDateFormat pattern is expected as first argument" ) );
+            throw new JGivenWrongUsageException( "A SimpleDateFormat pattern is expected as first argument" );
         }
 
         String pattern = args[0];
         Locale locale = Locale.getDefault();
         if( args.length > 1 ) {
-            locale = new Locale( args[1] );
+            locale = Locale.forLanguageTag( args[1] );
         }
 
         SimpleDateFormat sdf;
