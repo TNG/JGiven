@@ -2,14 +2,16 @@ package com.tngtech.jgiven.report.asciidoc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 public class AsciiDocSnippetGeneratorTest {
 
     @Test
-    public void writeIndexFileForFailedScenarios() {
+    public void generateIndexForFailedScenarios() {
         // given
         final List<String> featureFileNames = new ArrayList<>();
         featureFileNames.add("com.example.application.FailedScenarioOne");
@@ -17,7 +19,7 @@ public class AsciiDocSnippetGeneratorTest {
 
         // when
         AsciiDocSnippetGenerator asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
-                "Failed Scenarios", "failed scenarios", 3);
+                "Failed Scenarios", "failed", 3);
         final List<String> blocks = asciiDocSnippetGenerator.generateIndexSnippet("features", featureFileNames, "scenario-failed", -1);
 
         // then
@@ -28,14 +30,12 @@ public class AsciiDocSnippetGeneratorTest {
                 ":leveloffset: +1");
     }
 
-
     @Test
-    public void writeIndexFileForAllScenarios() {
+    public void generateIndexForAllScenarios() {
         // given
         final List<String> featureFileNames = new ArrayList<>();
         featureFileNames.add("com.example.application.BigFeature");
         featureFileNames.add("com.example.application.OtherFeature");
-
 
         // when
         AsciiDocSnippetGenerator asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
@@ -47,5 +47,4 @@ public class AsciiDocSnippetGeneratorTest {
                 "include::features/com.example.application.BigFeature.asciidoc[]",
                 "include::features/com.example.application.OtherFeature.asciidoc[]");
     }
-
 }

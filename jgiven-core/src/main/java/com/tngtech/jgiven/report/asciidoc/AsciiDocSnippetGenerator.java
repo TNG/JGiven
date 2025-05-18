@@ -10,6 +10,7 @@ import java.util.List;
  */
 final class AsciiDocSnippetGenerator {
     private static final String LINE_BREAK = System.lineSeparator();
+    private static final String LEVEL_OFFSET = ":leveloffset:";
     private final String title;
     private final String scenarioQualifier;
     private final int numScenarios;
@@ -24,7 +25,7 @@ final class AsciiDocSnippetGenerator {
     }
 
     List<String> generateIntroSnippet(final String description) {
-        final ArrayList<String> result = new ArrayList<>();
+        final List<String> result = new ArrayList<>();
 
         result.add("== " + this.title);
 
@@ -32,37 +33,47 @@ final class AsciiDocSnippetGenerator {
             result.add("+++" + LINE_BREAK + description + LINE_BREAK + "+++");
         }
 
-        if (numScenarios == 0) {
-            result.add("There are no " + scenarioQualifier + ". Keep rocking!");
+        final String qualifiedScenario = scenarioQualifier.isBlank() ? "scenario" : scenarioQualifier + " scenario";
+
+        if (numScenarios <= 0) {
+            result.add("There are no " + qualifiedScenario + "s. Keep rocking!");
+        } else if (numScenarios == 1) {
+            result.add("There is " + numScenarios + " " + qualifiedScenario + ".");
         } else {
-            result.add("There are " + numScenarios + " " + scenarioQualifier + ".");
+            result.add("There are " + numScenarios + " " + qualifiedScenario + "s.");
         }
 
         return result;
     }
 
-    List<String> generateIndexSnippet(final String featurePath, final List<String> featureFiles, final String tags, final int leveloffset) {
+    List<String> generateIndexSnippet(final String featurePath, final List<String> features, final String tags, final int levelOffset) {
+        final List<String> result = new ArrayList<>();
+
         final String tagSelector = Strings.isNullOrEmpty(tags) ? "" : "tag=" + tags;
-        final ArrayList<String> result = new ArrayList<>();
 
-        if (!featureFiles.isEmpty()) {
-            result.addAll(generateIncludeSnippet("", leveloffset, featurePath, featureFiles, tagSelector));
+        if (!features.isEmpty()) {
+            result.addAll(generateIncludeSnippet("", levelOffset, featurePath, features, tagSelector));
         }
 
         return result;
     }
 
-    List<String> generateTagSnippet(final Tag tag, int scenarioCount, final List<String> features, final int leveloffset) {
+    List<String> generateTagSnippet(final Tag tag, int scenarioCount, final List<String> features) {
         final ArrayList<String> result = new ArrayList<>();
 
         result.add("=== " + tag.toString());
 
-        if (features.isEmpty()) {
-            result.add("There are no tagged scenarios. Keep rocking!");
+        if (numScenarios <= 0) {
+            result.add("There are no " + scenarioQualifier + " scenarios. Keep rocking!");
         } else {
-            final String intro = "There are " + scenarioCount + " " + scenarioQualifier + ".";
+            final String intro;
+            if (numScenarios == 1) {
+                intro = "There is " + scenarioCount + " " + scenarioQualifier + " scenario.";
+            } else {
+                intro = "There are " + scenarioCount + " " + scenarioQualifier + " scenarios.";
+            }
             final String tagSelector = TagMapper.toAsciiDocTagName(tag);
-            result.addAll(generateIncludeSnippet(intro, leveloffset, "../features", features, tagSelector));
+            result.addAll(generateIncludeSnippet(intro, 0, "../features", features, tagSelector));
         }
 
         return result;
@@ -81,17 +92,17 @@ final class AsciiDocSnippetGenerator {
         }
 
         if (leveloffset > 0) {
-            result.add(":leveloffset: +" + leveloffset);
+            result.add(LEVEL_OFFSET + " +" + leveloffset);
         } else if (leveloffset < 0) {
-            result.add(":leveloffset: -" + Math.abs(leveloffset));
+            result.add(LEVEL_OFFSET + " -" + Math.abs(leveloffset));
         }
 
         featureFiles.forEach(fileName -> result.add(includeMacroFor(featurePath, fileName, tags)));
 
         if (leveloffset > 0) {
-            result.add(":leveloffset: -" + leveloffset);
+            result.add(LEVEL_OFFSET + " -" + leveloffset);
         } else if (leveloffset < 0) {
-            result.add(":leveloffset: +" + Math.abs(leveloffset));
+            result.add(LEVEL_OFFSET + " +" + Math.abs(leveloffset));
         }
         return result;
     }
