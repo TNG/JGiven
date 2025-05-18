@@ -168,7 +168,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         final int numAbortedScenarios = this.completeReportModel.getTotalStatistics().numAbortedScenarios;
 
         final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
-                "Aborted Scenarios", "aborted scenarios", numAbortedScenarios);
+                "Aborted Scenarios", "aborted", numAbortedScenarios);
 
         final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(

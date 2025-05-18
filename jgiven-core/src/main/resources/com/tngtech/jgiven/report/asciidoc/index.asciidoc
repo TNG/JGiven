@@ -11,4 +11,6 @@ include::failedScenarios.asciidoc[]
 
 include::pendingScenarios.asciidoc[]
 
+include::abortedScenarios.asciidoc[]
+
 include::allTags.asciidoc[]
