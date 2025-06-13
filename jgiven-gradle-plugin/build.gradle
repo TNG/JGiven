@@ -7,6 +7,7 @@ plugins {
 dependencies {
     implementation localGroovy() //we're a gradle plugin, we want to use the same groovy version as gradle
     implementation project(':jgiven-core')
+    implementation project(':jgiven-asciidoc-report')
     implementation project(':jgiven-html5-report')
     implementation(platform(libs.junit.bom))
     implementation(libs.jakarta.annotation)
