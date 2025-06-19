@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.generate;
 
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Lists;
 import com.tngtech.jgiven.impl.util.WordUtil;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.CasesTable;
@@ -46,7 +47,8 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
         statisticsTable.append("| total steps ");
         statisticsTable.append("| duration").append(LINE_BREAK);
 
-        featureStatistics.entries().stream().sorted(Map.Entry.comparingByKey())
+        featureStatistics.entries().stream()
+                .sorted(Map.Entry.comparingByKey())
                 .forEach(entry -> appendStatisticsRowFragment(statisticsTable, entry.getKey(), entry.getValue()));
 
         appendStatisticsRowFragment(statisticsTable, "sum", totalStatistics);
@@ -90,7 +92,10 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
                                              final String extendedDescription) {
         StringBuilder blockContent = new StringBuilder();
 
-        blockContent.append(MetadataMapper.toAsciiDocTagStart(executionStatus)).append(LINE_BREAK);
+        blockContent.append(MetadataMapper.toAsciiDocStartTag(executionStatus)).append(LINE_BREAK);
+
+        tags.forEach(tag -> blockContent.append(TagMapper.toAsciiDocStartTag(tag)).append(LINE_BREAK));
+
         blockContent.append(LINE_BREAK);
 
         blockContent.append("==== ").append(WordUtil.capitalize(name)).append(LINE_BREAK);
@@ -110,7 +115,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
             blockContent.append(LINE_BREAK);
             blockContent.append(LINE_BREAK);
             blockContent.append("Tags: ");
-            blockContent.append(tags.stream().map(tag -> "_" + TagMapper.mapTag(tag) + "_").collect(joining(", ")));
+            blockContent.append(tags.stream().map(tag -> "_" + TagMapper.toHumanReadableLabel(tag) + "_").collect(joining(", ")));
         }
 
         return blockContent.toString();
@@ -234,8 +239,14 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
     }
 
     @Override
-    public String convertScenarioFooterBlock(final ExecutionStatus executionStatus) {
-        return MetadataMapper.toAsciiDocTagEnd(executionStatus);
+    public String convertScenarioFooterBlock(final ExecutionStatus executionStatus, final List<Tag> tags) {
+        StringBuilder blockContent = new StringBuilder();
+
+        Lists.reverse(tags).forEach(tag -> blockContent.append(TagMapper.toAsciiDocEndTag(tag)).append(LINE_BREAK));
+
+        blockContent.append(MetadataMapper.toAsciiDocEndTag(executionStatus));
+
+        return blockContent.toString();
     }
 
     private static boolean appendWordFragments(final StringBuilder blockContent, final List<Word> words,
@@ -288,8 +299,8 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
                                           final String fragment) {
         final String lineContinuation = lastFragmentWasBlockFragment ? "" : " ";
         if (fragment.contains(LINE_BREAK)) {
-            if (!statusAlreadyAppended && !statusFragment.isBlank()){
-                    blockContent.append(" ").append(statusFragment);
+            if (!statusAlreadyAppended && !statusFragment.isBlank()) {
+                blockContent.append(" ").append(statusFragment);
             }
             blockContent.append(fragment);
             return true;
