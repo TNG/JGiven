@@ -13,6 +13,7 @@ dependencies {
     implementation 'org.fusesource.jansi:jansi:2.4.1'
 
     testImplementation 'com.github.stefanbirkner:system-rules:1.19.0'
+    testImplementation 'org.mockito:mockito-core:5.16.1'
 }
 
 def generatedSourceDir = "generatedSrc/java"
