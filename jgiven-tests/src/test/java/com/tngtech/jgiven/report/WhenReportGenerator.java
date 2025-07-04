@@ -83,7 +83,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
             case HTML:
             case HTML5:
             default:
-                ReportGenerator.generateHtml5Report().generateWithConfig( html5ReportConfig );
+                ReportGenerator.loadHtml5ReportGenerator().generateWithConfig( html5ReportConfig );
         }
         return self();
     }
