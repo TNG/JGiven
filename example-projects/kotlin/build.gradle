@@ -38,7 +38,7 @@ dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.13.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.13.2'
-    testImplementation 'org.junit.platform:junit-platform-runner:1.13.2'
+    testImplementation 'org.junit.platform:junit-platform-runner:1.13.3'
     testImplementation 'org.slf4j:slf4j-jdk14:2.0.17'
 }
 

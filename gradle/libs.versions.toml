@@ -25,7 +25,7 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
 guava = { module = "com.google.guava:guava", version.ref = "guavaVersion" }
 hypersql-database = { module = "org.hsqldb:hsqldb", version = "2.7.4" }
 jakarta-annotation = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-version" }
-junit-bom = { module = "org.junit:junit-bom", version = "5.13.2" }
+junit-bom = { module = "org.junit:junit-bom", version = "5.13.3" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 junit4 = { module = "junit:junit", version.ref = "junit4-version" }
