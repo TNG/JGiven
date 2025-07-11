@@ -39,13 +39,13 @@ public interface ReportBlockConverter {
      * </p>
      *
      * @param name                the name of the scenario
-     * @param executionStatus     was the scenario successful
-     * @param duration            how long did the scenario run
-     * @param tagNames            names of the tags if scenario is tagged
+     * @param executionStatus     was the scenario successful?
+     * @param duration            how long did the scenario run?
+     * @param tags                tags the scenario is tagged with
      * @param extendedDescription detailed description of the scenario, may be {@code null}
      */
     String convertScenarioHeaderBlock(String name, ExecutionStatus executionStatus, long duration,
-                                      List<Tag> tagNames, String extendedDescription);
+                                      List<Tag> tags, String extendedDescription);
 
     /**
      * Convert scenario case number and parameters into case header.
@@ -54,7 +54,7 @@ public interface ReportBlockConverter {
      *
      * @param caseNr          the number of the case, starting from 1
      * @param executionStatus whether the case was successful
-     * @param duration        how long did the scenario case run
+     * @param duration        how long did the scenario case run?
      * @param description     a short description of this case, may be {@code null}
      */
     String convertCaseHeaderBlock(int caseNr, ExecutionStatus executionStatus, final long duration, String description);
@@ -62,29 +62,29 @@ public interface ReportBlockConverter {
     /**
      * Convert the words that make up the first step into a block.
      *
-     * @param depth                the depth of the step
-     * @param words                the words to be converted
-     * @param status               was the step executed successfully
-     * @param durationInNanos      how long did the step take
-     * @param extendedDescription  detailed description of the step, may be {@code null}
-     * @param caseIsUnsuccessful   was the scenario case executed successfully
-     * @param currentSectionTitle  the current section's title, may be {@code null}
+     * @param depth               the depth of the step
+     * @param words               the words to be converted
+     * @param status              was the step executed successfully
+     * @param durationInNanos     how long did the step take?
+     * @param extendedDescription detailed description of the step, may be {@code null}
+     * @param caseIsUnsuccessful  was the scenario case executed successfully?
+     * @param currentSectionTitle the current section's title, may be {@code null}
      */
     String convertFirstStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-            String extendedDescription, boolean caseIsUnsuccessful, String currentSectionTitle);
+                                 String extendedDescription, boolean caseIsUnsuccessful, String currentSectionTitle);
 
     /**
      * Convert the words that make up a step into a block.
      *
-     * @param depth                the depth of the step
-     * @param words                the words to be converted
-     * @param status               was the step executed successfully
-     * @param durationInNanos      how long did the step take
-     * @param extendedDescription  detailed description of the step, may be {@code null}
-     * @param caseIsUnsuccessful   was the scenario case executed successfully
+     * @param depth               the depth of the step
+     * @param words               the words to be converted
+     * @param status              was the step executed successfully
+     * @param durationInNanos     how long did the step take?
+     * @param extendedDescription detailed description of the step, may be {@code null}
+     * @param caseIsUnsuccessful  was the scenario case executed successfully?
      */
     String convertStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-            String extendedDescription, boolean caseIsUnsuccessful);
+                            String extendedDescription, boolean caseIsUnsuccessful);
 
     /**
      * Is invoked at the end of a scenario, when the scenario has multiple case and a data table.
@@ -104,8 +104,9 @@ public interface ReportBlockConverter {
     /**
      * Is invoked at the end of a scenario.
      *
-     * @param executionStatus was the scenario successful
+     * @param executionStatus was the scenario successful?
+     * @param tags            tags the scenario is tagged with
      */
-    String convertScenarioFooterBlock(ExecutionStatus executionStatus);
+    String convertScenarioFooterBlock(ExecutionStatus executionStatus, List<Tag> tags);
 
 }
