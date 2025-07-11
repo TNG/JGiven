@@ -46,6 +46,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     private static final String FEATURE_PATH = "features";
     private static final String ASCIIDOC_FILETYPE = ".asciidoc";
     private static final String SCENARIO_TAG = "scenario-";
+    private static final String TAGGED_SCENARIO_QUALIFIER = "tagged";
     private static final Logger log = LoggerFactory.getLogger(AsciiDocReportGenerator.class);
 
     private final AsciiDocBlockConverter blockConverter = new AsciiDocBlockConverter();
@@ -197,7 +198,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     private List<String> singleValuedTag(final Map<String, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
         final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
-                tag.toString(), "tagged", numTaggedScenarios);
+                tag.toString(), TAGGED_SCENARIO_QUALIFIER, numTaggedScenarios);
 
         final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet(tag.getDescription());
 
@@ -213,9 +214,10 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     private List<String> multiValuedTag(final Map<String, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
         final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
-                tag.getName(), "tagged", numTaggedScenarios);
+                tag.getName(), TAGGED_SCENARIO_QUALIFIER, numTaggedScenarios);
 
         final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet(tag.getDescription());
+
         taggedScenarios.forEach((tagId, features) -> {
             final List<String> snippet = snippetGenerator.generateTagSnippet(
                     allTags.get(tagId), taggedScenarioCounts.get(tagId), features);
@@ -236,7 +238,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
                 .toList();
         final Integer total = taggedScenarioCounts.values().stream().reduce(Integer::sum).orElse(999);
         final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
-                "Tags", "all tags are beautiful", total
+                "Tags", TAGGED_SCENARIO_QUALIFIER, total
         );
 
         final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet("");

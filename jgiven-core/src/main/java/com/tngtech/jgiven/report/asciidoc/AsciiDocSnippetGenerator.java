@@ -33,15 +33,7 @@ final class AsciiDocSnippetGenerator {
             result.add("+++" + LINE_BREAK + description + LINE_BREAK + "+++");
         }
 
-        final String qualifiedScenario = scenarioQualifier.isBlank() ? "scenario" : scenarioQualifier + " scenario";
-
-        if (numScenarios <= 0) {
-            result.add("There are no " + qualifiedScenario + "s. Keep rocking!");
-        } else if (numScenarios == 1) {
-            result.add("There is " + numScenarios + " " + qualifiedScenario + ".");
-        } else {
-            result.add("There are " + numScenarios + " " + qualifiedScenario + "s.");
-        }
+        result.add(createIntroSentence(numScenarios, scenarioQualifier));
 
         return result;
     }
@@ -63,18 +55,9 @@ final class AsciiDocSnippetGenerator {
 
         result.add("=== " + tag.toString());
 
-        if (numScenarios <= 0) {
-            result.add("There are no " + scenarioQualifier + " scenarios. Keep rocking!");
-        } else {
-            final String intro;
-            if (numScenarios == 1) {
-                intro = "There is " + scenarioCount + " " + scenarioQualifier + " scenario.";
-            } else {
-                intro = "There are " + scenarioCount + " " + scenarioQualifier + " scenarios.";
-            }
-            final String tagSelector = TagMapper.toAsciiDocTagName(tag);
-            result.addAll(generateIncludeSnippet(intro, 0, "../features", features, tagSelector));
-        }
+        final String intro = createIntroSentence(scenarioCount, scenarioQualifier);
+        final String tagSelector = TagMapper.toAsciiDocTagName(tag);
+        result.addAll(generateIncludeSnippet(intro, 0, "../features", features, tagSelector));
 
         return result;
     }
@@ -105,6 +88,18 @@ final class AsciiDocSnippetGenerator {
             result.add(LEVEL_OFFSET + " +" + Math.abs(leveloffset));
         }
         return result;
+    }
+
+    private String createIntroSentence(final int scenarioCount, final String scenarioQualifier) {
+        final String qualifiedScenario = scenarioQualifier.isBlank() ? "scenario" : scenarioQualifier + " scenario";
+
+        if (scenarioCount <= 0) {
+            return "There are no " + qualifiedScenario + "s. Keep rocking!";
+        } else if (scenarioCount == 1) {
+            return "There is " + scenarioCount + " " + qualifiedScenario + ".";
+        } else {
+            return "There are " + scenarioCount + " " + qualifiedScenario + "s.";
+        }
     }
 
     private static String includeMacroFor(final String featurePath, final String featureName, final String tags) {
