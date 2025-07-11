@@ -1,0 +1,9 @@
+plugins {
+    id 'java-library'
+}
+
+dependencies {
+    implementation libs.guava
+    implementation libs.slf4j.api
+    implementation project(':jgiven-core')
+}
