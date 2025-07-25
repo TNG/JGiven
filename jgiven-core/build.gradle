@@ -10,7 +10,7 @@ dependencies {
     implementation(libs.jakarta.annotation)
     implementation libs.paranamer
     implementation libs.byteBuddy
-    implementation 'org.fusesource.jansi:jansi:2.4.1'
+    implementation 'org.fusesource.jansi:jansi:2.4.2'
 
     testImplementation libs.mockito
     testImplementation 'com.github.stefanbirkner:system-rules:1.19.0'
