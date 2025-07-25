@@ -11,7 +11,7 @@ import java.util.Arrays;
  */
 public class ReportGenerator {
     private static final String ASCIIDOC_GENERATOR_FQCN = "com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator";
-	private static final String HTML5_REPORT_GENERATOR_FQCN = "com.tngtech.jgiven.report.html5.Html5ReportGenerator";
+    private static final String HTML5_REPORT_GENERATOR_FQCN = "com.tngtech.jgiven.report.html5.Html5ReportGenerator";
 
 	/**
      * to create a custom report, extend this enum with the name of your choice
@@ -54,27 +54,20 @@ public class ReportGenerator {
                 break;
             case HTML, HTML5:
             default:
-                ReportGenerator.loadReportGenerator(HTML5_REPORT_GENERATOR_FQCN).generateFromCommandLine(args);
+                loadReportGenerator(HTML5_REPORT_GENERATOR_FQCN).generateFromCommandLine(args);
                 break;
         }
     }
 
-    /**
-	 * Searches the Html5ReportGenerator in Java path and instantiates it
-	 */
-	public static AbstractReportGenerator loadHtml5ReportGenerator() {
-		return loadReportGenerator( HTML5_REPORT_GENERATOR_FQCN );
-	}
-
-	private static AbstractReportGenerator loadReportGenerator(String fqcn) {
-		try {
-			Class<?> aClass = ReportGenerator.class.getClassLoader().loadClass(fqcn);
+    private static AbstractReportGenerator loadReportGenerator(String fqcn) {
+        try {
+            Class<?> aClass = ReportGenerator.class.getClassLoader().loadClass(fqcn);
             return (AbstractReportGenerator) aClass.getDeclaredConstructor().newInstance();
         } catch( ClassNotFoundException e ) {
-            throw new JGivenInstallationException( "The JGiven HTML5 Report Generator seems not to be on the classpath.\n"
-                    + "Ensure that you have a dependency to jgiven-html5-report." );
+            throw new JGivenInstallationException( "The requested JGiven report generator seems not to be on the classpath.\n"
+                    + "Ensure that you have a dependency to the corresponding plugin." );
         } catch( Exception e ) {
-            throw new JGivenInternalDefectException( "The HTML5 Report Generator could not be instantiated.", e );
+            throw new JGivenInternalDefectException( "The report generator could not be instantiated.", e );
         }
 	}
 

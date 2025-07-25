@@ -1,20 +1,19 @@
 package com.tngtech.jgiven.maven;
 
 import com.tngtech.jgiven.report.AbstractReportConfig;
-import com.tngtech.jgiven.report.AbstractReportGenerator;
 import com.tngtech.jgiven.report.ReportGenerator;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
 import com.tngtech.jgiven.report.html5.Html5ReportConfig;
+import com.tngtech.jgiven.report.html5.Html5ReportGenerator;
 import com.tngtech.jgiven.report.text.PlainTextReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
+import java.io.File;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-
-import java.io.File;
 
 @Mojo(name = "report", defaultPhase = LifecyclePhase.VERIFY, threadSafe = true)
 public class JGivenReportMojo extends AbstractMojo {
@@ -88,7 +87,7 @@ public class JGivenReportMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-        ReportGenerator.Format parsedFormat = ReportGenerator.Format.fromStringOrNull(format);
+        var parsedFormat = ReportGenerator.Format.fromStringOrNull(format);
         selectOutputDirectory(parsedFormat);
         try {
             if (!outputDirectory.exists() && !outputDirectory.mkdirs()) {
@@ -105,27 +104,33 @@ public class JGivenReportMojo extends AbstractMojo {
             getLog().info("Generating " + parsedFormat + " reports to " + outputDirectory + "...");
 
             AbstractReportConfig config;
-            AbstractReportGenerator generator;
-
-            switch (parsedFormat) {
-                case ASCIIDOC:
+            var generator = switch (parsedFormat) {
+                case ASCIIDOC -> {
                     config = new AsciiDocReportConfig();
-                    generator = new AsciiDocReportGenerator();
-                    break;
-                case TEXT:
+                    yield new AsciiDocReportGenerator();
+                }
+                case TEXT -> {
                     config = new PlainTextReportConfig();
-                    generator = new PlainTextReportGenerator();
-                    break;
-                case HTML, HTML5:
-                default:
+                    yield new PlainTextReportGenerator();
+                }
+                case HTML, HTML5 -> {
                     Html5ReportConfig customConf = new Html5ReportConfig();
                     customConf.setShowThumbnails(thumbnailsAreShown);
                     customConf.setCustomCss(customCssFile);
                     customConf.setCustomJs(customJsFile);
                     config = customConf;
-                    generator = ReportGenerator.loadHtml5ReportGenerator();
-                    break;
-            }
+                    yield new Html5ReportGenerator();
+                }
+                default -> {
+                    Html5ReportConfig customConf = new Html5ReportConfig();
+                    customConf.setShowThumbnails(thumbnailsAreShown);
+                    customConf.setCustomCss(customCssFile);
+                    customConf.setCustomJs(customJsFile);
+                    config = customConf;
+                    yield new Html5ReportGenerator();
+                }
+            };
+
             config.setTitle(title);
             config.setSourceDir(sourceDirectory);
             config.setTargetDir(outputDirectory);
