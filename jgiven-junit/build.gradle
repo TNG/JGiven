@@ -42,6 +42,8 @@ files { file("../jgiven-core/src/main/translations").listFiles() }.collect {
         expand(props)
         filteringCharset = 'UTF-8'
     }
-    sourcesJar.dependsOn += taskName
     compileJava.dependsOn += taskName
+    project.afterEvaluate {
+        tasks.named('sourcesJar') { it.dependsOn(taskName) }
+    }
 }
