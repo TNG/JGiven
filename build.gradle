@@ -32,13 +32,6 @@ allprojects {
         options.addStringOption('Xdoclint:none', '-quiet')
     }
 
-    ext.sonatypeUsername = (rootProject.hasProperty('sonatypeUsername')) ?
-            rootProject.sonatypeUsername :
-            System.getenv().getOrDefault("SONATYPE_USERNAME", "")
-    ext.sonatypePassword = (rootProject.hasProperty('sonatypePassword')) ?
-            rootProject.sonatypePassword :
-            System.getenv().getOrDefault("SONATYPE_PASSWORD", "")
-
     configurations.configureEach {
         resolutionStrategy.capabilitiesResolution.withCapability('com.google.collections:google-collections') {
             def toBeSelected = candidates.find { cvi -> cvi.id instanceof ModuleComponentIdentifier && cvi.id.group == 'com.google.guava' && cvi.id.module == 'guava' }
