@@ -4,7 +4,7 @@ import java.util.stream.Collectors
 plugins {
     id 'com.github.kt3k.coveralls' version '2.12.2'
     id 'org.asciidoctor.jvm.convert' version '4.0.5'
-    id 'io.codearte.nexus-staging' version '0.30.0'
+    id 'com.vanniktech.maven.publish.base' version '0.34.0'
     id 'com.github.ben-manes.versions' version '0.52.0'
     id 'com.github.node-gradle.node' version '7.1.0' apply false
 }
@@ -55,96 +55,17 @@ asciidoctor {
     attributes 'version': version
 }
 
-
-nexusStaging {
-    stagingProfileId = stagingProfileId // stagingProfileId must be defined externally
-    packageGroup = 'com.tngtech'
-    username = sonatypeUsername
-    password = sonatypePassword
-    numberOfRetries = 100
-}
-
 subprojects {
     ext {
         androidCompileSdkVersion = 34
         androidMinSdkVersion = 29
         androidTargetSdkVersion = 32
-
-
-        publishVariant = { String variant ->
-            publishing {
-                publications {
-                    maven(MavenPublication) {
-                        from components[variant]
-                        pom {
-                            name = project.name
-                            url = 'https://jgiven.org'
-                            // to be able use project.description which may be overridden in later executed build.gradle of subproject
-                            afterEvaluate {
-                                description = project.description
-                            }
-                            withXml {
-                                project.configurations.compileOnly.allDependencies.each { dep ->
-                                    asNode().dependencies[0].appendNode('dependency').with { dependencyNode ->
-                                        dependencyNode.appendNode('groupId', dep.group)
-                                        dependencyNode.appendNode('artifactId', dep.name)
-                                        if (dep.version != null && dep.version.trim() != "") {
-                                            dependencyNode.appendNode('version', dep.version)
-                                        }
-                                        dependencyNode.appendNode('scope', 'provided')
-                                    }
-                                }
-
-                            }
-
-                            scm {
-                                url = 'scm:git@github.com:TNG/jgiven.git'
-                                connection = 'scm:git@github.com:TNG/jgiven.git'
-                                developerConnection = 'scm:git@github.com:TNG/jgiven.git'
-                            }
-
-                            licenses {
-                                license {
-                                    name = 'The Apache Software License, Version 2.0'
-                                    url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
-                                    distribution = 'repo'
-                                }
-                            }
-
-                            developers {
-                                developer {
-                                    id = 'janschaefer'
-                                    name = 'Jan Schäfer'
-                                }
-                                developer {
-                                    id = 'l-1squared'
-                                    name = 'Kristof Karhan'
-                                }
-                            }
-
-                        }
-                    }
-                }
-                repositories {
-                    maven {
-                        String releaseUrl = project["mavenRepo.releaseUrl"]
-                        String snapshotUrl = project["mavenRepo.snapshotUrl"]
-                        url = System.env.RELEASE == "true" ? releaseUrl : snapshotUrl
-                        credentials {
-                            username = sonatypeUsername
-                            password = sonatypePassword
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 
 configure(subprojects.findAll { !it.name.contains("android") }) {
     apply plugin: 'java'
     apply plugin: 'org.asciidoctor.jvm.convert'
-    apply plugin: 'maven-publish'
 
     dependencies {
         implementation libs.slf4j.api
@@ -220,8 +141,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
 
     java {
         sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
-        withJavadocJar()
-        withSourcesJar()
     }
 
     if (jacocoEnabled) {
@@ -245,7 +164,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         classpath = configurations.testRuntimeClasspath
     }
 
-    tasks.register("jgivenAsciiDocReport",JavaExec) {
+    tasks.register("jgivenAsciiDocReport", JavaExec) {
         //noinspection GroovyAccessibility
         mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',
@@ -257,7 +176,7 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         classpath = configurations.testRuntimeClasspath
     }
 
-    tasks.register("jgivenPlainTextReport",JavaExec) {
+    tasks.register("jgivenPlainTextReport", JavaExec) {
         //noinspection GroovyAccessibility
         mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
         args '--sourceDir=build/reports/jgiven/json',
@@ -275,15 +194,13 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         attributes toc: ''
     }
 
-    tasks.register("copyAsciiDoc", Copy, ) {
+    tasks.register("copyAsciiDoc", Copy,) {
         dependsOn += jgivenAsciiDocReport
         from 'src/asciidoc'
         into 'build/reports/jgiven/asciidoc'
     }
 
     copyAsciiDoc.finalizedBy(asciidoctor)
-
-    project.ext.publishVariant('java')
 }
 
 configure(subprojects) { subproject ->
@@ -291,7 +208,7 @@ configure(subprojects) { subproject ->
     apply plugin: 'eclipse'
     apply plugin: 'idea'
     apply plugin: 'signing'
-    apply plugin: 'maven-publish'
+    apply plugin: 'com.vanniktech.maven.publish'
 
     description = "${rootProject.description} - Module ${project.name}"
 
@@ -304,8 +221,49 @@ configure(subprojects) { subproject ->
 
     // -- build and publish artifacts -------------------------------------------------------------------------------------
 
-    signing {
+    mavenPublishing {
+        publishToMavenCentral()
+        signAllPublications()
 
+        coordinates(
+                "com.tngtech.jgiven",
+                project.name,
+                rootProject.version.toString()
+        )
+
+        pom {
+            name = project.name
+            url = "https://jgiven.org"
+            // to be able use project.description which may be overridden in later executed build.gradle of subproject
+            afterEvaluate {
+                description = project.description
+            }
+            scm {
+                url = "scm:git@github.com:TNG/jgiven.git"
+                connection = "scm:git@github.com:TNG/jgiven.git"
+                developerConnection = "scm:git@github.com:TNG/jgiven.git"
+            }
+            licenses {
+                license {
+                    name = "The Apache Software License, Version 2.0"
+                    url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                    distribution = "repo"
+                }
+            }
+            developers {
+                developer {
+                    id = "janschaefer"
+                    name = "Jan Schäfer"
+                }
+                developer {
+                    id = "l-1squared"
+                    name = "Kristof Karhan"
+                }
+            }
+        }
+    }
+
+    signing {
         // requires gradle.properties, see http://www.gradle.org/docs/current/userguide/signing_plugin.html
         logger.debug("Task graph at signing:" + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
         required = isReleaseVersion && gradle.taskGraph.getAllTasks().any { it instanceof PublishToMavenRepository }
@@ -313,7 +271,6 @@ configure(subprojects) { subproject ->
         def signingKey = findProperty("signingKey")
         def signingPassword = findProperty("signingPassword")
         useInMemoryPgpKeys(signingKey, signingPassword)
-        sign publishing.publications
     }
 
     idea {
