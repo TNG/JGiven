@@ -215,7 +215,7 @@ configure(subprojects) { subproject ->
     // -- build and publish artifacts -------------------------------------------------------------------------------------
 
     mavenPublishing {
-        publishToMavenCentral()
+        publishToMavenCentral(true)
         signAllPublications()
 
         coordinates(
