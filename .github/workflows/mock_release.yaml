@@ -54,7 +54,7 @@ jobs:
         run: "source scripts/source_files/helper_functions.sh && updateAllVersionInformation ${VERSION}"
       - name: Release JGiven to Mock Repository
         run: >
-          ./gradlew publishMavenPublicationToMavenRepository 
+          ./gradlew publishAllPublicationsToMavenCentralRepository
           -PsigningKey="$(gpg --batch --pinentry-mode=loopback --yes --passphrase "${GPG_PASSWORD}" --armor --export-secret-key "${GPG_KEY_ID}")"
           -PsigningPassword="${GPG_PASSWORD}" -PmavenRepo.releaseUrl=https://localhost:8443
         env:
