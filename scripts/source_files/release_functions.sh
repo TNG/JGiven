@@ -12,8 +12,8 @@ function find_gradle_property(){
 
 function releaseRepositoryAndPushVersion()
 {
-  echo Releasing the repository...
-  ./gradlew releaseRepository || return 21
+  echo publishing...
+  ./gradlew publishAllPublicationsToMavenCentralRepository "${GRADLE_PROPERTIES[@]}" || return 21
 
   echo Testing Maven plugin from Maven repository...
   mvn -f example-projects/maven/pom.xml clean test -Djgiven.version="${VERSION}" || return 22
