@@ -6,6 +6,10 @@
 * Upgraded paranamer to 2.8.3 [#1960](https://github.com/TNG/JGiven/issues/1960)
 * Various dependency upgrades
 
+## Other
+
+* Deprecated JGiven-Spock Module. JGiven-Spock2 is the suggested replacement.
+
 # Release v2.0.2
 ## Fixed issues
 * The java 17 example projects now comes with a basic logger. [#374](https://github.com/TNG/JGiven/issues/374) (thanks to rolfschumacher for reporting)
