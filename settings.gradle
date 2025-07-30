@@ -40,7 +40,7 @@ develocity{
 }
 
 rootProject.name = 'JGiven'
-
+includeBuild('build-conventions')
 include ':jgiven-core',
         ':jgiven-maven-plugin',
         ':jgiven-junit',
