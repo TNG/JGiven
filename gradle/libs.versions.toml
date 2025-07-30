@@ -9,6 +9,7 @@ paranamerVersion = "2.8.3"
 slf4j-version = "2.0.17"
 spring-version = "6.2.10"
 androidx-test-version = "1.7.0"
+vanniktech-version = "0.34.0"
 
 [libraries]
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version = "8.13.0"}
@@ -32,6 +33,7 @@ junit4 = { module = "junit:junit", version.ref = "junit4-version" }
 junit4-dataprovider = { module = "com.tngtech.java:junit-dataprovider", version = "1.13.1" }
 junit4-params = { module = "pl.pragmatists:JUnitParams", version = "1.1.1" }
 paranamer = { module = "com.thoughtworks.paranamer:paranamer", version.ref = "paranamerVersion" }
+publish = { module = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin", version.ref = "vanniktech-version" }
 quickcheck = { module = "net.java.quickcheck:quickcheck", version = "0.6" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-version" }
 slf4j-java-util-logging = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j-version" }
@@ -40,6 +42,7 @@ spring-test = { module = "org.springframework:spring-test", version.ref = "sprin
 spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring-version" }
 spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring-version" }
 testng = { module = "org.testng:testng", version="7.11.0" }
+
 
 [bundles]
 junit4 = [ "junit4", "junit4-dataprovider", "junit4-params" ]
