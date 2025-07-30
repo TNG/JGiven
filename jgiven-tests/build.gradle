@@ -1,3 +1,6 @@
+plugins {
+    id('jgiven-publishing')
+}
 description = 'JGiven Tests - Contains BDD tests for JGiven written in JGiven'
 
 dependencies {

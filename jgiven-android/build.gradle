@@ -1,5 +1,8 @@
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
+plugins {
+    id("com.android.library")
+    id("jgiven-publishing")
+    id("maven-publish")
+}
 
 repositories {
     mavenLocal()
