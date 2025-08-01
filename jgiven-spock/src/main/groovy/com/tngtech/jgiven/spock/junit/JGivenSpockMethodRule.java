@@ -10,7 +10,9 @@ import spock.lang.Specification;
  * JUnit Rule to enable JGiven with Spock Framework
  *
  * @since 0.17.0
+ * @deprecated use the jgiven-spock2 module instead
  */
+@Deprecated
 public class JGivenSpockMethodRule extends JGivenMethodRule {
 
     /**
