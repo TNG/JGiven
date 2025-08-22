@@ -1,4 +1,6 @@
-
+plugins {
+    id('jgiven-publishing')
+}
 dependencies {
 	implementation project(':jgiven-core')
     testImplementation project(':jgiven-junit')
