@@ -13,7 +13,9 @@ import spock.lang.Specification
  * ScenarioSpec to use JGiven with Spock Framework
  *
  * @since 0.17.0
+ * @deprecated use the jgiven-spock2 module instead
  */
+@Deprecated
 class ScenarioSpec<GIVEN, WHEN, THEN> extends Specification {
 
     @ClassRule @Shared JGivenClassRule writerRule = new JGivenClassRule()
