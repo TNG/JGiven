@@ -18,8 +18,8 @@ VERSION="1.1-t"
 
 updateAllVersionInformation $VERSION
 
-./gradlew -b jgiven-core/build.gradle clean publishToMavenLocal
-./gradlew -b jgiven-junit/build.gradle clean publishToMavenLocal
-./gradlew -b jgiven-html-app/build.gradle clean publishToMavenLocal
-./gradlew -b jgiven-html5-report/build.gradle clean publishToMavenLocal
-./gradlew -b jgiven-android/build.gradle clean publishToMavenLocal
+./gradlew jgiven-core:clean jgiven-core:publishToMavenLocal
+./gradlew jgiven-junit:clean jgiven-junit:publishToMavenLocal
+./gradlew jgiven-html-app:clean jgiven-html-app:publishToMavenLocal
+./gradlew jgiven-html5-report:clean jgiven-html5-report:publishToMavenLocal
+./gradlew jgiven-android:clean jgiven-android:publishToMavenLocal
