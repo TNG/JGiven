@@ -89,7 +89,7 @@ jar.configure {
     }
 }
 
-class CrossPlatformExec extends Exec {
+abstract class CrossPlatformExec extends Exec {
     void buildCommand(String command, String... commandArgs) {
         if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
             executable = 'cmd'
