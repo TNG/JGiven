@@ -19,8 +19,8 @@ repositories {
 }
 
 android {
-    compileSdk androidCompileSdkVersion
-    namespace 'jgiven.tngtech.com.jgiven_android'
+    compileSdk = androidCompileSdkVersion
+    namespace = 'jgiven.tngtech.com.jgiven_android'
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

@@ -21,8 +21,8 @@ android {
     namespace = 'jgiven.tngtech.com.jgiven_android.example'
     defaultConfig {
         applicationId = "com.tngtech.jgiven.android.example"
-        minSdkVersion = androidMinSdkVersion
-        targetSdkVersion = androidTargetSdkVersion
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
         versionCode = 1
         versionName = "${version}"
         testInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
