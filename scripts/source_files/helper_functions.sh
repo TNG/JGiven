@@ -98,7 +98,7 @@ function runAndroidTestOnGivenProject() {
     local givenProject="$1"
     local VERSION="$2"
 
-    ./gradlew -b $givenProject clean test connectedAndroidTest -Pversion=$VERSION
+    ./gradlew -p $givenProject clean test connectedAndroidTest -Pversion=$VERSION
 }
 
 function runMavenTestOnGivenProject() {
