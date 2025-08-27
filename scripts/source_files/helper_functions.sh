@@ -84,7 +84,7 @@ function runGradleTestOnGivenProject() {
     local givenProject="$1"
     local VERSION="$2"
 
-    ./gradlew -b $givenProject clean test -Pversion=$VERSION
+    ./gradlew -p $givenProject clean test -Pversion=$VERSION
 }
 
 function runScalaTest() {
