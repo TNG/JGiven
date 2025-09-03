@@ -19,24 +19,24 @@ jobs:
       - name: Test Kotlin Example Project
         run: >
           source scripts/source_files/helper_functions.sh
-          && runGradleTestOnGivenProject example-projects/kotlin/build.gradle 1.1-t
+          && runGradleTestOnGivenProject example-projects/kotlin 1.1-t
       - name: Test JUnit5 Example Project
         run: >
           sudo apt-get install firefox
           && source scripts/source_files/helper_functions.sh
-          && runGradleTestOnGivenProject example-projects/junit5/build.gradle 1.1-t
+          && runGradleTestOnGivenProject example-projects/junit5 1.1-t
       - name: Test Selenium Example Project
         run: >
           source scripts/source_files/helper_functions.sh
-          && runGradleTestOnGivenProject example-projects/selenium/build.gradle 1.1-t
+          && runGradleTestOnGivenProject example-projects/selenium 1.1-t
       - name: Test Spock Example Project
         run: >
           source scripts/source_files/helper_functions.sh
-          && runGradleTestOnGivenProject example-projects/spock/build.gradle 1.1-t
+          && runGradleTestOnGivenProject example-projects/spock 1.1-t
       - name: Test Spring-Boot Example Project
         run: >
           source scripts/source_files/helper_functions.sh
-          && runGradleTestOnGivenProject example-projects/spring-boot/build.gradle 1.1-t
+          && runGradleTestOnGivenProject example-projects/spring-boot 1.1-t
       - name: Test Maven Example Project
         run: >
           source scripts/source_files/helper_functions.sh
@@ -52,7 +52,7 @@ jobs:
       - name: Test Java 17 Project
         run: source scripts/source_files/helper_functions.sh && runMavenTestOnGivenProject example-projects/java17/pom.xml 1.1-t
       - name: Test TestNG Example Project
-        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/testng/build.gradle 1.1-t
+        run: source scripts/source_files/helper_functions.sh && runGradleTestOnGivenProject example-projects/testng 1.1-t
       - name: Test Scala Example Project
         run: |
           sudo apt-get update
