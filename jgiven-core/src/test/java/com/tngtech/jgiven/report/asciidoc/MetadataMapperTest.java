@@ -14,21 +14,6 @@ import org.junit.runner.RunWith;
  */
 @RunWith(DataProviderRunner.class)
 public class MetadataMapperTest {
-
-    @Test
-    public void toAsciiDocTagStart() {
-        final String actualName = MetadataMapper.toAsciiDocTagStart(ExecutionStatus.SUCCESS);
-
-        assertThat(actualName).isEqualTo("// tag::scenario-successful[]");
-    }
-
-    @Test
-    public void toAsciiDocTagEnd() {
-        final String actualName = MetadataMapper.toAsciiDocTagEnd(ExecutionStatus.SUCCESS);
-
-        assertThat(actualName).isEqualTo("// end::scenario-successful[]");
-    }
-
     @Test
     @DataProvider({
         "SUCCESS, scenario-successful",
@@ -36,9 +21,13 @@ public class MetadataMapperTest {
         "SCENARIO_PENDING, scenario-pending",
         "SOME_STEPS_PENDING, scenario-pending"})
     public void toAsciiDocTagName(final ExecutionStatus executionStatus, final String expectedName) {
-        final String actualName = MetadataMapper.toAsciiDocTagName(executionStatus);
+        // when
+        final String startSnippet = MetadataMapper.toAsciiDocStartTag(executionStatus);
+        final String endSnippet = MetadataMapper.toAsciiDocEndTag(executionStatus);
 
-        assertThat(actualName).isEqualTo(expectedName);
+        // then
+        assertThat(startSnippet).isEqualTo("// tag::" + expectedName + "[]");
+        assertThat(endSnippet).isEqualTo("// end::" + expectedName + "[]");
     }
 
     @Test
@@ -86,7 +75,7 @@ public class MetadataMapperTest {
     }
 
     @Test
-    public void toStepDurationBelow1ms() {
+    public void toStepDurationBelow10ms() {
         final String actualDuration = MetadataMapper.toHumanReadableStepDuration(9_999_999);
 
         assertThat(actualDuration).isEmpty();
