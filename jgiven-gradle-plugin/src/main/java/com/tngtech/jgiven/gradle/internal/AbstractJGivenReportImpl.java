@@ -8,11 +8,14 @@ import com.tngtech.jgiven.report.ReportGenerator;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
 import com.tngtech.jgiven.report.html5.Html5ReportConfig;
+import com.tngtech.jgiven.report.html5.Html5ReportGenerator;
 import com.tngtech.jgiven.report.text.PlainTextReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
 import groovy.lang.Closure;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+import java.io.File;
+import org.gradle.api.NonNullApi;
 import org.gradle.api.Task;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.provider.Property;
@@ -20,8 +23,7 @@ import org.gradle.api.reporting.Report;
 import org.gradle.api.tasks.Internal;
 import org.gradle.util.internal.ConfigureUtil;
 
-import java.io.File;
-
+@NonNullApi
 public abstract class AbstractJGivenReportImpl implements JGivenReport {
 
     private File customCssFile;
@@ -41,6 +43,7 @@ public abstract class AbstractJGivenReportImpl implements JGivenReport {
         this.getRequired().convention(false);
     }
 
+    @Override
     public AbstractReportGenerator createGenerator() {
         AbstractReportConfig conf;
         AbstractReportGenerator generator;
@@ -56,7 +59,7 @@ public abstract class AbstractJGivenReportImpl implements JGivenReport {
             case HTML:
             case HTML5:
             default:
-                Html5ReportConfig customConf = new Html5ReportConfig();
+                var customConf = new Html5ReportConfig();
                 customConf.setShowThumbnails( isThumbnailsAreShown() );
                 if (getCustomCssFile() != null) {
                     customConf.setCustomCss( getCustomCssFile() );
@@ -65,7 +68,7 @@ public abstract class AbstractJGivenReportImpl implements JGivenReport {
                     customConf.setCustomJs( getCustomJsFile() );
                 }
                 conf = customConf;
-                generator = ReportGenerator.generateHtml5Report();
+                generator = new Html5ReportGenerator();
                 break;
         }
         if( getTitle() != null ) {

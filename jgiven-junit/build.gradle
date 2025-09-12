@@ -11,8 +11,8 @@ dependencies {
     implementation project(':jgiven-html5-report')
 
     testImplementation libs.bundles.junit4
+    testImplementation libs.mockito
     testImplementation "com.googlecode.junit-toolbox:junit-toolbox:2.4"
-    testImplementation "org.mockito:mockito-core:5.19.0"
 }
 
 test.finalizedBy(jgivenHtml5Report)

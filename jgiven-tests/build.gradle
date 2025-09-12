@@ -7,6 +7,7 @@ dependencies {
     implementation project(':jgiven-junit')
     implementation project(':jgiven-testng')
     implementation project(':jgiven-junit5')
+    implementation project(':jgiven-asciidoc-report')
     implementation project(':jgiven-html5-report')
     implementation libs.bundles.junit4
     implementation platform(libs.junit.bom)
