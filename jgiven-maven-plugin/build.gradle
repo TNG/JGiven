@@ -2,6 +2,7 @@ import java.util.stream.Collectors
 
 plugins {
     id "java-gradle-plugin"
+    id('jgiven-publishing')
 }
 
 description = 'JGiven Maven Mojo'
@@ -52,16 +53,19 @@ tasks.register('generateMavenPlugin', CrossPlatformExec) {
 }
 
 generateMavenPlugin.configure {
-    List<Task> thisProjectsPublishTasks = getTasks().withType(PublishToMavenLocal).stream().collect(Collectors.toList())
+    List<Task> thisProjectsPublishTasks = getTasks().stream().filter(task -> task.name.startsWith('publish')).toList();
     mustRunAfter(rootProject.getAllTasks(true).values().stream()
             .flatMap(Set::stream)
-            .filter(task -> task instanceof PublishToMavenLocal)
+            .filter(task -> task.name.startsWith('publish'))
             .filter(task -> !thisProjectsPublishTasks.contains(task))
             .collect(Collectors.toList())
     )
     onlyIf {
-        logger.debug("TaskGraph at generateMavenPlugin: " + gradle.taskGraph.getAllTasks().stream().map(Task::getName).collect(Collectors.toList()))
-        gradle.taskGraph.getAllTasks().stream().anyMatch(thisProjectsPublishTasks::contains)
+        def publishTasks = gradle.taskGraph.allTasks.findAll {
+            it.name.toLowerCase().startsWith('publish')
+        }
+        logger.debug("TaskGraph at generateMavenPlugin: " + gradle.taskGraph.allTasks*.name)
+        !publishTasks.isEmpty()
     }
 }
 
@@ -90,7 +94,7 @@ jar.configure {
     }
 }
 
-class CrossPlatformExec extends Exec {
+abstract class CrossPlatformExec extends Exec {
     void buildCommand(String command, String... commandArgs) {
         if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
             executable = 'cmd'

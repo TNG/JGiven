@@ -1,6 +1,7 @@
 plugins {
+    id('jgiven-publishing')
     id "java-gradle-plugin"
-    id "com.gradle.plugin-publish" version "1.3.1"
+    id "com.gradle.plugin-publish" version "2.0.0"
     id "groovy"
 }
 
@@ -17,7 +18,7 @@ dependencies {
     testImplementation project(':jgiven-junit5')
     testImplementation libs.junit.jupiter
     testRuntimeOnly libs.junit.platform.launcher
-    testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
+    testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
 }
 
 test{

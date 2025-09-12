@@ -1,4 +1,5 @@
 plugins {
+    id('jgiven-publishing')
     id 'java-library'
 }
 description = "Module for writing JGiven tests with JUnit 5"
@@ -52,6 +53,9 @@ files { file("../jgiven-core/src/main/translations").listFiles() }.collect {
         expand(props)
         filteringCharset = 'UTF-8'
     }
-    sourcesJar.dependsOn += taskName
     compileJava.dependsOn += taskName
+
+    project.afterEvaluate {
+        tasks.named('sourcesJar') { it.dependsOn(taskName) }
+    }
 }

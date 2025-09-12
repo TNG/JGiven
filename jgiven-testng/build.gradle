@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id('jgiven-publishing')
 }
 description = "Module to write JGiven tests with TestNG"
 

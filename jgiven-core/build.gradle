@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id('jgiven-publishing')
 }
 
 description = "JGiven core module"
@@ -57,8 +58,11 @@ files { file("src/main/translations").listFiles() }.collect {
     }
     compileJava.dependsOn += taskName
     jar.dependsOn += taskName
-    sourcesJar.dependsOn += taskName
     javadoc.dependsOn += taskName
+
+    project.afterEvaluate {
+        tasks.named('sourcesJar') { it.dependsOn(taskName) }
+    }
 }
 
 tasks.register("runShellCommand", Exec){

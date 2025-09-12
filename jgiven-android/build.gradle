@@ -1,16 +1,8 @@
-buildscript {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        google()
-    }
-    dependencies {
-        classpath libs.androidGradlePlugin
-    }
+plugins {
+    id("com.android.library")
+    id("jgiven-publishing")
+    id("maven-publish")
 }
-
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
 
 repositories {
     mavenLocal()
@@ -19,8 +11,8 @@ repositories {
 }
 
 android {
-    compileSdk androidCompileSdkVersion
-    namespace 'jgiven.tngtech.com.jgiven_android'
+    compileSdk = androidCompileSdkVersion
+    namespace = 'jgiven.tngtech.com.jgiven_android'
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -28,28 +20,20 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion = androidMinSdkVersion
-        targetSdkVersion = androidTargetSdkVersion
-        versionCode = 1
-        versionName = "${version}"
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
 
         testInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
 
     }
     buildTypes {
         release {
-            minifyEnabled = false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     lintOptions {
         abortOnError = false
-    }
-
-    publishing {
-        singleVariant('release'){
-            withSourcesJar()
-        }
     }
 }
 
@@ -57,10 +41,9 @@ configurations.configureEach {
     exclude group: 'xml-apis', module: 'xml-apis-ext'
 
 }
-afterEvaluate {project.ext.publishVariant('release')}
 
 dependencies {
-    api('com.google.guava:guava:33.4.8-jre')
+    api(libs.guava)
     api("net.bytebuddy:byte-buddy-android:${libs.versions.byteBuddy.version.get()}")
     api(junitVariableVersionLibs.junit4)
     implementation(libs.androidx.appcompat){

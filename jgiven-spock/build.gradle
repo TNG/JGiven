@@ -1,10 +1,15 @@
 plugins {
+    id('jgiven-publishing')
     id 'java-library'
 }
 
 apply plugin: 'groovy'
 
 description = "Module for writing JGiven tests with Spock"
+
+gradle.projectsEvaluated {
+    logger.warn("DEPRECATED: The jgiven-spock module is deprecated. Please use jgiven-spock2 instead.")
+}
 
 dependencies {
     api project(':jgiven-junit')
