@@ -1,7 +1,7 @@
 [versions]
 aspectj-version = "1.9.24"
 byteBuddy-version = "1.17.7"
-gsonVersion = "2.13.1"
+gsonVersion = "2.13.2"
 guavaVersion = "33.4.8-jre"
 jakarta-version = "3.0.0"
 junit4-version = "4.13.2"
