@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Executable;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -145,7 +145,7 @@ public class JGivenMethodRule implements MethodRule {
 
     @VisibleForTesting
     static List<NamedArgument> getNamedArguments(Statement base, FrameworkMethod method, Object target) {
-        Executable constructorOrMethod = method.getMethod();
+        AccessibleObject constructorOrMethod = method.getMethod();
 
         List<Object> arguments = Collections.emptyList();
 
