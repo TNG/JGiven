@@ -8,7 +8,7 @@ import com.tngtech.jgiven.report.model.NamedArgument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Executable;
+import java.lang.reflect.AccessibleObject;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ParameterNameUtil {
     /**
      * @throws NullPointerException iif {@code constructorOrMethod} is {@code null}
      */
-    public static List<NamedArgument> mapArgumentsWithParameterNames(Executable constructorOrMethod, List<Object> arguments) {
+    public static List<NamedArgument> mapArgumentsWithParameterNames(AccessibleObject constructorOrMethod, List<Object> arguments) {
         Preconditions.checkNotNull( constructorOrMethod, "constructorOrMethod must not be null." );
         Preconditions.checkNotNull( arguments, "arguments must not be null" );
 
@@ -48,7 +48,7 @@ public class ParameterNameUtil {
         return result;
     }
 
-    private static List<String> getParameterNamesUsingParanamer(Executable constructorOrMethod) {
+    private static List<String> getParameterNamesUsingParanamer(AccessibleObject constructorOrMethod) {
         try {
             return Arrays.asList( PARANAMER.lookupParameterNames( constructorOrMethod ) );
 

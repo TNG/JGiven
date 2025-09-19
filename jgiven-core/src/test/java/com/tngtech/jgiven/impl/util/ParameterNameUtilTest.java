@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Executable;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -33,10 +33,10 @@ public class ParameterNameUtilTest {
 
     @Test
     @UseDataProvider( "dataProviderMapArgumentsWithParameterNamesOf" )
-    public void testMapArgumentsWithParameterNamesOf(Executable contructorOrMethod, List<Object> arguments,
+    public void testMapArgumentsWithParameterNamesOf(AccessibleObject constructorOrMethod, List<Object> arguments,
                                                      List<NamedArgument> expected) {
         // When:
-        List<NamedArgument> result = ParameterNameUtil.mapArgumentsWithParameterNames( contructorOrMethod, arguments );
+        List<NamedArgument> result = ParameterNameUtil.mapArgumentsWithParameterNames( constructorOrMethod, arguments );
 
         // Then:
         assertThat( result ).containsExactly( expected.toArray( new NamedArgument[0] ) );
