@@ -13,7 +13,7 @@ plugins {
     id 'com.github.kt3k.coveralls' version '2.12.2'
     id 'org.asciidoctor.jvm.convert' version '4.0.5'
     id("com.vanniktech.maven.publish") version libs.versions.vanniktech.version apply false
-    id 'com.github.ben-manes.versions' version '0.52.0'
+    id 'com.github.ben-manes.versions' version '0.53.0'
     id 'com.github.node-gradle.node' version '7.1.0' apply false
 }
 
