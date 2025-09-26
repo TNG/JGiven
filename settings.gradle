@@ -44,7 +44,6 @@ includeBuild('build-conventions')
 include ':jgiven-core',
         ':jgiven-maven-plugin',
         ':jgiven-junit',
-        ':jgiven-spock',
         ':jgiven-spock2',
         ':jgiven-testng',
         ':jgiven-spring',

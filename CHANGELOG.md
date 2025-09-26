@@ -1,3 +1,9 @@
+# Release v3.0.0
+
+## Backward incompatible changes
+
+* Removed deprecated JGiven-Spock module. Please use the JGiven-Spock2 module instead.
+
 # Release v2.0.3
 
 ## Fixed issues
