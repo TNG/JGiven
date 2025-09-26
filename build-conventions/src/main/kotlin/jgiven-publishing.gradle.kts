@@ -16,10 +16,8 @@ mavenPublishing {
     pom {
         name = project.name
         url = "https://jgiven.org"
-        // to be able use project.description which may be overridden in later executed build.gradle of subproject
-        afterEvaluate {
-            description = project.description
-        }
+        description = project.description
+
         scm {
             url = "scm:git@github.com:TNG/jgiven.git"
             connection = "scm:git@github.com:TNG/jgiven.git"

@@ -6,7 +6,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jgiven.version>2.0.2</jgiven.version>
+    <jgiven.version>2.0.3</jgiven.version>
   </properties>
   <dependencies>
     <dependency>
@@ -31,7 +31,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.0</version>
+        <version>3.14.1</version>
         <configuration>
           <source>17</source>
           <target>17</target>
@@ -41,7 +41,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.4</version>
         <configuration>
           <systemPropertyVariables>
             <jgiven.report.text.color>true</jgiven.report.text.color>
