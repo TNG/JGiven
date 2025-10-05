@@ -65,9 +65,9 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
                 .map(this.featureTagMap::get)
                 .collect(Collectors.toList());
 
-        String scenarioHeader = blockConverter.convertScenarioHeaderBlock(scenarioModel.getDescription(),
-                scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tagList,
-                scenarioModel.getExtendedDescription());
+        String scenarioHeader = blockConverter.convertScenarioHeaderBlock(scenarioModel.getTestMethodName(),
+                scenarioModel.getDescription(), scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(),
+                tagList, scenarioModel.getExtendedDescription());
         asciiDocBlocks.add(scenarioHeader);
 
         scenarioHasDataTable = scenarioModel.isCasesAsTable();
@@ -137,7 +137,8 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
             asciiDocBlocks.add(casesTableBlock);
         }
 
-        String scenarioFooter = blockConverter.convertScenarioFooterBlock(scenarioModel.getExecutionStatus(), tagList);
+        String scenarioFooter = blockConverter.convertScenarioFooterBlock(
+                scenarioModel.getTestMethodName(), scenarioModel.getExecutionStatus(), tagList);
         asciiDocBlocks.add(scenarioFooter);
     }
 

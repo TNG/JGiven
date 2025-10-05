@@ -28,11 +28,12 @@ public class AsciiDocScenarioBlockConverterTest {
         long oneSecond = 1_000_000_000L;
 
         // when
-        String block = converter.convertScenarioHeaderBlock("my first scenario", status, oneSecond, tags, null);
+        String block = converter.convertScenarioHeaderBlock("method_1", "my first scenario", status, oneSecond, tags, null);
 
         // then
         assertThatBlockContainsLines(block,
-                "// tag::scenario-" + scenarioTag + "[]",
+                "// tag::scenario-method_1[]",
+                "// tag::status-is-" + scenarioTag + "[]",
                 "",
                 "==== My first scenario",
                 "",
@@ -46,13 +47,14 @@ public class AsciiDocScenarioBlockConverterTest {
         long nineMilliseconds = 10_000_000L;
 
         // when
-        String block = converter.convertScenarioHeaderBlock("my first scenario",
+        String block = converter.convertScenarioHeaderBlock("method_1", "my first scenario",
                 ExecutionStatus.SCENARIO_PENDING, nineMilliseconds, tags, "");
 
         // then
         assertThatBlockContainsLines(block,
-                "// tag::scenario-pending[]",
-                "// tag::com.jgiven.ArbitraryTag-BestTag[]",
+                "// tag::scenario-method_1[]",
+                "// tag::status-is-pending[]",
+                "// tag::tag-com.jgiven.ArbitraryTag-BestTag[]",
                 "",
                 "==== My first scenario",
                 "",
@@ -68,12 +70,13 @@ public class AsciiDocScenarioBlockConverterTest {
         long halfMillisecond = 500_000L;
 
         // when
-        String block = converter.convertScenarioHeaderBlock("my first scenario",
+        String block = converter.convertScenarioHeaderBlock("method_1", "my first scenario",
                 ExecutionStatus.SOME_STEPS_PENDING, halfMillisecond, tags, "Best scenario ever!!!");
 
         // then
         assertThatBlockContainsLines(block,
-                "// tag::scenario-pending[]",
+                "// tag::scenario-method_1[]",
+                "// tag::status-is-pending[]",
                 "",
                 "==== My first scenario",
                 "",
@@ -90,13 +93,14 @@ public class AsciiDocScenarioBlockConverterTest {
 
         // when
         String block =
-                converter.convertScenarioHeaderBlock("my first scenario", ExecutionStatus.SUCCESS, threeSeconds, tags,
+                converter.convertScenarioHeaderBlock("method_1", "my first scenario", ExecutionStatus.SUCCESS, threeSeconds, tags,
                         "Best scenario ever!!!");
 
         // then
         assertThatBlockContainsLines(block,
-                "// tag::scenario-successful[]",
-                "// tag::com.jgiven.ArbitraryTag-BestTag[]",
+                "// tag::scenario-method_1[]",
+                "// tag::status-is-successful[]",
+                "// tag::tag-com.jgiven.ArbitraryTag-BestTag[]",
                 "",
                 "==== My first scenario",
                 "",
@@ -115,15 +119,16 @@ public class AsciiDocScenarioBlockConverterTest {
 
         // when
         String block =
-                converter.convertScenarioHeaderBlock("my first scenario", ExecutionStatus.SUCCESS, threeSeconds,
+                converter.convertScenarioHeaderBlock("method_1", "my first scenario", ExecutionStatus.SUCCESS, threeSeconds,
                         tags, "");
 
         // then
         assertThatBlockContainsLines(block,
-                "// tag::scenario-successful[]",
-                "// tag::com.jgiven.ArbitraryTag-BestTag[]",
-                "// tag::com.jgiven.ArbitraryTag-OtherTag[]",
-                "// tag::com.jgiven.ArbitraryTag-NicestTag[]",
+                "// tag::scenario-method_1[]",
+                "// tag::status-is-successful[]",
+                "// tag::tag-com.jgiven.ArbitraryTag-BestTag[]",
+                "// tag::tag-com.jgiven.ArbitraryTag-OtherTag[]",
+                "// tag::tag-com.jgiven.ArbitraryTag-NicestTag[]",
                 "",
                 "==== My first scenario",
                 "",
@@ -140,10 +145,12 @@ public class AsciiDocScenarioBlockConverterTest {
         List<Tag> tags = List.of();
 
         // when
-        String block = converter.convertScenarioFooterBlock(status, tags);
+        String block = converter.convertScenarioFooterBlock("method_3", status, tags);
 
         // then
-        assertThat(block).isEqualTo("// end::scenario-" + scenarioTag + "[]");
+        assertThatBlockContainsLines(block,
+                "// end::status-is-" + scenarioTag + "[]",
+                "// end::scenario-method_3[]");
     }
 
     @Test
@@ -152,12 +159,13 @@ public class AsciiDocScenarioBlockConverterTest {
         List<Tag> tags = List.of(mkTag("BestTag"));
 
         // when
-        String block = converter.convertScenarioFooterBlock(ExecutionStatus.FAILED, tags);
+        String block = converter.convertScenarioFooterBlock("method_1", ExecutionStatus.FAILED, tags);
 
         // then
         assertThatBlockContainsLines(block,
-                "// end::com.jgiven.ArbitraryTag-BestTag[]",
-                "// end::scenario-failed[]");
+                "// end::tag-com.jgiven.ArbitraryTag-BestTag[]",
+                "// end::status-is-failed[]",
+                "// end::scenario-method_1[]");
     }
 
     @Test
@@ -166,14 +174,15 @@ public class AsciiDocScenarioBlockConverterTest {
         List<Tag> tags = List.of(mkTag("BestTag"), mkTag("OtherTag"), mkTag("NicestTag"));
 
         // when
-        String block = converter.convertScenarioFooterBlock(ExecutionStatus.FAILED, tags);
+        String block = converter.convertScenarioFooterBlock("method_2", ExecutionStatus.FAILED, tags);
 
         // then
         assertThatBlockContainsLines(block,
-                "// end::com.jgiven.ArbitraryTag-NicestTag[]",
-                "// end::com.jgiven.ArbitraryTag-OtherTag[]",
-                "// end::com.jgiven.ArbitraryTag-BestTag[]",
-                "// end::scenario-failed[]");
+                "// end::tag-com.jgiven.ArbitraryTag-NicestTag[]",
+                "// end::tag-com.jgiven.ArbitraryTag-OtherTag[]",
+                "// end::tag-com.jgiven.ArbitraryTag-BestTag[]",
+                "// end::status-is-failed[]",
+                "// end::scenario-method_2[]");
     }
 
     private static Tag mkTag(final String value) {

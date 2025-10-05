@@ -50,6 +50,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
 
         featureStatistics.entries().stream()
                 .sorted(Map.Entry.comparingByKey())
+                .filter(entry -> entry.getValue() != null)
                 .forEach(entry -> appendStatisticsRowFragment(statisticsTable, entry.getKey(), entry.getValue()));
 
         appendStatisticsRowFragment(statisticsTable, "sum", totalStatistics);
@@ -91,6 +92,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertScenarioHeaderBlock(
+            final String identifier,
             final String name,
             final ExecutionStatus executionStatus,
             final long duration,
@@ -98,6 +100,7 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
             final String extendedDescription) {
         StringBuilder blockContent = new StringBuilder();
 
+        blockContent.append(MetadataMapper.toAsciiDocStartTag(identifier)).append(LINE_BREAK);
         blockContent.append(MetadataMapper.toAsciiDocStartTag(executionStatus)).append(LINE_BREAK);
 
         tags.forEach(tag -> blockContent.append(TagMapper.toAsciiDocStartTag(tag)).append(LINE_BREAK));
@@ -258,12 +261,13 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
     }
 
     @Override
-    public String convertScenarioFooterBlock(final ExecutionStatus executionStatus, final List<Tag> tags) {
+    public String convertScenarioFooterBlock(final String identifier, final ExecutionStatus executionStatus, final List<Tag> tags) {
         StringBuilder blockContent = new StringBuilder();
 
         Lists.reverse(tags).forEach(tag -> blockContent.append(TagMapper.toAsciiDocEndTag(tag)).append(LINE_BREAK));
 
-        blockContent.append(MetadataMapper.toAsciiDocEndTag(executionStatus));
+        blockContent.append(MetadataMapper.toAsciiDocEndTag(executionStatus)).append(LINE_BREAK);
+        blockContent.append(MetadataMapper.toAsciiDocEndTag(identifier));
 
         return blockContent.toString();
     }

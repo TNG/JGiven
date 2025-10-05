@@ -34,18 +34,18 @@ public interface ReportBlockConverter {
     String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics, String description);
 
     /**
-     * Convert the scenario name and more meta information into the scenario header.
-     * <p>
-     * The name corresponds to the test method name
-     * </p>
+     * Converts a scenario's header information into a formatted string block.
      *
+     * @param identifier          the unique identifier for the scenario
      * @param name                the name of the scenario
-     * @param executionStatus     was the scenario successful?
-     * @param duration            how long did the scenario run?
-     * @param tags                tags the scenario is tagged with
-     * @param extendedDescription detailed description of the scenario, may be {@code null}
+     * @param executionStatus     the execution status of the scenario, such as SUCCESS or FAILED
+     * @param duration            the execution duration of the scenario in milliseconds
+     * @param tags                a list of tags associated with the scenario
+     * @param extendedDescription an extended description for the scenario; may be null
+     * @return a formatted string block representing the scenario header
      */
     String convertScenarioHeaderBlock(
+            String identifier,
             String name,
             ExecutionStatus executionStatus,
             long duration,
@@ -120,9 +120,10 @@ public interface ReportBlockConverter {
     /**
      * Is invoked at the end of a scenario.
      *
+     * @param identifier      the unique identifier for the scenario
      * @param executionStatus was the scenario successful?
      * @param tags            tags the scenario is tagged with
      */
-    String convertScenarioFooterBlock(ExecutionStatus executionStatus, List<Tag> tags);
+    String convertScenarioFooterBlock(final String identifier, ExecutionStatus executionStatus, List<Tag> tags);
 
 }

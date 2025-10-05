@@ -98,8 +98,8 @@ public class TagMapperTest {
         final String endSnippet = TagMapper.toAsciiDocEndTag(tag);
 
         // then
-        assertThat(startSnippet).isEqualTo("// tag::com.tngtech.jgiven.tags.Feature[]");
-        assertThat(endSnippet).isEqualTo("// end::com.tngtech.jgiven.tags.Feature[]");
+        assertThat(startSnippet).isEqualTo("// tag::tag-com.tngtech.jgiven.tags.Feature[]");
+        assertThat(endSnippet).isEqualTo("// end::tag-com.tngtech.jgiven.tags.Feature[]");
     }
 
     @Test
@@ -113,8 +113,8 @@ public class TagMapperTest {
         final String endSnippet = TagMapper.toAsciiDocEndTag(tag);
 
         // then
-        assertThat(startSnippet).isEqualTo("// tag::com.tngtech.jgiven.tags.Feature-AsciiDoc[]");
-        assertThat(endSnippet).isEqualTo("// end::com.tngtech.jgiven.tags.Feature-AsciiDoc[]");
+        assertThat(startSnippet).isEqualTo("// tag::tag-com.tngtech.jgiven.tags.Feature-AsciiDoc[]");
+        assertThat(endSnippet).isEqualTo("// end::tag-com.tngtech.jgiven.tags.Feature-AsciiDoc[]");
     }
 
     @Test
@@ -129,8 +129,8 @@ public class TagMapperTest {
         final String endSnippet = TagMapper.toAsciiDocEndTag(tag);
 
         // then
-        assertThat(startSnippet).isEqualTo("// tag::com.tngtech.jgiven.tags.Issue-#1337[]");
-        assertThat(endSnippet).isEqualTo("// end::com.tngtech.jgiven.tags.Issue-#1337[]");
+        assertThat(startSnippet).isEqualTo("// tag::tag-com.tngtech.jgiven.tags.Issue-#1337[]");
+        assertThat(endSnippet).isEqualTo("// end::tag-com.tngtech.jgiven.tags.Issue-#1337[]");
     }
 
     @Test
@@ -143,7 +143,7 @@ public class TagMapperTest {
         final String endSnippet = TagMapper.toAsciiDocEndTag(tag);
 
         // then
-        assertThat(startSnippet).isEqualTo("// tag::com.tngtech.jgiven.tags.Feature-AsciiDoc,_Markdown[]");
-        assertThat(endSnippet).isEqualTo("// end::com.tngtech.jgiven.tags.Feature-AsciiDoc,_Markdown[]");
+        assertThat(startSnippet).isEqualTo("// tag::tag-com.tngtech.jgiven.tags.Feature-AsciiDoc,_Markdown[]");
+        assertThat(endSnippet).isEqualTo("// end::tag-com.tngtech.jgiven.tags.Feature-AsciiDoc,_Markdown[]");
     }
 }

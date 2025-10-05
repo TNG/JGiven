@@ -7,6 +7,7 @@ import com.google.common.io.Resources;
 import com.tngtech.jgiven.impl.util.PrintWriterUtil;
 import com.tngtech.jgiven.report.AbstractReportConfig;
 import com.tngtech.jgiven.report.AbstractReportGenerator;
+import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 import com.tngtech.jgiven.report.model.ReportStatistics;
@@ -41,7 +42,6 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     private static final String FEATURE_PATH = "features";
     private static final String ASCIIDOC_FILETYPE = ".asciidoc";
-    private static final String SCENARIO_TAG = "scenario-";
     private static final String TAGGED_SCENARIO_QUALIFIER = "tagged";
     private static final Logger log = LoggerFactory.getLogger(AsciiDocReportGenerator.class);
 
@@ -143,7 +143,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
-                FEATURE_PATH, this.failedScenarioFeatures, SCENARIO_TAG + "failed", -1));
+                FEATURE_PATH, this.failedScenarioFeatures,
+                MetadataMapper.toAsciiDocTagName(ExecutionStatus.FAILED), -1));
 
         writeAsciiDocBlocksToFile(targetDir, "failedScenarios", asciiDocBlocks);
     }
@@ -156,7 +157,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
-                FEATURE_PATH, this.pendingScenarioFeatures, SCENARIO_TAG + "pending", -1));
+                FEATURE_PATH, this.pendingScenarioFeatures,
+                MetadataMapper.toAsciiDocTagName(ExecutionStatus.SCENARIO_PENDING), -1));
 
         writeAsciiDocBlocksToFile(targetDir, "pendingScenarios", asciiDocBlocks);
     }
@@ -169,7 +171,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
-                FEATURE_PATH, this.abortedScenarioFeatures, SCENARIO_TAG + "aborted", -1));
+                FEATURE_PATH, this.abortedScenarioFeatures,
+                MetadataMapper.toAsciiDocTagName(ExecutionStatus.ABORTED), -1));
 
         writeAsciiDocBlocksToFile(targetDir, "abortedScenarios", asciiDocBlocks);
     }

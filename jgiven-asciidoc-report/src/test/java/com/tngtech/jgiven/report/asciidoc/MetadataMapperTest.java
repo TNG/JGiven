@@ -16,10 +16,12 @@ import org.junit.runner.RunWith;
 public class MetadataMapperTest {
     @Test
     @DataProvider({
-        "SUCCESS, scenario-successful",
-        "FAILED, scenario-failed",
-        "SCENARIO_PENDING, scenario-pending",
-        "SOME_STEPS_PENDING, scenario-pending"})
+            "SUCCESS, status-is-successful",
+            "SCENARIO_PENDING, status-is-pending",
+            "SOME_STEPS_PENDING, status-is-pending",
+            "ABORTED, status-is-aborted",
+            "FAILED, status-is-failed",
+    })
     public void toAsciiDocTagName(final ExecutionStatus executionStatus, final String expectedName) {
         // when
         final String startSnippet = MetadataMapper.toAsciiDocStartTag(executionStatus);
@@ -32,10 +34,10 @@ public class MetadataMapperTest {
 
     @Test
     @DataProvider({
-        "SUCCESS, icon:check-square[role=green]",
-        "FAILED, icon:exclamation-circle[role=red]",
-        "SCENARIO_PENDING, icon:ban[role=silver]",
-        "SOME_STEPS_PENDING, icon:ban[role=silver]"})
+            "SUCCESS, icon:check-square[role=green]",
+            "FAILED, icon:exclamation-circle[role=red]",
+            "SCENARIO_PENDING, icon:ban[role=silver]",
+            "SOME_STEPS_PENDING, icon:ban[role=silver]"})
     public void toHumanReadableExecutionStatus(final ExecutionStatus executionStatus, final String expectedStatus) {
         final String actualStatus = MetadataMapper.toHumanReadableStatus(executionStatus);
 
@@ -44,10 +46,10 @@ public class MetadataMapperTest {
 
     @Test
     @DataProvider({
-        "PASSED, icon:check-square[role=green]",
-        "FAILED, icon:exclamation-circle[role=red]",
-        "SKIPPED, icon:step-forward[role=silver]",
-        "PENDING, icon:ban[role=silver]"})
+            "PASSED, icon:check-square[role=green]",
+            "FAILED, icon:exclamation-circle[role=red]",
+            "SKIPPED, icon:step-forward[role=silver]",
+            "PENDING, icon:ban[role=silver]"})
     public void toHumanReadableStepStatus(final StepStatus stepStatus, final String expectedStatus) {
         final String actualStatus = MetadataMapper.toHumanReadableStatus(stepStatus);
 
@@ -63,11 +65,11 @@ public class MetadataMapperTest {
 
     @Test
     @DataProvider({
-        "   1000000, 1ms",
-        " 999999999, 999ms",
-        "1000000000, 1s 0ms",
-        "1000999999, 1s 0ms",
-        "1001000000, 1s 1ms"})
+            "   1000000, 1ms",
+            " 999999999, 999ms",
+            "1000000000, 1s 0ms",
+            "1000999999, 1s 0ms",
+            "1001000000, 1s 1ms"})
     public void toScenarioDurationForDurationOver1ms(final long nanoseconds, final String expectedDuration) {
         final String actualDuration = MetadataMapper.toHumanReadableScenarioDuration(nanoseconds);
 
@@ -83,11 +85,11 @@ public class MetadataMapperTest {
 
     @Test
     @DataProvider({
-        "  10000000, (10ms)",
-        " 999999999, (999ms)",
-        "1000000000, (1s 0ms)",
-        "1000999999, (1s 0ms)",
-        "1001000000, (1s 1ms)"})
+            "  10000000, (10ms)",
+            " 999999999, (999ms)",
+            "1000000000, (1s 0ms)",
+            "1000999999, (1s 0ms)",
+            "1001000000, (1s 1ms)"})
     public void toStepDurationForDurationOver1ms(final long nanoseconds, final String expectedDuration) {
         final String actualDuration = MetadataMapper.toHumanReadableStepDuration(nanoseconds);
 

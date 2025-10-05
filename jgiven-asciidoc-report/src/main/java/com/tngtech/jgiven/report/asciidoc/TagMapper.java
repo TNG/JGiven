@@ -22,6 +22,6 @@ final class TagMapper {
     }
 
     static String toAsciiDocTagName(final Tag tag) {
-        return tag.toIdString().replace(' ', '_');
+        return "tag-" + tag.toIdString().replace(' ', '_');
     }
 }

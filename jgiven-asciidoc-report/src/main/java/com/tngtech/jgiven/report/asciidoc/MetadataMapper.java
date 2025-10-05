@@ -16,6 +16,18 @@ final class MetadataMapper {
         // static helper class isn't intended to be instantiated
     }
 
+    public static String toAsciiDocStartTag(final String scenarioName) {
+        return "// tag::" + toAsciiDocTagName(scenarioName) + "[]";
+    }
+
+    static String toAsciiDocEndTag(final String scenarioName) {
+        return "// end::" + toAsciiDocTagName(scenarioName) + "[]";
+    }
+
+    static String toAsciiDocTagName(final String scenarioName) {
+        return "scenario-" + scenarioName;
+    }
+
     static String toAsciiDocStartTag(ExecutionStatus executionStatus) {
         return "// tag::" + toAsciiDocTagName(executionStatus) + "[]";
     }
@@ -24,49 +36,32 @@ final class MetadataMapper {
         return "// end::" + toAsciiDocTagName(executionStatus) + "[]";
     }
 
-    private static String toAsciiDocTagName(final ExecutionStatus executionStatus) {
-        switch (executionStatus) {
-            case SCENARIO_PENDING:
-            case SOME_STEPS_PENDING:
-                return "scenario-pending";
-            case SUCCESS:
-                return "scenario-successful";
-            case FAILED:
-                return "scenario-failed";
-            default:
-                return "scenario-" + executionStatus.toString().toLowerCase();
-        }
+    static String toAsciiDocTagName(final ExecutionStatus executionStatus) {
+        return switch (executionStatus) {
+            case SUCCESS -> "status-is-successful";
+            case SCENARIO_PENDING, SOME_STEPS_PENDING -> "status-is-pending";
+            case ABORTED -> "status-is-aborted";
+            case FAILED -> "status-is-failed";
+        };
     }
 
     static String toHumanReadableStatus(final ExecutionStatus executionStatus) {
-        switch (executionStatus) {
-            case SCENARIO_PENDING:
-            case SOME_STEPS_PENDING:
-                return ICON_BANNED;
-            case SUCCESS:
-                return ICON_CHECK_MARK;
-            case FAILED:
-                return ICON_EXCLAMATION_MARK;
-            case ABORTED:
-                return ICON_TIMES_CIRCLE;
-            default:
-                return executionStatus.toString();
-        }
+        return switch (executionStatus) {
+            case SUCCESS -> ICON_CHECK_MARK;
+            case SCENARIO_PENDING, SOME_STEPS_PENDING -> ICON_BANNED;
+            case ABORTED -> ICON_TIMES_CIRCLE;
+            case FAILED -> ICON_EXCLAMATION_MARK;
+        };
     }
 
     static String toHumanReadableStatus(final StepStatus stepStatus) {
-        switch (stepStatus) {
-            case PASSED:
-                return ICON_CHECK_MARK;
-            case FAILED:
-                return ICON_EXCLAMATION_MARK;
-            case SKIPPED:
-                return ICON_STEP_FORWARD;
-            case PENDING:
-                return ICON_BANNED;
-            default:
-                return stepStatus.toString();
-        }
+        return switch (stepStatus) {
+            case PASSED -> ICON_CHECK_MARK;
+            case SKIPPED -> ICON_STEP_FORWARD;
+            case PENDING -> ICON_BANNED;
+            case ABORTED -> ICON_TIMES_CIRCLE;
+            case FAILED -> ICON_EXCLAMATION_MARK;
+        };
     }
 
     static String toHumanReadableScenarioDuration(final long durationInNanos) {
@@ -86,11 +81,11 @@ final class MetadataMapper {
     }
 
     private static String toHumanReadableDuration(final long nanos) {
-        final Duration duration = Duration.ofNanos(nanos);
-        final String millisFragment = duration.getNano() / NANOSECONDS_PER_MILLISECOND + "ms";
+        final var duration = Duration.ofNanos(nanos);
+        final var millisFragment = duration.getNano() / NANOSECONDS_PER_MILLISECOND + "ms";
 
-        final long seconds = duration.getSeconds();
-        final String secondsFragment = seconds > 0 ? seconds + "s " : "";
+        final var seconds = duration.getSeconds();
+        final var secondsFragment = seconds > 0 ? seconds + "s " : "";
 
         return secondsFragment + millisFragment;
     }
