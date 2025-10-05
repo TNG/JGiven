@@ -20,11 +20,12 @@ public interface ReportBlockConverter {
      * @param featureStatistics a map from feature names to statistics
      * @param totalStatistics   the total statistics for all features combined
      */
-    String convertStatisticsBlock(ListMultimap<String, ReportStatistics> featureStatistics,
-                                  ReportStatistics totalStatistics);
+    String convertStatisticsBlock(
+            ListMultimap<String, ReportStatistics> featureStatistics,
+            ReportStatistics totalStatistics);
 
     /**
-     * Convert feature name and execution statistics into feature header.
+     * Convert feature name and execution statistics into the feature header.
      *
      * @param featureName the feature's name
      * @param statistics  the execution statistics for the feature
@@ -33,7 +34,7 @@ public interface ReportBlockConverter {
     String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics, String description);
 
     /**
-     * Convert scenario name and more meta information into scenario header.
+     * Convert the scenario name and more meta information into the scenario header.
      * <p>
      * The name corresponds to the test method name
      * </p>
@@ -44,8 +45,12 @@ public interface ReportBlockConverter {
      * @param tags                tags the scenario is tagged with
      * @param extendedDescription detailed description of the scenario, may be {@code null}
      */
-    String convertScenarioHeaderBlock(String name, ExecutionStatus executionStatus, long duration,
-                                      List<Tag> tags, String extendedDescription);
+    String convertScenarioHeaderBlock(
+            String name,
+            ExecutionStatus executionStatus,
+            long duration,
+            List<Tag> tags,
+            String extendedDescription);
 
     /**
      * Convert scenario case number and parameters into case header.
@@ -64,27 +69,38 @@ public interface ReportBlockConverter {
      *
      * @param depth               the depth of the step
      * @param words               the words to be converted
-     * @param status              was the step executed successfully
+     * @param status              was the step executed successfully?
      * @param durationInNanos     how long did the step take?
      * @param extendedDescription detailed description of the step, may be {@code null}
      * @param caseIsUnsuccessful  was the scenario case executed successfully?
      * @param currentSectionTitle the current section's title, may be {@code null}
      */
-    String convertFirstStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-                                 String extendedDescription, boolean caseIsUnsuccessful, String currentSectionTitle);
+    String convertFirstStepBlock(
+            int depth,
+            List<Word> words,
+            StepStatus status,
+            long durationInNanos,
+            String extendedDescription,
+            boolean caseIsUnsuccessful,
+            String currentSectionTitle);
 
     /**
      * Convert the words that make up a step into a block.
      *
      * @param depth               the depth of the step
      * @param words               the words to be converted
-     * @param status              was the step executed successfully
+     * @param status              was the step executed successfully?
      * @param durationInNanos     how long did the step take?
      * @param extendedDescription detailed description of the step, may be {@code null}
      * @param caseIsUnsuccessful  was the scenario case executed successfully?
      */
-    String convertStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-                            String extendedDescription, boolean caseIsUnsuccessful);
+    String convertStepBlock(
+            int depth,
+            List<Word> words,
+            StepStatus status,
+            long durationInNanos,
+            String extendedDescription,
+            boolean caseIsUnsuccessful);
 
     /**
      * Is invoked at the end of a scenario, when the scenario has multiple case and a data table.
