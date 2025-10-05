@@ -1,4 +1,5 @@
 plugins {
+    id('jgiven-publishing')
     id 'java-library'
     id 'groovy'
 }
@@ -7,7 +8,7 @@ description = "Module for writing JGiven tests with Spock 2"
 
 ext {
     spock2_version = '2.3-groovy-4.0'
-    groovy_version = '4.0.26'
+    groovy_version = '4.0.28'
 }
 
 dependencies {

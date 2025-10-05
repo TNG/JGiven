@@ -29,10 +29,16 @@ repositories {
 dependencies {
     implementation "org.spockframework:spock-core:2.3-groovy-4.0"
     implementation "org.spockframework:spock-junit4:2.3-groovy-4.0"
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.14.0'
     testImplementation "com.tngtech.jgiven:jgiven-spock2:${jGivenVersion}"
 }
 
 test {
     useJUnitPlatform()
     test.finalizedBy jgivenTestReport
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }

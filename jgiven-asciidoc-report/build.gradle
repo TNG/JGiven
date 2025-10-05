@@ -1,0 +1,10 @@
+plugins {
+    id 'java-library'
+    id 'jgiven-publishing'
+}
+
+dependencies {
+    implementation libs.guava
+    implementation libs.slf4j.api
+    implementation project(':jgiven-core')
+}

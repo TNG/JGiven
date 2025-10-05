@@ -1,0 +1,143 @@
+name: "Verify Release Procedure"
+on:
+  - push
+  - pull_request
+
+jobs:
+  verify-tests:
+    name: Tests work when the version was changed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5.0.0
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Checkout code
+        uses: actions/checkout@v5.0.0
+      - name: Set alternate version for testing
+        run: "source scripts/source_files/helper_functions.sh && updateAllVersionInformation 0.0.1-TEST-RELEASE"
+      - name: publish to local maven repo
+        run: ./gradlew publishToMavenLocal -x test
+      - name: run tests
+        run: ./gradlew test
+
+  verify-signing:
+    name: Verify JGiven Signing
+    runs-on: ubuntu-latest
+    env:
+      GPG_PASSWORD: 'test-signing-password'
+      GPG_KEY_ID: 'test-signing@jgiven.org'
+      VERSION: '0.0.1-SIGNING-TEST'
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5.0.0
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Checkout code
+        uses: actions/checkout@v5.0.0
+
+      - name: Set up OpenPGP signing keys
+        run: |
+          echo "Setting up GPG key for signing verification..."
+          gpg --quick-gen-key --batch --passphrase "${GPG_PASSWORD}" "${GPG_KEY_ID}"
+          gpg --list-keys
+          echo "GPG key created successfully"
+
+      - name: Set alternate version for testing
+        run: "source scripts/source_files/helper_functions.sh && updateAllVersionInformation ${VERSION}"
+
+      - name: Build and sign artifacts
+        run: |
+          echo "Building and signing JGiven artifacts..."
+          ./gradlew clean build -x test \
+            -PsigningKey="$(gpg --batch --pinentry-mode=loopback --yes --passphrase "${GPG_PASSWORD}" --armor --export-secret-key "${GPG_KEY_ID}")" \
+            -PsigningPassword="${GPG_PASSWORD}"
+        env:
+          RELEASE: TRUE
+
+      - name: Publish to local repository for verification
+        run: |
+          echo "Publishing to local Maven repository for signature verification..."
+          ./gradlew publishToMavenLocal \
+            -PsigningKey="$(gpg --batch --pinentry-mode=loopback --yes --passphrase "${GPG_PASSWORD}" --armor --export-secret-key "${GPG_KEY_ID}")" \
+            -PsigningPassword="${GPG_PASSWORD}"
+        env:
+          RELEASE: TRUE
+
+      - name: Verify signatures on published artifacts
+        run: |
+          echo "Verifying GPG signatures on published artifacts..."
+          
+          # Find the local Maven repository path
+          MAVEN_LOCAL_REPO=~/.m2/repository/com/tngtech/jgiven
+          
+          # Check if any artifacts were published
+          if [ ! -d "$MAVEN_LOCAL_REPO" ]; then
+            echo "ERROR: No JGiven artifacts found in local Maven repository"
+            exit 1
+          fi
+          
+          # Find all .asc signature files
+          SIGNATURE_FILES=$(find "$MAVEN_LOCAL_REPO" -name "*.asc" | head -20)
+          
+          if [ -z "$SIGNATURE_FILES" ]; then
+            echo "ERROR: No signature files (.asc) found in published artifacts"
+            exit 1
+          fi
+          
+          echo "Found signature files:"
+          echo "$SIGNATURE_FILES"
+          
+          VERIFIED_COUNT=0
+          FAILED_COUNT=0
+          
+          # Verify each signature
+          for sig_file in $SIGNATURE_FILES; do
+            # Get the corresponding artifact file (remove .asc extension)
+            artifact_file="${sig_file%.asc}"
+          
+            if [ -f "$artifact_file" ]; then
+              echo "Verifying signature for: $(basename $artifact_file)"
+              if gpg --verify "$sig_file" "$artifact_file" 2>/dev/null; then
+                echo "✓ Signature verification PASSED for $(basename $artifact_file)"
+                VERIFIED_COUNT=$((VERIFIED_COUNT + 1))
+              else
+                echo "✗ Signature verification FAILED for $(basename $artifact_file)"
+                FAILED_COUNT=$((FAILED_COUNT + 1))
+              fi
+            else
+              echo "⚠ Warning: Artifact file not found for signature: $(basename $sig_file)"
+            fi
+          done
+          
+          echo ""
+          echo "=== SIGNATURE VERIFICATION SUMMARY ==="
+          echo "Total signatures verified: $VERIFIED_COUNT"
+          echo "Total verification failures: $FAILED_COUNT"
+          
+          if [ $VERIFIED_COUNT -gt 0 ] && [ $FAILED_COUNT -eq 0 ]; then
+            echo "✓ SUCCESS: All artifact signatures verified successfully!"
+          elif [ $VERIFIED_COUNT -gt 0 ] && [ $FAILED_COUNT -gt 0 ]; then
+            echo "⚠ WARNING: Some signatures verified, but $FAILED_COUNT failed"
+            exit 1
+          else
+            echo "✗ FAILURE: No signatures could be verified"
+            exit 1
+          fi
+
+      - name: List sample signed artifacts
+        run: |
+          echo "Sample of signed artifacts in local Maven repository:"
+          find ~/.m2/repository/com/tngtech/jgiven -name "*.jar" -o -name "*.pom" | head -10 | while read file; do
+            echo "Artifact: $(basename $file)"
+            sig_file="${file}.asc"
+            if [ -f "$sig_file" ]; then
+              echo "  ✓ Has signature: $(basename $sig_file)"
+            else
+              echo "  ✗ Missing signature"
+            fi
+          done

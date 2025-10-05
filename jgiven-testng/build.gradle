@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id('jgiven-publishing')
 }
 description = "Module to write JGiven tests with TestNG"
 
@@ -10,7 +11,7 @@ dependencies {
     compileOnly libs.testng
 
     testImplementation libs.testng
-    testImplementation "org.mockito:mockito-core:5.17.0"
+    testImplementation libs.mockito
 }
 
 test.useTestNG() {

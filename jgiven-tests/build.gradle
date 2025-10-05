@@ -1,9 +1,13 @@
+plugins {
+    id('jgiven-publishing')
+}
 description = 'JGiven Tests - Contains BDD tests for JGiven written in JGiven'
 
 dependencies {
     implementation project(':jgiven-junit')
     implementation project(':jgiven-testng')
     implementation project(':jgiven-junit5')
+    implementation project(':jgiven-asciidoc-report')
     implementation project(':jgiven-html5-report')
     implementation libs.bundles.junit4
     implementation platform(libs.junit.bom)
@@ -16,8 +20,8 @@ dependencies {
     implementation 'com.beust:jcommander:1.82'
     implementation libs.assertj
 
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.32.0'
-    testImplementation 'io.github.bonigarcia:webdrivermanager:6.1.0'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.36.0'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:6.3.2'
     testImplementation 'org.apache.commons:commons-io:1.3.2'
 }
 test {

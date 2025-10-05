@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,9 +85,9 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         writeIndexFileForAbortedScenarios();
 
-        final HierarchyCalculator hierarchyCalculator = new HierarchyCalculator(allTags, taggedScenarioFeatures);
+        final var hierarchyCalculator = new HierarchyCalculator(allTags, taggedScenarioFeatures);
 
-        final Map<String, Map<String, List<String>>> groupedTags = hierarchyCalculator.computeGroupedTag();
+        final var groupedTags = hierarchyCalculator.computeGroupedTag();
 
         groupedTags.forEach(this::writeIndexFileForTaggedScenarios);
 
@@ -118,21 +119,21 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         completeReportModel.getAllReportModels().stream()
                 .sorted(Comparator.comparing(AsciiDocReportGenerator::byFeatureName))
                 .forEach(reportModelFile -> {
-                    final ReportStatistics statistics = completeReportModel.getStatistics(reportModelFile);
-                    final String featureName = Files.getNameWithoutExtension(reportModelFile.file().getName());
-                    final List<String> asciiDocBlocks = collectReportBlocks(featureName, statistics, reportModelFile.model());
+                    final var statistics = completeReportModel.getStatistics(reportModelFile);
+                    final var featureName = Files.getNameWithoutExtension(reportModelFile.file().getName());
+                    final var asciiDocBlocks = collectReportBlocks(featureName, statistics, reportModelFile.model());
 
                     writeAsciiDocBlocksToFile(featuresDir, featureName, asciiDocBlocks);
                 });
     }
 
     private void writeIndexFileForAllScenarios() {
-        final int numScenarios = this.completeReportModel.getTotalStatistics().numScenarios;
+        final var numScenarios = this.completeReportModel.getTotalStatistics().numScenarios;
 
-        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+        final var snippetGenerator = new AsciiDocSnippetGenerator(
                 "All Scenarios", "", numScenarios);
 
-        final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
+        final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
                 FEATURE_PATH, this.allFeatures, "", 0));
 
@@ -140,12 +141,12 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void writeIndexFileForFailedScenarios() {
-        final int numFailedScenarios = this.completeReportModel.getTotalStatistics().numFailedScenarios;
+        final var numFailedScenarios = this.completeReportModel.getTotalStatistics().numFailedScenarios;
 
-        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+        final var snippetGenerator = new AsciiDocSnippetGenerator(
                 "Failed Scenarios", "failed", numFailedScenarios);
 
-        final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
+        final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
                 FEATURE_PATH, this.failedScenarioFeatures, SCENARIO_TAG + "failed", -1));
 
@@ -153,12 +154,12 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void writeIndexFileForPendingScenarios() {
-        final int numPendingScenarios = this.completeReportModel.getTotalStatistics().numPendingScenarios;
+        final var numPendingScenarios = this.completeReportModel.getTotalStatistics().numPendingScenarios;
 
-        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+        final var snippetGenerator = new AsciiDocSnippetGenerator(
                 "Pending Scenarios", "pending", numPendingScenarios);
 
-        final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
+        final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
                 FEATURE_PATH, this.pendingScenarioFeatures, SCENARIO_TAG + "pending", -1));
 
@@ -166,12 +167,12 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void writeIndexFileForAbortedScenarios() {
-        final int numAbortedScenarios = this.completeReportModel.getTotalStatistics().numAbortedScenarios;
+        final var numAbortedScenarios = this.completeReportModel.getTotalStatistics().numAbortedScenarios;
 
-        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+        final var snippetGenerator = new AsciiDocSnippetGenerator(
                 "Aborted Scenarios", "aborted", numAbortedScenarios);
 
-        final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
+        final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
                 FEATURE_PATH, this.abortedScenarioFeatures, SCENARIO_TAG + "aborted", -1));
 
@@ -179,7 +180,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void writeIndexFileForTaggedScenarios(final String tagType, final Map<String, List<String>> taggedScenarios) {
-        final Optional<Tag> firstTag = taggedScenarios.keySet().stream()
+        final var firstTag = taggedScenarios.keySet().stream()
                 .findFirst()
                 .map(allTags::get);
 
@@ -187,9 +188,9 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             return;
         }
 
-        final int numTaggedScenarios = taggedScenarios.keySet().stream().mapToInt(taggedScenarioCounts::get).sum();
+        final var numTaggedScenarios = taggedScenarios.keySet().stream().mapToInt(taggedScenarioCounts::get).sum();
 
-        final List<String> asciiDocBlocks = taggedScenarios.size() == 1
+        final var asciiDocBlocks = taggedScenarios.size() == 1
                 ? singleValuedTag(taggedScenarios, firstTag.get(), numTaggedScenarios)
                 : multiValuedTag(taggedScenarios, firstTag.get(), numTaggedScenarios);
 
@@ -197,29 +198,29 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private List<String> singleValuedTag(final Map<String, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
-        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+        final var snippetGenerator = new AsciiDocSnippetGenerator(
                 tag.toString(), TAGGED_SCENARIO_QUALIFIER, numTaggedScenarios);
 
-        final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet(tag.getDescription());
+        final var asciiDocBlocks = snippetGenerator.generateIntroSnippet(tag.getDescription());
 
         taggedScenarios.forEach((tagId, features) -> {
-            final Tag valueTag = allTags.get(tagId);
-            final String tagName = TagMapper.toAsciiDocTagName(valueTag);
+            final var valueTag = allTags.get(tagId);
+            final var tagName = TagMapper.toAsciiDocTagName(valueTag);
             asciiDocBlocks.add("=== Scenarios");
-            final List<String> snippet = snippetGenerator.generateIndexSnippet("../" + FEATURE_PATH, features, tagName, 0);
+            final var snippet = snippetGenerator.generateIndexSnippet("../" + FEATURE_PATH, features, tagName, 0);
             asciiDocBlocks.addAll(snippet);
         });
         return asciiDocBlocks;
     }
 
     private List<String> multiValuedTag(final Map<String, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
-        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+        final var snippetGenerator = new AsciiDocSnippetGenerator(
                 tag.getName(), TAGGED_SCENARIO_QUALIFIER, numTaggedScenarios);
 
-        final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet(tag.getDescription());
+        final var asciiDocBlocks = snippetGenerator.generateIntroSnippet(tag.getDescription());
 
         taggedScenarios.forEach((tagId, features) -> {
-            final List<String> snippet = snippetGenerator.generateTagSnippet(
+            final var snippet = snippetGenerator.generateTagSnippet(
                     allTags.get(tagId), taggedScenarioCounts.get(tagId), features);
             asciiDocBlocks.addAll(snippet);
         });
@@ -227,46 +228,46 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private void writeIndexFileForAllTags(final Map<String, Map<String, List<String>>> strings) {
-        final List<String> tagFiles = strings.entrySet().stream()
+        final var tagFiles = strings.entrySet().stream()
                 .sorted((o1, o2) -> {
-                    final Tag tag1 = allTags.get(o1.getValue().keySet().stream().findFirst().orElse(""));
-                    final Tag tag2 = allTags.get(o2.getValue().keySet().stream().findFirst().orElse(""));
+                    final var tag1 = allTags.get(o1.getValue().keySet().stream().findFirst().orElse(""));
+                    final var tag2 = allTags.get(o2.getValue().keySet().stream().findFirst().orElse(""));
                     return Objects.compare(tag1, tag2, Comparator.comparing(Tag::getName));
 
                 })
                 .map(entry -> entry.getKey().replace(' ', '_'))
                 .toList();
-        final Integer total = taggedScenarioCounts.values().stream().reduce(Integer::sum).orElse(999);
-        final AsciiDocSnippetGenerator snippetGenerator = new AsciiDocSnippetGenerator(
+        final var total = taggedScenarioCounts.values().stream().reduce(Integer::sum).orElse(999);
+        final var snippetGenerator = new AsciiDocSnippetGenerator(
                 "Tags", TAGGED_SCENARIO_QUALIFIER, total
         );
 
-        final List<String> asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
+        final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet("tags", tagFiles, "", 1));
         writeAsciiDocBlocksToFile(targetDir, "allTags", asciiDocBlocks);
     }
 
     private void writeTotalStatisticsFile() {
-        final ListMultimap<String, ReportStatistics> featureStatistics = completeReportModel.getAllReportModels()
+        final var featureStatistics = completeReportModel.getAllReportModels()
                 .stream()
                 .collect(Multimaps.toMultimap(
                         modelFile -> modelFile.model().getName(),
                         completeReportModel::getStatistics,
                         MultimapBuilder.hashKeys().arrayListValues()::build));
 
-        final String statisticsBlock = blockConverter.convertStatisticsBlock(
+        final var statisticsBlock = blockConverter.convertStatisticsBlock(
                 featureStatistics, completeReportModel.getTotalStatistics());
 
         writeAsciiDocBlocksToFile(targetDir, "totalStatistics", Collections.singletonList(statisticsBlock));
     }
 
     private void writeIndexFileForFullReport(final String reportTitle) {
-        final URL resourceUrl = Resources.getResource(this.getClass(), "index.asciidoc");
+        final var resourceUrl = Resources.getResource(this.getClass(), "index.asciidoc");
         try {
-            final List<String> indexLines = Resources.readLines(resourceUrl, StandardCharsets.UTF_8);
+            final var indexLines = Resources.readLines(resourceUrl, Charset.defaultCharset());
 
-            final File indexFile = new File(targetDir, "index.asciidoc");
-            try (PrintWriter writer = PrintWriterUtil.getPrintWriter(indexFile)) {
+            final var indexFile = new File(targetDir, "index.asciidoc");
+            try (var writer = PrintWriterUtil.getPrintWriter(indexFile)) {
                 writer.println("= " + reportTitle);
                 indexLines.forEach(writer::println);
             }
@@ -312,7 +313,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             abortedScenarioFeatures.add(featureName);
         }
 
-        final AsciiDocReportModelVisitor visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
+        final var visitor = new AsciiDocReportModelVisitor(blockConverter, statistics);
         model.accept(visitor);
 
         visitor.getUsedTags().forEach((tagId, count) -> {
@@ -341,9 +342,9 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             final File directory,
             final String fileName,
             final List<String> asciiDocBlocks) {
-        final File file = new File(directory, fileName + ASCIIDOC_FILETYPE);
-        try (final PrintWriter writer = PrintWriterUtil.getPrintWriter(file)) {
-            for (final String block : asciiDocBlocks) {
+        final var file = new File(directory, fileName + ASCIIDOC_FILETYPE);
+        try (final var writer = PrintWriterUtil.getPrintWriter(file)) {
+            for (final var block : asciiDocBlocks) {
                 writer.println(block);
                 writer.println();
             }

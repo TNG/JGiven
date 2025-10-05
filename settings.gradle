@@ -17,7 +17,7 @@ pluginManagement {
 }
 
 plugins {
-    id 'com.gradle.develocity' version '4.0.1'
+    id 'com.gradle.develocity' version '4.2.1'
 }
 
 dependencyResolutionManagement {
@@ -40,17 +40,17 @@ develocity{
 }
 
 rootProject.name = 'JGiven'
-
+includeBuild('build-conventions')
 include ':jgiven-core',
         ':jgiven-maven-plugin',
         ':jgiven-junit',
-        ':jgiven-spock',
         ':jgiven-spock2',
         ':jgiven-testng',
         ':jgiven-spring',
         ':jgiven-spring-junit4',
         ':jgiven-html-app',
         ':jgiven-html5-report',
+        ':jgiven-asciidoc-report',
         ':jgiven-tests',
         ':jgiven-examples',
         ':jgiven-junit5',

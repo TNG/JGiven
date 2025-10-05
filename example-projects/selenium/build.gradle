@@ -38,9 +38,9 @@ compileJava {
 dependencies {
     testImplementation "com.tngtech.jgiven:jgiven-junit:${version}"
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:4.32.0'
-    testImplementation 'io.github.bonigarcia:webdrivermanager:6.1.0'
-    testImplementation 'org.assertj:assertj-core:3.27.3'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.36.0'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:6.3.2'
+    testImplementation 'org.assertj:assertj-core:3.27.6'
 
 }
 
