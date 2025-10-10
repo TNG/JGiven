@@ -1,0 +1,25 @@
+plugins {
+    id("java-library")
+    id("jgiven-publishing")
+    id("jgiven-checkstyle")
+    id("jgiven-java")
+}
+
+description = "Module to write JGiven tests with TestNG"
+
+dependencies {
+    api(project(":jgiven-core"))
+    implementation(project(":jgiven-html5-report"))
+    compileOnly(libs.testng)
+
+    testImplementation(libs.testng)
+    testImplementation(libs.mockito)
+}
+
+tasks.named<Test>("test") {
+    useTestNG {
+        parallel = "methods"
+        threadCount = 10
+    }
+    finalizedBy("jgivenHtml5Report")
+}

@@ -1,0 +1,45 @@
+plugins {
+    id("jgiven-publishing")
+    id("java-gradle-plugin")
+    id("com.gradle.plugin-publish") version "2.0.0"
+    id("groovy")
+    id("jgiven-checkstyle")
+    id("jgiven-java")
+}
+
+dependencies {
+    implementation(localGroovy()) // we're a gradle plugin, we want to use the same groovy version as gradle
+    implementation(project(":jgiven-core"))
+    implementation(project(":jgiven-asciidoc-report"))
+    implementation(project(":jgiven-html5-report"))
+    implementation(platform(libs.junit.bom))
+    implementation(libs.jakarta.annotation)
+    implementation(libs.guava)
+    implementation(libs.gson)
+
+    testImplementation(project(":jgiven-junit5"))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testImplementation("org.spockframework:spock-core:2.3-groovy-4.0")
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
+}
+
+gradlePlugin {
+    website = "http://jgiven.org/"
+    vcsUrl = "https://github.com/TNG/JGiven.git"
+    plugins {
+        create("jgivenPlugin") {
+            id = "com.tngtech.jgiven.gradle-plugin"
+            displayName = "Gradle JGiven Plugin"
+            implementationClass = "com.tngtech.jgiven.gradle.JGivenPlugin"
+            description = "JGiven - BDD in plain Java integrated into Gradle builds"
+            tags.set(listOf("jgiven", "testing", "bdd", "junit", "testng"))
+        }
+    }
+}
