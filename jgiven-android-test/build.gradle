@@ -15,6 +15,7 @@ repositories {
 }
 
 apply plugin: 'com.android.application'
+apply plugin: 'jgiven-checkstyle'
 
 android {
     compileSdk = androidCompileSdkVersion
