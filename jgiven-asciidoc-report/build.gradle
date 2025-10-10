@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'jgiven-publishing'
     id('jgiven-checkstyle')
+    id('jgiven-java')
 }
 
 dependencies {
