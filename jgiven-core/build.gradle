@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id('jgiven-publishing')
     id('jgiven-checkstyle')
+    id('jgiven-java')
 }
 
 description = "JGiven core module"
@@ -69,3 +70,4 @@ files { file("src/main/translations").listFiles() }.collect {
 tasks.register("runShellCommand", Exec){
     commandLine 'git', 'rev-parse', '--short', 'HEAD'
 }
+

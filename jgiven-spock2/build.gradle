@@ -3,6 +3,7 @@ plugins {
     id 'java-library'
     id 'groovy'
     id('jgiven-checkstyle')
+    id('jgiven-java')
 }
 
 description = "Module for writing JGiven tests with Spock 2"
