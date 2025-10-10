@@ -3,6 +3,7 @@ import java.util.stream.Collectors
 plugins {
     id "java-gradle-plugin"
     id('jgiven-publishing')
+    id('jgiven-checkstyle')
 }
 
 description = 'JGiven Maven Mojo'

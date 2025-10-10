@@ -1,6 +1,7 @@
 plugins {
     id('jgiven-publishing')
     id('com.github.node-gradle.node')
+    id('jgiven-checkstyle')
 }
 
 def htmlAppVersion = '1.1.3'
