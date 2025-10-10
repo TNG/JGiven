@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id('jgiven-checkstyle')
 }
 java {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_19

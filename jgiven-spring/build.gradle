@@ -1,5 +1,6 @@
 plugins {
     id('jgiven-publishing')
+    id('jgiven-checkstyle')
 }
 description = "Module for using Spring dependency injection together with JGiven"
 
