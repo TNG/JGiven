@@ -1,0 +1,43 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.tngtech.jgiven:jgiven-gradle-plugin:${version}")
+    }
+}
+
+plugins {
+    java
+    groovy
+}
+
+apply {
+    plugin("com.tngtech.jgiven.gradle-plugin")
+}
+
+description = "Module for writing JGiven tests with Spock"
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.spockframework:spock-core:2.3-groovy-4.0")
+    implementation("org.spockframework:spock-junit4:2.3-groovy-4.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.14.0")
+    testImplementation("com.tngtech.jgiven:jgiven-spock2:${version}")
+}
+
+tasks.test {
+    useJUnitPlatform()
+    finalizedBy("jgivenTestReport")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}

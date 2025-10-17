@@ -10,6 +10,11 @@ buildscript {
     }
 }
 
+plugins {
+    id 'jgiven-checkstyle'
+}
+
+
 repositories {
     google()
 }

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("jgiven-publishing")
+    id("jgiven-checkstyle")
     id("maven-publish")
 }
 
