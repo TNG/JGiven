@@ -1,8 +1,12 @@
 plugins {
     id 'java'
+    id('jgiven-checkstyle')
+    id('jgiven-java')
 }
 java {
-    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_19
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+    }
 }
 
 dependencies {
