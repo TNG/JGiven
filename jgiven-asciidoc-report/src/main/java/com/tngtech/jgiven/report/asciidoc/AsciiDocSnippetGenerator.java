@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.report.asciidoc;
 
 import com.google.common.base.Strings;
+import com.tngtech.jgiven.report.model.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,53 +9,100 @@ import java.util.List;
  * Generate snippets for including feature files via AsciiDoc include macro.
  */
 final class AsciiDocSnippetGenerator {
+    private static final String LINE_BREAK = System.lineSeparator();
+    private static final String LEVEL_OFFSET = ":leveloffset:";
     private final String title;
     private final String scenarioQualifier;
-    private final List<String> featureFiles;
     private final int numScenarios;
-    private final String tagSelector;
 
-    AsciiDocSnippetGenerator(final String title, final String scenarioQualifier,
-                             final List<String> featureFiles, final String tags, final int numScenarios) {
+    AsciiDocSnippetGenerator(
+            final String title,
+            final String scenarioQualifier,
+            final int numScenarios) {
         this.title = title;
         this.scenarioQualifier = scenarioQualifier;
-        this.featureFiles = featureFiles;
-        this.tagSelector = Strings.isNullOrEmpty(tags) ? "" : "tag=scenario-" + tags;
         this.numScenarios = numScenarios;
     }
 
-    List<String> generateIndexSnippet() {
-        final ArrayList<String> result = new ArrayList<>();
+    List<String> generateIntroSnippet(final String description) {
+        final List<String> result = new ArrayList<>();
+
         result.add("== " + this.title);
 
-        if (featureFiles.isEmpty()) {
-            result.add("There are no " + scenarioQualifier + ". Keep rocking!");
-        } else {
-            final String intro = "There are " + numScenarios + " " + scenarioQualifier + ".";
-            result.addAll(generateIndexSnippet(intro, this.tagSelector));
+        if (!description.isEmpty()) {
+            result.add("+++" + LINE_BREAK + description + LINE_BREAK + "+++");
+        }
+
+        result.add(createIntroSentence(numScenarios, scenarioQualifier));
+
+        return result;
+    }
+
+    List<String> generateIndexSnippet(final String featurePath, final List<String> features, final String tags, final int levelOffset) {
+        final List<String> result = new ArrayList<>();
+
+        final String tagSelector = Strings.isNullOrEmpty(tags) ? "" : "tag=" + tags;
+
+        if (!features.isEmpty()) {
+            result.addAll(generateIncludeSnippet("", levelOffset, featurePath, features, tagSelector));
         }
 
         return result;
     }
 
-    private List<String> generateIndexSnippet(final String intro, final String tags) {
+    List<String> generateTagSnippet(final Tag tag, int scenarioCount, final List<String> features) {
         final ArrayList<String> result = new ArrayList<>();
-        result.add(intro);
 
-        if (!Strings.isNullOrEmpty(tags)) {
-            result.add(":leveloffset: -1");
+        result.add("=== " + tag.toString());
+
+        final String intro = createIntroSentence(scenarioCount, scenarioQualifier);
+        final String tagSelector = TagMapper.toAsciiDocTagName(tag);
+        result.addAll(generateIncludeSnippet(intro, 0, "../features", features, tagSelector));
+
+        return result;
+    }
+
+    private List<String> generateIncludeSnippet(
+            final String intro,
+            final int leveloffset,
+            final String featurePath,
+            final List<String> featureFiles,
+            final String tags) {
+        final ArrayList<String> result = new ArrayList<>();
+
+        if (!intro.isBlank()) {
+            result.add(intro);
         }
 
-        featureFiles.forEach(fileName -> result.add(includeMacroFor(fileName, tags)));
+        if (leveloffset > 0) {
+            result.add(LEVEL_OFFSET + " +" + leveloffset);
+        } else if (leveloffset < 0) {
+            result.add(LEVEL_OFFSET + " -" + Math.abs(leveloffset));
+        }
 
-        if (!Strings.isNullOrEmpty(tags)) {
-            result.add(":leveloffset: +1");
+        featureFiles.forEach(fileName -> result.add(includeMacroFor(featurePath, fileName, tags)));
+
+        if (leveloffset > 0) {
+            result.add(LEVEL_OFFSET + " -" + leveloffset);
+        } else if (leveloffset < 0) {
+            result.add(LEVEL_OFFSET + " +" + Math.abs(leveloffset));
         }
         return result;
     }
 
+    private String createIntroSentence(final int scenarioCount, final String scenarioQualifier) {
+        final String qualifiedScenario = scenarioQualifier.isBlank() ? "scenario" : scenarioQualifier + " scenario";
 
-    private static String includeMacroFor(final String fileName, final String tags) {
-        return "include::features/" + fileName + "[" + tags + "]";
+        if (scenarioCount <= 0) {
+            return "There are no " + qualifiedScenario + "s. Keep rocking!";
+        } else if (scenarioCount == 1) {
+            return "There is " + scenarioCount + " " + qualifiedScenario + ".";
+        } else {
+            return "There are " + scenarioCount + " " + qualifiedScenario + "s.";
+        }
+    }
+
+    private static String includeMacroFor(final String featurePath, final String featureName, final String tags) {
+        return "include::" + featurePath + "/" + featureName + ".asciidoc[" + tags + "]";
     }
 }
