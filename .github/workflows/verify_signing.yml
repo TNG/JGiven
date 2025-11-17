@@ -15,7 +15,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Checkout code
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v5.0.1
       - name: Set alternate version for testing
         run: "source scripts/source_files/helper_functions.sh && updateAllVersionInformation 0.0.1-TEST-RELEASE"
       - name: publish to local maven repo
@@ -38,7 +38,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Checkout code
-        uses: actions/checkout@v5.0.0
+        uses: actions/checkout@v5.0.1
 
       - name: Set up OpenPGP signing keys
         run: |
