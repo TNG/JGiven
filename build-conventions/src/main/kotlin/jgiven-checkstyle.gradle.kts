@@ -3,7 +3,7 @@ plugins {
 }
 
 checkstyle {
-    toolVersion = "12.1.0"
+    toolVersion = "12.2.0"
     configFile = file("${rootProject.projectDir}/checkstyle.xml")
 
     isShowViolations = true
