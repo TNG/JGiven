@@ -85,65 +85,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
             jvmArgs += "-javaagent:${rootProject.projectDir}/jgiven-timing/build/libs/jgiven-timing-1.1.0.jar"
         }
     }
-
-    test {
-        systemProperty 'jgiven.report.dir', 'build/reports/jgiven/json'
-        systemProperty 'jgiven.report.text', 'false'
-
-        if (jacocoEnabled) {
-            jacoco {
-                destinationFile = file("${rootProject.projectDir}/build/jacoco/jacocoTest.exec")
-                classDumpDir = file("${rootProject.projectDir}/build/jacoco/classpathdumps")
-            }
-        }
-
-        testLogging {
-            showStandardStreams = true
-        }
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        // needed for DeSzenarioTest.java as it has Umlauts in the code
-        options.encoding = 'UTF-8'
-    }
-
-    tasks.withType(Jar) {
-        def now = new Date()
-        manifest {
-            attributes(
-                    'Built-By': "Gradle ${gradle.gradleVersion}",
-                    'Build-Date': now.format('yyyy-MM-dd HH:mm:ss.S'),
-                    'Copyright': "2013-" + now.format('yyyy') + " TNG Technology Consulting GmbH",
-                    'Implementation-Title': project.name,
-                    'Implementation-Version': project.version,
-                    'Implementation-Vendor': 'TNG Technology Consulting GmbH',
-                    'License': 'Apache License v2.0, January 2004',
-                    'Specification-Title': project.name,
-                    'Specification-Version': project.version,
-                    'Specification-Vendor': 'TNG Technology Consulting GmbH',
-                    'Automatic-Module-Name': "com.tngtech.jgiven.${project.name.replaceAll("-", ".").replace("jgiven.", "")}"
-            )
-        }
-    }
-
-    normalization {
-        runtimeClasspath {
-            ignore "META-INF/MANIFEST.MF"
-        }
-    }
-
-    javadoc {
-        exclude '**/impl/**'
-
-        onlyIf {
-            JavaVersion.current().isJava8Compatible()
-        }
-    }
-
-    java {
-        sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
-    }
-
     if (jacocoEnabled) {
         jacocoTestReport {
             reports {
@@ -151,7 +92,6 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
             }
         }
     }
-
     tasks.register("jgivenHtml5Report", JavaExec) {
         //noinspection GroovyAccessibility
         mainClass = 'com.tngtech.jgiven.report.ReportGenerator'
@@ -205,19 +145,10 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
 }
 
 configure(subprojects) { subproject ->
-    apply plugin: 'checkstyle'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
 
     description = "${rootProject.description} - Module ${project.name}"
-
-    checkstyle {
-        toolVersion = "12.2.0"
-        configFile = file("${rootProject.projectDir}/checkstyle.xml")
-        showViolations = false
-        ignoreFailures = true
-    }
-
 
     idea {
         module {

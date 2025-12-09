@@ -1,5 +1,7 @@
 plugins {
     id('jgiven-publishing')
+    id('jgiven-checkstyle')
+    id('jgiven-java')
 }
 description = 'JGiven Tests - Contains BDD tests for JGiven written in JGiven'
 

@@ -1,6 +1,8 @@
 plugins {
     id('jgiven-publishing')
     id 'java-library'
+    id('jgiven-checkstyle')
+    id('jgiven-java')
 }
 
 description = "Module for writing JGiven tests with JUnit"

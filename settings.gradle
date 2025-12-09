@@ -75,6 +75,6 @@ if (android && !release && hasAndroidSourcePath) {
     include ':jgiven-android-test'
 }
 
-if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_19)) {
+if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
     include ':jgiven-future-java-tests'
 }
