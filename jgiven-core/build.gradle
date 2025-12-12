@@ -1,6 +1,8 @@
 plugins {
     id 'java-library'
     id('jgiven-publishing')
+    id('jgiven-java')
+    id('jgiven-checkstyle')
 }
 
 description = "JGiven core module"
