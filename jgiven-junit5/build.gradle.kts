@@ -1,11 +1,11 @@
+import java.util.*
+
 plugins {
     id("jgiven-publishing")
     id("java-library")
     id("jgiven-checkstyle")
     id("jgiven-java")
 }
-
-import java . util . Properties
 
 description = "Module for writing JGiven tests with JUnit 5"
 
@@ -56,7 +56,8 @@ file("../jgiven-core/src/main/translations").listFiles()?.forEach { translationF
         into("$generatedSourceDir/com/tngtech/jgiven/junit5/lang/$pkg")
         rename("SimpleScenarioTest.template", "${props.getProperty("simple_scenario_test_class")}.java")
         rename("ScenarioTest.template", "${props.getProperty("scenario_test_class")}.java")
-        expand(props as Map<String, Any>)
+        @Suppress("UNCHECKED_CAST") // Properties has string keys!
+        expand(props.toMap() as Map<String, *>)
         filteringCharset = "UTF-8"
     }
 

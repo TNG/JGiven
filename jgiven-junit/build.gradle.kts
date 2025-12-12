@@ -1,3 +1,5 @@
+import java.util.*
+
 plugins {
     id("jgiven-publishing")
     id("java-library")
@@ -5,7 +7,6 @@ plugins {
     id("jgiven-java")
 }
 
-import java . util . Properties
 
 description = "Module for writing JGiven tests with JUnit"
 
