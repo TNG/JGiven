@@ -10,7 +10,7 @@ buildscript {
 }
 
 plugins {
-    id("org.springframework.boot") version "3.5.8"
+    id("org.springframework.boot") version "3.5.9"
     java
     idea
     eclipse
