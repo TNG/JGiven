@@ -43,7 +43,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.seleniumhq.selenium:selenium-java:4.39.0")
     testImplementation("io.github.bonigarcia:webdrivermanager:6.3.3")
-    testImplementation("org.assertj:assertj-core:3.27.6")
+    testImplementation("org.assertj:assertj-core:3.27.7")
 }
 
 tasks.test {
