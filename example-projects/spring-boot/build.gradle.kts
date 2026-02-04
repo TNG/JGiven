@@ -25,7 +25,7 @@ tasks.wrapper {
 }
 
 val version: String by project
-val assertjVersion = "3.27.6"
+val assertjVersion = "3.27.7"
 val junitDataproviderVersion = "1.13.1"
 val hsqldbVersion = "2.7.4"
 
