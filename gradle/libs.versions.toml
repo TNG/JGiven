@@ -44,7 +44,7 @@ spring-context = { module = "org.springframework:spring-context", version.ref = 
 spring-test = { module = "org.springframework:spring-test", version.ref = "spring-version" }
 spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring-version" }
 spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring-version" }
-testng = { module = "org.testng:testng", version="7.11.0" }
+testng = { module = "org.testng:testng", version="7.12.0" }
 
 
 [bundles]
