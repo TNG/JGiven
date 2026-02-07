@@ -23,7 +23,7 @@ dependencies {
     implementation("com.beust:jcommander:1.82")
     implementation(libs.assertj)
 
-    testImplementation("org.seleniumhq.selenium:selenium-java:4.39.0")
+    testImplementation("org.seleniumhq.selenium:selenium-java:4.40.0")
     testImplementation("io.github.bonigarcia:webdrivermanager:6.3.3")
     testImplementation("org.apache.commons:commons-io:1.3.2")
 }
