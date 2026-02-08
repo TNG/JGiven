@@ -33,7 +33,7 @@ repositories {
 dependencies {
     val version: String by project
     testImplementation("com.tngtech.jgiven:jgiven-testng:$version")
-    testImplementation("org.testng:testng:7.11.0")
+    testImplementation("org.testng:testng:7.12.0")
 }
 
 tasks.test {
