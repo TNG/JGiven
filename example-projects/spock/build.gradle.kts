@@ -26,8 +26,8 @@ repositories {
 
 dependencies {
     val version: String by project
-    implementation("org.spockframework:spock-core:2.3-groovy-4.0")
-    implementation("org.spockframework:spock-junit4:2.3-groovy-4.0")
+    implementation("org.spockframework:spock-core:2.4-groovy-5.0")
+    implementation("org.spockframework:spock-junit4:2.4-groovy-5.0")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.14.2")
     testImplementation("com.tngtech.jgiven:jgiven-spock2:$version")
 }
