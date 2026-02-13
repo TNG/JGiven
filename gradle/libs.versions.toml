@@ -13,7 +13,7 @@ androidx-test-version = "1.7.0"
 vanniktech-version = "0.35.0"
 
 [libraries]
-androidGradlePlugin = { module = "com.android.tools.build:gradle", version = "8.13.2"}
+androidGradlePlugin = { module = "com.android.tools.build:gradle", version = "9.0.1"}
 androidx-appcompat = {module = "androidx.appcompat:appcompat", version = "1.7.1"}
 androidx-test-core = {module = "androidx.test:core", version.ref = "androidx-test-version"}
 androidx-test-rules = {module = "androidx.test:rules", version.ref = "androidx-test-version"}
