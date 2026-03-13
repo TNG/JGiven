@@ -3,14 +3,14 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Build JGiven on Java ${{ matrix.java }} with Junit ${{matrix.junit}}
+    name: Build JGiven on Java ${{ matrix.java }} with JUnit ${{ matrix.junit }}
     runs-on: ubuntu-latest
     env:
       ANDROID: true
     strategy:
       matrix:
         java: [ '17', '21']
-        junit: ['4.13.2']
+        junit: [ '5.14.3', '6.0.0' ]
     steps:
       - name: Ensure chrome is installed
         run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb && rm *.deb
@@ -22,10 +22,8 @@ jobs:
           distribution: 'adopt'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle  and Junit ${{matrix.junit}}
-        env:
-          JUNIT_VERSION: ${{matrix.junit}}
-        run:   "./gradlew -i -s check -DjunitVersion=${JUNIT_VERSION}"
+      - name: Build with Gradle and JUnit ${{ matrix.junit }}
+        run: "./gradlew -i -s check -PjunitVersion=${{ matrix.junit }}"
       - name: Run Jacoco
         if: ${{matrix.java == '17' && github.ref == 'refs/heads/master' && github.head_ref == null}}
         run: ./gradlew overallJacocoReport coveralls
@@ -35,5 +33,34 @@ jobs:
         uses: actions/upload-artifact@v7.0.0
         with:
           name: test-report_${{matrix.java}}_${{matrix.junit}}
+          path: /home/runner/work/JGiven/JGiven/*/build/reports/tests
+          if-no-files-found: ignore
+  junit4:
+    name: Build JGiven on Java ${{ matrix.java }} with JUnit 4
+    runs-on: ubuntu-latest
+    env:
+      ANDROID: true
+    strategy:
+      matrix:
+        java: [ '17', '21']
+    steps:
+      - name: Ensure chrome is installed
+        run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb && rm *.deb
+      - uses: actions/checkout@v6.0.2
+      - name: Set up JDK ${{matrix.java}}
+        uses: actions/setup-java@v5.2.0
+        with:
+          java-version: ${{matrix.java}}
+          distribution: 'adopt'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle and JUnit 4
+        run: "./gradlew -i -s check"
+      - name: Upload test results html files
+        continue-on-error: true
+        if: ${{failure()}}
+        uses: actions/upload-artifact@v7.0.0
+        with:
+          name: test-report_junit4_${{matrix.java}}
           path: /home/runner/work/JGiven/JGiven/*/build/reports/tests
           if-no-files-found: ignore

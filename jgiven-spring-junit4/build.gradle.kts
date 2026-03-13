@@ -11,10 +11,10 @@ dependencies {
     api(project(":jgiven-spring"))
     api(project(":jgiven-junit"))
 
-    compileOnly(junitVariableVersionLibs.junit4)
+    compileOnly(libs.junit4)
     compileOnly(libs.bundles.spring.compile)
 
-    testImplementation(junitVariableVersionLibs.junit4)
+    testImplementation(libs.junit4)
     testImplementation(libs.bundles.spring.test)
     testImplementation(libs.hypersql.database)
     testImplementation(libs.bundles.aspectj.spring.test)

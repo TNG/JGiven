@@ -12,7 +12,7 @@ description = "Module for writing JGiven tests with JUnit"
 
 dependencies {
     api(project(":jgiven-core"))
-    compileOnly(junitVariableVersionLibs.junit4)
+    compileOnly(libs.junit4)
     implementation(project(":jgiven-html5-report"))
 
     testImplementation(libs.bundles.junit4)
