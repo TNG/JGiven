@@ -20,7 +20,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
-    testImplementation("org.junit.platform:junit-platform-runner")
+    testImplementation(libs.junit.platform.launcher)
     testImplementation("org.apache.maven.shared:maven-invoker:3.3.0")
 }
 

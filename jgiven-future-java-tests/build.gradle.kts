@@ -18,8 +18,8 @@ dependencies {
     implementation(platform(libs.junit.bom))
 
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.junit.platform:junit-platform-runner")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation(libs.junit.platform.launcher)
 }
 
 tasks.test {
