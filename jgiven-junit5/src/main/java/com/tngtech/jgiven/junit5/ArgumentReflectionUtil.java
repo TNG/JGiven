@@ -4,8 +4,8 @@ import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.report.model.NamedArgument;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.params.ParameterInfo;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.support.ParameterInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
