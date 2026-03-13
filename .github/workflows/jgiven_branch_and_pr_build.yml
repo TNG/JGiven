@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         java: [ '17', '21']
-        junit: ['5.11.4', '5.14.2', '6.0.0-M1']
+        junit: [ '5.13.0', '5.14.3', '6.0.0' ]
     steps:
       - name: Ensure chrome is installed
         run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb && rm *.deb
