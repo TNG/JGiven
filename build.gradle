@@ -75,6 +75,11 @@ configure(subprojects.findAll { !it.name.contains("android") }) {
         testImplementation libs.slf4j.java.util.logging
         testImplementation libs.assertj
         testImplementation libs.quickcheck
+
+        if (rootProject.hasProperty('junitVersion')) {
+            // Use dynamic JUnit version for testing
+            testImplementation platform("org.junit:junit-bom:${rootProject.junitVersion}")
+        }
     }
 
     if (timingEnabled) {

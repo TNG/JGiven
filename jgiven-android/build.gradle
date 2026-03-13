@@ -46,7 +46,7 @@ configurations.configureEach {
 dependencies {
     api(libs.guava)
     api("net.bytebuddy:byte-buddy-android:${libs.versions.byteBuddy.version.get()}")
-    api(junitVariableVersionLibs.junit4)
+    api(libs.junit4)
     implementation(libs.androidx.appcompat){
         exclude group: 'com.google.guava', module: 'listenablefuture'
     }

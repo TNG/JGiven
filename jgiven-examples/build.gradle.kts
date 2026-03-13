@@ -13,7 +13,7 @@ dependencies {
     testImplementation(project(":jgiven-testng"))
     testImplementation("org.seleniumhq.selenium:htmlunit-driver:4.13.0")
     testImplementation(libs.bundles.spring.compile)
-    testImplementation(junitVariableVersionLibs.junit4.params)
+    testImplementation(libs.junit4.params)
     testImplementation(libs.testng)
 }
 

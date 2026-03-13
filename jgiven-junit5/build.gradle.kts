@@ -22,14 +22,18 @@ tasks.named<Test>("test") {
 dependencies {
     api(project(":jgiven-core"))
 
-    implementation(platform(libs.junit.bom))
+    if (rootProject.hasProperty("junitVersion")) {
+        implementation(platform("org.junit:junit-bom:${rootProject.property("junitVersion")}"))
+    } else {
+        implementation(platform(libs.junit.bom))
+    }
     compileOnly("org.junit.jupiter:junit-jupiter-params")
     compileOnly("org.junit.jupiter:junit-jupiter-api")
 
     testImplementation(project(":jgiven-html5-report"))
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
-    testImplementation(libs.junit.platform.launcher)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 val generatedSourceDir = "generatedSrc/java"
