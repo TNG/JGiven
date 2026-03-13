@@ -28,8 +28,8 @@ dependencies {
 
     testImplementation(project(":jgiven-html5-report"))
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.junit.platform:junit-platform-runner")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation(libs.junit.platform.launcher)
 }
 
 val generatedSourceDir = "generatedSrc/java"

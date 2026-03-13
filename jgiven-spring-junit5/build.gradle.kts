@@ -18,8 +18,8 @@ dependencies {
 
     testImplementation(project(":jgiven-html5-report"))
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("org.junit.platform:junit-platform-runner")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation(libs.junit.platform.launcher)
     testImplementation(libs.bundles.spring.test)
     testImplementation(libs.hypersql.database)
     testImplementation(libs.bundles.aspectj.spring.test)
