@@ -1,7 +1,7 @@
 plugins {
     id("jgiven-publishing")
     id("java-gradle-plugin")
-    id("com.gradle.plugin-publish") version "2.0.0"
+    id("com.gradle.plugin-publish") version "2.1.0"
     id("groovy")
     id("jgiven-checkstyle")
     id("jgiven-java")
