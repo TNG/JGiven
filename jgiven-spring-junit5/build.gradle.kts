@@ -5,7 +5,7 @@ plugins {
     id("jgiven-java")
 }
 
-description = "Module for using Spring dependency injection together with JGiven and JUnit 5"
+description = "Module for using Spring dependency injection together with JGiven and JUnit 5 (Deprecated: Use jgiven-spring-junit6 for Spring 7 support)"
 
 dependencies {
     api(project(":jgiven-spring"))

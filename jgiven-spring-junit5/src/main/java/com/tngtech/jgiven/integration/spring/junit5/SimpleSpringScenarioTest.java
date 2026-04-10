@@ -16,7 +16,11 @@ import com.tngtech.jgiven.junit5.JGivenExtension;
  * @param <STAGE> the stage class
  *
  * @since 1.0.0
+ * @deprecated As of JGiven 3.0.0, use {@link com.tngtech.jgiven.integration.spring.junit6.SimpleSpringScenarioTest SimpleSpringScenarioTest}
+ *             from {@code jgiven-spring-junit6} for Spring 7.x compatibility.
+ *             This module will continue to support Spring 6.x but is deprecated for future Spring versions.
  */
+@Deprecated(since = "3.0.0", forRemoval = false)
 @ExtendWith( {SpringExtension.class, JGivenExtension.class} )
 public class SimpleSpringScenarioTest<STAGE> extends
         SimpleScenarioTestBase<STAGE> implements BeanFactoryAware {

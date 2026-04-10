@@ -4,6 +4,20 @@
 
 * Removed deprecated JGiven-Spock module. Please use the JGiven-Spock2 module instead.
 
+## Deprecated modules
+
+* Deprecated `jgiven-junit5` module in favor of `jgiven-junit6`. The `jgiven-junit6` module provides full JUnit 5 support and is also compatible with JUnit 6, enabling forward compatibility. Existing JUnit 5 tests using `jgiven-junit5` will continue to work, but new projects should use `jgiven-junit6`.
+  * Use `com.tngtech.jgiven.junit6.ScenarioTest`, `com.tngtech.jgiven.junit6.SimpleScenarioTest`, and `com.tngtech.jgiven.junit6.DualScenarioTest` instead of the junit5 variants.
+
+* Deprecated `jgiven-spring-junit5` module for Spring 7.x compatibility. A new `jgiven-spring-junit6` module has been introduced that supports Spring 7.x.
+  * The `jgiven-spring-junit5` module will continue to support Spring 6.x but is deprecated for users wanting to upgrade to Spring 7.x or later.
+  * Use `com.tngtech.jgiven.integration.spring.junit6.SpringScenarioTest`, `com.tngtech.jgiven.integration.spring.junit6.SimpleSpringScenarioTest`, and `com.tngtech.jgiven.integration.spring.junit6.DualSpringScenarioTest` instead of the junit5 variants.
+
+## New features
+
+* Added `jgiven-junit6` module with support for both JUnit 5 and JUnit 6. This module provides API compatibility with JUnit 5 and enables migration to JUnit 6 when ready.
+* Added `jgiven-spring-junit6` module with support for Spring 7.x while maintaining backward compatibility with JUnit 5.
+
 # Release v2.0.3
 
 ## Fixed issues

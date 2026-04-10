@@ -1,0 +1,21 @@
+package com.tngtech.jgiven.junit5.lang.${pkg};
+
+import com.tngtech.jgiven.lang.${pkg}.${simple_scenario_test_base_class};
+import org.junit.jupiter.api.extension.ExtendWith;
+import com.tngtech.jgiven.junit5.JGivenExtension;
+import com.tngtech.jgiven.impl.Scenario;
+
+/**
+ * ${simple_scenario_test_javadoc}
+ */
+@ExtendWith( JGivenExtension.class )
+public class ${simple_scenario_test_class}<${stage_type}>
+               extends ${simple_scenario_test_base_class}<${stage_type}> {
+
+    private Scenario<${stage_type}, ${stage_type}, ${stage_type}> scenario = createScenario();
+
+    @Override
+    public Scenario<${stage_type}, ${stage_type}, ${stage_type}> getScenario() {
+        return scenario;
+    }
+}

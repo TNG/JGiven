@@ -7,7 +7,7 @@ plugins {
     id("jgiven-java")
 }
 
-description = "Module for writing JGiven tests with JUnit 5"
+description = "Module for writing JGiven tests with JUnit 5 (Deprecated: Use jgiven-junit6 for JUnit 5 and 6 support)"
 
 tasks.withType<JavaCompile> {
     options.compilerArgs.add("-parameters")

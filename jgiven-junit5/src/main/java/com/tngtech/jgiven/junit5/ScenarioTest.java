@@ -17,7 +17,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
  *
  * @see JGivenExtension
  * @see SimpleScenarioTest
+ * @deprecated As of JGiven 3.0.0, the junit5 module is deprecated in favor of {@code jgiven-junit6}.
+ *             The junit6 module supports both JUnit 5 and JUnit 6, and provides forward compatibility.
+ *             This module will continue to work with JUnit 5, but new projects should use junit6.
  */
+@Deprecated(since = "3.0.0", forRemoval = false)
 @ExtendWith( JGivenExtension.class )
 public class ScenarioTest<GIVEN, WHEN, THEN> extends ScenarioTestBase<GIVEN, WHEN, THEN> {
 
