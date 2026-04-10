@@ -9,11 +9,11 @@ description = "JGiven Tests - Contains BDD tests for JGiven written in JGiven"
 dependencies {
     implementation(project(":jgiven-junit"))
     implementation(project(":jgiven-testng"))
-    implementation(project(":jgiven-junit5"))
+    implementation(project(":jgiven-junit6"))
     implementation(project(":jgiven-asciidoc-report"))
     implementation(project(":jgiven-html5-report"))
     implementation(libs.bundles.junit4)
-    implementation(platform(libs.junit.bom))
+    implementation(platform(libs.junit6.bom))
     implementation("org.junit.jupiter:junit-jupiter-api")
     implementation("org.junit.jupiter:junit-jupiter-engine")
     implementation(libs.slf4j.java.util.logging)

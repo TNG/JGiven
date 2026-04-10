@@ -3,7 +3,7 @@ package com.tngtech.jgiven;
 
 import com.tngtech.jgiven.testframework.ThenTestFramework;
 import com.tngtech.jgiven.testframework.WhenTestFramework;
-import com.tngtech.jgiven.tests.assumptions.JUnit5AssumptionTestScenarios;
+import com.tngtech.jgiven.tests.assumptions.JUnit6AssumptionTestScenarios;
 import com.tngtech.jgiven.tests.assumptions.JUnitAssumptionTestScenarios;
 import com.tngtech.jgiven.tests.assumptions.TestNgAssumptionTestScenarios;
 import org.junit.Test;
@@ -69,7 +69,7 @@ public class AssumptionsTest extends JGivenScenarioTest<GivenScenarioTest<?>, Wh
     }
 
     private void junit5_handles_assumptions_correctly(String testName) {
-        given().a_test_named_$(testName, JUnit5AssumptionTestScenarios.class);
+        given().a_test_named_$(testName, JUnit6AssumptionTestScenarios.class);
         when().the_test_is_executed_with_JUnit5();
         then().the_test_is_ignored()
                 .the_report_model_contains_$_scenarios(1);

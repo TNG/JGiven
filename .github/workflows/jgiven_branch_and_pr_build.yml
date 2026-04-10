@@ -2,15 +2,15 @@ name: Java CI with Gradle
 on: [push, pull_request]
 
 jobs:
-  build:
-    name: Build JGiven on Java ${{ matrix.java }} with JUnit ${{ matrix.junit }}
+  junit5:
+    name: Build JGiven on Java ${{ matrix.java }} with JUnit 5
     runs-on: ubuntu-latest
     env:
       ANDROID: true
     strategy:
       matrix:
         java: [ '17', '21']
-        junit: [ '5.14.3', '6.0.0' ]
+        junit5: [ '5.11.4', '5.12.2', '5.13.4' ]
     steps:
       - name: Ensure chrome is installed
         run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb && rm *.deb
@@ -22,17 +22,47 @@ jobs:
           distribution: 'adopt'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle and JUnit ${{ matrix.junit }}
-        run: "./gradlew -i -s check -PjunitVersion=${{ matrix.junit }}"
+      - name: Build with Gradle and JUnit 5 ${{ matrix.junit5 }}
+        run: "./gradlew -i -s check -Pjunit5Version=${{ matrix.junit5 }}"
       - name: Run Jacoco
-        if: ${{matrix.java == '17' && github.ref == 'refs/heads/master' && github.head_ref == null}}
+        if: ${{matrix.java == '17' && matrix.junit5 == '5.13.4' && github.ref == 'refs/heads/master' && github.head_ref == null}}
         run: ./gradlew overallJacocoReport coveralls
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
         uses: actions/upload-artifact@v7.0.1
         with:
-          name: test-report_${{matrix.java}}_${{matrix.junit}}
+          name: test-report_junit5-${{matrix.junit5}}_java${{matrix.java}}
+          path: /home/runner/work/JGiven/JGiven/*/build/reports/tests
+          if-no-files-found: ignore
+  junit6:
+    name: Build JGiven on Java ${{ matrix.java }} with JUnit 6
+    runs-on: ubuntu-latest
+    env:
+      ANDROID: true
+    strategy:
+      matrix:
+        java: [ '17', '21' ]
+        junit6: [ '6.0.0', '6.0.3' ]
+    steps:
+      - name: Ensure chrome is installed
+        run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb && rm *.deb
+      - uses: actions/checkout@v6.0.2
+      - name: Set up JDK ${{matrix.java}}
+        uses: actions/setup-java@v5.2.0
+        with:
+          java-version: ${{matrix.java}}
+          distribution: 'adopt'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle and JUnit 6 ${{ matrix.junit6 }}
+        run: "./gradlew -i -s check -Pjunit6Version=${{ matrix.junit6 }}"
+      - name: Upload test results html files
+        continue-on-error: true
+        if: ${{failure()}}
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: test-report_junit6-${{matrix.junit6}}_java${{matrix.java}}
           path: /home/runner/work/JGiven/JGiven/*/build/reports/tests
           if-no-files-found: ignore
   junit4:
