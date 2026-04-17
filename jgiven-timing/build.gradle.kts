@@ -12,12 +12,12 @@ description = "Module for injecting automated performance analysis for test meth
 
 dependencies {
     implementation(project(":jgiven-core"))
-    implementation("com.google.guava:guava:33.5.0-jre")
+    implementation("com.google.guava:guava:33.6.0-jre")
     implementation(libs.byteBuddy.agent)
     implementation(libs.byteBuddy.plugin)
 
     testImplementation(libs.mockito)
-    testImplementation("com.google.guava:guava-testlib:33.5.0-jre")
+    testImplementation("com.google.guava:guava-testlib:33.6.0-jre")
 }
 
 val generatedSourceDir = "generatedSrc/java"
