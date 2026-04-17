@@ -11,7 +11,7 @@ dependencies {
     implementation(project(":jgiven-core"))
     implementation(project(":jgiven-asciidoc-report"))
     implementation(project(":jgiven-html5-report"))
-    implementation("org.apache.maven:maven-plugin-api:3.9.14")
+    implementation("org.apache.maven:maven-plugin-api:3.9.15")
     implementation("org.apache.maven.plugin-tools:maven-plugin-annotations:3.15.2")
 
     testImplementation(project(":jgiven-html5-report"))
