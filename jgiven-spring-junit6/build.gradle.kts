@@ -10,9 +10,14 @@ description = "Module for using Spring dependency injection together with JGiven
 dependencies {
     api(project(":jgiven-spring"))
     api(project(":jgiven-junit6"))
-    
-    implementation(platform(libs.junit.bom))
-    
+
+
+    if (rootProject.hasProperty("junit6Version")) {
+        implementation(platform("org.junit:junit-bom:${rootProject.property("junit6Version")}"))
+    } else {
+        implementation(platform(libs.junit.bom))
+    }
+
     compileOnly(libs.spring7.context)
     compileOnly(libs.spring7.test)
     compileOnly("org.junit.jupiter:junit-jupiter-api")

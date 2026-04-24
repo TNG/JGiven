@@ -23,7 +23,7 @@ dependencies {
     api(project(":jgiven-core"))
 
     if (rootProject.hasProperty("junit6Version")) {
-        implementation(platform("org.junit:junit-bom:${rootProject.property("junitVersion")}"))
+        implementation(platform("org.junit:junit-bom:${rootProject.property("junit6Version")}"))
     } else {
         implementation(platform(libs.junit.bom))
     }
