@@ -22,7 +22,11 @@ tasks.named<Test>("test") {
 dependencies {
     api(project(":jgiven-core"))
 
-    implementation(platform(libs.junit.bom))
+    if (rootProject.hasProperty("junit6Version")) {
+        implementation(platform("org.junit:junit-bom:${rootProject.property("junitVersion")}"))
+    } else {
+        implementation(platform(libs.junit.bom))
+    }
     compileOnly("org.junit.jupiter:junit-jupiter-params")
     compileOnly("org.junit.jupiter:junit-jupiter-api")
 

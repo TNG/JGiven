@@ -15,7 +15,7 @@ public class JUnit5ExecutorTest
 
     @Test
     public void tests_with_scenario_modifications_in_after_method() {
-        given().junit5_tests_with_scenario_modifications_in_after_method();
+        given().junit6_tests_with_scenario_modifications_in_after_method();
         when().the_test_class_is_executed_with_JUnit5();
         then().each_scenario_contains_$_cases(2);
     }
