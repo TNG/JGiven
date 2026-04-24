@@ -1,8 +1,8 @@
-package com.tngtech.jgiven.junit6.lang.${pkg};
+package com.tngtech.jgiven.${module}.lang.${pkg};
 
 import com.tngtech.jgiven.lang.${pkg}.${simple_scenario_test_base_class};
 import org.junit.jupiter.api.extension.ExtendWith;
-import com.tngtech.jgiven.junit6.JGivenExtension;
+import com.tngtech.jgiven.${module}.JGivenExtension;
 import com.tngtech.jgiven.impl.Scenario;
 
 /**

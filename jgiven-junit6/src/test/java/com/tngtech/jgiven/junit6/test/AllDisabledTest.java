@@ -1,9 +1,8 @@
-package com.tngtech.jgiven.junit5.test;
+package com.tngtech.jgiven.junit6.test;
 
+import com.tngtech.jgiven.junit6.ScenarioTest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import com.tngtech.jgiven.junit5.ScenarioTest;
 
 /**
  * A test class with only disabled test methods to reproduce #338

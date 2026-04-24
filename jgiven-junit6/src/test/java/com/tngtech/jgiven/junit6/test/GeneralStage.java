@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.junit5.test;
+package com.tngtech.jgiven.junit6.test;
 
 import org.junit.jupiter.api.Assertions;
 

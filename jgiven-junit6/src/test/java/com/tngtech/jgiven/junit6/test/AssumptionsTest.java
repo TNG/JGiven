@@ -1,6 +1,6 @@
-package com.tngtech.jgiven.junit5.test;
+package com.tngtech.jgiven.junit6.test;
 
-import com.tngtech.jgiven.junit5.SimpleScenarioTest;
+import com.tngtech.jgiven.junit6.SimpleScenarioTest;
 import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.StepStatus;
 import org.junit.jupiter.api.Assumptions;
@@ -24,8 +24,8 @@ class AssumptionsTest extends SimpleScenarioTest<AssumptionsTest.TestStage> {
     }
 
     @Test
-    void should_pass_on_junit5_assumptions() throws Throwable {
-        when().I_assume_something_using_junit5();
+    void should_pass_on_junit6_assumptions() throws Throwable {
+        when().I_assume_something_using_junit6();
         getScenario().finished();
 
         assertThat(getScenario().getExecutor().hasAborted()).isTrue();
@@ -39,7 +39,7 @@ class AssumptionsTest extends SimpleScenarioTest<AssumptionsTest.TestStage> {
             assertJAssumptionFailure();
         }
 
-        void I_assume_something_using_junit5() {
+        void I_assume_something_using_junit6() {
             junitAssumptionFailure();
         }
     }

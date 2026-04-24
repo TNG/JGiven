@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.junit5.test;
+package com.tngtech.jgiven.junit6.test;
 
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;

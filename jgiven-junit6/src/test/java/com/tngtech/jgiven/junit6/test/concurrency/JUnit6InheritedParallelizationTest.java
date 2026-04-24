@@ -1,15 +1,16 @@
-package com.tngtech.jgiven.junit5.test.concurrency;
+package com.tngtech.jgiven.junit6.test.concurrency;
 
-import com.tngtech.jgiven.junit5.ScenarioTest;
-import java.util.stream.IntStream;
+import com.tngtech.jgiven.junit6.ScenarioTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.stream.IntStream;
+
 @Execution(ExecutionMode.CONCURRENT)
-class JUnit5InheritedParallelizationTest
+class JUnit6InheritedParallelizationTest
     extends ScenarioTest<Stages.ParallelGivenStage, Stages.ParallelWhenStage, Stages.ParallelThenStage> {
 
     public static IntStream iterationProvider() {

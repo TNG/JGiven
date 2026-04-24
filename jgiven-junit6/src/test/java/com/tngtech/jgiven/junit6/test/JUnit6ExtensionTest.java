@@ -1,13 +1,13 @@
-package com.tngtech.jgiven.junit5.test;
+package com.tngtech.jgiven.junit6.test;
 
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.annotation.ScenarioStage;
-import com.tngtech.jgiven.junit5.JGivenExtension;
+import com.tngtech.jgiven.junit6.JGivenExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(JGivenExtension.class)
-class JUnit5ExtensionTest {
+class JUnit6ExtensionTest {
 
     @ScenarioStage
     GivenStage givenStage;
@@ -19,7 +19,7 @@ class JUnit5ExtensionTest {
     ThenStage thenStage;
 
     @Test
-    public void JGiven_works_with_JUnit5() {
+    public void JGiven_works_with_JUnit6() {
         givenStage.some_state();
         whenStage.some_action();
         thenStage.some_outcome();

@@ -1,11 +1,11 @@
-package com.tngtech.jgiven.junit5.test.concurrency;
-
-import static org.assertj.core.api.Assertions.assertThat;
+package com.tngtech.jgiven.junit6.test.concurrency;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import org.slf4j.LoggerFactory;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 final class Stages {
     private Stages() {

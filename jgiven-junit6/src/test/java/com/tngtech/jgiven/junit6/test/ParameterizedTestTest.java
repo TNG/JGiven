@@ -1,16 +1,18 @@
-package com.tngtech.jgiven.junit5.test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.*;
+package com.tngtech.jgiven.junit6.test;
 
 import com.tngtech.jgiven.annotation.CaseAs;
-import com.tngtech.jgiven.junit5.JGivenExtension;
-import com.tngtech.jgiven.junit5.ScenarioTest;
+import com.tngtech.jgiven.junit6.JGivenExtension;
+import com.tngtech.jgiven.junit6.ScenarioTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(JGivenExtension.class)
 public class ParameterizedTestTest extends ScenarioTest<GivenStage, WhenStage, ThenStage> {

@@ -1,6 +1,6 @@
-package com.tngtech.jgiven.junit5.test;
+package com.tngtech.jgiven.junit6.test;
 
-import com.tngtech.jgiven.junit5.JGivenExtension;
+import com.tngtech.jgiven.junit6.JGivenExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;

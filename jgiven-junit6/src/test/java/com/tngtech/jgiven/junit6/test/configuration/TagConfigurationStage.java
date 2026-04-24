@@ -1,11 +1,11 @@
-package com.tngtech.jgiven.junit5.test.configuration;
-
-import static org.assertj.core.api.Assertions.assertThat;
+package com.tngtech.jgiven.junit6.test.configuration;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.config.TagConfiguration;
 import org.junit.jupiter.api.Tag;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TagConfigurationStage extends Stage<TagConfigurationStage> {
 

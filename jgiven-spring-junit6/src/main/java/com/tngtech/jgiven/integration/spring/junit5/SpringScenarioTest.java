@@ -1,14 +1,13 @@
 package com.tngtech.jgiven.integration.spring.junit5;
 
+import com.tngtech.jgiven.base.ScenarioTestBase;
+import com.tngtech.jgiven.impl.Scenario;
+import com.tngtech.jgiven.integration.spring.SpringStageCreator;
+import com.tngtech.jgiven.junit6.JGivenExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import com.tngtech.jgiven.base.ScenarioTestBase;
-import com.tngtech.jgiven.impl.Scenario;
-import com.tngtech.jgiven.integration.spring.SpringStageCreator;
-import com.tngtech.jgiven.junit5.JGivenExtension;
 
 /**
  * Base class for Spring 5 and JUnit 5 test with three stage classes

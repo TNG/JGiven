@@ -34,37 +34,18 @@ dependencies {
 
 val generatedSourceDir = "generatedSrc/java"
 
-file("../jgiven-core/src/main/translations").listFiles()?.forEach { translationFile ->
-    if (!translationFile.isFile()) {
-        return@forEach
-    }
-    
-    val pkg = translationFile.nameWithoutExtension
+tasks.named<Delete>("clean") {
+    delete(generatedSourceDir)
+}
 
-    val props = Properties()
-    translationFile.inputStream().use { stream -> props.load(stream) }
-    props["pkg"] = pkg
-
-    val taskName = "${pkg}Translation"
-
-    val copyTask = tasks.register<Copy>(taskName) {
-        from("src/main/templates")
-        into("$generatedSourceDir/com/tngtech/jgiven/junit6/lang/$pkg")
-        rename("SimpleScenarioTest.template", "${props.getProperty("simple_scenario_test_class")}.java")
-        rename("ScenarioTest.template", "${props.getProperty("scenario_test_class")}.java")
-        @Suppress("UNCHECKED_CAST") // Properties has string keys!
-        expand(props.toMap() as Map<String, *>)
-        filteringCharset = "UTF-8"
-    }
-
-    tasks.named("compileJava") {
-        dependsOn(copyTask)
-    }
-
-    project.afterEvaluate {
-        tasks.named("sourcesJar") {
-            dependsOn(copyTask)
+sourceSets {
+    main {
+        java {
+            setSrcDirs(listOf("src/main/java", generatedSourceDir))
         }
+    }
+}
+
 file("../jgiven-core/src/main/translations").listFiles()?.forEach { translationFile ->
     if (!translationFile.isFile()) {
         return@forEach
@@ -83,6 +64,7 @@ file("../jgiven-core/src/main/translations").listFiles()?.forEach { translationF
         into("$generatedSourceDir/com/tngtech/jgiven/junit6/lang/$pkg")
         rename("SimpleScenarioTest.template", "${props.getProperty("simple_scenario_test_class")}.java")
         rename("ScenarioTest.template", "${props.getProperty("scenario_test_class")}.java")
+        props["module"] = "junit6"
         @Suppress("UNCHECKED_CAST") // Properties has string keys!
         expand(props.toMap() as Map<String, *>)
         filteringCharset = "UTF-8"

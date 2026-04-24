@@ -1,4 +1,4 @@
-package com.tngtech.jgiven.junit5;
+package com.tngtech.jgiven.junit6;
 
 import com.tngtech.jgiven.impl.util.ParameterNameUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
@@ -53,7 +53,11 @@ class ArgumentReflectionUtil {
     //ExperimentalAPI that only exists since JUnit 5.13
     @SuppressWarnings("OptionalGetWithoutIsPresent") //Presence checked in calling method
     private static List<NamedArgument> findByPublicApi(ExtensionContext context) {
-        var args = Arrays.asList(ParameterInfo.get(context).getArguments().toArray());
+        var contextParameterInfo = ParameterInfo.get(context);
+        if (contextParameterInfo == null) {
+            return List.of();
+        }
+        var args = contextParameterInfo.getArguments().toList();
         return ParameterNameUtil.mapArgumentsWithParameterNames(context.getTestMethod().get(), args);
     }
 

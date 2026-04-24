@@ -1,8 +1,7 @@
-package com.tngtech.jgiven.junit5.test.concurrency;
+package com.tngtech.jgiven.junit6.test.concurrency;
 
 import com.tngtech.jgiven.annotation.ScenarioStage;
-import com.tngtech.jgiven.junit5.JGivenExtension;
-import java.util.stream.IntStream;
+import com.tngtech.jgiven.junit6.JGivenExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
@@ -10,9 +9,11 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.stream.IntStream;
+
 @Execution(ExecutionMode.CONCURRENT)
 @ExtendWith(JGivenExtension.class)
-class JUnit5InjectedParallelizationTest {
+class JUnit6InjectedParallelizationTest {
 
     @ScenarioStage
     private Stages.ParallelGivenStage parallelGivenStage;

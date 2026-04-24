@@ -1,16 +1,16 @@
-package com.tngtech.jgiven.junit5.test;
+package com.tngtech.jgiven.junit6.test;
 
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ScenarioStage;
 import com.tngtech.jgiven.impl.ScenarioHolder;
-import com.tngtech.jgiven.junit5.JGivenExtension;
+import com.tngtech.jgiven.junit6.JGivenExtension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(JGivenExtension.class)
-class JUnit5NoScenarioTest {
+class JUnit6NoScenarioTest {
 
     @ScenarioStage
     TestStage testStage;
@@ -35,7 +35,7 @@ class JUnit5NoScenarioTest {
 
        TestStage i_get_a_report(){
            var myScenario = ScenarioHolder.get().getScenarioOfCurrentThread();
-           assertThat(myScenario.getModel().getClassName()).isEqualTo(JUnit5NoScenarioTest.class.getName());
+           assertThat(myScenario.getModel().getClassName()).isEqualTo(JUnit6NoScenarioTest.class.getName());
            return self();
        }
     }

@@ -1,14 +1,13 @@
-package com.tngtech.jgiven.junit5.test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.tngtech.jgiven.annotation.ScenarioStage;
-import com.tngtech.jgiven.junit5.SimpleScenarioTest;
+package com.tngtech.jgiven.junit6.test;
 
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.Pending;
+import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.junit6.SimpleScenarioTest;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PendingTest extends SimpleScenarioTest<PendingTest.PendingTestSteps> {
 

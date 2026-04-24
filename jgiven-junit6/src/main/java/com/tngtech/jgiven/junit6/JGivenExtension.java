@@ -81,6 +81,9 @@ public class JGivenExtension implements
     @Override
     public void afterTestExecution(ExtensionContext context) throws Exception {
         ScenarioBase scenario = getScenario();
+        if (scenario == null) {
+            return;
+        }
         try {
             reportPotentialExecutionException(scenario, context);
             scenario.finished();

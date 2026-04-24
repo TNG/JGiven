@@ -1,18 +1,17 @@
-package com.tngtech.jgiven.junit5.test;
+package com.tngtech.jgiven.junit6.test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.annotation.ScenarioState;
+import com.tngtech.jgiven.junit6.JGivenExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import com.tngtech.jgiven.annotation.BeforeStage;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.annotation.ScenarioStage;
-import com.tngtech.jgiven.annotation.ScenarioState;
-import com.tngtech.jgiven.junit5.JGivenExtension;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith( { JGivenExtension.class } )
 @DisplayName( "@Nested")

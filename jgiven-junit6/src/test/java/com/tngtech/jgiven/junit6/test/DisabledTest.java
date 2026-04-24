@@ -1,10 +1,9 @@
-package com.tngtech.jgiven.junit5.test;
-
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+package com.tngtech.jgiven.junit6.test;
 
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.junit5.SimpleScenarioTest;
+import com.tngtech.jgiven.junit6.SimpleScenarioTest;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class DisabledTest extends SimpleScenarioTest<DisabledTest.ExtensibleReproStage> {
     @Test

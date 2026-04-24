@@ -20,7 +20,7 @@ tasks.named<Test>("test") {
 }
 
 dependencies {
-    api(project(":jgiven-core"))
+    api(project(":jgiven-junit6"))
 
     if (rootProject.hasProperty("junitVersion")) {
         implementation(platform("org.junit:junit-bom:${rootProject.property("junitVersion")}"))
@@ -38,6 +38,10 @@ dependencies {
 
 val generatedSourceDir = "generatedSrc/java"
 
+tasks.named<Delete>("clean") {
+    delete(generatedSourceDir)
+}
+
 sourceSets {
     main {
         java {
@@ -47,7 +51,11 @@ sourceSets {
 }
 
 file("../jgiven-core/src/main/translations").listFiles()?.forEach { translationFile ->
-    val pkg = translationFile.name.split(".")[0]
+    if (!translationFile.isFile()) {
+        return@forEach
+    }
+
+    val pkg = translationFile.nameWithoutExtension
 
     val props = Properties()
     translationFile.inputStream().use { stream -> props.load(stream) }
@@ -56,10 +64,11 @@ file("../jgiven-core/src/main/translations").listFiles()?.forEach { translationF
     val taskName = "${pkg}Translation"
 
     val copyTask = tasks.register<Copy>(taskName) {
-        from("src/main/templates")
+        from("../jgiven-junit6/src/main/templates")
         into("$generatedSourceDir/com/tngtech/jgiven/junit5/lang/$pkg")
         rename("SimpleScenarioTest.template", "${props.getProperty("simple_scenario_test_class")}.java")
         rename("ScenarioTest.template", "${props.getProperty("scenario_test_class")}.java")
+        props["module"] = "junit5"
         @Suppress("UNCHECKED_CAST") // Properties has string keys!
         expand(props.toMap() as Map<String, *>)
         filteringCharset = "UTF-8"
