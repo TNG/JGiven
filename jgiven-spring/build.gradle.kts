@@ -11,7 +11,7 @@ dependencies {
 
     compileOnly(libs.bundles.spring.compile)
 
-    testImplementation(libs.bundles.spring.test)
+    testImplementation(libs.bundles.spring6.test)
     testImplementation(libs.hypersql.database)
     testImplementation(libs.bundles.aspectj.spring.test)
 }

@@ -11,8 +11,8 @@ dependencies {
     api(project(":jgiven-spring"))
     api(project(":jgiven-junit5"))
 
-    if (rootProject.hasProperty("junit5Version")) {
-        implementation(platform("org.junit:junit-bom:${rootProject.property("junit5Version")}"))
+    if (rootProject.hasProperty("junit6Version")) {
+        implementation(platform("org.junit:junit-bom:${rootProject.property("junit6Version")}"))
     } else {
         implementation(platform(libs.junit.bom))
     }

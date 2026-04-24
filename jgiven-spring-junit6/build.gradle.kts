@@ -18,8 +18,8 @@ dependencies {
         implementation(platform(libs.junit.bom))
     }
 
-    compileOnly(libs.spring7.context)
-    compileOnly(libs.spring7.test)
+    compileOnly(libs.spring.context)
+    compileOnly(libs.spring.test)
     compileOnly("org.junit.jupiter:junit-jupiter-api")
 
     testImplementation(project(":jgiven-html5-report"))
