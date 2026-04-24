@@ -140,8 +140,8 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         testScenario = new TestScenario(PendingDataProviderTests.class);
     }
 
-    public SELF junit5_tests_with_scenario_modifications_in_after_method() {
-        testScenario = TestScenarioRepository.junit5TestsWithModificationsInAfterMethod();
+    public SELF junit6_tests_with_scenario_modifications_in_after_method() {
+        testScenario = TestScenarioRepository.junit6TestsWithModificationsInAfterMethod();
         return self();
     }
 

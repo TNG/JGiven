@@ -5,14 +5,14 @@ plugins {
     id("jgiven-java")
 }
 
-description = "Module for using Spring dependency injection together with JGiven and JUnit 5"
+description = "Module for using Spring dependency injection together with JGiven and JUnit 5 (Deprecated: Use jgiven-spring-junit6 for Spring 7 support)"
 
 dependencies {
     api(project(":jgiven-spring"))
     api(project(":jgiven-junit5"))
 
-    if (rootProject.hasProperty("junitVersion")) {
-        implementation(platform("org.junit:junit-bom:${rootProject.property("junitVersion")}"))
+    if (rootProject.hasProperty("junit6Version")) {
+        implementation(platform("org.junit:junit-bom:${rootProject.property("junit6Version")}"))
     } else {
         implementation(platform(libs.junit.bom))
     }

@@ -1,9 +1,9 @@
-package com.tngtech.jgiven.junit5.lang.${pkg};
+package com.tngtech.jgiven.${module}.lang.${pkg};
 
 import com.tngtech.jgiven.impl.Scenario;
 import org.junit.jupiter.api.extension.ExtendWith;
 import com.tngtech.jgiven.lang.${pkg}.${scenario_test_base_class};
-import com.tngtech.jgiven.junit5.JGivenExtension;
+import com.tngtech.jgiven.${module}.JGivenExtension;
 
 /**
  * ${scenario_test_javadoc}

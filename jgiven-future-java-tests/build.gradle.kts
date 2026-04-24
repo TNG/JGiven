@@ -12,7 +12,7 @@ java {
 
 dependencies {
     testImplementation(project(":jgiven-core"))
-    testImplementation(project(":jgiven-junit5"))
+    testImplementation(project(":jgiven-junit6"))
     testImplementation(project(":jgiven-html5-report"))
 
     implementation(platform(libs.junit.bom))

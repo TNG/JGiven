@@ -5,10 +5,13 @@ gson-version = "2.13.2"
 guava-version = "33.6.0-jre"
 jakarta-version = "3.0.0"
 junit4-version = "4.13.2"
+junit5-version = "5.13.4"
+junit6-version = "6.0.3"
 mockito-version = "5.23.0"
 paranamer-version = "2.8.3"
 slf4j-version = "2.0.17"
-spring-version = "6.2.18"
+spring6-version = "6.2.17"
+spring7-version = "7.0.6"
 androidx-test-version = "1.7.0"
 vanniktech-version = "0.36.0"
 
@@ -28,7 +31,8 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gson-version" }
 guava = { module = "com.google.guava:guava", version.ref = "guava-version" }
 hypersql-database = { module = "org.hsqldb:hsqldb", version = "2.7.4" }
 jakarta-annotation = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-version" }
-junit-bom = { module = "org.junit:junit-bom", version = "6.0.3" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit6-version" }
+junit5-bom = { module = "org.junit:junit-bom", version.ref = "junit5-version" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 junit4 = { module = "junit:junit", version.ref = "junit4-version" }
@@ -40,17 +44,22 @@ publish = { module = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.
 quickcheck = { module = "net.java.quickcheck:quickcheck", version = "0.6" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-version" }
 slf4j-java-util-logging = { module = "org.slf4j:slf4j-jdk14", version.ref = "slf4j-version" }
-spring-context = { module = "org.springframework:spring-context", version.ref = "spring-version" }
-spring-test = { module = "org.springframework:spring-test", version.ref = "spring-version" }
-spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring-version" }
-spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring-version" }
+spring6-context = { module = "org.springframework:spring-context", version.ref = "spring6-version" }
+spring6-test = { module = "org.springframework:spring-test", version.ref = "spring6-version" }
+spring6-tx = { module = "org.springframework:spring-tx", version.ref = "spring6-version" }
+spring6-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring6-version" }
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring7-version" }
+spring-test = { module = "org.springframework:spring-test", version.ref = "spring7-version" }
+spring-tx = { module = "org.springframework:spring-tx", version.ref = "spring7-version" }
+spring-jdbc = { module = "org.springframework:spring-jdbc", version.ref = "spring7-version" }
 testng = { module = "org.testng:testng", version="7.12.0" }
 
 
 [bundles]
 junit4 = [ "junit4", "junit4-dataprovider", "junit4-params" ]
-spring-test = [ "spring-context", "spring-test", "spring-tx", "spring-jdbc" ]
-spring-compile = [ "spring-context", "spring-test" ]
+spring6-test = ["spring6-context", "spring6-test", "spring6-tx", "spring6-jdbc"]
+spring-test = ["spring-context", "spring-test", "spring-tx", "spring-jdbc"]
+spring-compile = ["spring6-context", "spring6-test"]
 aspectj-spring-test = [ "aspectj-jrt", "aspectj-jweaver" ]
 
 [plugins]
