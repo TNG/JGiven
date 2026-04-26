@@ -37,7 +37,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:6.0.3'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:6.0.3'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:6.0.3'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.14.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.14.4'
     testImplementation "com.tngtech.jgiven:jgiven-junit5:${jgivenVersion}"
     testImplementation "com.tngtech.jgiven:jgiven-html5-report:${jgivenVersion}"
 }
