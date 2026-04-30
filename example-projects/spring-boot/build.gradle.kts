@@ -20,7 +20,7 @@ apply(plugin = "io.spring.dependency-management")
 apply(plugin = "com.tngtech.jgiven.gradle-plugin")
 
 tasks.wrapper {
-    gradleVersion = "9.4.1"
+    gradleVersion = "9.5.0"
     distributionType = Wrapper.DistributionType.ALL
 }
 
