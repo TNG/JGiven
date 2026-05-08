@@ -42,11 +42,11 @@ class AsciiDocScenarioBlockConverterTest {
     void convert_scenario_header_with_a_tag_and_no_description() {
         // given
         List<Tag> tags = List.of(mkTag("BestTag"));
-        var nineMilliseconds = 10_000_000L;
+        var tenMilliseconds = 10_000_000L;
 
         // when
         var block = converter.convertScenarioHeaderBlock("method_1", "my first scenario",
-                ExecutionStatus.SCENARIO_PENDING, nineMilliseconds, tags, "");
+                ExecutionStatus.SCENARIO_PENDING, tenMilliseconds, tags, "");
 
         // then
         assertThatBlockContainsLines(block,
@@ -169,7 +169,7 @@ class AsciiDocScenarioBlockConverterTest {
     @Test
     void convert_scenario_footer_with_multiple_tags() {
         // given
-        List<Tag> tags = List.of(mkTag("BestTag"), mkTag("OtherTag"), mkTag("NicestTag"));
+        List<Tag> tags = List.of(mkTag("BestTag"), mkTag("GreatestTag"), mkTag("NicestTag"));
 
         // when
         var block = converter.convertScenarioFooterBlock("method_2", ExecutionStatus.FAILED, tags);
