@@ -1,8 +1,5 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.CasesTable;
@@ -16,24 +13,18 @@ import com.tngtech.jgiven.report.model.StepStatus;
 import com.tngtech.jgiven.report.model.Tag;
 import com.tngtech.jgiven.report.model.Word;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class AsciiDocReportModelVisitorTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class AsciiDocReportModelVisitorTest {
     private final ReportBlockConverter blockConverter = new MyFakeReportBlockConverter();
-
-    private AsciiDocReportModelVisitor reportModelVisitor;
-
-    @Before
-    public void setUp() {
-        ReportStatistics reportStatistics = new ReportStatistics();
-        reportModelVisitor = new AsciiDocReportModelVisitor(blockConverter, reportStatistics);
-    }
+    private AsciiDocReportModelVisitor reportModelVisitor = new AsciiDocReportModelVisitor(blockConverter, new ReportStatistics());
 
     @Test
-    public void visits_a_simple_report() {
+    void visits_a_simple_report() {
         // given
-        ReportModel report = mkReport(mkScenario("Simple Scenario", false, mkScenarioCase(
+        var report = mkReport(mkScenario("Simple Scenario", false, mkScenarioCase(
                 mkStep("Given", "state"),
                 mkStep("When", "action"),
                 mkStep("Then", "outcome"))));
@@ -43,7 +34,7 @@ public class AsciiDocReportModelVisitorTest {
 
         // then
         assertThat(reportModelVisitor.getAsciiDocBlocks())
-                .isEqualTo(ImmutableList.of(
+                .isEqualTo(List.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
                         "FirstStepBlock",
@@ -53,10 +44,10 @@ public class AsciiDocReportModelVisitorTest {
     }
 
     @Test
-    public void visits_a_report_with_two_scenarios() {
+    void visits_a_report_with_two_scenarios() {
         // given
 
-        ReportModel report = mkReport(
+        var report = mkReport(
                 mkScenario("Scenario One", false, mkScenarioCase(
                         mkStep("Given", "state"),
                         mkStep("When", "action"),
@@ -71,7 +62,7 @@ public class AsciiDocReportModelVisitorTest {
 
         // then
         assertThat(reportModelVisitor.getAsciiDocBlocks())
-                .isEqualTo(ImmutableList.of(
+                .isEqualTo(List.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
                         "FirstStepBlock",
@@ -86,9 +77,9 @@ public class AsciiDocReportModelVisitorTest {
     }
 
     @Test
-    public void visits_a_scenario_with_two_standalone_cases() {
+    void visits_a_scenario_with_two_standalone_cases() {
         // given
-        ReportModel report = mkReport(mkScenario("Simple Scenario", false,
+        var report = mkReport(mkScenario("Simple Scenario", false,
                 mkScenarioCase(
                         mkStep("Given", "state"),
                         mkStep("When", "action"),
@@ -103,7 +94,7 @@ public class AsciiDocReportModelVisitorTest {
 
         // then
         assertThat(reportModelVisitor.getAsciiDocBlocks())
-                .isEqualTo(ImmutableList.of(
+                .isEqualTo(List.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
                         "CaseHeaderBlock",
@@ -118,9 +109,9 @@ public class AsciiDocReportModelVisitorTest {
     }
 
     @Test
-    public void visits_a_scenario_with_two_cases_as_table() {
+    void visits_a_scenario_with_two_cases_as_table() {
         // given
-        ReportModel report = mkReport(mkScenario("Simple Scenario", true,
+        var report = mkReport(mkScenario("Simple Scenario", true,
                 mkScenarioCase(
                         mkStep("Given", "state"),
                         mkStep("When", "action"),
@@ -135,7 +126,7 @@ public class AsciiDocReportModelVisitorTest {
 
         // then
         assertThat(reportModelVisitor.getAsciiDocBlocks())
-                .isEqualTo(ImmutableList.of(
+                .isEqualTo(List.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
                         "FirstStepBlock",
@@ -146,9 +137,9 @@ public class AsciiDocReportModelVisitorTest {
     }
 
     @Test
-    public void visits_a_scenario_with_a_section() {
+    void visits_a_scenario_with_a_section() {
         // given
-        ReportModel report = mkReport(mkScenario("Simple Scenario", false, mkScenarioCase(
+        var report = mkReport(mkScenario("Simple Scenario", false, mkScenarioCase(
                 mkSectionTitle("Some Section"),
                 mkStep("Given", "state"),
                 mkStep("When", "action"),
@@ -159,7 +150,7 @@ public class AsciiDocReportModelVisitorTest {
 
         // then
         assertThat(reportModelVisitor.getAsciiDocBlocks())
-                .isEqualTo(ImmutableList.of(
+                .isEqualTo(List.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
                         "FirstStepBlock",
@@ -169,9 +160,9 @@ public class AsciiDocReportModelVisitorTest {
     }
 
     @Test
-    public void visits_a_scenario_with_two_sections() {
+    void visits_a_scenario_with_two_sections() {
         // given
-        ReportModel report = mkReport(mkScenario("Simple Scenario", false, mkScenarioCase(
+        var report = mkReport(mkScenario("Simple Scenario", false, mkScenarioCase(
                 mkSectionTitle("First Section"),
                 mkStep("Given", "state"),
                 mkStep("When", "action"),
@@ -186,7 +177,7 @@ public class AsciiDocReportModelVisitorTest {
 
         // then
         assertThat(reportModelVisitor.getAsciiDocBlocks())
-                .isEqualTo(ImmutableList.of(
+                .isEqualTo(List.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
                         "FirstStepBlock",
@@ -199,7 +190,7 @@ public class AsciiDocReportModelVisitorTest {
     }
 
     private static ReportModel mkReport(final ScenarioModel... scenarios) {
-        ReportModel report = new ReportModel();
+        var report = new ReportModel();
         for (final ScenarioModel scenarioModel : scenarios) {
             report.addScenarioModel(scenarioModel);
 
@@ -209,7 +200,7 @@ public class AsciiDocReportModelVisitorTest {
 
     private static ScenarioModel mkScenario(final String description, final boolean casesAsTable,
                                             final ScenarioCaseModel... cases) {
-        ScenarioModel scenario = new ScenarioModel();
+        var scenario = new ScenarioModel();
         scenario.setDescription(description);
         scenario.setCasesAsTable(casesAsTable);
         for (final ScenarioCaseModel caseModel : cases) {
@@ -219,7 +210,7 @@ public class AsciiDocReportModelVisitorTest {
     }
 
     private static ScenarioCaseModel mkScenarioCase(final StepModel... steps) {
-        ScenarioCaseModel scenarioCase = new ScenarioCaseModel();
+        var scenarioCase = new ScenarioCaseModel();
         for (final StepModel step : steps) {
             scenarioCase.addStep(step);
         }
@@ -227,14 +218,14 @@ public class AsciiDocReportModelVisitorTest {
     }
 
     private static StepModel mkSectionTitle(final String title) {
-        final Word sectionWord = new Word(title);
-        final StepModel stepModel = new StepModel(title, List.of(sectionWord));
+        final var sectionWord = new Word(title);
+        final var stepModel = new StepModel(title, List.of(sectionWord));
         stepModel.setIsSectionTitle(true);
         return stepModel;
     }
 
     private static StepModel mkStep(final String introWord, final String object) {
-        StepModel step = new StepModel();
+        var step = new StepModel();
         step.addIntroWord(Word.introWord(introWord));
         step.addWords(new Word("some"), new Word(object));
         return step;

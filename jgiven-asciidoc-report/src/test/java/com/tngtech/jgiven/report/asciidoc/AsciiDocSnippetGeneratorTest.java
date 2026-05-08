@@ -1,24 +1,24 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class AsciiDocSnippetGeneratorTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class AsciiDocSnippetGeneratorTest {
 
     @Test
-    public void generateIndexForFailedScenarios() {
+    void generateIndexForFailedScenarios() {
         // given
         final List<String> featureFileNames = new ArrayList<>();
         featureFileNames.add("com.example.application.FailedScenarioOne");
         featureFileNames.add("com.example.application.FailedScenarioTwo");
 
         // when
-        AsciiDocSnippetGenerator asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
+        var asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
                 "Failed Scenarios", "failed", 3);
-        final List<String> blocks = asciiDocSnippetGenerator.generateIndexSnippet("features", featureFileNames, "scenario-failed", -1);
+        final var blocks = asciiDocSnippetGenerator.generateIndexSnippet("features", featureFileNames, "scenario-failed", -1);
 
         // then
         assertThat(blocks).containsExactly(
@@ -29,16 +29,16 @@ public class AsciiDocSnippetGeneratorTest {
     }
 
     @Test
-    public void generateIndexForAllScenarios() {
+    void generateIndexForAllScenarios() {
         // given
         final List<String> featureFileNames = new ArrayList<>();
         featureFileNames.add("com.example.application.BigFeature");
         featureFileNames.add("com.example.application.OtherFeature");
 
         // when
-        AsciiDocSnippetGenerator asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
+        var asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
                 "All Scenarios", "scenarios in total", 40);
-        final List<String> blocks = asciiDocSnippetGenerator.generateIndexSnippet("features", featureFileNames, "", 0);
+        final var blocks = asciiDocSnippetGenerator.generateIndexSnippet("features", featureFileNames, "", 0);
 
         // then
         assertThat(blocks).containsExactly(

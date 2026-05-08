@@ -1,34 +1,32 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.Tag;
 import java.util.List;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-@RunWith(DataProviderRunner.class)
-public class AsciiDocScenarioBlockConverterTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class AsciiDocScenarioBlockConverterTest {
 
     private final AsciiDocBlockConverter converter = new AsciiDocBlockConverter();
 
-    @Test
-    @DataProvider({"SUCCESS, successful, icon:check-square[role=green]",
+    @ParameterizedTest
+    @CsvSource({ "SUCCESS, successful, icon:check-square[role=green]",
             "FAILED, failed, icon:exclamation-circle[role=red]",
             "SCENARIO_PENDING, pending, icon:ban[role=silver]",
             "SOME_STEPS_PENDING, pending, icon:ban[role=silver]"})
-    public void convert_scenario_header_without_tags_or_description(final ExecutionStatus status,
+    void convert_scenario_header_without_tags_or_description(final ExecutionStatus status,
                                                                     final String scenarioTag,
                                                                     final String humanStatus) {
         // given
         List<Tag> tags = List.of();
-        long oneSecond = 1_000_000_000L;
+        var oneSecond = 1_000_000_000L;
 
         // when
-        String block = converter.convertScenarioHeaderBlock("method_1", "my first scenario", status, oneSecond, tags, null);
+        var block = converter.convertScenarioHeaderBlock("method_1", "my first scenario", status, oneSecond, tags, null);
 
         // then
         assertThatBlockContainsLines(block,
@@ -41,13 +39,13 @@ public class AsciiDocScenarioBlockConverterTest {
     }
 
     @Test
-    public void convert_scenario_header_with_a_tag_and_no_description() {
+    void convert_scenario_header_with_a_tag_and_no_description() {
         // given
         List<Tag> tags = List.of(mkTag("BestTag"));
-        long nineMilliseconds = 10_000_000L;
+        var nineMilliseconds = 10_000_000L;
 
         // when
-        String block = converter.convertScenarioHeaderBlock("method_1", "my first scenario",
+        var block = converter.convertScenarioHeaderBlock("method_1", "my first scenario",
                 ExecutionStatus.SCENARIO_PENDING, nineMilliseconds, tags, "");
 
         // then
@@ -64,13 +62,13 @@ public class AsciiDocScenarioBlockConverterTest {
     }
 
     @Test
-    public void convert_scenario_header_with_description_and_no_tags() {
+    void convert_scenario_header_with_description_and_no_tags() {
         // given
         List<Tag> tags = List.of();
-        long halfMillisecond = 500_000L;
+        var halfMillisecond = 500_000L;
 
         // when
-        String block = converter.convertScenarioHeaderBlock("method_1", "my first scenario",
+        var block = converter.convertScenarioHeaderBlock("method_1", "my first scenario",
                 ExecutionStatus.SOME_STEPS_PENDING, halfMillisecond, tags, "Best scenario ever!!!");
 
         // then
@@ -86,13 +84,13 @@ public class AsciiDocScenarioBlockConverterTest {
     }
 
     @Test
-    public void convert_scenario_header_with_a_tag_and_description() {
+    void convert_scenario_header_with_a_tag_and_description() {
         // given
         List<Tag> tags = List.of(mkTag("BestTag"));
-        long threeSeconds = 3_000_000_000L;
+        var threeSeconds = 3_000_000_000L;
 
         // when
-        String block =
+        var block =
                 converter.convertScenarioHeaderBlock("method_1", "my first scenario", ExecutionStatus.SUCCESS, threeSeconds, tags,
                         "Best scenario ever!!!");
 
@@ -112,13 +110,13 @@ public class AsciiDocScenarioBlockConverterTest {
     }
 
     @Test
-    public void convert_scenario_header_with_multiple_tags() {
+    void convert_scenario_header_with_multiple_tags() {
         // given
         List<Tag> tags = List.of(mkTag("BestTag"), mkTag("OtherTag"), mkTag("NicestTag"));
-        long threeSeconds = 3_000_000_000L;
+        var threeSeconds = 3_000_000_000L;
 
         // when
-        String block =
+        var block =
                 converter.convertScenarioHeaderBlock("method_1", "my first scenario", ExecutionStatus.SUCCESS, threeSeconds,
                         tags, "");
 
@@ -138,14 +136,14 @@ public class AsciiDocScenarioBlockConverterTest {
                         + "_[.jg-tag-ArbitraryTag]#NicestTag#_");
     }
 
-    @Test
-    @DataProvider({"SUCCESS, successful", "FAILED, failed", "SCENARIO_PENDING, pending", "SOME_STEPS_PENDING, pending"})
-    public void convert_scenario_footer_without_tags(final ExecutionStatus status, final String scenarioTag) {
+    @ParameterizedTest
+    @CsvSource({ "SUCCESS, successful", "FAILED, failed", "SCENARIO_PENDING, pending", "SOME_STEPS_PENDING, pending" })
+    void convert_scenario_footer_without_tags(final ExecutionStatus status, final String scenarioTag) {
         // given
         List<Tag> tags = List.of();
 
         // when
-        String block = converter.convertScenarioFooterBlock("method_3", status, tags);
+        var block = converter.convertScenarioFooterBlock("method_3", status, tags);
 
         // then
         assertThatBlockContainsLines(block,
@@ -154,12 +152,12 @@ public class AsciiDocScenarioBlockConverterTest {
     }
 
     @Test
-    public void convert_scenario_footer_with_a_tag() {
+    void convert_scenario_footer_with_a_tag() {
         // given
         List<Tag> tags = List.of(mkTag("BestTag"));
 
         // when
-        String block = converter.convertScenarioFooterBlock("method_1", ExecutionStatus.FAILED, tags);
+        var block = converter.convertScenarioFooterBlock("method_1", ExecutionStatus.FAILED, tags);
 
         // then
         assertThatBlockContainsLines(block,
@@ -169,12 +167,12 @@ public class AsciiDocScenarioBlockConverterTest {
     }
 
     @Test
-    public void convert_scenario_footer_with_multiple_tags() {
+    void convert_scenario_footer_with_multiple_tags() {
         // given
         List<Tag> tags = List.of(mkTag("BestTag"), mkTag("OtherTag"), mkTag("NicestTag"));
 
         // when
-        String block = converter.convertScenarioFooterBlock("method_2", ExecutionStatus.FAILED, tags);
+        var block = converter.convertScenarioFooterBlock("method_2", ExecutionStatus.FAILED, tags);
 
         // then
         assertThatBlockContainsLines(block,
@@ -186,13 +184,13 @@ public class AsciiDocScenarioBlockConverterTest {
     }
 
     private static Tag mkTag(final String value) {
-        final Tag tag = new Tag("com.jgiven.ArbitraryTag", value);
+        final var tag = new Tag("com.jgiven.ArbitraryTag", value);
         tag.setType("ArbitraryTag");
         return tag;
     }
 
     private static void assertThatBlockContainsLines(final String block, final String... expectedLines) {
-        final String[] blockLines = block.split(System.lineSeparator());
+        final var blockLines = block.split(System.lineSeparator());
         assertThat(blockLines).hasSize(expectedLines.length).containsExactly(expectedLines);
     }
 }
