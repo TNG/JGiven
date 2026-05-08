@@ -4,6 +4,8 @@ target
 .classpath
 .project
 .settings
+.checkstyle
+*.kate-swp
 .idea
 jgiven-reports
 *.iml
