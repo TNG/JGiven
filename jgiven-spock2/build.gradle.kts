@@ -9,7 +9,7 @@ plugins {
 description = "Module for writing JGiven tests with Spock 2"
 
 val spock2Version = "2.3-groovy-4.0"
-val groovyVersion = "4.0.32"
+val groovyVersion = "5.0.6"
 
 repositories {
     mavenLocal()
