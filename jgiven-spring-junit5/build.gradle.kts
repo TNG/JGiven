@@ -5,16 +5,16 @@ plugins {
     id("jgiven-java")
 }
 
-description = "Module for using Spring dependency injection together with JGiven and JUnit 5"
+description = "Module for using Spring dependency injection together with JGiven and JUnit 5 (Deprecated: Use jgiven-spring-junit6 for Spring 7 support)"
 
 dependencies {
     api(project(":jgiven-spring"))
     api(project(":jgiven-junit5"))
 
-    if (rootProject.hasProperty("junitVersion")) {
-        implementation(platform("org.junit:junit-bom:${rootProject.property("junitVersion")}"))
+    if (rootProject.hasProperty("junit5Version")) {
+        implementation(platform("org.junit:junit-bom:${rootProject.property("junit5Version")}"))
     } else {
-        implementation(platform(libs.junit.bom))
+        implementation(platform(libs.junit5.bom))
     }
 
     compileOnly(libs.bundles.spring.compile)
@@ -24,7 +24,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testRuntimeOnly(libs.junit.platform.launcher)
-    testImplementation(libs.bundles.spring.test)
+    testImplementation(libs.bundles.spring6.test)
     testImplementation(libs.hypersql.database)
     testImplementation(libs.bundles.aspectj.spring.test)
 }

@@ -16,7 +16,7 @@ dependencies {
 
     testImplementation(project(":jgiven-html5-report"))
 
-    testImplementation(platform(libs.junit.bom))
+    testImplementation(platform(libs.junit6.bom))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-params")

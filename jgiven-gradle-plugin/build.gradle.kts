@@ -12,7 +12,7 @@ dependencies {
     implementation(project(":jgiven-core"))
     implementation(project(":jgiven-asciidoc-report"))
     implementation(project(":jgiven-html5-report"))
-    implementation(platform(libs.junit.bom))
+    implementation(platform(libs.junit6.bom))
     implementation(libs.jakarta.annotation)
     implementation(libs.guava)
     implementation(libs.gson)
