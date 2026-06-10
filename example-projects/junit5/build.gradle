@@ -42,7 +42,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:6.1.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:6.1.0'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:6.1.0'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.14.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.1.0'
     testImplementation 'org.slf4j:slf4j-jdk14:2.0.18'
 }
 
