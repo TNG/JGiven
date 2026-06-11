@@ -20,7 +20,7 @@ dependencies {
     testImplementation(project(":jgiven-junit5"))
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
-    testImplementation("org.spockframework:spock-core:2.3-groovy-4.0")
+    testImplementation("org.spockframework:spock-core:2.4-groovy-5.0")
 }
 
 tasks.named<Test>("test") {
