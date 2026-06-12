@@ -2,8 +2,7 @@
 
 ## Backward incompatible changes
 
-* Removed deprecated JGiven-Spock module. Please use the JGiven-Spock2 module instead.
-* Drop support for Java 17. JGiven now requires Java 21 or higher.
+* Dropped support for Java 17. JGiven now requires Java 21 or higher.
 
 ## Deprecated modules
 
