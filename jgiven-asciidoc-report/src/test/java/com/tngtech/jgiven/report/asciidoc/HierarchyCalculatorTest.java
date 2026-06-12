@@ -44,4 +44,28 @@ class HierarchyCalculatorTest {
                                 "tag-id", List.of("file"),
                                 "other-tag", List.of("file"))));
     }
+
+    @Test
+    void multiple_tag_types_in_different_files() {
+        var result = HierarchyCalculator.computeGroupedTag(
+                Map.of("tag-id1", new Tag("tag type 1"),
+                        "tag-id2", new Tag("tag type 2")),
+                Map.of("tag-id1", List.of("file1"),
+                        "tag-id2", List.of("file2")));
+        assertThat(result).isEqualTo(
+                Map.of("tag type 1", Map.of("tag-id1", List.of("file1")),
+                        "tag type 2", Map.of("tag-id2", List.of("file2"))));
+    }
+
+    @Test
+    void multiple_tag_types_in_overlapping_files() {
+        var result = HierarchyCalculator.computeGroupedTag(
+                Map.of("tag-id1", new Tag("tag type 1"),
+                        "tag-id2", new Tag("tag type 2")),
+                Map.of("tag-id1", List.of("file1", "file2"),
+                        "tag-id2", List.of("file2", "file3")));
+        assertThat(result).isEqualTo(
+                Map.of("tag type 1", Map.of("tag-id1", List.of("file1", "file2")),
+                        "tag type 2", Map.of("tag-id2", List.of("file2", "file3"))));
+    }
 }
