@@ -8,7 +8,9 @@
     "gradle",
     "maven",
     "github-actions",
-    "gradle-wrapper"
+    "gradle-wrapper",
+    "kotlin-script",
+    "sbt"
   ],
   "ignorePaths": [
     "**/example-projects/scala/**"
