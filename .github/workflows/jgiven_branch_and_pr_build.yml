@@ -9,7 +9,7 @@ jobs:
       ANDROID: true
     strategy:
       matrix:
-        java: [ '17', '21']
+        java: [ '21', '24', '25' ]
         junit5: [ '5.11.4', '5.12.2', '5.13.4' ]
     steps:
       - name: Ensure chrome is installed
@@ -19,13 +19,13 @@ jobs:
         uses: actions/setup-java@v5.2.0
         with:
           java-version: ${{matrix.java}}
-          distribution: 'adopt'
+          distribution: 'temurin'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle and JUnit 5 ${{ matrix.junit5 }}
         run: "./gradlew -i -s check -Pjunit5Version=${{ matrix.junit5 }}"
       - name: Run Jacoco
-        if: ${{matrix.java == '17' && matrix.junit5 == '5.13.4' && github.ref == 'refs/heads/master' && github.head_ref == null}}
+        if: ${{matrix.java == '21' && matrix.junit5 == '5.13.4' && github.ref == 'refs/heads/master' && github.head_ref == null}}
         run: ./gradlew overallJacocoReport coveralls
       - name: Upload test results html files
         continue-on-error: true
@@ -42,7 +42,7 @@ jobs:
       ANDROID: true
     strategy:
       matrix:
-        java: [ '17', '21' ]
+        java: [ '21', '24', '25' ]
         junit6: [ '6.0.0', '6.0.3' ]
     steps:
       - name: Ensure chrome is installed
@@ -52,7 +52,7 @@ jobs:
         uses: actions/setup-java@v5.2.0
         with:
           java-version: ${{matrix.java}}
-          distribution: 'adopt'
+          distribution: 'temurin'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle and JUnit 6 ${{ matrix.junit6 }}
@@ -72,7 +72,7 @@ jobs:
       ANDROID: true
     strategy:
       matrix:
-        java: [ '17', '21']
+        java: [ '21', '24', '25' ]
     steps:
       - name: Ensure chrome is installed
         run: wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt install ./google-chrome-stable_current_amd64.deb && rm *.deb
@@ -81,7 +81,7 @@ jobs:
         uses: actions/setup-java@v5.2.0
         with:
           java-version: ${{matrix.java}}
-          distribution: 'adopt'
+          distribution: 'temurin'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle and JUnit 4
