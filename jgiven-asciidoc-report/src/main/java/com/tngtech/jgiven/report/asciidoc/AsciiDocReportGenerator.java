@@ -227,12 +227,8 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     private void writeIndexFileForAllTags(final Map<String, Map<String, List<String>>> strings) {
         final var tagFiles = strings.entrySet().stream()
-                .sorted((o1, o2) -> {
-                    final var tag1 = allTags.get(o1.getValue().keySet().stream().findFirst().orElse(""));
-                    final var tag2 = allTags.get(o2.getValue().keySet().stream().findFirst().orElse(""));
-                    return Objects.compare(tag1, tag2, Comparator.comparing(Tag::getName));
-
-                })
+                .sorted((o1, o2) -> Objects.compare(o1, o2, Comparator
+                        .comparing(entry -> allTags.get(entry.getValue().keySet().stream().findFirst().orElse("")).getName())))
                 .map(entry -> entry.getKey().replace(' ', '_'))
                 .toList();
         final var total = taggedScenarioCounts.values().stream().reduce(Integer::sum).orElse(999);
