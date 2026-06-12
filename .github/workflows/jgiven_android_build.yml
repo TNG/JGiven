@@ -8,9 +8,9 @@ jobs:
     env:
       ANDROID: true
     steps:
-      - uses: actions/checkout@v5.0.0
-      - name: Set upt JDK 17
-        uses: actions/setup-java@v5.0.0
+      - uses: actions/checkout@v6.0.3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5.2.0
         with:
           java-version: 17
           distribution: 'adopt'
@@ -25,14 +25,14 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Test Android plugin and Android example project
-        uses: reactivecircus/android-emulator-runner@v2.34.0
+        uses: reactivecircus/android-emulator-runner@v2.37.0
         with:
           api-level: 29
           script: "bash -c 'source scripts/source_files/helper_functions.sh && runAndroidTestOnGivenProject jgiven-android-test 1.1-t && runAndroidTestOnGivenProject example-projects/android 1.1-t'"
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
-        uses: actions/upload-artifact@v4.6.2
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: test-report-example-projects
           path: /home/runner/work/JGiven/JGiven/example-projects/*/build/reports/tests

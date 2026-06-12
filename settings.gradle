@@ -17,20 +17,10 @@ pluginManagement {
 }
 
 plugins {
-    id 'com.gradle.develocity' version '4.2.1'
+    id 'com.gradle.develocity' version '4.4.2'
 }
 
-dependencyResolutionManagement {
-    versionCatalogs {
-        junitVariableVersionLibs {
-            from(files('gradle/libs.versions.toml'))
-            def junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : null
-            if (junitVersion != null) {
-                version("junit4-version", junitVersion)
-            }
-        }
-    }
-}
+
 
 develocity{
     buildScan {
@@ -54,7 +44,9 @@ include ':jgiven-core',
         ':jgiven-tests',
         ':jgiven-examples',
         ':jgiven-junit5',
+        ':jgiven-junit6',
         ':jgiven-spring-junit5',
+        ':jgiven-spring-junit6',
         ':jgiven-gradle-plugin'
 
 def timingEnabled = System.getenv("JGivenTiming")
@@ -75,6 +67,6 @@ if (android && !release && hasAndroidSourcePath) {
     include ':jgiven-android-test'
 }
 
-if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_19)) {
+if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
     include ':jgiven-future-java-tests'
 }

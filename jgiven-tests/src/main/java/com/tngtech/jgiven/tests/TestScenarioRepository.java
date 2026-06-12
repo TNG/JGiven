@@ -283,8 +283,8 @@ public class TestScenarioRepository {
         return new TestScenario(TestWithTwoCasesAndAFailingOne.class);
     }
 
-    public static TestScenario junit5TestsWithModificationsInAfterMethod() {
-        return new TestScenario(JUnit5AfterMethodTests.class);
+    public static TestScenario junit6TestsWithModificationsInAfterMethod() {
+        return new TestScenario(JUnit6AfterMethodTests.class);
     }
 
     public static TestScenario testNgTestWithAFailingCase() {
