@@ -80,9 +80,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         writeIndexFileForAbortedScenarios();
 
-        final var hierarchyCalculator = new HierarchyCalculator(allTags, taggedScenarioFeatures);
-
-        final var groupedTags = hierarchyCalculator.computeGroupedTag();
+        final var groupedTags = HierarchyCalculator.computeGroupedTag(allTags, taggedScenarioFeatures);
 
         groupedTags.forEach(this::writeIndexFileForTaggedScenarios);
 

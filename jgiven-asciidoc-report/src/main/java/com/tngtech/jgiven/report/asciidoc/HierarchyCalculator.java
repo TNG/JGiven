@@ -14,6 +14,11 @@ public class HierarchyCalculator {
         this.allTags = allTags;
     }
 
+    static Map<String, Map<String, List<String>>> computeGroupedTag(final Map<String, Tag> allTags,
+            final Map<String, List<String>> taggedScenarioFiles) {
+        return new HierarchyCalculator(allTags, taggedScenarioFiles).computeGroupedTag();
+    }
+
     Map<String, Map<String, List<String>>> computeGroupedTag() {
         return taggedScenarioFiles.entrySet().stream()
                 .filter(entry -> allTags.get(entry.getKey()).getShownInNavigation())
@@ -21,7 +26,7 @@ public class HierarchyCalculator {
     }
 
     private String fullType(final Map.Entry<String, List<String>> entry) {
-        final Tag tag = allTags.get(entry.getKey());
+        final var tag = allTags.get(entry.getKey());
 
         return tag.getFullType();
 
