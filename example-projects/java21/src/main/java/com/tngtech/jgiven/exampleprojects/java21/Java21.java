@@ -1,8 +1,8 @@
-package com.tngtech.jgiven.exampleprojects.java17;
+package com.tngtech.jgiven.exampleprojects.java21;
 
 import java.util.function.*;
 
-public class Java17 {
+public class Java21 {
 
     public static boolean test(String y) {
        Predicate<String> p   = ( var x ) -> x == x;
@@ -14,3 +14,4 @@ public class Java17 {
     }
 
 }
+

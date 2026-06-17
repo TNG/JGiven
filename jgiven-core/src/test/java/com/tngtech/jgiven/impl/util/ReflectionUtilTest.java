@@ -1,20 +1,21 @@
 package com.tngtech.jgiven.impl.util;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assumptions.assumeThat;
-
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
 import com.tngtech.jgiven.exception.JGivenInjectionException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import java.lang.reflect.AccessibleObject;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 @RunWith(DataProviderRunner.class)
 public class ReflectionUtilTest {
@@ -47,7 +48,7 @@ public class ReflectionUtilTest {
     @Test
     @UseDataProvider("javaInternalComplexDataTypes")
     public void complex_java_datatypes_are_treated_as_inaccessible(Object input){
-        assumeThat(Integer.parseInt(System.getProperty("java.version").split("[.]")[0])).isGreaterThanOrEqualTo(17);
+        assumeThat(Integer.parseInt(System.getProperty("java.version").split("[.]")[0])).isGreaterThanOrEqualTo(21);
         assertThat(ReflectionUtil.getAllFieldValues(
                 input,
                 ReflectionUtil.getAllNonStaticFields(input.getClass()),"")).containsOnly((Object) null);
