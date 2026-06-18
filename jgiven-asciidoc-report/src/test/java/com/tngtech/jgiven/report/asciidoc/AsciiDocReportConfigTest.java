@@ -1,15 +1,15 @@
 package com.tngtech.jgiven.report.asciidoc;
 
+import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Test;
-
-public class AsciiDocReportConfigTest {
+class AsciiDocReportConfigTest {
 
     @Test
-    public void defaultConfigHasSensibleDefaults() {
+    void defaultConfigHasSensibleDefaults() {
         // when
-        final AsciiDocReportConfig reportConfig = new AsciiDocReportConfig();
+        final var reportConfig = new AsciiDocReportConfig();
 
         // then
         assertThat(reportConfig.getTitle()).isEqualTo("JGiven Report");
@@ -21,9 +21,9 @@ public class AsciiDocReportConfigTest {
     }
 
     @Test
-    public void badlyInitializedConfigHasSensibleDefaults() {
+    void badlyInitializedConfigHasSensibleDefaults() {
         // when
-        final AsciiDocReportConfig reportConfig = new AsciiDocReportConfig("foobar=fizzbuzz");
+        final var reportConfig = new AsciiDocReportConfig("foobar=fizzbuzz");
 
         // then
         assertThat(reportConfig.getTitle()).isEqualTo("JGiven Report");

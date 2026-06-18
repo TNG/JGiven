@@ -1,25 +1,22 @@
 package com.tngtech.jgiven.report.asciidoc;
 
+import com.tngtech.jgiven.report.AbstractReportConfig;
+import java.io.File;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.tngtech.jgiven.report.AbstractReportConfig;
-import java.io.IOException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-public class AsciiDocReportGeneratorTest {
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+class AsciiDocReportGeneratorTest {
 
     private final AsciiDocReportGenerator reportGenerator = new AsciiDocReportGenerator();
 
     @Test
-    public void createReportConfig() {
+    void createReportConfig() {
         // when
-        final AsciiDocReportConfig reportConfig = reportGenerator.createReportConfig();
+        final var reportConfig = reportGenerator.createReportConfig();
 
         // then
         assertThat(reportConfig.getTitle()).isEqualTo("JGiven Report");
@@ -31,7 +28,7 @@ public class AsciiDocReportGeneratorTest {
     }
 
     @Test
-    public void generatingReportWithoutConfigWillFail() {
+    void generatingReportWithoutConfigWillFail() {
         // when
         assertThatThrownBy(reportGenerator::generate)
                 .isInstanceOf(IllegalStateException.class)
@@ -39,10 +36,10 @@ public class AsciiDocReportGeneratorTest {
     }
 
     @Test
-    public void generatingReportWithImplicitConfig() throws IOException {
+    void generatingReportWithImplicitConfig(@TempDir File temporaryFolder) {
         // given
         final AbstractReportConfig config = new AsciiDocReportConfig();
-        config.setTargetDir(temporaryFolder.newFolder());
+        config.setTargetDir(temporaryFolder);
 
         reportGenerator.setConfig(config);
 
@@ -51,10 +48,10 @@ public class AsciiDocReportGeneratorTest {
     }
 
     @Test
-    public void generatingReportWithExplicitConfig() throws IOException {
+    void generatingReportWithExplicitConfig(@TempDir File temporaryFolder) {
         // given
         final AbstractReportConfig config = new AsciiDocReportConfig();
-        config.setTargetDir(temporaryFolder.newFolder());
+        config.setTargetDir(temporaryFolder);
 
         // when
         assertThatNoException().isThrownBy(() -> reportGenerator.generateWithConfig(config));
@@ -62,7 +59,7 @@ public class AsciiDocReportGeneratorTest {
 
 
     @Test
-    public void reporterHandlesBadConfigGracefully() throws IOException {
+    void reporterHandlesBadConfigGracefully() {
         // given
         final AbstractReportConfig config = new AsciiDocReportConfig();
         config.setSourceDir(null);
