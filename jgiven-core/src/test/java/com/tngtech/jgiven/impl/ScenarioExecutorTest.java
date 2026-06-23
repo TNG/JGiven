@@ -1,20 +1,19 @@
 package com.tngtech.jgiven.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-import com.tngtech.jgiven.annotation.AfterStage;
-import com.tngtech.jgiven.annotation.BeforeStage;
-import com.tngtech.jgiven.annotation.DoNotIntercept;
-import com.tngtech.jgiven.annotation.ExpectedScenarioState;
-import com.tngtech.jgiven.annotation.Pending;
-import com.tngtech.jgiven.annotation.ProvidedScenarioState;
-import com.tngtech.jgiven.annotation.ScenarioStage;
+import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
-import java.util.Collections;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.RestoreSystemProperties;
+
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ScenarioExecutorTest {
 
@@ -258,6 +257,199 @@ public class ScenarioExecutorTest {
         @DoNotIntercept
         public int returnFive() {
             return 5;
+        }
+    }
+
+    private static URLClassLoader createSeparateLoader() throws Exception {
+        String classpath = System.getProperty("java.class.path");
+        String[] entries = classpath.split(File.pathSeparator);
+        URL[] urls = new URL[entries.length];
+        for (int i = 0; i < entries.length; i++) {
+            urls[i] = new File(entries[i]).toURI().toURL();
+        }
+        return new URLClassLoader(urls, null);
+    }
+
+    @Test
+    public void wrapper_class_loading_strategy_still_executes_BeforeStage_methods() {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        executor.setStageClassCreator(new WrapperStageClassCreator());
+        WrapperBeforeStageStep steps = executor.addStage(WrapperBeforeStageStep.class);
+        executor.startScenario("Test");
+        steps.before_stage_was_executed();
+    }
+
+    @Test
+    public void wrapper_class_loading_strategy_still_executes_AfterStage_methods() {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        executor.setStageClassCreator(new WrapperStageClassCreator());
+        WrapperAfterStageStep steps = executor.addStage(WrapperAfterStageStep.class);
+        WrapperNextSteps nextSteps = executor.addStage(WrapperNextSteps.class);
+        executor.startScenario("Test");
+        steps.after_stage_was_not_yet_executed();
+        nextSteps.after_stage_was_executed();
+    }
+
+    @Test
+    public void wrapper_class_loading_strategy_still_executes_BeforeScenario_methods() throws Throwable {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        executor.setStageClassCreator(new WrapperStageClassCreator());
+        WrapperBeforeScenarioStep steps = executor.addStage(WrapperBeforeScenarioStep.class);
+        executor.startScenario("Test");
+        steps.some_step();
+        executor.finished();
+
+        assertThat(steps.beforeScenarioExecuted).isTrue();
+    }
+
+    @Test
+    public void wrapper_class_loading_strategy_still_executes_AfterScenario_methods() throws Throwable {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        executor.setStageClassCreator(new WrapperStageClassCreator());
+        WrapperAfterScenarioStep steps = executor.addStage(WrapperAfterScenarioStep.class);
+        executor.startScenario("Test");
+        steps.some_step();
+        executor.finished();
+
+        assertThat(steps.afterScenarioExecuted).isTrue();
+    }
+
+    @Test
+    public void wrapper_class_loading_strategy_fails_with_package_private_stage_class() {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        executor.setStageClassCreator(new WrapperStageClassCreator());
+        assertThatThrownBy(() -> executor.addStage(PackagePrivateStageStep.class))
+                .hasRootCauseInstanceOf(IllegalAccessError.class);
+    }
+
+    @Test
+    public void injection_class_loading_strategy_works_with_package_private_stage_class() {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        PackagePrivateStageStep steps = executor.addStage(PackagePrivateStageStep.class);
+        executor.startScenario("Test");
+        steps.some_step();
+    }
+
+    @Test
+    public void wrapper_class_loading_strategy_executes_protected_lifecycle_methods() {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        executor.setStageClassCreator(new WrapperStageClassCreator());
+        ProtectedLifecycleStageStep steps = executor.addStage(ProtectedLifecycleStageStep.class);
+        executor.startScenario("Test");
+        steps.some_step();
+
+        assertThat(steps.beforeStageExecuted).isTrue();
+    }
+
+    @Test
+    public void injection_class_loading_strategy_executes_protected_lifecycle_methods() {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        ProtectedLifecycleStageStep steps = executor.addStage(ProtectedLifecycleStageStep.class);
+        executor.startScenario("Test");
+        steps.some_step();
+
+        assertThat(steps.beforeStageExecuted).isTrue();
+    }
+
+    @Test
+    public void getStageState_returns_null_when_stage_class_identity_differs_from_map_key() throws Exception {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        WrapperBeforeStageStep steps = executor.addStage(WrapperBeforeStageStep.class);
+
+        try (URLClassLoader separateLoader = createSeparateLoader()) {
+            Class<?> sameClassDifferentLoader = separateLoader.loadClass(
+                    "com.tngtech.jgiven.impl.ScenarioExecutorTest$WrapperBeforeStageStep");
+
+            assertThat(sameClassDifferentLoader).isNotSameAs(WrapperBeforeStageStep.class);
+            assertThat(sameClassDifferentLoader.getName()).isEqualTo(WrapperBeforeStageStep.class.getName());
+
+            assertThat(executor.getStageState(steps)).isNotNull();
+            assertThat(executor.stages.containsKey(WrapperBeforeStageStep.class)).isTrue();
+            assertThat(executor.stages.containsKey(sameClassDifferentLoader)).isFalse();
+        }
+    }
+
+    static class WrapperStageClassCreator extends ByteBuddyStageClassCreator {
+        @Override
+        protected ClassLoadingStrategy getClassLoadingStrategy(Class<?> stageClass) {
+            return ClassLoadingStrategy.Default.WRAPPER;
+        }
+    }
+
+    public static class WrapperBeforeStageStep {
+        public boolean beforeStageExecuted;
+
+        @BeforeStage
+        public void setup() {
+            beforeStageExecuted = true;
+        }
+
+        public void before_stage_was_executed() {
+            assertThat(beforeStageExecuted).isTrue();
+        }
+    }
+
+    public static class WrapperAfterStageStep {
+        @ProvidedScenarioState
+        public boolean afterStageExecuted;
+
+        @AfterStage
+        public void setup() {
+            afterStageExecuted = true;
+        }
+
+        public void after_stage_was_not_yet_executed() {
+            assertThat(afterStageExecuted).isFalse();
+        }
+    }
+
+    public static class WrapperNextSteps {
+        @ExpectedScenarioState
+        public boolean afterStageExecuted;
+
+        public void after_stage_was_executed() {
+            assertThat(afterStageExecuted).isTrue();
+        }
+    }
+
+    public static class WrapperBeforeScenarioStep {
+        public boolean beforeScenarioExecuted;
+
+        @BeforeScenario
+        public void setup() {
+            beforeScenarioExecuted = true;
+        }
+
+        public void some_step() {
+        }
+    }
+
+    public static class WrapperAfterScenarioStep {
+        public boolean afterScenarioExecuted;
+
+        @AfterScenario
+        public void teardown() {
+            afterScenarioExecuted = true;
+        }
+
+        public void some_step() {
+        }
+    }
+
+    static class PackagePrivateStageStep {
+        public void some_step() {
+        }
+    }
+
+    public static class ProtectedLifecycleStageStep {
+        boolean beforeStageExecuted;
+
+        @BeforeStage
+        protected void setup() {
+            beforeStageExecuted = true;
+        }
+
+        public void some_step() {
         }
     }
 }

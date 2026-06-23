@@ -1,17 +1,18 @@
 package com.tngtech.jgiven.impl;
 
-import static net.bytebuddy.matcher.ElementMatchers.named;
-import static net.bytebuddy.matcher.ElementMatchers.not;
-
 import com.tngtech.jgiven.impl.intercept.ByteBuddyMethodInterceptor;
 import com.tngtech.jgiven.impl.intercept.StageInterceptorInternal;
 import com.tngtech.jgiven.impl.intercept.StepInterceptor;
 import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.dynamic.loading.ClassInjector;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.dynamic.scaffold.subclass.ConstructorStrategy;
 import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.implementation.bind.annotation.FieldProxy;
 import net.bytebuddy.matcher.ElementMatchers;
+
+import static net.bytebuddy.matcher.ElementMatchers.named;
+import static net.bytebuddy.matcher.ElementMatchers.not;
 
 public class ByteBuddyStageClassCreator implements StageClassCreator {
 
@@ -49,15 +50,19 @@ public class ByteBuddyStageClassCreator implements StageClassCreator {
                             StepInterceptorGetterSetter.class ))
                 .to( new ByteBuddyMethodInterceptor() ))
             .make()
-            .load( getClassLoader(stageClass),
+                .load(getClassLoader(stageClass),
                 getClassLoadingStrategy( stageClass ) )
             .getLoaded();
     }
 
     protected ClassLoadingStrategy getClassLoadingStrategy( Class<?> stageClass ) {
-        return getClassLoader(stageClass) == null
-                ? ClassLoadingStrategy.Default.WRAPPER
-                : ClassLoadingStrategy.Default.INJECTION;
+        if (getClassLoader(stageClass) == null) {
+            return ClassLoadingStrategy.Default.WRAPPER;
+        }
+        if (ClassInjector.UsingReflection.isAvailable()) {
+            return ClassLoadingStrategy.Default.INJECTION;
+        }
+        return ClassLoadingStrategy.Default.WRAPPER;
     }
 
     protected ClassLoader getClassLoader( Class<?> stageClass ) {
