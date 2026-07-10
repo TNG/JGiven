@@ -2,6 +2,7 @@ package com.tngtech.jgiven.impl;
 
 import com.tngtech.jgiven.annotation.*;
 import com.tngtech.jgiven.exception.JGivenExecutionException;
+import net.bytebuddy.dynamic.loading.ClassInjector;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import org.junit.Rule;
 import org.junit.Test;
@@ -324,6 +325,9 @@ public class ScenarioExecutorTest {
 
     @Test
     public void injection_class_loading_strategy_works_with_package_private_stage_class() {
+        org.junit.Assume.assumeTrue(
+                "Injection class loading strategy requires reflective class injection to be available",
+                ClassInjector.UsingReflection.isAvailable());
         ScenarioExecutor executor = new ScenarioExecutor();
         PackagePrivateStageStep steps = executor.addStage(PackagePrivateStageStep.class);
         executor.startScenario("Test");
@@ -352,7 +356,7 @@ public class ScenarioExecutorTest {
     }
 
     @Test
-    public void getStageState_returns_null_when_stage_class_identity_differs_from_map_key() throws Exception {
+    public void getStageState_returns_state_when_stage_class_identity_differs_from_map_key() throws Exception {
         ScenarioExecutor executor = new ScenarioExecutor();
         WrapperBeforeStageStep steps = executor.addStage(WrapperBeforeStageStep.class);
 
