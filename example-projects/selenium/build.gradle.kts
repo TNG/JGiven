@@ -22,8 +22,8 @@ plugins {
 apply(plugin = "com.tngtech.jgiven.gradle-plugin")
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 repositories {
@@ -41,7 +41,7 @@ dependencies {
     val version: String by project
     testImplementation("com.tngtech.jgiven:jgiven-junit:$version")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.seleniumhq.selenium:selenium-java:4.44.0")
+    testImplementation("org.seleniumhq.selenium:selenium-java:4.45.0")
     testImplementation("io.github.bonigarcia:webdrivermanager:6.3.4")
     testImplementation("org.assertj:assertj-core:3.27.7")
 }

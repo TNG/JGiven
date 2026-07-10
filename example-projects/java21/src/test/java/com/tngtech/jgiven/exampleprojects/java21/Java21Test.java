@@ -1,10 +1,10 @@
-package com.tngtech.jgiven.exampleprojects.java17;
+package com.tngtech.jgiven.exampleprojects.java21;
 
 import com.tngtech.jgiven.junit.SimpleScenarioTest;
 import org.junit.Test;
-import com.tngtech.jgiven.exampleprojects.java17.Java17;
+import com.tngtech.jgiven.exampleprojects.java21.Java21;
 
-public class Java17Test extends SimpleScenarioTest<Java17Test.Steps> {
+public class Java21Test extends SimpleScenarioTest<Java21Test.Steps> {
 
     @Test
     public void example_scenario() {
@@ -20,7 +20,7 @@ public class Java17Test extends SimpleScenarioTest<Java17Test.Steps> {
         }
 
         public void some_action() {
-            Java17.test("f");
+            Java21.test("f");
         }
 
         public void some_outcome() {
