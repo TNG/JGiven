@@ -1,12 +1,10 @@
 package com.tngtech.jgiven.report.model;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF> {
 
@@ -46,19 +44,18 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
     }
 
     public void the_report_model_contains_a_tag_named( String tagName ) {
-        List<String> tags = reportModel.getLastScenarioModel().getTagIds();
-        assertThat( tags ).isNotEmpty();
-        assertThat( tags ).contains( tagName + "-testValue" );
+        assertThat(reportModel.getLastScenarioModel().getTagIds()).contains(tagName + "-testValue");
     }
 
     public void the_description_of_the_report_model_is( String description ) {
         assertThat( reportModel.getDescription() ).isEqualTo( description );
     }
 
-    @ExtendedDescription( "With version 4.12 JUnit changed its behavior regarding test classes where all tests are @Ignored. " +
-            "Instead of executing class-level test rules, no rules are executed at all. " +
-            "In that case no report model will be generated at all by JGiven. " +
-            "For earlier JUnit versions JGiven will generate empty report models" )
+    @ExtendedDescription( """
+        With version 4.12 JUnit changed its behavior regarding test classes where all tests are @Ignored. \
+        Instead of executing class-level test rules, no rules are executed at all. \
+        In that case no report model will be generated at all by JGiven. \
+        For earlier JUnit versions JGiven will generate empty report models""" )
     public SELF the_report_model_is_either_null_or_empty() {
         assertThat( reportModel == null || reportModel.getScenarios().isEmpty() )
             .as( "Report model is either null or empty" ).isTrue();
@@ -79,7 +76,7 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
     }
 
     private SELF isDifferent( int wordNr, int stepNr, int caseNr, boolean expected ) {
-        Word word = getWord( caseNr, stepNr, wordNr );
+        var word = getWord( caseNr, stepNr, wordNr );
         assertThat( word.isDifferent() ).isEqualTo( expected );
         return self();
     }

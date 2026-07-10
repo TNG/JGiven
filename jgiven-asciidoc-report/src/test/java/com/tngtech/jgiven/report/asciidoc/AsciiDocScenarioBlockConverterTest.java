@@ -177,7 +177,7 @@ class AsciiDocScenarioBlockConverterTest {
         // then
         assertThatBlockContainsLines(block,
                 "// end::tag-com.jgiven.ArbitraryTag-NicestTag[]",
-                "// end::tag-com.jgiven.ArbitraryTag-OtherTag[]",
+                "// end::tag-com.jgiven.ArbitraryTag-GreatestTag[]",
                 "// end::tag-com.jgiven.ArbitraryTag-BestTag[]",
                 "// end::status-is-failed[]",
                 "// end::scenario-method_2[]");
