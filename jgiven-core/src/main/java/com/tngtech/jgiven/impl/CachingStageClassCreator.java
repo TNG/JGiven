@@ -20,4 +20,8 @@ public class CachingStageClassCreator implements StageClassCreator {
         return (Class<? extends T>) typeCache.findOrInsert( stageClass.getClassLoader(), stageClass,
                 () -> stageCreator.createStageClass( stageClass ) );
     }
+
+    static void clearCache() {
+        typeCache.clear();
+    }
 }
