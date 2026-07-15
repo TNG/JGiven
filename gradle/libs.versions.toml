@@ -38,6 +38,7 @@ junit6-params = { module = "org.junit.jupiter:junit-jupiter-params" }
 junit5-bom = { module = "org.junit:junit-bom", version.ref = "junit5-version" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+junit4-engine = { module = "org.junit.vintage:junit-vintage-engine" }
 junit4 = { module = "junit:junit", version.ref = "junit4-version" }
 junit4-dataprovider = { module = "com.tngtech.java:junit-dataprovider", version = "1.13.1" }
 junit4-params = { module = "pl.pragmatists:JUnitParams", version = "1.1.1" }
