@@ -1,6 +1,8 @@
 package com.tngtech.jgiven.impl;
 
 import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.impl.intercept.StageInterceptorInternal;
+import com.tngtech.jgiven.impl.intercept.StepInterceptor;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -93,6 +95,41 @@ class StageInjectionTest {
         steps.some_step();
 
         assertThat(steps.beforeStageExecuted).isTrue();
+    }
+
+    /**
+     * A {@code public} stage class with a package-private step method must
+     * still be instrumented with an injection style strategy: the
+     * {@code WRAPPER} strategy loads the subclass in a different package
+     * namespace and therefore cannot override the package-private method, so
+     * interception silently breaks. This is the common JGiven idiom of writing
+     * step methods without an explicit {@code public} modifier.
+     */
+    @Test
+    void default_creator_intercepts_package_private_step_of_public_stage_class() {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        RecordingInterceptor interceptor = new RecordingInterceptor();
+        PublicStageWithPackagePrivateStep steps = executor.addStage(PublicStageWithPackagePrivateStep.class);
+        ((StageInterceptorInternal) steps).__jgiven_setStepInterceptor(interceptor);
+        executor.startScenario("Test");
+        steps.some_step();
+
+        assertThat(interceptor.interceptedMethods)
+                .contains("some_step");
+    }
+
+    @Test
+    void wrapper_class_loading_strategy_does_not_intercept_package_private_step_of_public_stage_class() {
+        ScenarioExecutor executor = new ScenarioExecutor();
+        executor.setStageClassCreator(new WrapperStageClassCreator());
+        RecordingInterceptor interceptor = new RecordingInterceptor();
+        PublicStageWithPackagePrivateStep steps = executor.addStage(PublicStageWithPackagePrivateStep.class);
+        ((StageInterceptorInternal) steps).__jgiven_setStepInterceptor(interceptor);
+        executor.startScenario("Test");
+        steps.some_step();
+
+        assertThat(interceptor.interceptedMethods)
+                .doesNotContain("some_step");
     }
 
     /**
@@ -213,6 +250,28 @@ class StageInjectionTest {
         }
 
         public void some_step() {
+        }
+    }
+
+    /**
+     * A {@code public} stage class that declares a package-private step method,
+     * the common JGiven idiom that requires an injection style strategy.
+     */
+    public static class PublicStageWithPackagePrivateStep {
+        void some_step() {
+        }
+    }
+
+    /**
+     * Records the names of methods that the ByteBuddy interceptor invokes.
+     */
+    static class RecordingInterceptor implements StepInterceptor {
+        final java.util.List<String> interceptedMethods = new java.util.ArrayList<>();
+
+        @Override
+        public Object intercept(Object receiver, java.lang.reflect.Method method, Object[] parameters, Invoker invoker) throws Throwable {
+            interceptedMethods.add(method.getName());
+            return invoker.proceed();
         }
     }
 }
