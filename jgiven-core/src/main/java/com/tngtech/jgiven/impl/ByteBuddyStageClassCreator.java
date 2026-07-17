@@ -13,6 +13,7 @@ import net.bytebuddy.implementation.bind.annotation.FieldProxy;
 import net.bytebuddy.matcher.ElementMatchers;
 
 import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Modifier;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
 import static net.bytebuddy.matcher.ElementMatchers.not;
@@ -53,20 +54,19 @@ public class ByteBuddyStageClassCreator implements StageClassCreator {
         if (getClassLoader(stageClass) == null) {
             return ClassLoadingStrategy.Default.WRAPPER;
         }
-        return getInjectionStrategy(stageClass);
+        if (!Modifier.isPublic(stageClass.getModifiers())) {
+            return getStrategyForPackagePrivateClasses(stageClass);
+        }
+        return ClassLoadingStrategy.Default.WRAPPER;
     }
 
     /**
-     * Defines the generated subclass directly in the stage class's own class
-     * loader and package, so that the subclass can access package-private
-     * members of the stage class and so that the generated class is resolvable
-     * by name from that class loader (e.g. by Spring, which references stage
-     * beans by their generated class name). The reflection based
-     * {@link ClassLoadingStrategy.Default#INJECTION} strategy is used where
-     * available; on JVMs where it is not (e.g. Java 26+), the lookup based
-     * {@link ClassLoadingStrategy.UsingLookup} strategy is used instead.
+     * Package-private stage classes cannot be subclassed from the wrapper
+     * class loader (the generated class lives in a different package
+     * namespace), so a strategy that injects into the stage class's own
+     * package is required.
      */
-    private ClassLoadingStrategy<ClassLoader> getInjectionStrategy(Class<?> stageClass) {
+    private ClassLoadingStrategy<ClassLoader> getStrategyForPackagePrivateClasses(Class<?> stageClass) {
         if (ClassInjector.UsingReflection.isAvailable()) {
             return ClassLoadingStrategy.Default.INJECTION;
         } else if (ClassInjector.UsingLookup.isAvailable()) {
