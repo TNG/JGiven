@@ -18,15 +18,6 @@
 * Added `jgiven-junit6` module with support for both JUnit 5 and JUnit 6. This module provides API compatibility with JUnit 5 and enables migration to JUnit 6 when ready.
 * Added `jgiven-spring-junit6` module with support for Spring 7.x while maintaining backward compatibility with JUnit 5.
 
-## Fixed issues
-
-* JGiven now uses ByteBuddy's `UsingLookup` class loading strategy (based on `MethodHandles.Lookup#defineClass`) to
-  create subclasses of **package-private** stage classes. This restores support for package-private stages on Java 26+
-  where the legacy reflection-based `INJECTION` strategy is no longer available. Public stage classes continue to use
-  the `WRAPPER` strategy, which is sufficient for them and avoids any `opens` requirement. The `INJECTION` strategy
-  remains as a fallback for package-private classes on older JVMs where lookup-based definition is
-  unavailable. [#2224](https://github.com/TNG/JGiven/issues/2224)
-
 # Release v2.0.3
 
 ## Fixed issues
