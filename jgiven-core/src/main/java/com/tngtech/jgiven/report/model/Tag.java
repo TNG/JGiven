@@ -3,7 +3,6 @@ package com.tngtech.jgiven.report.model;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class Tag {
     private Boolean prependType;
 
     /**
-     * An optional color that is used in reports 
+     * An optional color that is used in reports
      */
     private String color;
 
@@ -56,7 +55,7 @@ public class Tag {
     private String cssClass;
 
     /**
-     * An optional style used in the HTML report. 
+     * An optional style used in the HTML report.
      * Can be {@code null}.
      */
     private String style;
@@ -103,7 +102,7 @@ public class Tag {
     }
 
     public boolean isPrependType() {
-        return prependType == null ? false : true;
+        return prependType != null;
     }
 
     public String getDescription() {
@@ -189,7 +188,7 @@ public class Tag {
     @Override
     public String toString() {
         if( value != null ) {
-            String valueString = getValueString();
+            var valueString = getValueString();
             if( isPrependType() ) {
                 return getName() + "-" + valueString;
             }
@@ -222,13 +221,10 @@ public class Tag {
         if( this == obj ) {
             return true;
         }
-        if( obj == null ) {
+        if( (obj == null) || (getClass() != obj.getClass()) ) {
             return false;
         }
-        if( getClass() != obj.getClass() ) {
-            return false;
-        }
-        Tag other = (Tag) obj;
+        var other = (Tag) obj;
         return Objects.equal( getFullType(), other.getFullType() )
                 && Objects.equal( getName(), other.getName() )
                 && Objects.equal( value, other.value );
@@ -243,7 +239,7 @@ public class Tag {
     public String toEscapedString() {
         List<String> parts = Lists.newArrayList( getName() );
         parts.addAll( getValues() );
-        String escapedString = escape( Joiner.on( '-' ).join( parts ) );
+        var escapedString = escape( Joiner.on( '-' ).join( parts ) );
         return escapedString.substring( 0, Math.min( escapedString.length(), 255 ) );
     }
 
@@ -277,7 +273,7 @@ public class Tag {
     }
 
     public Tag copy() {
-        Tag tag = new Tag( fullType, name, value );
+        var tag = new Tag( fullType, name, value );
         tag.type = this.type;
         tag.cssClass = this.cssClass;
         tag.color = this.color;

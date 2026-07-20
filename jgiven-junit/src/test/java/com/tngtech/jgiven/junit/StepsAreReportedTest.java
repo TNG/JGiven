@@ -1,14 +1,5 @@
 package com.tngtech.jgiven.junit;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.Arrays;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -17,7 +8,20 @@ import com.tngtech.jgiven.annotation.Hidden;
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.junit.StepsAreReportedTest.TestSteps;
-import com.tngtech.jgiven.report.model.*;
+import com.tngtech.jgiven.report.model.ExecutionStatus;
+import com.tngtech.jgiven.report.model.ReportModel;
+import com.tngtech.jgiven.report.model.ScenarioCaseModel;
+import com.tngtech.jgiven.report.model.ScenarioModel;
+import com.tngtech.jgiven.report.model.StepModel;
+import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.Word;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( DataProviderRunner.class )
 public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, TestSteps> {
@@ -28,7 +32,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         given().some_test_step();
 
         getScenario().finished();
-        ScenarioModel model = getScenario().getScenarioModel();
+        var model = getScenario().getScenarioModel();
 
         assertThat( model.getClassName() ).isEqualTo( StepsAreReportedTest.class.getName() );
         assertThat( model.getTestMethodName() ).isEqualTo( "given_steps_are_reported" );
@@ -37,12 +41,12 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         assertThat( model.getTagIds() ).isEmpty();
         assertThat( model.getScenarioCases() ).hasSize( 1 );
 
-        ScenarioCaseModel scenarioCase = model.getCase( 0 );
+        var scenarioCase = model.getCase( 0 );
         assertThat( scenarioCase.getExplicitArguments() ).isEmpty();
         assertThat( scenarioCase.getCaseNr() ).isEqualTo( 1 );
         assertThat( scenarioCase.getSteps() ).hasSize( 1 );
 
-        StepModel step = scenarioCase.getSteps().get( 0 );
+        var step = scenarioCase.getSteps().get( 0 );
         assertThat( step.getName() ).isEqualTo( "some test step" );
         assertThat( step.getWords() ).isEqualTo( Arrays.asList( Word.introWord( "Given" ), new Word( "some test step" ) ) );
         assertThat( step.isPending() ).isFalse();
@@ -55,8 +59,8 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         getScenario().finished();
 
-        ScenarioModel model = getScenario().getScenarioModel();
-        StepModel stepModel = model.getCase( 0 ).getSteps().get( 0 );
+        var model = getScenario().getScenarioModel();
+        var stepModel = model.getCase( 0 ).getSteps().get( 0 );
         assertThat( stepModel.isPending() ).isTrue();
         assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SCENARIO_PENDING );
     }
@@ -68,7 +72,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         getScenario().finished();
 
-        ScenarioModel model = getScenario().getScenarioModel();
+        var model = getScenario().getScenarioModel();
         assertThat( model.getExecutionStatus() ).isEqualTo( ExecutionStatus.SOME_STEPS_PENDING );
     }
 
@@ -84,14 +88,11 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         given().some_test_step();
         getScenario().finished();
 
-        ReportModel reportModel = getScenario().getModel();
-        ScenarioModel model = reportModel.getLastScenarioModel();
-        assertThat( model.getTagIds() ).hasSize( 1 );
+        var reportModel = getScenario().getModel();
+        var model = reportModel.getLastScenarioModel();
+        var tagId = assertThat(model.getTagIds()).singleElement().isEqualTo(this.getClass().getName() + "$TestTag-foo, bar, baz").actual();
 
-        String tagId = model.getTagIds().get( 0 );
-        assertThat( tagId ).isEqualTo( this.getClass().getName() + "$TestTag-foo, bar, baz" );
-
-        Tag tag = reportModel.getTagWithId( tagId );
+        var tag = reportModel.getTagWithId( tagId );
         assertThat( tag ).isNotNull();
         assertThat( tag.getName() ).isEqualTo( "TestTag" );
         assertThat( tag.getValues() ).containsExactly( "foo", "bar", "baz" );
@@ -109,13 +110,11 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
         given().some_test_step();
         getScenario().finished();
 
-        ReportModel reportModel = getScenario().getModel();
-        ScenarioModel model = getScenario().getScenarioModel();
-        assertThat( model.getTagIds() ).hasSize( 1 );
+        var reportModel = getScenario().getModel();
+        var model = getScenario().getScenarioModel();
+        var tagId = assertThat(model.getTagIds()).singleElement().actual();
 
-        String tagId = model.getTagIds().get( 0 );
-
-        Tag tag = reportModel.getTagWithId( tagId );
+        var tag = reportModel.getTagWithId( tagId );
         assertThat( tag ).isNotNull();
         assertThat( tag.getName() ).isEqualTo( "TestTag" );
         assertThat( tag.getValues() ).containsExactly( "foo", "bar", "baz" );
@@ -127,7 +126,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         getScenario().finished();
 
-        ScenarioModel model = getScenario().getScenarioModel();
+        var model = getScenario().getScenarioModel();
         assertThat( model.getCase( 0 ).getSteps() ).isEmpty();
     }
 
@@ -137,7 +136,7 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         getScenario().finished();
 
-        ScenarioModel model = getScenario().getScenarioModel();
+        var model = getScenario().getScenarioModel();
         assertThat( model.getCase( 0 ).getStep( 0 ).getWords() ).hasSize( 2 );
     }
 

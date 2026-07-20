@@ -1,20 +1,21 @@
 package com.tngtech.jgiven.junit;
 
-import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.NAME;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.CurrentScenario;
 import com.tngtech.jgiven.CurrentStep;
 import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.annotation.*;
+import com.tngtech.jgiven.annotation.AfterScenario;
+import com.tngtech.jgiven.annotation.AfterStage;
+import com.tngtech.jgiven.annotation.BeforeScenario;
+import com.tngtech.jgiven.annotation.BeforeStage;
+import com.tngtech.jgiven.annotation.Description;
+import com.tngtech.jgiven.annotation.ExpectedScenarioState;
+import com.tngtech.jgiven.annotation.Hidden;
+import com.tngtech.jgiven.annotation.IsTag;
+import com.tngtech.jgiven.annotation.JGivenConfiguration;
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.annotation.ScenarioRule;
+import com.tngtech.jgiven.annotation.ScenarioState;
 import com.tngtech.jgiven.attachment.Attachment;
 import com.tngtech.jgiven.attachment.MediaType;
 import com.tngtech.jgiven.exception.AmbiguousResolutionException;
@@ -22,7 +23,13 @@ import com.tngtech.jgiven.junit.tags.ConfiguredTag;
 import com.tngtech.jgiven.junit.test.BeforeAfterTestStage;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
-import com.tngtech.jgiven.report.model.AttachmentModel;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.NAME;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( DataProviderRunner.class )
 @JGivenConfiguration( TestConfiguration.class )
@@ -57,14 +64,14 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     @Test
     public void beforeStage_is_executed_for_stages_added_with_the_test_method() {
-        TestStage stage = addStage( TestStage.class );
+        var stage = addStage( TestStage.class );
         given().something();
         assertThat( stage.beforeCalled ).isTrue();
     }
 
     @Test( expected = AmbiguousResolutionException.class )
     public void an_exception_is_thrown_when_stages_have_ambiguous_fields() {
-        TestStageWithAmbiguousFields stage = addStage( TestStageWithAmbiguousFields.class );
+        var stage = addStage( TestStageWithAmbiguousFields.class );
         given().something();
         stage.something();
     }
@@ -83,7 +90,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     @Test
     public void ambiguous_fields_are_avoided_by_using_resolution_by_name() {
-        TestStageWithAmbiguousFieldsButResolutionByName stage = addStage( TestStageWithAmbiguousFieldsButResolutionByName.class );
+        var stage = addStage( TestStageWithAmbiguousFieldsButResolutionByName.class );
         given().something();
         stage.something();
     }
@@ -174,7 +181,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     @Test( expected = SomeExceptionInAfterStage.class )
     public void AfterStage_methods_of_the_last_stage_are_executed() throws Throwable {
-        AssertionInAfterStage stage = addStage( AssertionInAfterStage.class );
+        var stage = addStage( AssertionInAfterStage.class );
         given().something();
         stage.then().something();
 
@@ -204,11 +211,8 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     public void configured_tags_are_reported() throws Throwable {
         given().something();
         getScenario().finished();
-        List<String> tagIds = getScenario().getScenarioModel().getTagIds();
-        assertThat( tagIds ).isNotEmpty();
-        String tagId = tagIds.get( 0 );
-        assertThat( tagId ).isNotNull();
-        assertThat( tagId ).isEqualTo( ConfiguredTag.class.getName() + "-Test" );
+        var tagIds = getScenario().getScenarioModel().getTagIds();
+        assertThat(tagIds).singleElement().isEqualTo(ConfiguredTag.class.getName() + "-Test");
     }
 
     @Test
@@ -216,7 +220,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
     public void description_annotations_are_evaluated() throws Throwable {
         given().something();
         getScenario().finished();
-        String description = getScenario().getScenarioModel().getDescription();
+        var description = getScenario().getScenarioModel().getDescription();
         assertThat( description ).isEqualTo( "@Description annotations are evaluated" );
     }
 
@@ -239,8 +243,8 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     @Test
     public void hidden_steps_see_injected_values() {
-        SomeStageProvidingAString stage1 = addStage( SomeStageProvidingAString.class );
-        SomeStageWithAHiddenMethod stage2 = addStage( SomeStageWithAHiddenMethod.class );
+        var stage1 = addStage( SomeStageProvidingAString.class );
+        var stage2 = addStage( SomeStageWithAHiddenMethod.class );
 
         stage1.something();
         stage2.someHiddenStep();
@@ -260,8 +264,8 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     @Test
     public void before_stage_methods_see_injected_values() {
-        SomeStageProvidingAString stage1 = addStage( SomeStageProvidingAString.class );
-        SomeStageWithABeforeMethod stage2 = addStage( SomeStageWithABeforeMethod.class );
+        var stage1 = addStage( SomeStageProvidingAString.class );
+        var stage2 = addStage( SomeStageWithABeforeMethod.class );
 
         stage1.something();
         stage2.something();
@@ -286,11 +290,11 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     @Test
     public void attachments_can_be_added_to_steps() {
-        AttachmentStepClass steps = addStage( AttachmentStepClass.class );
+        var steps = addStage( AttachmentStepClass.class );
 
         steps.add_attachment();
 
-        List<AttachmentModel> attachments = getScenario().getScenarioCaseModel().getFirstStep().getAttachments();
+        var attachments = getScenario().getScenarioCaseModel().getFirstStep().getAttachments();
 
         assertThat( attachments ).hasSize( 1 );
         assertThat( attachments.get( 0 ).getValue() ).isEqualTo( "FOOBAR" );
@@ -299,22 +303,22 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     @Test
     public void extended_descriptions_can_be_set_using_the_current_step() {
-        AttachmentStepClass steps = addStage( AttachmentStepClass.class );
+        var steps = addStage( AttachmentStepClass.class );
 
         steps.set_description();
 
-        String description = getScenario().getScenarioCaseModel().getFirstStep().getExtendedDescription();
+        var description = getScenario().getScenarioCaseModel().getFirstStep().getExtendedDescription();
 
         assertThat( description ).isEqualTo( "An extended description" );
     }
 
     @Test
     public void the_name_of_a_step_can_be_changed_using_the_current_step() {
-        AttachmentStepClass steps = addStage( AttachmentStepClass.class );
+        var steps = addStage( AttachmentStepClass.class );
 
         steps.set_name();
 
-        String description = getScenario().getScenarioCaseModel().getFirstStep().getName();
+        var description = getScenario().getScenarioCaseModel().getFirstStep().getName();
 
         assertThat( description ).isEqualTo( "A new step name" );
     }
@@ -334,13 +338,12 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     @Test
     public void tags_can_be_added_using_the_current_scenario() {
-        CurrentScenarioStage steps = addStage( CurrentScenarioStage.class );
+        var steps = addStage( CurrentScenarioStage.class );
 
         steps.add_tag();
 
-        List<String> tagIds = getScenario().getScenarioModel().getTagIds();
-        assertThat( tagIds ).hasSize( 1 );
-        assertThat( tagIds.get( 0 ) ).isEqualTo( this.getClass().getName() + "$DynamicTag-value" );
+        assertThat(getScenario().getScenarioModel().getTagIds())
+                .singleElement().isEqualTo(this.getClass().getName() + "$DynamicTag-value");
     }
 
     static abstract class AbstractStage {
@@ -354,7 +357,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
 
     @Test
     public void abstract_steps_should_appear_in_the_report_model() throws Throwable {
-        ConcreteStage stage = addStage( ConcreteStage.class );
+        var stage = addStage( ConcreteStage.class );
         stage.abstract_step();
 
     }
