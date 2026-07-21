@@ -42,7 +42,7 @@ public class AsciiDocReportModelVisitorTest {
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
@@ -70,7 +70,7 @@ public class AsciiDocReportModelVisitorTest {
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
@@ -102,7 +102,7 @@ public class AsciiDocReportModelVisitorTest {
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
@@ -134,7 +134,7 @@ public class AsciiDocReportModelVisitorTest {
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
@@ -158,7 +158,7 @@ public class AsciiDocReportModelVisitorTest {
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
@@ -177,15 +177,15 @@ public class AsciiDocReportModelVisitorTest {
                 mkStep("When", "action"),
                 mkStep("Then", "outcome"),
                 mkSectionTitle("Second Section"),
-                mkStep("Given", "other state"),
+                mkStep("Given", "another state"),
                 mkStep("When", "other action"),
-                mkStep("Then", "other outcome"))));
+                mkStep("Then", "another outcome"))));
 
         // when
         report.accept(reportModelVisitor);
 
         // then
-        assertThat(reportModelVisitor.getResult())
+        assertThat(reportModelVisitor.getAsciiDocBlocks())
                 .isEqualTo(ImmutableList.of(
                         "FeatureHeaderBlock",
                         "ScenarioHeaderBlock",
@@ -243,39 +243,60 @@ public class AsciiDocReportModelVisitorTest {
     private static class MyFakeReportBlockConverter implements ReportBlockConverter {
 
         @Override
-        public String convertStatisticsBlock(final ListMultimap<String, ReportStatistics> featureStatistics,
+        public String convertStatisticsBlock(
+                final ListMultimap<String, ReportStatistics> featureStatistics,
                 final ReportStatistics totalStatistics) {
             return "StatisticsBlock";
         }
 
         @Override
-        public String convertFeatureHeaderBlock(String featureName, ReportStatistics statistics,
+        public String convertFeatureHeaderBlock(
+                String featureName,
+                ReportStatistics statistics,
                 String description) {
             return "FeatureHeaderBlock";
         }
 
         @Override
-        public String convertScenarioHeaderBlock(String name, ExecutionStatus executionStatus, long duration,
-                                                 List<Tag> tagNames, String extendedDescription) {
+        public String convertScenarioHeaderBlock(
+                final String identifier,
+                String name,
+                ExecutionStatus executionStatus,
+                long duration,
+                List<Tag> tags,
+                String extendedDescription) {
             return "ScenarioHeaderBlock";
         }
 
         @Override
-        public String convertCaseHeaderBlock(final int caseNr, final ExecutionStatus executionStatus,
-                                             final long duration, final String description) {
+        public String convertCaseHeaderBlock(
+                final int caseNr,
+                final ExecutionStatus executionStatus,
+                final long duration,
+                final String description) {
             return "CaseHeaderBlock";
         }
 
         @Override
-        public String convertFirstStepBlock(final int depth, final List<Word> words, final StepStatus status,
-                final long durationInNanos, final String extendedDescription,
-                final boolean caseIsUnsuccessful, final String currentSectionTitle) {
+        public String convertFirstStepBlock(
+                final int depth,
+                final List<Word> words,
+                final StepStatus status,
+                final long durationInNanos,
+                final String extendedDescription,
+                final boolean caseIsUnsuccessful,
+                final String currentSectionTitle) {
             return "FirstStepBlock";
         }
 
         @Override
-        public String convertStepBlock(int depth, List<Word> words, StepStatus status, long durationInNanos,
-                String extendedDescription, boolean caseIsUnsuccessful) {
+        public String convertStepBlock(
+                int depth,
+                List<Word> words,
+                StepStatus status,
+                long durationInNanos,
+                String extendedDescription,
+                boolean caseIsUnsuccessful) {
             return "StepBlock";
         }
 
@@ -290,7 +311,7 @@ public class AsciiDocReportModelVisitorTest {
         }
 
         @Override
-        public String convertScenarioFooterBlock(ExecutionStatus executionStatus) {
+        public String convertScenarioFooterBlock(final String identifier, ExecutionStatus executionStatus, final List<Tag> tags) {
             return "ScenarioFooterBlock";
         }
     }
