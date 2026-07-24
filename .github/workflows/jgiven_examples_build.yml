@@ -1,7 +1,27 @@
 name: "Test published JGiven"
 on: [push, pull_request]
 
+env:
+  TEST_VERSION: '1.1-t'
+
 jobs:
+  validate_module_project:
+    name: Test that the example project java26-module works
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6.0.3
+      - name: Set up JDK 26
+        uses: actions/setup-java@v5.3.0
+        with:
+          java-version: '26'
+          distribution: 'temurin'
+      - name: Produce a local release with version ${{ env.TEST_VERSION }}
+        run: source scripts/local_release_with_version.sh ${{ env.TEST_VERSION }}
+      - name: Build Java 26 Module Example Project
+        run: >
+          source scripts/source_files/helper_functions.sh
+          && runGradleTestOnGivenProject example-projects/java26-module ${{ env.TEST_VERSION }}
+
   validate_example_projects_work:
     name: Test that the examples are actually working
     runs-on: ubuntu-latest
