@@ -41,7 +41,7 @@ android {
     buildTypes {
         release {
             minifyEnabled = false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -71,7 +71,7 @@ dependencies {
 }
 
 def targetDir = 'build/reports/jgiven/json'
-def adb = android.adbExecutable.toString()
+def adb = androidComponents.sdkComponents.adb.get().asFile.absolutePath
 def reportsDir = '/storage/emulated/0/Download/jgiven-reports'
 
 task cleanJGivenReports(type: Delete) {
