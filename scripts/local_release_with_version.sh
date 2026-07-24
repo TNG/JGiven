@@ -14,8 +14,8 @@ if [ ! -e 'gradle.properties' ]; then
 fi
 
 
-VERSION="1.1-t"
+VERSION=${1:-"1.1-t"}
 
 updateAllVersionInformation $VERSION
 
-./gradlew clean publishToMavenLocal
+./gradlew -x test publishToMavenLocal
