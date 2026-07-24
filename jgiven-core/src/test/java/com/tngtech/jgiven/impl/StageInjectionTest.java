@@ -2,6 +2,7 @@ package com.tngtech.jgiven.impl;
 
 import com.tngtech.jgiven.annotation.*;
 import net.bytebuddy.dynamic.loading.ClassInjector;
+import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -16,9 +17,11 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 /**
  * Verifies that the actual {@link ByteBuddyStageClassCreator} class loader
  * can successfully instrument the given stage classes, i.e. that the real
- * production {@code getClassLoadingStrategy()} decision (INJECTION vs. WRAPPER
- * based on {@link ClassInjector.UsingReflection#isAvailable()}) produces a
- * usable instrumented subclass for every kind of stage class.
+ * production {@code getClassLoadingStrategy()} decision (reflection-based
+ * INJECTION, lookup-based INJECTION, or WRAPPER fallback, based on
+ * {@link ClassInjector.UsingReflection#isAvailable()} /
+ * {@link ClassInjector.UsingLookup#isAvailable()}) produces a usable
+ * instrumented subclass for every kind of stage class.
  *
  * <p>Unlike the previous version of these tests, the stage class creator is
  * <em>not</em> overridden to force a particular class loading strategy.
@@ -212,17 +215,43 @@ class StageInjectionTest {
 
         @Test
         void actual_class_loader_can_instrument_package_private_stage_class() {
-            // The INJECTION strategy is only available where reflective class
-            // injection works. On JVMs where it is unavailable the real
-            // ByteBuddyStageClassCreator falls back to the WRAPPER strategy,
-            // which cannot load package-private classes; skip in that case.
-            assumeThat(ClassInjector.UsingReflection.isAvailable())
-                    .withFailMessage("Reflective class injection is not available on this JVM")
+            // Package-private stages require same-loader injection so the
+            // generated subclass lands in the same runtime package as its
+            // superclass. Either reflective injection
+            // (ClassInjector.UsingReflection, available on Java 8 and on
+            // Java 9+ when java.base/java.lang is opened via --add-opens)
+            // or lookup-based injection (ClassInjector.UsingLookup, JDK 9+
+            // via MethodHandles.privateLookupIn) is sufficient. On JVMs
+            // where neither is available the real ByteBuddyStageClassCreator
+            // falls back to the WRAPPER strategy, which cannot load
+            // package-private classes; skip in that case.
+            assumeThat(ClassInjector.UsingReflection.isAvailable()
+                    || ClassInjector.UsingLookup.isAvailable())
+                    .withFailMessage("Neither reflective nor lookup-based class injection is available on this JVM")
                     .isTrue();
             ScenarioExecutor executor = newExecutorWithActualCreator();
             PackagePrivateStageStep steps = executor.addStage(PackagePrivateStageStep.class);
             executor.startScenario("Test");
             steps.some_step();
+        }
+
+        @Test
+        void get_class_loading_strategy_returns_injection_when_any_injector_available() {
+            // Whenever either reflective or lookup-based class injection is
+            // available, the production getClassLoadingStrategy() decision
+            // must not fall back to WRAPPER for a stage class with a
+            // non-null classloader. This guards against regressions that
+            // would silently break package-private stage instrumentation.
+            assumeThat(ClassInjector.UsingReflection.isAvailable()
+                    || ClassInjector.UsingLookup.isAvailable())
+                    .withFailMessage("No class injector available on this JVM")
+                    .isTrue();
+            ByteBuddyStageClassCreator creator = new ByteBuddyStageClassCreator();
+            ClassLoadingStrategy strategy = creator.getClassLoadingStrategy(PackagePrivateStageStep.class);
+            assertThat(strategy.getClass().getName())
+                    .as("strategy should be reflection-INJECTION or UsingLookup when either injector is available")
+                    .isIn(ClassLoadingStrategy.Default.INJECTION.getClass().getName(),
+                            "net.bytebuddy.dynamic.loading.ClassLoadingStrategy$UsingLookup");
         }
     }
 }
