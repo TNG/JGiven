@@ -5,7 +5,7 @@ import com.tngtech.jgiven.report.model.Tag;
 final class TagMapper {
 
     private TagMapper() {
-        // static helper class isn't intended to be instantiated
+        // static helper class not intended to be instantiated
     }
 
     static String toHumanReadableLabel(final Tag tag) {

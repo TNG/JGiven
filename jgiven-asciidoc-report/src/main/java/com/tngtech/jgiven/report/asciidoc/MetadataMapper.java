@@ -13,7 +13,7 @@ final class MetadataMapper {
     private static final int NANOSECONDS_PER_MILLISECOND = 1000000;
 
     private MetadataMapper() {
-        // static helper class isn't intended to be instantiated
+        // static helper class not intended to be instantiated
     }
 
     public static String toAsciiDocStartTag(final String scenarioName) {
