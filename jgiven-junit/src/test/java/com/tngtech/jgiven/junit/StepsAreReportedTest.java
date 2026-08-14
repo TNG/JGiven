@@ -9,11 +9,6 @@ import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.annotation.Pending;
 import com.tngtech.jgiven.junit.StepsAreReportedTest.TestSteps;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
-import com.tngtech.jgiven.report.model.ReportModel;
-import com.tngtech.jgiven.report.model.ScenarioCaseModel;
-import com.tngtech.jgiven.report.model.ScenarioModel;
-import com.tngtech.jgiven.report.model.StepModel;
-import com.tngtech.jgiven.report.model.Tag;
 import com.tngtech.jgiven.report.model.Word;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -21,6 +16,7 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static com.tngtech.jgiven.report.model.Tag.TagId.id;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( DataProviderRunner.class )
@@ -90,7 +86,8 @@ public class StepsAreReportedTest extends ScenarioTest<TestSteps, TestSteps, Tes
 
         var reportModel = getScenario().getModel();
         var model = reportModel.getLastScenarioModel();
-        var tagId = assertThat(model.getTagIds()).singleElement().isEqualTo(this.getClass().getName() + "$TestTag-foo, bar, baz").actual();
+        var tagId = assertThat(model.getTagIds()).singleElement().isEqualTo(id(this.getClass().getName() + "$TestTag-foo, bar, baz"))
+                .actual();
 
         var tag = reportModel.getTagWithId( tagId );
         assertThat( tag ).isNotNull();

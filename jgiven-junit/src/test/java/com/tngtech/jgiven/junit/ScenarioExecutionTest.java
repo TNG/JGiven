@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static com.tngtech.jgiven.annotation.ScenarioState.Resolution.NAME;
+import static com.tngtech.jgiven.report.model.Tag.TagId.id;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith( DataProviderRunner.class )
@@ -212,7 +213,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         given().something();
         getScenario().finished();
         var tagIds = getScenario().getScenarioModel().getTagIds();
-        assertThat(tagIds).singleElement().isEqualTo(ConfiguredTag.class.getName() + "-Test");
+        assertThat(tagIds).singleElement().isEqualTo(id(ConfiguredTag.class.getName() + "-Test"));
     }
 
     @Test
@@ -343,7 +344,7 @@ public class ScenarioExecutionTest extends ScenarioTest<BeforeAfterTestStage, Wh
         steps.add_tag();
 
         assertThat(getScenario().getScenarioModel().getTagIds())
-                .singleElement().isEqualTo(this.getClass().getName() + "$DynamicTag-value");
+                .singleElement().isEqualTo(id(this.getClass().getName() + "$DynamicTag-value"));
     }
 
     static abstract class AbstractStage {

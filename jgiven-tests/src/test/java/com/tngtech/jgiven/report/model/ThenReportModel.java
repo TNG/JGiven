@@ -4,6 +4,7 @@ import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ExtendedDescription;
 
+import static com.tngtech.jgiven.report.model.Tag.TagId.id;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF> {
@@ -44,7 +45,7 @@ public class ThenReportModel<SELF extends ThenReportModel<?>> extends Stage<SELF
     }
 
     public void the_report_model_contains_a_tag_named( String tagName ) {
-        assertThat(reportModel.getLastScenarioModel().getTagIds()).contains(tagName + "-testValue");
+        assertThat(reportModel.getLastScenarioModel().getTagIds()).contains(id(tagName + "-testValue"));
     }
 
     public void the_description_of_the_report_model_is( String description ) {

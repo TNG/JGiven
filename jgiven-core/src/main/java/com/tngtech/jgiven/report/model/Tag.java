@@ -3,6 +3,11 @@ package com.tngtech.jgiven.report.model;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -210,9 +215,29 @@ public class Tag {
         return id(value == null ? fullType : fullType + "-" + getValueString());
     }
 
+    @JsonAdapter(TagId.JsonConverter.class)
     public record TagId(String id) {
         public static TagId id(String id) {
             return new TagId(id);
+        }
+
+        @Override
+        public final String toString() {
+            return id;
+        }
+
+        public static class JsonConverter extends TypeAdapter<TagId> {
+
+            @Override
+            public void write(JsonWriter out, TagId value) throws IOException {
+                out.value(value.id);
+            }
+
+            @Override
+            public TagId read(JsonReader in) throws IOException {
+                return id(in.nextString());
+            }
+
         }
     }
 

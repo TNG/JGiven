@@ -27,7 +27,7 @@ class HierarchyCalculatorTest {
                 Map.of(id("tag-id"), List.of("file1", "file2")));
         assertThat(result).isEqualTo(
                 Map.of("tag type",
-                        Map.of("tag-id", List.of("file1", "file2"))));
+                        Map.of(id("tag-id"), List.of("file1", "file2"))));
     }
 
     @Test
