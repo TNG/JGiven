@@ -10,7 +10,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class AsciiDocIntroSnippetGeneratorTest {
 
-    public static Stream<Arguments> data() {
+    public static Stream<Arguments> introTestCases() {
         return Stream.of(
                 arguments("All Scenarios", "", 0, "There are no scenarios. Keep rocking!"),
                 arguments("All Scenarios", "", 1, "There is 1 scenario."),
@@ -27,7 +27,7 @@ class AsciiDocIntroSnippetGeneratorTest {
     }
 
     @ParameterizedTest
-    @MethodSource("data")
+    @MethodSource("introTestCases")
     void generateIntroSnippetWithoutDescriptionForQualifiedScenarios(
             final String title,
             final String qualifier,
@@ -43,7 +43,7 @@ class AsciiDocIntroSnippetGeneratorTest {
     }
 
     @ParameterizedTest
-    @MethodSource("data")
+    @MethodSource("introTestCases")
     void generateIntroSnippetWithDescriptionForQualifiedScenarios(
             final String title,
             final String qualifier,
