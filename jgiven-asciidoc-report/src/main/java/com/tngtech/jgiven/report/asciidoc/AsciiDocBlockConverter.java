@@ -91,22 +91,22 @@ class AsciiDocBlockConverter implements ReportBlockConverter {
 
     @Override
     public String convertScenarioHeaderBlock(
-            final String identifier,
-            final String name,
+            final String testMethodName,
+            final String description,
             final ExecutionStatus executionStatus,
             final long duration,
             final List<Tag> tags,
             final String extendedDescription) {
         var blockContent = new StringBuilder();
 
-        blockContent.append(MetadataMapper.toAsciiDocStartTag(identifier)).append(LINE_BREAK);
+        blockContent.append(MetadataMapper.toAsciiDocStartTag(testMethodName)).append(LINE_BREAK);
         blockContent.append(MetadataMapper.toAsciiDocStartTag(executionStatus)).append(LINE_BREAK);
 
         tags.forEach(tag -> blockContent.append(TagMapper.toAsciiDocStartTag(tag)).append(LINE_BREAK));
 
         blockContent.append(LINE_BREAK);
 
-        blockContent.append("==== ").append(WordUtil.capitalize(name)).append(LINE_BREAK);
+        blockContent.append("==== ").append(WordUtil.capitalize(description)).append(LINE_BREAK);
 
         blockContent.append(LINE_BREAK);
 

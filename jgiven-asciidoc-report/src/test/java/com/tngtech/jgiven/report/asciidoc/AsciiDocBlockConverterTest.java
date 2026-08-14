@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AsciiDocScenarioBlockConverterTest {
+class AsciiDocBlockConverterTest {
 
     private final AsciiDocBlockConverter converter = new AsciiDocBlockConverter();
 
@@ -26,7 +26,7 @@ class AsciiDocScenarioBlockConverterTest {
         var oneSecond = 1_000_000_000L;
 
         // when
-        var block = converter.convertScenarioHeaderBlock("method_1", "my first scenario", status, oneSecond, tags, null);
+        String block = converter.convertScenarioHeaderBlock("method_1", "my first scenario", status, oneSecond, tags, null);
 
         // then
         assertThatBlockContainsLines(block,
@@ -45,7 +45,7 @@ class AsciiDocScenarioBlockConverterTest {
         var tenMilliseconds = 10_000_000L;
 
         // when
-        var block = converter.convertScenarioHeaderBlock("method_1", "my first scenario",
+        String block = converter.convertScenarioHeaderBlock("method_1", "my first scenario",
                 ExecutionStatus.SCENARIO_PENDING, tenMilliseconds, tags, "");
 
         // then
@@ -68,7 +68,7 @@ class AsciiDocScenarioBlockConverterTest {
         var halfMillisecond = 500_000L;
 
         // when
-        var block = converter.convertScenarioHeaderBlock("method_1", "my first scenario",
+        String block = converter.convertScenarioHeaderBlock("method_1", "my first scenario",
                 ExecutionStatus.SOME_STEPS_PENDING, halfMillisecond, tags, "Best scenario ever!!!");
 
         // then
@@ -90,7 +90,7 @@ class AsciiDocScenarioBlockConverterTest {
         var threeSeconds = 3_000_000_000L;
 
         // when
-        var block =
+        String block =
                 converter.convertScenarioHeaderBlock("method_1", "my first scenario", ExecutionStatus.SUCCESS, threeSeconds, tags,
                         "Best scenario ever!!!");
 
@@ -116,7 +116,7 @@ class AsciiDocScenarioBlockConverterTest {
         var threeSeconds = 3_000_000_000L;
 
         // when
-        var block =
+        String block =
                 converter.convertScenarioHeaderBlock("method_1", "my first scenario", ExecutionStatus.SUCCESS, threeSeconds,
                         tags, "");
 
@@ -143,7 +143,7 @@ class AsciiDocScenarioBlockConverterTest {
         List<Tag> tags = List.of();
 
         // when
-        var block = converter.convertScenarioFooterBlock("method_3", status, tags);
+        String block = converter.convertScenarioFooterBlock("method_3", status, tags);
 
         // then
         assertThatBlockContainsLines(block,
@@ -157,7 +157,7 @@ class AsciiDocScenarioBlockConverterTest {
         List<Tag> tags = List.of(mkTag("BestTag"));
 
         // when
-        var block = converter.convertScenarioFooterBlock("method_1", ExecutionStatus.FAILED, tags);
+        String block = converter.convertScenarioFooterBlock("method_1", ExecutionStatus.FAILED, tags);
 
         // then
         assertThatBlockContainsLines(block,
@@ -172,7 +172,7 @@ class AsciiDocScenarioBlockConverterTest {
         List<Tag> tags = List.of(mkTag("BestTag"), mkTag("GreatestTag"), mkTag("NicestTag"));
 
         // when
-        var block = converter.convertScenarioFooterBlock("method_2", ExecutionStatus.FAILED, tags);
+        String block = converter.convertScenarioFooterBlock("method_2", ExecutionStatus.FAILED, tags);
 
         // then
         assertThatBlockContainsLines(block,
@@ -190,7 +190,7 @@ class AsciiDocScenarioBlockConverterTest {
     }
 
     private static void assertThatBlockContainsLines(final String block, final String... expectedLines) {
-        final var blockLines = block.split(System.lineSeparator());
+        final String[] blockLines = block.split(System.lineSeparator());
         assertThat(blockLines).hasSize(expectedLines.length).containsExactly(expectedLines);
     }
 }

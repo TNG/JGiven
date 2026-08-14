@@ -2,6 +2,7 @@ package com.tngtech.jgiven.report.model;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tngtech.jgiven.report.model.Tag.TagId;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +19,7 @@ public class CompleteReportModel {
     protected final List<ScenarioModel> failedScenarios = Lists.newArrayList();
     protected final List<ScenarioModel> pendingScenarios = Lists.newArrayList();
     protected final List<ScenarioModel> allScenarios = Lists.newArrayList();
-    protected final Map<String, Tag> tagIdMap = Maps.newLinkedHashMap();
+    protected final Map<TagId, Tag> tagIdMap = Maps.newLinkedHashMap();
 
     public void addModelFile( ReportModelFile modelFile ) {
         var model = modelFile.model();
@@ -44,7 +45,7 @@ public class CompleteReportModel {
 
     }
 
-    private void addToMap( Tag tag, ScenarioModel scenario ) {
+    private void addToMap(Tag tag, ScenarioModel scenario) {
         var list = tagMap.computeIfAbsent(tag, k -> Lists.newArrayList());
         list.add(scenario);
     }
@@ -81,7 +82,7 @@ public class CompleteReportModel {
         return models;
     }
 
-    public Map<String, Tag> getTagIdMap() {
+    public Map<TagId, Tag> getTagIdMap() {
         return tagIdMap;
     }
 }

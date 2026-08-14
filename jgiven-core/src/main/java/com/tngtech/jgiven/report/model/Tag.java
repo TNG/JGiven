@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 
+import static com.tngtech.jgiven.report.model.Tag.TagId.id;
+
 /**
  * A tag represents a Java annotation of a scenario-test.
  */
@@ -162,8 +164,8 @@ public class Tag {
         if( value == null ) {
             return Collections.emptyList();
         }
-        if( value instanceof String ) {
-            return Lists.newArrayList( (String) value );
+        if (value instanceof String string) {
+            return Lists.newArrayList(string);
         }
         return (List<String>) value;
     }
@@ -204,11 +206,14 @@ public class Tag {
         return Joiner.on( ", " ).join( getValues() );
     }
 
-    public String toIdString() {
-        if( value != null ) {
-            return fullType + "-" + getValueString();
+    public TagId toIdString() {
+        return id(value == null ? fullType : fullType + "-" + getValueString());
+    }
+
+    public record TagId(String id) {
+        public static TagId id(String id) {
+            return new TagId(id);
         }
-        return fullType;
     }
 
     @Override

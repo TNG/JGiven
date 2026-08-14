@@ -10,12 +10,15 @@ import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.Tag.TagId;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.unmodifiableMap;
 
 class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
@@ -23,8 +26,8 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     private final ReportStatistics featureStatistics;
     private final CasesTableCalculator tableCalculator;
     private final List<String> asciiDocBlocks;
-    private final Map<String, Integer> featureTagIds;
-    private Map<String, Tag> featureTagMap;
+    private final Map<TagId, Integer> tagCount;
+    private Map<TagId, Tag> featureTagMap;
     private List<Tag> tagList;
     private boolean scenarioHasDataTable;
     private boolean scenarioHasMultipleCases;
@@ -39,7 +42,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         this.featureStatistics = featureStatistics;
         this.tableCalculator = new CasesTableCalculator();
         this.asciiDocBlocks = new ArrayList<>();
-        this.featureTagIds = new HashMap<>();
+        this.tagCount = new HashMap<>();
     }
 
     @Override
@@ -57,7 +60,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
     @Override
     public void visit(final ScenarioModel scenarioModel) {
-        scenarioModel.getTagIds().forEach(tagId -> featureTagIds.merge(tagId, 1, Integer::sum));
+        scenarioModel.getTagIds().forEach(tagId -> tagCount.merge(tagId, 1, Integer::sum));
 
         tagList = scenarioModel.getTagIds().stream()
                 .map(this.featureTagMap::get)
@@ -141,11 +144,11 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     }
 
     public List<String> getAsciiDocBlocks() {
-        return Collections.unmodifiableList(asciiDocBlocks);
+        return unmodifiableList(asciiDocBlocks);
     }
 
-    public Map<String, Integer> getUsedTags() {
-        return Collections.unmodifiableMap(featureTagIds);
+    public Map<TagId, Integer> getUsedTags() {
+        return unmodifiableMap(tagCount);
     }
 
 }

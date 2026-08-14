@@ -22,7 +22,7 @@ class AsciiDocStepBlockConverterTest {
     private final ReportBlockConverter converter = new AsciiDocBlockConverter();
 
     ////
-    // All step conversations in this section assume, that the containing scenario case was executed successful
+    // All step conversations in this section assume, that the containing scenario case was executed successfully
     ////
 
     @Test
@@ -291,7 +291,7 @@ class AsciiDocStepBlockConverterTest {
     }
 
     ////
-    // All step conversations in this section assume, that the containing scenario case was not executed successful
+    // All step conversations in this section assume, that the containing scenario case was not executed successfully
     ////
 
     @Test

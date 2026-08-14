@@ -12,6 +12,7 @@ import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.Tag.TagId;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -21,9 +22,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static java.util.Comparator.comparing;
 
 /**
  * This reporter provides the functionality for reading/writing a report in AsciiDoc format.
@@ -46,13 +48,13 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     private static final Logger log = LoggerFactory.getLogger(AsciiDocReportGenerator.class);
 
     private final AsciiDocBlockConverter blockConverter = new AsciiDocBlockConverter();
-    private final Map<String, Tag> allTags = new HashMap<>();
+    private final Map<TagId, Tag> allTags = new HashMap<>();
     private final List<String> allFeatures = new ArrayList<>();
     private final List<String> failedScenarioFeatures = new ArrayList<>();
     private final List<String> pendingScenarioFeatures = new ArrayList<>();
     private final List<String> abortedScenarioFeatures = new ArrayList<>();
-    private final Map<String, List<String>> taggedScenarioFeatures = new HashMap<>();
-    private final Map<String, Integer> taggedScenarioCounts = new HashMap<>();
+    private final Map<TagId, List<String>> taggedScenarioFeatures = new HashMap<>();
+    private final Map<TagId, Integer> taggedScenarioCounts = new HashMap<>();
 
     private File targetDir;
     private File featuresDir;
@@ -175,12 +177,12 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         writeAsciiDocBlocksToFile(targetDir, "abortedScenarios", asciiDocBlocks);
     }
 
-    private void writeIndexFileForTaggedScenarios(final String tagType, final Map<String, List<String>> taggedScenarios) {
+    private void writeIndexFileForTaggedScenarios(final String tagType, final Map<TagId, List<String>> taggedScenarios) {
         final var firstTag = taggedScenarios.keySet().stream()
                 .findFirst()
                 .map(allTags::get);
 
-        if (firstTag.isEmpty()) {
+        if (firstTag.isEmpty()) { // TODO HV that ain't right
             return;
         }
 
@@ -193,7 +195,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         writeAsciiDocBlocksToFile(tagsDir, tagType, asciiDocBlocks);
     }
 
-    private List<String> singleValuedTag(final Map<String, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
+    private List<String> singleValuedTag(final Map<TagId, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
         final var snippetGenerator = new AsciiDocSnippetGenerator(
                 tag.toString(), TAGGED_SCENARIO_QUALIFIER, numTaggedScenarios);
 
@@ -209,7 +211,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         return asciiDocBlocks;
     }
 
-    private List<String> multiValuedTag(final Map<String, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
+    private List<String> multiValuedTag(final Map<TagId, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
         final var snippetGenerator = new AsciiDocSnippetGenerator(
                 tag.getName(), TAGGED_SCENARIO_QUALIFIER, numTaggedScenarios);
 
@@ -223,10 +225,10 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         return asciiDocBlocks;
     }
 
-    private void writeIndexFileForAllTags(final Map<String, Map<String, List<String>>> strings) {
-        final var tagFiles = strings.entrySet().stream()
-                .sorted((o1, o2) -> Objects.compare(o1, o2, Comparator
-                        .comparing(entry -> allTags.get(entry.getValue().keySet().stream().findFirst().orElse("")).getName())))
+    private void writeIndexFileForAllTags(final Map<String, Map<TagId, List<String>>> tagTypeToIdToScenarioFile) {
+        final var tagFiles = tagTypeToIdToScenarioFile.entrySet().stream()
+                // TODO That ain't right either
+                .sorted(comparing(entry -> entry.getValue().keySet().stream().findFirst().map(allTags::get).map(Tag::getName).orElse("")))
                 .map(entry -> entry.getKey().replace(' ', '_'))
                 .toList();
         final var total = taggedScenarioCounts.values().stream().reduce(Integer::sum).orElse(999);
