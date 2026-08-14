@@ -22,12 +22,6 @@ import static org.assertj.core.api.Assumptions.assumeThat;
  * {@link ClassInjector.UsingReflection#isAvailable()} /
  * {@link ClassInjector.UsingLookup#isAvailable()}) produces a usable
  * instrumented subclass for every kind of stage class.
- *
- * <p>Unlike the previous version of these tests, the stage class creator is
- * <em>not</em> overridden to force a particular class loading strategy.
- * The default {@link ByteBuddyStageClassCreator} is used directly, so the
- * tests prove that the real ByteBuddy class loader can instrument the given
- * stage class.</p>
  */
 class StageInjectionTest {
 

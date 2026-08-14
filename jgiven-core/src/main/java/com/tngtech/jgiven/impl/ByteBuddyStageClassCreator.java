@@ -28,13 +28,11 @@ import static net.bytebuddy.matcher.ElementMatchers.not;
  * <ol>
  *   <li><strong>Reflection-based injection</strong> ({@link ClassLoadingStrategy.Default#INJECTION})
  *       &mdash; used when {@link ClassInjector.UsingReflection#isAvailable()} returns true.
- *       This is the default on Java 8 and on Java 9+ when
- *       {@code java.base/java.lang} is opened via
- *       {@code --add-opens java.base/java.lang=ALL-UNNAMED}. The generated
+ *       This is the case when the class to be instrumented is not barred from injection
+ *       via the Jave module system. (Mostly the case up to Java 21) The generated
  *       subclass is injected into the same classloader as the stage class
  *       via {@code sun.misc.Unsafe}/{@code defineClass} reflection, which
- *       preserves package membership and is required for instrumenting
- *       package-private stage classes.</li>
+ *       preserves package membership.</li>
  *
  *   <li><strong>Lookup-based injection</strong> ({@link ClassLoadingStrategy.UsingLookup})
  *       &mdash; used when reflective injection is unavailable but
@@ -89,8 +87,7 @@ public class ByteBuddyStageClassCreator implements StageClassCreator {
             return null;
         }
         try {
-            // privateLookupIn gives PACKAGE/MODULE privs over the stage
-            // class's package; required so Lookup#defineClass can place the
+            // privateLookupIn allows Lookup#defineClass to place the
             // generated subclass in the same runtime package as its
             // superclass.
             Object lookup = MethodHandles.privateLookupIn(stageClass, MethodHandles.lookup());

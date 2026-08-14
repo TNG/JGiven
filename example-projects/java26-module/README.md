@@ -1,4 +1,4 @@
-# Java 21 Module Example Project
+# Java 26 Module Example Project
 
 This project shows how JGiven can be used from a JPMS named module
 (`module-info.java`) on Java 26, exercising the future-proof injection path
