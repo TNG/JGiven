@@ -32,9 +32,13 @@ guava = { module = "com.google.guava:guava", version.ref = "guava-version" }
 hypersql-database = { module = "org.hsqldb:hsqldb", version = "2.7.4" }
 jakarta-annotation = { module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-version" }
 junit6-bom = { module = "org.junit:junit-bom", version.ref = "junit6-version" }
+junit6-api = { module = "org.junit.jupiter:junit-jupiter-api" }
+junit6-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
+junit6-params = { module = "org.junit.jupiter:junit-jupiter-params" }
 junit5-bom = { module = "org.junit:junit-bom", version.ref = "junit5-version" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+junit4-engine = { module = "org.junit.vintage:junit-vintage-engine" }
 junit4 = { module = "junit:junit", version.ref = "junit4-version" }
 junit4-dataprovider = { module = "com.tngtech.java:junit-dataprovider", version = "1.13.1" }
 junit4-params = { module = "pl.pragmatists:JUnitParams", version = "1.1.1" }
@@ -60,6 +64,7 @@ testng = { module = "org.testng:testng", version="7.12.0" }
 
 [bundles]
 junit4 = [ "junit4", "junit4-dataprovider", "junit4-params" ]
+junit6 = ["junit6-api", "junit6-engine", "junit6-params", "junit-platform-launcher"]
 # Spring 6 test bundle (used by jgiven-spring, jgiven-spring-junit4, jgiven-spring-junit5).
 spring6-test = ["spring6-context", "spring6-test", "spring6-tx", "spring6-jdbc"]
 # Spring 7 test bundle (used by jgiven-spring-junit6).
