@@ -1,17 +1,16 @@
 package com.tngtech.jgiven.junit;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-import org.junit.Test;
-
 import com.tngtech.jgiven.annotation.IsTag;
 import com.tngtech.jgiven.junit.test.GivenTaggedTestStep;
 import com.tngtech.jgiven.junit.test.GivenTestStep;
 import com.tngtech.jgiven.junit.test.ThenTestStep;
 import com.tngtech.jgiven.junit.test.WhenTestStep;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import org.junit.Test;
+
+import static com.tngtech.jgiven.report.model.Tag.TagId.id;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TagAnnotationTest extends ScenarioTest<GivenTestStep, WhenTestStep, ThenTestStep> {
 
@@ -26,8 +25,7 @@ public class TagAnnotationTest extends ScenarioTest<GivenTestStep, WhenTestStep,
 
         getScenario().finished();
 
-        assertThat( getScenario().getModel().getTagMap().entrySet().iterator().next().getValue().getShownInNavigation() )
-            .isEqualTo( false );
+        assertThat(getScenario().getModel().getTagMap().entrySet().iterator().next().getValue().getShownInNavigation()).isFalse();
     }
 
     @Test
@@ -36,7 +34,7 @@ public class TagAnnotationTest extends ScenarioTest<GivenTestStep, WhenTestStep,
 
         getScenario().finished();
 
-        assertThat( getScenario().getModel().getTagMap().keySet() ).contains( "com.tngtech.jgiven.junit.test.GivenTestStep$StepMethodTag" );
+        assertThat(getScenario().getModel().getTagMap()).containsKey(id("com.tngtech.jgiven.junit.test.GivenTestStep$StepMethodTag"));
     }
 
     @Test
@@ -46,6 +44,6 @@ public class TagAnnotationTest extends ScenarioTest<GivenTestStep, WhenTestStep,
 
         getScenario().finished();
 
-        assertThat( getScenario().getModel().getTagMap().keySet() ).contains( "com.tngtech.jgiven.junit.test.GivenTaggedTestStep$StageTag" );
+        assertThat(getScenario().getModel().getTagMap()).containsKey(id("com.tngtech.jgiven.junit.test.GivenTaggedTestStep$StageTag"));
     }
 }

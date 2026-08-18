@@ -1,7 +1,5 @@
 package com.tngtech.jgiven.report.model;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.tngtech.jgiven.ScenarioTestBaseForTesting;
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.IsTag;
@@ -9,6 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.Collections;
 import org.junit.Test;
+
+import static com.tngtech.jgiven.report.model.Tag.TagId.id;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReportModelIntegrationTest extends ScenarioTestBaseForTesting<
     ReportModelIntegrationTest.TestStage, ReportModelIntegrationTest.TestStage, ReportModelIntegrationTest.TestStage> {
@@ -27,8 +28,8 @@ public class ReportModelIntegrationTest extends ScenarioTestBaseForTesting<
         then();
         getScenario().finished();
         assertThat(model.getTagMap()).containsKeys(
-            "com.tngtech.jgiven.report.model.ReportModelIntegrationTest$ParentTag",
-            "com.tngtech.jgiven.report.model.ReportModelIntegrationTest$ChildTag"
+                id("com.tngtech.jgiven.report.model.ReportModelIntegrationTest$ParentTag"),
+                id("com.tngtech.jgiven.report.model.ReportModelIntegrationTest$ChildTag")
         );
     }
 

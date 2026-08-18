@@ -1,9 +1,13 @@
 package com.tngtech.jgiven.report.model;
 
-import java.util.*;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.tngtech.jgiven.report.model.Tag.TagId;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 public class ScenarioModel {
     private String className;
@@ -11,10 +15,7 @@ public class ScenarioModel {
     private String description;
     private String extendedDescription;
 
-    /**
-     * A list of tag ids
-     */
-    private Set<String> tagIds = Sets.newLinkedHashSet();
+    private Set<TagId> tagIds = Sets.newLinkedHashSet();
     private final List<String> explicitParameters = Lists.newArrayList();
     private final List<String> derivedParameters = Lists.newArrayList();
     private final List<ScenarioCaseModel> scenarioCases = Lists.newArrayList();
@@ -64,7 +65,7 @@ public class ScenarioModel {
 
     private ExecutionStatus calculateExecutionStatus() {
         for (ScenarioCaseModel caseModel : getScenarioCases()) {
-            ExecutionStatus caseStatus = caseModel.getExecutionStatus();
+            var caseStatus = caseModel.getExecutionStatus();
             if (caseStatus != ExecutionStatus.SUCCESS) {
                 return caseStatus;
             }
@@ -103,8 +104,8 @@ public class ScenarioModel {
         return scenarioCases;
     }
 
-    public List<String> getTagIds() {
-        return Lists.newArrayList(tagIds);
+    public Set<TagId> getTagIds() {
+        return Set.copyOf(tagIds);
     }
 
     public boolean isCasesAsTable() {
@@ -168,7 +169,7 @@ public class ScenarioModel {
         this.description = description;
     }
 
-    public void setTagIds(Set<String> tagIds) {
+    public void setTagIds(Set<TagId> tagIds) {
         this.tagIds = tagIds;
     }
 
