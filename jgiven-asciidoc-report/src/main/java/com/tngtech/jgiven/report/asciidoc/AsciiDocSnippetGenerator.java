@@ -39,7 +39,8 @@ final class AsciiDocSnippetGenerator {
         return result;
     }
 
-    List<String> generateIndexSnippet(final String featurePath, final List<String> features, final String tags, final int levelOffset) {
+    List<String> generateIndexSnippet(final String featurePath, final List<FeatureName> features, final String tags,
+            final int levelOffset) {
         final List<String> result = new ArrayList<>();
 
         final var tagSelector = Strings.isNullOrEmpty(tags) ? "" : "tag=" + tags;
@@ -51,7 +52,7 @@ final class AsciiDocSnippetGenerator {
         return result;
     }
 
-    List<String> generateTagSnippet(final Tag tag, int scenarioCount, final List<String> features) {
+    List<String> generateTagSnippet(final Tag tag, int scenarioCount, final List<FeatureName> features) {
         final var result = new ArrayList<String>();
 
         result.add("=== " + tag.toString());
@@ -67,7 +68,7 @@ final class AsciiDocSnippetGenerator {
             final String intro,
             final int leveloffset,
             final String featurePath,
-            final List<String> featureFiles,
+            final List<FeatureName> featureFiles,
             final String tags) {
         final var result = new ArrayList<String>();
 
@@ -101,7 +102,7 @@ final class AsciiDocSnippetGenerator {
         }
     }
 
-    private static String includeMacroFor(final String featurePath, final String featureName, final String tags) {
+    private static String includeMacroFor(final String featurePath, final FeatureName featureName, final String tags) {
         return "include::" + featurePath + "/" + featureName + ".asciidoc[" + tags + "]";
     }
 }

@@ -25,6 +25,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.tngtech.jgiven.report.asciidoc.FeatureName.feature;
 import static java.util.Comparator.comparing;
 
 /**
@@ -49,11 +50,11 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
     private final AsciiDocBlockConverter blockConverter = new AsciiDocBlockConverter();
     private final Map<TagId, Tag> allTags = new HashMap<>();
-    private final List<String> allFeatures = new ArrayList<>();
-    private final List<String> failedScenarioFeatures = new ArrayList<>();
-    private final List<String> pendingScenarioFeatures = new ArrayList<>();
-    private final List<String> abortedScenarioFeatures = new ArrayList<>();
-    private final Map<TagId, List<String>> taggedScenarioFeatures = new HashMap<>();
+    private final List<FeatureName> allFeatures = new ArrayList<>();
+    private final List<FeatureName> failedScenarioFeatures = new ArrayList<>();
+    private final List<FeatureName> pendingScenarioFeatures = new ArrayList<>();
+    private final List<FeatureName> abortedScenarioFeatures = new ArrayList<>();
+    private final Map<TagId, List<FeatureName>> taggedScenarioFeatures = new HashMap<>();
     private final Map<TagId, Integer> taggedScenarioCounts = new HashMap<>();
 
     private File targetDir;
@@ -115,10 +116,10 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
                 .sorted(Comparator.comparing(AsciiDocReportGenerator::byFeatureName))
                 .forEach(reportModelFile -> {
                     final var statistics = completeReportModel.getStatistics(reportModelFile);
-                    final var featureName = Files.getNameWithoutExtension(reportModelFile.file().getName());
+                    final var featureName = feature(Files.getNameWithoutExtension(reportModelFile.file().getName()));
                     final var asciiDocBlocks = collectReportBlocks(featureName, statistics, reportModelFile.model());
 
-                    writeAsciiDocBlocksToFile(featuresDir, featureName, asciiDocBlocks);
+                    writeAsciiDocBlocksToFile(featuresDir, featureName.value(), asciiDocBlocks);
                 });
     }
 
@@ -177,7 +178,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         writeAsciiDocBlocksToFile(targetDir, "abortedScenarios", asciiDocBlocks);
     }
 
-    private void writeIndexFileForTaggedScenarios(final String tagType, final Map<TagId, List<String>> taggedScenarios) {
+    private void writeIndexFileForTaggedScenarios(final String tagType, final Map<TagId, List<FeatureName>> taggedScenarios) {
         final var firstTag = taggedScenarios.keySet().stream()
                 .findFirst()
                 .map(allTags::get);
@@ -195,7 +196,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         writeAsciiDocBlocksToFile(tagsDir, tagType, asciiDocBlocks);
     }
 
-    private List<String> singleValuedTag(final Map<TagId, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
+    private List<String> singleValuedTag(final Map<TagId, List<FeatureName>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
         final var snippetGenerator = new AsciiDocSnippetGenerator(
                 tag.toString(), TAGGED_SCENARIO_QUALIFIER, numTaggedScenarios);
 
@@ -211,7 +212,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         return asciiDocBlocks;
     }
 
-    private List<String> multiValuedTag(final Map<TagId, List<String>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
+    private List<String> multiValuedTag(final Map<TagId, List<FeatureName>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
         final var snippetGenerator = new AsciiDocSnippetGenerator(
                 tag.getName(), TAGGED_SCENARIO_QUALIFIER, numTaggedScenarios);
 
@@ -225,11 +226,12 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         return asciiDocBlocks;
     }
 
-    private void writeIndexFileForAllTags(final Map<String, Map<TagId, List<String>>> tagTypeToIdToScenarioFile) {
+    private void writeIndexFileForAllTags(final Map<String, Map<TagId, List<FeatureName>>> tagTypeToIdToScenarioFile) {
         final var tagFiles = tagTypeToIdToScenarioFile.entrySet().stream()
                 // TODO That ain't right either
                 .sorted(comparing(entry -> entry.getValue().keySet().stream().findFirst().map(allTags::get).map(Tag::getName).orElse("")))
                 .map(entry -> entry.getKey().replace(' ', '_'))
+                .map(FeatureName::new) // TODO HV make sure that there was no mix-up here between feature names and tags
                 .toList();
         final var total = taggedScenarioCounts.values().stream().reduce(Integer::sum).orElse(999);
         final var snippetGenerator = new AsciiDocSnippetGenerator(
@@ -292,7 +294,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
     }
 
     private List<String> collectReportBlocks(
-            final String featureName,
+            final FeatureName featureName,
             final ReportStatistics statistics,
             final ReportModel model) {
         allTags.putAll(model.getTagMap());
