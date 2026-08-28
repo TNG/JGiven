@@ -1,8 +1,6 @@
 package com.tngtech.jgiven.impl.tag;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.tngtech.jgiven.config.DefaultConfiguration;
 import com.tngtech.jgiven.impl.TestUtil.JGivenLogHandler;
 import com.tngtech.jgiven.report.model.Tag;
@@ -15,6 +13,9 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import org.junit.Before;
 import org.junit.Test;
+
+import static com.tngtech.jgiven.report.model.Tag.TagId.id;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TagCreatorTest {
 
@@ -49,7 +50,7 @@ public class TagCreatorTest {
         Tag tag = getOnlyTagFor(AnnotationWithNameTestClass.class.getAnnotations()[0]);
         assertThat(tag.getName()).isEqualTo("AnotherName");
         assertThat(tag.getValues()).isEmpty();
-        assertThat(tag.toIdString()).isEqualTo(AnnotationWithName.class.getName());
+        assertThat(tag.toIdString()).isEqualTo(id(AnnotationWithName.class.getName()));
     }
 
     @Test
@@ -57,7 +58,7 @@ public class TagCreatorTest {
         Tag tag = getOnlyTagFor(AnnotationWithIgnoredValueTestClass.class.getAnnotations()[0]);
         assertThat(tag.getName()).isEqualTo(AnnotationWithIgnoredValue.class.getSimpleName());
         assertThat(tag.getValues()).isEmpty();
-        assertThat(tag.toIdString()).isEqualTo(AnnotationWithIgnoredValue.class.getName());
+        assertThat(tag.toIdString()).isEqualTo(id(AnnotationWithIgnoredValue.class.getName()));
     }
 
     @Test

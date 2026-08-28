@@ -1,31 +1,29 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.google.common.collect.ImmutableList;
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
-@RunWith(DataProviderRunner.class)
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class AsciiDocScenarioCaseBlockConverterTest {
 
     public static final long ARBITRARY_DURATION = 42_000_000L;
     private static final String LINE_BREAK = System.lineSeparator();
     private final ReportBlockConverter converter = new AsciiDocBlockConverter();
 
-    @Test
-    @DataProvider({"SUCCESS, check-square[role=green]",
+    @ParameterizedTest
+    @CsvSource({ "SUCCESS, check-square[role=green]",
         "FAILED, exclamation-circle[role=red]",
         "SCENARIO_PENDING, ban[role=silver]",
         "SOME_STEPS_PENDING, ban[role=silver]"})
-    public void convert_scenario_case_header_without_description(final ExecutionStatus executionStatus,
+    void convert_scenario_case_header_without_description(final ExecutionStatus executionStatus,
             final String icon) {
         // when
-        String block = converter.convertCaseHeaderBlock(1, executionStatus, ARBITRARY_DURATION, null);
+        var block = converter.convertCaseHeaderBlock(1, executionStatus, ARBITRARY_DURATION, null);
 
         // then
         assertThatBlockContainsLines(block,
@@ -34,15 +32,15 @@ public class AsciiDocScenarioCaseBlockConverterTest {
             "icon:" + icon + " (42ms)");
     }
 
-    @Test
-    @DataProvider({"SUCCESS, check-square[role=green]",
+    @ParameterizedTest
+    @CsvSource({ "SUCCESS, check-square[role=green]",
         "FAILED, exclamation-circle[role=red]",
         "SCENARIO_PENDING, ban[role=silver]",
         "SOME_STEPS_PENDING, ban[role=silver]"})
-    public void convert_scenario_case_header_with_empty_description(final ExecutionStatus executionStatus,
+    void convert_scenario_case_header_with_empty_description(final ExecutionStatus executionStatus,
             final String icon) {
         // when
-        String block = converter.convertCaseHeaderBlock(2, executionStatus, ARBITRARY_DURATION, "");
+        var block = converter.convertCaseHeaderBlock(2, executionStatus, ARBITRARY_DURATION, "");
 
         // then
         assertThatBlockContainsLines(block,
@@ -52,9 +50,9 @@ public class AsciiDocScenarioCaseBlockConverterTest {
     }
 
     @Test
-    public void convert_scenario_case_header_with_description() {
+    void convert_scenario_case_header_with_description() {
         // when
-        String block = converter.convertCaseHeaderBlock(3, ExecutionStatus.SUCCESS, ARBITRARY_DURATION, "First case");
+        var block = converter.convertCaseHeaderBlock(3, ExecutionStatus.SUCCESS, ARBITRARY_DURATION, "First case");
 
         // then
         assertThatBlockContainsLines(block,
@@ -64,9 +62,9 @@ public class AsciiDocScenarioCaseBlockConverterTest {
     }
 
     @Test
-    public void convert_scenario_case_footer_without_stacktrace() {
+    void convert_scenario_case_footer_without_stacktrace() {
         // when
-        final String block = converter.convertCaseFooterBlock("Something is broken" + LINE_BREAK + "inside me", null);
+        final var block = converter.convertCaseFooterBlock("Something is broken" + LINE_BREAK + "inside me", null);
 
         // then
         assertThatBlockContainsLines(block,
@@ -81,12 +79,12 @@ public class AsciiDocScenarioCaseBlockConverterTest {
     }
 
     @Test
-    public void convert_scenario_case_footer_with_stacktrace() {
+    void convert_scenario_case_footer_with_stacktrace() {
         // given
-        final ImmutableList<String> stackTraceLines = ImmutableList.of("broken line 1", "broken line 2");
+        final var stackTraceLines = List.of("broken line 1", "broken line 2");
 
         // when
-        final String block =
+        final var block =
                 converter.convertCaseFooterBlock("Something is broken", stackTraceLines);
 
         // then
@@ -108,7 +106,7 @@ public class AsciiDocScenarioCaseBlockConverterTest {
     }
 
     private static void assertThatBlockContainsLines(final String block, final String... expectedLines) {
-        final String[] blockLines = block.split(System.lineSeparator());
+        final var blockLines = block.split(System.lineSeparator());
         assertThat(blockLines).hasSize(expectedLines.length).containsExactly(expectedLines);
     }
 }
