@@ -17,6 +17,20 @@
 
 * Added `jgiven-junit6` module with support for both JUnit 5 and JUnit 6. This module provides API compatibility with JUnit 5 and enables migration to JUnit 6 when ready.
 * Added `jgiven-spring-junit6` module with support for Spring 7.x while maintaining backward compatibility with JUnit 5.
+* Added `JGivenSpringExtension` (in `jgiven-spring-junit5` and `jgiven-spring-junit6`) that installs JGiven's
+  `SpringStageCreator` via a JUnit extension callback, so that Spring dependency injection into JGiven stages keeps
+  working even when a test declares `@TestExecutionListeners` with the default `REPLACE_DEFAULTS` merge mode. The Spring
+  scenario test base classes now register this extension
+  automatically. [#2193](https://github.com/TNG/JGiven/issues/2193)
+
+## Fixed issues
+
+* Spring's `@TestExecutionListener` annotation no longer breaks JGiven's Spring context initialization. Previously,
+  declaring `@TestExecutionListeners` (which defaults to `REPLACE_DEFAULTS`) removed Spring's
+  `DependencyInjectionTestExecutionListener`, so the `BeanFactoryAware` callback that JGiven relied on to install its
+  `SpringStageCreator` never fired, leaving `@Autowired` stage beans uninjected. JGiven now installs the
+  `SpringStageCreator` through its own JUnit extension, independent of any
+  `TestExecutionListener`. [#2193](https://github.com/TNG/JGiven/issues/2193)
 
 # Release v2.0.3
 

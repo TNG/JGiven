@@ -1,1 +1,0 @@
-org.springframework.test.context.TestExecutionListener=com.tngtech.jgiven.integration.spring.junit5.test.TestExecutionListenerTest.BeanInjectingListener
