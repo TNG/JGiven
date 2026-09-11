@@ -3,15 +3,16 @@ package com.tngtech.jgiven.report.html5;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;
 import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.Tag.TagClass;
 import com.tngtech.jgiven.report.model.Tag.TagId;
 import java.util.Map;
 
 public class TagFile {
-    private Map<String, Tag> tagTypeMap = Maps.newLinkedHashMap();
+    private Map<TagClass, Tag> tagTypeMap = Maps.newLinkedHashMap();
     private Map<String, TagInstance> tags = Maps.newLinkedHashMap();
 
     private static class TagInstance {
-        String tagType;
+        TagClass tagType;
         String value;
         String description;
         String href;

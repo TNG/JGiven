@@ -1,6 +1,7 @@
 package com.tngtech.jgiven.report.asciidoc;
 
 import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.Tag.TagClass;
 import com.tngtech.jgiven.report.model.Tag.TagId;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ public class HierarchyCalculator {
     private HierarchyCalculator() {
     }
 
-    static Map<String, Map<TagId, List<FeatureName>>> computeGroupedTag(final Map<TagId, Tag> allTags,
+    static Map<TagClass, Map<TagId, List<FeatureName>>> computeGroupedTag(final Map<TagId, Tag> allTags,
             final Map<TagId, List<FeatureName>> taggedScenarioFeatures) {
         return taggedScenarioFeatures.entrySet().stream()
                 .filter(entry -> allTags.get(entry.getKey()).getShownInNavigation())

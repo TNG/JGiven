@@ -4,6 +4,7 @@ import com.tngtech.jgiven.report.model.Tag;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
+import static com.tngtech.jgiven.report.model.Tag.TagClass.tagClass;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TagMapperTest {
@@ -12,7 +13,7 @@ class TagMapperTest {
         @Test
         void simple_tag_to_label() {
             // given
-            final var tag = new Tag("com.tngtech.jgiven.tags.Feature");
+            final var tag = new Tag(tagClass("com.tngtech.jgiven.tags.Feature"));
             tag.setType("Feature");
 
             // when
@@ -25,7 +26,7 @@ class TagMapperTest {
         @Test
         void single_value_tag_to_label() {
             // given
-            final var tag = new Tag("com.tngtech.jgiven.tags.Story", "ACME-1337");
+            final var tag = new Tag(tagClass("com.tngtech.jgiven.tags.Story"), "ACME-1337");
             tag.setType("Story");
 
             // when
@@ -38,7 +39,7 @@ class TagMapperTest {
         @Test
         void single_value_tag_with_type_to_label() {
             // given
-            final var tag = new Tag("com.tngtech.jgiven.tags.Issue", "#1337");
+            final var tag = new Tag(tagClass("com.tngtech.jgiven.tags.Issue"), "#1337");
             tag.setType("Issue");
             tag.setPrependType(true);
 
@@ -52,7 +53,7 @@ class TagMapperTest {
         @Test
         void multiple_value_tag_to_label() {
             // given
-            final var tag = new Tag("com.tngtech.jgiven.tags.Story", List.of("ACME-1337", "ACME-4221"));
+            final var tag = new Tag(tagClass("com.tngtech.jgiven.tags.Story"), List.of("ACME-1337", "ACME-4221"));
             tag.setType("Story");
 
             // when
@@ -65,7 +66,7 @@ class TagMapperTest {
         @Test
         void tag_with_css_class_to_label() {
             // given
-            final var tag = new Tag("com.tngtech.jgiven.tags.Priority", "1");
+            final var tag = new Tag(tagClass("com.tngtech.jgiven.tags.Priority"), "1");
             tag.setType("Priority");
             tag.setCssClass("hidden");
 
@@ -79,7 +80,7 @@ class TagMapperTest {
         @Test
         void tag_with_name_to_label() {
             // given
-            final var tag = new Tag("com.tngtech.jgiven.tags.FeatureCore", "Core Features", null);
+            final var tag = new Tag(tagClass("com.tngtech.jgiven.tags.FeatureCore"), "Core Features", null);
             tag.setType("FeatureCore");
 
             // when
@@ -94,7 +95,7 @@ class TagMapperTest {
         @Test
         void simple_tag_to_AsciiDoc_tag() {
             // given
-            final var tag = new Tag("com.tngtech.jgiven.tags.Feature");
+            final var tag = new Tag(tagClass("com.tngtech.jgiven.tags.Feature"));
             tag.setType("Feature");
 
             // when
@@ -109,7 +110,7 @@ class TagMapperTest {
         @Test
         void single_value_tag_to_AsciiDoc_tag() {
             // given
-            final var tag = new Tag("com.tngtech.jgiven.tags.Feature", "AsciiDoc");
+            final var tag = new Tag(tagClass("com.tngtech.jgiven.tags.Feature"), "AsciiDoc");
             tag.setType("Feature");
 
             // when
@@ -124,7 +125,7 @@ class TagMapperTest {
         @Test
         void single_value_tag_with_type_to_AsciiDoc_tag() {
             // given
-            final var tag = new Tag("com.tngtech.jgiven.tags.Issue", "#1337");
+            final var tag = new Tag(tagClass("com.tngtech.jgiven.tags.Issue"), "#1337");
             tag.setType("Issue");
             tag.setPrependType(true);
 
@@ -140,7 +141,7 @@ class TagMapperTest {
         @Test
         void multiple_value_tag_to_AsciiDoc_tag() {
             // given
-            final var tag = new Tag("com.tngtech.jgiven.tags.Feature", List.of("AsciiDoc", "Markdown"));
+            final var tag = new Tag(tagClass("com.tngtech.jgiven.tags.Feature"), List.of("AsciiDoc", "Markdown"));
 
             // when
             final var startSnippet = TagMapper.toAsciiDocStartTag(tag);

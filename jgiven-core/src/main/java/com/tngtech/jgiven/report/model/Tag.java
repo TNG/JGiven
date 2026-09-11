@@ -3,11 +3,7 @@ package com.tngtech.jgiven.report.model;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +16,25 @@ public class Tag {
     /**
      * The full type of the annotation of the tag
      */
-    private final String fullType;
+    private final TagClass fullType;
+
+    @JsonAdapter(TagClass.JsonConverter.class)
+    public record TagClass(String fqcn) implements StringWrapper {
+        public static TagClass tagClass(String fqcn) {
+            return new TagClass(fqcn);
+        }
+
+        @Override
+        public final String toString() {
+            return fqcn;
+        }
+
+        public static class JsonConverter extends StringWrapperConverter<TagClass> {
+            public JsonConverter() {
+                super(TagClass::new);
+            }
+        }
+    }
 
     /**
      * The simple type of the annotation of the tag
@@ -86,16 +100,16 @@ public class Tag {
      */
     private Boolean hideInNav;
 
-    public Tag( String fullType ) {
+    public Tag(TagClass fullType) {
         this.fullType = fullType;
     }
 
-    public Tag( String fullType, Object value ) {
+    public Tag(TagClass fullType, Object value) {
         this( fullType );
         this.value = value;
     }
 
-    public Tag( String fullType, String name, Object value ) {
+    public Tag(TagClass fullType, String name, Object value) {
         this( fullType, value );
         this.name = name;
     }
@@ -212,11 +226,11 @@ public class Tag {
     }
 
     public TagId toIdString() {
-        return id(value == null ? fullType : fullType + "-" + getValueString());
+        return id(value == null ? fullType.toString() : fullType + "-" + getValueString());
     }
 
     @JsonAdapter(TagId.JsonConverter.class)
-    public record TagId(String id) {
+    public record TagId(String id) implements StringWrapper {
         public static TagId id(String id) {
             return new TagId(id);
         }
@@ -226,18 +240,10 @@ public class Tag {
             return id;
         }
 
-        public static class JsonConverter extends TypeAdapter<TagId> {
-
-            @Override
-            public void write(JsonWriter out, TagId value) throws IOException {
-                out.value(value.id);
+        public static class JsonConverter extends StringWrapperConverter<TagId> {
+            public JsonConverter() {
+                super(TagId::new);
             }
-
-            @Override
-            public TagId read(JsonReader in) throws IOException {
-                return id(in.nextString());
-            }
-
         }
     }
 
@@ -281,7 +287,7 @@ public class Tag {
         this.name = name;
     }
 
-    public String getFullType() {
+    public TagClass getFullType() {
         return fullType;
     }
 

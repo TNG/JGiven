@@ -21,6 +21,8 @@ import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.tngtech.jgiven.report.model.Tag.TagClass.tagClass;
+
 /**
  * Handles the conversion of Annotations on Classes and Methods to displayable Tags.
  */
@@ -125,7 +127,7 @@ public class TagCreator {
     }
 
     private Tag createStyledTag(TagConfiguration tagConfig) {
-        Tag tag = new Tag(tagConfig.getAnnotationFullType());
+        Tag tag = new Tag(tagClass(tagConfig.getAnnotationFullType()));
 
         tag.setType(tagConfig.getAnnotationType());
         tag.setPrependType(tagConfig.isPrependType());

@@ -12,6 +12,7 @@ import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.report.model.ReportModelFile;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.Tag.TagClass;
 import com.tngtech.jgiven.report.model.Tag.TagId;
 import java.io.File;
 import java.io.IOException;
@@ -178,7 +179,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         writeAsciiDocBlocksToFile(targetDir, "abortedScenarios", asciiDocBlocks);
     }
 
-    private void writeIndexFileForTaggedScenarios(final String tagType, final Map<TagId, List<FeatureName>> taggedScenarios) {
+    private void writeIndexFileForTaggedScenarios(final TagClass tagType, final Map<TagId, List<FeatureName>> taggedScenarios) {
         final var firstTag = taggedScenarios.keySet().stream()
                 .findFirst()
                 .map(allTags::get);
@@ -193,7 +194,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
                 ? singleValuedTag(taggedScenarios, firstTag.get(), numTaggedScenarios)
                 : multiValuedTag(taggedScenarios, firstTag.get(), numTaggedScenarios);
 
-        writeAsciiDocBlocksToFile(tagsDir, tagType, asciiDocBlocks);
+        writeAsciiDocBlocksToFile(tagsDir, tagType.toString(), asciiDocBlocks);
     }
 
     private List<String> singleValuedTag(final Map<TagId, List<FeatureName>> taggedScenarios, final Tag tag, final int numTaggedScenarios) {
@@ -226,11 +227,11 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         return asciiDocBlocks;
     }
 
-    private void writeIndexFileForAllTags(final Map<String, Map<TagId, List<FeatureName>>> tagTypeToIdToScenarioFile) {
+    private void writeIndexFileForAllTags(final Map<TagClass, Map<TagId, List<FeatureName>>> tagTypeToIdToScenarioFile) {
         final var tagFiles = tagTypeToIdToScenarioFile.entrySet().stream()
-                // TODO That ain't right either
+                // TODO HV That ain't right either
                 .sorted(comparing(entry -> entry.getValue().keySet().stream().findFirst().map(allTags::get).map(Tag::getName).orElse("")))
-                .map(entry -> entry.getKey().replace(' ', '_'))
+                .map(entry -> entry.getKey().toString().replace(' ', '_'))
                 .map(FeatureName::new) // TODO HV make sure that there was no mix-up here between feature names and tags
                 .toList();
         final var total = taggedScenarioCounts.values().stream().reduce(Integer::sum).orElse(999);

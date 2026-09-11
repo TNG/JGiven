@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+import static com.tngtech.jgiven.report.model.Tag.TagClass.tagClass;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AsciiDocBlockConverterTest {
@@ -184,7 +185,7 @@ class AsciiDocBlockConverterTest {
     }
 
     private static Tag mkTag(final String value) {
-        final var tag = new Tag("com.jgiven.ArbitraryTag", value);
+        final var tag = new Tag(tagClass("com.jgiven.ArbitraryTag"), value);
         tag.setType("ArbitraryTag");
         return tag;
     }
