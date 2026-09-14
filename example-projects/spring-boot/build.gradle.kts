@@ -37,7 +37,7 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("junit:junit:4.13.2")
-    implementation("com.h2database:h2:2.4.240")
+    implementation("com.h2database:h2:2.5.250")
     testImplementation("com.tngtech.jgiven:jgiven-spring-junit4:$version")
     testImplementation("org.assertj:assertj-core:$assertjVersion")
     testImplementation("com.tngtech.java:junit-dataprovider:$junitDataproviderVersion")
