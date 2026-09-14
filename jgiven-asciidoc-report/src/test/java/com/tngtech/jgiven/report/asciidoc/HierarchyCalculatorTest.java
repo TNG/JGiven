@@ -18,8 +18,8 @@ class HierarchyCalculatorTest {
                 Map.of(id("tag-id"), new Tag(tagClass("tag type"))),
                 Map.of(id("tag-id"), List.of(feature("file"))));
         assertThat(result).isEqualTo(
-                Map.of("tag type",
-                        Map.of(id("tag-id"), List.of("file"))));
+                Map.of(tagClass("tag type"),
+                        Map.of(id("tag-id"), List.of(feature("file")))));
     }
 
     @Test
@@ -28,8 +28,8 @@ class HierarchyCalculatorTest {
                 Map.of(id("tag-id"), new Tag(tagClass("tag type"))),
                 Map.of(id("tag-id"), List.of(feature("file1"), feature("file2"))));
         assertThat(result).isEqualTo(
-                Map.of("tag type",
-                        Map.of(id("tag-id"), List.of("file1", "file2"))));
+                Map.of(tagClass("tag type"),
+                        Map.of(id("tag-id"), List.of(feature("file1"), feature("file2")))));
     }
 
     @Test
@@ -42,10 +42,10 @@ class HierarchyCalculatorTest {
                         id("tag-id"), List.of(feature("file")),
                         id("other-tag"), List.of(feature("file"))));
         assertThat(result).isEqualTo(
-                Map.of("tag type",
+                Map.of(tagClass("tag type"),
                         Map.of(
-                                id("tag-id"), List.of("file"),
-                                id("other-tag"), List.of("file"))));
+                                id("tag-id"), List.of(feature("file")),
+                                id("other-tag"), List.of(feature("file")))));
     }
 
     @Test
@@ -56,8 +56,8 @@ class HierarchyCalculatorTest {
                 Map.of(id("tag-id1"), List.of(feature("file1")),
                         id("tag-id2"), List.of(feature("file2"))));
         assertThat(result).isEqualTo(
-                Map.of("tag type 1", Map.of(id("tag-id1"), List.of("file1")),
-                        "tag type 2", Map.of(id("tag-id2"), List.of("file2"))));
+                Map.of(tagClass("tag type 1"), Map.of(id("tag-id1"), List.of(feature("file1"))),
+                        tagClass("tag type 2"), Map.of(id("tag-id2"), List.of(feature("file2")))));
     }
 
     @Test
@@ -68,7 +68,7 @@ class HierarchyCalculatorTest {
                 Map.of(id("tag-id1"), List.of(feature("file1"), feature("file2")),
                         id("tag-id2"), List.of(feature("file2"), feature("file3"))));
         assertThat(result).isEqualTo(
-                Map.of("tag type 1", Map.of(id("tag-id1"), List.of("file1", "file2")),
-                        "tag type 2", Map.of(id("tag-id2"), List.of("file2", "file3"))));
+                Map.of(tagClass("tag type 1"), Map.of(id("tag-id1"), List.of(feature("file1"), feature("file2"))),
+                        tagClass("tag type 2"), Map.of(id("tag-id2"), List.of(feature("file2"), feature("file3")))));
     }
 }
