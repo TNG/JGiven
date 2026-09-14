@@ -21,7 +21,7 @@ If you want to contribute code or documentation please follow the following work
 
 ## System Requirements
 
-* JDK 11 (`JAVA_HOME` and `PATH` should be set accordingly)
+* JDK 21 (`JAVA_HOME` and `PATH` should be set accordingly)
 * Gradle (is automatically downloaded by the `gradlew` script)
 * Android SDK if you want to build the `jgiven-android module`
     - Setting `ANDROID_SDK_ROOT` and `ANDROID=true` env variables is required
