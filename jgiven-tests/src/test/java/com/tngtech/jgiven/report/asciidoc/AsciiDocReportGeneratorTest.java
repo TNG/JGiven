@@ -14,6 +14,7 @@ public class AsciiDocReportGeneratorTest extends
         JGivenScenarioTest<GivenReportModels<?>, WhenReportGenerator<?>, ThenAsciiDocReportGenerator<?>> {
 
     private static final String TAG_CLASS = "com.acme.TestTag";
+    private static final String OTHER_TAG_CLASS = "com.acme.OtherTag";
     @ScenarioStage
     private GivenJsonReports<?> jsonReports;
 
@@ -118,8 +119,7 @@ public class AsciiDocReportGeneratorTest extends
     }
 
     @Test
-    public void the_AsciiDoc_reporter_generates_files_that_list_tags()
-            throws IOException {
+    public void the_AsciiDoc_reporter_generates_files_that_list_tags() throws IOException {
         given().a_report_model()
                 .and().the_first_scenario_has_tag(TAG_CLASS);
         jsonReports.and().the_report_exist_as_JSON_file();
@@ -189,6 +189,31 @@ public class AsciiDocReportGeneratorTest extends
                         "...." + System.lineSeparator()
                                 + content + System.lineSeparator()
                                 + "....");
+    }
+
+    @Test
+    public void the_AsciiDoc_reporter_generates_allTags_file_for_multiple_tags()
+            throws IOException {
+        given().a_report_model()
+                .and().the_first_scenario_has_tag(TAG_CLASS)
+                .and().the_first_scenario_has_tag(OTHER_TAG_CLASS);
+        jsonReports.and().the_report_exist_as_JSON_file();
+        when().the_asciidoc_reporter_is_executed();
+        then().a_file_with_name_$_exists("allTags.asciidoc")
+                .with().content("""
+                    == Tags
+
+                    There are 2 tagged scenarios.
+
+                    :leveloffset: +1
+
+                    include::tags/com.acme.OtherTag.asciidoc[]
+
+                    include::tags/com.acme.TestTag.asciidoc[]
+
+                    :leveloffset: -1
+
+                    """);
     }
 
 }
