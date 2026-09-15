@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 /**
  * Generate snippets for including feature files via AsciiDoc include macro.
  */
@@ -30,7 +32,7 @@ final class AsciiDocSnippetGenerator {
 
         result.add("== " + this.title);
 
-        if (!description.isEmpty()) {
+        if (!isNullOrEmpty(description)) {
             result.add("+++" + LINE_BREAK + description + LINE_BREAK + "+++");
         }
 

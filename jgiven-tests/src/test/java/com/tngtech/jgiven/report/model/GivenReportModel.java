@@ -235,7 +235,7 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
         return self();
     }
 
-    public void the_tag_has_prependTpe_set_to(boolean prependType) {
+    public void the_tag_has_prependType_set_to(boolean prependType) {
         latestTag.setPrependType(prependType);
     }
 

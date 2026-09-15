@@ -48,7 +48,7 @@ public abstract class AbstractReportGenerator {
         try {
             generate();
         } catch( Exception e ) {
-            log.error("JGivenReport has encountered the following exception: " + e + "\n" );
+            log.error("JGivenReport has encountered the following exception: " + e + "\n", e);
             printUsageAndExit();
         }
     }
