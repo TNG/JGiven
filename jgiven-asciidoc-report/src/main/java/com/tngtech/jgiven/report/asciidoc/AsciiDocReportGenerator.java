@@ -234,7 +234,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
                 .map(entry -> entry.getKey().toString().replace(' ', '_'))
                 .map(FeatureName::new) // TODO HV make sure that there was no mix-up here between feature names and tags
                 .toList();
-        final var total = taggedScenarioCounts.values().stream().reduce(Integer::sum).orElse(999);
+        final var total = taggedScenarioCounts.values().stream().reduce(0, Integer::sum);
         final var snippetGenerator = new AsciiDocSnippetGenerator(
                 "Tags", TAGGED_SCENARIO_QUALIFIER, total
         );
