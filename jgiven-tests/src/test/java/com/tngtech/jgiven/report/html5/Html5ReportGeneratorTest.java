@@ -52,8 +52,8 @@ public class Html5ReportGeneratorTest extends
 
         when().the_HTML_Report_Generator_is_executed();
 
-        then().a_file_$_exists_in_folder_$( "tags.js", "data" )
-            .and().a_file_$_exists_in_folder_$( "metaData.js", "data" );
+        then().a_file_$2_exists_in_folder_$1( "data", "tags.js" )
+            .and().a_file_$2_exists_in_folder_$1( "data", "metaData.js" );
     }
 
     @Test
@@ -85,9 +85,9 @@ public class Html5ReportGeneratorTest extends
         when().the_HTML_Report_Generator_is_executed();
 
         String folder = "data/attachments/Test".replaceAll("/", Matcher.quoteReplacement(File.separator));
-        then().a_file_$_exists_in_folder_$("jsonfile.json", folder)
+        then().a_file_$2_exists_in_folder_$1(folder, "jsonfile.json")
                 .with().content(JSON_SAMPLE)
-                .and().a_file_$_exists_in_folder_$("binary.octet-stream", folder)
+                .and().a_file_$2_exists_in_folder_$1(folder, "binary.octet-stream")
                 .with().binary_content(BINARY_SAMPLE);
     }
 
