@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static java.util.Collections.emptyList;
 
 /**
  * Generate snippets for including feature files via AsciiDoc include macro.
@@ -41,17 +42,14 @@ final class AsciiDocSnippetGenerator {
         return result;
     }
 
-    List<String> generateIndexSnippet(final String featurePath, final List<FeatureName> features, final String tags,
+    List<String> generateIndexSnippet(final String featurePath, final List<String> indexEntries, final String tags,
             final int levelOffset) {
-        final List<String> result = new ArrayList<>();
+        if (indexEntries.isEmpty())
+            return emptyList();
 
         final var tagSelector = Strings.isNullOrEmpty(tags) ? "" : "tag=" + tags;
 
-        if (!features.isEmpty()) {
-            result.addAll(generateIncludeSnippet("", levelOffset, featurePath, features, tagSelector));
-        }
-
-        return result;
+        return generateIncludeSnippet("", levelOffset, featurePath, indexEntries, tagSelector);
     }
 
     List<String> generateTagSnippet(final Tag tag, int scenarioCount, final List<FeatureName> features) {
@@ -61,7 +59,7 @@ final class AsciiDocSnippetGenerator {
 
         final var intro = createIntroSentence(scenarioCount, scenarioQualifier);
         final var tagSelector = TagMapper.toAsciiDocTagName(tag);
-        result.addAll(generateIncludeSnippet(intro, 0, "../features", features, tagSelector));
+        result.addAll(generateIncludeSnippet(intro, 0, "../features", features.stream().map(FeatureName::value).toList(), tagSelector));
 
         return result;
     }
@@ -70,7 +68,7 @@ final class AsciiDocSnippetGenerator {
             final String intro,
             final int leveloffset,
             final String featurePath,
-            final List<FeatureName> featureFiles,
+            final List<String> filesToInclude,
             final String tags) {
         final var result = new ArrayList<String>();
 
@@ -79,7 +77,7 @@ final class AsciiDocSnippetGenerator {
         }
 
         createLevelOffset(leveloffset).ifPresent(result::add);
-        featureFiles.forEach(fileName -> result.add(includeMacroFor(featurePath, fileName, tags)));
+        filesToInclude.forEach(fileName -> result.add(includeMacroFor(featurePath, fileName, tags)));
         createLevelOffset(-leveloffset).ifPresent(result::add);
         return result;
     }
@@ -104,7 +102,7 @@ final class AsciiDocSnippetGenerator {
         }
     }
 
-    private static String includeMacroFor(final String featurePath, final FeatureName featureName, final String tags) {
-        return "include::" + featurePath + "/" + featureName + ".asciidoc[" + tags + "]";
+    private static String includeMacroFor(final String featurePath, final String fileName, final String tags) {
+        return "include::" + featurePath + "/" + fileName + ".asciidoc[" + tags + "]";
     }
 }

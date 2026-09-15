@@ -3,7 +3,6 @@ package com.tngtech.jgiven.report.asciidoc;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-import static com.tngtech.jgiven.report.asciidoc.FeatureName.feature;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AsciiDocSnippetGeneratorTest {
@@ -11,9 +10,9 @@ class AsciiDocSnippetGeneratorTest {
     @Test
     void generateIndexForFailedScenarios() {
         // given
-        final List<FeatureName> featureFileNames = List.of(
-                feature("com.example.application.FailedScenarioOne"),
-                feature("com.example.application.FailedScenarioTwo"));
+        final var featureFileNames = List.of(
+                "com.example.application.FailedScenarioOne",
+                "com.example.application.FailedScenarioTwo");
 
         // when
         var asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
@@ -31,9 +30,9 @@ class AsciiDocSnippetGeneratorTest {
     @Test
     void generateIndexForAllScenarios() {
         // given
-        final List<FeatureName> featureFileNames = List.of(
-                feature("com.example.application.BigFeature"),
-                feature("com.example.application.OtherFeature"));
+        final var featureFileNames = List.of(
+                "com.example.application.BigFeature",
+                "com.example.application.OtherFeature");
 
         // when
         var asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(

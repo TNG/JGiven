@@ -23,11 +23,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.tngtech.jgiven.report.asciidoc.FeatureName.feature;
-import static java.util.Comparator.comparing;
 
 /**
  * This reporter provides the functionality for reading/writing a report in AsciiDoc format.
@@ -88,7 +88,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         groupedTags.forEach(this::writeIndexFileForTaggedScenarios);
 
-        writeIndexFileForAllTags(groupedTags);
+        writeIndexFileForAllTags(groupedTags.keySet());
 
         writeTotalStatisticsFile();
 
@@ -132,10 +132,15 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
-                FEATURE_PATH, this.allFeatures, "", 0));
+                FEATURE_PATH, featureNames( allFeatures), "", 0));
 
         writeAsciiDocBlocksToFile(targetDir, "allScenarios", asciiDocBlocks);
     }
+
+    private List<String> featureNames(List<FeatureName> featureNames) {
+        return featureNames.stream().map(FeatureName::value).toList();
+    }
+
 
     private void writeIndexFileForFailedScenarios() {
         final var numFailedScenarios = this.completeReportModel.getTotalStatistics().numFailedScenarios;
@@ -145,7 +150,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
-                FEATURE_PATH, this.failedScenarioFeatures,
+                FEATURE_PATH, featureNames(failedScenarioFeatures),
                 MetadataMapper.toAsciiDocTagName(ExecutionStatus.FAILED), -1));
 
         writeAsciiDocBlocksToFile(targetDir, "failedScenarios", asciiDocBlocks);
@@ -159,7 +164,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
-                FEATURE_PATH, this.pendingScenarioFeatures,
+                FEATURE_PATH, featureNames(pendingScenarioFeatures),
                 MetadataMapper.toAsciiDocTagName(ExecutionStatus.SCENARIO_PENDING), -1));
 
         writeAsciiDocBlocksToFile(targetDir, "pendingScenarios", asciiDocBlocks);
@@ -173,7 +178,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
 
         final var asciiDocBlocks = snippetGenerator.generateIntroSnippet("");
         asciiDocBlocks.addAll(snippetGenerator.generateIndexSnippet(
-                FEATURE_PATH, this.abortedScenarioFeatures,
+                FEATURE_PATH, featureNames(abortedScenarioFeatures),
                 MetadataMapper.toAsciiDocTagName(ExecutionStatus.ABORTED), -1));
 
         writeAsciiDocBlocksToFile(targetDir, "abortedScenarios", asciiDocBlocks);
@@ -183,10 +188,6 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         final var firstTag = taggedScenarios.keySet().stream()
                 .findFirst()
                 .map(allTags::get);
-
-        if (firstTag.isEmpty()) { // TODO HV that ain't right
-            return;
-        }
 
         final var numTaggedScenarios = taggedScenarios.keySet().stream().mapToInt(taggedScenarioCounts::get).sum();
 
@@ -207,7 +208,7 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
             final var valueTag = allTags.get(tagId);
             final var tagName = TagMapper.toAsciiDocTagName(valueTag);
             asciiDocBlocks.add("=== Scenarios");
-            final var snippet = snippetGenerator.generateIndexSnippet("../" + FEATURE_PATH, features, tagName, 0);
+            final var snippet = snippetGenerator.generateIndexSnippet("../" + FEATURE_PATH, featureNames(features), tagName, 0);
             asciiDocBlocks.addAll(snippet);
         });
         return asciiDocBlocks;
@@ -227,12 +228,11 @@ public class AsciiDocReportGenerator extends AbstractReportGenerator {
         return asciiDocBlocks;
     }
 
-    private void writeIndexFileForAllTags(final Map<TagClass, Map<TagId, List<FeatureName>>> tagTypeToIdToScenarioFile) {
-        final var tagFiles = tagTypeToIdToScenarioFile.entrySet().stream()
-                // TODO HV That ain't right either
-                .sorted(comparing(entry -> entry.getValue().keySet().stream().findFirst().map(allTags::get).map(Tag::getName).orElse("")))
-                .map(entry -> entry.getKey().toString().replace(' ', '_'))
-                .map(FeatureName::new) // TODO HV make sure that there was no mix-up here between feature names and tags
+    private void writeIndexFileForAllTags(final Set<TagClass> tags) {
+        final var tagFiles = tags.stream()
+                .map(TagClass::fqcn)
+                .map(tag -> tag.replace(' ', '_'))
+                .sorted()
                 .toList();
         final var total = taggedScenarioCounts.values().stream().reduce(0, Integer::sum);
         final var snippetGenerator = new AsciiDocSnippetGenerator(
