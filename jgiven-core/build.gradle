@@ -17,6 +17,13 @@ dependencies {
 
     testImplementation libs.mockito
     testImplementation 'com.github.stefanbirkner:system-rules:1.19.0'
+    testImplementation(platform(libs.junit6.bom))
+    testImplementation(libs.bundles.junit6)
+    testRuntimeOnly(libs.junit4.engine)
+}
+
+test {
+    useJUnitPlatform()
 }
 
 def generatedSourceDir = "generatedSrc/java"

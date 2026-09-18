@@ -83,4 +83,8 @@ file("../jgiven-core/src/main/translations").listFiles()?.forEach { translationF
             dependsOn(copyTask)
         }
     }
+
+    tasks.test {
+        useJUnitPlatform()
+    }
 }

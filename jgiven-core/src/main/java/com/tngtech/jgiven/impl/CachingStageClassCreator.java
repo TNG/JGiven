@@ -1,5 +1,6 @@
 package com.tngtech.jgiven.impl;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.bytebuddy.TypeCache;
 
 /**
@@ -19,5 +20,10 @@ public class CachingStageClassCreator implements StageClassCreator {
     public <T> Class<? extends T> createStageClass( Class<T> stageClass ){
         return (Class<? extends T>) typeCache.findOrInsert( stageClass.getClassLoader(), stageClass,
                 () -> stageCreator.createStageClass( stageClass ) );
+    }
+
+    @VisibleForTesting
+    static void clearCache() {
+        typeCache.clear();
     }
 }

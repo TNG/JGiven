@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.13.2'
+        classpath 'com.android.tools.build:gradle:9.3.2'
     }
 }
 
@@ -32,7 +32,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -47,7 +47,7 @@ configurations {
 }
 
 dependencies {
-    implementation('androidx.appcompat:appcompat:1.7.1') {
+    implementation('androidx.appcompat:appcompat:1.8.0') {
         exclude group: 'com.google.guava', module: 'listenablefuture'
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8'
     }
@@ -66,11 +66,11 @@ dependencies {
     androidTestImplementation('com.tngtech.jgiven:jgiven-android:' + version)
 
     jgivenReport 'com.tngtech.jgiven:jgiven-html5-report:' + version
-    jgivenReport 'org.slf4j:slf4j-simple:2.0.18'
+    jgivenReport 'org.slf4j:slf4j-simple:2.0.19'
 }
 
 def targetDir = 'build/reports/jgiven/json'
-def adb = android.getAdbExe().toString()
+def adb = androidComponents.sdkComponents.adb.get().asFile.absolutePath
 def reportsDir = '/storage/emulated/0/Download/jgiven-reports'
 
 task cleanJGivenReports(type: Delete) {

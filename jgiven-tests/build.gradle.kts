@@ -14,16 +14,14 @@ dependencies {
     implementation(project(":jgiven-html5-report"))
     implementation(libs.bundles.junit4)
     implementation(platform(libs.junit6.bom))
-    implementation("org.junit.jupiter:junit-jupiter-api")
-    implementation("org.junit.jupiter:junit-jupiter-engine")
+    implementation(libs.bundles.junit6)
     implementation(libs.slf4j.java.util.logging)
-    implementation("org.junit.jupiter:junit-jupiter-params")
     implementation(libs.junit.platform.launcher)
     implementation(libs.testng)
     implementation("com.beust:jcommander:1.82")
     implementation(libs.assertj)
 
-    testImplementation("org.seleniumhq.selenium:selenium-java:4.45.0")
+    testImplementation("org.seleniumhq.selenium:selenium-java:4.48.0")
     testImplementation("io.github.bonigarcia:webdrivermanager:6.3.4")
     testImplementation("org.apache.commons:commons-io:1.3.2")
 }
