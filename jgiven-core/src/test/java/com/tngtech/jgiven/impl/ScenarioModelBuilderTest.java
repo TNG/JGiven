@@ -1,8 +1,5 @@
 package com.tngtech.jgiven.impl;
 
-import static java.util.Arrays.asList;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -29,6 +26,10 @@ import java.util.Iterator;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static com.tngtech.jgiven.report.model.Tag.TagClass.tagClass;
+import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(DataProviderRunner.class)
 public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTestStep, WhenTestStep, ThenTestStep> {
@@ -204,7 +205,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
         startScenario("nasiges");
         given().something().and().something_else();
         getScenario().finished();
-        ScenarioModel scenarioModel = getScenario().getScenarioModel();
+        getScenario().getScenarioModel();
 
     }
 
@@ -304,7 +305,7 @@ public class ScenarioModelBuilderTest extends ScenarioTestBaseForTesting<GivenTe
 
     @Test
     public void testTagEquals() {
-        assertThat(new Tag("test", "1")).isEqualTo(new Tag("test", "1"));
+        assertThat(new Tag(tagClass("test"), "1")).isEqualTo(new Tag(tagClass("test"), "1"));
     }
 
     abstract static class AbstractStage {

@@ -1,22 +1,19 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.ReportStatistics;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-@RunWith(DataProviderRunner.class)
-public class AsciiDocFeatureBlockConverterTest {
+import static org.assertj.core.api.Assertions.assertThat;
+
+class AsciiDocFeatureBlockConverterTest {
 
     private final ReportBlockConverter converter = new AsciiDocBlockConverter();
 
     @Test
-    public void convert_feature_header_without_description() {
+    void convert_feature_header_without_description() {
         // given
-        final ReportStatistics statistics = new ReportStatistics();
+        final var statistics = new ReportStatistics();
         statistics.numScenarios = 47;
         statistics.numFailedScenarios = 21;
         statistics.numPendingScenarios = 13;
@@ -24,7 +21,7 @@ public class AsciiDocFeatureBlockConverterTest {
         statistics.numSuccessfulScenarios = 8;
 
         // when
-        final String block = converter.convertFeatureHeaderBlock("My first feature", statistics, null);
+        final var block = converter.convertFeatureHeaderBlock("My first feature", statistics, null);
 
         // then
         assertThatBlockContainsLines(block,
@@ -35,9 +32,9 @@ public class AsciiDocFeatureBlockConverterTest {
     }
 
     @Test
-    public void convert_feature_header_with_description() {
+    void convert_feature_header_with_description() {
         // given
-        final ReportStatistics statistics = new ReportStatistics();
+        final var statistics = new ReportStatistics();
         statistics.numScenarios = 47;
         statistics.numFailedScenarios = 21;
         statistics.numPendingScenarios = 13;
@@ -45,7 +42,7 @@ public class AsciiDocFeatureBlockConverterTest {
         statistics.numSuccessfulScenarios = 8;
 
         // when
-        final String block =
+        final var block =
                 converter.convertFeatureHeaderBlock("My first feature", statistics, "A very nice feature.");
 
         // then
@@ -59,7 +56,7 @@ public class AsciiDocFeatureBlockConverterTest {
     }
 
     private static void assertThatBlockContainsLines(final String block, final String... expectedLines) {
-        final String[] blockLines = block.split(System.lineSeparator());
+        final var blockLines = block.split(System.lineSeparator());
         assertThat(blockLines).hasSize(expectedLines.length).containsExactly(expectedLines);
     }
 }
