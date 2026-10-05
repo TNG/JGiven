@@ -1,5 +1,6 @@
 == Spring
 :javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring/{version}/com/tngtech/jgiven/integration/spring
+:springjunit5javadocurl: http://static.javadoc.io/com.tngtech.jgiven/jgiven-spring-junit5/{version}/com/tngtech/jgiven/integration/spring/junit5
 
 Only two steps are required to use JGiven together with Spring or Spring-Boot. First,
 <<Install Dependency, install the right dependency>>. Second,
@@ -103,8 +104,21 @@ class MySpringBootApplicationTest extends SimpleSpringScenarioTest<MyStage> {
    //...
 }
 ----
-If you cannot or don't want to inherit from these classes, you
-can copy the content of these classes (one method) into one of your test base classes.
+
+If you cannot or don't want to inherit from these classes, you can annotate your test base class with the link:{springjunit5javadocurl}/JGivenSpringExtension.html[`JGivenSpringExtension`]
+in addition to Spring's `SpringExtension`.
+This extension combines JGiven's regular JUnit 5 lifecycle with installing JGiven's `SpringStageCreator` for the test instance, so you no longer have to copy the content of the base classes:
+
+[source,java]
+----
+@ExtendWith({SpringExtension.class, JGivenSpringExtension.class})
+class MySpringTestBase {
+   //...
+}
+----
+
+The extension is also registered automatically by the base classes above, which means JGiven's stage injection keeps working even if a test declares
+`@TestExecutionListeners` with the default `REPLACE_DEFAULTS` merge mode.
 
 === Stages as Spring Beans
 
