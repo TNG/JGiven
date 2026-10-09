@@ -1,9 +1,8 @@
 package com.tngtech.jgiven.impl.tag;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.tngtech.jgiven.report.model.Tag;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ResolvedTagsTest {
 
@@ -11,14 +10,14 @@ public class ResolvedTagsTest {
     @Test
     public void testResolvedTagsFiltersForDirectTags() {
         ResolvedTags underTest = TestTagGenerator.getEnumeratedResolvedTags(5);
-        assertThat(underTest.getDeclaredTags()).extracting(Tag::getFullType)
+        assertThat(underTest.getDeclaredTags()).extracting(tag -> tag.getFullType().toString())
             .containsExactlyInAnyOrder("tag1", "tag2", "tag3", "tag4", "tag5");
     }
 
     @Test
     public void testResolvedTagsFiltersForParents() {
         ResolvedTags underTest = TestTagGenerator.getEnumeratedResolvedTags(5);
-        assertThat(underTest.getAncestors()).extracting(Tag::getFullType)
+        assertThat(underTest.getAncestors()).extracting(tag -> tag.getFullType().toString())
             .containsExactlyInAnyOrder("parent1", "parent2", "parent3", "parent4", "parent5");
     }
 }

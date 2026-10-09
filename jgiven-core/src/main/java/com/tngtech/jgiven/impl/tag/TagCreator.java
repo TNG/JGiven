@@ -8,6 +8,7 @@ import com.tngtech.jgiven.config.AbstractJGivenConfiguration;
 import com.tngtech.jgiven.config.TagConfiguration;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.Tag.TagId;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.tngtech.jgiven.report.model.Tag.TagClass.tagClass;
 
 /**
  * Handles the conversion of Annotations on Classes and Methods to displayable Tags.
@@ -124,7 +127,7 @@ public class TagCreator {
     }
 
     private Tag createStyledTag(TagConfiguration tagConfig) {
-        Tag tag = new Tag(tagConfig.getAnnotationFullType());
+        Tag tag = new Tag(tagClass(tagConfig.getAnnotationFullType()));
 
         tag.setType(tagConfig.getAnnotationType());
         tag.setPrependType(tagConfig.isPrependType());
@@ -189,6 +192,7 @@ public class TagCreator {
         return getTagAnnotationsOn(annotationType)
             .flatMap(resolvedTags -> resolvedTags.getDeclaredTags().stream())
             .map(Tag::toIdString)
+            .map(TagId::id)
             .collect(Collectors.toList());
     }
 

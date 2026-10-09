@@ -47,8 +47,7 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
     }
 
     public SELF a_report_model_with_name(String name) {
-        ReportModel reportModel = givenReportModel.a_report_model_with_name(name).getReportModel();
-        reportModels.add(reportModel);
+        reportModels.add(givenReportModel.a_report_model_with_name(name).getReportModel());
         return self();
     }
 
@@ -73,7 +72,7 @@ public class GivenReportModels<SELF extends GivenReportModels<?>> extends Stage<
     }
 
     public SELF the_tag_has_prependType_set_to(boolean prependType) {
-        givenReportModel.the_tag_has_prependTpe_set_to(prependType);
+        givenReportModel.the_tag_has_prependType_set_to(prependType);
         return self();
     }
 

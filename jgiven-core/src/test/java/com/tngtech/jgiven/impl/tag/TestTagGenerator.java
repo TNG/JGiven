@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
+import static com.tngtech.jgiven.report.model.Tag.TagClass.tagClass;
+
 class TestTagGenerator implements Iterator<ResolvedTag> {
 
     int count = 0;
@@ -19,8 +21,8 @@ class TestTagGenerator implements Iterator<ResolvedTag> {
     public ResolvedTag next() {
         count++;
         return new ResolvedTag(
-            new Tag("tag" + count),
-            Collections.singletonList(new Tag("parent" + count))
+                new Tag(tagClass("tag" + count)),
+                Collections.singletonList(new Tag(tagClass("parent" + count)))
         );
     }
 

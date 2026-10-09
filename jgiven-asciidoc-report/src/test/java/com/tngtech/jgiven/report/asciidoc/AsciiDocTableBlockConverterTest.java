@@ -1,21 +1,18 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.MultimapBuilder;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.jgiven.report.ReportBlockConverter;
 import com.tngtech.jgiven.report.model.CasesTable;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportStatistics;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-@RunWith(DataProviderRunner.class)
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class AsciiDocTableBlockConverterTest {
 
     public static final long ARBITRARY_DURATION = 60_000_000000L;
@@ -28,14 +25,14 @@ public class AsciiDocTableBlockConverterTest {
         final List<String> placeHolders = new ArrayList<>();
         placeHolders.add("foo");
         placeHolders.add("bar");
-        final CasesTable casesTable = new CasesTable(placeHolders, false, ImmutableList.of(
+        final var casesTable = new CasesTable(placeHolders, false, ImmutableList.of(
                 new CasesTable.CaseRow(1, null, ImmutableList.of("1", "2"), ExecutionStatus.SUCCESS,
                         ARBITRARY_DURATION, null, null),
                 new CasesTable.CaseRow(2, null, ImmutableList.of("3", "4"), ExecutionStatus.FAILED,
                         ARBITRARY_DURATION, null, null)));
 
         // when
-        final String block = converter.convertCasesTableBlock(casesTable);
+        final var block = converter.convertCasesTableBlock(casesTable);
 
         // then
         assertThatBlockContainsLines(block,
@@ -54,14 +51,14 @@ public class AsciiDocTableBlockConverterTest {
         final List<String> placeHolders = new ArrayList<>();
         placeHolders.add("foo");
         placeHolders.add("bar");
-        final CasesTable casesTable = new CasesTable(placeHolders, true, ImmutableList.of(
+        final var casesTable = new CasesTable(placeHolders, true, ImmutableList.of(
                 new CasesTable.CaseRow(1, "First case", ImmutableList.of("1", "2"), ExecutionStatus.SUCCESS,
                         ARBITRARY_DURATION, null, null),
                 new CasesTable.CaseRow(2, "Second case", ImmutableList.of("3", "4"), ExecutionStatus.FAILED,
                         ARBITRARY_DURATION, null, null)));
 
         // when
-        final String block = converter.convertCasesTableBlock(casesTable);
+        final var block = converter.convertCasesTableBlock(casesTable);
 
         // then
         assertThatBlockContainsLines(block,
@@ -77,7 +74,7 @@ public class AsciiDocTableBlockConverterTest {
     @Test
     public void convert_cases_table_with_errors() {
         // given
-        final String errorMessage = "java.lang.AssertionError:" + LINE_BREAK + "value 5 is not 12";
+        final var errorMessage = "java.lang.AssertionError:" + LINE_BREAK + "value 5 is not 12";
 
         final List<String> stackTrace = new ArrayList<>();
         stackTrace.add("exception in line 1");
@@ -86,14 +83,14 @@ public class AsciiDocTableBlockConverterTest {
         final List<String> placeHolders = new ArrayList<>();
         placeHolders.add("foo");
         placeHolders.add("bar");
-        final CasesTable casesTable = new CasesTable(placeHolders, false, ImmutableList.of(
+        final var casesTable = new CasesTable(placeHolders, false, ImmutableList.of(
                 new CasesTable.CaseRow(1, null, ImmutableList.of("1", "2"), ExecutionStatus.FAILED,
                         ARBITRARY_DURATION, errorMessage, stackTrace),
                 new CasesTable.CaseRow(2, null, ImmutableList.of("3", "4"), ExecutionStatus.FAILED,
                         ARBITRARY_DURATION, null, null)));
 
         // when
-        final String block = converter.convertCasesTableBlock(casesTable);
+        final var block = converter.convertCasesTableBlock(casesTable);
 
         // then
         assertThatBlockContainsLines(block,
@@ -125,7 +122,7 @@ public class AsciiDocTableBlockConverterTest {
     @Test
     public void convert_statistics() {
         // given
-        final ReportStatistics statisticsOne = new ReportStatistics();
+        final var statisticsOne = new ReportStatistics();
         statisticsOne.numClasses = 1;
         statisticsOne.numScenarios = 3;
         statisticsOne.numSuccessfulScenarios = 2;
@@ -135,7 +132,7 @@ public class AsciiDocTableBlockConverterTest {
         statisticsOne.numFailedCases = 1;
         statisticsOne.numSteps = 13;
 
-        final ReportStatistics statisticsTwo = new ReportStatistics();
+        final var statisticsTwo = new ReportStatistics();
         statisticsTwo.numClasses = 1;
         statisticsTwo.numScenarios = 2;
         statisticsTwo.numSuccessfulScenarios = 1;
@@ -144,7 +141,7 @@ public class AsciiDocTableBlockConverterTest {
         statisticsTwo.numFailedCases = 1;
         statisticsTwo.numSteps = 8;
 
-        final ReportStatistics totalStatistics = new ReportStatistics();
+        final var totalStatistics = new ReportStatistics();
         totalStatistics.numClasses = 2;
         totalStatistics.numScenarios = 5;
         totalStatistics.numSuccessfulScenarios = 3;
@@ -161,7 +158,7 @@ public class AsciiDocTableBlockConverterTest {
         featureStatistics.put("Feature Two", statisticsTwo);
 
         // when
-        final String block = converter.convertStatisticsBlock(featureStatistics, totalStatistics);
+        final var block = converter.convertStatisticsBlock(featureStatistics, totalStatistics);
 
         // then
         assertThatBlockContainsLines(block,
@@ -177,7 +174,7 @@ public class AsciiDocTableBlockConverterTest {
     }
 
     private static void assertThatBlockContainsLines(final String block, final String... expectedLines) {
-        final String[] blockLines = block.split(System.lineSeparator());
+        final var blockLines = block.split(System.lineSeparator());
         assertThat(blockLines).hasSize(expectedLines.length).containsExactly(expectedLines);
     }
 }

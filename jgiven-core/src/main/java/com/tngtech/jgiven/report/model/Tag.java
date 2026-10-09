@@ -3,9 +3,11 @@ package com.tngtech.jgiven.report.model;
 import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-
+import com.google.gson.annotations.JsonAdapter;
 import java.util.Collections;
 import java.util.List;
+
+import static com.tngtech.jgiven.report.model.Tag.TagId.id;
 
 /**
  * A tag represents a Java annotation of a scenario-test.
@@ -14,7 +16,25 @@ public class Tag {
     /**
      * The full type of the annotation of the tag
      */
-    private final String fullType;
+    private final TagClass fullType;
+
+    @JsonAdapter(TagClass.JsonConverter.class)
+    public record TagClass(String fqcn) implements StringWrapper {
+        public static TagClass tagClass(String fqcn) {
+            return new TagClass(fqcn);
+        }
+
+        @Override
+        public final String toString() {
+            return fqcn;
+        }
+
+        public static class JsonConverter extends StringWrapperConverter<TagClass> {
+            public JsonConverter() {
+                super(TagClass::new);
+            }
+        }
+    }
 
     /**
      * The simple type of the annotation of the tag
@@ -45,7 +65,7 @@ public class Tag {
     private Boolean prependType;
 
     /**
-     * An optional color that is used in reports 
+     * An optional color that is used in reports
      */
     private String color;
 
@@ -56,7 +76,7 @@ public class Tag {
     private String cssClass;
 
     /**
-     * An optional style used in the HTML report. 
+     * An optional style used in the HTML report.
      * Can be {@code null}.
      */
     private String style;
@@ -80,16 +100,16 @@ public class Tag {
      */
     private Boolean hideInNav;
 
-    public Tag( String fullType ) {
+    public Tag(TagClass fullType) {
         this.fullType = fullType;
     }
 
-    public Tag( String fullType, Object value ) {
+    public Tag(TagClass fullType, Object value) {
         this( fullType );
         this.value = value;
     }
 
-    public Tag( String fullType, String name, Object value ) {
+    public Tag(TagClass fullType, String name, Object value) {
         this( fullType, value );
         this.name = name;
     }
@@ -103,7 +123,7 @@ public class Tag {
     }
 
     public boolean isPrependType() {
-        return prependType == null ? false : true;
+        return prependType != null;
     }
 
     public String getDescription() {
@@ -163,8 +183,8 @@ public class Tag {
         if( value == null ) {
             return Collections.emptyList();
         }
-        if( value instanceof String ) {
-            return Lists.newArrayList( (String) value );
+        if (value instanceof String string) {
+            return Lists.newArrayList(string);
         }
         return (List<String>) value;
     }
@@ -189,7 +209,7 @@ public class Tag {
     @Override
     public String toString() {
         if( value != null ) {
-            String valueString = getValueString();
+            var valueString = getValueString();
             if( isPrependType() ) {
                 return getName() + "-" + valueString;
             }
@@ -205,11 +225,26 @@ public class Tag {
         return Joiner.on( ", " ).join( getValues() );
     }
 
-    public String toIdString() {
-        if( value != null ) {
-            return fullType + "-" + getValueString();
+    public TagId toIdString() {
+        return id(value == null ? fullType.toString() : fullType + "-" + getValueString());
+    }
+
+    @JsonAdapter(TagId.JsonConverter.class)
+    public record TagId(String id) implements StringWrapper {
+        public static TagId id(String id) {
+            return new TagId(id);
         }
-        return fullType;
+
+        @Override
+        public final String toString() {
+            return id;
+        }
+
+        public static class JsonConverter extends StringWrapperConverter<TagId> {
+            public JsonConverter() {
+                super(TagId::new);
+            }
+        }
     }
 
     @Override
@@ -222,13 +257,10 @@ public class Tag {
         if( this == obj ) {
             return true;
         }
-        if( obj == null ) {
+        if( (obj == null) || (getClass() != obj.getClass()) ) {
             return false;
         }
-        if( getClass() != obj.getClass() ) {
-            return false;
-        }
-        Tag other = (Tag) obj;
+        var other = (Tag) obj;
         return Objects.equal( getFullType(), other.getFullType() )
                 && Objects.equal( getName(), other.getName() )
                 && Objects.equal( value, other.value );
@@ -243,7 +275,7 @@ public class Tag {
     public String toEscapedString() {
         List<String> parts = Lists.newArrayList( getName() );
         parts.addAll( getValues() );
-        String escapedString = escape( Joiner.on( '-' ).join( parts ) );
+        var escapedString = escape( Joiner.on( '-' ).join( parts ) );
         return escapedString.substring( 0, Math.min( escapedString.length(), 255 ) );
     }
 
@@ -255,7 +287,7 @@ public class Tag {
         this.name = name;
     }
 
-    public String getFullType() {
+    public TagClass getFullType() {
         return fullType;
     }
 
@@ -277,7 +309,7 @@ public class Tag {
     }
 
     public Tag copy() {
-        Tag tag = new Tag( fullType, name, value );
+        var tag = new Tag( fullType, name, value );
         tag.type = this.type;
         tag.cssClass = this.cssClass;
         tag.color = this.color;

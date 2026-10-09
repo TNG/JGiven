@@ -10,7 +10,6 @@ public class CustomerBuilder  {
     }
 
     public Customer build() {
-        // TODO Auto-generated method stub
         return new Customer(name);
     }
 

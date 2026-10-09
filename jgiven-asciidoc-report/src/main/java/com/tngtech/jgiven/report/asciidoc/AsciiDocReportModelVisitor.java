@@ -1,7 +1,6 @@
 package com.tngtech.jgiven.report.asciidoc;
 
 import com.tngtech.jgiven.report.ReportBlockConverter;
-import com.tngtech.jgiven.report.model.CasesTable;
 import com.tngtech.jgiven.report.model.CasesTableCalculator;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
 import com.tngtech.jgiven.report.model.ReportModel;
@@ -11,42 +10,48 @@ import com.tngtech.jgiven.report.model.ScenarioCaseModel;
 import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.StepModel;
 import com.tngtech.jgiven.report.model.Tag;
+import com.tngtech.jgiven.report.model.Tag.TagId;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.unmodifiableMap;
 
 class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
     private final ReportBlockConverter blockConverter;
-    private final List<String> asciiDocBlocks;
     private final ReportStatistics featureStatistics;
     private final CasesTableCalculator tableCalculator;
-    private Map<String, Tag> featureTagMap;
+    private final List<String> asciiDocBlocks;
+    private final Map<TagId, Integer> tagCount;
+    private Map<TagId, Tag> featureTagMap;
+    private List<Tag> tagList;
     private boolean scenarioHasDataTable;
+    private boolean scenarioHasMultipleCases;
     private boolean skipCurrentCase;
     private boolean caseIsUnsuccessful;
-    private String currentSectionTitle;
-    private boolean scenarioHasMultipleCases;
     private boolean isFirstStepInCase;
+    private String currentSectionTitle;
 
     public AsciiDocReportModelVisitor(final ReportBlockConverter blockConverter,
                                       final ReportStatistics featureStatistics) {
         this.blockConverter = blockConverter;
-        this.asciiDocBlocks = new ArrayList<>();
         this.featureStatistics = featureStatistics;
         this.tableCalculator = new CasesTableCalculator();
+        this.asciiDocBlocks = new ArrayList<>();
+        this.tagCount = new HashMap<>();
     }
 
     @Override
     public void visit(final ReportModel reportModel) {
-        String featureName = Optional.ofNullable(reportModel.getName())
+        var featureName = Optional.ofNullable(reportModel.getName())
                 .filter(name -> !name.isEmpty())
                 .orElse(reportModel.getClassName());
 
-        String featureHeader =
+        var featureHeader =
                 blockConverter.convertFeatureHeaderBlock(featureName, featureStatistics, reportModel.getDescription());
         asciiDocBlocks.add(featureHeader);
 
@@ -55,13 +60,15 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
     @Override
     public void visit(final ScenarioModel scenarioModel) {
-        final List<Tag> tags = scenarioModel.getTagIds().stream()
-                .map(this.featureTagMap::get)
-                .collect(Collectors.toList());
+        scenarioModel.getTagIds().forEach(tagId -> tagCount.merge(tagId, 1, Integer::sum));
 
-        String scenarioHeader = blockConverter.convertScenarioHeaderBlock(scenarioModel.getDescription(),
-                scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(), tags,
-                scenarioModel.getExtendedDescription());
+        tagList = scenarioModel.getTagIds().stream()
+                .map(this.featureTagMap::get)
+                .toList();
+
+        var scenarioHeader = blockConverter.convertScenarioHeaderBlock(scenarioModel.getTestMethodName(),
+                scenarioModel.getDescription(), scenarioModel.getExecutionStatus(), scenarioModel.getDurationInNanos(),
+                tagList, scenarioModel.getExtendedDescription());
         asciiDocBlocks.add(scenarioHeader);
 
         scenarioHasDataTable = scenarioModel.isCasesAsTable();
@@ -76,7 +83,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
         }
 
         if (scenarioHasMultipleCases && !scenarioHasDataTable) {
-            String caseHeader = blockConverter.convertCaseHeaderBlock(scenarioCase.getCaseNr(),
+            var caseHeader = blockConverter.convertCaseHeaderBlock(scenarioCase.getCaseNr(),
                     scenarioCase.getExecutionStatus(), scenarioCase.getDurationInNanos(),
                     scenarioCase.getDescription());
             asciiDocBlocks.add(caseHeader);
@@ -117,7 +124,7 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
 
     @Override
     public void visitEnd(final ScenarioCaseModel scenarioCase) {
-        final String errorMessage = scenarioCase.getErrorMessage();
+        final var errorMessage = scenarioCase.getErrorMessage();
         if (!scenarioHasDataTable && errorMessage != null) {
             asciiDocBlocks.add(blockConverter.convertCaseFooterBlock(errorMessage, scenarioCase.getStackTrace()));
         }
@@ -126,16 +133,22 @@ class AsciiDocReportModelVisitor extends ReportModelVisitor {
     @Override
     public void visitEnd(final ScenarioModel scenarioModel) {
         if (scenarioHasDataTable) {
-            final CasesTable casesTable = tableCalculator.collectCases(scenarioModel);
-            final String casesTableBlock = blockConverter.convertCasesTableBlock(casesTable);
+            final var casesTable = tableCalculator.collectCases(scenarioModel);
+            final var casesTableBlock = blockConverter.convertCasesTableBlock(casesTable);
             asciiDocBlocks.add(casesTableBlock);
         }
 
-        String scenarioFooter = blockConverter.convertScenarioFooterBlock(scenarioModel.getExecutionStatus());
+        var scenarioFooter = blockConverter.convertScenarioFooterBlock(
+                scenarioModel.getTestMethodName(), scenarioModel.getExecutionStatus(), tagList);
         asciiDocBlocks.add(scenarioFooter);
     }
 
-    public List<String> getResult() {
-        return Collections.unmodifiableList(asciiDocBlocks);
+    public List<String> getAsciiDocBlocks() {
+        return unmodifiableList(asciiDocBlocks);
     }
+
+    public Map<TagId, Integer> getUsedTags() {
+        return unmodifiableMap(tagCount);
+    }
+
 }
