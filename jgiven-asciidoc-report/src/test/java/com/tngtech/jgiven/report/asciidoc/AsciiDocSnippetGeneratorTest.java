@@ -10,14 +10,14 @@ class AsciiDocSnippetGeneratorTest {
     @Test
     void generateIndexForFailedScenarios() {
         // given
-        final var featureFileNames = List.of(
+        final var featureNames = List.of(
                 "com.example.application.FailedScenarioOne",
                 "com.example.application.FailedScenarioTwo");
 
         // when
         var asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
                 "Failed Scenarios", "failed", 3);
-        final var blocks = asciiDocSnippetGenerator.generateIndexSnippet("features", featureFileNames, "scenario-failed", -1);
+        final var blocks = asciiDocSnippetGenerator.generateIndexSnippet("features", featureNames, "scenario-failed", -1);
 
         // then
         assertThat(blocks).containsExactly(
@@ -30,14 +30,14 @@ class AsciiDocSnippetGeneratorTest {
     @Test
     void generateIndexForAllScenarios() {
         // given
-        final var featureFileNames = List.of(
+        final var featureNames = List.of(
                 "com.example.application.BigFeature",
                 "com.example.application.OtherFeature");
 
         // when
         var asciiDocSnippetGenerator = new AsciiDocSnippetGenerator(
                 "All Scenarios", "scenarios in total", 40);
-        final var blocks = asciiDocSnippetGenerator.generateIndexSnippet("features", featureFileNames, "", 0);
+        final var blocks = asciiDocSnippetGenerator.generateIndexSnippet("features", featureNames, "", 0);
 
         // then
         assertThat(blocks).containsExactly(

@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
  * Everything has a default value.
  *
  * The functionality is piped together for an easier and extendable interface to create a custom report
- * For examples see {@link com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator}
  *
  */
 public abstract class AbstractReportGenerator {
