@@ -26,7 +26,7 @@ function releaseRepositoryAndPushVersion()
 
   echo Pushing version and tag to GitHub repository...
   git push
-  git push "$(git config --get remote.origin.url)" "${VERSION_PREFIXED}" || return 25
+  git push origin "${VERSION_PREFIXED}" || return 25
 }
 
 function verify_version_present_and_formatted(){
