@@ -1,9 +1,10 @@
 package com.tngtech.jgiven.report.asciidoc;
 
-import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -59,6 +60,9 @@ class AsciiDocIntroSnippetGeneratorTest {
                 so that the report speaks for itself.""";
         var blocks = generator.generateIntroSnippet(description);
 
-        assertThat(blocks).containsExactly("== " + title, "+++\n" + description + "\n+++", expectedMessage);
+        assertThat(blocks).containsExactly(
+                "== " + title,
+                "+++" + System.lineSeparator() + description + System.lineSeparator() + "+++",
+                expectedMessage);
     }
 }
