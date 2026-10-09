@@ -59,7 +59,8 @@ function updateAllVersionInformation() {
   "example-projects/android/gradle.properties" \
   "example-projects/kotlin/gradle.properties" \
   "example-projects/selenium/gradle.properties" \
-  "example-projects/spring-boot/gradle.properties"
+  "example-projects/spring-boot/gradle.properties" \
+  "example-projects/java26-module/gradle.properties"
   do
     update_version "${VERSION}" "${file}" || exit $?
   done
