@@ -1,14 +1,12 @@
 package com.tngtech.jgiven.integration.spring.junit5;
 
+import com.tngtech.jgiven.base.DualScenarioTestBase;
+import com.tngtech.jgiven.impl.Scenario;
+import com.tngtech.jgiven.integration.spring.SpringStageCreator;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import com.tngtech.jgiven.base.DualScenarioTestBase;
-import com.tngtech.jgiven.impl.Scenario;
-import com.tngtech.jgiven.integration.spring.SpringStageCreator;
-import com.tngtech.jgiven.junit5.JGivenExtension;
 
 /**
  * Base class for Spring 5 and JUnit 5 test with two stage class parameter
@@ -22,7 +20,7 @@ import com.tngtech.jgiven.junit5.JGivenExtension;
  *             This module will continue to support Spring 6.x but is deprecated for future Spring versions.
  */
 @Deprecated(since = "3.0.0", forRemoval = false)
-@ExtendWith( {SpringExtension.class, JGivenExtension.class} )
+@ExtendWith({SpringExtension.class, JGivenSpringExtension.class})
 public class DualSpringScenarioTest<GIVEN_WHEN, THEN> extends
         DualScenarioTestBase<GIVEN_WHEN, THEN> implements BeanFactoryAware {
 
@@ -33,7 +31,13 @@ public class DualSpringScenarioTest<GIVEN_WHEN, THEN> extends
         return scenario;
     }
 
+    /**
+     * @deprecated The {@link JGivenSpringExtension} registered by this class already installs
+     * the {@link SpringStageCreator}, so being {@link BeanFactoryAware} is no longer
+     * required.
+     */
     @Override
+    @Deprecated(since = "3.0.0", forRemoval = true)
     public void setBeanFactory( BeanFactory beanFactory ) {
         getScenario().setStageCreator( beanFactory.getBean( SpringStageCreator.class ) );
     }
