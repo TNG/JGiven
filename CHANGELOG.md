@@ -15,6 +15,8 @@
 
 ## New features
 
+* JGiven is now capable of generating its reports in Asciidoc format. Huge thanks to @johtor for sketching this
+  feature. [#2211](https://github.com/TNG/JGiven/issues/2211)
 * Added `jgiven-junit6` module with support for both JUnit 5 and JUnit 6. This module provides API compatibility with JUnit 5 and enables migration to JUnit 6 when ready.
 * Added `jgiven-spring-junit6` module with support for Spring 7.x while maintaining backward compatibility with JUnit 5.
 * Added `JGivenSpringExtension` (in `jgiven-spring-junit5` and `jgiven-spring-junit6`) that installs JGiven's
