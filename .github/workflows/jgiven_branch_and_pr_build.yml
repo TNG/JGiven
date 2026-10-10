@@ -30,7 +30,7 @@ jobs:
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: test-report_junit5-${{matrix.junit5}}_java${{matrix.java}}
           path: /home/runner/work/JGiven/JGiven/*/build/reports/tests
@@ -60,7 +60,7 @@ jobs:
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: test-report_junit6-${{matrix.junit6}}_java${{matrix.java}}
           path: /home/runner/work/JGiven/JGiven/*/build/reports/tests
@@ -89,7 +89,7 @@ jobs:
       - name: Upload test results html files
         continue-on-error: true
         if: ${{failure()}}
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: test-report_junit4_${{matrix.java}}
           path: /home/runner/work/JGiven/JGiven/*/build/reports/tests
