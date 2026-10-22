@@ -8,7 +8,7 @@ plugins {
 dependencies {
     implementation(project(":jgiven-core"))
     implementation(project(":jgiven-html-app"))
-    implementation("org.apache.xmlgraphics:batik-transcoder:1.19") {
+    implementation("org.apache.xmlgraphics:batik-transcoder:1.20") {
         exclude(group = "commons-io", module = "commons-io")
     }
     implementation("commons-io:commons-io:2.22.0")
