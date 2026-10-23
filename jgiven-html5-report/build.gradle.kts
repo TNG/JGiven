@@ -12,5 +12,5 @@ dependencies {
         exclude(group = "commons-io", module = "commons-io")
     }
     implementation("commons-io:commons-io:2.22.0")
-    implementation("org.apache.xmlgraphics:batik-codec:1.19")
+    implementation("org.apache.xmlgraphics:batik-codec:1.20")
 }
