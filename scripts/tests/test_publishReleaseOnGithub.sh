@@ -35,17 +35,16 @@ curl(){
     printf '%s' "${payload}" > "${test_directory}/payload"
     status=${MOCK_CREATE_STATUS:-201}
     response='{"message":"create response"}'
-  elif [[ "${url}" == */tags/* ]]; then
-    status=${MOCK_LOOKUP_STATUS:-404}
-    response=${MOCK_LOOKUP_BODY:-'{"message":"lookup response"}'}
   else
+    [[ "${url}" == *'/releases?per_page=100&page='* ]] || return 91
     status=${MOCK_LIST_STATUS:-200}
     response=${MOCK_LIST_BODY:-'[]'}
     if [[ "${MOCK_PAGINATION:-false}" == true ]]; then
       if [[ "${url}" == *page=1 ]]; then
         response=$(jq -nc '[range(100) | {tag_name: "v0.0.0", draft: false}]')
       else
-        response='[{"tag_name":"v1.2.3","draft":true}]'
+        response="[{\"tag_name\":\"v1.2.3\",\"draft\":${MOCK_EXISTING_DRAFT:-true}}]"
+        status=${MOCK_SECOND_PAGE_STATUS:-200}
       fi
     fi
   fi
@@ -57,8 +56,8 @@ export -f curl
 
 reset_mock(){
   rm -f "${test_directory:?}/"*
-  unset MOCK_LOOKUP_STATUS MOCK_LOOKUP_BODY MOCK_LIST_STATUS MOCK_LIST_BODY
-  unset MOCK_CREATE_STATUS MOCK_TRANSPORT_FAILURE MOCK_PAGINATION
+  unset MOCK_LIST_STATUS MOCK_LIST_BODY MOCK_SECOND_PAGE_STATUS
+  unset MOCK_CREATE_STATUS MOCK_TRANSPORT_FAILURE MOCK_PAGINATION MOCK_EXISTING_DRAFT
   unset GITHUB_TOKEN RELEASE
   export RELEASE_TOKEN=example-release-token
 }
@@ -109,7 +108,7 @@ test_create_release(){
     and (.body | contains("#1200") | not)' "${test_directory}/payload" &&
     grep -q -- '--fail-with-body' "${test_directory}/arguments" &&
     grep -q 'Accept: application/vnd.github+json' "${test_directory}/arguments" &&
-    [[ $(wc -l < "${test_directory}/requests") -eq 3 ]] &&
+    [[ $(wc -l < "${test_directory}/requests") -eq 2 ]] &&
     assert_authorization example-release-token &&
     ! grep -q 'example-release-token' "${test_directory}/arguments" "${test_directory}/output"
 }
@@ -142,7 +141,7 @@ test_environment_token_precedence(){
 
 test_existing_published_release(){
   reset_mock
-  export MOCK_LOOKUP_STATUS=200 MOCK_LOOKUP_BODY='{"draft":false}'
+  export MOCK_LIST_BODY='[{"tag_name":"v1.2.3","draft":false}]'
   invoke --version=1.2.3 &&
     grep -q 'already published' "${test_directory}/output" &&
     [[ $(wc -l < "${test_directory}/requests") -eq 1 ]]
@@ -150,17 +149,27 @@ test_existing_published_release(){
 
 test_existing_draft_release(){
   reset_mock
-  export MOCK_LOOKUP_STATUS=200 MOCK_LOOKUP_BODY='{"draft":true}'
+  export MOCK_LIST_BODY='[{"tag_name":"v1.2.3","draft":true}]'
   ! invoke --version=1.2.3 &&
     grep -q 'Publish or delete it manually' "${test_directory}/output" &&
     [[ $(wc -l < "${test_directory}/requests") -eq 1 ]]
 }
 
-test_draft_found_in_list(){
+test_paginated_published_lookup(){
   reset_mock
-  export MOCK_LIST_BODY='[{"tag_name":"v1.2.3","draft":true}]'
+  export MOCK_PAGINATION=true MOCK_EXISTING_DRAFT=false
+  invoke --version=1.2.3 &&
+    grep -q 'already published' "${test_directory}/output" &&
+    [[ $(wc -l < "${test_directory}/requests") -eq 2 ]] &&
+    [[ ! -e "${test_directory}/payload" ]]
+}
+
+test_paginated_lookup_failure(){
+  reset_mock
+  export MOCK_PAGINATION=true MOCK_SECOND_PAGE_STATUS=500
   ! invoke --version=1.2.3 &&
-    grep -q 'already exists as a draft' "${test_directory}/output" &&
+    grep -q 'HTTP 500' "${test_directory}/output" &&
+    [[ $(wc -l < "${test_directory}/requests") -eq 2 ]] &&
     [[ ! -e "${test_directory}/payload" ]]
 }
 
@@ -175,8 +184,8 @@ test_paginated_draft_lookup(){
 
 test_api_failures(){
   local status stage
-  for stage in LOOKUP LIST CREATE; do
-    for status in 301 401 403 422 500; do
+  for stage in LIST CREATE; do
+    for status in 301 401 403 404 422 500; do
       reset_mock
       export "MOCK_${stage}_STATUS=${status}"
       if invoke --version=1.2.3; then
@@ -198,15 +207,12 @@ test_api_failures(){
 
 test_malformed_responses(){
   local response
-  for response in 'invalid JSON' '{}' '{"draft":"false"}'; do
+  for response in 'invalid JSON' '{}' '[{"tag_name":"v1.2.3"}]' '[{"tag_name":"v1.2.3","draft":"false"}]'; do
     reset_mock
-    export MOCK_LOOKUP_STATUS=200 MOCK_LOOKUP_BODY="${response}"
+    export MOCK_LIST_BODY="${response}"
     ! invoke --version=1.2.3 || return 1
     [[ ! -e "${test_directory}/payload" ]] || return 1
   done
-  reset_mock
-  export MOCK_LIST_BODY='{}'
-  ! invoke --version=1.2.3 && [[ ! -e "${test_directory}/payload" ]]
 }
 
 test_token_header_injection(){
@@ -261,7 +267,7 @@ test_changelog_prerelease_and_crlf(){
 
 test_existing_release_without_changelog(){
   reset_mock
-  export MOCK_LOOKUP_STATUS=200 MOCK_LOOKUP_BODY='{"draft":false}'
+  export MOCK_LIST_BODY='[{"tag_name":"v99999.0.0","draft":false}]'
   invoke --version=99999.0.0 &&
     grep -q 'already published' "${test_directory}/output" &&
     [[ ! -e "${test_directory}/payload" ]]
@@ -270,7 +276,8 @@ test_existing_release_without_changelog(){
 run_tests test_invalid_options test_missing_authentication test_create_release \
   test_default_draft_and_github_token_fallback test_legacy_credentials \
   test_environment_token_precedence test_existing_published_release \
-  test_existing_draft_release test_draft_found_in_list test_paginated_draft_lookup \
+  test_existing_draft_release test_paginated_published_lookup test_paginated_draft_lookup \
+  test_paginated_lookup_failure \
   test_api_failures test_malformed_responses test_token_header_injection \
   test_changelog_section_selection test_changelog_missing_or_empty \
   test_changelog_prerelease_and_crlf test_existing_release_without_changelog

@@ -86,18 +86,11 @@ check_existing_release(){
   fi
 }
 
-request "${api_url}/tags/${release_tag}"
-case "${status}" in
-  200) check_existing_release ;;
-  404) ;;
-  *) api_error "looking up ${release_tag}" ;;
-esac
-
-# The tag endpoint only promises published releases. List releases to find drafts.
+# Authenticated release listings include both published releases and drafts.
 page=1
 while :; do
   request "${api_url}?per_page=100&page=${page}"
-  [[ "${status}" == 200 ]] || api_error "checking for draft releases"
+  [[ "${status}" == 200 ]] || api_error "looking up ${release_tag}"
   jq -e 'type == "array"' "${response_file}" >/dev/null \
     || fail "Invalid release list response from GitHub."
   existing=$(jq -c --arg tag "${release_tag}" '.[] | select(.tag_name == $tag)' "${response_file}")
