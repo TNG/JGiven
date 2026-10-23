@@ -7,6 +7,8 @@ set -euo pipefail
 SCRIPT_LOCATION=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
 # shellcheck source=scripts/source_files/release_functions.sh
 source "${SCRIPT_LOCATION}/source_files/release_functions.sh"
+# shellcheck source=scripts/source_files/changelog_functions.sh
+source "${SCRIPT_LOCATION}/source_files/changelog_functions.sh"
 
 fail(){
   printf 'Error: %s\n' "$1" >&2
@@ -109,10 +111,12 @@ done
 
 is_draft=true
 [[ "${RELEASE:-}" != true ]] || is_draft=false
-body=$(jq -n --arg tag "${release_tag}" --arg version "${version}" --argjson draft "${is_draft}" '{
+release_notes=$(changelog_content_for_version "${version}" "${SCRIPT_LOCATION}/../CHANGELOG.md") || exit $?
+body=$(jq -n --arg tag "${release_tag}" --arg version "${version}" \
+  --arg notes "${release_notes}" --argjson draft "${is_draft}" '{
   tag_name: $tag,
   name: ("Release " + $tag),
-  body: ("Version " + $version + " release of JGiven.\nSource code may be found in Maven Central: https://search.maven.org/search?q=com.tngtech.jgiven"),
+  body: ("Version " + $version + " release of JGiven.\nSource code may be found in Maven Central: https://search.maven.org/search?q=com.tngtech.jgiven\n\n" + $notes),
   draft: $draft
 }')
 request --fail-with-body --request POST --header 'Content-Type: application/json' \

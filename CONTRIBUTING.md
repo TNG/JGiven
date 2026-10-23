@@ -55,6 +55,11 @@ draft instead of a published release. Rerunning skips an already published relea
 successfully; an existing draft fails and must be published or deleted manually.
 API failures stop the script without proceeding to publication.
 
+The release body includes the Markdown content under the matching
+`# Release v<version>` heading in `CHANGELOG.md`, up to the next top-level heading.
+Creation fails if that section is missing or empty. An already published release
+is still skipped without requiring local changelog content.
+
 The legacy `--credentials=username:token` option remains supported with a
 deprecation warning, but exposes credentials in process arguments. Environment
 tokens take precedence over this option.

@@ -5,6 +5,8 @@
 SCRIPT_LOCATION=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
 # shellcheck source=scripts/tests/test_runner.sh
 source "${SCRIPT_LOCATION}/test_runner.sh"
+# shellcheck source=scripts/source_files/changelog_functions.sh
+source "${SCRIPT_LOCATION}/../source_files/changelog_functions.sh"
 
 test_directory=$(mktemp -d)
 trap 'rm -rf "${test_directory}"' EXIT
@@ -101,7 +103,10 @@ test_create_release(){
   export RELEASE=true
   invoke --version=1.2.3 || return 1
   jq -e '.tag_name == "v1.2.3" and .name == "Release v1.2.3" and .draft == false
-    and (.body | contains("\nSource code"))' "${test_directory}/payload" &&
+    and (.body | contains("\nSource code"))
+    and (.body | contains("## Fixed issues\n* Fixed build error"))
+    and (.body | contains("#947"))
+    and (.body | contains("#1200") | not)' "${test_directory}/payload" &&
     grep -q -- '--fail-with-body' "${test_directory}/arguments" &&
     grep -q 'Accept: application/vnd.github+json' "${test_directory}/arguments" &&
     [[ $(wc -l < "${test_directory}/requests") -eq 3 ]] &&
@@ -113,8 +118,8 @@ test_default_draft_and_github_token_fallback(){
   reset_mock
   unset RELEASE_TOKEN
   export GITHUB_TOKEN=example-fallback-token
-  invoke --version=1.2.3-RC.1 &&
-    jq -e '.draft == true and .tag_name == "v1.2.3-RC.1"' "${test_directory}/payload" &&
+  invoke --version=1.2.3 &&
+    jq -e '.draft == true and .tag_name == "v1.2.3"' "${test_directory}/payload" &&
     assert_authorization example-fallback-token
 }
 
@@ -212,9 +217,61 @@ test_token_header_injection(){
     [[ ! -e "${test_directory}/requests" ]]
 }
 
+test_changelog_section_selection(){
+  reset_mock
+  cat > "${test_directory}/CHANGELOG.md" <<'EOF'
+# Release v1.2.30
+Wrong version
+# Release v1.2.3
+
+## Fixed issues
+* Preserve "quotes", 'apostrophes', \backslashes and `code`.
+
+  Nested paragraph with [a link](https://example.com).
+
+# Release v1.2.2
+Older version
+EOF
+  local expected actual
+  expected=$'## Fixed issues\n* Preserve "quotes", \'apostrophes\', \\backslashes and `code`.\n\n  Nested paragraph with [a link](https://example.com).'
+  actual=$(changelog_content_for_version 1.2.3 "${test_directory}/CHANGELOG.md") || return 1
+  [[ "${actual}" == "${expected}" ]] || return 1
+  actual=$(changelog_content_for_version 1.2.2 "${test_directory}/CHANGELOG.md") || return 1
+  [[ "${actual}" == 'Older version' ]]
+}
+
+test_changelog_missing_or_empty(){
+  reset_mock
+  ! changelog_content_for_version 1.2.3 "${test_directory}/missing.md" || return 1
+  printf '# Release v1.2.3\n\n \n# Release v1.2.2\nOlder version\n' > "${test_directory}/CHANGELOG.md"
+  ! changelog_content_for_version 1.2.3 "${test_directory}/CHANGELOG.md" || return 1
+  ! changelog_content_for_version 9.9.9 "${test_directory}/CHANGELOG.md" || return 1
+  ! invoke --version=99999.0.0 &&
+    grep -q 'No changelog content found for version 99999.0.0' "${test_directory}/output" &&
+    [[ ! -e "${test_directory}/payload" ]]
+}
+
+test_changelog_prerelease_and_crlf(){
+  reset_mock
+  printf '# Release v1.2.3-RC.1\r\n\r\n## Changes\r\n* Prerelease notes\r\n' > "${test_directory}/CHANGELOG.md"
+  local actual
+  actual=$(changelog_content_for_version 1.2.3-RC.1 "${test_directory}/CHANGELOG.md") || return 1
+  [[ "${actual}" == $'## Changes\n* Prerelease notes' ]]
+}
+
+test_existing_release_without_changelog(){
+  reset_mock
+  export MOCK_LOOKUP_STATUS=200 MOCK_LOOKUP_BODY='{"draft":false}'
+  invoke --version=99999.0.0 &&
+    grep -q 'already published' "${test_directory}/output" &&
+    [[ ! -e "${test_directory}/payload" ]]
+}
+
 run_tests test_invalid_options test_missing_authentication test_create_release \
   test_default_draft_and_github_token_fallback test_legacy_credentials \
   test_environment_token_precedence test_existing_published_release \
   test_existing_draft_release test_draft_found_in_list test_paginated_draft_lookup \
-  test_api_failures test_malformed_responses test_token_header_injection
+  test_api_failures test_malformed_responses test_token_header_injection \
+  test_changelog_section_selection test_changelog_missing_or_empty \
+  test_changelog_prerelease_and_crlf test_existing_release_without_changelog
 exit $?
