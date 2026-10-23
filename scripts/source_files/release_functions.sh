@@ -33,8 +33,8 @@ function verify_version_present_and_formatted(){
   if [ $# -ne 1 ];then
     printf "Error parsing version, version does not seem to be set\n" 1>&2
     return 11
-  elif [[ ! $1 =~ ^[0-9]*\.[0-9]*\.[0-9]*(-[A-Z0-9]*)?$ ]]; then
-    printf  "You have to provide a version as first parameter (without v-prefix, e.g. 0.14.0)\n" 1>&2
+  elif [[ ! $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9]+([.-][A-Za-z0-9]+)*)?$ ]]; then
+    printf "Error: Invalid version: expected x.y.z or x.y.z-suffix, without the v prefix (e.g. 0.14.0).\n" 1>&2
     return 12
   fi
   return 0

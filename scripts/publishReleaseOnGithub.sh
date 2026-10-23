@@ -4,6 +4,10 @@
 set +x
 set -euo pipefail
 
+SCRIPT_LOCATION=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
+# shellcheck source=scripts/source_files/release_functions.sh
+source "${SCRIPT_LOCATION}/source_files/release_functions.sh"
+
 fail(){
   printf 'Error: %s\n' "$1" >&2
   exit 1
@@ -30,8 +34,7 @@ for var in "$@"; do
 done
 
 [[ -n "${version}" ]] || fail "Missing --version=<x.y.z> (without the v prefix)."
-[[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9]+([.-][A-Za-z0-9]+)*)?$ ]] \
-  || fail "Invalid version: expected x.y.z or x.y.z-suffix, without the v prefix."
+verify_version_present_and_formatted "${version}" || exit $?
 for dependency in curl jq; do
   command -v "${dependency}" >/dev/null || fail "Required command not found: ${dependency}."
 done
