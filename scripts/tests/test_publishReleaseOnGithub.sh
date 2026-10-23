@@ -238,18 +238,18 @@ test_api_failures(){
   for stage in LIST CREATE; do
     for status in 301 401 403 404 422 500; do
       reset_mock
-      export status stage
+      export test_http_status="${status}" test_failure_stage="${stage}"
       mock_response(){
         case "$1" in
           'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1')
-            if [[ "${stage}" == LIST ]]; then
-              reply "${status}" '{"message":"list failure"}'
+            if [[ "${test_failure_stage}" == LIST ]]; then
+              reply "${test_http_status}" '{"message":"list failure"}'
             else
               reply 200 '[]'
             fi ;;
           'POST https://api.github.com/repos/TNG/JGiven/releases')
-            [[ "${stage}" == CREATE ]] || { unexpected_request "$1"; return $?; }
-            reply "${status}" '{"message":"create failure"}' ;;
+            [[ "${test_failure_stage}" == CREATE ]] || { unexpected_request "$1"; return $?; }
+            reply "${test_http_status}" '{"message":"create failure"}' ;;
           *) unexpected_request "$1" ;;
         esac
       }
@@ -258,6 +258,7 @@ test_api_failures(){
         return 1
       fi
       grep -q 'GitHub API' "${test_directory}/output" || return 1
+      grep -q "HTTP ${status}" "${test_directory}/output" || return 1
       if [[ "${stage}" != CREATE ]]; then
         [[ ! -e "${test_directory}/payload" ]] || return 1
       fi
