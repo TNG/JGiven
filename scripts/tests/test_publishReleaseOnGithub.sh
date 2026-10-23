@@ -104,21 +104,45 @@ test_missing_authentication(){
     [[ ! -e "${test_directory}/requests" ]]
 }
 
-test_create_release(){
+prepare_successful_release(){
   reset_mock
   mock_successful_creation
   export RELEASE=true
-  invoke --version=1.2.3 || return 1
-  jq -e '.tag_name == "v1.2.3" and .name == "Release v1.2.3" and .draft == false
-    and (.body | contains("\nSource code"))
-    and (.body | contains("## Fixed issues\n* Fixed build error"))
-    and (.body | contains("#947"))
-    and (.body | contains("#1200") | not)' "${test_directory}/payload" &&
-    grep -q -- '--fail-with-body' "${test_directory}/arguments" &&
-    grep -q 'Accept: application/vnd.github+json' "${test_directory}/arguments" &&
-    [[ $(wc -l < "${test_directory}/requests") -eq 2 ]] &&
-    assert_authorization example-release-token &&
-    ! grep -q 'example-release-token' "${test_directory}/arguments" "${test_directory}/output"
+  invoke --version=1.2.3
+}
+
+test_create_release_payload_metadata(){
+  prepare_successful_release || return 1
+  jq -e '.tag_name == "v1.2.3" and .name == "Release v1.2.3" and .draft == false' \
+    "${test_directory}/payload"
+}
+
+test_create_release_payload_changelog(){
+  prepare_successful_release || return 1
+  jq -e '.body | contains("\nSource code")
+    and contains("## Fixed issues\n* Fixed build error")
+    and contains("#947")
+    and (contains("#1200") | not)' "${test_directory}/payload"
+}
+
+test_create_release_api_requests(){
+  prepare_successful_release || return 1
+  grep -Fxq 'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1' \
+    "${test_directory}/requests" || return 1
+  grep -Fxq 'POST https://api.github.com/repos/TNG/JGiven/releases' \
+    "${test_directory}/requests" || return 1
+  [[ $(wc -l < "${test_directory}/requests") -eq 2 ]] || return 1
+  grep -q -- '--fail-with-body' "${test_directory}/arguments" || return 1
+  grep -q 'Accept: application/vnd.github+json' "${test_directory}/arguments"
+}
+
+test_create_release_keeps_token_out_of_arguments_and_output(){
+  prepare_successful_release || return 1
+  grep -Fxq '@-' "${test_directory}/arguments" || return 1
+  if grep -q 'example-release-token' "${test_directory}/arguments" "${test_directory}/output"; then
+    printf 'Expected release token to be absent from arguments and output\n'
+    return 1
+  fi
 }
 
 test_default_draft_and_github_token_fallback(){
@@ -359,7 +383,9 @@ test_existing_release_without_changelog(){
     [[ ! -e "${test_directory}/payload" ]]
 }
 
-run_tests test_invalid_options test_missing_authentication test_create_release \
+run_tests test_invalid_options test_missing_authentication \
+  test_create_release_payload_metadata test_create_release_payload_changelog \
+  test_create_release_api_requests test_create_release_keeps_token_out_of_arguments_and_output \
   test_default_draft_and_github_token_fallback test_legacy_credentials \
   test_environment_token_precedence test_existing_published_release \
   test_existing_draft_release test_paginated_published_lookup test_paginated_draft_lookup \
