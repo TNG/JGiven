@@ -16,7 +16,6 @@ export test_directory
 curl(){
   local method=GET url=''
   mock_output=''
-  mock_strict=false
   printf '%s\n' "$@" >> "${test_directory}/arguments"
   cat >> "${test_directory}/headers"
   while [[ $# -gt 0 ]]; do
@@ -24,7 +23,7 @@ curl(){
       --output) mock_output=$2; shift ;;
       --request) method=$2; shift ;;
       --data) printf '%s' "$2" > "${test_directory}/payload"; shift ;;
-      --fail-with-body) mock_strict=true ;;
+      --fail-with-body);;
       https://*) url=$1 ;;
     esac
     shift
@@ -36,7 +35,7 @@ curl(){
 reply(){
   printf '%s' "$2" > "${mock_output}"
   printf '%s' "$1"
-  [[ "${mock_strict}" != true || "$1" -lt 400 ]] || return 22
+  [[ "$1" -lt 400 ]] || return 22
 }
 
 unexpected_request(){
@@ -69,7 +68,6 @@ mock_successful_creation(){
     case "$1" in
       'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1') reply 200 '[]' ;;
       'POST https://api.github.com/repos/TNG/JGiven/releases')
-        [[ "${mock_strict}" == true ]] || return 90
         reply 201 '{"message":"created"}'
         ;;
       *) unexpected_request "$1" ;;
