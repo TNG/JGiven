@@ -9,6 +9,8 @@ jobs:
       - uses: actions/checkout@v7.0.1
       - name: Run release functions test
         run: "bash scripts/tests/test_release_functions.sh"
+      - name: Run GitHub release publication tests
+        run: "bash scripts/tests/test_publishReleaseOnGithub.sh"
   validateHelperFunctions:
     name: "validate helper functions"
     runs-on: ubuntu-latest
