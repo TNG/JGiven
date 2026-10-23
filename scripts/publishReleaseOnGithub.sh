@@ -1,43 +1,118 @@
 #!/usr/bin/env bash
 
+# Do not trace authentication, even when invoked with bash -x.
+set +x
+set -euo pipefail
 
-SCRIPT_LOCATION=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")
-# shellcheck source=./release_functions.sh
-source "${SCRIPT_LOCATION}/source_files/release_functions.sh"
-source "${SCRIPT_LOCATION}/source_files/helper_functions.sh"
-
-
-function create_message_body(){
-  verify_version_present_and_formatted $1 || return $?
-  version="$1"
-  release_tag="v$1"
-  is_draft=$(determine_is_draft "${RELEASE}")
-  json_adjacent_body="{
-    'tag_name' : '${release_tag}',
-    'name' : 'Release ${release_tag}',
-    'body' : 'Version ${version} release of JGiven.\nSource code may be found in Maven Central: https://search.maven.org/search?q=com.tngtech.jgiven',
-    'draft' : ${is_draft}
-  }"
-  replace_single_by_double_quotes "${json_adjacent_body}"
-  return $?
+fail(){
+  printf 'Error: %s\n' "$1" >&2
+  exit 1
 }
 
-for var in "$@";do
+version=
+credentials=
+for var in "$@"; do
   case "${var}" in
-    --version*)
-        version=${var#--version=};;
-    --credentials*)
-      credentials=${var#--action_token=};;
+    --version=*)
+      [[ -z "${version}" ]] || fail "Provide --version only once."
+      version=${var#--version=}
+      [[ -n "${version}" ]] || fail "--version must not be empty."
+      ;;
+    --credentials=*)
+      printf 'Warning: --credentials is deprecated; use RELEASE_TOKEN or GITHUB_TOKEN instead.\n' >&2
+      credentials=${var#--credentials=}
+      [[ -n "${credentials}" ]] || fail "--credentials must not be empty."
+      ;;
     *)
-      printf "Unknown option '%s' \n" "${1}"
-      exit 1;;
+      fail "Unknown or malformed option. Usage: $0 --version=<x.y.z> (set RELEASE_TOKEN or GITHUB_TOKEN)."
+      ;;
   esac
-
 done
-[[ -n "${credentials}" ]] || { echo "Found no credentials to access github"; exit 2; }
-body=$(create_message_body "$version") || { code=$?;  echo "Failed to create message body with error ${code}"; exit ${code}; }
-curl -X POST \
-  -H "Accept: application/vnd.github.v3+json" \
-  https://api.github.com/repos/TNG/JGiven/releases \
-  -u "${credentials}" \
-  -d "${body}"
+
+[[ -n "${version}" ]] || fail "Missing --version=<x.y.z> (without the v prefix)."
+[[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9]+([.-][A-Za-z0-9]+)*)?$ ]] \
+  || fail "Invalid version: expected x.y.z or x.y.z-suffix, without the v prefix."
+for dependency in curl jq; do
+  command -v "${dependency}" >/dev/null || fail "Required command not found: ${dependency}."
+done
+
+token=${RELEASE_TOKEN:-${GITHUB_TOKEN:-}}
+if [[ -n "${token}" ]]; then
+  [[ "${token}" != *$'\n'* && "${token}" != *$'\r'* ]] || fail "Token must not contain newlines."
+  printf -v authorization '%s %s' Bearer "${token}"
+elif [[ -n "${credentials}" ]]; then
+  authorization="Basic $(printf '%s' "${credentials}" | base64 | tr -d '\n')"
+else
+  fail "Set RELEASE_TOKEN or GITHUB_TOKEN with permission to publish releases."
+fi
+
+umask 077
+response_file=$(mktemp)
+trap 'rm -f "${response_file}"' EXIT
+api_url=https://api.github.com/repos/TNG/JGiven/releases
+release_tag="v${version}"
+
+request(){
+  # Read authentication from stdin, not curl's process arguments.
+  if ! status=$(printf 'Authorization: %s\n' "${authorization}" |
+    curl --disable --silent --show-error --header @- \
+      --header 'Accept: application/vnd.github+json' \
+      --output "${response_file}" --write-out '%{http_code}' "$@"); then
+    printf 'GitHub API request failed (HTTP %s). Response:\n' "${status:-unknown}" >&2
+    cat "${response_file}" >&2
+    exit 1
+  fi
+}
+
+api_error(){
+  printf 'GitHub API returned HTTP %s while %s:\n' "${status}" "$1" >&2
+  cat "${response_file}" >&2
+  exit 1
+}
+
+check_existing_release(){
+  if jq -e '.draft == false' "${response_file}" >/dev/null; then
+    printf 'Release %s is already published; nothing to do.\n' "${release_tag}"
+    exit 0
+  elif jq -e '.draft == true' "${response_file}" >/dev/null; then
+    fail "Release ${release_tag} already exists as a draft. Publish or delete it manually before rerunning."
+  else
+    fail "Invalid release response from GitHub (expected a boolean draft field)."
+  fi
+}
+
+request "${api_url}/tags/${release_tag}"
+case "${status}" in
+  200) check_existing_release ;;
+  404) ;;
+  *) api_error "looking up ${release_tag}" ;;
+esac
+
+# The tag endpoint only promises published releases. List releases to find drafts.
+page=1
+while :; do
+  request "${api_url}?per_page=100&page=${page}"
+  [[ "${status}" == 200 ]] || api_error "checking for draft releases"
+  jq -e 'type == "array"' "${response_file}" >/dev/null \
+    || fail "Invalid release list response from GitHub."
+  existing=$(jq -c --arg tag "${release_tag}" '.[] | select(.tag_name == $tag)' "${response_file}")
+  if [[ -n "${existing}" ]]; then
+    printf '%s\n' "${existing}" > "${response_file}"
+    check_existing_release
+  fi
+  [[ $(jq 'length' "${response_file}") -eq 100 ]] || break
+  page=$((page + 1))
+done
+
+is_draft=true
+[[ "${RELEASE:-}" != true ]] || is_draft=false
+body=$(jq -n --arg tag "${release_tag}" --arg version "${version}" --argjson draft "${is_draft}" '{
+  tag_name: $tag,
+  name: ("Release " + $tag),
+  body: ("Version " + $version + " release of JGiven.\nSource code may be found in Maven Central: https://search.maven.org/search?q=com.tngtech.jgiven"),
+  draft: $draft
+}')
+request --fail-with-body --request POST --header 'Content-Type: application/json' \
+  --data "${body}" "${api_url}"
+[[ "${status}" == 201 ]] || api_error "creating ${release_tag}"
+printf 'Created release %s (draft=%s).\n' "${release_tag}" "${is_draft}"
