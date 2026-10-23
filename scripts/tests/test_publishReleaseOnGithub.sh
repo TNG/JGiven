@@ -78,9 +78,7 @@ mock_successful_creation(){
 }
 
 assert_authorization(){
-  local expected
-  printf -v expected 'Authorization: %s %s' Bearer "$1"
-  grep -Fxq "${expected}" "${test_directory}/headers"
+  grep -Fxq "Authorization: Bearer $1" "${test_directory}/headers"
 }
 
 test_invalid_options(){

@@ -50,7 +50,7 @@ and discover drafts. Do not enable shell tracing when supplying secrets.
 RELEASE=true bash scripts/publishReleaseOnGithub.sh --version=1.2.3
 ```
 
-The script adds the `v` tag prefix. As before, omitting `RELEASE=true` creates a
+The script adds the `v` tag prefix. Omitting `RELEASE=true` creates a
 draft instead of a published release. Rerunning skips an already published release
 successfully; an existing draft fails and must be published or deleted manually.
 API failures stop the script without proceeding to publication.

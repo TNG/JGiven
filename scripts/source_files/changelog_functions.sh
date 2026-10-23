@@ -19,9 +19,9 @@ function changelog_content_for_version(){
       if ($0 == heading) found = 1
       next
     }
-    found {
-      if ($0 !~ /^[[:space:]]*$/) has_content = 1
-      if (has_content) print
+    found && ! /^[[:space:]]*$/ {
+      has_content = 1
+      print
     }
     END { if (!has_content) exit 1 }
   ' "${changelog_file}" || {
