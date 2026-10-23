@@ -14,56 +14,67 @@ export test_directory
 
 # Export a mock into the script's subprocess so no test accesses GitHub.
 curl(){
-  local output='' method=GET url='' strict=false payload=''
+  local method=GET url=''
+  mock_output=''
+  mock_strict=false
   printf '%s\n' "$@" >> "${test_directory}/arguments"
   cat >> "${test_directory}/headers"
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      --output) output=$2; shift ;;
+      --output) mock_output=$2; shift ;;
       --request) method=$2; shift ;;
-      --data) payload=$2; shift ;;
-      --fail-with-body) strict=true ;;
+      --data) printf '%s' "$2" > "${test_directory}/payload"; shift ;;
+      --fail-with-body) mock_strict=true ;;
       https://*) url=$1 ;;
     esac
     shift
   done
   printf '%s %s\n' "${method}" "${url}" >> "${test_directory}/requests"
-  [[ "${MOCK_TRANSPORT_FAILURE:-false}" != true ]] || return 7
-  local status response
-  if [[ "${method}" == POST ]]; then
-    [[ "${strict}" == true ]] || return 90
-    printf '%s' "${payload}" > "${test_directory}/payload"
-    status=${MOCK_CREATE_STATUS:-201}
-    response='{"message":"create response"}'
-  else
-    [[ "${url}" == *'/releases?per_page=100&page='* ]] || return 91
-    status=${MOCK_LIST_STATUS:-200}
-    response=${MOCK_LIST_BODY:-'[]'}
-    if [[ "${MOCK_PAGINATION:-false}" == true ]]; then
-      if [[ "${url}" == *page=1 ]]; then
-        response=$(jq -nc '[range(100) | {tag_name: "v0.0.0", draft: false}]')
-      else
-        response="[{\"tag_name\":\"v1.2.3\",\"draft\":${MOCK_EXISTING_DRAFT:-true}}]"
-        status=${MOCK_SECOND_PAGE_STATUS:-200}
-      fi
-    fi
-  fi
-  printf '%s' "${response}" > "${output}"
-  printf '%s' "${status}"
-  [[ "${strict}" != true || "${status}" -lt 400 ]] || return 22
+  mock_response "${method} ${url}"
 }
-export -f curl
+
+reply(){
+  printf '%s' "$2" > "${mock_output}"
+  printf '%s' "$1"
+  [[ "${mock_strict}" != true || "$1" -lt 400 ]] || return 22
+}
+
+unexpected_request(){
+  printf 'Unexpected curl request: %s\n' "$1" >&2
+  touch "${test_directory}/unexpected_request"
+  return 99
+}
+export -f curl reply unexpected_request
 
 reset_mock(){
   rm -f "${test_directory:?}/"*
-  unset MOCK_LIST_STATUS MOCK_LIST_BODY MOCK_SECOND_PAGE_STATUS
-  unset MOCK_CREATE_STATUS MOCK_TRANSPORT_FAILURE MOCK_PAGINATION MOCK_EXISTING_DRAFT
+  mock_response(){ unexpected_request "$1"; }
   unset GITHUB_TOKEN RELEASE
   export RELEASE_TOKEN=example-release-token
 }
 
 invoke(){
-  bash "${SCRIPT_LOCATION}/../publishReleaseOnGithub.sh" "$@" > "${test_directory}/output" 2>&1
+  export -f mock_response
+  local result=0
+  bash "${SCRIPT_LOCATION}/../publishReleaseOnGithub.sh" "$@" > "${test_directory}/output" 2>&1 || result=$?
+  if [[ -e "${test_directory}/unexpected_request" ]]; then
+    cat "${test_directory}/output"
+    exit 1
+  fi
+  return "${result}"
+}
+
+mock_successful_creation(){
+  mock_response(){
+    case "$1" in
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1') reply 200 '[]' ;;
+      'POST https://api.github.com/repos/TNG/JGiven/releases')
+        [[ "${mock_strict}" == true ]] || return 90
+        reply 201 '{"message":"created"}'
+        ;;
+      *) unexpected_request "$1" ;;
+    esac
+  }
 }
 
 assert_authorization(){
@@ -99,6 +110,7 @@ test_missing_authentication(){
 
 test_create_release(){
   reset_mock
+  mock_successful_creation
   export RELEASE=true
   invoke --version=1.2.3 || return 1
   jq -e '.tag_name == "v1.2.3" and .name == "Release v1.2.3" and .draft == false
@@ -115,6 +127,7 @@ test_create_release(){
 
 test_default_draft_and_github_token_fallback(){
   reset_mock
+  mock_successful_creation
   unset RELEASE_TOKEN
   export GITHUB_TOKEN=example-fallback-token
   invoke --version=1.2.3 &&
@@ -124,6 +137,7 @@ test_default_draft_and_github_token_fallback(){
 
 test_legacy_credentials(){
   reset_mock
+  mock_successful_creation
   unset RELEASE_TOKEN
   invoke --version=1.2.3 --credentials=example-user:example-password &&
     grep -q 'deprecated' "${test_directory}/output" &&
@@ -133,6 +147,7 @@ test_legacy_credentials(){
 
 test_environment_token_precedence(){
   reset_mock
+  mock_successful_creation
   export GITHUB_TOKEN=example-fallback-token
   invoke --version=1.2.3 --credentials=example-user:example-password &&
     assert_authorization example-release-token &&
@@ -141,7 +156,13 @@ test_environment_token_precedence(){
 
 test_existing_published_release(){
   reset_mock
-  export MOCK_LIST_BODY='[{"tag_name":"v1.2.3","draft":false}]'
+  mock_response(){
+    case "$1" in
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1')
+        reply 200 '[{"tag_name":"v1.2.3","draft":false}]' ;;
+      *) unexpected_request "$1" ;;
+    esac
+  }
   invoke --version=1.2.3 &&
     grep -q 'already published' "${test_directory}/output" &&
     [[ $(wc -l < "${test_directory}/requests") -eq 1 ]]
@@ -149,7 +170,13 @@ test_existing_published_release(){
 
 test_existing_draft_release(){
   reset_mock
-  export MOCK_LIST_BODY='[{"tag_name":"v1.2.3","draft":true}]'
+  mock_response(){
+    case "$1" in
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1')
+        reply 200 '[{"tag_name":"v1.2.3","draft":true}]' ;;
+      *) unexpected_request "$1" ;;
+    esac
+  }
   ! invoke --version=1.2.3 &&
     grep -q 'Publish or delete it manually' "${test_directory}/output" &&
     [[ $(wc -l < "${test_directory}/requests") -eq 1 ]]
@@ -157,7 +184,15 @@ test_existing_draft_release(){
 
 test_paginated_published_lookup(){
   reset_mock
-  export MOCK_PAGINATION=true MOCK_EXISTING_DRAFT=false
+  mock_response(){
+    case "$1" in
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1')
+        reply 200 "$(jq -nc '[range(100) | {tag_name: "v0.0.0", draft: false}]')" ;;
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=2')
+        reply 200 '[{"tag_name":"v1.2.3","draft":false}]' ;;
+      *) unexpected_request "$1" ;;
+    esac
+  }
   invoke --version=1.2.3 &&
     grep -q 'already published' "${test_directory}/output" &&
     [[ $(wc -l < "${test_directory}/requests") -eq 2 ]] &&
@@ -166,7 +201,15 @@ test_paginated_published_lookup(){
 
 test_paginated_lookup_failure(){
   reset_mock
-  export MOCK_PAGINATION=true MOCK_SECOND_PAGE_STATUS=500
+  mock_response(){
+    case "$1" in
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1')
+        reply 200 "$(jq -nc '[range(100) | {tag_name: "v0.0.0", draft: false}]')" ;;
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=2')
+        reply 500 '{"message":"server error"}' ;;
+      *) unexpected_request "$1" ;;
+    esac
+  }
   ! invoke --version=1.2.3 &&
     grep -q 'HTTP 500' "${test_directory}/output" &&
     [[ $(wc -l < "${test_directory}/requests") -eq 2 ]] &&
@@ -175,7 +218,15 @@ test_paginated_lookup_failure(){
 
 test_paginated_draft_lookup(){
   reset_mock
-  export MOCK_PAGINATION=true
+  mock_response(){
+    case "$1" in
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1')
+        reply 200 "$(jq -nc '[range(100) | {tag_name: "v0.0.0", draft: false}]')" ;;
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=2')
+        reply 200 '[{"tag_name":"v1.2.3","draft":true}]' ;;
+      *) unexpected_request "$1" ;;
+    esac
+  }
   ! invoke --version=1.2.3 &&
     grep -q 'already exists as a draft' "${test_directory}/output" &&
     grep -q 'page=2' "${test_directory}/requests" &&
@@ -187,7 +238,21 @@ test_api_failures(){
   for stage in LIST CREATE; do
     for status in 301 401 403 404 422 500; do
       reset_mock
-      export "MOCK_${stage}_STATUS=${status}"
+      export status stage
+      mock_response(){
+        case "$1" in
+          'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1')
+            if [[ "${stage}" == LIST ]]; then
+              reply "${status}" '{"message":"list failure"}'
+            else
+              reply 200 '[]'
+            fi ;;
+          'POST https://api.github.com/repos/TNG/JGiven/releases')
+            [[ "${stage}" == CREATE ]] || { unexpected_request "$1"; return $?; }
+            reply "${status}" '{"message":"create failure"}' ;;
+          *) unexpected_request "$1" ;;
+        esac
+      }
       if invoke --version=1.2.3; then
         printf 'Expected %s HTTP %s to fail\n' "${stage}" "${status}"
         return 1
@@ -199,7 +264,12 @@ test_api_failures(){
     done
   done
   reset_mock
-  export MOCK_TRANSPORT_FAILURE=true
+  mock_response(){
+    case "$1" in
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1') return 7 ;;
+      *) unexpected_request "$1" ;;
+    esac
+  }
   ! invoke --version=1.2.3 &&
     grep -q 'GitHub API request failed' "${test_directory}/output" &&
     [[ ! -e "${test_directory}/payload" ]]
@@ -207,9 +277,16 @@ test_api_failures(){
 
 test_malformed_responses(){
   local response
-  for response in 'invalid JSON' '{}' '[{"tag_name":"v1.2.3"}]' '[{"tag_name":"v1.2.3","draft":"false"}]'; do
+  local -a responses=('invalid JSON' '{}' '[{"tag_name":"v1.2.3"}]' '[{"tag_name":"v1.2.3","draft":"false"}]')
+  for response in "${responses[@]}"; do
     reset_mock
-    export MOCK_LIST_BODY="${response}"
+    export response
+    mock_response(){
+      case "$1" in
+        'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1') reply 200 "${response}" ;;
+        *) unexpected_request "$1" ;;
+      esac
+    }
     ! invoke --version=1.2.3 || return 1
     [[ ! -e "${test_directory}/payload" ]] || return 1
   done
@@ -248,6 +325,12 @@ EOF
 
 test_changelog_missing_or_empty(){
   reset_mock
+  mock_response(){
+    case "$1" in
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1') reply 200 '[]' ;;
+      *) unexpected_request "$1" ;;
+    esac
+  }
   ! changelog_content_for_version 1.2.3 "${test_directory}/missing.md" || return 1
   printf '# Release v1.2.3\n\n \n# Release v1.2.2\nOlder version\n' > "${test_directory}/CHANGELOG.md"
   ! changelog_content_for_version 1.2.3 "${test_directory}/CHANGELOG.md" || return 1
@@ -267,7 +350,13 @@ test_changelog_prerelease_and_crlf(){
 
 test_existing_release_without_changelog(){
   reset_mock
-  export MOCK_LIST_BODY='[{"tag_name":"v99999.0.0","draft":false}]'
+  mock_response(){
+    case "$1" in
+      'GET https://api.github.com/repos/TNG/JGiven/releases?per_page=100&page=1')
+        reply 200 '[{"tag_name":"v99999.0.0","draft":false}]' ;;
+      *) unexpected_request "$1" ;;
+    esac
+  }
   invoke --version=99999.0.0 &&
     grep -q 'already published' "${test_directory}/output" &&
     [[ ! -e "${test_directory}/payload" ]]
