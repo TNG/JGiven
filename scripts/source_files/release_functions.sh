@@ -10,7 +10,7 @@ function find_gradle_property(){
     done
 }
 
-function releaseRepositoryAndPushVersion()
+function releaseRepository()
 {
   echo publishing...
   ./gradlew publishAllPublicationsToMavenCentralRepository "${GRADLE_PROPERTIES[@]}" || return 21
@@ -23,7 +23,9 @@ function releaseRepositoryAndPushVersion()
 
   echo Testing Gradle Plugin from Gradle Plugin repository...
   ./gradlew -p example-projects/junit5 clean test -Pversion="${VERSION}" || return 24
+}
 
+function pushVersion(){
   echo Pushing version and tag to GitHub repository...
   git push
   git push origin "${VERSION_PREFIXED}" || return 25
