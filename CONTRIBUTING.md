@@ -47,6 +47,7 @@ The token needs permission to write repository contents so it can create release
 and discover drafts. Do not enable shell tracing when supplying secrets.
 
 ```bash
+read -p "RELEASE_TOKEN: " -s RELEASE_TOKEN # or any other secure way to provide the token;
 RELEASE=true bash scripts/publishReleaseOnGithub.sh --version=1.2.3
 ```
 
@@ -54,12 +55,10 @@ The script adds the `v` tag prefix. Omitting `RELEASE=true` creates a
 draft instead of a published release. Rerunning skips an already published release
 successfully; an existing draft fails and must be published or deleted manually.
 API failures stop the script without proceeding to publication.
-
 The release body includes the Markdown content under the matching
 `# Release v<version>` heading in `CHANGELOG.md`, up to the next top-level heading.
 Creation fails if that section is missing or empty. An already published release
 is still skipped without requiring local changelog content.
-
 The legacy `--credentials=username:token` option remains supported with a
 deprecation warning, but exposes credentials in process arguments. Environment
 tokens take precedence over this option.
