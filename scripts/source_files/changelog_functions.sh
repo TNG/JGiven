@@ -14,16 +14,11 @@ function changelog_content_for_version(){
 
   awk -v heading="# Release v${version}" '
     { sub(/\r$/, "") }
-    /^# / {
-      if (found) exit
-      if ($0 == heading) found = 1
-      next
-    }
-    found && ! /^[[:space:]]*$/ {
-      has_content = 1
-      print
-    }
-    END { if (!has_content) exit 1 }
+    /^# / && found { exit }
+    heading == $0 { found = 1 ; next }
+    found && ! /^[[:space:]]*$/ { has_content = 1 }
+    has_content { print }
+    END { exit !has_content }
   ' "${changelog_file}" || {
     printf 'Error: No changelog content found for version %s in %s.\n' "${version}" "${changelog_file}" >&2
     return 1
