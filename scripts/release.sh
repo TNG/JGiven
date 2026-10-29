@@ -3,7 +3,7 @@
 # SONATYPE_PASSWORD='${sonatypePassword}'
 # SONATYPE_USERNAME='${sonatpyeUsername}'
 # ANDROID_SDK_ROOT='${androidRoot}'
-# JAVA_HOME='${java8Home}'
+# JAVA_HOME='${java21Home}'
 # and run with the following arguments
 #"${version}" "-PsigningKey=$(gpg --export-secret-key -a ${id} | sed -e '/^---.*/d' | tr -d '\n')" "-PsigningPassword=${password}"
 
@@ -53,14 +53,15 @@ echo Building, Testing...
 echo Creating Tag
 git tag -a -m "${VERSION_PREFIXED}" "${VERSION_PREFIXED}"
 
-echo "${CI}"
-if [[ "${CI}" == "true" ]]
-then
-  releaseRepositoryAndPushVersion || exit $?
-else
-  read -p "Do you want to release and push now? [y/N]" -n 1 -r
-  if [[ "${REPLY}" =~ ^[Yy]$ ]]
-  then
-    releaseRepositoryAndPushVersion || exit $?
-  fi
+echo "CI=${CI}"
+check_do_release(){
+  # Create the proper return code for the if guard below.
+  [[ "${CI}" == "true" ]] || {
+    read -p "Do you want to release and push now? [y/N]" -n 1 -r
+    [[ "${REPLY}" =~ ^[Yy]$ ]]
+  }
+}
+if check_do_release; then
+   releaseRepository && pushVersion  || exit $?
 fi
+echo "Release finished successfully"
