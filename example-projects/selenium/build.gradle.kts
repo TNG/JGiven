@@ -41,7 +41,7 @@ dependencies {
     val version: String by project
     testImplementation("com.tngtech.jgiven:jgiven-junit:$version")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.seleniumhq.selenium:selenium-java:4.51.0")
+    testImplementation("org.seleniumhq.selenium:selenium-java:4.52.0")
     testImplementation("io.github.bonigarcia:webdrivermanager:6.4.0")
     testImplementation("org.assertj:assertj-core:3.27.7")
 }
