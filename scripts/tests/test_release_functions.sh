@@ -118,7 +118,25 @@ test_well_formed_version_passes_check(){
  verify_version_present_and_formatted "1.00.1-Whatever"
  local actual_return_value=$?
  printf "Expected return value to be zero, got '%d'" "${actual_return_value}"
- [ ${actual_return_value} -gt 0 ] || return 1 && return 0
+ [ ${actual_return_value} -eq 0 ] || return 1 && return 0
+}
+
+test_incomplete_version_components_fail_check(){
+ local version
+ for version in "" ".." ".1.2" "1..2" "1.2." "1.2.3-" "1.2.3-RC." "1.2.3-RC..1" \
+   "v1.2.3" "1.2.3/RC" "1.2.3 RC"; do
+   if verify_version_present_and_formatted "${version}"; then
+     printf "Expected malformed version '%s' to fail" "${version}"
+     return 1
+   fi
+ done
+}
+
+test_release_suffixes_pass_check(){
+ local version
+ for version in "1.2.3-SNAPSHOT" "1.2.3-RC1" "1.2.3-RC.1" "1.2.3-alpha-1"; do
+   verify_version_present_and_formatted "${version}" || return 1
+ done
 }
 
 test_a_release_version_passes_check(){
@@ -142,6 +160,8 @@ run_tests "test_find_gradle_property_extracts_property" \
 "test_missing_version_fails_check" \
 "test_malformed_version_fails_check" \
 "test_shortened_version_fails_check" \
+"test_incomplete_version_components_fail_check" \
+"test_release_suffixes_pass_check" \
 "test_well_formed_version_passes_check" \
 "test_a_release_version_passes_check"
 exit $?
