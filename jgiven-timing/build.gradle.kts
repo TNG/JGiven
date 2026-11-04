@@ -17,7 +17,7 @@ dependencies {
     implementation(libs.byteBuddy.plugin)
 
     testImplementation(libs.mockito)
-    testImplementation("com.google.guava:guava-testlib:33.7.2-jre")
+    testImplementation("com.google.guava:guava-testlib:33.8.0-jre")
 }
 
 val generatedSourceDir = "generatedSrc/java"
