@@ -59,7 +59,8 @@ function updateAllVersionInformation() {
   "example-projects/android/gradle.properties" \
   "example-projects/kotlin/gradle.properties" \
   "example-projects/selenium/gradle.properties" \
-  "example-projects/spring-boot/gradle.properties"
+  "example-projects/spring-boot/gradle.properties" \
+  "example-projects/java26-module/gradle.properties"
   do
     update_version "${VERSION}" "${file}" || exit $?
   done
@@ -70,7 +71,7 @@ function updateAllVersionInformation() {
   printf "Done.\n"
 
   printf "Updating version in maven files..."
-  for file in "example-projects/java11/pom.xml" \
+  for file in "example-projects/java21/pom.xml" \
   "example-projects/maven/pom.xml" \
   "jgiven-maven-plugin/src/test/resources/sampleProject/pom.xml"
   do
@@ -84,7 +85,7 @@ function runGradleTestOnGivenProject() {
     local givenProject="$1"
     local VERSION="$2"
 
-    ./gradlew -b $givenProject clean test -Pversion=$VERSION
+    ./gradlew -p $givenProject clean test -Pversion=$VERSION
 }
 
 function runScalaTest() {
@@ -98,7 +99,7 @@ function runAndroidTestOnGivenProject() {
     local givenProject="$1"
     local VERSION="$2"
 
-    ./gradlew -b $givenProject clean test connectedAndroidTest -Pversion=$VERSION
+    ./gradlew -p $givenProject clean test connectedAndroidTest -Pversion=$VERSION
 }
 
 function runMavenTestOnGivenProject() {

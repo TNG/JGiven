@@ -1,12 +1,13 @@
 package com.tngtech.jgiven.tests.sealed;
 
+import com.tngtech.jgiven.Stage;
+import com.tngtech.jgiven.junit6.SimpleScenarioTest;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-import com.tngtech.jgiven.Stage;
-import com.tngtech.jgiven.junit5.SimpleScenarioTest;
-import java.util.Collections;
-import org.junit.jupiter.api.Test;
 
 class SealedClassesHandlingTest {
 

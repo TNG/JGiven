@@ -74,7 +74,7 @@ public class GivenJsonReports<SELF extends GivenJsonReports<?>> extends Stage<SE
     public SELF a_custom_JS_file_with_content( String content ) throws IOException {
         File jsFile = temporaryFolderRule.newFile( "custom.js" );
         html5ReportConfig.setCustomJs( jsFile );
-        Files.append( content, jsFile, Charsets.UTF_8 );
+        Files.asCharSink( jsFile, Charsets.UTF_8 ).write(content);
         return self();
     }
 }

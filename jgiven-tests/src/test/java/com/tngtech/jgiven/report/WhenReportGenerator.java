@@ -9,6 +9,7 @@ import com.tngtech.jgiven.report.ReportGenerator.Format;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportConfig;
 import com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator;
 import com.tngtech.jgiven.report.html5.Html5ReportConfig;
+import com.tngtech.jgiven.report.html5.Html5ReportGenerator;
 import com.tngtech.jgiven.report.model.CompleteReportModel;
 import com.tngtech.jgiven.report.text.PlainTextReportConfig;
 import com.tngtech.jgiven.report.text.PlainTextReportGenerator;
@@ -83,7 +84,7 @@ public class WhenReportGenerator<SELF extends WhenReportGenerator<?>> extends St
             case HTML:
             case HTML5:
             default:
-                ReportGenerator.generateHtml5Report().generateWithConfig( html5ReportConfig );
+                new Html5ReportGenerator().generateWithConfig( html5ReportConfig );
         }
         return self();
     }

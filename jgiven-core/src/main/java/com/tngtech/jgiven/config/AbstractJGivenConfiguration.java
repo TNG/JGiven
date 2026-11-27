@@ -1,5 +1,8 @@
 package com.tngtech.jgiven.config;
 
+import com.tngtech.jgiven.annotation.AsProvider;
+import com.tngtech.jgiven.exception.JGivenWrongUsageException;
+import com.tngtech.jgiven.impl.params.DefaultAsProvider;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
@@ -10,6 +13,8 @@ import com.tngtech.jgiven.impl.format.FormatterCache;
 public abstract class AbstractJGivenConfiguration implements FormatterConfiguration {
     private final Map<Class<? extends Annotation>, TagConfiguration> tagConfigurations = Maps.newHashMap();
     private final FormatterCache formatterCache = new FormatterCache();
+
+    private AsProvider asProvider = new DefaultAsProvider();
     private String testClassSuffixRegEx = "Tests?";
 
     /**
@@ -95,5 +100,21 @@ public abstract class AbstractJGivenConfiguration implements FormatterConfigurat
 
     public String getTestClassSuffixRegEx() {
         return testClassSuffixRegEx;
+    }
+
+    /**
+     * Set a default interpreter for method names for all items that are subject to this configuration.
+     * Can be overriden by {@link com.tngtech.jgiven.annotation.As} annotation.
+     * @see com.tngtech.jgiven.annotation.As
+     */
+    public void setAsProvider(AsProvider asProvider) {
+        if (asProvider == null) {
+            throw new JGivenWrongUsageException("A custom AsProvider must not be set to null");
+        }
+        this.asProvider = asProvider;
+    }
+
+    public AsProvider getAsProvider() {
+        return asProvider;
     }
 }

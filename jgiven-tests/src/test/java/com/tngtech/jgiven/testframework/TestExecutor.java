@@ -1,7 +1,7 @@
 package com.tngtech.jgiven.testframework;
 
 import com.tngtech.jgiven.junit.JUnitExecutor;
-import com.tngtech.jgiven.junit5.JUnit5Executor;
+import com.tngtech.jgiven.junit6.JUnit6Executor;
 import com.tngtech.jgiven.testng.TestNgExecutor;
 
 public abstract class TestExecutor {
@@ -11,7 +11,7 @@ public abstract class TestExecutor {
             case JUnit:
                 return new JUnitExecutor();
             case JUnit5:
-                return new JUnit5Executor();
+                return new JUnit6Executor();
             case TestNG:
                 return new TestNgExecutor();
             default:

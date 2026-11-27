@@ -8,53 +8,45 @@ pluginManagement {
         gradlePluginPortal()
         google()
         maven {
-            url "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
         }
         maven {
-            url "https://oss.sonatype.org/content/repositories/staging/"
+            url = "https://oss.sonatype.org/content/repositories/staging/"
         }
     }
 }
 
 plugins {
-    id 'com.gradle.enterprise' version '3.16.1'
+    id 'com.gradle.develocity' version '4.6.1'
 }
 
-dependencyResolutionManagement {
-    versionCatalogs {
-        junitVariableVersionLibs {
-            from(files('gradle/libs.versions.toml'))
-            def junitVersion = rootProject.hasProperty('junitVersion') ? rootProject.junitVersion : null
-            if (junitVersion != null) {
-                version("junit4-version", junitVersion)
-            }
-        }
-    }
-}
 
-gradleEnterprise {
+
+develocity{
     buildScan {
-        termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-        termsOfServiceAgree = 'yes'
+        termsOfUseUrl = 'https://gradle.com/terms-of-service'
+        termsOfUseAgree = 'yes'
     }
 }
 
 rootProject.name = 'JGiven'
-
+includeBuild('build-conventions')
 include ':jgiven-core',
         ':jgiven-maven-plugin',
         ':jgiven-junit',
-        ':jgiven-spock',
         ':jgiven-spock2',
         ':jgiven-testng',
         ':jgiven-spring',
         ':jgiven-spring-junit4',
         ':jgiven-html-app',
         ':jgiven-html5-report',
+        ':jgiven-asciidoc-report',
         ':jgiven-tests',
         ':jgiven-examples',
         ':jgiven-junit5',
+        ':jgiven-junit6',
         ':jgiven-spring-junit5',
+        ':jgiven-spring-junit6',
         ':jgiven-gradle-plugin'
 
 def timingEnabled = System.getenv("JGivenTiming")
@@ -75,6 +67,6 @@ if (android && !release && hasAndroidSourcePath) {
     include ':jgiven-android-test'
 }
 
-if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_19)) {
+if (JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
     include ':jgiven-future-java-tests'
 }

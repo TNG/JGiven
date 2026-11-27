@@ -1,7 +1,5 @@
 package com.tngtech.jgiven.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.CharSink;
 import com.google.common.io.FileWriteMode;
@@ -19,6 +17,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConfigTest {
 
@@ -89,7 +89,7 @@ public class ConfigTest {
 
         assertThat(underTest.isReportEnabled()).isTrue();
         assertThat(underTest.getReportDir()).get().extracting(File::getPath).isEqualTo("jgiven-reports");
-        assertThat(underTest.textColorEnabled()).extracting(Enum::name).isEqualTo("AUTO");
+        assertThat(underTest.textColorEnabled()).extracting(Enum::name).isEqualTo("FALSE");
         assertThat(underTest.filterStackTrace()).isTrue();
     }
 

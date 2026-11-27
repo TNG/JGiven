@@ -1,11 +1,11 @@
 package com.tngtech.jgiven.report.model;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.tngtech.jgiven.report.model.Tag.TagId;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * Represents the complete report model of all report files.
@@ -19,20 +19,20 @@ public class CompleteReportModel {
     protected final List<ScenarioModel> failedScenarios = Lists.newArrayList();
     protected final List<ScenarioModel> pendingScenarios = Lists.newArrayList();
     protected final List<ScenarioModel> allScenarios = Lists.newArrayList();
-    protected final Map<String, Tag> tagIdMap = Maps.newLinkedHashMap();
+    protected final Map<TagId, Tag> tagIdMap = Maps.newLinkedHashMap();
 
     public void addModelFile( ReportModelFile modelFile ) {
-        ReportModel model = modelFile.model();
+        var model = modelFile.model();
 
-        for( ScenarioModel scenario : model.getScenarios() ) {
-            for( String tagId : scenario.getTagIds() ) {
-                Tag tag = model.getTagWithId( tagId );
-                addToMap( tag, scenario );
-            }
+        for (ScenarioModel scenario : model.getScenarios()) {
+            scenario.getTagIds()
+                    .stream()
+                    .map(model::getTagWithId)
+                    .forEach(tag -> addToMap(tag, scenario));
         }
 
         tagIdMap.putAll( model.getTagMap() );
-        ReportStatistics statistics = new StatisticsCalculator().getStatistics( model );
+        var statistics = new StatisticsCalculator().getStatistics( model );
 
         statisticsMap.put( modelFile, statistics );
 
@@ -45,8 +45,8 @@ public class CompleteReportModel {
 
     }
 
-    private void addToMap( Tag tag, ScenarioModel scenario ) {
-        List<ScenarioModel> list = tagMap.computeIfAbsent(tag, k -> Lists.newArrayList());
+    private void addToMap(Tag tag, ScenarioModel scenario) {
+        var list = tagMap.computeIfAbsent(tag, k -> Lists.newArrayList());
         list.add(scenario);
     }
 
@@ -82,7 +82,7 @@ public class CompleteReportModel {
         return models;
     }
 
-    public Map<String, Tag> getTagIdMap() {
+    public Map<TagId, Tag> getTagIdMap() {
         return tagIdMap;
     }
 }

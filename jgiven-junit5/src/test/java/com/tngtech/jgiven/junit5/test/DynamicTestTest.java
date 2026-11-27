@@ -4,8 +4,6 @@ import com.tngtech.jgiven.junit5.JGivenExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 @ExtendWith(JGivenExtension.class)
-@RunWith( JUnitPlatform.class )
 @DisplayName("Dynamic Tests")
 public class DynamicTestTest {
 

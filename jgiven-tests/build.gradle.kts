@@ -1,0 +1,32 @@
+plugins {
+    id("jgiven-publishing")
+    id("jgiven-checkstyle")
+    id("jgiven-java")
+}
+
+description = "JGiven Tests - Contains BDD tests for JGiven written in JGiven"
+
+dependencies {
+    implementation(project(":jgiven-junit"))
+    implementation(project(":jgiven-testng"))
+    implementation(project(":jgiven-junit6"))
+    implementation(project(":jgiven-asciidoc-report"))
+    implementation(project(":jgiven-html5-report"))
+    implementation(libs.bundles.junit4)
+    implementation(platform(libs.junit6.bom))
+    implementation(libs.bundles.junit6)
+    implementation(libs.slf4j.java.util.logging)
+    implementation(libs.junit.platform.launcher)
+    implementation(libs.testng)
+    implementation("com.beust:jcommander:1.82")
+    implementation(libs.assertj)
+
+    testImplementation("org.seleniumhq.selenium:selenium-java:4.52.0")
+    testImplementation("io.github.bonigarcia:webdrivermanager:6.4.0")
+    testImplementation("org.apache.commons:commons-io:1.3.2")
+}
+
+tasks.named("test") {
+    finalizedBy("jgivenHtml5Report")
+    finalizedBy("jgivenAsciiDocReport")
+}

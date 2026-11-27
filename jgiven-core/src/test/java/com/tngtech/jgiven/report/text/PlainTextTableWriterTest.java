@@ -5,24 +5,20 @@ import static net.java.quickcheck.generator.CombinedGenerators.pairs;
 import static net.java.quickcheck.generator.PrimitiveGenerators.strings;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.List;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.google.common.collect.Lists;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.DataProviders;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import com.tngtech.jgiven.annotation.Table;
 import com.tngtech.jgiven.report.model.DataTable;
-
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
 import net.java.quickcheck.collection.Pair;
 import net.java.quickcheck.junit.SeedInfo;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 @RunWith( DataProviderRunner.class )
 public class PlainTextTableWriterTest {
@@ -78,9 +74,8 @@ public class PlainTextTableWriterTest {
     }
 
     @DataProvider
-    public static Object[][] randomPrintableStrings() {
-        List<Pair<String, String>> values = lists( pairs( strings(), strings() ), 100 ).next();
-        return DataProviders.testForEach( values );
+    public static List<?> randomPrintableStrings() {
+        return lists( pairs( strings(), strings() ), 100 ).next();
     }
 
     @UseDataProvider( "randomPrintableStrings" )

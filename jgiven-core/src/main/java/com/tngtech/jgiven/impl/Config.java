@@ -21,7 +21,6 @@ public class Config {
 
     private static final String TRUE = "true";
     private static final String FALSE = "false";
-    private static final String AUTO = "auto";
     private static final String JGIVEN_REPORT_ENABLED = "jgiven.report.enabled";
     public static final String JGIVEN_REPORT_DIR = "jgiven.report.dir";
     private static final String JGIVEN_REPORT_TEXT = "jgiven.report.text";
@@ -115,7 +114,7 @@ public class Config {
     }
 
     public ConfigValue textColorEnabled() {
-        return ConfigValue.fromString(resolveProperty(JGIVEN_REPORT_TEXT_COLOR, AUTO));
+        return ConfigValue.fromString(resolveProperty(JGIVEN_REPORT_TEXT_COLOR, FALSE));
     }
 
     public boolean textReport() {

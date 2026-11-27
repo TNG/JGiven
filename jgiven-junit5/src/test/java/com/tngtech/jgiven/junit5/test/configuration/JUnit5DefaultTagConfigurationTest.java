@@ -16,6 +16,6 @@ class JUnit5DefaultTagConfigurationTest extends SimpleScenarioTest<TagConfigurat
         when().the_configuration_is_queried();
         then().the_tag_configuration_has_the_color("orange")
             .and().the_tag_configuration_has_the_name("")
-            .and().the_tag_configuration_has_the_description("JUnit 5 Tag");
+                .and().the_tag_configuration_has_the_description("JUnit 5/6 Tag");
     }
 }

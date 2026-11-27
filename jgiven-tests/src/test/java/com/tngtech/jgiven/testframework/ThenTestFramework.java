@@ -1,10 +1,5 @@
 package com.tngtech.jgiven.testframework;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.reflect.Method;
-import java.util.List;
-
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
 import com.tngtech.jgiven.report.model.ExecutionStatus;
@@ -12,6 +7,12 @@ import com.tngtech.jgiven.report.model.ScenarioModel;
 import com.tngtech.jgiven.report.model.ThenReportModel;
 import com.tngtech.jgiven.tests.TestScenarioRepository.TestScenario;
 
+import java.lang.reflect.Method;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SuppressWarnings("UnusedReturnValue") //JGiven style prefers a fluent interface
 public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenReportModel<SELF> {
     @ExpectedScenarioState
     protected TestScenario testScenario;
@@ -25,6 +26,8 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
         // The standard JUnit executor will report the test as passed and not ignored,
         // we thus only test for not failed here
         the_test_passes();
+        assertThat(reportModel.getScenarios().get(0).getExecutionStatus())
+                .isIn(ExecutionStatus.ABORTED, ExecutionStatus.SCENARIO_PENDING, ExecutionStatus.SOME_STEPS_PENDING);
         return self();
     }
 
@@ -50,7 +53,6 @@ public class ThenTestFramework<SELF extends ThenTestFramework<?>> extends ThenRe
     }
 
     public SELF the_report_model_contains_one_scenario_for_each_test_method() {
-        Method[] declaredMethods = testScenario.testClass.getDeclaredMethods();
         List<Method> nonStaticMethods = ReflectionUtil.getNonStaticMethod(testScenario.testClass.getDeclaredMethods());
         assertThat(reportModel.getScenarios()).hasSize(nonStaticMethods.size());
         return self();

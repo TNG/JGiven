@@ -3,12 +3,13 @@ package com.tngtech.jgiven.tests;
 import com.tngtech.jgiven.exception.JGivenWrongUsageException;
 import com.tngtech.jgiven.impl.ScenarioBase;
 import com.tngtech.jgiven.impl.ScenarioHolder;
-import com.tngtech.jgiven.junit5.JGivenExtension;
+import com.tngtech.jgiven.junit6.JGivenExtension;
 import com.tngtech.jgiven.report.model.ReportModel;
+import org.junit.jupiter.api.extension.ExtensionContext;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import org.junit.jupiter.api.extension.ExtensionContext;
 
 /**
  * Extracts the report Model from within the Test context before it gets deleted.

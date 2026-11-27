@@ -1,15 +1,12 @@
 package com.tngtech.jgiven.example.springboot;
 
-import org.junit.Test;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-
 import com.tngtech.jgiven.annotation.JGivenConfiguration;
 import com.tngtech.jgiven.integration.spring.EnableJGiven;
 import com.tngtech.jgiven.integration.spring.JGivenStage;
 import com.tngtech.jgiven.integration.spring.SimpleSpringRuleScenarioTest;
+import org.junit.Test;
+import org.springframework.context.annotation.ComponentScan;
 
-@DataJpaTest
 @ComponentScan(includeFilters = @ComponentScan.Filter(JGivenStage.class))
 @EnableJGiven
 @JGivenConfiguration( HelloJGivenConfiguration.class )

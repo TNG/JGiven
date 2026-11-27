@@ -40,8 +40,20 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         return self();
     }
 
+
+    public SELF a_test_named_$(String testName, Class<?> testClass){
+        testScenario = new TestScenario(testClass, testName);
+        return self();
+    }
+
+
     public SELF the_test_has_$_failing_stages(int n) {
         criteria.numberOfFailingStages = n;
+        return self();
+    }
+
+    public SELF the_test_has_a_failed_assumption(){
+        criteria.assumptionFailed = true;
         return self();
     }
 
@@ -74,7 +86,7 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
     @AfterStage
     public void findScenario() {
         if (testScenario == null) {
-            testScenario = TestScenarioRepository.findScenario(criteria);
+            testScenario = TestScenarioRepository.findScenario(criteria).stream().findFirst().orElseThrow();
         }
     }
 
@@ -128,8 +140,8 @@ public class GivenScenarioTest<SELF extends GivenScenarioTest<?>> extends Stage<
         testScenario = new TestScenario(PendingDataProviderTests.class);
     }
 
-    public SELF junit5_tests_with_scenario_modifications_in_after_method() {
-        testScenario = TestScenarioRepository.junit5TestsWithModificationsInAfterMethod();
+    public SELF junit6_tests_with_scenario_modifications_in_after_method() {
+        testScenario = TestScenarioRepository.junit6TestsWithModificationsInAfterMethod();
         return self();
     }
 

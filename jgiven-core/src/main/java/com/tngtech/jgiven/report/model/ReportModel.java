@@ -7,9 +7,10 @@ import com.google.common.collect.Maps;
 import com.tngtech.jgiven.annotation.As;
 import com.tngtech.jgiven.annotation.AsProvider;
 import com.tngtech.jgiven.annotation.Description;
-import com.tngtech.jgiven.impl.params.DefaultAsProvider;
+import com.tngtech.jgiven.config.ConfigurationUtil;
 import com.tngtech.jgiven.impl.util.AssertionUtil;
 import com.tngtech.jgiven.impl.util.ReflectionUtil;
+import com.tngtech.jgiven.report.model.Tag.TagId;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ReportModel {
 
     private List<ScenarioModel> scenarios = Lists.newArrayList();
 
-    private Map<String, Tag> tagMap = Maps.newLinkedHashMap();
+    private Map<TagId, Tag> tagMap = Maps.newLinkedHashMap();
 
     public void accept(ReportModelVisitor visitor) {
         visitor.visit(this);
@@ -141,17 +142,17 @@ public class ReportModel {
         tags.forEach(this::addTag);
     }
 
-    public synchronized Tag getTagWithId(String tagId) {
+    public synchronized Tag getTagWithId(TagId tagId) {
         Tag tag = this.tagMap.get(tagId);
         AssertionUtil.assertNotNull(tag, "Could not find tag with id " + tagId);
         return tag;
     }
 
-    public synchronized Map<String, Tag> getTagMap() {
+    public synchronized Map<TagId, Tag> getTagMap() {
         return tagMap;
     }
 
-    public synchronized void setTagMap(Map<String, Tag> tagMap) {
+    public synchronized void setTagMap(Map<TagId, Tag> tagMap) {
         this.tagMap = tagMap;
     }
 
@@ -180,7 +181,7 @@ public class ReportModel {
         As as = testClass.getAnnotation(As.class);
         AsProvider provider = as != null
             ? ReflectionUtil.newInstance(as.provider())
-            : new DefaultAsProvider();
+            : ConfigurationUtil.getConfiguration(testClass).getAsProvider();
         name = provider.as(as, testClass);
     }
 

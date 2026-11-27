@@ -16,7 +16,7 @@ public class DefaultStageCreator implements StageCreator {
     public <T> T createStage( Class<T> stageClass, StepInterceptor stepInterceptor ) {
         try {
             Class<? extends T> stageSubClass = stageClassCreator.createStageClass(stageClass);
-            T result = stageSubClass.newInstance();
+            T result = stageSubClass.getConstructor().newInstance();
             setStepInterceptor( result, stepInterceptor);
             return result;
         } catch( Error e ) {

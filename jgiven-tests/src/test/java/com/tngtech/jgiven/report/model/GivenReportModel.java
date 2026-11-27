@@ -1,7 +1,5 @@
 package com.tngtech.jgiven.report.model;
 
-import static java.util.Arrays.asList;
-
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.AfterStage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
@@ -16,6 +14,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import static com.tngtech.jgiven.report.model.Tag.TagClass.tagClass;
+import static java.util.Arrays.asList;
 
 public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SELF> {
 
@@ -227,14 +228,14 @@ public class GivenReportModel<SELF extends GivenReportModel<?>> extends Stage<SE
     }
 
     public SELF scenario_$_has_tag_$_with_value_$(int i, String name, String value) {
-        latestTag = new Tag(name, value).setPrependType(true);
+        latestTag = new Tag(tagClass(name), value).setPrependType(true);
         latestTag.setType(name);
         reportModel.getScenarios().get(i - 1).addTag(latestTag);
         reportModel.addTag(latestTag);
         return self();
     }
 
-    public void the_tag_has_prependTpe_set_to(boolean prependType) {
+    public void the_tag_has_prependType_set_to(boolean prependType) {
         latestTag.setPrependType(prependType);
     }
 

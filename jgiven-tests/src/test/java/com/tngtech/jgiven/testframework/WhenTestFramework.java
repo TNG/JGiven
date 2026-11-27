@@ -1,12 +1,11 @@
 package com.tngtech.jgiven.testframework;
 
-import org.assertj.core.api.Assertions;
-
 import com.tngtech.jgiven.Stage;
 import com.tngtech.jgiven.annotation.ExpectedScenarioState;
 import com.tngtech.jgiven.annotation.ProvidedScenarioState;
 import com.tngtech.jgiven.report.model.ReportModel;
 import com.tngtech.jgiven.tests.TestScenarioRepository.TestScenario;
+import org.assertj.core.api.Assertions;
 
 public class WhenTestFramework<SELF extends WhenTestFramework<?>> extends Stage<SELF> {
 

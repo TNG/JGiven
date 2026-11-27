@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
  * Everything has a default value.
  *
  * The functionality is piped together for an easier and extendable interface to create a custom report
- * For examples see {@link com.tngtech.jgiven.report.asciidoc.AsciiDocReportGenerator}
  *
  */
 public abstract class AbstractReportGenerator {
@@ -48,7 +47,7 @@ public abstract class AbstractReportGenerator {
         try {
             generate();
         } catch( Exception e ) {
-            log.error("JGivenReport has encountered the following exception: " + e + "\n" );
+            log.error("JGivenReport has encountered the following exception: " + e + "\n", e);
             printUsageAndExit();
         }
     }

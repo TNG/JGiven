@@ -1,0 +1,24 @@
+package com.tngtech.jgiven.integration.spring.junit6.test.proxy;
+
+import com.tngtech.jgiven.annotation.ProvidedScenarioState;
+import com.tngtech.jgiven.integration.spring.JGivenStage;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@JGivenStage
+public class GivenTestStage {
+
+    @Autowired
+    private HelloWorldService helloWorldService;
+
+    @ProvidedScenarioState
+    private MessageToTheWorld message;
+
+    public GivenTestStage should_say_hello() {
+        assertThat(helloWorldService).isNotNull();
+
+        message = helloWorldService.sayHello();
+        return this;
+    }
+}

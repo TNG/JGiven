@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 class AssumptionsTest extends SimpleScenarioTest<AssumptionsTest.TestStage> {
@@ -15,20 +14,24 @@ class AssumptionsTest extends SimpleScenarioTest<AssumptionsTest.TestStage> {
 
     @Test
     void should_pass_on_assertJ_assumptions() throws Throwable {
-        assertThatThrownBy(() -> when().I_assume_something_using_assertJ())
-                .isInstanceOf(catchException(AssumptionsTest::assertJAssumptionFailure));
+        when().I_assume_something_using_assertJ();
         getScenario().finished();
-        ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase( 0 );
-        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.PASSED );
+
+        assertThat(getScenario().getExecutor().hasAborted()).isTrue();
+        assertThat(getScenario().getExecutor().getAbortedException()).isInstanceOf(org.junit.AssumptionViolatedException.class);
+        ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase(0);
+        assertThat(aCase.getStep(0).getStatus()).isEqualTo(StepStatus.ABORTED);
     }
 
     @Test
     void should_pass_on_junit5_assumptions() throws Throwable {
-        assertThatThrownBy(() -> when().I_assume_something_using_junit5())
-                .isInstanceOf(catchException(AssumptionsTest::junitAssumptionFailure));
+        when().I_assume_something_using_junit5();
         getScenario().finished();
-        ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase( 0 );
-        assertThat( aCase.getStep( 0 ).getStatus() ).isEqualTo( StepStatus.PASSED );
+
+        assertThat(getScenario().getExecutor().hasAborted()).isTrue();
+        assertThat(getScenario().getExecutor().getAbortedException()).isInstanceOf(org.opentest4j.TestAbortedException.class);
+        ScenarioCaseModel aCase = getScenario().getModel().getLastScenarioModel().getCase(0);
+        assertThat(aCase.getStep(0).getStatus()).isEqualTo(StepStatus.ABORTED);
     }
 
     static class TestStage {
@@ -47,13 +50,5 @@ class AssumptionsTest extends SimpleScenarioTest<AssumptionsTest.TestStage> {
 
     private static void junitAssumptionFailure(){
         Assumptions.abort();
-    }
-    private Class<? extends Exception> catchException(Runnable runnable) {
-        try {
-            runnable.run();
-            return null;
-        } catch (Exception e) {
-            return e.getClass();
-        }
     }
 }
